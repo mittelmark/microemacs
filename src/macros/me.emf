@@ -226,12 +226,12 @@ add-file-hook ".emf"                                          fhook-emf
 add-file-hook ".doc"                                          fhook-doc
 add-file-hook ".txt"                                          fhook-txt
 add-file-hook ".jst"                                          fhook-jst
-add-file-hook ".tex .sty"                                     fhook-latex
+add-file-hook ".tex .sty .snw .rnw"                           fhook-latex
 add-file-hook ".bib"                                          fhook-bibtex
 add-file-hook ".n .1 .2 .3 .4 .5 .6 .7 .8 .9 .so .tni .sm"    fhook-nroff
 add-file-hook ".sgm .sgml"                                    fhook-sgml
 add-file-hook ".c .h .def .i"                                 fhook-c
-add-file-hook ".cc .cpp .hpp .rc"                             fhook-cpp
+add-file-hook ".cc .cpp .hpp .rc .cs"                         fhook-cpp
 add-file-hook ".l .y"                                         fhook-yacc
 add-file-hook "Makefile makefile .mak .mk .gmk"               fhook-make
 add-file-hook "Imakefile imakefile"                           fhook-imake
@@ -251,7 +251,7 @@ add-file-hook ".pl .pm"                                       fhook-perl
 add-file-hook ".php .inc .php3 .php4 .phtml"                  fhook-php
 add-file-hook ".phps"                                         fhook-phps
 add-file-hook ".cmd .bat .btm"                                fhook-dos
-add-file-hook ".tcl .tk"                                      fhook-tcl
+add-file-hook ".tcl .tk .tm"                                  fhook-tcl
 add-file-hook ".rul"                                          fhook-rul
 add-file-hook ".awk .nawk .gawk"                              fhook-awk
 add-file-hook ".ada .adb .ads"                                fhook-ada
@@ -292,6 +292,7 @@ add-file-hook ".r"                                            fhook-r
 add-file-hook ".cfm .cfml .cfc"                               fhook-cfm
 add-file-hook ".iss"                                          fhook-iss
 add-file-hook ".go"                                           fhook-go
+add-file-hook ".md .Rmd .Tmd"                                 fhook-md
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script

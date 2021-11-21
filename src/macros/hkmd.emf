@@ -1,0 +1,100 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : $Author$
+;  Created By    : Dr. Detlef Groth
+;  Created       : Sun Nov 15 05:11:33 2020
+;  Last Modified : <211121.0719>
+;
+;  Description
+;
+;  Notes
+;
+;  History
+;
+;  Copyright (c) 2021 Dr. Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;set-variable .fhook-md.name "Markdown"
+;set-variable .fhook-md.setup &reg "/history/fhook/md" "fghijopsw"
+;set-variable .fhook-md.setup-mask "acefghijkmnopstuwx"
+
+!if &sequal .hilight.md "ERROR"
+    set-variable .hilight.md &pinc .hilight.next 1
+!endif
+0 hilight .hilight.md 1                $global-scheme
+hilight .hilight.md 2 "^#"              .scheme.header
+hilight .hilight.md 2 "^```"              .scheme.string
+hilight .hilight.md 4 "\"" "\"" "\\"   .scheme.string
+;hilight .hilight.md 4 "```" "```" "\\"   .scheme.string
+hilight .hilight.md 0 "'[^']+'"            .scheme.quote
+hilight .hilight.md 1 "_[^_]+_"          .scheme.bold
+hilight .hilight.md 1 "__[^_]+__"      .scheme.bold
+hilight .hilight.md 1 "`[^`]+`"            .scheme.quote
+
+
+; comments for code chunks
+define-macro md-comment-line
+    !while &gre &pdec @# 1 0
+        beginning-of-line
+        insert-string "#"
+        beginning-of-line
+        forward-line
+    !done
+!emacro
+
+; Macro to remove a comment from a line
+define-macro md-uncomment-line
+    !while &gre &pdec @# 1 0
+        beginning-of-line
+        -1 search-forward "#"
+        backward-delete-char
+        forward-line
+    !done
+!emacro
+
+define-macro fhook-md
+    ; Temporary comment to make sure that it works.
+    !if &not @#
+        etfinsrt "md"
+    !endif
+    set-variable $buffer-hilight .hilight.md
+    set-variable $buffer-indent .hilight.md
+    buffer-abbrev-file "md"
+    1 buffer-mode "time"
+    1 buffer-mode "indent"
+    ; Set up local bindings
+    buffer-bind-key md-comment-line "C-c C-c"
+    buffer-bind-key md-uncomment-line "C-c C-d"
+    buffer-bind-key collapse-current "f2"
+    buffer-bind-key collapse-all "f3"
+    ml-write "Markdown filehook loaded."
+!emacro
+
+set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
+set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\)"
+set-variable .fhook-md.collapse-mnext "-1"
+
+set-variable .fhook-md.item-list-s1 "^# \\(\.+\\)"
+set-variable .fhook-md.item-list-r1 "H1 \ecB\\1\ecA"
+set-variable .fhook-md.item-list-s2 "^## <a \.+>\\(\.+\\)</a>"
+set-variable .fhook-md.item-list-r2 "H2 \ecB\\1\ecA"
+set-variable .fhook-md.item-list-s3 "^## \\(\[^<\]\.+\\)"
+set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
+
+ml-write "[MicroEmacs md file hook loaded]"
+!if &not &exi .hilight.tcl
+    !force execute-file "hktcl"
+!endif
+!if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
+    hilight .hilight.md 0x80 "^```{tcl\.+" .hilight.tcl .scheme.hide
+    hilight .hilight.tcl 0x80 "^```" .hilight.md .scheme.hide
+!endif
+!if &not &exi .hilight.r
+    !force execute-file "hkr"
+!endif
+!if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
+    hilight .hilight.md 0x80 "^```{r\.+" .hilight.r .scheme.hide
+    hilight .hilight.r  0x80 "^```" .hilight.md .scheme.hide
+!endif
+
+!force execute-file "mymd"

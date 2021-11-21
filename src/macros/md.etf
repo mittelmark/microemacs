@@ -1,0 +1,18 @@
+---
+title: "Long Title"
+author: 
+- $USER_NAME$
+date: $ASCII_TIME$
+abstract: >
+    Some abstract ...
+    on several lines...
+---
+
+## Introduction
+
+Some text ...
+
+## EOF
+
+
+
