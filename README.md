@@ -11,8 +11,10 @@ Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/
 
 ![](images/ayu-light.png)
 
-* adding Markddown mode
+* adding Markdown mode (folding, template file, syntax hilghlighting, outline in item list, embedding Tcl and R code in fences with syntax highlight)
 
 ## Original README
 
 Here the link to the original Jasspa MicroEmacs [README](README).
+
+## EOF
