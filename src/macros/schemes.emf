@@ -7,5 +7,5 @@
 ; Synopsis:    List of screen color schemes
 ; Authors:     Steven Phillips
 ;
-set-variable .scheme.scheme-names "|Default White on Black|Basic Black on Cream|Black on Cream|Sandy Shores|Sherwood Forest|Brownie|Lemon Jelly|Blue Hue|Mirkwood|Plain Black on Cream|Plain White on Black|Black on Grey|MS Dev-Studio Colors|Termcap (black)|Termcap (White)|Charcoal|Lumina|Lumina Evolution|General Electric Black|General Electric Blue|General Electric Olive|General Electric Gray|"
-set-variable .scheme.scheme-files "|schemed|schemebc|schemej|schemevi|schemesf|schemeb|schemelj|schemebh|schememw|schemepl|schemepd|schemel|schememd|schemetb|schemetw|schemech|schemelm|schemel2|schemege|schemegb|schemego|schemegg|"
+set-variable .scheme.scheme-names "|Default White on Black|Basic Black on Cream|Black on Cream|Sandy Shores|Sherwood Forest|Brownie|Ayu Light|Dracula|Lemon Jelly|Blue Hue|Mirkwood|Plain Black on Cream|Plain White on Black|Black on Grey|MS Dev-Studio Colors|Termcap (black)|Termcap (White)|Charcoal|Lumina|Lumina Evolution|General Electric Black|General Electric Blue|General Electric Olive|General Electric Gray|"
+set-variable .scheme.scheme-files "|schemed|schemebc|schemej|schemevi|schemesf|schemeb|schemeal|schemedr|schemelj|schemebh|schememw|schemepl|schemepd|schemel|schememd|schemetb|schemetw|schemech|schemelm|schemel2|schemege|schemegb|schemego|schemegg|"
