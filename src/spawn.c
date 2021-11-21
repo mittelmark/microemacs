@@ -215,10 +215,11 @@ meShell(int f, int n)
         case 0:
             /* we want the children to die on interrupt */
             execlp("xterm", "xterm", "-sl", "200", "-sb", NULL);
-            mlwrite(MWABORT,(meUByte *)"exec failed, %s", sys_errlist[errno]);
+            mlwrite(MWABORT,(meUByte *)"exec failed, %s", strerror(errno));            
+            /* mlwrite(MWABORT,(meUByte *)"exec failed, %s", sys_errlist[errno]); */
             meExit(127);
         case -1:
-            ss = mlwrite(MWABORT,(meUByte *)"exec failed, %s", sys_errlist[errno]);
+            ss = mlwrite(MWABORT,(meUByte *)"exec failed, %s", strerror(errno));
         default:
             ss = meTRUE ;
         }
