@@ -1429,7 +1429,8 @@ readin(register meBuffer *bp, meUByte *fname)
                    )
                 {
                     /* READ ONLY DIR */
-                    mlwrite(MWPAUSE,(meUByte *)"%s: %s", dirbuf, sys_errlist[errno]);
+                    mlwrite(MWPAUSE,(meUByte *)"%s: %s", dirbuf, strerror(errno));
+                    /* mlwrite(MWPAUSE,(meUByte *)"%s: %s", dirbuf, sys_errlist[errno]); */
                     /* Zap the filename - it is invalid.
                        We only want a buffer */
                     mlwrite (0,(meUByte *)"[New buffer %s]", getFileBaseName(fname));
@@ -1463,7 +1464,8 @@ readin(register meBuffer *bp, meUByte *fname)
             {
                 /* We are not allowed to read the file */
 #if ((defined _UNIX) || (defined _DOS))
-                mlwrite(MWABORT,(meUByte *)"[%s: %s]", fn, sys_errlist[errno]) ;
+                mlwrite(MWABORT,(meUByte *)"[%s: %s]", fn, strerror(errno)) ; 
+                /* mlwrite(MWABORT,(meUByte *)"[%s: %s]", fn, sys_errlist[errno]) ; */
 #else
                 mlwrite(MWABORT,"[cannot read: %s]", fn) ;
 #endif
