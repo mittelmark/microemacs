@@ -7,9 +7,11 @@ It contains the following changes:
 * fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64 - Fedora with gcc 10.3
 * adding schemes (themes) [Ayu Light](https://github.com/ayu-theme/ayu-colors) and [Dracula](https://github.com/dracula/dracula-theme)
 
-Here the Ayu Light theme:
+Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf)
 
 ![](images/ayu-light.png)
+
+* adding Markddown mode
 
 ## Original README
 
