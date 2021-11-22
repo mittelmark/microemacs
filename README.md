@@ -56,7 +56,7 @@ Here the link to the original Jasspa MicroEmacs [README](README).
 ## Links
 
 * [Jasspa Homepage](http://www.jasspa.com/)
-* [Github Repo with sources from 2010 with fixes for Mingw64 but removed Makefiles (terminal build via cmake](https://github.com/vitalyster/microemacs)
+* [Github Repo with sources from 2010 with fixes for Mingw64 but removed Makefiles (terminal build via cmake)](https://github.com/vitalyster/microemacs)
 * [Github Repo with sources from 2010 and fixes for Mac and BSD](https://github.com/ipstone/microemacs)
 * [Github Repo with sources from 2009](https://github.com/cstrotm/jasspa-microemacs)
 * [Github Repo with fixes for MSDOS](https://github.com/robdaemon/microemacs)
@@ -64,5 +64,9 @@ Here the link to the original Jasspa MicroEmacs [README](README).
 * [MicroEmacs Refcard](http://www.jamesie.de/microemacs/me-refcard.pdf)
 * [MicroEmacs.de](http://www.dgroth.de/pmwiki/index.php?n=MicroEmacs.MicroEmacs)
 * [MicroEmacs chm file (2002)](http://www.dgroth.de/downloads/me2002.chm)
+
+## License
+
+MicroEmacs is released with the GPL, see the file [license.txt](license.txt).
 
 ## EOF
