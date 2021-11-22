@@ -1,6 +1,5 @@
-if (NOT APPLE)
-    option(ENABLE_GUI "Build GUI" OFF)
-endif()
+project(me)
+option(ENABLE_GUI "Build GUI" ON)
 set (SRCS abbrev.c
           basic.c
           bind.c
