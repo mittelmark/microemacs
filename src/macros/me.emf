@@ -288,7 +288,7 @@ add-file-hook ".au3"                                          fhook-au3
 add-file-hook ".mod"                                          fhook-mod2
 add-file-hook ".dot"                                          fhook-dot
 add-file-hook ".rb"                                           fhook-ruby
-add-file-hook ".r"                                            fhook-r
+add-file-hook ".r .R .Rtk"                                    fhook-r
 add-file-hook ".cfm .cfml .cfc"                               fhook-cfm
 add-file-hook ".iss"                                          fhook-iss
 add-file-hook ".go"                                           fhook-go
