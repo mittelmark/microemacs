@@ -1,6 +1,6 @@
 ## MicroEmacs
 
-This is a fork of Jasspa MicroEmacs forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs)
+This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs)
 
 It contains the following changes:
 
@@ -22,6 +22,22 @@ build is folded by the indicated three dots:
 
 ![](images/dracula.png)
 
+## Pros and Cons of Jasspa MicroEmacs
+
+* Pro:
+    * emacs like coding
+    * distraction free coding, no popups, no annoying updates - just you and the editor
+    * easy to extend, the file _USER.emf_ can is your friend
+    * same features in terminal and in GUI mode
+    * small and fast
+    * different color themes can be used and changed easily
+    * many platforms supported see here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html)
+* Cons:
+    * no unicode!
+    * no softwrap!
+    
+        
+    
 
 ## Build
 
@@ -36,5 +52,17 @@ make -f linux26.gmk
 ## Original README
 
 Here the link to the original Jasspa MicroEmacs [README](README).
+
+## Links
+
+* [Jasspa Homepage](http://www.jasspa.com/)
+* [Github Repo with sources from 2010 with fixes for Mingw64 but removed Makefiles (terminal build via cmake](https://github.com/vitalyster/microemacs)
+* [Github Repo with sources from 2010 and fixes for Mac and BSD](https://github.com/ipstone/microemacs)
+* [Github Repo with sources from 2009](https://github.com/cstrotm/jasspa-microemacs)
+* [Github Repo with fixes for MSDOS](https://github.com/robdaemon/microemacs)
+* [MicroEmacs Online Help](http://www.jasspa.com/me.html)
+* [MicroEmacs Refcard](http://www.jamesie.de/microemacs/me-refcard.pdf)
+* [MicroEmacs.de](http://www.dgroth.de/pmwiki/index.php?n=MicroEmacs.MicroEmacs)
+* [MicroEmacs chm file (2002)](http://www.dgroth.de/downloads/me2002.chm)
 
 ## EOF
