@@ -14,5 +14,5 @@ tryfi "try:\r    # try code\r    \p\rfinally:\r     # finally code\P" "  try fin
 main "import sys\rdef main(argv):\r    pass\rif __name__ == \"__main__\":\rmain(sys.argv)\r" "  main"
  "" ""
  "" "</FOLD><FOLD+> \ecCTkinter:\ecA "
-import "from Tkinter import *\r"  "  import"
+tkimport "import tkinter as tk\r"  "  tkimport"
  "" "</FOLD>"
