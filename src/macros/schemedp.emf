@@ -1,40 +1,39 @@
 ; Generated color scheme file for JASSPA MicroEmacs
 ; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
 ; See the file me.emf for copying and conditions.
-; Description: Dracula
+; Description: Default Dark Pastel
 set-variable $system &band $system &bnot 0x020
 set-variable .hilight.flags 7
 ; Create the colors first
 add-color &set .col0 0 200 200 200
-add-color &set .col1 1 40 42 54
-add-color &set .col2 2 255 84 84
-add-color &set .col3 3 80 250 123
-add-color &set .col4 4 255 184 108
-add-color &set .col5 5 98 114 164
-add-color &set .col6 6 189 147 249
-add-color &set .col7 7 80 250 120
-add-color &set .col8 8 248 248 242
-add-color &set .col9 9 75 75 75
-add-color &set .col10 10 255 86 86
-add-color &set .col11 11 80 250 130
-add-color &set .col12 12 241 250 140
-add-color &set .col13 13 98 114 160
-add-color &set .col14 14 255 121 198
-add-color &set .col15 15 139 233 253
-add-color &set .col16 16 98 114 170
-add-color &set .col17 17 98 114 162
+add-color &set .col1 1 30 30 30
+add-color &set .col2 2 160 40 40
+add-color &set .col3 3 20 160 20
+add-color &set .col4 4 200 200 40
+add-color &set .col5 5 50 50 245
+add-color &set .col6 6 200 40 200
+add-color &set .col7 7 40 190 190
+add-color &set .col8 8 225 225 225
+add-color &set .col9 9 120 120 120
+add-color &set .col10 10 225 25 25
+add-color &set .col11 11 30 200 30
+add-color &set .col12 12 220 220 20
+add-color &set .col13 13 100 100 255
+add-color &set .col14 14 255 40 255
+add-color &set .col15 15 50 225 225
+add-color &set .col16 16 50 50 160
 ; Set the required cursor-color
 set-variable $cursor-color .col12
 ; Create the color schemes
 ; Standard
-add-color-scheme $global-scheme .col0 .col1 .col8 .col9 .col0 .col5 .col8 .col5 0 8 0 8 0 8 0 8
-add-color-scheme $ml-scheme .col0 .col1 .col8 .col9 .col0 .col16 .col8 .col16 0 8 0 8 0 8 0 8
+add-color-scheme $global-scheme .col0 .col1 .col8 .col1 .col0 .col16 .col8 .col16 0 8 0 8 0 8 0 8
+add-color-scheme $ml-scheme .col0 .col1 .col8 .col1 .col0 .col16 .col8 .col16 0 8 0 8 0 8 0 8
 add-color-scheme $mode-line-scheme .col0 .col2 .col10 .col8 .col0 .col2 .col8 .col10 8 0 8 0 0 8 0 8
 add-color-scheme $scroll-bar-scheme .col9 .col0 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
 add-color-scheme $trunc-scheme .col4 .col1 .col12 .col1 .col4 .col16 .col12 .col16 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.dmf .col8 .col9 .col8 .col9 .col8 .col10 .col8 .col16 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.no1 .col7 .col1 .col15 .col9 .col7 .col16 .col15 .col16 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.no2 .col3 .col1 .col11 .col9 .col3 .col16 .col11 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.no1 .col7 .col1 .col15 .col1 .col7 .col16 .col15 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.no2 .col3 .col1 .col11 .col1 .col3 .col16 .col11 .col16 0 8 0 8 0 8 0 8
 ; OSD
 add-color-scheme $osd-scheme .col0 .col1 .col0 .col2 .col8 .col9 .col2 .col9 8 0 24 16 0 8 16 24
 add-color-scheme .scheme.osd-entry .col0 .col1 .col2 .col1 .col9 .col0 .col9 .col2 0 8 0 8 8 0 8 0
@@ -44,17 +43,17 @@ add-color-scheme .scheme.osd-title .col2 .col0 .col10 .col8 .col0 .col2 .col8 .c
 add-color-scheme .scheme.osd-child .col4 .col1 .col12 .col1 .col16 .col4 .col16 .col12 0 8 0 8 8 0 8 0
 add-color-scheme .scheme.osd-sbar .col9 .col0 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
 ; Programming Langs
-add-color-scheme .scheme.prepro .col12 .col1 .col12 .col9 .col12 .col5 .col12 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.function .col3 .col1 .col3 .col9 .col3 .col5 .col3 .col5 17 25 17 25 17 25 17 25
-add-color-scheme .scheme.keyword .col15 .col1 .col15 .col9 .col15 .col5 .col15 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.type .col12 .col1 .col12 .col9 .col12 .col5 .col12 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.operator .col4 .col1 .col4 .col9 .col4 .col5 .col4 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.variable .col3 .col1 .col11 .col9 .col3 .col5 .col11 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.constant .col0 .col1 .col8 .col9 .col0 .col5 .col8 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.comment .col6 .col1 .col6 .col9 .col6 .col5 .col6 .col5 2 10 2 10 2 10 2 10
-add-color-scheme .scheme.string .col12 .col1 .col12 .col9 .col12 .col5 .col12 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.quote .col12 .col1 .col12 .col9 .col12 .col5 .col12 .col5 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.error .col10 .col1 .col2 .col9 .col10 .col5 .col10 .col5 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.prepro .col4 .col1 .col12 .col1 .col4 .col16 .col12 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.function .col7 .col1 .col15 .col1 .col7 .col16 .col15 .col16 17 25 17 25 17 25 17 25
+add-color-scheme .scheme.keyword .col7 .col1 .col15 .col1 .col7 .col16 .col15 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.type .col3 .col1 .col11 .col1 .col3 .col16 .col11 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.operator .col4 .col1 .col12 .col1 .col4 .col16 .col12 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.variable .col3 .col1 .col11 .col1 .col3 .col16 .col11 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.constant .col0 .col1 .col8 .col1 .col0 .col16 .col8 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.comment .col9 .col1 .col9 .col1 .col9 .col16 .col9 .col16 2 10 2 10 2 10 2 10
+add-color-scheme .scheme.string .col6 .col1 .col14 .col1 .col6 .col16 .col14 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.quote .col6 .col1 .col14 .col1 .col6 .col16 .col14 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.error .col10 .col1 .col2 .col1 .col10 .col16 .col10 .col16 0 8 0 8 0 8 0 8
 ; Formatted Text
 add-color-scheme .scheme.header .col12 .col1 .col4 .col1 .col12 .col16 .col12 .col16 1 9 1 9 1 9 1 9
 add-color-scheme .scheme.link .col6 .col1 .col14 .col1 .col6 .col16 .col14 .col16 16 24 16 24 16 24 16 24
