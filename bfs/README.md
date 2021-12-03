@@ -13,6 +13,8 @@ abstract: >
 The Readme text below is a copy of the document of the Jasspa website at:
 [www.jasspa.com/zeroinst.html](www.jasspa.com/zeroinst.html)
 
+Short instructions to build and use the bfs executable for making a standa lone MicroEmacs executable are given in the file [readme.txt](readme.txt)
+
 ## So How Does This Work ?
 
 The motivation behind this latest development was to produce a fully featured
