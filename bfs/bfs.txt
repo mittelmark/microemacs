@@ -1,0 +1,349 @@
+> -!- document -!-
+>
+>  Copyright 2009 Jon Green.
+>
+>  Created By    : Jon Green
+>  Created       : Wed Oct 21 12:09:12 2009
+>  Last Modified : <091108.1943>
+>
+
+Built-in File System (binfs)
+============================
+
+The  structure  of the RAM file  system used within  MicroEmacs  is defined as
+follows. All constructs are big endian with the most significant bit first and
+all pointer  references  are offset to the start of the block. The file system
+is considered read only and is optimised for reading.
+
+The container  used  comprises a "header",  "nodes" and a "trailer". The first
+node is special and is a special node "mount" the mount node  references  to a
+"directory"  node called the "root". A "directory"  node may  reference  other
+"file" or "directory" nodes.
+
+ @ +----------------------+
+   | header               |
+   +----------------------+
+   | node [0] - mount     |
+   +----------------------+
+   | node [1] - FS root   |
+   +----------------------+
+   |                      |
+   +----------------------+
+   |                      |
+   |                      |
+   |                      |
+   |                      |
+   |                      |
+   |                      |
+   |                      |
+   +----------------------+
+   | node [n]             |
+   +----------------------+
+   | trailer              |
+   +----------------------+
+
+Type definitions
+----------------
+
+uimsbf - Unsigned Integer Most Significant Bits First
+
+bslbf - Bit string left bit first
+
+vuimsbf - Variable Unsigned Integer Most Significant Bits First
+
+        Where vuimsbf is defined as:
+
+        @ vimsbf {
+            count                                  3 uimsbf
+            value                                  5 uimsbf
+            for (i=0; i<numbytes; i++) {
+              value-byte                           8 uimsbf
+            }
+          }
+
+A generic node
+--------------
+
+  @ node {
+      attrib_flag                                   1 uimsbf
+      encoding                                      3 uimsbf
+      aux_flag                                      1 uimsbf
+      type                                          3 uimsbf
+      data_length                                   * vuimsbf
+      if (encoding != 0) {
+        original_length                             * vuimsbf
+      }
+      if (aux_flag != 0) {
+        aux_data                                    * vuimsbf
+      }      
+      if (attrib_flag != 0) {
+        attribute_length                            * vuimsbf
+        attribute_loop()
+      }
+      for (i=0; i<data_length; i++) {
+        data_byte                                   8 uimsbf
+      }
+      padding_len                                   4 uimsbf
+      reserved_0xf                                  4 bslbf
+      for (i=0; i<padding_len; i++)
+        reserved_0xaa                               8 uimsbf
+    }
+
+leader - Leader  character  defined as '@' and simply enables the start of the
+         payload data to be identified.
+
+attrib_flag -  Indicates that the structure includes an attributes component.
+
+aux_flag - Indicates that the structure includes an additional  auxillary data
+component. 
+
+encoding - The encoding of the block. The encoding is defined as follows:
+
+       @ 0x0 - The block is not encoded.
+         0x1 - The block is compressed using zlib.
+
+pad_flag -  Indicates that the structure includes a padding component. This is
+            used to fill  any  residue  memory  until  the next  block  and is
+            typically not defined.
+
+type - The type of the node this may be a  directory  or file node. The values
+       are defined as follows:
+
+       @ Value   Description
+           0     Reserved for undefined or illegal value
+           1     The node is the mount point.
+           2     The node is a file.
+           3     The node is a directory.
+           
+aux_data - A node specific  optional  value  interpreted in the context of the
+node to indicate that there is additional information available.
+
+Directory structure
+
+  The structure of the node::date_byte for a directory object.
+
+  @ dirent {
+      node                                          * vuimsbf
+      name_len                                      * vuimsbf
+      for (i=0; i<name_len; i++) {
+        name_data                                   8 uimsbf
+      }
+    }
+
+  Where
+
+    node - is the byte offset of the reference from the top of the archive.
+    
+    name_len - is the length of the name in bytes.
+    
+    name_data - The directory node name, this is not nil terminated.
+
+Free block
+==========
+
+  The structure of the node::date_byte for a free block defined as follows and
+  shall  appear at offset 3 at the start of the file system. The "node" of the
+  free block shall be defined  with with no encoding,  attributes  and padding
+  with a length >= 9.
+
+  Where there is insufficient space for the free block then the previous block
+  shall be padded to consume the remaining space.
+
+  Typically  one would not expect any free space to exist in the file  system,
+  however this is defined for completeness.
+
+  @ free_block {
+      next_node                                     * vuimsbf
+    }
+
+next - The next free block that exists in the file system.
+
+Mount
+=====
+
+  The  structure  of the  node::date_byte  for the mount  point is  defined as
+  follows and shall appear at offset 3 at the start of the file system.
+
+  @ mount {
+      version_major                                8 uimsbf
+      version_minor                                8 uimsbf
+      version_micro                                8 uimsbf
+      reserved                                     8 uimsbf
+      create_time {
+        year                                      12 uimsbf
+        month                                      4 uimsbf
+        day                                        6 uimsbf
+        reserved_zero                              2 uimsbf
+        hour                                       8 uimsbf
+        minute                                     8 uimsbf
+        second                                     8 uimsbf
+      }        
+      free_node                                    * vuimsbf
+      length                                       * vuimsbf
+      crc32_data                                  32 uimsbf
+      crc32_header                                32 uimsbf
+   }
+
+encoding - The type of encoding used. 
+
+node - The entry point to the file system and shall be a directory object.
+
+length - The total length of the file system  memory space for the file system
+         including the starting delimiter "bfs" (0x626673).
+
+free_node - The offset of the first free node in the file  system.  This shall
+            be zero if there is no free space otherwise it shall be the offset
+            to the free node in the file system.
+
+Attributes
+==========
+
+Version Attribute
+-----------------
+
+  Contains the version of the binFS and MUST be present in the mount node.
+
+  @ version_attribute {
+      tag                                           8 uimsbf
+      length                                        8 uimsbf
+    }
+
+  tag - Identifies the attribute and has value 0x01
+
+  major - The major version number; integer in the range 0..255
+
+  minor - The major version number; integer in the range 0..255
+
+  delta - The delta increment;  integer in the range 0..26 and shall be mapped
+          to the alphabetic characters a-z. 0 indicates there is no delta.
+
+Trailer
+=======
+
+The BFS file trailer contains the marker:
+  
+  @ trailer {
+      id                                           24 uimsbf
+      mount_offset                                  * vuimsbf
+    }       
+       
+  id - The end marker which has the value "BFS" (0x424653)
+    
+  mount_offset  - The  number  of  character  bytes  to the  start of the file
+  specified  in bytes. The byte  offset is the  number of bytes to the  header
+  node from the last byte of the mount offset (i.e. end of the file).
+ 
+
+Copyright Attribute
+-------------------
+
+  Contains a copyright notice associated with the structure.
+
+  @ copyright_attribute {
+      tag                                           8 uimsbf
+      length                                        * vuimsbf
+      for (i=0; i<length;i++) {
+        copyright_char                              8 uimsbf
+      }
+    }
+
+  tag - Identifies the attribute and has value 0x02
+
+UTC Time Attribute
+------------------
+
+  The calender date and time in UTC.
+
+  @ utc_time_attribute {
+      tag                                           8 uimsbf
+      vlength                                       * vuimsbf
+      year                                         12 uimsbf
+      month                                         4 uimsbf
+      day                                           6 uimsbf
+      type                                          2 uimsbf
+      hour                                          8 uimsbf
+      minute                                        8 uimsbf
+      second                                        8 uimsbf
+    }
+
+  tag - Identifies the attribute and has value 0x03
+
+  year - The calendar year.
+
+  month - The calendar month 0..11
+
+  day - The calendar day 0..31
+
+  type - The type of date defined as follows
+
+         @ 0x0 - create date.
+           0x1 - modified date.
+           0x2 - accessed date.
+           0x3 - reserved.
+
+Owner Name Attribute
+--------------------
+
+  The owner name information.
+
+  @ owner_name_attribute {
+      tag                                           8 uimsbf
+      length                                        * vuimsbf
+      user_id                                       * vuimsbf
+      for (i=0; i<N; i++) {
+        name_char                                   8 uimsbf
+      }
+    }
+
+  tag - Identifies the attribute and has value 0x04
+
+  user_id - The originating system user identity.
+
+  name - The name of the user.
+
+Group Attribute
+---------------
+
+  The group information.
+
+  @ group_name_attribute {
+      tag                                           8 uimsbf
+      length                                        * vuimsbf
+      group_id                                      * vuimsbf
+      for (i=0; i<N; i++) {
+        name_char                                   8 uimsbf
+      }
+    }
+
+  tag - Identifies the attribute and has value 0x05
+
+  user_id - The originating system user identity.
+
+  name - The name of the group.
+
+Permissions Attribute
+---------------------
+
+  The permissions of the object.
+
+  @ permissions_attribute {
+      tag                                           8 uimsbf
+      length                                        * vuimsbf
+      owner                                         * vuimsbf
+      group                                         * vuimsbf
+      user_read                                     1 bslbf
+      user_write                                    1 bslbf
+      user_execute                                  1 bslbf
+      group_read                                    1 bslbf
+      group_write                                   1 bslbf
+      group_execute                                 1 bslbf
+      other_read                                    1 bslbf
+      other_write                                   1 bslbf
+      other_execute                                 1 bslbf
+      reserved                                      7 bslbf
+    }
+
+  tag - Identifies the attribute and has value 0x06
+
+  *_read/write/execute  - Bit  identifies  whether  the  owner  has the  named
+  access. A value of 0 indicates that access is not allowed
