@@ -1,0 +1,210 @@
+
+
+
+Build(2)                          microemacs                           Build(2)
+
+
+
+
+BUILD 
+     MicroEmacs 2009 may  be compiled from  the source files  using the command
+     shell build scripts build (UNIX  Bourne Shell) or build.bat (DOS/Windows).
+     A default compile sequence may be achieved with a simple: 
+
+       build 
+
+     from the command line. The build script attempts to detect the host system
+     and available compiler and build the editor. 
+
+     The build script recognizes the following options:- 
+
+     -C   Build clean. Delete all of the object files. 
+
+     -d   Build a debugging  version, the  output is  med (or  med32 for 32-bit
+          Windows versions). 
+
+     -h   Display a simple help page 
+
+     -l logfile 
+          Redirect all compilation output to the  logfile, this may not work on
+          DOS or Windows systems. 
+
+     -la logfile 
+          Append all compilation  output to  the end  of logfile,  this may not
+          work on DOS or Windows systems. 
+
+     -m makefile 
+          Build using  the  specified  makefile.  over-riding  the  auto system
+          detect. The supplied makefiles include:- 
+
+            *  aix4.mak IBM AIX 4.x native. 
+            *  aix5.mak IBM AIX 5.x native. 
+            *  aix4.gmk IBM AIX 4.x using GNU tools. 
+            *  aix5.gmk IBM AIX 5.x using GNU tools. 
+            *  cygwin.gmk Cygwin using GNU tools under Windows. 
+            *  darwin.gmk Apple Darwin (console and X-Windows). 
+            *  dosdj1.mak Microsoft DOS build using djgpp version 1. 
+            *  dosdj2.mak Microsoft DOS build using djgpp version 2. 
+            *  freebsd.gmk Free BSD using GNU tools. 
+            *  hpux9.gmk HP-UX 9.x using GNU tools. 
+            *  hpux9.mak HP-UX 9.x native 
+            *  hpux10.gmk HP-UX 10.x using GNU tools. 
+            *  hpux10.mak HP-UX 10.x native 
+            *  hpux11.gmk HP-UX 11.x using GNU tools. 
+            *  hpux11.mak HP-UX 11.x native 
+            *  irix5.gmk Silicon Graphics IRIX 5.x using GNU tools 
+            *  irix5.mak Silicon Graphics IRIX 5.x native 
+            *  irix6.gmk Silicon Graphics IRIX 6.x using GNU tools 
+            *  irix6.mak Silicon Graphics IRIX 6.x native 
+            *  linux2.gmk Linux 2.2/4 kernels using GNU tools 
+            *  linux26.gmk Linux 2.6 kernels using GNU tools 
+            *  mingw.gmk minGW http://www.MinGW.org using GNU tools. 
+            *  osf1.gmk OSF1 using GNU tools. 
+            *  openbsd.gmk OpenBSD using GNU tools. 
+            *  openstep.mak Openstep 4.2 on NeXTstep (BSD 4.3). 
+            *  sunos5.gmak Sun Solaris 5.5/6/7/8/9/10 using GNU tools 
+            *  sunos5.mak Sun Solaris 5.6/7/8/9/10 native 
+            *  sunosx86.gmk Sun Solarais 2.6/7/8/9/10 (Intel) using GNU tools. 
+            *  win32bc.mak Borland C, 32-bit Windows version. 
+            *  win32b55.mak  Borland  C  5.5,   32-bit  Windows  version  (Free
+               compiler). 
+            *  win32sv2.mak Microsoft Developer v2.x, Win32s (for Win 3.xx) 
+            *  win32sv4.mak Microsoft Developer v4.2, Win32s (for Win 3.xx) 
+            *  win32v2.mak Microsoft Developer v2.x, 32-bit Windows. 
+            *  win32v5.mak Microsoft Developer v5.x, 32-bit Windows. 
+            *  win32v6.mak Microsoft Developer v6.x, 32-bit Windows. 
+            *  zaurus.gmk Zauras palm using GNU tools. 
+
+     -ne  Build NanoEmacs (a cut  down version aimed as  a vi replacement), the
+          output is ne (or ned32 for 32-bit Windows versions). 
+
+     -S   Build spotless. Deletes all of the object files and any backup files,
+          tag files etc. 
+
+     -t type 
+          Set the build type, where type can be one of the following: 
+
+            *  c Build  a console  only version  (i.e. no  window support), the
+               output is mec (or mec32 on Windows). 
+            *  w Build a  windows only  version (i.e. no  console support), the
+               output is mew (or mew32 on Windows). 
+            *  cw Build a version which  supports both console and windows, the
+               output is mecw (or mecw32 on Windows). 
+
+  Makefiles 
+     The supplied makefiles are provided in two forms:- 
+
+       *  .gmk - GNU make, using gcc. 
+       *  .mak - Native make, consistent with the compiler and platform. 
+
+     The makefiles are supplied with the following targets:- 
+
+       *  all - Default build. 
+       *  clean - Removes intermediate files. 
+       *  spotless - Removes intermediate files and any backup files. 
+       *  me - Builds the default MicroEmacs executable. 
+       *  med - Builds a debugging version. 
+       *  mec - Builds a console only version. 
+       *  mew - Builds a windows only version. 
+       *  mecw - Builds a version which supports both console and windows. 
+       *  ne - Builds NanoEmacs executable. 
+
+WINDOWS ENVIRONMENT 
+     The Windows environment  is a little  more difficult than  UNIX because it
+     does not  have  a good  native  command  line environment.  There  are two
+     Microsoft Developer options for building. If you have not purchased MS-DEV
+     then use the FREE Borland compiler which runs on the command line. 
+
+  MinGW Build 
+     A collection of freely available and freely distributable Windows specific
+     header files and  import libraries  combined with GNU  toolsets that allow
+     one to produce native Windows programs that do not rely on any 3rd-party C
+     runtime  DLLs.  Available   from  http://www.mingw.org,   mingw  allows  a
+     Microsoft Windows version MicroEmacs to bu built and maintained. 
+
+  MS-Dev GUI Build 
+     MicroEmacs is supplied  with a MS-Dev  6.x project for  building. This has
+     only been set up for debugging and has limited build options, it will also
+     produce a large executable image.  The MS-Windows images shipped by JASSPA
+     are built using the command line  build environment which is detailed in a
+     later section. 
+
+  MS-Dev Command Line Build 
+     The command line  build with MS-Dev  is a little  messy to set  up, in the
+     following sections we discuss MS-Dev 6.x under Windows 2000. There will be
+     differences with different  operating systems  versions, different install
+     paths and  different versions  of  the MS-Dev  toolkit. Use  the following
+     information as an  outline ONLY,  JASSPA will not  take responsibility for
+     the configuration of  the command line  environment, if in  doubt then use
+     the GUI builder. 
+
+     To run nmake(1)  from a  DOS box  then the  MS-Dev compiler  tools must be
+     available in the  command path. The  MS-Dev kit V6.x  is supplied with the
+     necessary file  to set  up the  path which  is called  VCVARS32.BAT and is
+     typically located in directory: 
+
+       C:\Program Files\Microsoft Visual Studio\VC98\Bin 
+
+     This should be run first  and then the command line  make files may be run
+     using nmake i.e. to build ME:- 
+
+       nmake -f win32v6.mak me 
+
+     To build NE:- 
+
+       nmake -f win32v6.mak ne 
+
+     To clean up after:- 
+
+       nmake -f spotless 
+
+     If you are  going to  perform a  lot of command  line building  then it is
+     easier to set  up the environment  and not have  to run VCVARS32.BAT every
+     time you compile. 
+
+     You can add the variables to your environment, you will need to expand the
+     VCVARS32.BAT script and then add the results. The following example is for
+     MS-Dev 6.0  under W2K,  the  settings will  differ  depending on  what O/S
+     variant you  are  running  and  where  you  have  installed  software. The
+     following  ONLY  serves  as  an  example,  you  need  to  tailor  for your
+     installation. 
+
+       *  To set up the variables then Start -> Settings -> Control Panel which
+          displays the Control Panel items. 
+       *  Select System -> Advanced -> Environment variables 
+       *  In  User  Variables  for  <User>  then  New...  or  Edit...  the PATH
+          variable.  Add  the  command  line   tools  execution  paths  to  the
+          environment variable, this will be  something like the following (but
+          without newlines):- 
+
+            Variable Name:  PATH 
+            Variable Value: %PATH%; 
+                            C:\PROGRA~1\MICROS~3\Common\msdev98\BIN; 
+                            C:\PROGRA~1\MICROS~3\VC98\BIN; 
+                            C:\PROGRA~1\MICROS~3\Common\TOOLS\WINNT; 
+                            C:\PROGRA~1\MICROS~3\Common\TOOLS; 
+
+       *  Similarly add the INCLUDE variable:- 
+
+            Variable Name:  INCLUDE 
+            Variable Value: C:\PROGRA~1\MICROS~3\VC98\ATL\INCLUDE; 
+                            C:\PROGRA~1\MICROS~3\VC98\INCLUDE; 
+                            C:\PROGRA~1\MICROS~3\VC98\MFC\INCLUDE; 
+                            %INCLUDE% 
+
+       *  Similarly add the LIB variable:- 
+
+            Variable Name:  LIB 
+            Variable Value: C:\PROGRA~1\MICROS~3\VC98\LIB; 
+                            C:\PROGRA~1\MICROS~3\VC98\MFC\LIB; 
+                            %LIB% 
+
+       *  Accept the entries and close down the dialog. Start a new DOS command
+          line and the variables should be set up ready for the build. 
+
+NOTES 
+     Other UNIX  ports  should  be fairly  easy  from  the base  set  of ported
+     platforms. If  any new  platform ports  are performed  by individuals then
+     please submit the  makefiles and any  source changes back  to JASSPA - see
+     Contact Information. 
+
