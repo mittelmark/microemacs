@@ -237,7 +237,7 @@ add-file-hook "Makefile makefile .mak .mk .gmk"               fhook-make
 add-file-hook "Imakefile imakefile"                           fhook-imake
 add-file-hook "smb.conf"                                      fhook-samba
 add-file-hook "httpd.conf"                                    fhook-apache
-add-file-hook ".sh .ksh .csh .login .cshrc .profile .tcshrc"  fhook-shell
+add-file-hook ".sh .ksh .csh .login .cshrc .profile .tcshrc .bashrc"  fhook-shell
 add-file-hook ".ini .hpj .reg .rgy"                           fhook-ini
 add-file-hook ".htm .html .htp .hts"                          fhook-html
 add-file-hook ".lhtm .lhtml"                                  fhook-lhtml
