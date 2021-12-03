@@ -1,0 +1,47 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1999-2006 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Over-riding the ipipe behaviour
+; Authors:     Steve Phillips & Jon Green
+
+; Macro to exchange the current buffer scroll mode setting on entering the
+; buffer. 
+0 define-macro bhook-ipipe
+    ; Save the other context. Resrote local context.
+    set-variable :oscroll $scroll
+    set-variable $scroll :scroll
+!emacro
+
+; Macro to restore the buffer scroll mode setting on leaving the buffer.
+0 define-macro ehook-ipipe
+    ; Restore existing context
+    set-variable :scroll $scroll
+    set-variable $scroll :oscroll
+!emacro
+    
+; Macro to redefine the wrapping behavior of the *compile* buffer and disable
+; word wrapping. 
+0 define-macro my-fhook-ipipe
+    ; Default scroll mode - simply copy in the current scroll mode.
+    set-variable :scroll $scroll
+    
+    ; Determine what type of buffer we want to over-ride.
+    !if &seq $buffer-bname "*compile*"
+        ; Smooth scroll in *compile* buffer
+        set-variable :scroll &bor 0x10 &band $scroll 0x0f 
+        ; Disable word wraping
+        -1 buffer-mode "wrap"
+    !endif
+    !if &seq $buffer-bname "*grep*"
+        ; Smooth scroll in *grep* buffer
+        set-variable :scroll &bor 0x10 &band $scroll 0x0f 
+    !endif
+    !if &seq $buffer-bname "*icommand*"
+        ; Smooth scroll in *icommand* buffer
+        set-variable :scroll &bor 0x10 &band $scroll 0x0f 
+    !endif
+!emacro
+
+    

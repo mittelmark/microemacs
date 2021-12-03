@@ -1,0 +1,75 @@
+; -!- emf -!-
+; Copyright (C) 1998-2008 Ilija Kocho, SIvA doo
+;
+; This program is free software; you can redistribute it and/or modify it
+; under the terms of the GNU General Public License as published by the Free
+; Software Foundation; either version 2 of the License, or (at your option)
+; any later version.
+;
+; This program is distributed in the hope that it will be useful, but WITHOUT
+; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+; FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+; more details.
+;
+; Synopsis:    Smart beginning-of-line and end-of-line macros.
+; Author:      Ilija Kocho <ilijak@siva.com.mk>
+;
+
+; Smart beginning of line
+; Moves cursor at first non-white-space character at the beginning of the
+; current line. If the cursor is already there or lies within the leading
+; whitespace it will be moved to the beginning of line.
+;
+; If the numeric argument is specified as 0 then the cursor position is
+; toggled between column 0 the actual line beginning and the first non-white
+; space chatracter. If a non-zero argument is given then the cursor remains
+; at the beginning of the line.
+define-macro smart-bol
+    !if &or &set #l0 $window-col &not @#
+        beginning-of-line
+        !if &not &seq @wc ""
+            !while &sin @wc " \t"
+                forward-char
+            !done
+        !endif
+        !if &not #l0
+            ; was at left hand side so always want first non-white
+        !elif &not &gre #l0 $window-col
+            beginning-of-line
+        !endif
+    !endif
+!emacro
+
+; Smart end of line
+; Moves the cursor to the first-white space character at the end of the
+; current line. ; If the cursor is already there or within the trailing
+; whitespace then the cursor is moved to the actual end of line.
+;
+; If the numeric argument is specified as 0 then the cursor position is moved
+; between the actual end of line and first white space character position at
+; the end of the line. If a non-zero arg is given then the cursor remains at
+; the end of the line.
+define-macro smart-eol
+    set-variable #l0 $window-col
+    end-of-line
+    !if &or &les #l0 &set #l1 $window-col &not @#
+        !if $window-col
+            !repeat
+                backward-char
+            !until &not &sin @wc " \t"
+            forward-char
+        !endif
+        !if &equ #l0 #l1
+            ; was at right hand side so always want last non-white
+        !elif &not &les #l0 $window-col
+            end-of-line
+        !endif
+    !endif
+!emacro
+
+; Uncomment lines below if you want to bind bol_eol.
+global-bind-key smart-bol "home"
+global-bind-key smart-eol "end"
+; Uncomment lines below if you want to bind toggling bol_eol.
+;0 global-bind-key smart-bol "home"
+;0 global-bind-key smart-eol "end"

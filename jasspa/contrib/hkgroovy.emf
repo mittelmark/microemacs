@@ -1,0 +1,160 @@
+field;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Bryan Schofield
+;  Created       : Mon Apr 2 09:38:19 2007
+;  Last Modified : <090912.1054>
+;
+;  Description
+;   Groovy Language Template
+;   http://groovy.codehaus.org
+;
+;  Notes
+;
+;  History
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+define-macro fhook-groovy
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "groovy"
+    buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-groovy.setup &reg "/history/fhook/groovy" "bdfghinopx"
+set-variable .fhook-groovy.setup-mask "abdefghikmnoptux"
+set-variable .fhook-groovy.comment "|/*| */|*| * | * |fr|"
+set-variable .fhook-groovy.comment-1 "|/**| */|*| * | * |f|"
+
+set-variable .fhook-groovy.collapse-open  "^class"
+set-variable .fhook-groovy.collapse-close "^}"
+set-variable .fhook-groovy.collapse-mclose "1"
+set-variable .fhook-groovy.collapse-mnext "-1"
+
+set-variable .fhook-groovy.item-list-s1 "^[\t ]*class[\t ]+\\(\\w[1-9A-Za-z_]*\\)[\t ]*<?<?[\t ]*[A-Za-z0-9_]*"
+set-variable .fhook-groovy.item-list-r1 "class \ecB\\1\ecA"
+set-variable .fhook-groovy.item-list-s2 "^[\t ]*def[\t ]+\\(\\w[1-9A-Za-z_.]*\\)[\t ]*.*$"
+set-variable .fhook-groovy.item-list-r2 "def \ecB\\1\ecA"
+
+!if &not &exist .hilight.groovy
+    set-variable .hilight.groovy  &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-groovy.setup &band .hilight.flags 0x02
+    0 hilight .hilight.groovy 0x00 $global-scheme
+    ; Comments
+    hilight .hilight.groovy 20 "/\\*" "*/" "" .scheme.comment
+    hilight .hilight.groovy  2 "//"           .scheme.comment
+    ; Comment TODO's
+    hilight .hilight.groovy 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+    hilight .hilight.groovy 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+
+    ; Strings
+    hilight .hilight.groovy  4 "\"" "\"" "\\"  .scheme.string
+    hilight .hilight.groovy  4 "\'" "\'" "\\"  .scheme.string
+    hilight .hilight.groovy  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote
+    ; groovy string literal /.foo[0-9]\s*bar/ hiligh gets confused with simple division.
+    ;hilight .hilight.groovy  4 "/" "/" "" .scheme.quote
+
+    ; constants: A_CONSTANT_VARAIBLE
+    hilight .hilight.groovy 1    "[A-Z_]+"          .scheme.constant
+    ; class names: AJavaClassName
+    hilight .hilight.groovy 1    "[A-Z]+[a-z]+\\w*" .scheme.type
+
+    ; Keywords
+    hilight .hilight.groovy 0x12 "^\\s*import"       .scheme.prepro
+    hilight .hilight.groovy 0x12 "^\\s*package"      .scheme.prepro
+    hilight .hilight.groovy 1    "abstract"     .scheme.keyword
+    hilight .hilight.groovy 1    "as"           .scheme.keyword
+    hilight .hilight.groovy 1    "assert"       .scheme.keyword
+    hilight .hilight.groovy 1    "boolean"      .scheme.type
+    hilight .hilight.groovy 1    "break"        .scheme.operator
+    hilight .hilight.groovy 1    "byte"         .scheme.type
+    hilight .hilight.groovy 1    "case"         .scheme.operator
+    hilight .hilight.groovy 1    "catch"        .scheme.operator
+    hilight .hilight.groovy 1    "char"         .scheme.type
+    hilight .hilight.groovy 1    "class"        .scheme.keyword
+    hilight .hilight.groovy 1    "continue"     .scheme.operator
+    hilight .hilight.groovy 1    "def"          .scheme.keyword
+    hilight .hilight.groovy 1    "default"      .scheme.operator
+    hilight .hilight.groovy 1    "do"           .scheme.operator
+    hilight .hilight.groovy 1    "double"       .scheme.type
+    hilight .hilight.groovy 1    "else"         .scheme.operator
+    hilight .hilight.groovy 1    "enum"         .scheme.keyword
+    hilight .hilight.groovy 1    "extends"      .scheme.keyword
+    hilight .hilight.groovy 1    "false"        .scheme.constant
+    hilight .hilight.groovy 1    "final"        .scheme.keyword
+    hilight .hilight.groovy 1    "finally"      .scheme.operator
+    hilight .hilight.groovy 1    "float"        .scheme.type
+    hilight .hilight.groovy 1    "for"          .scheme.operator
+    hilight .hilight.groovy 1    "if"           .scheme.operator
+    hilight .hilight.groovy 1    "implements"   .scheme.keyword
+    hilight .hilight.groovy 1    "import"       .scheme.keyword
+    hilight .hilight.groovy 1    "in"           .scheme.operator
+    hilight .hilight.groovy 1    "instanceof"   .scheme.keyword
+    hilight .hilight.groovy 1    "int"          .scheme.type
+    hilight .hilight.groovy 1    "interface"    .scheme.keyword
+    hilight .hilight.groovy 1    "long"         .scheme.type
+    hilight .hilight.groovy 1    "native"       .scheme.keyword
+    hilight .hilight.groovy 1    "new"          .scheme.keyword
+    hilight .hilight.groovy 1    "null"         .scheme.constant
+    hilight .hilight.groovy 1    "package"      .scheme.keyword
+    hilight .hilight.groovy 1    "print"        .scheme.keyword
+    hilight .hilight.groovy 1    "println"      .scheme.keyword
+    hilight .hilight.groovy 1    "private"      .scheme.keyword
+    hilight .hilight.groovy 1    "property"     .scheme.keyword
+    hilight .hilight.groovy 1    "protected"    .scheme.keyword
+    hilight .hilight.groovy 1    "public"       .scheme.keyword
+    hilight .hilight.groovy 1    "return"       .scheme.operator
+    hilight .hilight.groovy 1    "short"        .scheme.type
+    hilight .hilight.groovy 1    "static"       .scheme.keyword
+    hilight .hilight.groovy 1    "strictfp"     .scheme.keyword
+    hilight .hilight.groovy 1    "super"        .scheme.keyword
+    hilight .hilight.groovy 1    "switch"       .scheme.operator
+    hilight .hilight.groovy 1    "synchronized" .scheme.keyword
+    hilight .hilight.groovy 1    "this"         .scheme.keyword
+    hilight .hilight.groovy 1    "throw"        .scheme.operator
+    hilight .hilight.groovy 1    "throws"       .scheme.keyword
+    hilight .hilight.groovy 1    "transient"    .scheme.keyword
+    hilight .hilight.groovy 1    "true"         .scheme.constant
+    hilight .hilight.groovy 1    "try"          .scheme.operator
+    hilight .hilight.groovy 1    "void"         .scheme.keyword
+    hilight .hilight.groovy 1    "volatile"     .scheme.keyword
+    hilight .hilight.groovy 1    "while"        .scheme.operator
+
+    hilight .hilight.groovy 1    "; *$"       .scheme.error
+
+!endif
+
+!if &sin "d" .fhook-groovy.setup
+    !if &not &exi .indent.groovy-comm
+        set-variable .indent.groovy-comm &pinc .hilight.next 1
+        set-variable .indent.groovyT &pinc .hilight.next 1
+    !endif
+
+
+    0 indent .indent.groovy-comm 1 20
+    0 indent .indent.groovyT 1 500
+    0 indent .hilight.groovy 2 20 .indent.groovyT
+
+    ; switch to comment indentation mode
+    indent .indent.groovyT t "/\\*"   .indent.groovy-comm
+    indent .hilight.groovy  x "/\\*" 1 .indent.groovy-comm
+    indent .indent.groovy-comm x "\\*/" -1 0
+    indent .indent.groovyT t "\\*/" 0
+    indent .hilight.groovy o "\\*/" -1
+
+
+    ; strings
+    indent .hilight.groovy e "\"" "\"" "\\"
+    indent .hilight.groovy e "\'" "\'" "\\"
+    ; standard braces
+    indent .hilight.groovy n "{"  t
+    indent .hilight.groovy o "}" -t
+    indent .hilight.groovy n "(" 3/2t
+    indent .hilight.groovy o ")" -3/2t
+
+!endif
+
+buffer-init-fhook "groovy"

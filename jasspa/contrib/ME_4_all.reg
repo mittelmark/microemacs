@@ -1,0 +1,8 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\*\shell]
+
+[HKEY_CLASSES_ROOT\*\shell\MicroEmacs Edit]
+
+[HKEY_CLASSES_ROOT\*\shell\MicroEmacs Edit\command]
+@="me32.exe -c -o \"%1\""

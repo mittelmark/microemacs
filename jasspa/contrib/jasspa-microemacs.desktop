@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=JASSPA MicroEmacs
+GenericName=Text Editor
+Comment=Emacs Text Editor
+Icon=/usr/share/jasspa/pixmaps/me_gnome_48.png
+TryExec=me
+Exec=me %F
+Terminal=false
+MimeType=text/plain;
+Categories=Development;TextEditor;
+StartupWMClass=MicroEmacs

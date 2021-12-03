@@ -1,0 +1,70 @@
+; Apply key translations if in Terminal Mode
+; Contribution by Bryan Schofield.
+; 30th October 2006
+;======================================================================
+; Translations and Key bindings
+;======================================================================
+; Translation table for solaris 8
+;
+; F-Key translations
+;         f1     f2     f3     f4     f5     f6     f7     f8     f9     f10
+;         ^[OP   ^[OQ   ^[OR   ^[OS   ^[[15~ ^[[17~ ^[[18~ ^[[19~ ^[[20~ ^[[21~
+; Shift   ^[[23~ ^[[24~ ^[[25~ ^[[26~ ^[[28~ ^[[29~ ^[[31~ ^[[32~ ^[[33~ ^[[34~
+; Control ^[[11^ ^[[12^ ^[[13^ ^[[14^ ^[[15^ ^[[17^ ^[[18^ ^[[19^ ^[[20^ ^[[21^
+;
+; Navigation Keys
+;         ins    del  home  end   pgup  pgdn  up   down left right
+;         ^[[2~ ^[[3~ ^[[1~ ^[[4~ ^[[5~ ^[[6~ ^[[A ^[[B ^[[D ^[[C
+; Shift   ^[[2$ ^[[3$ ^[[1$ ^[[4$ ^[[5$ ^[[6$ ^[[a ^[[b ^[[d ^[[c
+; Control ^[[2^ ^[[3^ ^[[1^ ^[[4^ ^[[5^ ^[[6^ ^[Oa ^[Ob ^[Od ^[Oc
+
+!if &band $system 0x001 ; &and &seq $TERM "dtterm"
+    translate-key "C-[ O P" "f1"
+    translate-key "C-[ O Q" "f2"
+    translate-key "C-[ O R" "f3"
+    translate-key "C-[ O S" "f4"
+    translate-key "C-[ [ 2 3 ~" "S-f1"
+    translate-key "C-[ [ 2 4 ~" "S-f2"
+    translate-key "C-[ [ 2 5 ~" "S-f3"
+    translate-key "C-[ [ 2 6 ~" "S-f4"
+    translate-key "C-[ [ 2 8 ~" "S-f5"
+    translate-key "C-[ [ 2 9 ~" "S-f6"
+    translate-key "C-[ [ 3 1 ~" "S-f7"
+    translate-key "C-[ [ 3 2 ~" "S-f8"
+    translate-key "C-[ [ 3 3 ~" "S-f9"
+    translate-key "C-[ [ 3 4 ~" "S-f10"
+    translate-key "C-[ [ 1 1 ^" "C-f1"
+    translate-key "C-[ [ 1 2 ^" "C-f2"
+    translate-key "C-[ [ 1 3 ^" "C-f3"
+    translate-key "C-[ [ 1 4 ^" "C-f4"
+    translate-key "C-[ [ 1 5 ^" "C-f5"
+    translate-key "C-[ [ 1 7 ^" "C-f6"
+    translate-key "C-[ [ 1 8 ^" "C-f7"
+    translate-key "C-[ [ 1 9 ^" "C-f8"
+    translate-key "C-[ [ 2 0 ^" "C-f9"
+    translate-key "C-[ [ 2 1 ^" "C-f10"
+    translate-key "C-[ [ 1 ~" "home"
+    translate-key "C-[ [ 2 $" "S-insert"
+    translate-key "C-[ [ 3 $" "S-delete"
+    translate-key "C-[ [ 1 $" "S-home"
+    translate-key "C-[ [ 4 $" "S-end"
+    translate-key "C-[ [ 5 $" "S-page-up"
+    translate-key "C-[ [ 6 $" "S-page-down"
+    translate-key "C-[ [ a" "S-up"
+    translate-key "C-[ [ b" "S-down"
+    translate-key "C-[ [ d" "S-left"
+    translate-key "C-[ [ c" "S-right"
+    translate-key "C-[ [ 2 ^" "C-insert"
+    translate-key "C-[ [ 3 ^" "C-delete"
+    translate-key "C-[ [ 1 ^" "C-home"
+    translate-key "C-[ [ 4 ^" "C-end"
+    translate-key "C-[ [ 5 ^" "C-page-up"
+    translate-key "C-[ [ 6 ^" "C-page-down"
+    translate-key "C-[ O a" "C-up"
+    translate-key "C-[ O b" "C-down"
+    translate-key "C-[ O d" "C-left"
+    translate-key "C-[ O c" "C-right"
+    translate-key "\x7F" "backspace"
+    translate-key "C-[ [ Z" "S-tab"
+    1000 ml-write "Applied Sun keyboard translations"
+!endif
