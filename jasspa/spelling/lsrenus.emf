@@ -1,0 +1,144 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1998-2002 JASSPA (www.jasspa.com)
+;
+; Created:     Fri May 8 1998
+; Authors:     Steven Phillips
+; Synopsis:    Spell checker rules for American English
+; Description:
+;     This file "lsrengb.emf", "lsdmengb.edf" and , "lsdxengb.edf" are 
+;     derived from the English ispell dictionary by Geoff Kuenning.
+;     The spell rules and word derivations have been repackaged in
+;     a proprietary format for use with JASSPA's MicroEmacs.
+;     The following copyright applies to these files:-
+;
+;       Copyright 1993, Geoff Kuenning, Granada Hills, CA
+;       All rights reserved.
+;     
+;       Redistribution and use in source and binary forms, with or without
+;       modification, are permitted provided that the following conditions
+;       are met:
+;     
+;       1. Redistributions of source code must retain the above copyright
+;          notice, this list of conditions and the following disclaimer.
+;       2. Redistributions in binary form must reproduce the above copyright
+;          notice, this list of conditions and the following disclaimer in the
+;          documentation and/or other materials provided with the distribution.
+;       3. All modifications to the source code must be clearly marked as
+;          such.  Binary redistributions based on modified source code
+;          must be clearly marked as modified versions in the documentation
+;          and/or other materials provided with the distribution.
+;       4. All advertising materials mentioning features or use of this software
+;          must display the following acknowledgment:
+;            This product includes software developed by Geoff Kuenning and
+;            other unpaid contributors.
+;       5. The name of Geoff Kuenning may not be used to endorse or promote
+;          products derived from this software without specific prior
+;          written permission.
+;     
+;       THIS SOFTWARE IS PROVIDED BY GEOFF KUENNING AND CONTRIBUTORS ``AS IS'' AND
+;       ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+;       IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+;       ARE DISCLAIMED.  IN NO EVENT SHALL GEOFF KUENNING OR CONTRIBUTORS BE LIABLE
+;       FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+;       DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+;       OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+;       HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+;       LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+;       OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+;       SUCH DAMAGE.
+;
+; Rules used - list used by spell-edit-word
+set-variable .spell.rules "AIUVNXHYGJDTRZSPM"
+
+; reset the spell rules
+0 add-spell-rule
+
+; Add some special word rules to make life easier
+; These are for 1st, 2nd 3rd etc. & hex numbres
+add-spell-rule "*" "\\([0-9]*[02-9]\\)?1\\(st\\|ST\\)"
+add-spell-rule "*" "\\([0-9]*[02-9]\\)?2\\(nd\\|ND\\)"
+add-spell-rule "*" "\\([0-9]*[02-9]\\)?3\\(rd\\|RD\\)"
+add-spell-rule "*" "[0-9]*1[0-9]\\(th\\|TH\\)"
+add-spell-rule "*" "[0-9]*[04-9]\\(th\\|TH\\)"
+add-spell-rule "*" "0[xX][[:xdigit:]]+"
+; Spell rules for unit definitions.
+; These are for 50Mb, 10Kg, -45.56cm 12ft 10.00am 16.00pm etc.
+add-spell-rule "*" "-?\\([0-9]*.\\)?[0-9]+\\(k\\|Kg\\|Kb\\|Gb\\|Tb\\|Mb\\|mm\\|cm\\|m\\|Km\\|ft\\|in\\|inch\\|mph\\|lb\\|am\\|pm\\|bps\\|kbps\\)"
+
+; Add the american prefix spell rules
+; flag *A:
+-2 add-spell-rule "A" "" "" "re" ; As in enter > reenter
+; flag *I:
+-2 add-spell-rule "I" "" "" "in" ; As in disposed > indisposed
+; flag *U:
+-2 add-spell-rule "U" "" "" "un" ; As in natural > unnatural
+
+; Add the american suffix spell rules
+; flag V:
+ 1 add-spell-rule "V" "e" "e" "ive" ; As in create > creative
+ 1 add-spell-rule "V" "[^e]" "" "ive" ; As in prevent > preventive
+
+; flag *N:
+ 2 add-spell-rule "N" "e" "e" "ion" ; As in create > creation
+ 2 add-spell-rule "N" "y" "y" "ication" ; As in multiply > multiplication
+ 2 add-spell-rule "N" "[^ey]" "" "en" ; As in fall > fallen
+
+; flag *X:
+ 2 add-spell-rule "X" "e" "e" "ions" ; As in create > creations
+ 2 add-spell-rule "X" "y" "y" "ications" ; As in multiply > multiplications
+ 2 add-spell-rule "X" "[^ey]" "" "ens" ; As in weak > weakens
+
+; flag H:
+ 1 add-spell-rule "H" "y" "y" "ieth" ; As in twenty > twentieth
+ 1 add-spell-rule "H" "[^y]" "" "th" ; As in hundred > hundredth
+
+; flag *Y:
+ 2 add-spell-rule "Y" "" "" "ly" ; As in quick > quickly
+
+; flag *G:
+ 2 add-spell-rule "G" "e" "e" "ing" ; As in file > filing
+ 2 add-spell-rule "G" "[^e]" "" "ing" ; As in cross > crossing
+
+; flag *J:
+ 2 add-spell-rule "J" "e" "e" "ings" ; As in file > filings
+ 2 add-spell-rule "J" "[^e]" "" "ings" ; As in cross > crossings
+
+; flag *D:
+ 2 add-spell-rule "D" "e" "" "d" ; As in create > created
+ 2 add-spell-rule "D" "[^aeiou]y" "y" "ied" ; As in imply > implied
+ 2 add-spell-rule "D" "[^ey]" "" "ed" ; As in cross > crossed
+ 2 add-spell-rule "D" "[aeiou]y" "" "ed" ; As in convey > conveyed
+
+; flag T:
+ 1 add-spell-rule "T" "e" "" "st" ; As in late > latest
+ 1 add-spell-rule "T" "[^aeiou]y" "y" "iest" ; As in dirty > dirtiest
+ 1 add-spell-rule "T" "[aeiou]y" "" "est" ; As in gray > grayest
+ 1 add-spell-rule "T" "[^ey]" "" "est" ; As in small > smallest
+
+; flag *R:
+ 2 add-spell-rule "R" "e" "" "r" ; As in skate > skater
+ 2 add-spell-rule "R" "[^aeiou]y" "y" "ier" ; As in multiply > multiplier
+ 2 add-spell-rule "R" "[aeiou]y" "" "er" ; As in convey > conveyer
+ 2 add-spell-rule "R" "[^ey]" "" "er" ; As in build > builder
+
+; flag *Z:
+ 2 add-spell-rule "Z" "e" "" "rs" ; As in skate > skaters
+ 2 add-spell-rule "Z" "[^aeiou]y" "y" "iers" ; As in multiply > multipliers
+ 2 add-spell-rule "Z" "[aeiou]y" "" "ers" ; As in convey > conveyers
+ 2 add-spell-rule "Z" "[^ey]" "" "ers" ; As in build > builders
+
+; flag *S:
+ 2 add-spell-rule "S" "[^aeiou]y" "y" "ies" ; As in imply > implies
+ 2 add-spell-rule "S" "[aeiou]y" "" "s" ; As in convey > conveys
+ 2 add-spell-rule "S" "[sxzh]" "" "es" ; As in fix > fixes
+ 2 add-spell-rule "S" "[^sxzhy]" "" "s" ; As in bat > bats
+
+; flag *P:
+ 2 add-spell-rule "P" "[^aeiou]y" "y" "iness" ; As in cloudy > cloudiness
+ 2 add-spell-rule "P" "[aeiou]y" "" "ness" ; As in gray > grayness
+ 2 add-spell-rule "P" "[^y]" "" "ness" ; As in late > lateness
+
+; flag *M:
+ 2 add-spell-rule "M" "" "" "'s" ; As in dog > dog's
+
