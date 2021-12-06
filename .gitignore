@@ -1,6 +1,2 @@
-CMakeCache.txt
-**/cmake_install.cmake
-**/CMakeFiles/**
-**/Makefile
 /src/*.o
 /src/me
