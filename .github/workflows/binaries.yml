@@ -18,12 +18,16 @@ jobs:
       
     - name: make me binary
       run: make me-bin
+
+    - name: make me-standalone binary
+      run: make me-bfs-bin
     
-    - name: Make tcl-filter.tapp
+    - name: Make me-standalone binary
       run: |
         mkdir binaries
         cp src/me binaries/
         cp bfs/bfs binaries/
+        cp me-linux.bin binaries/me-linux-x64.bin
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v2
       with: 
