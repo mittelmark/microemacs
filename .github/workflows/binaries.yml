@@ -1,0 +1,32 @@
+name: Binaries CI
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+     
+    - name: make bfs binary
+      run: make bfs
+      
+    - name: make me binary
+      run: make me
+    
+    - name: Make tcl-filter.tapp
+      run: |
+        mkdir binaries
+        cp src/me binaries/
+        cp bfs/bfs binaries/
+        cp pandoc-tcl-filter/pandoc-tcl-filter.tapp pandoc-filter
+    - name: Upload Artifact GitHub Action
+      uses: actions/upload-artifact@v2
+      with: 
+        name: binaries
+        path: binaries
