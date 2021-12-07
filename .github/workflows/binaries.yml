@@ -28,6 +28,7 @@ jobs:
         cp src/me binaries/
         cp bfs/bfs binaries/
         cp me-linux.bin binaries/me-linux-x64.bin
+        cp *.bfs binaries/
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v2
       with: 
