@@ -14,10 +14,10 @@ jobs:
     
      
     - name: make bfs binary
-      run: make bfs
+      run: make bfs-bin
       
     - name: make me binary
-      run: make me
+      run: make me-bin
     
     - name: Make tcl-filter.tapp
       run: |
