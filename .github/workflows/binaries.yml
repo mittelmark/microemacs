@@ -24,7 +24,6 @@ jobs:
         mkdir binaries
         cp src/me binaries/
         cp bfs/bfs binaries/
-        cp pandoc-tcl-filter/pandoc-tcl-filter.tapp pandoc-filter
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v2
       with: 
