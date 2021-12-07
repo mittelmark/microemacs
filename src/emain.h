@@ -58,11 +58,13 @@
  */
 #define _STDARG 1       /* Use <stdarg.h> in defintions                 */
 
-#ifndef _WIN32
+/* One may think that this should be platform dependant, BUT time and
+ * experience has shown that it is best to always use a '/' in the body
+ * of MicroEmacs (simplifies everything) and convert to or from the
+ * system DIR char if required. No system yet needs this but
+ * as some need to check and convert to a '/' they define a CONVDIR_CHAR
+ */
 #define DIR_CHAR  '/'   /* directory divide char, ie /bin/ */
-#else
-#define DIR_CHAR  '\\'
-#endif
 
 /**************************************************************************
 * UNIX : IRIX                                                             *
@@ -310,6 +312,7 @@
 #define _SINGLE_CASE   1                /* Files only have single case   */
 #define _MOUSE         1                /* Mouse supported               */
 #define _DRV_CHAR     ':'               /* drive divide letter, C:\dos   */
+#define _CONVDIR_CHAR '\\'              /* Filename convert '\\' => '/'  */
 #endif /* _DOS */
 
 /**************************************************************************
@@ -347,6 +350,7 @@
 #define _BINFS         1                /* Use the built-in File system  */
 #define _DRAGNDROP     1                /* Drag and drop supported.      */
 #define _DRV_CHAR     ':'               /* drive divide letter, C:\dos   */
+#define _CONVDIR_CHAR '\\'              /* Filename convert '\\' => '/'  */
 #ifdef _ME_WINDOW                       /* windowing mode?               */
 #define _MULTI_WINDOW  1                /* can support multiple window frames    */
 #endif
@@ -354,7 +358,6 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 #include <windows.h>                    /* Standard windows API          */
-#include <direct.h>
 #ifdef _DRAGNDROP
 #include <shellapi.h>                   /* Drag and drop API             */
 #endif /* _DRAGNDROP */
@@ -587,8 +590,6 @@ typedef unsigned int   meUInt ;
 #define _DEFAULT_SEARCH_PATH ""
 #endif
 
-#undef _BINFS
-#undef MEOPT_BINFS
 #if MEOPT_BINFS
 #include "bfs.h"        /* Binary file system definitions. */
 #endif
