@@ -23,13 +23,13 @@ jobs:
     
     - name: Make me-standalone binary
       run: |
-        mkdir binaries
-        cp src/me binaries/
-        cp bfs/bfs binaries/
-        cp me-linux.bin binaries/me-linux-x64.bin
-        cp *.bfs binaries/
+        mkdir binaries-Linux-x86_64
+        cp bfs/bfs binaries-Linux-x86_64/
+        cp me-linux.bin binaries-Linux-x86_64/me-linux.bin
+        cp license.txt binaries-Linux-x86_64/
+        cp README-standalone.md binaries-Linux-x86_64/        
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v2
       with: 
-        name: binaries
-        path: binaries
+        name: binaries-Linux-x86_64
+        path: binaries-Linux-x86_64
