@@ -1,6 +1,6 @@
 ## MicroEmacs
 
-This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs)
+This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
 It contains the following changes:
 
@@ -22,6 +22,14 @@ build is folded by the indicated three dots:
 
 ![](images/dracula.png)
 
+## Download 
+
+There is a stand alone single file executable build for the following platforms here: 
+
+* [Linux-x86_64](https://github.com/mittelmark/microemacs/suites/4587289431/artifacts/123655903)
+
+Other platforms will follow.
+
 ## Pros and Cons of Jasspa MicroEmacs
 
 * Pro:
@@ -36,9 +44,6 @@ build is folded by the indicated three dots:
     * no unicode!
     * no softwrap!
     
-        
-    
-
 ## Build
 
 I currently build only on Linux using the file _src/linux26.gmk_. Other Makefiles you should take from [https://github.com/ipstone/microemacs/tree/master/src](https://github.com/ipstone/microemacs/tree/master/src)
