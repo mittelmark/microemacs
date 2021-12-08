@@ -53,6 +53,16 @@ bfs -a me-linux.bin ./mearchive
 This will replace the old archive with the new one. You can now copy simply
 this file and use it on other machines having the same platform.
 
+## Current version
+
+The stand alone binaries in the current build contain a few extensions, fixes
+and improvements in comparison to the old binaries which you can download from
+[http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html).
+This build contains as well the american spelling dictionary. Other
+dictionaries can be download from
+[http://www.jasspa.com/spelling.html](http://www.jasspa.com/spelling.html).
+They can be installed by placing the files into your personal `~/.jassüa`
+folder.
 
 ## EOF
 
