@@ -27,6 +27,7 @@ build is folded by the indicated three dots:
 There is a stand alone single file executable build for the following platforms here: 
 
 * [Linux-x86_64](https://github.com/mittelmark/microemacs/suites/4587289431/artifacts/123655903)
+* [Windows-32bit](https://github.com/mittelmark/microemacs/suites/4587422309/artifacts/123662018)
 
 Other platforms will follow.
 
