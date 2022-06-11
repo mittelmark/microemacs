@@ -43,13 +43,19 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 0 "^#.*"         .scheme.comment   
     
     hilight .hilight.r 4 "\"" "\"" "\\" .scheme.string
+    hilight .hilight.r 4 "'" "'" "\\" .scheme.string    
     !if &band .hilight.flags 0x04
         hilight .hilight.r 1 "\\w+\\s+<-\\s+function"   .scheme.function
     !endif
     hilight .hilight.r 2 "^library"     .scheme.prepro
     hilight .hilight.r 1 "abline"       .scheme.keyword
+    hilight .hilight.r 1 "abs"          .scheme.keyword    
+    hilight .hilight.r 1 "all"          .scheme.keyword
+    hilight .hilight.r 1 "any"          .scheme.keyword    
     hilight .hilight.r 1 "apply"        .scheme.keyword
     hilight .hilight.r 1 "array"        .scheme.keyword
+    hilight .hilight.r 1 "as.data.frame"   .scheme.keyword    
+    hilight .hilight.r 1 "as.matrix"   .scheme.keyword        
     hilight .hilight.r 1 "attach"       .scheme.keyword
     hilight .hilight.r 1 "axis"         .scheme.keyword
     hilight .hilight.r 1 "barplot"      .scheme.keyword
@@ -79,6 +85,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "file.path"    .scheme.keyword
     hilight .hilight.r 1 "file.exists"  .scheme.keyword
     hilight .hilight.r 1 "for"          .scheme.keyword
+    hilight .hilight.r 1 "function"     .scheme.function
     hilight .hilight.r 1 "grep"         .scheme.keyword
     hilight .hilight.r 1 "grepl"        .scheme.keyword
     hilight .hilight.r 1 "grid"         .scheme.keyword
@@ -86,6 +93,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "hist"         .scheme.keyword
     hilight .hilight.r 1 "if"           .scheme.keyword
     hilight .hilight.r 1 "image"        .scheme.keyword
+    hilight .hilight.r 1 "intersect"    .scheme.keyword
     hilight .hilight.r 1 "lapply"       .scheme.keyword
     hilight .hilight.r 1 "legend"       .scheme.keyword
     hilight .hilight.r 1 "length"       .scheme.keyword
@@ -93,15 +101,22 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "lines"        .scheme.keyword
     hilight .hilight.r 1 "lm"           .scheme.keyword
     hilight .hilight.r 1 "load"         .scheme.keyword
+    hilight .hilight.r 1 "log"          .scheme.keyword
+    hilight .hilight.r 1 "log2"         .scheme.keyword
+    hilight .hilight.r 1 "log10"        .scheme.keyword    
     hilight .hilight.r 1 "loadhistory"  .scheme.keyword
     hilight .hilight.r 1 "lsfit"        .scheme.keyword
     hilight .hilight.r 1 "matrix"       .scheme.keyword
     hilight .hilight.r 1 "max"          .scheme.keyword
     hilight .hilight.r 1 "median"       .scheme.keyword
     hilight .hilight.r 1 "min"          .scheme.keyword
+    hilight .hilight.r 1 "mtext"        .scheme.keyword
+    hilight .hilight.r 1 "ncol"         .scheme.keyword    
     hilight .hilight.r 1 "next"         .scheme.keyword
     hilight .hilight.r 1 "new.env"      .scheme.keyword
+    hilight .hilight.r 1 "nrow"         .scheme.keyword
     hilight .hilight.r 1 "list"         .scheme.keyword
+    hilight .hilight.r 1 "options"      .scheme.keyword    
     hilight .hilight.r 1 "outer"        .scheme.keyword
     hilight .hilight.r 1 "pairs"        .scheme.keyword
     hilight .hilight.r 1 "panel"        .scheme.keyword
@@ -136,13 +151,17 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "scan"         .scheme.keyword
     hilight .hilight.r 1 "scale"        .scheme.keyword
     hilight .hilight.r 1 "seq"          .scheme.keyword
+    hilight .hilight.r 1 "setdiff"      .scheme.keyword
     hilight .hilight.r 1 "solve"        .scheme.keyword
     hilight .hilight.r 1 "source"       .scheme.keyword
+    hilight .hilight.r 1 "substr"        .scheme.keyword    
     hilight .hilight.r 1 "summary"      .scheme.keyword
     hilight .hilight.r 1 "table"        .scheme.keyword
     hilight .hilight.r 1 "tapply"       .scheme.keyword
     hilight .hilight.r 1 "title"        .scheme.keyword
     hilight .hilight.r 1 "unlist"       .scheme.keyword
+    hilight .hilight.r 1 "union"        .scheme.keyword
+    hilight .hilight.r 1 "unique"       .scheme.keyword    
     hilight .hilight.r 1 "var"          .scheme.keyword
     hilight .hilight.r 1 "while"        .scheme.keyword
     hilight .hilight.r 1 "which"        .scheme.keyword
@@ -161,11 +180,14 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "wilcox.test"  .scheme.keyword
     hilight .hilight.r 1 "pairwise.wilcox.test"  .scheme.keyword
     ; operators
-    hilight .hilight.r 0    "&&"        .scheme.operator
-    hilight .hilight.r 0    "||"        .scheme.operator
+    hilight .hilight.r 0    "&"         .scheme.operator
+    hilight .hilight.r 0    "|"         .scheme.operator
+    hilight .hilight.r 0    "%in%"      .scheme.operator    
+    hilight .hilight.r 0    "%ni%"      .scheme.operator        
     hilight .hilight.r 1 "TRUE"         .scheme.prepro
     hilight .hilight.r 1 "FALSE"        .scheme.prepro
     hilight .hilight.r 1 "NA"           .scheme.prepro
+    hilight .hilight.r 1 "NULL"           .scheme.prepro    
 
     ; sql stuff
     hilight .hilight.r 1 "dbSendQuery"  .scheme.keyword
