@@ -58,8 +58,11 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "cat"          .scheme.keyword
     hilight .hilight.r 1 "cbind"        .scheme.keyword
     hilight .hilight.r 1 "coef"         .scheme.keyword
+    hilight .hilight.r 1 "colnames"     .scheme.keyword
     hilight .hilight.r 1 "contour"      .scheme.keyword
     hilight .hilight.r 1 "coplot"       .scheme.keyword
+    hilight .hilight.r 1 "cor"          .scheme.keyword    
+    hilight .hilight.r 1 "commandArgs"  .scheme.keyword            
     hilight .hilight.r 1 "crossprod"    .scheme.keyword
     hilight .hilight.r 1 "curve"        .scheme.keyword
     hilight .hilight.r 1 "data"         .scheme.keyword
@@ -67,59 +70,96 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "density"      .scheme.keyword
     hilight .hilight.r 1 "detach"       .scheme.keyword
     hilight .hilight.r 1 "dim"          .scheme.keyword
+    hilight .hilight.r 1 "dirname"      .scheme.keyword    
     hilight .hilight.r 1 "dotchart"     .scheme.keyword
     hilight .hilight.r 1 "edit"         .scheme.keyword
-    hilight .hilight.r 1 "eigen"        .scheme.keywor
+    hilight .hilight.r 1 "eigen"        .scheme.keyword
+    hilight .hilight.r 1 "eval"         .scheme.keyword    
     hilight .hilight.r 1 "else"         .scheme.keyword
+    hilight .hilight.r 1 "file.path"    .scheme.keyword
+    hilight .hilight.r 1 "file.exists"  .scheme.keyword    
     hilight .hilight.r 1 "for"          .scheme.keyword
+    hilight .hilight.r 1 "grep"         .scheme.keyword
+    hilight .hilight.r 1 "grepl"        .scheme.keyword
+    hilight .hilight.r 1 "grid"        .scheme.keyword
+    hilight .hilight.r 1 "gsub"         .scheme.keyword    
     hilight .hilight.r 1 "hist"         .scheme.keyword
     hilight .hilight.r 1 "if"           .scheme.keyword
     hilight .hilight.r 1 "image"        .scheme.keyword
+    hilight .hilight.r 1 "lapply"       .scheme.keyword    
     hilight .hilight.r 1 "legend"       .scheme.keyword
     hilight .hilight.r 1 "length"       .scheme.keyword
     hilight .hilight.r 1 "levels"       .scheme.keyword
     hilight .hilight.r 1 "lines"        .scheme.keyword
     hilight .hilight.r 1 "lm"           .scheme.keyword
+    hilight .hilight.r 1 "load"         .scheme.keyword
+    hilight .hilight.r 1 "loadhistory"  .scheme.keyword
     hilight .hilight.r 1 "lsfit"        .scheme.keyword
     hilight .hilight.r 1 "matrix"       .scheme.keyword
     hilight .hilight.r 1 "max"          .scheme.keyword
     hilight .hilight.r 1 "median"       .scheme.keyword
     hilight .hilight.r 1 "min"          .scheme.keyword
-    hilight .hilight.r 1 "next"          .scheme.keyword    
+    hilight .hilight.r 1 "next"         .scheme.keyword
+    hilight .hilight.r 1 "new.env"      .scheme.keyword
     hilight .hilight.r 1 "list"         .scheme.keyword
     hilight .hilight.r 1 "outer"        .scheme.keyword
     hilight .hilight.r 1 "pairs"        .scheme.keyword
     hilight .hilight.r 1 "panel"        .scheme.keyword
     hilight .hilight.r 1 "par"          .scheme.keyword
+    hilight .hilight.r 1 "parse"        .scheme.keyword    
+    hilight .hilight.r 1 "paste"        .scheme.keyword    
     hilight .hilight.r 1 "persp"        .scheme.keyword
     hilight .hilight.r 1 "plot"         .scheme.keyword
     hilight .hilight.r 1 "points"       .scheme.keyword
     hilight .hilight.r 1 "predict"      .scheme.keyword
+    hilight .hilight.r 1 "prcomp"      .scheme.keyword    
     hilight .hilight.r 1 "prod"         .scheme.keyword
     hilight .hilight.r 1 "print"        .scheme.keyword
     hilight .hilight.r 1 "qqnorm"       .scheme.keyword
     hilight .hilight.r 1 "qqline"       .scheme.keyword
     hilight .hilight.r 1 "qqplot"       .scheme.keyword
     hilight .hilight.r 1 "qr"           .scheme.keyword
-    hilight .hilight.r 1 "repeat"       .scheme.keyword
     hilight .hilight.r 1 "read.table"   .scheme.keyword
+    hilight .hilight.r 1 "readRDS"      .scheme.keyword
+    hilight .hilight.r 1 "repeat"       .scheme.keyword
+    hilight .hilight.r 1 "require"      .scheme.keyword    
+    hilight .hilight.r 1 "rm"           .scheme.keyword    
+    hilight .hilight.r 1 "return"       .scheme.keyword    
     hilight .hilight.r 1 "rbind"        .scheme.keyword
     hilight .hilight.r 1 "rep"          .scheme.keyword
+    hilight .hilight.r 1 "round"        .scheme.keyword    
+    hilight .hilight.r 1 "rownames"     .scheme.keyword
+    hilight .hilight.r 1 "save"         .scheme.keyword
+    hilight .hilight.r 1 "save.image"   .scheme.keyword
+    hilight .hilight.r 1 "savehistory"  .scheme.keyword
+    hilight .hilight.r 1 "saveRDS"      .scheme.keyword
     hilight .hilight.r 1 "scan"         .scheme.keyword
+    hilight .hilight.r 1 "scale"        .scheme.keyword    
     hilight .hilight.r 1 "seq"          .scheme.keyword
     hilight .hilight.r 1 "solve"        .scheme.keyword
+    hilight .hilight.r 1 "source"       .scheme.keyword    
     hilight .hilight.r 1 "summary"      .scheme.keyword
     hilight .hilight.r 1 "table"        .scheme.keyword
     hilight .hilight.r 1 "tapply"       .scheme.keyword
     hilight .hilight.r 1 "title"        .scheme.keyword
+    hilight .hilight.r 1 "unlist"       .scheme.keyword
     hilight .hilight.r 1 "var"          .scheme.keyword
     hilight .hilight.r 1 "while"        .scheme.keyword
+    hilight .hilight.r 1 "which"        .scheme.keyword
 
     ; tests
+    hilight .hilight.r 1 "aov"         .scheme.keyword    
+    hilight .hilight.r 1 "cor.test"     .scheme.keyword
+    hilight .hilight.r 1 "chisq.test"   .scheme.keyword        
+    hilight .hilight.r 1 "fisher.test"  .scheme.keyword
+    hilight .hilight.r 1 "prop.test"    .scheme.keyword
+    hilight .hilight.r 1 "pairwise.prop.test"    .scheme.keyword
     hilight .hilight.r 1 "t.test"       .scheme.keyword
+    hilight .hilight.r 1 "pairwise.t.test"       .scheme.keyword    
     hilight .hilight.r 1 "ks.test"      .scheme.keyword
     hilight .hilight.r 1 "var.test"     .scheme.keyword
     hilight .hilight.r 1 "wilcox.test"  .scheme.keyword
+    hilight .hilight.r 1 "pairwise.wilcox.test"  .scheme.keyword
     ; operators
     hilight .hilight.r 0    "&&"        .scheme.operator
     hilight .hilight.r 0    "||"        .scheme.operator
