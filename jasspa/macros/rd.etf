@@ -1,0 +1,41 @@
+\name{ }
+\alias{ }
+
+\title{
+  title
+}
+\description{
+    A intial starting function ...
+}
+\usage{
+    func(x)
+}
+\arguments{
+  \item{x}{
+    integer value, default: 1
+  }
+}
+\details{
+    Some more details ...
+}
+\value{
+    return an object of ...
+}
+\author{
+    $USER_NAME$
+}
+\note{
+   some notes
+}
+
+\seealso{
+    See also \code{\link{otherdocu}}
+}
+\examples{
+ x=1
+ print(x)
+}
+
+\keyword{ print } % use one of  RShowDoc("KEYWORDS")
+
+

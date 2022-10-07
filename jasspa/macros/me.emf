@@ -253,6 +253,7 @@ add-file-hook ".phps"                                         fhook-phps
 add-file-hook ".cmd .bat .btm"                                fhook-dos
 add-file-hook ".tcl .tk .tm"                                  fhook-tcl
 add-file-hook ".rul"                                          fhook-rul
+add-file-hook ".rd .Rd"                                       fhook-rd
 add-file-hook ".awk .nawk .gawk"                              fhook-awk
 add-file-hook ".ada .adb .ads"                                fhook-ada
 add-file-hook ".f .f77 .f90"                                  fhook-f90

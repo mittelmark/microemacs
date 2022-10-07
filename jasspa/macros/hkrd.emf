@@ -1,0 +1,65 @@
+; -!- emf -!-
+;  Created By    : Detlef Groth
+;  Created       : Sun Nov 15 05:11:33 2020
+;  Last Modified : <221007.0854>
+;
+;  Description:  : file hook for Markdown files
+;
+;  Synopsis      : Markdown initialisation hook.
+;  Authors       : Detlef Groth
+;
+;  Notes         : Used for R documentation files. For the file format look 
+;                  here: https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Rd-format
+; 
+;  History
+;
+;  Copyright (c) 2022 Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;set-variable .fhook-rd.setup &reg "/history/fhook/rd" "fghijopsw"
+;set-variable .fhook-rd.setup-mask "acefghijkmnopstuwx"
+;
+define-macro fhook-rd
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "rd"
+    buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-rd.name "Rd"
+set-variable .fhook-rd.setup &reg "/history/fhook/rd" "fghioptx"
+set-variable .fhook-rd.setup-mask "adefghikmnptux"
+;set-variable .fhook-rd.comment "|;||;|; | ;|r|"
+
+; setup rd file collapse
+
+!if &sequal .hilight.rd "ERROR"
+    ; Allocate a hilighting scheme number
+    set-variable .hilight.rd &pinc .hilight.next 1
+!endif
+0 hilight .hilight.rd  0                   .scheme.text
+hilight .hilight.rd   2   "%"             .scheme.comment  ; Comment from SOL to EOL.
+hilight .hilight.rd   4 "\"" "\"" "\\"    .scheme.string
+hilight .hilight.rd   0 "\\\\[^{]*"       .scheme.keyword   
+
+define-macro fhook-rd
+    ; Assign the hilighting
+    !if &not @#
+        etfinsrt "rd"
+    !endif
+    set-variable $buffer-hilight .hilight.rd
+    buffer-abbrev-file "rd"
+    ; Temporary comment to make sure that it works.
+    ml-write "Loaded a Rd file"
+!emacro
+
+; Notification that hook is loaded.
+ml-write "[MicroEmacs foo file hook loaded]"
+
+set-variable .fhook-rd.collapse-open  "^\\[a-z]*{"
+set-variable .fhook-rd.collapse-close "^\\}"
+set-variable .fhook-rd.collapse-mnext "-1"
+
+;buffer-init-fhook "rd"
+
