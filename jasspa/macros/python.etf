@@ -1,31 +1,16 @@
-#!/usr/bin/env python
-##############################################################################
-#
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
-#  Date          : $Date$
-#  Author        : $Author$
-#  Created By    : $USER_NAME$
-#  Created       : $ASCII_TIME$
-#  Last Modified : <090829.1749>
-#
-#  Description	
-#
-#  Notes
-#
-#  History
-#	
-##############################################################################
-#
-#  Copyright (c) $YEAR$ $COMPANY_NAME$.
-# 
-#  All Rights Reserved.
-# 
-#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
-#  readable form without prior written consent from $COMPANY_NAME$.
-#
-##############################################################################
+#!/usr/bin/env python3
+import sys, os, re
+
+def usage(argv):
+    print(f"Usage: {argv[0]} args")
+    
+def main(argv):
+    pass
+    
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        usage(sys.argv)
+    else:
+        main(sys.argv)
+        
 

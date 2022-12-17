@@ -13,7 +13,7 @@ openr "file = open(\p,'r')\rfor line in file:\r    print(line)\rfile.close()\r\P
 openw "out  = open(\p,'w')\rout.write('')\rout.close()\r\P" "  openw"
 tryex "try:\r    # try code\r    \p\rexcept ...Error:\r     # except code\P" "  try except"
 tryfi "try:\r    # try code\r    \p\rfinally:\r     # finally code\P" "  try finally"
-main "#!/usr/bin/env python3\rimport sys, os, re\r\rdef usage():\r    print(\"Usage: app args\")\r\rdef main(argv):\r    pass\r\rif __name__ == \"__main__\":\r    if len(sys.argv) == 1:\r    usage()\relse:\rmain(sys.argv)\r" "  main"
+main "#!/usr/bin/env python3\rimport sys, os, re\r\rdef usage(argv):\r    print(\f"Usage: {argv[0]} args\")\r\rdef main(argv):\r    pass\r\rif __name__ == \"__main__\":\r    if len(sys.argv) == 1:\r    usage(sys.argv)\relse:\r    main(sys.argv)\r" "  main"
  "" ""
  "" "</FOLD><FOLD+> \ecCTkinter:\ecA "
 tkimport "import tkinter as tk\rimport tkinter.ttk as ttk\r"  "  tkimport"

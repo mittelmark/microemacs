@@ -1,17 +1,19 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;
-;  Author        : $Author$
-;  Created By    : Dr. Detlef Groth
+; -!- emf -!-
+;  Created By    : Detlef Groth
 ;  Created       : Sun Nov 15 05:11:33 2020
-;  Last Modified : <211121.0719>
+;  Last Modified : <221007.0751>
 ;
-;  Description
+;  Description:  : file hook for Markdown files
 ;
-;  Notes
+;  Synopsis      : Markdown initialisation hook.
+;  Authors       : Detlef Groth
 ;
+;  Notes         : Used for R documentation files. For the file format look 
+;                  here: https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Rd-format
+; 
 ;  History
 ;
-;  Copyright (c) 2021 Dr. Detlef Groth.
+;  Copyright (c) 2021-2022 Detlef Groth.
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;set-variable .fhook-md.name "Markdown"
