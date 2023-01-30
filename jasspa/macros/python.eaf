@@ -14,7 +14,7 @@ openr "file = open(\p,'r')\rfor line in file:\r    print(line)\rfile.close()\r\P
 openw "out  = open(\p,'w')\rout.write('')\rout.close()\r\P" "  openw"
 tryex "try:\r    # try code\r    \p\rexcept ...Error:\r     # except code\P" "  try except"
 tryfi "try:\r    # try code\r    \p\rfinally:\r     # finally code\P" "  try finally"
-main "#!/usr/bin/env python3\r\"\"\"Module docstring\"\"\"\rimport sys, os, re\r\rdef usage():\r\Tprint(\"Usage: app args\")\r\r\Tprint(__doc__)\r\rdef main(argv):\r\Tif (length(argv)) == 0:\r\Tusage()\r\rif __name__ == \"__main__\":\r\Tmain(sys.argv)\r\r" "  main"
+main "#!/usr/bin/env python3\r\"\"\"Module docstring\"\"\"\r__author__ = \"first last\"\r__version__ = \"0.1\"\rimport sys, os, re\r\rdef usage():\r\Tprint(\"Usage: app args\")\r\r\Tprint(__doc__)\r\rdef main(argv):\r\Tif (length(argv)) == 0:\r\Tusage()\r\rif __name__ == \"__main__\":\r\Tmain(sys.argv)\r\r" "  main"
  "" ""
  "" "</FOLD><FOLD+> \ecCArgparse:\ecA "
 argpn "parser = argparse.ArgumentParser(prog = '\p',\r\Tdescription=__doc__,\rformatter_class=argparse.RawTextHelpFormatter)\rargs=parser.parse_args(sys.argv[1:])\rprint(args)\r\P" "  parser"
