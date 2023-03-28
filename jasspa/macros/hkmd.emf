@@ -72,6 +72,16 @@ define-macro fhook-md
     ml-write "Markdown filehook loaded."
 !emacro
 
+0 define-macro bhook-md
+    set-variable .timestamp $timestamp
+   ; Buffer specific time stamp string.
+   set-variable $timestamp "%Y-%M-%D %h:%m"
+!emacro
+0 define-macro ehook-md
+    ; Restore the existing time stamp.
+    set-variable $timestamp .bhook-md.timestamp
+!emacro
+
 set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
 set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\)"
 set-variable .fhook-md.collapse-mnext "-1"
