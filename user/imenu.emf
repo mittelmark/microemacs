@@ -1,0 +1,65 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : Detlef Groth
+;  Created By    : Detlef Groth
+;  Created       : Thu Aug 16 14:49:02 2001
+;  Last Modified : <010825.0722>
+;
+;  Description:   generates a emacs-like imenu popup with the aid of a custom, buffer specific 
+;                 search-string if no one is defined the user is asked for one.
+;                 You can undefine the search-string by esc 0 esc x imenu
+;                 The imenu my be bound to any other key than <f7> if you like
+;  Notes          you can use a standard search string in you custom filehooks
+;                 by defining the variable :index-string
+;                 like myperl.emf
+;                 set-variable :index-string "^sub \\|^package "
+;                 or myemf.emf
+;                 set-variable :index-string "^define-" 
+;  History        
+;  Installation   add the imenu.emf file into your user-directory
+;                 add the following line to your <user>.emf
+;                 define-macro-file imenu
+;
+;  Copyright (c) 2001 <unknown>.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+define-macro imenu 
+
+    ; i use a high number trying not to disturb the original .osd.next variable
+    ; hopefully that your session will not be to long
+    set-variable #l0 10000 ; dangerous is somebody is building here an other osd
+    set-variable #l1 1 ; osd incrementor for item-additions
+    !if &or &not &exists :index-string &not @# ; then ask for a new one
+        set-variable :index-string @ml "index what"
+    !endif
+    ; at first destroy possible old items
+    set-variable #l5 40  ; let's say there is a max of 40 items
+    !while &great #l5 1
+        -1 osd #l0
+        set-variable #l5 &dec #l5 1
+    !done
+    ; constant osd
+    osd #l0 0   "b"
+    set-alpha-mark "p"
+    beginning-of-buffer
+    !force search-forward :index-string
+    !while $status
+        beginning-of-line
+        set-mark
+        2 forward-word
+        exchange-point-and-mark
+        copy-region
+        set-variable #l2 @y
+        -1 yank
+        end-of-line
+        osd #l0 &pinc #l1 1 "" &cat &cat &cat &cat "|"   #l2  "   |" $window-line "|" f  imenu-osd-goto-line
+        !force search-forward :index-string
+    !done
+    goto-alpha-mark "p"
+    #l0 osd 0 "ba" &add $cursor-x 1 &sub $cursor-y 1
+!emacro
+
+0 define-macro imenu-osd-goto-line
+    ; fetch the line number and goto
+    goto-line &lget $result 2
+!emacro
+
