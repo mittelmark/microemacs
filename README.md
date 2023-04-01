@@ -1,4 +1,4 @@
-![](images/logo.png | width=30)
+<img src="images/logo.png" width="30px" />
 ## MicroEmacs ![](images/jasspamicroemacs.gif)
 
 * [Jasspa homepage](http://www.jasspa.com)
