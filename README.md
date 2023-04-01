@@ -1,4 +1,13 @@
-## MicroEmacs
+
+## MicroEmacs ![](images/jasspamicroemacs.gif)
+
+* [Jasspa homepage](http://www.jasspa.com)
+* [new mailing list](https://groups.google.com/g/jasspa-microemacs)
+* [old downloads](http://www.jasspa.com/downlatest.html)
+* [standalone executables](http://www.jasspa.com/zeroinst.html)
+* [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
+* [spelling dictionaries](http://www.jasspa.com/spelling.html)
+* [online help](http://www.jasspa.com/me.html)
 
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
@@ -10,6 +19,8 @@ It contains the following changes:
   and [Dracula](https://github.com/dracula/dracula-theme)
 * Markdown mode (folding, template file, syntax hilghlighting, outline
   in item list, embedding Tcl and R code in fences with syntax highlight)
+
+
 
 Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf)
 
