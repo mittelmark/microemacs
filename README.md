@@ -1,6 +1,5 @@
-<img src="images/logo.png" width="30px" />
-## MicroEmacs ![](images/jasspamicroemacs.gif)
 
+## MicroEmacs &nbsp;&nbsp;&nbsp;&nbsp; <img src="images/logo.png" width="30px" />
 * [Jasspa homepage](http://www.jasspa.com)
 * [new mailing list](https://groups.google.com/g/jasspa-microemacs)
 * [old downloads](http://www.jasspa.com/downlatest.html)
