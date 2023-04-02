@@ -7,7 +7,7 @@
 * [standalone executables](http://www.jasspa.com/zeroinst.html)
 * [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
 * [spelling dictionaries](http://www.jasspa.com/spelling.html)
-* [online help](http://www.dgroth.de/me2009/me.html)
+* [online help](http://www.dgroth.de/me2009/me.htm)
 * [MicroEmacs help chm-file (2009)](http://www.dgroth.de/downloads/me2009.chm)
 
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
