@@ -1,7 +1,7 @@
 ; -!- emf -!-
 ;  Created By    : Detlef Groth
 ;  Created       : Sun Nov 15 05:11:33 2020
-;  Last Modified : <221007.0751>
+;  Last Modified : <230402.1948>
 ;
 ;  Description:  : file hook for Markdown files
 ;
@@ -54,6 +54,7 @@ define-macro md-uncomment-line
     !done
 !emacro
 
+
 define-macro fhook-md
     ; Temporary comment to make sure that it works.
     !if &not @#
@@ -69,7 +70,10 @@ define-macro fhook-md
     buffer-bind-key md-uncomment-line "C-c C-d"
     buffer-bind-key collapse-current "f2"
     buffer-bind-key collapse-all "f3"
-    ml-write "Markdown filehook loaded."
+    @# buffer-init "md"
+    buffer-init-hooks
+
+    ml-write "Markdown filehook loaded!"
 !emacro
 
 0 define-macro bhook-md
@@ -81,7 +85,6 @@ define-macro fhook-md
     ; Restore the existing time stamp.
     set-variable $timestamp .bhook-md.timestamp
 !emacro
-
 set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
 set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\)"
 set-variable .fhook-md.collapse-mnext "-1"
@@ -93,7 +96,6 @@ set-variable .fhook-md.item-list-r2 "H2 \ecB\\1\ecA"
 set-variable .fhook-md.item-list-s3 "^## \\(\[^<\]\.+\\)"
 set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
 
-ml-write "[MicroEmacs md file hook loaded]"
 !if &not &exi .hilight.tcl
     !force execute-file "hktcl"
 !endif
@@ -109,4 +111,4 @@ ml-write "[MicroEmacs md file hook loaded]"
     hilight .hilight.r  0x80 "^```" .hilight.md .scheme.hide
 !endif
 
-!force execute-file "mymd"
+buffer-init-fhook "md" 
