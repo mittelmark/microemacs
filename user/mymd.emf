@@ -1,0 +1,45 @@
+; hightlights 
+; highlights as well code chunks like
+; ```{.tcl}
+; Tcl-code
+; ```
+;  
+define-help "md-hilight-dot-tcl" "3" 
+
+cENAMEcA 
+
+     md-hilight-dot-tcl - Highlight Tcl code within Markdown documents
+     
+cESYNOPSIScA 
+
+     md-hilight-dot-tcl
+
+cEDESCRIPTIONcA 
+
+     md-hilight-dot-tcl adds syntax higlighting to a Markdown files which 
+     contains chode chunks with the string {.tcl} after triple backticks.
+
+cENOTEScA
+
+     This command is a macro defined in mymd.emf. 
+
+cESEE ALSOcA 
+
+    lm define-macro(2)le
+
+!ehelp 
+define-macro md-hilight-dot-tcl
+    !if &not &exi .hilight.tcl
+        !force execute-file "hktcl"
+    !endif
+    !if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
+        hilight .hilight.md 0x80 "^```{.tcl\.+" .hilight.tcl .scheme.hide
+        hilight .hilight.tcl 0x80 "^```" .hilight.md .scheme.hide
+    !endif
+!emacro
+
+define-macro my-fhook-md
+    ml-write "executing mymd.emf with my-fhook-md"
+    set-variable :test 1
+    set-variable :testx 2
+!emacro
