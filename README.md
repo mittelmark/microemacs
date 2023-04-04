@@ -7,7 +7,7 @@
 * [standalone executables](http://www.jasspa.com/zeroinst.html)
 * [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
 * [spelling dictionaries](http://www.jasspa.com/spelling.html)
-* [online help](https://www.dgroth.de/me2009/me.htm)
+* [online help](https://www.dgroth.de/me2009/me/index.htm)
 * [MicroEmacs help chm-file (2009)](https://www.dgroth.de/downloads/me2009.chm)
 
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
@@ -81,7 +81,7 @@ Here the link to the original Jasspa MicroEmacs [README](README).
 * [Github Repo with sources from 2009](https://github.com/cstrotm/jasspa-microemacs)
 * [Github Repo with fixes for MSDOS](https://github.com/robdaemon/microemacs)
 * [MicroEmacs Online Help (2006)](http://www.jasspa.com/me.html)
-* [MicroEmacs Online Help (2000)](https://www.dgroth.de/me2009/me.html)
+* [MicroEmacs Online Help (2000)](https://www.dgroth.de/me2009/me/index.html)
 * [MicroEmacs Refcard](https://web.archive.org/web/20160328000629/http://www.jamesie.de/microemacs/me-refcard.pdf)
 * [MicroEmacs.de](http://www.dgroth.de/pmwiki/index.php?n=MicroEmacs.MicroEmacs)
 * [MicroEmacs chm file (2002)](http://www.dgroth.de/downloads/me2002.chm)
