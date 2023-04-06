@@ -1,0 +1,104 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : Detlef Groth, Caputh-Schwiewlowsee
+;  Created By    : Detlef Groth, Caputh-Schwiewlowsee
+;  Created       : Thu Apr 6 07:53:06 2023
+;  Last Modified : <230406.0801>
+;
+;  Description   : Dynamically setting the font-size based on some X11 fonts
+;
+;  Notes         : You can cycle through a font-list
+;
+;  History       : 
+;
+;  Copyright (c) 2023 Detlef Groth, Caputh-Schwielowsee
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+set-variable %font-size 18
+define-macro font-increase
+    !if &equal %font-size 10
+        set-variable %font-size 14
+    !elif &equal %font-size 14
+        set-variable %font-size 18
+    !elif &equal %font-size 18
+        set-variable %font-size 20
+    !elif &equal %font-size 20
+        set-variable %font-size 24
+    !else
+        set-variable %font-size 34
+    !endif
+    set-variable #l1 &cat "-*-courier-bold-r-*-*-" &cat %font-size "-*-*-*-*-*-*-*"
+    change-font #l1
+    ml-write &cat "New fontsize:" %font-size
+!emacro
+
+define-macro font-decrease
+    !if &equal %font-size 14
+        set-variable %font-size 10
+    !elif &equal %font-size 18
+        set-variable %font-size 14
+    !elif &equal %font-size 20
+        set-variable %font-size 18
+    !elif &equal %font-size 24
+        set-variable %font-size 20
+    !else
+        set-variable %font-size 24
+    !endif
+    set-variable #l1 &cat "-*-courier-bold-r-*-*-" &cat %font-size "-*-*-*-*-*-*-*"
+    change-font #l1
+    ml-write &cat "New fontsize:" %font-size
+!emacro
+
+define-macro font-inc
+    !if &equal %font-index 7
+        500 ml-write "Largest font!"
+    !else
+        set-variable %font-index &inc %font-index 1
+        set-variable #l1 &lget %fonts %font-index
+        change-font #l1
+    !endif
+    
+!emacro
+
+define-macro font-dec
+    !if &equal %font-index 1
+        500 ml-write "Smallest font!"
+    !else
+        set-variable %font-index &dec %font-index 1
+        set-variable #l1 &lget %fonts %font-index
+        change-font #l1
+    !endif
+!emacro
+set-variable %font-index 2
+set-variable %fonts-prime "|-freetype-courier prime-medium-r-normal--14-100-100-100-p-69-iso10646-1|"
+set-variable %fonts-prime &linsert %fonts-prime 1 "-freetype-courier prime-medium-r-normal--17-120-100-100-p-83-iso10646-1"
+set-variable %fonts-prime &linsert %fonts-prime 2 "-freetype-courier prime-medium-r-normal--19-140-100-100-p-91-iso10646-1"
+set-variable %fonts-prime &linsert %fonts-prime 3 "-freetype-courier prime-medium-r-normal--22-160-100-100-p-104-iso10646-1"
+set-variable %fonts-prime &linsert %fonts-prime 4 "-freetype-courier prime-medium-r-normal--25-180-100-100-p-119-iso10646-1"
+set-variable %fonts-prime &linsert %fonts-prime 5 "-freetype-courier prime-medium-r-normal--28-200-100-100-p-133-iso10646-1"
+set-variable %fonts-prime &linsert %fonts-prime 6 "-freetype-courier prime-medium-r-normal--30-220-100-100-p-147-iso10646-1"
+set-variable %fonts-prime &linsert %fonts-prime 7 "-freetype-courier prime-medium-r-normal--33-240-100-100-p-157-iso10646-1"
+
+set-variable %fonts-ubuntu "|-freetype-ubuntu mono-medium-r-normal--14-100-100-100-p-61-iso10646-1|"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 1 "-freetype-ubuntu mono-medium-r-normal--17-120-100-100-p-74-iso10646-1"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 2 "-freetype-ubuntu mono-medium-r-normal--19-140-100-100-p-82-iso10646-1"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 3 "-freetype-ubuntu mono-medium-r-normal--22-160-100-100-p-94-iso10646-1"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 4 "-freetype-ubuntu mono-medium-r-normal--25-180-100-100-p-107-iso10646-1"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 5 "-freetype-ubuntu mono-medium-r-normal--28-200-100-100-p-119-iso10646-1"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 6 "-freetype-ubuntu mono-medium-r-normal--30-220-100-100-p-131-iso10646-1"
+set-variable %fonts-ubuntu &linsert %fonts-ubuntu 7 "-freetype-ubuntu mono-medium-r-normal--33-240-100-100-p-140-iso10646-1"
+
+set-variable %fonts-courier "|-*-courier-bold-r-*-*-10-*-*-*-*-*-*-*|"
+set-variable %fonts-courier &linsert %fonts-courier 1 "-*-courier-bold-r-*-*-12-*-*-*-*-*-*-*"
+set-variable %fonts-courier &linsert %fonts-courier 2 "-*-courier-bold-r-*-*-14-*-*-*-*-*-*-*"
+set-variable %fonts-courier &linsert %fonts-courier 3 "-*-courier-bold-r-*-*-17-*-*-*-*-*-*-*"
+set-variable %fonts-courier &linsert %fonts-courier 4 "-*-courier-bold-r-*-*-18-*-*-*-*-*-*-*"
+set-variable %fonts-courier &linsert %fonts-courier 5 "-*-courier-bold-r-*-*-20-*-*-*-*-*-*-*"
+set-variable %fonts-courier &linsert %fonts-courier 6 "-*-courier-bold-r-*-*-24-*-*-*-*-*-*-*"
+set-variable %fonts-courier &linsert %fonts-courier 7 "-*-courier-bold-r-*-*-34-*-*-*-*-*-*-*"
+
+global-bind-key "font-inc" "C-+"
+global-bind-key "font-dec" "C--"
+ml-write &lget %fonts 2
+set-variable %fonts %fonts-ubuntu
+font-inc
