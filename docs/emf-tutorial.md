@@ -1,7 +1,7 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-04-07 07:25
+date: 2023-04-07 07:33
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
 cmd:
@@ -78,6 +78,12 @@ quick-exit
 - scalars
 - list
 
+## Operators
+
+- boolean
+- math
+- string
+
 ## Control-Flow
 
 - if, elseif, else
@@ -93,7 +99,9 @@ quick-exit
 Thsi document was generated using pandoc and the pantcl filter like this:
 
 ```
-pandoc --filter pantcl emf-tutorial.md -o emf-tutorial.html -s --css mini.css
+pandoc --filter pantcl emf-tutorial.md -o temp.html -s --css mini.css
+htmlark temp.html -o emf-tutorial.html
+rm temp.html
 ```
 
 
