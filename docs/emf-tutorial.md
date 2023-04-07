@@ -1,7 +1,7 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-04-07 07:33
+date: 2023-04-07 07:38
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
 cmd:
@@ -23,13 +23,13 @@ executation of this code in the Markdown document.
 
 ## Hello World
 
-Within the editor we would simple write:
+Within the editor we would simple execute:
 
 ```
 ml-write "Hello World!"
 ```
 
-Which would display the message line into the editors command line at the
+That the should display the message line into the editors command line at the
 bottom like this:
 
 ![](../images/hello-world.png)
