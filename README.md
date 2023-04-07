@@ -9,6 +9,7 @@
 * [spelling dictionaries](http://www.jasspa.com/spelling.html)
 * [online help](https://www.dgroth.de/me2009/me/index.htm)
 * [MicroEmacs help chm-file (2009)](https://www.dgroth.de/downloads/me2009.chm)
+* [WIP tutorial on the Macro Language](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/microemacs/master/docs/emf-tutorial.html)
 
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
