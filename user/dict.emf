@@ -1,0 +1,43 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : Detlef Groth
+;  Created By    : Detlef Groth
+;  Created       : Fri Apr 14 15:45:14 2023
+;  Last Modified : <230414.2147>
+;
+;  Description   : dictionary like access to key value pairs
+;
+;  Notes         :
+;  History       :
+;
+;  Copyright (c) 2023 Detlef Groth
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+define-macro dict
+    set-variable #l1 $buffer-bname
+    find-buffer "*dict1"
+    set-variable #l2 &cat &cat &cat ":*dict1:" @1 "-" @2
+    !force set-variable #l3 @3 
+    !if &not $status
+        set-variable .dict.value &ind #l2
+    !else
+        set-variable &ind #l2 @3    
+        set-variable .dict.value @3
+    !endif
+    find-buffer #l1
+!emacro
+
+dict "test" "two" 2
+dict "test" "three" 3
+dict "test" "four" 4
+dict "aa" "Ala" "A"
+dict "aa" "Cys" "C"
+dict "aa" "Asp" "D"
+dict "test" "two" 
+
+500 ml-write &cat "dict is now: " .dict.value
+
+dict "aa" "Cys" 
+
+500 ml-write &cat "Cys abbreviation is: " .dict.value
