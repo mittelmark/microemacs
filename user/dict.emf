@@ -3,7 +3,7 @@
 ;  Author        : Detlef Groth
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Apr 14 15:45:14 2023
-;  Last Modified : <230415.0758>
+;  Last Modified : <230415.1032>
 ;
 ;  Description   : dictionary like access to key value pairs
 ;
@@ -42,7 +42,7 @@ define-help "dict" "3"
          dict "test" "two" 2
          dict "test" "three" 3
          dict "test" "four" 4
-         ; create dictionary aa - abbrevations for amino acids
+         ; create dictionary aa - abbreviations for amino acids
          dict "aa" "Ala" "A"
          dict "aa" "Cys" "C"
          dict "aa" "Asp" "D"
@@ -55,7 +55,13 @@ define-help "dict" "3"
          dict "aa" "Cys" 
          500 ml-write &cat "Cys abbreviation is: " .dict.value
          sA
+         
+cETODOcA
 
+      * dict-exists dict key
+      * dict-keys   dict
+      * dict functions: &dget, &dset ... ?
+      
 cENOTEScA
 
      This command is a macro defined in dict.emf. 
