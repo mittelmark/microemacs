@@ -3,7 +3,7 @@
 ;  Author        : Detlef Groth
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Apr 14 15:45:14 2023
-;  Last Modified : <230414.2147>
+;  Last Modified : <230415.0758>
 ;
 ;  Description   : dictionary like access to key value pairs
 ;
@@ -13,6 +13,58 @@
 ;  Copyright (c) 2023 Detlef Groth
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+define-help "dict" "3" 
+
+cENAMEcA 
+
+     dict - Dictionary / Hash like data structure implementation.
+     
+cESYNOPSIScA 
+
+     sBdict name key [value]sA
+
+cEDESCRIPTIONcA 
+
+     The function dict provides a function for dictionary like data access
+     using a hidden buffer and adding buffer variables to this. If the third
+     argument value is not given then just the value is retrieved. Otherwise
+     the value is used to set the dictionary entry.
+     The output of this command is stored in the command variable .dict.value -
+     so if the value is given as well the value is stored in this variable.
+     
+cEEXAMPLEcA
+
+     The following example creates two dictionaries "test" and "aa" adds a
+     few keys with their values and then access two of them
+        
+         sB
+         ; create dictionary test
+         dict "test" "two" 2
+         dict "test" "three" 3
+         dict "test" "four" 4
+         ; create dictionary aa - abbrevations for amino acids
+         dict "aa" "Ala" "A"
+         dict "aa" "Cys" "C"
+         dict "aa" "Asp" "D"
+         ; access dictionary test with key two
+         ; value is stored in the variable .dict.value
+         dict "test" "two" 
+         ; dump out the value
+         500 ml-write &cat "dict is now: " .dict.value
+         ; access to dictionary aa 
+         dict "aa" "Cys" 
+         500 ml-write &cat "Cys abbreviation is: " .dict.value
+         sA
+
+cENOTEScA
+
+     This command is a macro defined in dict.emf. 
+
+cESEE ALSOcA 
+
+    lm define-macro(2)le, lm &linsert(4)le
+
+!ehelp 
 
 define-macro dict
     set-variable #l1 $buffer-bname
@@ -28,16 +80,3 @@ define-macro dict
     find-buffer #l1
 !emacro
 
-dict "test" "two" 2
-dict "test" "three" 3
-dict "test" "four" 4
-dict "aa" "Ala" "A"
-dict "aa" "Cys" "C"
-dict "aa" "Asp" "D"
-dict "test" "two" 
-
-500 ml-write &cat "dict is now: " .dict.value
-
-dict "aa" "Cys" 
-
-500 ml-write &cat "Cys abbreviation is: " .dict.value
