@@ -69,9 +69,35 @@ quick-exit
 
 ## Variables
 
-- register variables
-- local variables
-- global variables
+For more background on the variables have a look at the help page [Variables](https://www.dgroth.de/me2009/me/m4fil018.htm).
+
+Essentially we have:
+
+- register variables - starting with the hash mark sign __#__ there are mainly used due to the fast access speed
+- system variables - starting with the dollar sign __$__ and followed uppercase letters
+- editor variables - starting with the dollar sign __$__ and followed by lowercase letters
+- command variables - usually starting with a dot __.__ sign to be used within macros
+- global variables - usually starting with a percentage __%__ sign
+- buffer variables - usually starting with a colon __:__, these variables keep information about the currently opened file
+
+Variable values were assigned usually with the `set-variable`{.emf}  command. Here an example:
+
+```{.emf eval=true}
+; make dumping out information easier
+define-macro print
+    -1 ml-write @1
+!emacro
+
+print "Hello Print World!"
+set-variable %test "This is a test!"
+set-variable #g1 "This is a global register variable!"
+print %test
+print #g1
+; some editor variables
+print $buffer-bname
+print $progname
+print $version
+```
 
 ## Data structures
 

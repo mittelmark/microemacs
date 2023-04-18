@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="emf" version="1" kateversion="2.4" section="Sources" extensions="*.emf;*.erf">
+  <highlighting>
+    <list name="keywords">
+      <item>define</item>
+      <item>macro</item>      
+      <item>!emacro</item>      
+    </list>
+    <contexts>
+      <context attribute="Normal Text" lineEndContext="#pop" name="Normal Text" >
+        <keyword attribute="Keyword" context="#stay" String="keywords" />
+        <DetectChar attribute="String" context="string" char="&quot;" />
+        <DetectChar attribute="Command" context="command" char="!" />
+        <DetectChar attribute="Variable" context="variable" char="%" />
+        <DetectChar attribute="Variable" context="variable" char="#" />        
+        <DetectChar attribute="Variable" context="variable" char="$" />        
+        <DetectChar attribute="Operator" context="operator" char="&amp;" /> 
+        <DetectChar attribute="Comment" context="comment" char=";" />
+      </context>
+      <context attribute="String" lineEndContext="#stay" name="string" >
+        <DetectChar attribute="String" context="#pop" char="&quot;" />
+      </context>
+      <context attribute="Command" lineEndContext="#pop" name="command" >
+        <DetectChar attribute="Command" context="#pop" char=" " />
+      </context>
+      <context attribute="Variable" lineEndContext="#pop" name="variable" >
+        <DetectChar attribute="Variable" context="#pop" char=" " />
+      </context>
+      <context attribute="Operator" lineEndContext="#pop" name="operator" >
+        <DetectChar attribute="Operator" context="#pop" char=" " />
+      </context>
+      <context name="comment" attribute="Comment" lineEndContext="#pop">
+        <DetectSpaces />
+      </context>
+
+    </contexts>
+    <itemDatas>
+      <itemData name="Normal Text" defStyleNum="dsNormal" />
+      <itemData name="Keyword" defStyleNum="dsOthers" bold="0"/>
+      <itemData name="String" defStyleNum="dsString" />
+      <itemData name="Comment"   defStyleNum="dsComment" />
+      <itemData name="Command"   defStyleNum="dsOthers" />
+      <itemData name="Variable"   defStyleNum="dsDataType" />
+      <itemData name="Operator"   defStyleNum="dsOperator" />      
+    </itemDatas>
+  </highlighting>
+</language>
