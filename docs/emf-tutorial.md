@@ -203,6 +203,7 @@ execute-file "tutorial.emf"
 set-variable %real-var "hello"
 set-variable #l2 %real-var
 set-variable #l3 %dummy-var
+; check if the variable has the string ERROR &seq == string equal
 !if &seq #l2 "ERROR"
     print "variable %real-var does not exists!"
 !else
