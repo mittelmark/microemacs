@@ -159,7 +159,7 @@ print %test
 
 As you can see the default value for register variables is an empty string.
 
-There are as well register variables with the prefix `#p` which means that the should be as well visible in the calling macro.
+There are as well register variables with the prefix `#p` which means that the should be as well visible in the calling macro, so the parent macro.
 Here an example:
 
 ```{.emf eval=true}
