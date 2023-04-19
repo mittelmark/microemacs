@@ -99,12 +99,129 @@ print $progname
 print $version
 ```
 
+Every code example in this tutorial is in its own script file, so if we would like to use
+the `print` macro in the next code example this would produce an error.
+
+```{.emf eval=true}
+print "test"
+```
+
+To use our print macro we will place this macro in our `user.emf` file which is in our jasspa home directory:
+
+```{.emf eval=true}
+-1 ml-write $user-path
+-1 ml-write $user-name
+```
+
+So as our setting show we simply write the print macro in a file `groth.emf`.
+Thereafter we should be able to use the `print` function in all code-chunk
+examples. For illustrative purposes we place the function in a file
+`tutorial.emf` which we put in our `$user-path` and which we then just execute
+like this at the beginning of our code chunk:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+print "Hello Tutorial!"
+```
+
+Now back to variables ...
+
+### Register variables
+
+Global register variables start with the prefix `#g` and then a number between
+1 and 9. There are used for fast access of variables values which are visible in all code regions:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #g1 "Value of #g1 is a string!"
+set-variable #g2 "Another value!"
+define-macro test-global
+    print #g1
+!emacro 
+test-global
+print #g2
+```
+
+Local variable a prefixed with `#l` and the values again from 1 to 9.
+
+Here an example:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+define-macro test-local
+    set-variable #l1 "Local variable string!"
+    print #l1
+!emacro 
+test-local
+set-variable %test &spr "#l1 is '%s'" #l1
+print %test
+```
+
+As you can see the default value for register variables is an empty string.
+
+There are as well register variables with the prefix `#p` which means that the should be as well visible in the calling macro.
+Here an example:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+define-macro child-mac
+    ; set a local variable in the caller
+    set-variable #p1 "Hello parent!"
+!emacro
+define-macro parent-mac
+    child-mac
+    print #l1
+!emacro
+parent-mac
+```
+
+This might be helpful in some situations but might as well complicate a little bit the code
+understanding.
+
+### System variables 
+
+
+As told system variables start with a dollar and they keep information about
+the editor and some variables which are derived from system variables. You can
+display the variables using the macro "list-variables" from within the editor,
+so executing `esc-x` and then writing the command. Or by using the default
+key-combination `C-h v`. Here we just display a few of these variables:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+print &sprintf "variable: $auto-time    = %s" $auto-time  
+print &sprintf "variable: $buffer-bname = %s" $buffer-bname
+print &sprintf "variable: $not-existing = %s" $not-existing
+```
+
+As you can see in the case you try to access a variable that does not exists
+you get the value "ERROR" as a variable value, that can be used to check if a
+variable exists. Here an example:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable %real-var "hello"
+set-variable #l2 %real-var
+set-variable #l3 %dummy-var
+!if &seq #l2 "ERROR"
+    print "variable %real-var does not exists!"
+!else
+    print "variable %real-var does exists!"
+!endif
+!if &seq #l3 "ERROR"
+    print "variable %dummy-var does not exists!"
+!else
+    print "variable %dummy-var does exists!"
+!endif
+```
+
+
 ## Data structures
 
 - scalars
 - list
 
-## Operators
+## Operators and Functions
 
 - boolean
 - math
