@@ -192,6 +192,12 @@ execute-file "tutorial.emf"
 print &sprintf "variable: $auto-time    = %s" $auto-time  
 print &sprintf "variable: $buffer-bname = %s" $buffer-bname
 print &sprintf "variable: $not-existing = %s" $not-existing
+; load a file into MicroEmacs
+find-file &cat $user-home "/groth.emf"
+print &sprintf "variable: $buffer-bname = %s" $buffer-bname
+; how many lines has this file
+print &sprintf "variable: $window-eline = %s" $window-eline
+
 ```
 
 As you can see in the case you try to access a variable that does not exists
