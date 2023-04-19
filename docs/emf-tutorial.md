@@ -193,10 +193,12 @@ print &sprintf "variable: $auto-time    = %s" $auto-time
 print &sprintf "variable: $buffer-bname = %s" $buffer-bname
 print &sprintf "variable: $not-existing = %s" $not-existing
 ; load a file into MicroEmacs
-find-file &cat $user-home "/groth.emf"
+find-file &cat $user-path "groth.emf"
 print &sprintf "variable: $buffer-bname = %s" $buffer-bname
+print &sprintf "variable: $buffer-fname = %s" $buffer-fname
 ; how many lines has this file
-print &sprintf "variable: $window-eline = %s" $window-eline
+end-of-buffer ; jump to the end
+print &sprintf "variable: $window-aline = %s" $window-aline
 
 ```
 
