@@ -1423,10 +1423,10 @@ missing_arg:
 #endif
 #if MEOPT_EXTENDED
             case 'p':
-                alarmState |= meALARM_PIPED_QUIET ;
+                alarmState |= meALARM_PIPED_QUIET;
             case 'P':
-                alarmState |= meALARM_PIPED ;
-                meSystemCfg |= meSYSTEM_PIPEDMODE ;
+                alarmState |= meALARM_PIPED;
+                meSystemCfg |= meSYSTEM_PIPEDMODE;
                 break ;
 #endif
             case 'r':
@@ -1900,6 +1900,16 @@ handle_stdin:
     carg = decode_fncname((meUByte *)"start-up",1) ;
     if(carg >= 0)
         execFunc(carg,meFALSE,1) ;
+#if MEOPT_EXTENDED
+    if(alarmState & meALARM_PIPED)
+    {
+        /* if we got here then the exit strategy of the pipe script failed - get out */
+        mlwrite(MWABORT|MWSTDERRWRT,(meUByte *)"[Error: Pipe script failed to exit!]");
+        alarmState = meALARM_DIE;
+        exitEmacs(1,0x30);
+    }
+#endif
+
 }
 
 #ifndef NDEBUG
