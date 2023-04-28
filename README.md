@@ -83,10 +83,10 @@ on a Linux system. To check the executuable on Linux using wine you do
 something like this:
 
 ```
-MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/Portable/me32.exe
+MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/path/to/me32.exe
 ```
 
-You can as well create an alias.
+You can as well create an alias to shorten the command line.
 
 ## Original README
 
