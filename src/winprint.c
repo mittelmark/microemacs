@@ -58,6 +58,11 @@
 #define PFONT_UNDER              0x04   /* Underline font */
 #define PFONT_MAX                0x08   /* Maximum mask for fonts */
 
+/* Set this flag to use the new way that we should enumerate fonts. This only
+ * operates for NT 4.0 and Win 95. We typeically use the existing Font
+ * enumeration that is good for win32s */
+#define USE_EnumFontFamiliesEx    0     /* 1 = use Ex rather then old function */
+
 /* Pain the special characters */
 typedef struct
 {
@@ -78,7 +83,7 @@ static PAGEDESC pd;
 #define PRINT_DIALOGUE         0x02     /* Printer dialogue is constucted */
 
 static int printStatus = 0;             /* Status of print dialogue */
-static WCHAR *printJob = NULL;           /* Name of current print job */
+static char *printJob = NULL;           /* Name of current print job */
 static HWND hDlgCancel;                 /* Cancel Dialogue */
 PRINTDLG printDlg;                      /* Print Dialogue */
 static int bPrint;
@@ -120,7 +125,7 @@ printFont (LOGFONT *plf, char *fontName)
     plf->lfClipPrecision = CLIP_DEFAULT_PRECIS;
     plf->lfQuality = DEFAULT_QUALITY;
     plf->lfPitchAndFamily = FIXED_PITCH|FF_DONTCARE;
-    wcscpy(plf->lfFaceName, utf8_decode(fontName));
+    strcpy (plf->lfFaceName, fontName);
 }
 
 /*
@@ -223,10 +228,10 @@ getPrinterInfo (int index)
                       (strcmp (printer.param [mePI_WINDRIVER].p, pi2[ii].pDriverName) == 0)) &&*/
                      ((printer.param [mePI_WINDEVICE].p != NULL) &&
                       (pi2[ii].pPrinterName != NULL) &&
-                      (strcmp (printer.param [mePI_WINDEVICE].p, utf8_encode(pi2[ii].pPrinterName)) == 0)) &&
+                      (strcmp (printer.param [mePI_WINDEVICE].p, pi2[ii].pPrinterName) == 0)) &&
                      ((printer.param [mePI_WINPORT].p != NULL) &&
                       (pi2[ii].pPortName != NULL) &&
-                      (strcmp (printer.param [mePI_WINPORT].p, utf8_encode(pi2[ii].pPortName)) == 0))))
+                      (strcmp (printer.param [mePI_WINPORT].p, pi2[ii].pPortName) == 0))))
                 {
                     /* Set this to our index. */
                     index = ii;
@@ -243,13 +248,13 @@ getPrinterInfo (int index)
                     (index == ii))
                 {
                     DEVNAMES *hDev;
-                    WCHAR *dicp;
+                    char *dicp;
                     int jj;
 
                     /* Get the size of the structure */
-                    jj = ((wcslen (pi2[ii].pPrinterName) + 1) +
-                          (wcslen (pi2[ii].pDriverName) + 1) +
-                          (wcslen (pi2[ii].pPortName + 1) +
+                    jj = ((strlen (pi2[ii].pPrinterName) + 1) +
+                          (strlen (pi2[ii].pDriverName) + 1) +
+                          (strlen (pi2[ii].pPortName + 1) +
                            sizeof (DEVNAMES)));
 
                     /* Build movable global object */
@@ -261,15 +266,15 @@ getPrinterInfo (int index)
 
                     hDev = GlobalLock (hDevNames);
                     jj = sizeof (DEVNAMES);
-                    dicp = (WCHAR *)(hDev);
+                    dicp = (char *)(hDev);
 
                     /* Copy in driver details */
                     hDev->wDriverOffset = jj;
-                    jj += wsprintf (&dicp[jj], L"%s", pi2[ii].pDriverName) + 1;
+                    jj += sprintf (&dicp[jj], "%s", pi2[ii].pDriverName) + 1;
                     hDev->wDeviceOffset = jj;
-                    jj += wsprintf (&dicp[jj], L"%s", pi2[ii].pPrinterName) + 1;
+                    jj += sprintf (&dicp[jj], "%s", pi2[ii].pPrinterName) + 1;
                     hDev->wOutputOffset = jj;
-                    wsprintf (&dicp[jj], L"%s", pi2[ii].pPortName);
+                    sprintf (&dicp[jj], "%s", pi2[ii].pPortName);
 
                     if (pi2[ii].Attributes & PRINTER_ATTRIBUTE_DEFAULT)
                         hDev->wDefault = 1;
@@ -313,8 +318,8 @@ printGetDC (void)
 
     /* Construct the device context for the print job */
     hDev = GlobalLock (printDlg.hDevNames);
-    printDlg.hDC = CreateDC (&((WCHAR *)(hDev))[hDev->wDriverOffset],
-                             &((WCHAR *)(hDev))[hDev->wDeviceOffset],
+    printDlg.hDC = CreateDC (&((char *)(hDev))[hDev->wDriverOffset],
+                             &((char *)(hDev))[hDev->wDeviceOffset],
                              NULL, /*&((char *)(hDev))[hDev->wOutputOffset]*/
                              NULL);
     GlobalUnlock (printDlg.hDevNames);
@@ -441,7 +446,7 @@ AbortPrintJob (HWND hwndDlg,     /* window handle of dialog box     */
 
         /* Initialize the static text control. */
         if (printJob == NULL)
-            SetDlgItemText(hwndDlg, IDC_FILE, L"**NO INFORMATION**");
+            SetDlgItemText(hwndDlg, IDC_FILE, "**NO INFORMATION**");
         else
             SetDlgItemText(hwndDlg, IDC_FILE, printJob);
         return meTRUE;
@@ -651,7 +656,7 @@ pcdEnumFontFamiliesCallback (ENUMLOGFONT *lpelf, NEWTEXTMETRIC *lpntm, int fontT
         index = SendMessage ((HWND) lParam, CB_ADDSTRING, 0, (LPARAM) lpelf->elfLogFont.lfFaceName);
         if ((index >= 0) &&
             (printer.param [mePI_FONTFACE].p != NULL) &&
-            (strcmp (printer.param [mePI_FONTFACE].p,  utf8_encode(lpelf->elfLogFont.lfFaceName)) == 0))
+            (strcmp (printer.param [mePI_FONTFACE].p,  lpelf->elfLogFont.lfFaceName) == 0))
             SendMessage ((HWND) lParam, CB_SETCURSEL, index, 0);
     }
     return meTRUE;
@@ -763,7 +768,7 @@ pcdChange (HWND hWnd)
              pd.upaperx, pd.upapery,
              pd.paperx - pd.upaperx, pd.papery - pd.upapery,
              pd.upagex, pd.upagey);
-    SetDlgItemText (hWnd, IDC_PAGE_PROPS, utf8_decode(buf));
+    SetDlgItemText (hWnd, IDC_PAGE_PROPS, buf);
 }
 
 /*
@@ -808,7 +813,7 @@ pcdDeviceName (HWND hWnd)
     else
         strcpy (buf, "** Unknown Device **");
 
-    SetDlgItemText (hWnd, IDC_PC_PRINTER, utf8_decode(buf));
+    SetDlgItemText (hWnd, IDC_PC_PRINTER, buf);
 
     /* Get the paper orientation out */
     if (printDlg.hDevMode != NULL)
@@ -929,13 +934,22 @@ pcdDialogue (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             printDlg.hwndOwner = hWnd;
 
         pcdDeviceName(hWnd);
-        LOGFONT logfont;
+#if USE_EnumFontFamiliesEx
+        /* This is the new way that we should enumerate fonts. This only
+         * operates for NT 4.0 and Win 95. We use the existing Font
+         * enumeration that is good for win32s */
+        {
+            LOGFONT logfont;
 
-        /* Set up to default values */
-        memset(&logfont, 0, sizeof(LOGFONT));
-        logfont.lfCharSet = ttlogfont.lfCharSet;
+            /* Set up to default values */
+            memset (&logfont, 0, sizeof (LOGFONT));
+            logfont.lfCharSet = ttlogfont.lfCharSet;
 
-        EnumFontFamiliesEx(printGetDC(), &logfont, (FONTENUMPROC)pcdEnumFontFamiliesCallback, (LPARAM)dWnd, 0);
+            EnumFontFamiliesEx (printGetDC(), &logfont, (FONTENUMPROC) pcdEnumFontFamiliesCallback, (LPARAM)dWnd, 0);
+        }
+#else
+        EnumFontFamilies (printGetDC(), NULL, (FONTENUMPROC) pcdEnumFontFamiliesCallback, (LPARAM)dWnd);
+#endif
         /* Set up the rows & columns */
         SetTimer (hWnd, PRINT_TIMER_ID, PRINT_TIMER_RESPONSE, (TIMERPROC) pcdTimerCallback);
         return meTRUE;
@@ -1181,14 +1195,14 @@ WinPrintSetColor(HDC hDC, int colNo, int setBgCol)
 static void
 WinPrintThread (LPVOID wParam)
 {
-    WCHAR *title = utf8_decode(ME_FULLNAME " " meVERSION " Print Spooler");
+    static const char title[] = ME_FULLNAME " " meVERSION " Print Spooler";
 
     HWND curHwnd ;
     DOCINFO di;                         /* Document information. */
     RECT paperArea;                     /* Paper area */
     HFONT fontTab [PFONT_MAX];          /* Font table */
-    WCHAR nambuf [meBUF_SIZE_MAX];               /* Name buffer */
-    WCHAR *docName;
+    char nambuf [meBUF_SIZE_MAX];               /* Name buffer */
+    char *docName;
     meLine *ihead;
 
 #ifdef _ME_CONSOLE
@@ -1205,8 +1219,8 @@ WinPrintThread (LPVOID wParam)
 #endif /* _ME_WINDOW */
 
     /* Pick up the arguments */
-    docName = ((WCHAR **)(wParam))[0];
-    ihead = (meLine *)(((WCHAR **)(wParam)) [1]);
+    docName = ((char **)(wParam))[0];
+    ihead = (meLine *)(((char **)(wParam)) [1]);
 
     /* Mark as spooling */
     printStatus |= PRINT_SPOOLING;
@@ -1216,8 +1230,8 @@ WinPrintThread (LPVOID wParam)
 
     if (ihead == NULL)
     {
-        WCHAR msgbuf [meBUF_SIZE_MAX];           /* Message buffer */
-        wsprintf (msgbuf, L"Nothing to spool \"%s\"", docName);
+        char msgbuf [meBUF_SIZE_MAX];           /* Message buffer */
+        sprintf (msgbuf, "Nothing to spool \"%s\"", docName);
         MessageBox (curHwnd, msgbuf, title, MB_ICONEXCLAMATION|MB_OK);
         goto quick_exit;
     }
@@ -1229,7 +1243,7 @@ WinPrintThread (LPVOID wParam)
 /*    if (((printStatus & PRINT_DIALOGUE) == 0) || (printDlg.hDC == NULL))*/
     if (printDlg.hDC == NULL)
     {
-        MessageBox (curHwnd, L"Device context not configured", title, MB_ICONEXCLAMATION|MB_OK);
+        MessageBox (curHwnd, "Device context not configured", title, MB_ICONEXCLAMATION|MB_OK);
         goto quick_exit;
     }
 
@@ -1249,7 +1263,7 @@ WinPrintThread (LPVOID wParam)
     /* Initialise the document indormation structure for the spool job */
     memset (&di, 0, sizeof (DOCINFO));
     di.cbSize = sizeof (DOCINFO);
-    wsprintf (nambuf, utf8_decode("MicroEmacs " meVERSION ": %s"), docName);
+    sprintf (nambuf, "MicroEmacs " meVERSION ": %s", docName);
     di.lpszDocName = nambuf;
 
     /* Set the font mapper into text mode */
@@ -1271,7 +1285,7 @@ do { \
     { \
         TextOut (printDlg.hDC,colNo*pd.cell.sizeX,\
                  lineNo*pd.cell.sizeY, \
-                 utf8_decode(&buffer[0]),bindex); \
+                 &buffer[0],bindex); \
         colNo += bindex; \
         bindex = 0; \
     } \
@@ -1431,7 +1445,7 @@ do { \
     }
 
 error_exit:
-    MessageBox (hDlgCancel, L"Printer Job Unsuccessful", title, MB_ICONEXCLAMATION|MB_OK);
+    MessageBox (hDlgCancel, "Printer Job Unsucessful", title, MB_ICONEXCLAMATION|MB_OK);
 
 dlg_exit:
     /* Abort dialogue is up, destruct the dialogue and enable main window. */

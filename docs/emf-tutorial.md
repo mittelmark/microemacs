@@ -1,12 +1,17 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-04-07 07:38
+date: 2023-04-20 21:54
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
-cmd:
+emf:
+     app: mecw
      results: show
      eval: 1
+cmd:
+    app: me
+    results: show
+    eval: 1     
 ---
 
 ## Introduction

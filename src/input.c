@@ -1812,6 +1812,9 @@ input_addexpand:
         if((option & (MLNOHIST|MLNOSTORE)) == 0)
         {
             if((option & MLFILE) && ((meStrchr(buf,DIR_CHAR) != NULL) 
+#ifdef _CONVDIR_CHAR
+                                     || (meStrchr(buf,_CONVDIR_CHAR) != NULL)
+#endif
                                      ))
             {
                 fileNameCorrect(buf,storeBuf,NULL) ;

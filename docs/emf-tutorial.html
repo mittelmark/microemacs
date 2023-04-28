@@ -87,7 +87,7 @@
 <header id="title-block-header">
 <h1 class="title">Tutorial about the Jasspa MicroEmacs EMF macro language</h1>
 <p class="author">Detlef Groth, Caputh-Schwielowsee, Germany</p>
-<p class="date">2023-04-07 07:38</p>
+<p class="date">2023-04-20 21:54</p>
 </header>
 <h2 id="introduction">Introduction</h2>
 <p>This is a tutorial about the <a href="http://www.jasspa.com">Jasspa MicroEmacs</a> language. We will cover the basic features of the language, variables, data structures, control-flow and functions and then give some example projects where we use this to create some useful extensions.</p>
@@ -157,20 +157,20 @@ x is 9</code></pre>
 This is a test!
 This is a global register variable!
 *scratch*
-/home/groth/.local/bin/me
-20091212</code></pre>
+/home/groth/.local/bin/mecw
+20230101</code></pre>
 <p>Every code example in this tutorial is in its own script file, so if we would like to use the <code>print</code> macro in the next code example this would produce an error.</p>
 <div class="sourceCode" data-eval="true" id="cb8"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a>print <span class="st">"test"</span></span></code></pre></div>
 <pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <p>To use our print macro we will place this macro in our <code>user.emf</code> file which is in our jasspa home directory:</p>
 <div class="sourceCode" data-eval="true" id="cb10"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a>-1 ml-write <span class="dt">$user-path</span></span>
 <span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a>-1 ml-write <span class="dt">$user-name</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>/home/groth/.jasspa/
+<pre class="emfout" data-eval="true"><code>/home/groth/.config/jasspa/
 groth</code></pre>
 <p>So as our setting show we simply write the print macro in a file <code>groth.emf</code>. Thereafter we should be able to use the <code>print</code> function in all code-chunk examples. For illustrative purposes we place the function in a file <code>tutorial.emf</code> which we put in our <code>$user-path</code> and which we then just execute like this at the beginning of our code chunk:</p>
 <div class="sourceCode" data-eval="true" id="cb12"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
 <span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a>print <span class="st">"Hello Tutorial!"</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello Tutorial!</code></pre>
+<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <p>Now back to variables …</p>
 <h3 id="register-variables">Register variables</h3>
 <p>Global register variables start with the prefix <code>#g</code> and then a number between 1 and 9. There are used for fast access of variables values which are visible in all code regions:</p>
@@ -182,8 +182,7 @@ groth</code></pre>
 <span id="cb14-6"><a aria-hidden="true" href="#cb14-6" tabindex="-1"></a><span class="ot">!emacro </span></span>
 <span id="cb14-7"><a aria-hidden="true" href="#cb14-7" tabindex="-1"></a>test-global</span>
 <span id="cb14-8"><a aria-hidden="true" href="#cb14-8" tabindex="-1"></a>print <span class="dt">#g2</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Value of #g1 is a string!
-Another value!</code></pre>
+<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <p>Local variable a prefixed with <code>#l</code> and the values again from 1 to 9.</p>
 <p>Here an example:</p>
 <div class="sourceCode" data-eval="true" id="cb16"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
@@ -194,8 +193,7 @@ Another value!</code></pre>
 <span id="cb16-6"><a aria-hidden="true" href="#cb16-6" tabindex="-1"></a>test-local</span>
 <span id="cb16-7"><a aria-hidden="true" href="#cb16-7" tabindex="-1"></a>set-variable <span class="dt">%test </span><span class="op">&amp;spr </span><span class="st">"#l1 is '%s'"</span> <span class="dt">#l1</span></span>
 <span id="cb16-8"><a aria-hidden="true" href="#cb16-8" tabindex="-1"></a>print <span class="dt">%test</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Local variable string!
-#l1 is ''</code></pre>
+<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <p>As you can see the default value for register variables is an empty string.</p>
 <p>There are as well register variables with the prefix <code>#p</code> which means that the should be as well visible in the calling macro, so the parent macro. Here an example:</p>
 <div class="sourceCode" data-eval="true" id="cb18"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
@@ -208,7 +206,7 @@ Another value!</code></pre>
 <span id="cb18-8"><a aria-hidden="true" href="#cb18-8" tabindex="-1"></a>    print <span class="dt">#l1</span></span>
 <span id="cb18-9"><a aria-hidden="true" href="#cb18-9" tabindex="-1"></a><span class="ot">!emacro</span></span>
 <span id="cb18-10"><a aria-hidden="true" href="#cb18-10" tabindex="-1"></a>parent-mac</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello parent!</code></pre>
+<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <p>This might be helpful in some situations but might as well complicate a little bit the code understanding.</p>
 <h3 id="system-variables">System variables</h3>
 <p>As told system variables start with a dollar and they keep information about the editor and some variables which are derived from system variables. You can display the variables using the macro “list-variables” from within the editor, so executing <code>esc-x</code> and then writing the command. Or by using the default key-combination <code>C-h v</code>. Here we just display a few of these variables:</p>
@@ -223,12 +221,7 @@ Another value!</code></pre>
 <span id="cb20-9"><a aria-hidden="true" href="#cb20-9" tabindex="-1"></a><span class="co">; how many lines has this file</span></span>
 <span id="cb20-10"><a aria-hidden="true" href="#cb20-10" tabindex="-1"></a>end-of-buffer <span class="co">; jump to the end</span></span>
 <span id="cb20-11"><a aria-hidden="true" href="#cb20-11" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $window-aline = %s"</span> <span class="dt">$window-aline</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>variable: $auto-time    = 300
-variable: $buffer-bname = *scratch*
-variable: $not-existing = ERROR
-variable: $buffer-bname = groth.emf
-variable: $buffer-fname = /home/groth/.jasspa/groth.emf
-variable: $window-aline = 111</code></pre>
+<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <p>As you can see in the case you try to access a variable that does not exists you get the value “ERROR” as a variable value, that can be used to check if a variable exists. Here an example:</p>
 <div class="sourceCode" data-eval="true" id="cb22"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb22-1"><a aria-hidden="true" href="#cb22-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
 <span id="cb22-2"><a aria-hidden="true" href="#cb22-2" tabindex="-1"></a>set-variable <span class="dt">%real-var </span><span class="st">"hello"</span></span>
@@ -245,8 +238,7 @@ variable: $window-aline = 111</code></pre>
 <span id="cb22-13"><a aria-hidden="true" href="#cb22-13" tabindex="-1"></a><span class="ot">!else</span></span>
 <span id="cb22-14"><a aria-hidden="true" href="#cb22-14" tabindex="-1"></a>    print <span class="st">"variable %dummy-var does exists!"</span></span>
 <span id="cb22-15"><a aria-hidden="true" href="#cb22-15" tabindex="-1"></a><span class="ot">!endif</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>variable %real-var does exists!
-variable %dummy-var does not exists!</code></pre>
+<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
 <h2 id="data-structures">Data structures</h2>
 <ul>
 <li>scalars</li>
@@ -274,4 +266,4 @@ variable %dummy-var does not exists!</code></pre>
 htmlark temp.html -o emf-tutorial.html
 rm temp.html</code></pre>
 </body>
-</html><!--Generated by HTMLArk 2023-04-19 21:55:51.514527. Original URL temp.html-->
+</html><!--Generated by HTMLArk 2023-04-20 21:54:13.854945. Original URL temp.html-->

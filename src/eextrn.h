@@ -236,11 +236,8 @@ extern  int     doRedrawEvent(void);
 
 extern  int     mlwrite(int flags, meUByte *fmt, ...) ;
 #ifdef _WIN32
-extern  LPWSTR  utf8_decode(const meUByte *str);
-extern  LPWSTR  utf8_decoden(const meUByte *str, int n);
-extern  meUByte *utf8_encode(LPWSTR str);
 #ifdef _ME_WINDOW
-#define mePrintMessage(mm) MessageBox(NULL,utf8_decode(mm), utf8_decode(ME_FULLNAME " '" meVERSION), MB_OK);
+#define mePrintMessage(mm) MessageBox(NULL,(char *) mm,ME_FULLNAME " '" meVERSION,MB_OK);
 #else
 #define mePrintMessage(mm) do{ int dummyInt; WriteFile(GetStdHandle(STD_ERROR_HANDLE),mm,meStrlen(mm),&dummyInt,NULL); } while(0)
 #endif
@@ -353,6 +350,11 @@ extern	int	writeBuffer(int f, int n);
 extern  int     writeOut(register meBuffer *bp, meUInt flags, meUByte *fn) ;
 extern	void	resetBufferNames(meBuffer *bp, meUByte *fname);
 extern	int	changeFileName(int f, int n);
+#ifdef _CONVDIR_CHAR
+extern  void    fileNameConvertDirChar(meUByte *fname) ;
+#else
+#define fileNameConvertDirChar(ff)
+#endif
 extern  void    fileNameSetHome(meUByte *ss) ;
 #define PATHNAME_COMPLETE 0
 #define PATHNAME_PARTIAL  1
@@ -1140,28 +1142,25 @@ extern void gettimeofday (struct meTimeval *tp, struct meTimezone *tz);
  * Why the hell we need these functions and the ANSI 'C' functions are not
  * valid is beyond belief - typical bloody Microsoft !!
  */
-#define meRename(src,dst)   (MoveFile(utf8_decode(src), utf8_decode(dst)) == meFALSE)
-#define meUnlink(fn)        (DeleteFile(utf8_decode(fn)) == meFALSE)
-#define meChdir(dir)        SetCurrentDirectory(utf8_decode(dir))
+extern int chdir(const char *name) ;
+extern int _getdrive(void) ;
+#define meChdir(dir)        chdir(dir)
+#define meRename(src,dst)   (MoveFile(src,dst)==meFALSE)
+#define meUnlink(fn)        (DeleteFile(fn)==meFALSE)
 /* Doesn't exist if function returns -1 */
-#define meTestExist(fn)     (((int) meFileGetAttributes(fn)) < 0)
+#define meTestExist(fn)     (((int) GetFileAttributes(fn)) < 0)
 /* Can't read if doesn't exist or its a directory */
-#define meTestRead(fn)      (meFileGetAttributes(fn) & FILE_ATTRIBUTE_DIRECTORY)
+#define meTestRead(fn)      (GetFileAttributes(fn) & FILE_ATTRIBUTE_DIRECTORY)
 /* Can't write if exists and its readonly or a directory */
-#define meTestWrite(fn)     ((((int) meFileGetAttributes(fn)) & 0xffff8001) > 0)
+#define meTestWrite(fn)     ((((int) GetFileAttributes(fn)) & 0xffff8001) > 0)
 /* File is a directory */
-#define meTestDir(fn)       ((meFileGetAttributes(fn) & (0xf0000000|FILE_ATTRIBUTE_DIRECTORY)) != FILE_ATTRIBUTE_DIRECTORY)
+#define meTestDir(fn)       ((GetFileAttributes(fn) & (0xf0000000|FILE_ATTRIBUTE_DIRECTORY)) != FILE_ATTRIBUTE_DIRECTORY)
 extern int meTestExecutable(meUByte *fileName) ;
 #define meStatTestRead(st)  (((st).stmode & FILE_ATTRIBUTE_DIRECTORY) == 0)
 #define meStatTestWrite(st) (((st).stmode & (FILE_ATTRIBUTE_DIRECTORY|FILE_ATTRIBUTE_READONLY)) == 0)
 #define meStatTestSystem(st) (((st).stmode & FILE_ATTRIBUTE_SYSTEM) == 0)
-#ifndef _WIN32
 #define meFileGetAttributes GetFileAttributes
 #define meFileSetAttributes SetFileAttributes
-#else
-#define meFileGetAttributes(arg) GetFileAttributes(utf8_decode(arg))
-#define meFileSetAttributes(arg, arg2) SetFileAttributes(utf8_decode(arg), arg2)
-#endif
 extern void WinShutdown (void);
 #define meExit(status)      (WinShutdown(), ExitProcess(status))
 #endif
@@ -1339,20 +1338,12 @@ extern void exit(int i) ;
  */
 #ifdef _NOPUTENV
 #define meGetenv(s1)        ((void *) megetenv((const char *)(s1)))
-extern char                 *megetenv(const char *s);
-extern int                  putenv(const char *s);
+extern char    *megetenv(const char *s);
+extern int      putenv(const char *s);
 #else
-#ifndef _WIN32
 #define meGetenv(s1)        ((void *) getenv((const char *)(s1)))
-#else
-#define meGetenv(s1)        utf8_encode(_wgetenv(utf8_decode((s1))))
 #endif
-#endif
-#ifndef _WIN32
 #define mePutenv(s1)        (putenv((char *)(s1)))
-#else
-#define mePutenv(s1)        _wputenv(utf8_decode(s1))
-#endif
 #define meStrlen(s1)        strlen((const char *)(s1))
 #define meStrcmp(s1,s2)     strcmp((const char *)(s1),(const char *)(s2))
 #define meStrncmp(s1,s2,n)  strncmp((const char *)(s1),(const char *)(s2),(n))

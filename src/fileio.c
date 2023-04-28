@@ -1432,6 +1432,7 @@ createBackupName(meUByte *filename, meUByte *fn, meUByte backl, int flag)
 	if(((s=meGetenv("MEBACKUPPATH")) != NULL) && (meStrlen(s) > 0) &&
 	   ((backupPath=meStrdup(s)) != NULL))
         {
+            fileNameConvertDirChar(backupPath) ;
             if((backupPath[0] == DIR_CHAR)
 #ifdef _DRV_CHAR
                || (isAlpha(backupPath[0]) && (backupPath[1] == _DRV_CHAR))
@@ -1975,7 +1976,7 @@ ffReadFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
         else
         {
 #ifdef _WIN32
-            if((meio.rp=CreateFile(utf8_decode(fname),GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,NULL,OPEN_EXISTING,
+            if((meio.rp=CreateFile(fname,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,NULL,OPEN_EXISTING,
                                FILE_ATTRIBUTE_NORMAL,NULL)) == INVALID_HANDLE_VALUE)
 #else
             if ((meio.rp=fopen((char *)fname, "rb")) == NULL)
@@ -2357,8 +2358,6 @@ ffWriteFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
                                 sprintf((char *)filename+ll,"%d~",ii) ;
                                 if(meRename(filename,filename2) && (ffFileOp(filename,filename2,meRWFLAG_DELETE,-1) <= 0))
                                 {
-                                   /* mlwrite(MWABORT|MWPAUSE,(meUByte *)"[Unable to backup file to %s (%d - %s)]",
-                                            filename2,errno,sys_errlist[errno]) ;*/
                                     mlwrite(MWABORT|MWPAUSE,(meUByte *)"[Unable to backup file to %s (%d - %s)]",
                                             filename2,errno,strerror(errno)) ;
                                     if(meUnlink(filename))
@@ -2374,8 +2373,6 @@ ffWriteFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
                     if(!meTestExist(filename) && meUnlink(filename))
                         mlwrite(MWABORT|MWPAUSE,(meUByte *)"[Unable to remove backup file %s]", filename) ;
                     else if(meRename(filenameOld,filename) && (ffFileOp(filenameOld,filename,meRWFLAG_DELETE,-1) <= 0))
-                        /*mlwrite(MWABORT|MWPAUSE,(meUByte *)"[Unable to backup file to %s (%d - %s)]",
-                                filename,errno,sys_errlist[errno]) ;*/
                         mlwrite(MWABORT|MWPAUSE,(meUByte *)"[Unable to backup file to %s (%d - %s)]",
                                 filename,errno,strerror(errno)) ;
                     else if(bp != NULL)
@@ -2411,7 +2408,7 @@ ffWriteFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
                 if(!meTestDir(fname))
                 {
 #ifdef _WIN32
-                    ii = (RemoveDirectory(utf8_decode(fname)) == 0) ;
+                    ii = (RemoveDirectory(fname) == 0) ;
 #else
                     ii = rmdir((char *) fname) ;
                     if(ii && (errno == ENOTDIR))
@@ -2433,7 +2430,7 @@ ffWriteFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
             if(flags & meRWFLAG_MKDIR)
             {
 #ifdef _WIN32
-                if(CreateDirectory(utf8_decode(fname),NULL) == 0)
+                if(CreateDirectory(fname,NULL) == 0)
 #else
 #ifdef _DOS
                 if(mkdir((char *)fname,0) != 0)
@@ -2465,7 +2462,7 @@ ffWriteFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
             /* Windows must open the file with the correct permissions to support the
              * compress attribute
              */
-            if((meio.wp=CreateFile(utf8_decode(fname),GENERIC_WRITE,FILE_SHARE_READ,NULL,create,
+            if((meio.wp=CreateFile(fname,GENERIC_WRITE,FILE_SHARE_READ,NULL,create,
                                    ((bp == NULL) ? meUmask:bp->stats.stmode),
                                    NULL)) == INVALID_HANDLE_VALUE)
             {

@@ -28,13 +28,8 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #ifndef __BORLANDC__
-#include "winresrc.h"
+#include "afxres.h"
 #endif // ! __BORLANDC__
-
-#ifdef IDC_STATIC
-#undef IDC_STATIC
-#endif
-#define IDC_STATIC (-1)
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -236,7 +231,7 @@ END
 #endif    // !_MAC
 
 
-#ifndef __MINGW32__
+#ifndef _MINGW
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog Info

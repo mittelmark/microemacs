@@ -39,16 +39,16 @@
 ##############################################################################
 #
 # Installation Directory
-INSTDIR	      = c:\emacs
+INSTDIR	      = ~/.wine/c/emacs
 INSTPROGFLAGS = -s -o root -g root -m 0775
 #
 # Local Definitions
-CP            = copy
-RM            = - erase
-RC            =	windres
-CC            = gcc
+CP            = cp
+RM            = rm
+RC            =	i686-w64-mingw32-windres
+CC            = i686-w64-mingw32-gcc
 LD            = $(CC)
-STRIP         =	strip
+STRIP         =	i686-w64-mingw32-strip
 INSTALL       =	install
 CDEBUG        =	-g -Wall
 COPTIMISE     =	-O3 -DNDEBUG=1 -Wall -Wno-uninitialized
