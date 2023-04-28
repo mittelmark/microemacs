@@ -70,6 +70,24 @@ To build switch into the src directory and then run the Makefile for your plafor
 make -f linux26.gmk
 ```
 
+You can as well cross compile on a Linux system for Windows assuming that you
+have installed on your Linux system the mingw32 gcc compiler and the required tools. The you can do this:
+
+```
+mingw32-make -f mingw32.gmk
+```
+
+This should produce an executable me32.exe. If you place the file zlib1.dll in
+the same folder as the executable that file should be run using wine directly
+on a Linux system. To check the executuable on Linux using wine you do
+something like this:
+
+```
+MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/Portable/me32.exe
+```
+
+You can as well create an alias.
+
 ## Original README
 
 Here the link to the original Jasspa MicroEmacs [README](README).
