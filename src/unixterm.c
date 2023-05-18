@@ -1683,7 +1683,7 @@ meXEventHandler(void)
         {
             unsigned int   bb ;
             meUShort ss ;
-            if(!frame->flags & meFRAME_NOT_FOCUS)
+            if(!(frame->flags & meFRAME_NOT_FOCUS))
             {
                 /* if we haven't currently got the input focus, grab it now */
                 XSetInputFocus(mecm.xdisplay,meFrameGetXWindow(frame),RevertToPointerRoot,CurrentTime) ;
