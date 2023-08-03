@@ -66,12 +66,12 @@ endif
 # accomplish this try to compile test.c and see if it can link termcap. For
 # Linux 2.6 then preference would appear to be "ncurses" rather than "termcap".
 #
-test = $(shell echo "\#include <stdio.h>" > _t.c ; echo "main() { printf(\"HW\n\"); }" >> _t.c ; $(LD) $(LDFLAGS) -o /dev/null -lncurses _t.c 2>&1 ; rm -f _t.c)
-ifneq "$(strip $(test))" ""
-CONSOLE_LIBS  = -ltermcap
-else
+#test = $(shell echo "\#include <stdio.h>" > _t.c ; echo "main() { printf(\"HW\n\"); }" >> _t.c ; $(LD) $(LDFLAGS) -o /dev/null -lncurses _t.c 2>&1 ; rm -f _t.c)
+#ifneq "$(strip $(test))" ""
+#CONSOLE_LIBS  = -ltermcap
+#else
 CONSOLE_LIBS  = -lncurses
-endif
+#endif
 #
 # Rules
 .SUFFIXES: .c .oc .ow .ob .on .ov .oe .odc .odw .odb .odn .odv .ode
