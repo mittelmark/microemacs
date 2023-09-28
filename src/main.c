@@ -2017,7 +2017,11 @@ commandWait(int f, int n)
 int
 main(int argc, char *argv[])
 {
+    //return(0);
     mesetup(argc,argv) ;
+#ifdef _ME_CONSOLE
+    printf("\033[?47h\n");
+#endif          
     while(1)
     {
         doOneKey() ;

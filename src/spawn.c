@@ -2296,6 +2296,7 @@ suspendEmacs(int f, int n)		/* suspend MicroEMACS and wait to wake up */
 
     TTclose();				/* stty to old settings */
     kill(getpid(), SIGTSTP);
+    printf("\033[?47l\n");
     TTopen();
     sgarbf = meTRUE;
 
