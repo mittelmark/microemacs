@@ -1,7 +1,7 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-09-28 10:07
+date: 2023-09-28 10:13
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
 emf:
@@ -249,13 +249,13 @@ print &lget #l1 1
 print &lget #l1 2
 ```
 
-As you  can  see we can  get  the  element  of a list  using  the  `&amp;lget`
+As you  can  see we can  get  the  element  of a list  using  the  `&lget`
 function. To work with lists we have as well the following functions:
 
-- `&amp;ldel list idx`  - delete an element of a list
-- `&amp;lfind list value` - find a position in a list by value
-- `&amp;linsert list index value` - insert an element at a certain position
-- `&amp;lset list index value` - set a value of a list at a certain position
+- `&ldel list idx`  - delete an element of a list
+- `&lfind list value` - find a position in a list by value
+- `&linsert list index value` - insert an element at a certain position
+- `&lset list index value` - set a value of a list at a certain position
 
 ```{.emf eval=true}
 execute-file "tutorial.emf"
@@ -368,8 +368,8 @@ print #l0
 ```
 
 In the example above we  concatenate  first the strings " Hello" and "Murks  "
-using the function  `&amp;cat`, then we remove the  whitespaces at the beginning
-and the end using  `&amp;trb` and thereafter we do the  replacement of the the
+using the function  `&cat`, then we remove the  whitespaces at the beginning
+and the end using  `&trb` and thereafter we do the  replacement of the the
 last two strings. You could translate this like so:
 
 `rep(trim(cat(" Hello ", "Murks    ")), "Murks", "World!")`

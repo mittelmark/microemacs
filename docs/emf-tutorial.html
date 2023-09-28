@@ -87,7 +87,7 @@
 <header id="title-block-header">
 <h1 class="title">Tutorial about the Jasspa MicroEmacs EMF macro language</h1>
 <p class="author">Detlef Groth, Caputh-Schwielowsee, Germany</p>
-<p class="date">2023-09-28 10:07</p>
+<p class="date">2023-09-28 10:13</p>
 </header>
 <h2 id="introduction">Introduction</h2>
 <p>This is a tutorial about the <a href="http://www.jasspa.com">Jasspa MicroEmacs</a> language. We will cover the basic features of the language, variables, data structures, control-flow and functions and then give some example projects where we use this to create some useful extensions.</p>
@@ -260,12 +260,12 @@ variable %dummy-var does not exists!</code></pre>
 <span id="cb24-4"><a aria-hidden="true" href="#cb24-4" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="dt">#l1 </span>2</span></code></pre></div>
 <pre class="emfout" data-eval="true"><code>this
 is</code></pre>
-<p>As you can see we can get the element of a list using the <code>&amp;amp;lget</code> function. To work with lists we have as well the following functions:</p>
+<p>As you can see we can get the element of a list using the <code>&amp;lget</code> function. To work with lists we have as well the following functions:</p>
 <ul>
-<li><code>&amp;amp;ldel list idx</code> - delete an element of a list</li>
-<li><code>&amp;amp;lfind list value</code> - find a position in a list by value</li>
-<li><code>&amp;amp;linsert list index value</code> - insert an element at a certain position</li>
-<li><code>&amp;amp;lset list index value</code> - set a value of a list at a certain position</li>
+<li><code>&amp;ldel list idx</code> - delete an element of a list</li>
+<li><code>&amp;lfind list value</code> - find a position in a list by value</li>
+<li><code>&amp;linsert list index value</code> - insert an element at a certain position</li>
+<li><code>&amp;lset list index value</code> - set a value of a list at a certain position</li>
 </ul>
 <div class="sourceCode" data-eval="true" id="cb26"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb26-1"><a aria-hidden="true" href="#cb26-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
 <span id="cb26-2"><a aria-hidden="true" href="#cb26-2" tabindex="-1"></a>set-variable <span class="dt">#l1 </span><span class="st">"|this|is|a|list|"</span></span>
@@ -359,7 +359,7 @@ Hello World!</code></pre>
 <span id="cb34-2"><a aria-hidden="true" href="#cb34-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span><span class="op">&amp;rep &amp;trb &amp;cat </span><span class="st">" Hello "</span> <span class="st">"Murks    "</span> <span class="st">"Murks"</span> <span class="st">"World!"</span></span>
 <span id="cb34-3"><a aria-hidden="true" href="#cb34-3" tabindex="-1"></a>print <span class="dt">#l0</span></span></code></pre></div>
 <pre class="emfout" data-eval="true"><code>Hello World!</code></pre>
-<p>In the example above we concatenate first the strings ” Hello” and “Murks” using the function <code>&amp;amp;cat</code>, then we remove the whitespaces at the beginning and the end using <code>&amp;amp;trb</code> and thereafter we do the replacement of the the last two strings. You could translate this like so:</p>
+<p>In the example above we concatenate first the strings ” Hello” and “Murks” using the function <code>&amp;cat</code>, then we remove the whitespaces at the beginning and the end using <code>&amp;trb</code> and thereafter we do the replacement of the the last two strings. You could translate this like so:</p>
 <p><code>rep(trim(cat(" Hello ", "Murks    ")), "Murks", "World!")</code></p>
 <h3 id="operators">Operators</h3>
 <p>First again let’s start with numerical issues:</p>
@@ -418,7 +418,7 @@ Hello World!</code></pre>
 <span id="cb42-10"><a aria-hidden="true" href="#cb42-10" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Wday:  "</span> <span class="op">&amp;lget </span><span class="dt">%weekdays </span><span class="op">&amp;mid </span><span class="dt">$time </span>11 1</span>
 <span id="cb42-11"><a aria-hidden="true" href="#cb42-11" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"Hour:   %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>12 2 </span>
 <span id="cb42-12"><a aria-hidden="true" href="#cb42-12" tabindex="-1"></a>print <span class="op">&amp;sprintf </span> <span class="st">"Min:    %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>14 2 </span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>2023270 928410 817842
+<pre class="emfout" data-eval="true"><code>2023270 92841014 5316
 Year:  2023
 Month:  9
 Month: 09
@@ -426,7 +426,7 @@ Day:   28
 Wday:  4
 Wday:  Tue
 Hour:   10
-Min:    08</code></pre>
+Min:    14</code></pre>
 <p>Let us now evaluate what hour it is in the morning and then greet the user with the right choice!</p>
 <div class="sourceCode" data-eval="true" id="cb44"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb44-1"><a aria-hidden="true" href="#cb44-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
 <span id="cb44-2"><a aria-hidden="true" href="#cb44-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span><span class="op">&amp;mid </span><span class="dt">$time </span>12 2  <span class="co">; the current hour</span></span>
@@ -720,4 +720,4 @@ hello 2</code></pre>
 htmlark temp.html -o emf-tutorial.html
 rm temp.html</code></pre>
 </body>
-</html><!--Generated by HTMLArk 2023-09-28 10:08:23.496404. Original URL temp.html-->
+</html><!--Generated by HTMLArk 2023-09-28 10:14:11.185481. Original URL temp.html-->
