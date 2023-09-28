@@ -1,7 +1,7 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-09-28 10:13
+date: 2023-09-28 10:38
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
 emf:
@@ -32,6 +32,7 @@ Within the editor we would simple execute:
 
 ```
 ml-write "Hello World!"
+
 ```
 
 That the should display the message line into the editors command line at the
@@ -39,7 +40,12 @@ bottom like this:
 
 ![](../images/hello-world.png)
 
-To execute the code which is embedded within this source document, a Markdown file,
+You can  execute the code by pressing  `"Esc-x"`  then  writing  `"ml-write"`,
+pressing  the  ENTER  key and  then  writing  the  message  `"Hello  World!"`.
+Alternatively  you can write the text in the editor, marking the code line and
+an empty line thereafter and then `"Esc-x"` and write `"execute-region"`.
+
+For this tutorial, to execute the code which is embedded within this source document, a Markdown file,
 we just create a simple shell script which runs the code from lines 3 to the
 end as a ME script. We use here the value -1 before the macro to print to the
 terminal instead of the editor to be able to catch the result. This offers us
