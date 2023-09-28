@@ -1,7 +1,7 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-04-20 21:54
+date: 2023-09-28 08:14
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
 emf:
@@ -232,28 +232,449 @@ set-variable #l3 %dummy-var
 
 ## Data structures
 
+
+We have the following data structures in MicroEmacs:
+
 - scalars
-- list
+- lists
+
+A scalar is just a single value. Per default  MicroEmacs  has only one more complex data  structure,  the list,
+which is just recognized by ME if a variable  contains a list of pipe symbols.
+Here an example:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l1 "|this|is|a|list|"
+print &lget #l1 1
+print &lget #l1 2
+```
+
+As you  can  see we can  get  the  element  of a list  using  the  `&amp;lget`
+function. To work with lists we have as well the following functions:
+
+- `&amp;ldel list idx`  - delete an element of a list
+- `&amp;lfind list value` - find a position in a list by value
+- `&amp;linsert list index value` - insert an element at a certain position
+- `&amp;lset list index value` - set a value of a list at a certain position
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l1 "|this|is|a|list|"
+set-variable #l1 &linsert #l1 1 "start"
+print &lget #l1 1
+print &lget #l1 2
+```
+
+Access and  modification  to lists is quite slow, so it is  preferred to store
+not so large data in a list.
+
+For  illustration  purpose let's create an other data  structure, a dictionary
+like  structure  were we can have access using key value pairs. The  functions
+starting  with the  ampersand  sign are  created  on the  C-level.  To  create
+functions  on the macro  level we will  create two macros  which will handle a
+dictionary not based on a list but based on data saved in a hidden buffer ":*dict*DICTNAME:"
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+define-macro dict
+   set-variable #l1 &spr ":*dict*%s:" @1
+   set-variable #l2 @2
+   !force set-variable #l3 @3
+   !if $status
+     !if &not &exi &ind #l1
+       set-position "\x82"
+       find-buffer &mid #l1 1 -1
+       buffer-mode "hide"
+       !force goto-position "\x82"
+     !endif
+     set-variable &ind &cat #l1 #l2 &set .value #l3
+   !else
+     set-variable .value &ind &cat #l1 #l2
+   !endif
+!emacro
+define-macro dict-get
+    set-variable @3 &ind &spr ":*dict*%s:%s" @1 @2
+!emacro
+
+; we can now set dictionary values
+dict "aa" "Cys" "Cystein"
+dict "aa" "Ala" "Alanin"
+; and we can retrieve these values later
+dict-get "aa" "Cys" #g0
+print #g0
+dict-get "aa" "Ala" #g0
+print #g0
+```
+
+We need to give a  variable  name where we would like to store  these  values.
+This  code  was  kindly  provided  by  Steven  Phillips  as an  example  for a
+dictionary  implementation.  As you can see ME is  quite  flexible  and can be
+extended  creating  custom  macros. We will  discuss  this topic later in more
+detail.
 
 ## Operators and Functions
 
-- boolean
-- math
-- string
+Operators and functions are created on the C-level they can be broadly divided
+into the type of data they handle:
+
+- boolean data
+- math data
+- string string data
+
+You find out what functions are available by having a look at the help page of
+the  Macro  Language  Glossary.  To get  this  help  page  use the menu  entry
+"Help-General-Help" and then browse to "Macro-Dev".
+
+### Numerical functions
+
+Here are some examples on how to use the language glossary:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 -12
+set-variable #l1 &abs #l0   ; absolute value
+print #l0
+print #l1
+print &add #l1 1            ; add 1
+print &div #l1 4            ; divide by four
+set-variable #l2 &inc #l1 1 ; increment variable
+print #l2
+```
+
+### String functions
+
+Now a few examples for working with strings:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 "Hello Murks"
+print &rep #l0 "Murks" "World!"      ; replace a string
+print &cat &cat "Hello " "World" "!" ; concatenate a string
+print &rig "Hello World!" 6          ; right characters
+print &lef "Hello World!" 6          ; left characters
+print &mid "Hello World!" 6 8        ; middle characters
+print &slo "Hello World!"            ; lower case
+print &sup "Hello World!"            ; upper case
+print &len "Hello World!"            ; length of string
+print &trb " Hello World!  "         ; trim string - remove whitespaces
+```
+
+You can combine these functions in different ways:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 &rep &trb &cat " Hello " "Murks    " "Murks" "World!"
+print #l0
+```
+
+In the example above we  concatenate  first the strings " Hello" and "Murks  "
+using the function  `&amp;cat`, then we remove the  whitespaces at the beginning
+and the end using  `&amp;trb` and thereafter we do the  replacement of the the
+last two strings. You could translate this like so:
+
+`rep(trim(cat(" Hello ", "Murks    ")), "Murks", "World!")`
+
+### Operators
+
+First again let's start with numerical issues:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+print &equal 3 3   ; equal ? 1 true
+print &equal 3 4   ;         0 false
+print &greater 4 3 ; greater 4 > 3
+print &greater 3 4 ; greater 3 > 4
+print &less    3 4 ; less  r 3 < 4
+
+```
+
+Now a few string operators/functions:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+print &seq "Hello" "World!"     ; should return 0 / false
+print &seq "Hello" "Hello"      ; should return 1 / true
+print &seq "HELLO" &sup "Hello" ; should return 1 / true
+print &isequal "HELLO" "HeLLo"  ; case insensitive comparison
+print &isin "HE" "Hello"        ; case insensitive check
+print &sin  "HE" "Hello"        ; case   sensitive check
+```
+
+There are as well  functions,  operators  working  on  strings  using  regular
+expressions:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+print &xse "Hello World!" "H.+!"   ; 1 true
+print &xse "file.cpp" ".+\\.cp?p?"
+print &xse "file.c"   ".+\\.cp?p?"
+print &xse "file.h"   ".+\\.cp?p?" ; 0 false
+```
+
+These examples  should give you an idea how to manipulate  numbers and strings
+using the MicroEmacs macro language.
 
 ## Control-Flow
+
+MicroEmacs has as well the usual control  structures:
 
 - if, elseif, else
 - while, until
 
+But first let's look at some
+methods  to  express  current  date and time  which we might  later use for an
+example where we greet the user:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+print $time
+print &cat "Year:  " &mid $time 0 4
+print &cat "Month: " &mid $time 7 2 
+print &sprintf "Month: %02d" &mid $time 7 2 ; leading zero
+print &cat "Day:   " &mid $time 9 2  
+print &cat "Wday:  " &mid $time 11 1 ; 0=Sum
+; lets create a list and extract the three day abbreviations
+set-variable %weekdays "|NULL|Sun|Mon|Tue|Wed|Thu|Fri|Sat|"
+print &cat "Wday:  " &lget %weekdays &mid $time 11 1
+print &sprintf "Hour:   %02d" &mid $time 12 2 
+print &sprintf  "Min:    %02d" &mid $time 14 2 
+```
+
+Let us now  evaluate  what hour it is in the  morning  and then greet the user
+with the right choice!
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 &mid $time 12 2  ; the current hour
+print &sprintf "Current hour is: %02d" #l0
+!if &gre #l0 4 &and &less #l0 11  ; from 5 to ten
+    print "Good Morning!"
+!elif &gre #l0 10 &and &less #l0 15
+    print "Good Day!"
+!elif &gre #l0 14 &and &less #l0 18    
+    print "Good Afternoon!"
+!elif &gre #l0 17 &and &less #l0 23    
+    print "Good Evening!"
+!else
+    print "Good Night!!"
+!endif
+print &lget "|01|02|03|04|" 2
+```
+
+So an "if" statement  starts with the  expression  `!if` an "else if" with the
+expression  `!elif`  and the "else" with the  expression  `!else` and if or an
+if/elif/else  block must be finished with an else. The MicroEmacs  editor will
+automatically help you by indenting the blocks.
+
+Instead of these  complex  and  conditions  we could as well use the  `&lfind`
+function  which  returns 0 if the  element is not in the list, here an example
+for the code above  using this  feature. As in the case an element is not in a
+list the return value is zero, we can directly use it in an if condition.
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+; the  current  hour with leading zero if early in the morning
+set-variable  #l0  &sprintf  "%02d" &mid $time 12 2  
+print #l0
+print &lfind "|05|06|07|08|09|10|" #l0 ; checking &lfind
+!if &lfind "|05|06|07|08|09|10|" #l0 
+    print "Good Morning!"
+!elif &lfind "|11|12|13|14|" #l0
+    print "Good Day!"
+!elif &lfind "|15|16|17|" #l0
+    print "Good Afternoon!"
+!elif &lfind "|18|19|20|21|22|" #l0
+    print "Good Evening!"
+!else
+    print "Good Night!!"
+!endif
+```
+
+Using `&lfind` might be in some cases easier to read and to understand.
+
+Let's now  continue  with loops. ME knows a `!while` and a `!repeat' but not a
+for-loop. Loops are finished with the `!done` expression. A for loop can be however simulated using a while:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 0  ; initialization
+!while &less #l0 8  ; condition 
+    set-variable #l0 &inc #l0 1 ; increment
+    print #l0
+!done
+```    
+
+To skip the rest of a loop we have the `!continue`  directive.  Let's modify the
+example  above and only show even  numbers. We can do this by using the `&mod`
+function/operator.
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 0
+!while &less #l0 8 
+    set-variable #l0 &inc #l0 1 
+    !if &mod #l0 2 ; skip odd numbers
+        !continue
+    !endif  
+    print #l0
+!done
+```    
+
+Please  note, that in ME  versions  before 2010  while-loops  can't be nested,
+however you can place a `!repeat` or a `!goto`  directive  within  allowing as
+well nested loops.
+
+The `!repeat` directive  does not have a condition,  so we need at some point
+use `!break` to finish a loop. Here an example:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 0
+!repeat
+    set-variable #l0 &inc #l0 1
+    print #l0
+    !if &gre #l0 7
+        !break
+    !endif    
+!done
+```
+
+There is an other variation,the  `!until` directive which performs a condition
+check at the end of a `!repeat` loop.
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 0
+!repeat
+    set-variable #l0 &inc #l0 1
+    print #l0
+!until &gre #l0 7
+```
+
+As you can see ME has the main  control  structures,  except for the  for-loop
+which must be replaced with a `!while - !done` loop.
+
+There are as well  `!goto`  and  `!tgoto`  directives,  which  allow  jumps to
+certain  labels  as  known  from  languages  like C,  `!tgoto`  has as  well a
+condition  and might be used in cases where nested loops are required.  Please
+have a look at the  MicroEmacs  help pages for more  information  about  these
+directives. With the new ME version the nested loop restriction is removed, so
+with this version you can as well create nested loops.
+
+Just for curiosity, let's create a nested loop with the old ME version:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+set-variable #l0 0
+!while &less #l0 9
+    set-variable #l0 &inc #l0 1
+    set-variable #l1 0
+    set-variable %line ""
+    !repeat
+        set-variable #l1 &inc #l1 1
+        set-variable %line &sprintf "%s [%d,%d]" %line #l0 #l1
+    !until &gre #l1 8
+    print %line
+!done
+```
+
+So even in the older ME version, nested loops are possible.
+
 ## Functions - Macros
 
-- define-macro
-- define-help
+
+After  discussing the basics of programming  with ME we continue with creating
+macros in ME, which are like  functions, we should now discuss the following topics
+
+- `define-macro` - define a macro/function
+- `define-help` - define help for a macro/function
+
+Functions, called as well macros in ME can not return  values.
+However, you can arguments and add as well here variable  names and modify these  variables as inside of
+your  function.  Here an example which squares the submitted  value and stores
+the value in the given variable:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+define-macro square-value
+   set-variable @2 &mult @1 @1
+!emacro
+square-value 5 #l0
+print #l0
+```
+
+The first  argument for a macro is always `@1`, the second `@2` and so on. So,
+although  we can't  return  values  from  macros,  we can give  references  to
+variables and store date there.
+
+Macro  behavior  often is modified by preceeding the macro call with a numeric
+argument, `-1 ml-write "message string"` was an example where the message goes
+to the terminal but not to the editor. Let's create a root function:
+
+```{.emf eval=true}
+execute-file "tutorial.emf"
+define-macro check-num
+    !if @?
+        ; numeric argument given
+        print &sprintf "Given: %d" @#
+    !else
+        print "No numeric argument given"
+    !endif
+!emacro
+check-num
+100 check-num
+-5 check-num
+```
+
+For    more     information     consult    the     MicroEmacs     help    page
+on "define-macro".
+
+## Working with files/buffers
+
+Let's  finish  for now with a macro  which  extracts  all header  line of this
+document and places is them with the line number into its own file, toc.txt.
+
+```{.emf eval=true}
+find-file emf-tutorial.md
+beginning-of-buffer
+-1 ml-write $buffer-bname
+; let's now search for lines starting with two hashes
+!force  search-forward "^##"
+!while $status
+    forward-char
+    -1 ml-write &sprintf "line: %03d %s" $window-line @wl 
+    !force search-forward "^##"
+!done
+```
+
+Let's extend this a little bit so that we write this into a file "toc.txt".
+
+```{.emf eval=true}
+find-file "emf-tutorial.md"
+find-file "toc.txt"
+beginning-of-buffer
+set-mark
+end-of-buffer
+exchange-point-and-mark
+kill-region
+find-buffer "emf-tutorial.md"
+beginning-of-buffer
+; let's now search for lines starting with two hashes
+!force search-forward "^##"
+!while $status
+    forward-char
+    -1 ml-write &sprintf "line: %03d %s" $window-line @wl 
+    set-variable #l0 &sprintf "line: %03d %s\n" $window-line @wl 
+    find-buffer "toc.txt"
+    insert-string #l0
+    find-buffer "emf-tutorial.md"
+    !force search-forward "^##"
+!done
+```
 
 ## Document generation
 
-Thsi document was generated using pandoc and the pantcl filter like this:
+This document was generated using pandoc and the pantcl filter like this:
 
 ```
 pandoc --filter pantcl emf-tutorial.md -o temp.html -s --css mini.css
@@ -265,3 +686,4 @@ rm temp.html
 
 
 
+ 
