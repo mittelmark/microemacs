@@ -1,7 +1,7 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-09-28 08:14
+date: 2023-09-28 10:07
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
 emf:
@@ -671,6 +671,129 @@ beginning-of-buffer
     !force search-forward "^##"
 !done
 ```
+
+## Develop your own macros
+
+After understanding a few basic you might like to create your own macros.
+
+First  you  could add these  macros  into your  `USERNAME.emf`  file  which is
+usually  within  your ME home  folder.  Let's  open this file and add a simple
+macro  which  deletes all line with a certain  string  within  these line. You
+would like to use this macro every time you have such formats to convert.
+
+Here an example file:
+
+```
+some text
+delete me because I am not required
+some text with other lines
+delete me but with some other text
+some text within other lines
+```
+
+So let's  create a simple macro to delete all lines within the current  buffer
+which have the text "delete me" at the beginning of the lines. We start with a
+simple message in the macro. Open your  `USERNAME.emf` file and write down the
+following text:
+
+
+```{.emf eval=false}
+define-macro remove-delete-me
+    1000 ml-write "Macro is here"
+!emacro
+```
+
+Highlight  the three  macro  lines and  execute  the command  `execute-region`
+(Esc-x   execute-region).   If  you  did   this   you  now   have  a   command
+`remove-delete-me`  which you can  execute by again  pressing  `Esc-x` and the
+writing  `remove-delete-me`  - you can use tab completion, so writing  remoTAB
+should be sufficient. Afterward you see the message line in your editor.
+
+You can now modify the code,  re-mark and again use `execute-region` to update
+the macro code. Let's change the macro try it again out.
+
+```{.emf eval=false}
+define-macro remove-delete-me
+    1000 ml-write "Macro is here again!!"
+!emacro
+```
+
+That way you can stepwise extend the macro. BTW: I did this all here directly
+within a Markdown document, so it must be not an EMF file, but the final macro
+should  be then  written  then in such an EMF file.  Placing  the  macro  into
+`USERNAME.emf` ensures that it is loaded at every ME start.
+
+Here would be the final macro:
+
+```{.emf eval=false}
+define-macro remove-delete-me
+    ; stepwise debugging
+    set-variable $debug 2
+    set-alpha-mark "p"
+    !force  search-forward "^delete me"
+    !while $status
+        kill-line
+        !force search-forward "^delete.me"
+    !done
+    goto-alpha-mark "p"    
+    1000 ml-write "Macro was executed!!"
+    set-variable $debug 0
+!emacro
+```
+
+Here some example text on which we can apply this macro:
+
+```
+hello 1
+delete me 1
+hello 2
+delete me 1
+```
+
+We set some  debugging  variable  on top to step  through the macro code. This
+helps us in  identifying  problems  in the code. We will see then that we must
+jump to the beginning of the line and then the code should work:
+
+```{.emf eval=false}
+define-macro remove-delete-me
+    set-alpha-mark "p"
+    !force  search-forward "^delete me"
+    !while $status
+        beginning-of-line
+        kill-line ; cleans the line
+        kill-line ; the then empty line
+        !force search-forward "^delete.me"
+    !done
+    goto-alpha-mark "p"    
+!emacro
+```
+
+Placing the course above the text which should be  manipulated  allows us then
+to remove these lines.
+
+```
+<CURSOR>
+hello 1
+delete me 1
+hello 2
+delete me 2
+```
+
+After executing `remove-delete-me` we will then have this output:
+
+```
+<CURSOR>
+hello 1
+hello 2
+```
+
+This was a very simple  example,  but it shows you how to start  writing  your
+own macros.  Consult the embedded  MicroEmacs  help pages
+(Esc-?) for more  information.  
+
+BTW: There is as well a macro recorder "Ctrl-x
+(" to start the  recorder  and  "Ctrl-x )" to end a macro,  and  "Ctrl-x e" to
+execute the last recorded macro.
 
 ## Document generation
 

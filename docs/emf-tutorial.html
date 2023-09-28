@@ -87,7 +87,7 @@
 <header id="title-block-header">
 <h1 class="title">Tutorial about the Jasspa MicroEmacs EMF macro language</h1>
 <p class="author">Detlef Groth, Caputh-Schwielowsee, Germany</p>
-<p class="date">2023-09-28 08:14</p>
+<p class="date">2023-09-28 10:07</p>
 </header>
 <h2 id="introduction">Introduction</h2>
 <p>This is a tutorial about the <a href="http://www.jasspa.com">Jasspa MicroEmacs</a> language. We will cover the basic features of the language, variables, data structures, control-flow and functions and then give some example projects where we use this to create some useful extensions.</p>
@@ -418,15 +418,15 @@ Hello World!</code></pre>
 <span id="cb42-10"><a aria-hidden="true" href="#cb42-10" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Wday:  "</span> <span class="op">&amp;lget </span><span class="dt">%weekdays </span><span class="op">&amp;mid </span><span class="dt">$time </span>11 1</span>
 <span id="cb42-11"><a aria-hidden="true" href="#cb42-11" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"Hour:   %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>12 2 </span>
 <span id="cb42-12"><a aria-hidden="true" href="#cb42-12" tabindex="-1"></a>print <span class="op">&amp;sprintf </span> <span class="st">"Min:    %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>14 2 </span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>2023270 9284 815 1724
+<pre class="emfout" data-eval="true"><code>2023270 928410 817842
 Year:  2023
 Month:  9
 Month: 09
 Day:   28
 Wday:  4
 Wday:  Tue
-Hour:   08
-Min:    15</code></pre>
+Hour:   10
+Min:    08</code></pre>
 <p>Let us now evaluate what hour it is in the morning and then greet the user with the right choice!</p>
 <div class="sourceCode" data-eval="true" id="cb44"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb44-1"><a aria-hidden="true" href="#cb44-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
 <span id="cb44-2"><a aria-hidden="true" href="#cb44-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span><span class="op">&amp;mid </span><span class="dt">$time </span>12 2  <span class="co">; the current hour</span></span>
@@ -443,7 +443,7 @@ Min:    15</code></pre>
 <span id="cb44-13"><a aria-hidden="true" href="#cb44-13" tabindex="-1"></a>    print <span class="st">"Good Night!!"</span></span>
 <span id="cb44-14"><a aria-hidden="true" href="#cb44-14" tabindex="-1"></a><span class="ot">!endif</span></span>
 <span id="cb44-15"><a aria-hidden="true" href="#cb44-15" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="st">"|01|02|03|04|"</span> 2</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Current hour is: 08
+<pre class="emfout" data-eval="true"><code>Current hour is: 10
 Good Morning!
 02</code></pre>
 <p>So an “if” statement starts with the expression <code>!if</code> an “else if” with the expression <code>!elif</code> and the “else” with the expression <code>!else</code> and if or an if/elif/else block must be finished with an else. The MicroEmacs editor will automatically help you by indenting the blocks.</p>
@@ -464,8 +464,8 @@ Good Morning!
 <span id="cb46-14"><a aria-hidden="true" href="#cb46-14" tabindex="-1"></a><span class="ot">!else</span></span>
 <span id="cb46-15"><a aria-hidden="true" href="#cb46-15" tabindex="-1"></a>    print <span class="st">"Good Night!!"</span></span>
 <span id="cb46-16"><a aria-hidden="true" href="#cb46-16" tabindex="-1"></a><span class="ot">!endif</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>08
-4
+<pre class="emfout" data-eval="true"><code>10
+6
 Good Morning!</code></pre>
 <p>Using <code>&amp;lfind</code> might be in some cases easier to read and to understand.</p>
 <p>Let’s now continue with loops. ME knows a <code>!while</code> and a <code>!repeat' but not a for-loop. Loops are finished with the</code>!done` expression. A for loop can be however simulated using a while:</p>
@@ -614,7 +614,8 @@ line: 377 ### Operators
 line: 417 ## Control-Flow
 line: 583 ## Functions - Macros
 line: 632 ## Working with files/buffers
-line: 675 ## Document generation</code></pre>
+line: 675 ## Develop your own macros
+line: 798 ## Document generation</code></pre>
 <p>Let’s extend this a little bit so that we write this into a file “toc.txt”.</p>
 <div class="sourceCode" data-eval="true" id="cb64"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb64-1"><a aria-hidden="true" href="#cb64-1" tabindex="-1"></a>find-file <span class="st">"emf-tutorial.md"</span></span>
 <span id="cb64-2"><a aria-hidden="true" href="#cb64-2" tabindex="-1"></a>find-file <span class="st">"toc.txt"</span></span>
@@ -649,11 +650,74 @@ line: 377 ### Operators
 line: 417 ## Control-Flow
 line: 583 ## Functions - Macros
 line: 632 ## Working with files/buffers
-line: 675 ## Document generation</code></pre>
+line: 675 ## Develop your own macros
+line: 798 ## Document generation</code></pre>
+<h2 id="develop-your-own-macros">Develop your own macros</h2>
+<p>After understanding a few basic you might like to create your own macros.</p>
+<p>First you could add these macros into your <code>USERNAME.emf</code> file which is usually within your ME home folder. Let’s open this file and add a simple macro which deletes all line with a certain string within these line. You would like to use this macro every time you have such formats to convert.</p>
+<p>Here an example file:</p>
+<pre><code>some text
+delete me because I am not required
+some text with other lines
+delete me but with some other text
+some text within other lines</code></pre>
+<p>So let’s create a simple macro to delete all lines within the current buffer which have the text “delete me” at the beginning of the lines. We start with a simple message in the macro. Open your <code>USERNAME.emf</code> file and write down the following text:</p>
+<div class="sourceCode" data-eval="false" id="cb67"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb67-1"><a aria-hidden="true" href="#cb67-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
+<span id="cb67-2"><a aria-hidden="true" href="#cb67-2" tabindex="-1"></a>    1000 ml-write <span class="st">"Macro is here"</span></span>
+<span id="cb67-3"><a aria-hidden="true" href="#cb67-3" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
+<p>Highlight the three macro lines and execute the command <code>execute-region</code> (Esc-x execute-region). If you did this you now have a command <code>remove-delete-me</code> which you can execute by again pressing <code>Esc-x</code> and the writing <code>remove-delete-me</code> - you can use tab completion, so writing remoTAB should be sufficient. Afterward you see the message line in your editor.</p>
+<p>You can now modify the code, re-mark and again use <code>execute-region</code> to update the macro code. Let’s change the macro try it again out.</p>
+<div class="sourceCode" data-eval="false" id="cb68"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb68-1"><a aria-hidden="true" href="#cb68-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
+<span id="cb68-2"><a aria-hidden="true" href="#cb68-2" tabindex="-1"></a>    1000 ml-write <span class="st">"Macro is here again!!"</span></span>
+<span id="cb68-3"><a aria-hidden="true" href="#cb68-3" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
+<p>That way you can stepwise extend the macro. BTW: I did this all here directly within a Markdown document, so it must be not an EMF file, but the final macro should be then written then in such an EMF file. Placing the macro into <code>USERNAME.emf</code> ensures that it is loaded at every ME start.</p>
+<p>Here would be the final macro:</p>
+<div class="sourceCode" data-eval="false" id="cb69"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb69-1"><a aria-hidden="true" href="#cb69-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
+<span id="cb69-2"><a aria-hidden="true" href="#cb69-2" tabindex="-1"></a>    <span class="co">; stepwise debugging</span></span>
+<span id="cb69-3"><a aria-hidden="true" href="#cb69-3" tabindex="-1"></a>    set-variable <span class="dt">$debug </span>2</span>
+<span id="cb69-4"><a aria-hidden="true" href="#cb69-4" tabindex="-1"></a>    set-alpha-mark <span class="st">"p"</span></span>
+<span id="cb69-5"><a aria-hidden="true" href="#cb69-5" tabindex="-1"></a>    <span class="ot">!force </span> search-forward <span class="st">"^delete me"</span></span>
+<span id="cb69-6"><a aria-hidden="true" href="#cb69-6" tabindex="-1"></a>    <span class="ot">!while </span><span class="dt">$status</span></span>
+<span id="cb69-7"><a aria-hidden="true" href="#cb69-7" tabindex="-1"></a>        kill-line</span>
+<span id="cb69-8"><a aria-hidden="true" href="#cb69-8" tabindex="-1"></a>        <span class="ot">!force </span>search-forward <span class="st">"^delete.me"</span></span>
+<span id="cb69-9"><a aria-hidden="true" href="#cb69-9" tabindex="-1"></a>    <span class="ot">!done</span></span>
+<span id="cb69-10"><a aria-hidden="true" href="#cb69-10" tabindex="-1"></a>    goto-alpha-mark <span class="st">"p"</span>    </span>
+<span id="cb69-11"><a aria-hidden="true" href="#cb69-11" tabindex="-1"></a>    1000 ml-write <span class="st">"Macro was executed!!"</span></span>
+<span id="cb69-12"><a aria-hidden="true" href="#cb69-12" tabindex="-1"></a>    set-variable <span class="dt">$debug </span>0</span>
+<span id="cb69-13"><a aria-hidden="true" href="#cb69-13" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
+<p>Here some example text on which we can apply this macro:</p>
+<pre><code>hello 1
+delete me 1
+hello 2
+delete me 1</code></pre>
+<p>We set some debugging variable on top to step through the macro code. This helps us in identifying problems in the code. We will see then that we must jump to the beginning of the line and then the code should work:</p>
+<div class="sourceCode" data-eval="false" id="cb71"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb71-1"><a aria-hidden="true" href="#cb71-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
+<span id="cb71-2"><a aria-hidden="true" href="#cb71-2" tabindex="-1"></a>    set-alpha-mark <span class="st">"p"</span></span>
+<span id="cb71-3"><a aria-hidden="true" href="#cb71-3" tabindex="-1"></a>    <span class="ot">!force </span> search-forward <span class="st">"^delete me"</span></span>
+<span id="cb71-4"><a aria-hidden="true" href="#cb71-4" tabindex="-1"></a>    <span class="ot">!while </span><span class="dt">$status</span></span>
+<span id="cb71-5"><a aria-hidden="true" href="#cb71-5" tabindex="-1"></a>        beginning-of-line</span>
+<span id="cb71-6"><a aria-hidden="true" href="#cb71-6" tabindex="-1"></a>        kill-line <span class="co">; cleans the line</span></span>
+<span id="cb71-7"><a aria-hidden="true" href="#cb71-7" tabindex="-1"></a>        kill-line <span class="co">; the then empty line</span></span>
+<span id="cb71-8"><a aria-hidden="true" href="#cb71-8" tabindex="-1"></a>        <span class="ot">!force </span>search-forward <span class="st">"^delete.me"</span></span>
+<span id="cb71-9"><a aria-hidden="true" href="#cb71-9" tabindex="-1"></a>    <span class="ot">!done</span></span>
+<span id="cb71-10"><a aria-hidden="true" href="#cb71-10" tabindex="-1"></a>    goto-alpha-mark <span class="st">"p"</span>    </span>
+<span id="cb71-11"><a aria-hidden="true" href="#cb71-11" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
+<p>Placing the course above the text which should be manipulated allows us then to remove these lines.</p>
+<pre><code>&lt;CURSOR&gt;
+hello 1
+delete me 1
+hello 2
+delete me 2</code></pre>
+<p>After executing <code>remove-delete-me</code> we will then have this output:</p>
+<pre><code>&lt;CURSOR&gt;
+hello 1
+hello 2</code></pre>
+<p>This was a very simple example, but it shows you how to start writing your own macros. Consult the embedded MicroEmacs help pages (Esc-?) for more information.</p>
+<p>BTW: There is as well a macro recorder “Ctrl-x (” to start the recorder and “Ctrl-x )” to end a macro, and “Ctrl-x e” to execute the last recorded macro.</p>
 <h2 id="document-generation">Document generation</h2>
 <p>This document was generated using pandoc and the pantcl filter like this:</p>
 <pre><code>pandoc --filter pantcl emf-tutorial.md -o temp.html -s --css mini.css
 htmlark temp.html -o emf-tutorial.html
 rm temp.html</code></pre>
 </body>
-</html><!--Generated by HTMLArk 2023-09-28 08:15:09.756274. Original URL temp.html-->
+</html><!--Generated by HTMLArk 2023-09-28 10:08:23.496404. Original URL temp.html-->
