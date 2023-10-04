@@ -10,7 +10,7 @@ jobs:
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
      
     - name: make bfs binary
       run: make bfs-bin
