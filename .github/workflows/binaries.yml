@@ -30,16 +30,17 @@ jobs:
         cp license.txt binaries-Linux-x86_64/
         cp README-standalone.md binaries-Linux-x86_64/
         cp me-windows.exe binaries-Windows-32/
+        cp mec-windows.exe binaries-Windows-32/
         cp bin/bfs.exe binaries-Windows-32/
         cp license.txt binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
     - name: Upload Artifact GitHub Action
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with: 
         name: binaries-Linux-x86_64
         path: binaries-Linux-x86_64
     - name: Upload Artifact GitHub Action Windows
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with: 
         name: binaries-Windows-32
         path: binaries-Windows-32
