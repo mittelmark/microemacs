@@ -20,6 +20,14 @@ me-bfs-bin:
 	cp jasspa/spelling/*$(dict)*f me-bfs/jasspa/spelling/
 	cd me-bfs && ../bin/bfs -a ../bin/me -o ../me-linux.bin ./jasspa
 	cd me-bfs && ../bin/bfs -a ../bin/me32.exe -o ../me-windows.exe ./jasspa
+	cd me-bfs && ../bin/bfs -a ../bin/me32c.exe -o ../mec-windows.exe ./jasspa	
 	cd me-bfs && ../bin/bfs -c macros-`date +%Y-%m-%d`.bfs ./jasspa
 	cp me-bfs/macros-`date +%Y-%m-%d`.bfs .
 	rm -rf me-bfs/*
+mingw-w32-compile:
+        cd src && mingw32-make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+	cd src && mingw32-make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
+minw-w32-run:	
+	cd src && MEPATH=Z:/home/groth/workspace/microemacs/jasspa/macros wine ./.win32mingw-release-mew/mew32.exe
+
+
