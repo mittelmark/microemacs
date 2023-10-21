@@ -14,6 +14,7 @@ osd 1 50  ""  "\HClose           C-w"   f osd-close
 osd 1 80  ""  "\HSave            C-s"   f osd-save       ; Save the buffer
 osd 1 90  ""  "Save \HAs...      A-C-s" f osd-save-as    ; Save new file
 osd 1 140 ""  "\HPrint           C-p"   f print-buffer   ; Print
+osd 1 160 ""  "File \HBrowser    F10"   f file-browser   ; File browser
 osd 1 210 ""  "E\Hxit            A-f4"  f save-buffers-exit-emacs
 ; Edit
 osd 2 10  ""  "\HUndo                C-z"   1 osd-undo       ; Undo the last command
@@ -36,7 +37,7 @@ osd 3 50  ""  "Find \HNext            f3"   f hunt-forward
 osd 3 60  ""  "Find \HPrevious        S-f3" f hunt-backward
 osd 3 70  ""  "\HReplace              C-r"  2 osd-search
 osd 3 120 ""  "Set \HBookmark         C-m"  f set-alpha-mark
-osd 3 130 ""  "\HGoto Bookmark        C-t"  f goto-alpha-mark
+osd 3 130 ""  "\HGoto Bookmark        A-m"  f goto-alpha-mark
 osd 3 140 ""  "Goto Mat\Hching (..)   C-e"  f goto-matching-fence
 osd 3 150 ""  "Goto \HLine...         C-g"  f osd-goto-line
 osd 3 160 ""  "Goto \HTag..."               f osd-find-tag
@@ -61,16 +62,16 @@ osd 7 60  ""  "Execute \HFile..."    f execute-file
 osd 7 140 ""  "\HIpipe Command..."   f ipipe-shell-command
 osd 7 150 ""  "S\Hhell"              f shell
 ; Window
-osd 8 10  ""  "\HSplit Window V"       f split-window-vertically
-osd 8 20  ""  "\HGrow Window V"        1 change-window-depth
-osd 8 30  ""  "S\Hhrink Window V"     -1 change-window-depth
-osd 8 40  ""  "Spl\Hit Window H"       f split-window-horizontally
-osd 8 50  ""  "G\Hrow Window H"        1 change-window-width
-osd 8 60  ""  "Shr\Hink Window H    " -1 change-window-width
-osd 8 80  ""  "\HOne Window"           f delete-other-windows
-osd 8 90  ""  "\HDelete Window"        f delete-window
-osd 8 110 ""  "\HPrevious Window"      f previous-window
-osd 8 120 ""  "\HNext Window"          f next-window
+osd 8 10  ""  "\HSplit Window V     C-t"       f split-window-vertically
+osd 8 20  ""  "\HGrow Window V"                1 change-window-depth
+osd 8 30  ""  "S\Hhrink Window V"             -1 change-window-depth
+osd 8 40  ""  "Spl\Hit Window H     C-h"       f split-window-horizontally
+osd 8 50  ""  "G\Hrow Window H"                1 change-window-width
+osd 8 60  ""  "Shr\Hink Window H    "         -1 change-window-width
+osd 8 80  ""  "\HOne Window         C-1"       f delete-other-windows
+osd 8 90  ""  "\HDelete Window      C-0"       f delete-window
+osd 8 110 ""  "\HPrevious Window    C-6"       f previous-window
+osd 8 120 ""  "\HNext Window        C-7"       f next-window
 !if &and &not &band $system 0x01 &opt "mwf"
     ; running a version that can support multiple frames
     osd 8 150 "-"

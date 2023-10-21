@@ -6,7 +6,7 @@
 ; Created:     Wed Feb 21 2001
 ; Adapted:     Gabriel Tabares-Barreiro
 ; Synopsis:    CUA (Standard GUI keybindings) emulation
-; Authors:     Steven Phillips, Gabriel Tabares-Barreiro
+; Authors:     Steven Phillips, Gabriel Tabares-Barreiro, Detlef Groth
 ;
 ; Notes:
 ;     This is currently only a partical implementation created for proof
@@ -218,8 +218,8 @@ global-bind-key osd-close "C-w"
 global-bind-key cut "C-x"
 global-bind-key osd-redo "C-y"
 global-bind-key osd-undo "C-z"
-global-bind-key split-window-horizontally "C-t"
-global-bind-key split-window-vertically "A-C-t"
+global-bind-key split-window-horizontally "C-h" ; fix DG
+global-bind-key split-window-vertically "C-t" ; fix DG
 ;global-bind-key help "f1" ; fix DG
 global-bind-key major-mode-help "C-f1"
 global-bind-key grep  "f2"
@@ -233,6 +233,12 @@ global-bind-key context-menu "menu"
 global-bind-key execute-named-command "C-d"
 0xa0000 global-bind-key osd            "f1"
 global-bind-key file-browser "f10"
+global-bind-key delete-window "C-0"
+global-bind-key delete-other-windows "C-1"
+global-bind-key next-window "C-4"
+global-bind-key previous-window "C-3"
+global-bind-key next-buffer "C-7"
+global-bind-key previous-buffer "C-6"
 
 ; reconfigure the buffer bindings
 set-variable .buffer-bind-key.map-from "|C-c C-c|C-c C-d|"
