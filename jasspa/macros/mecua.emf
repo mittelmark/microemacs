@@ -209,7 +209,7 @@ global-bind-key print-buffer "C-p"
 global-bind-key query-replace-string "C-r"
 global-bind-key save-buffer "C-s"
 global-bind-key write-buffer "A-C-s"
-global-bind-key goto-alpha-mark "C-t"
+global-bind-key goto-alpha-mark "A-m" ; fix DG
 global-bind-key upper-case-word "A-u"
 global-bind-key cua-upper-case-region "C-u"
 global-bind-key paste "C-v"
@@ -220,15 +220,19 @@ global-bind-key osd-redo "C-y"
 global-bind-key osd-undo "C-z"
 global-bind-key split-window-horizontally "C-t"
 global-bind-key split-window-vertically "A-C-t"
-global-bind-key help "f1"
+;global-bind-key help "f1" ; fix DG
 global-bind-key major-mode-help "C-f1"
 global-bind-key grep  "f2"
 global-bind-key hunt-forward "f3"
 global-bind-key hunt-backward "S-f3"
 global-bind-key osd-close "C-f4"
 global-bind-key save-buffers-exit-emacs "A-f4"
-
 global-bind-key context-menu "menu"
+
+; new bindings groth
+global-bind-key execute-named-command "C-d"
+0xa0000 global-bind-key osd            "f1"
+global-bind-key file-browser "f10"
 
 ; reconfigure the buffer bindings
 set-variable .buffer-bind-key.map-from "|C-c C-c|C-c C-d|"
