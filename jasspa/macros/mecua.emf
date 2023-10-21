@@ -220,8 +220,8 @@ global-bind-key osd-redo "C-y"
 global-bind-key osd-undo "C-z"
 global-bind-key split-window-horizontally "C-h" ; fix DG
 global-bind-key split-window-vertically "C-t" ; fix DG
-;global-bind-key help "f1" ; fix DG
-global-bind-key major-mode-help "C-f1"
+global-bind-key help "S-f1" ; fix DG
+global-bind-key major-mode-help "S-f2"
 global-bind-key grep  "f2"
 global-bind-key hunt-forward "f3"
 global-bind-key hunt-backward "S-f3"

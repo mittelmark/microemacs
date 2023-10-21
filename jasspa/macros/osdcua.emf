@@ -6,7 +6,7 @@
 ; Created:     Wed Feb 21 2001
 ; Adapted:     Gabriel Tabares-Barreiro
 ; Synopsis:    CUA (Standard GUI keybindings) emulation
-; Authors:     Steven Phillips, Gabriel Tabares-Barreiro
+; Authors:     Steven Phillips, Gabriel Tabares-Barreiro, Detlef Groth
 ;
 osd 1 10  ""  "\HNew             C-n"   f osd-new-buffer ; Create a new document
 osd 1 20  ""  "\HOpen...         C-o"   f osd-file-open  ; Find a new file
@@ -15,6 +15,7 @@ osd 1 80  ""  "\HSave            C-s"   f osd-save       ; Save the buffer
 osd 1 90  ""  "Save \HAs...      A-C-s" f osd-save-as    ; Save new file
 osd 1 140 ""  "\HPrint           C-p"   f print-buffer   ; Print
 osd 1 160 ""  "File \HBrowser    F10"   f file-browser   ; File browser
+osd 1 160 ""  "Ftp Bro\Hwser        "   f ftp            ; Ftp connection
 osd 1 210 ""  "E\Hxit            A-f4"  f save-buffers-exit-emacs
 ; Edit
 osd 2 10  ""  "\HUndo                C-z"   1 osd-undo       ; Undo the last command
@@ -80,7 +81,8 @@ osd 8 120 ""  "\HNext Window        C-7"       f next-window
     osd 8 180 ""  "Ne\Hxt Frame"       f next-frame
 !endif
 ; Help
-osd 9 20  ""  "General \HHelp"             f osd-help
+osd 9 10  ""  "\HMajor Mode Help    S-F2"  f major-mode-help
+osd 9 20  ""  "General \HHelp       S-F1"  f osd-help
 osd 9 40  ""  "List \HBindings"            f describe-bindings
 osd 9 50  ""  "List Bu\Hffers"             f list-buffers
 osd 9 60  ""  "List \HCommands"            f list-commands
