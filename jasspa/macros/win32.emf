@@ -39,6 +39,28 @@
     set-variable #l3 &reg &spr "/history/%s/font-width" $platform "0"
     set-variable #l4 &reg &spr "/history/%s/font-depth" $platform "0"
     1 change-font #l0 #l1 #l2 #l3 #l4
+    define-macro change-font-size
+        set-variable #l0 &reg &spr "/history/%s/font" $platform ""
+        set-variable #l1 .change-font.type
+        set-variable #l2 &reg &spr "/history/%s/font-weight" $platform "0"
+        set-variable #l3 &reg &spr "/history/%s/font-width" $platform "0"
+        set-variable #l4 &reg &spr "/history/%s/font-depth" $platform "0"
+        !if &seq %font-size "ERROR"
+            set-variable %font-size #l4
+        !endif
+        !if &equal @# 0
+            set-variable #l4 -24
+        !else
+            set-variable #l4 &add %font-size @#
+        !endif
+        set-variable %font-size #l4
+        1 change-font #l0 #l1 #l2 #l3 #l4
+    !emacro
+    ; as depth is given in negative numbers we inverse the sign here
+    -1 global-bind-key change-font-size "C-+"
+    0 global-bind-key change-font-size "C-="
+    1 global-bind-key change-font-size "C--"
+
 !endif
 0 define-macro exec-me
     ipipe-shell-command &spr "\"%s\" %s" $progname @1 @mna
