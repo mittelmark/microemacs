@@ -131,7 +131,9 @@ set-variable #l0 &reg &spr "/history/%s/fence" %platform "1"
 !endif
 ; key bindings
 !if  &not &seq &reg "/history/emulate" "" "cua"
-    
+    1 global-bind-key prefix "esc"
+    2 global-bind-key prefix "C-x"
+    3 global-bind-key prefix "C-h"
     0x1 global-bind-key spell-word           "esc $"
     global-bind-key frame-handle             "C-x 5"
     global-bind-key find-zfile               "C-x 7"
