@@ -18,9 +18,9 @@ me-bfs-bin:
 	-rm me-bfs/jasspa/macros/null
 	cp -r jasspa/contrib me-bfs/jasspa/
 	cp jasspa/spelling/*$(dict)*f me-bfs/jasspa/spelling/
-	cd me-bfs && ../bin/bfs -a ../bin/me -o ../me-linux.bin ./jasspa
-	cd me-bfs && ../bin/bfs -a ../bin/me32.exe -o ../me-windows.exe ./jasspa
-	cd me-bfs && ../bin/bfs -a ../bin/mec32.exe -o ../mec-windows.exe ./jasspa	
+	cd me-bfs && ../bin/bfs -a ../src/mecw -o ../me-linux.bin ./jasspa
+	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mew/mew32.exe -o ../me-windows.exe ./jasspa
+	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mec/mec32.exe -o ../mec-windows.exe ./jasspa
 	cd me-bfs && ../bin/bfs -c macros-`date +%Y-%m-%d`.bfs ./jasspa
 	cp me-bfs/macros-`date +%Y-%m-%d`.bfs .
 	rm -rf me-bfs/*
