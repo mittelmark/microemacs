@@ -40012,6 +40012,11 @@ $a
         (defined in cGmenedit.emfcA). See lsCompatibility(2)lmCompatibilityle for more information on
         emulation.
 
+        In case you  change  the  keyboard  mapping  you  should in most cases
+        restart the editor to avoid possible problems. Since 2023 the CUA
+        emulation seems to work reasonable well. But if you switch back to 
+        no-emulation mode you have to restart the editor.
+
     cGRebind Home KeyscA
         When enabled the following key bindings are created to ease
         frustration, particularly for MS users:
