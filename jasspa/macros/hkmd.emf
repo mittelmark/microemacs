@@ -1,7 +1,7 @@
 ; -!- emf -!-
 ;  Created By    : Detlef Groth
 ;  Created       : Sun Nov 15 05:11:33 2020
-;  Last Modified : <230402.1948>
+;  Last Modified : <231023.0830>
 ;
 ;  Description:  : file hook for Markdown files
 ;
@@ -108,7 +108,17 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
 !endif
 !if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
     hilight .hilight.md 0x80 "^```{r\.+" .hilight.r .scheme.hide
+    hilight .hilight.md 0x80 "^```{.r\.+" .hilight.r .scheme.hide    
     hilight .hilight.r  0x80 "^```" .hilight.md .scheme.hide
+!endif
+
+!if &not &exi .hilight.r
+    !force execute-file "hkpy"
+!endif
+!if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
+    hilight .hilight.md 0x80 "^```{py\.+" .hilight.py .scheme.hide
+    hilight .hilight.md 0x80 "^```{.py\.+" .hilight.py .scheme.hide    
+    hilight .hilight.py  0x80 "^```" .hilight.md .scheme.hide
 !endif
 
 buffer-init-fhook "md" 

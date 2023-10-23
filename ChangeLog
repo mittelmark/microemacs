@@ -4,9 +4,79 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <091017.1800>
+>  Last Modified : <231023.0918>
 >
 
+  [231023] mittelmark: Updating ChangeLog
+ 
+  [231022] mittelmark:
+           fixing CUA issues, allowing error less backs witches
+           adding font resize support using C-+, C--, C-= for Windows and Linux
+           updating version to 2009-12-21 
+
+  [231021] mittelmark: Updating CUA  mapping,  remapping F1 back to menu for console and adding
+           complete-command bindings
+
+  [230928] mittelmark: extending EMF tutorial
+  
+  [230518] mittelmark: fixing parenthese issue in unixterm.c
+  
+  [230509] mittelmark: small fixes for Ayu Light scheme
+  
+  [230427] mittelmark: fixing -n command line argument hang issue in case of macro errors
+  
+  [230419] mittelmark: tutorial extension
+  
+  [230415] mittelmark: dict.emf added 
+  
+  [230407] mittelmark: starting tutorial for emf language
+  
+  [230403] mittelmark: adding mymd.emf for illustration
+  
+  [230328] mittelmark: adding imenu.emf file
+  
+  [230328] mittelmark: Markdown date updates for YAML header for YYYY-MM-DD HH:MM
+    
+  [230130] mittelmark: extending py.eaf and tcl.eaf
+
+  [221217] mittelmark: extending Python template and more snippets
+  
+  [221007] mittelmark: adding Rd (R documentation) file hooks
+  
+  [220611] mittelmark: adding more R abbreviations and keywords
+
+  [220302] mittelmark: adding more R abbreviations
+  
+  [220212] mittelmark: extending Python abrreviation file
+  
+  [220205] mittelmark: extending Tcl abbreviation file
+  
+  [211207] mittelmark: 
+           bfs building now working for Linux and Win32 
+           Github action for bfs building
+            
+  [211206] mittelmark: adding spelling dictionaries
+   
+  [211203] mittelmark: 
+           Update on bfs, README, binaries
+           .bashrc now with filehook shell
+    
+  [211124] mittelmark: adding White on Black Pastel scheme
+  
+  [211122] mittelmark: R comment fix, more R file patterns
+    
+  [211121] mittelmark: 
+           compiler fix for for strerror
+           new themes Ayu Light and Dracula
+           adding hkmd.emf for Markdown support
+           adding Python template  
+
+  [160407] rmagee: extending Go hooks (goimport, gofmt, gobuild)
+
+  [151116] jcowgar: adding golang mode
+
+  [141010] vitalyster: font fix for X11
+  
   [091017] man page - added Linux hypenation for line continuation. 
 
   [091015] SQL  template  - added  some  missing  types and  standardised  the

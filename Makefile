@@ -27,7 +27,7 @@ me-bfs-bin:
 mingw-w32-compile:
 	cd src && mingw32-make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
 	cd src && mingw32-make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
-minw-w32-run:	
+mingw-w32-run:	
 	cd src && MEPATH=Z:/home/groth/workspace/microemacs/jasspa/macros wine ./.win32mingw-release-mew/mew32.exe
 
 
