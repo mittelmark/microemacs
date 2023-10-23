@@ -1,10 +1,17 @@
 ---
-title: "Long Title"
+title: Long Title
 author: $USER_NAME$
 date: 2023-03-29 09:35
 abstract: >
     Some abstract ...
-    on several lines...
+    on several lines ...
+include-before: |
+    <style>
+    body { max-width: 1000px; font-family: Candara, sans-serif; }
+    pre  { font-family: Consolas; monospaced; }
+    table { min-width: 400px; border-spacing: 5px;  border-collapse: collapse; }
+    </style>
+    <center>some links on top</center>
 ---
 
 ## Introduction
