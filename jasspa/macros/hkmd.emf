@@ -98,3 +98,75 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
 !endif
 
 buffer-init-fhook "md" 
+
+define-help "md" 9
+
+cEcESYNOPSIS cEcA
+
+
+    md, Rmd - Markdown and R-markdown plain text Markup
+
+
+cEcEFILES cEcA
+
+
+    cDhkmd.emfcA - Markdown text hook definition
+
+
+cEcEEXTENSIONS cEcA
+
+
+    cD.mdcA - Markdown markup files
+    cD.RmdcA - Markdown markup files with embedd R code
+
+
+cEcEDESCRIPTION cEcA
+
+
+    The cDmdcA file type template handles the hilighting and text formating of a
+    Markdown formatted text file.
+    
+    cDShort CutscA
+        The short cut keys used within the buffer are:-
+
+        cDC-c C-scA - Start Comment
+        cDC-c C-ccA - Comment Out Line
+        cDC-c C-dcA - Delete Comment
+        cDC-c C-ecA - Comment to End of Line
+        cDC-c C-ocA - Restyle Current Comment
+        
+        cDf2cA      - Open/Close Current Collapse
+        cDC-f2cA    - Open/Close All Collapses        
+        
+        cDS-f7cA    - Enable/Disable Auto-Spell
+        cDC-f7cA    - Auto-Spell Context Menu
+        
+        cDf6cA      - List Items (Headers)
+        cDC-f6cA    - Close List Items
+        
+cEcENOTES cEcA
+
+    This mode allows as well embedding of Python, R, Tcl code with syntax highlighting.
+    
+            ## Python code chunk example
+            
+            ```{py}
+            import sys
+            print(os.sys.getenv('HOME')
+            ```
+            
+            ## R code chunk example
+            
+            ```{r}
+            library(lattice)
+            with(iris,bwplot(Sepal.Height~Species))
+            ```
+     
+cEcESEE ALSO cEcA
+
+
+    lslmbuffer-setup(3)le, lslmspell-buffer(3)le.
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    
+!ehelp    

@@ -1722,7 +1722,7 @@ Miscellaneous Information
     lslmini(9)le MS-Windows Initialization File
     lslmjav(9)le Java programming language
     lslmjava(9)le Java programming language
-    lslmjst(9)le JASSPA Structred Text
+    lslmjst(9)le JASSPA Structured Text
     lslmksh(9)le Korn shell file
     lslml(9)le LEX programming language
     lslmlatex(9)le TeX Documentation
@@ -1731,6 +1731,7 @@ Miscellaneous Information
     lslmm4(9)le M4 Macro Processor
     lslmmakefile(9)le Make file
     lslmman(9)le UNIX Manual Page
+    lslmmd(9)le Markdown Markup file
     lslmmf(9)le MetaFont File
     lslmmp(9)le MetaPost File
     lslmnawk(9)le New AWK File
