@@ -1727,11 +1727,12 @@ Miscellaneous Information
     lslml(9)le LEX programming language
     lslmlatex(9)le TeX Documentation
     lslmlogin(9)le Shell user login file
+    lslmMarkdown(9)le Markdown Markup File
     lslmMetaFont(9)le MetaFont/MetaPost File
     lslmm4(9)le M4 Macro Processor
-    lslmmakefile(9)le Make file
+    lslmmakefile(9)le Make File
     lslmman(9)le UNIX Manual Page
-    lslmmd(9)le Markdown Markup file
+    lslmmd(9)le Markdown Markup File
     lslmmf(9)le MetaFont File
     lslmmp(9)le MetaPost File
     lslmnawk(9)le New AWK File
@@ -3635,6 +3636,7 @@ Miscellaneous Information
     lslmMacroNumericArguments(4)le Numeric arguments to macros
     lslmMahjongg(3)le MicroEmacs 2009 version of the solitaire Mah Jongg game
     lslmMainMenu(3)le The top main menu
+    lslmMarkdown(9)le Markdown Markup File
     lslmMatch-It(3)le MicroEmacs 2009 version of the Match-It game
     lslmMessageLineVaraibles(4)le Prompt the user for input on message line
     lslmMetaFont(9)le MetaFont/MetaPost File
@@ -3653,6 +3655,7 @@ Miscellaneous Information
     lslmman(9)le UNIX Manual Page
     lslmman-clean(3)le Clean UNIX manual page
     lslmmark-registry(2)le Modify the operating mode of a registry node
+    lslmmd(9)le Markdown Markup File
     lslmme(1)le MicroEmacs 2009 text editor
     lslmme32.ini(8)le Microsoft Window's Initialization (ini) File
     lslmmemsdev(1)le Microsoft Developer Studio Add-in for MicroEmacs 2009
@@ -57101,6 +57104,77 @@ $a
 
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
+
+! 9 md
+! 9 Markdown
+cEcESYNOPSIS cEcA
+
+
+    md, Rmd - Markdown and R-markdown plain text Markup
+
+
+cEcEFILES cEcA
+
+
+    cDhkmd.emfcA - Markdown text hook definition
+
+
+cEcEEXTENSIONS cEcA
+
+
+    cD.mdcA - Markdown markup files
+    cD.RmdcA - Markdown markup files with embedd R code
+
+
+cEcEDESCRIPTION cEcA
+
+
+    The cDmdcA file type template handles the hilighting and text formating of a
+    Markdown formatted text file.
+    
+    cDShort CutscA
+        The short cut keys used within the buffer are:-
+
+        cDC-c C-scA - Start Comment
+        cDC-c C-ccA - Comment Out Line
+        cDC-c C-dcA - Delete Comment
+        cDC-c C-ecA - Comment to End of Line
+        cDC-c C-ocA - Restyle Current Comment
+        
+        cDf2cA      - Open/Close Current Collapse
+        cDC-f2cA    - Open/Close All Collapses        
+        
+        cDS-f7cA    - Enable/Disable Auto-Spell
+        cDC-f7cA    - Auto-Spell Context Menu
+        
+        cDf6cA      - List Items (Headers)
+        cDC-f6cA    - Close List Items
+        
+cEcENOTES cEcA
+
+    This mode allows as well embedding of Python, R, Tcl code with syntax highlighting.
+    
+            ## Python code chunk example
+            
+            ```{py}
+            import sys
+            print(os.sys.getenv('HOME')
+            ```
+            
+            ## R code chunk example
+            
+            ```{r}
+            library(lattice)
+            with(iris,bwplot(Sepal.Height~Species))
+            ```
+     
+cEcESEE ALSO cEcA
+
+
+    lslmbuffer-setup(3)le, lslmspell-buffer(3)le.
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+
 ! 9 MetaFont
 ! 9 mp
 ! 9 mf
