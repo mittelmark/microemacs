@@ -15,7 +15,7 @@ osd 1 80  ""  "\HSave            C-s"   f osd-save       ; Save the buffer
 osd 1 90  ""  "Save \HAs...      A-C-s" f osd-save-as    ; Save new file
 osd 1 140 ""  "\HPrint           C-p"   f print-buffer   ; Print
 osd 1 160 ""  "File \HBrowser    F10"   f file-browser   ; File browser
-osd 1 160 ""  "Ftp Bro\Hwser        "   f ftp            ; Ftp connection
+osd 1 170 ""  "Ftp Bro\Hwser        "   f ftp            ; Ftp connection
 osd 1 210 ""  "E\Hxit            A-f4"  f save-buffers-exit-emacs
 ; Edit
 osd 2 10  ""  "\HUndo                C-z"   1 osd-undo       ; Undo the last command
