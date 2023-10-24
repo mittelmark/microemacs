@@ -19,6 +19,7 @@ jobs:
       run: |
         sudo apt install gcc-mingw-w64-i686
         make me-bin
+        make mingw-w32-compile
 
     - name: make me-standalone binary
       run: make me-bfs-bin
