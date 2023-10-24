@@ -1,94 +1,24 @@
 ; -!- emf -!-
-;  Created By    : Detlef Groth
-;  Created       : Sun Nov 15 05:11:33 2020
-;  Last Modified : <231023.0932>
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
 ;
-;  Description:  : file hook for Markdown files
+; Created:    Sun Nov 15 2020
+; Authors:    Detlef Groth
+; Synopsis:   Markdown file hook (https://www.markdownguide.org/)
 ;
-;  Synopsis      : Markdown initialisation hook.
-;  Authors       : Detlef Groth
-;
-;  Notes         : Used for R documentation files. For the file format look 
-;                  here: https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Rd-format
-; 
-;  History
-;
-;  Copyright (c) 2021-2022 Detlef Groth.
-;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;set-variable .fhook-md.name "Markdown"
-;set-variable .fhook-md.setup &reg "/history/fhook/md" "fghijopsw"
-;set-variable .fhook-md.setup-mask "acefghijkmnopstuwx"
-
-!if &sequal .hilight.md "ERROR"
-    set-variable .hilight.md &pinc .hilight.next 1
-!endif
-0 hilight .hilight.md 1                $global-scheme
-hilight .hilight.md 2 "^#"              .scheme.header
-hilight .hilight.md 2 "^```"              .scheme.string
-hilight .hilight.md 4 "\"" "\"" "\\"   .scheme.string
-;hilight .hilight.md 4 "```" "```" "\\"   .scheme.string
-hilight .hilight.md 0 "'[^']+'"            .scheme.quote
-hilight .hilight.md 1 "_[^_]+_"          .scheme.bold
-hilight .hilight.md 1 "__[^_]+__"      .scheme.bold
-hilight .hilight.md 1 "`[^`]+`"            .scheme.quote
-
-
-; comments for code chunks
-define-macro md-comment-line
-    !while &gre &pdec @# 1 0
-        beginning-of-line
-        insert-string "#"
-        beginning-of-line
-        forward-line
-    !done
-!emacro
-
-; Macro to remove a comment from a line
-define-macro md-uncomment-line
-    !while &gre &pdec @# 1 0
-        beginning-of-line
-        -1 search-forward "#"
-        backward-delete-char
-        forward-line
-    !done
-!emacro
-
-
 define-macro fhook-md
-    ; Temporary comment to make sure that it works.
-    !if &not @#
-        etfinsrt "md"
-    !endif
-    set-variable $buffer-hilight .hilight.md
-    set-variable $buffer-indent .hilight.md
-    buffer-abbrev-file "md"
-    1 buffer-mode "time"
-    1 buffer-mode "indent"
-    ; Set up local bindings
-    buffer-bind-key md-comment-line "C-c C-c"
-    buffer-bind-key md-uncomment-line "C-c C-d"
-    buffer-bind-key collapse-current "f2"
-    buffer-bind-key collapse-all "f3"
-    @# buffer-init "md"
-    buffer-init-hooks
-
-    ml-write "Markdown filehook loaded!"
+  @# buffer-init "md"
+  buffer-init-hooks
 !emacro
 
-0 define-macro bhook-md
-    set-variable .timestamp $timestamp
-   ; Buffer specific time stamp string.
-   set-variable $timestamp "%Y-%M-%D %h:%m"
-!emacro
-0 define-macro ehook-md
-    ; Restore the existing time stamp.
-    set-variable $timestamp .bhook-md.timestamp
-!emacro
-set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
-set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\)"
-set-variable .fhook-md.collapse-mnext "-1"
+; buffer-init variables
+set-variable .fhook-md.name "Markdown"
+set-variable .fhook-md.setup &reg "/history/fhook/md" "bfghijnopswx"
+set-variable .fhook-md.setup-mask "abefghijkmnopstuwx"
+set-variable .fhook-md.comment "|<!---|-->|-|  -- | --||"
 
+; setup item-list
 set-variable .fhook-md.item-list-s1 "^# \\(\.+\\)"
 set-variable .fhook-md.item-list-r1 "H1 \ecB\\1\ecA"
 set-variable .fhook-md.item-list-s2 "^## <a \.+>\\(\.+\\)</a>"
@@ -96,29 +26,75 @@ set-variable .fhook-md.item-list-r2 "H2 \ecB\\1\ecA"
 set-variable .fhook-md.item-list-s3 "^## \\(\[^<\]\.+\\)"
 set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
 
-!if &not &exi .hilight.tcl
-    !force execute-file "hktcl"
-!endif
-!if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
-    hilight .hilight.md 0x80 "^```{tcl\.+" .hilight.tcl .scheme.hide
-    hilight .hilight.tcl 0x80 "^```" .hilight.md .scheme.hide
-!endif
-!if &not &exi .hilight.r
-    !force execute-file "hkr"
-!endif
-!if &and &sin "h" .fhook-tcl.setup &band .hilight.flags 0x02 
-    hilight .hilight.md 0x80 "^```{r\.+" .hilight.r .scheme.hide
-    hilight .hilight.md 0x80 "^```{.r\.+" .hilight.r .scheme.hide    
-    hilight .hilight.r  0x80 "^```" .hilight.md .scheme.hide
+!if &sin "f" .fhook-md.setup
+  ; setup emf collapsing
+  set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
+  set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\)"
+  set-variable .fhook-md.collapse-mnext "-1"
 !endif
 
-!if &not &exi .hilight.python
-    !force execute-file "hkpython"
+!if &and &sin "h" .fhook-md.setup &band .hilight.flags 0x02
+  !if &not &exi .hilight.md  
+    set-variable .hilight.md &pinc .hilight.next 1
+  !endif
+  0 hilight .hilight.md 1               $global-scheme
+  hilight .hilight.md 4 "<!--" "-->" "" .scheme.comment
+  hilight .hilight.md 2 "^#"            .scheme.header
+  hilight .hilight.md 2 "^```"          .scheme.string
+  hilight .hilight.md 4 "\"" "\"" "\\"  .scheme.string
+  ;hilight .hilight.md 4 "```" "```" "\\"   .scheme.string
+  hilight .hilight.md 0 "'[^']+'"       .scheme.quote
+  hilight .hilight.md 1 "_[^_]+_"       .scheme.bold
+  hilight .hilight.md 1 "__[^_]+__"     .scheme.bold
+  hilight .hilight.md 1 "`[^`]+`"       .scheme.quote
+  hilight .hilight.md 0x300 "```{"
+  hilight .hilight.md 0x300 "```{\\."
+  
+  ; Allow inserts into the markdown mode. You may add to the inserts in your mymd.emf file
+  0 define-macro md-add-file-support
+    set-variable #l0 @1
+    !if &seq #l0 "py"
+        set-variable #l0 "python"
+        set-variable #l1 "py"
+    !else
+        set-variable #l1 #l0
+    !endif
+    ; Force the hilighting mode to load if not already loaded.
+    !if &not &exi &cat ".hilight." #l0
+      !force execute-file &cat "hk" #l0
+      ml-write &cat "executed " #l0
+    !endif
+    ; If the hilighting mode is loaded then modify it.
+    !if &sin "h" &ind &spr ".fhook-%s.setup" #l0 &band .hilight.flags 0x02 
+      hilight .hilight.md 0x180 &spr "```{%s}" #l1 &ind &cat ".hilight." #l0 .scheme.hide
+      hilight .hilight.md 0x180 &spr "```{\\.%s}" #l1 &ind &cat ".hilight." #l0 .scheme.hide
+      hilight .hilight.md 0x180 &spr "```{%s[, ][^}]+}" #l1 &ind &cat ".hilight." #l0 .scheme.hide
+      hilight .hilight.md 0x180 &spr "```{\\.%s[, ][^}]+}" #l1 &ind &cat ".hilight." #l0 .scheme.hide
+      hilight &ind &cat ".hilight." #l0 0x180 "```" .hilight.md .scheme.hide
+    !else
+      hilight .hilight.md 0x104 &spr "```{%s}" #l0 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{\\.%s}" #l0 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{%s[, ][^}]+}" #l0 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{\\.%s[, ][^}]+}" #l0 "```" "" .scheme.quote
+    !endif
+  !emacro
+  md-add-file-support "tcl"
+  md-add-file-support "r"
+  md-add-file-support "dot"
+  md-add-file-support "python"
+  md-add-file-support "py"  
+  md-add-file-support "sql"
 !endif
-!if &and &sin "h" .fhook-python.setup &band .hilight.flags 0x02 
-    hilight .hilight.md 0x80 "^```{py\.+" .hilight.python .scheme.hide
-    hilight .hilight.md 0x80 "^```{.py\.+" .hilight.python .scheme.hide    
-    hilight .hilight.python  0x80 "^```" .hilight.md .scheme.hide
+
+!if &sin "x" .fhook-md.setup
+  ; only define the b & e hooks if time stamping is enabled
+  0 define-macro bhook-md
+    set-variable .timestamp $timestamp
+    set-variable $timestamp "%Y-%M-%D %h:%m"
+  !emacro
+  0 define-macro ehook-md
+    set-variable $timestamp .bhook-md.timestamp
+  !emacro
 !endif
 
 buffer-init-fhook "md" 
