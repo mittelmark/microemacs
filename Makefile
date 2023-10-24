@@ -25,8 +25,8 @@ me-bfs-bin:
 	cp me-bfs/macros-`date +%Y-%m-%d`.bfs .
 	rm -rf me-bfs/*
 mingw-w32-compile:
-	cd src && mingw32-make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
-	cd src && mingw32-make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
+	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
 mingw-w32-run:	
 	cd src && MEPATH=Z:/home/groth/workspace/microemacs/jasspa/macros wine ./.win32mingw-release-mew/mew32.exe
 
