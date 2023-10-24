@@ -18,7 +18,7 @@ jobs:
     - name: make me binary
       run: |
         sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
-        sudo apt install binutils-mingw-w64-i686 libz-mingw-w64 gcc-mingw-w64-i686 mingw-w64-tools
+        sudo apt install binutils-mingw-w64-i686 libz-mingw-w64 libz-mingw-w64-dev gcc-mingw-w64-i686 mingw-w64-tools
         make me-bin
         make mingw-w32-compile
 
