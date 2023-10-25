@@ -31,13 +31,14 @@ add-file-hook ".C" fhook-cpp
 ;set-variable %fonts &cat %fonts "-freetype-courier prime-medium-r-normal--30-220-100-100-p-147-iso10646-1|"
 ;set-variable %fonts &cat %fonts "-freetype-courier prime-medium-r-normal--33-240-100-100-p-157-iso10646-1|"
 
-set-variable $fonts "|-adobe-courier-bold-r-normal--11-80-100-100-m-60-iso8859-1|"
-set-variable $fonts &cat $fonts "-adobe-courier-bold-r-normal--14-100-100-100-m-90-iso8859-1|"
-set-variable $fonts &cat $fonts "-adobe-courier-bold-r-normal--17-120-100-100-m-100-iso8859-1|"
-set-variable $fonts &cat $fonts "-adobe-courier-bold-r-normal--20-140-100-100-m-110-iso8859-1|"
-set-variable $fonts &cat $fonts "-adobe-courier-bold-r-normal--25-180-100-100-m-150-iso8859-1|"
-set-variable $fonts &cat $fonts "-adobe-courier-bold-r-normal--34-240-100-100-m-200-iso8859-1|"
-set-variable $font-index 3
+; TODO check on more platforms
+set-variable %fonts "|-adobe-courier-bold-r-normal--11-80-100-100-m-60-iso8859-1|"
+set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--14-100-100-100-m-90-iso8859-1|"
+set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--17-120-100-100-m-100-iso8859-1|"
+set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--20-140-100-100-m-110-iso8859-1|"
+set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--25-180-100-100-m-150-iso8859-1|"
+set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--34-240-100-100-m-200-iso8859-1|"
+set-variable %font-index 3
 
 !if &band $system 0x01
     ; Not using X
@@ -54,16 +55,16 @@ set-variable $font-index 3
     !endif
     define-macro change-font-size
         !if &equal @# 0
-            set-variable $font-index 3
+            set-variable %font-index 3
         !else
-            set-variable $font-index &add $font-index @#
+            set-variable %font-index &add %font-index @#
         !endif
-        !if &less $font-index 1
-            set-variable $font-index 1
+        !if &less %font-index 1
+            set-variable %font-index 1
         !endif
-        set-variable #l0 &lget $fonts $font-index 
+        set-variable #l0 &lget %fonts %font-index 
         !if &seq #l0 ""
-            set-variable $font-index &add $font-index -1
+            set-variable %font-index &add %font-index -1
         !else
             change-font #l0
             !if $status
