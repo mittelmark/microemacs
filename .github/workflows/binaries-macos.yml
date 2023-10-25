@@ -33,7 +33,7 @@ jobs:
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
-           ./bin/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
            cp me-macos.bin binaries-MacOS/
            cp jasspa.tar.gz binaries-MacOS/
       - name: Upload Artifact GitHub Action
