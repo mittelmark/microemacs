@@ -29,6 +29,13 @@ jobs:
            pwd
            mkdir binaries-MacOS
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
+           tar cfvz jasspa.tar.gz
+           rm -rf jasspa/company
+           rm -rf jasspa/pixmaps
+           rm -rf jasspa/contrib           
+           ./bin/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
+           cp me-macos.bin binaries-MacOS/
+           cp jasspa.tar.gz binaries-MacOS/
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
