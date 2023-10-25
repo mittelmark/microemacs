@@ -6,7 +6,7 @@ bfs-bin:
 	cd bfs && make
 	cp bfs/bfs bin/
 me-bin:
-	cd src && make -f linux32.gmk
+	cd src && make -f linux32gcc.gmk
 	cp src/.linux32gcc-release-mecw/mecw bin/
 
 me-bfs-bin:
