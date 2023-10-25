@@ -36,6 +36,8 @@ jobs:
            ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
            cp me-macos.bin binaries-MacOS/
            cp jasspa.tar.gz binaries-MacOS/
+           chmod 755 ./me-macos.bin 
+           ./me-macos.bin -n -V
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
