@@ -22,4 +22,12 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
+           cd bfs && /usr/local/opt/make/libexec/gnubin/make make           
            cd src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
+           mkdir binaries-MacOS
+           cp src/.macos32gcc-mecw/mecw binaries-MacOS
+     - name: Upload Artifact GitHub Action
+       uses: actions/upload-artifact@v3
+       with: 
+         name: binaries-MacOS
+         path: binaries-MacOS
