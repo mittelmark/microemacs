@@ -1,0 +1,26 @@
+name: MacOS
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        r-version: ['4.1.1']
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install X11 dependencies on MacOS  
+        if: runner.os == 'macOS'
+        run: |
+           brew install xquartz
+           brew install gcc
+           brew install make
+           brew install zlib
+           brew install zlib-devel
