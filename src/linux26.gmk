@@ -53,6 +53,7 @@ LDDEBUG       =
 LDOPTIMISE    =
 LDFLAGS       =
 LIBS          = -lz
+
 #
 # The Xlib are located in /usr/X11R6/lib64 on some Linux distributions like RHEL4.* .
 #
