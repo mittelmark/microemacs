@@ -16,14 +16,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies on MacOS and compile and produce BFS exe 
+      - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
         if: runner.os == 'macOS'
         run: |
            brew install xquartz
            brew install gcc
            brew install make
-      - name: Compile BFS and ME executables
-      - run: |     
            cd bfs && /usr/local/opt/make/libexec/gnubin/make
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
            cd ..
@@ -31,8 +29,6 @@ jobs:
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
            tar cfvz jasspa.tar.gz jasspa/*
            cp jasspa.tar.gz binaries-MacOS/
-      - name: Create standalone ME executable with attached macro files
-      - run: |
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
