@@ -87,11 +87,11 @@ endif
 #
 # The Xlib are located in /usr/X11R6/lib64 on some Linux distributions like RHEL4.* .
 #
-ifeq "$(strip $(shell uname -m))" "x86_64"
-WINDOW_LIBS = $(MAKEWINLIBS) -L/usr/X11R6/lib64 -lX11
-else
+#ifeq "$(strip $(shell uname -m))" "x86_64"
+#WINDOW_LIBS = $(MAKEWINLIBS) -L/usr/X11R6/lib64 -lX11
+#else
 WINDOW_LIBS = $(MAKEWINLIBS) -L/usr/X11R6/lib -lX11
-endif
+#endif
 #
 # Preference now is to use "ncurses" rather than "termcap", figure out if ncurses is avaiable or if we must fall back to termcap.
 #
