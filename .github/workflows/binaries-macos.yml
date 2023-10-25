@@ -22,5 +22,4 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
-           brew install zlib
-           brew install zlib-devel
+           cd src && make -f linux32gcc.gmk 
