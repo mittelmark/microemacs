@@ -24,6 +24,9 @@ jobs:
            brew install make
            cd bfs && /usr/local/opt/make/libexec/gnubin/make
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
+           cd ..
+           ls
+           pwd
            mkdir binaries-MacOS
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
       - name: Upload Artifact GitHub Action
