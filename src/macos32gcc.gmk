@@ -24,11 +24,11 @@
 # Created:     Wed Jul 28 2004
 # Synopsis:    Make file for Linux v2 Kernel 2.6 using gcc
 # Notes:
-#	Run "make -f linux32gcc.mak"      for optimised build produces ./me
-#	Run "make -f linux32gcc.mak med"  for debug build produces     ./med
+#	Run "make -f macos32gcc.mak"      for optimised build produces ./me
+#	Run "make -f macos32gcc.mak med"  for debug build produces     ./med
 #
-#	Run "make -f linux32gcc.mak clean"      to clean source directory
-#	Run "make -f linux32gcc.mak spotless"   to clean source directory even more
+#	Run "make -f macos32gcc.mak clean"      to clean source directory
+#	Run "make -f macos32gcc.mak spotless"   to clean source directory even more
 #
 ##############################################################################
 #
@@ -50,7 +50,7 @@ AR       = ar
 RM       = rm -f
 RMDIR    = rm -r -f
 
-BUILDID  = linux32gcc
+BUILDID  = macos32gcc
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 CCDEFS   = -D_LINUX -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS
