@@ -132,7 +132,7 @@ $(OUTDIR)/%.o : %.c
 
 all: $(OUTDIR)/$(PRGFILE)
 
-$(OUTDIR)/$(PRGFILE): $(OUTDIR) $(PRGOBJS) $(PRGLIBS)
+$(OUTDIR)/$(PRGFILE): $(OUTDIR) $(PRGOBJS)
 	$(RM) $@
 	$(LD) $(LDDEFS) $(LDFLAGS) -o $@ $(PRGOBJS) $(PRGLIBS) $(BTYP_LIB) $(LDLIBS)
 	$(STRIP) $@
