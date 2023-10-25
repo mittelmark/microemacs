@@ -22,4 +22,5 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
-           cd src && make -f linux32gcc.gmk 
+           brew install libx11
+           cd src && /usr/local/opt/make/libexec/gnubin/gmake -f linux32gcc.gmk 
