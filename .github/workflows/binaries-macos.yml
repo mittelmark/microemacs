@@ -22,4 +22,4 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
-           cd src && /usr/local/opt/make/libexec/gnubin/make -f linux32gcc.gmk 
+           cd src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
