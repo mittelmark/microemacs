@@ -25,7 +25,7 @@ jobs:
            cd bfs && /usr/local/opt/make/libexec/gnubin/make
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
            mkdir binaries-MacOS
-           cp src/.macos32gcc-mecw/mecw binaries-MacOS
+           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
