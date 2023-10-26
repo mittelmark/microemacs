@@ -16,8 +16,9 @@ jobs:
         if: runner.os == 'macOS'
         run: |
            brew install xquartz
-           brew install gcc
            brew install make
+           uname -a
+           find / -name "fonts.dir" 2> /dev/null
            cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-11
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=gcc-11
            cd ..
