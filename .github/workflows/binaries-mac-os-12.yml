@@ -17,6 +17,7 @@ jobs:
         run: |
            uname -a
            find / -name "fonts.dir" 2> /dev/null
+           cat /usr/local/Cellar/ghostscript/10.02.0/share/ghostscript/fonts/fonts.dir
            brew install xquartz
            brew install gcc
            brew install make
