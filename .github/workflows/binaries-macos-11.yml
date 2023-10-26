@@ -17,4 +17,13 @@ jobs:
         run: |
            echo `uname -a`
            ls
+           brew install xquartz
+           brew install gcc
+           brew install make
+           cd bfs && /usr/local/opt/make/libexec/gnubin/make
+           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
+           cd ..
+           mkdir binaries-MacOS
+           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
+           tar cfvz jasspa.tar.gz jasspa/*
            
