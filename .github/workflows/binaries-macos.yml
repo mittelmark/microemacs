@@ -18,7 +18,7 @@ jobs:
            brew install xquartz
            brew install make
            uname -a
-           find / -name "fonts.dir" 2> /dev/null
+           cat /opt/X11/share/fonts/100dpi/fonts.dir
            cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-11
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=gcc-11
            cd ..
