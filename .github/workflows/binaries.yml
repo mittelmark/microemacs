@@ -1,4 +1,4 @@
-name: Binaries CI
+name: Binaries Linux and Windows
 
 on:
   workflow_dispatch:
