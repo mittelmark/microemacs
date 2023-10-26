@@ -37,7 +37,7 @@ jobs:
            cp README-standalone.md binaries-MacOS/
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
-           ./me-macos.bin @platform.emf
+           TERM=xterm ./me-macos.bin @platform.emf
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
