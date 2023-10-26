@@ -10,10 +10,6 @@ permissions:
 jobs:
   build:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        r-version: ['4.1.1']
-
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -22,8 +18,8 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
-           cd bfs && /usr/local/opt/make/libexec/gnubin/make
-           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
+           cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-11
+           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=gcc-11
            cd ..
            mkdir binaries-MacOS
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
