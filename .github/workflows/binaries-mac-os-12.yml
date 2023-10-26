@@ -1,0 +1,41 @@
+name: MacOS-12
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
+      - uses: actions/checkout@v3
+        if: runner.os == 'macOS'
+        run: |
+           brew install xquartz
+           brew install gcc
+           brew install make
+           cd bfs && /usr/local/opt/make/libexec/gnubin/make
+           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk 
+           cd ..
+           mkdir binaries-MacOS
+           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS/
+           tar cfvz jasspa.tar.gz jasspa/*
+           cp jasspa.tar.gz binaries-MacOS/
+           rm -rf jasspa/company
+           rm -rf jasspa/pixmaps
+           rm -rf jasspa/contrib           
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
+           cp me-macos.bin binaries-MacOS/
+           chmod 755 ./me-macos.bin 
+           ./me-macos.bin -n -V
+           cp README-standalone.md binaries-MacOS/
+           find / -name "fonts.dir"
+      - name: Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v3
+        with: 
+           name: binaries-MacOS
+           path: binaries-MacOS
