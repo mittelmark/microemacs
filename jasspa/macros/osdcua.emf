@@ -64,16 +64,16 @@ osd 7 60  ""  "Execute \HFile..."    f execute-file
 osd 7 140 ""  "\HIpipe Command..."   f ipipe-shell-command
 osd 7 150 ""  "S\Hhell"              f shell
 ; Window
-osd 8 10  ""  "\HSplit Window V     C-t"       f split-window-vertically
+osd 8 10  ""  "\HSplit Window V     C-2"       f split-window-vertically
 osd 8 20  ""  "\HGrow Window V"                1 change-window-depth
 osd 8 30  ""  "S\Hhrink Window V"             -1 change-window-depth
-osd 8 40  ""  "Spl\Hit Window H     C-h"       f split-window-horizontally
+osd 8 40  ""  "Spl\Hit Window H     C-3"       f split-window-horizontally
 osd 8 50  ""  "G\Hrow Window H"                1 change-window-width
 osd 8 60  ""  "Shr\Hink Window H    "         -1 change-window-width
 osd 8 80  ""  "\HOne Window         C-1"       f delete-other-windows
 osd 8 90  ""  "\HDelete Window      C-0"       f delete-window
-osd 8 110 ""  "\HPrevious Window    C-6"       f previous-window
-osd 8 120 ""  "\HNext Window        C-7"       f next-window
+osd 8 110 ""  "\HPrevious Window    C-4"       f previous-window
+osd 8 120 ""  "\HNext Window        C-5"       f next-window
 !if &and &not &band $system 0x01 &opt "mwf"
     ; running a version that can support multiple frames
     osd 8 150 "-"
@@ -82,18 +82,18 @@ osd 8 120 ""  "\HNext Window        C-7"       f next-window
     osd 8 180 ""  "Ne\Hxt Frame"       f next-frame
 !endif
 ; Help
-osd 9 10  ""  "\HMajor Mode Help    S-F2"  f major-mode-help
-osd 9 20  ""  "General \HHelp       S-F1"  f osd-help
-osd 9 40  ""  "List \HBindings"            f describe-bindings
-osd 9 50  ""  "List Bu\Hffers"             f list-buffers
-osd 9 60  ""  "List \HCommands"            f list-commands
-osd 9 80  ""  "List \HVariables"           f list-variables
-osd 9 90  ""  "Command Apropo\Hs..."       f command-apropos
-osd 9 110 ""  "Describe \HKey..."          f describe-key
-osd 9 120 ""  "Describe Var\Hiable...   "  f describe-variable
-osd 9 130 ""  "Describe \HWord..."         f describe-word
-osd 9 140 ""  "Help on C\Hommand..."       f help-command
-osd 9 150 ""  "Help on Variab\Hle..."      f help-variable
+;osd 9 10  ""  "\HMajor Mode Help      S-f2"    f major-mode-help
+osd 9 20  ""  "General \HHelp         S-f1"    f osd-help
+osd 9 40  ""  "List \HBindings        C-h b"   f describe-bindings
+osd 9 50  ""  "List Bu\Hffers         C-h C-b" f list-buffers
+osd 9 60  ""  "List \HCommands        C-h c"   f list-commands
+osd 9 80  ""  "List \HVariables       C-h v"   f list-variables
+osd 9 90  ""  "Command Apropo\Hs...   C-h a"   f command-apropos
+osd 9 110 ""  "Describe \HKey...      C-h k"   f describe-key
+osd 9 120 ""  "Describe Var\Hiable... C-h d"   f describe-variable
+osd 9 130 ""  "Describe \HWord...     C-h w"   f describe-word
+osd 9 140 ""  "Help on C\Hommand...   C-h C-c" f help-command
+osd 9 150 ""  "Help on Variab\Hle...  C-h C-v" f help-variable
 
 ; define a main menu initialisation macro - main use of this is to insert the
 ; find tag if a tags file exists & call specific file type open and close
@@ -126,7 +126,7 @@ osd 9 150 ""  "Help on Variab\Hle..."      f help-variable
     !endif
     set-variable #l0 &ind &spr ".%s.setup" $buffer-fhook
     !if &sin "p" #l0
-        osd 9 10 "" "\HMajor Mode Help      esc h" f major-mode-help
+        osd 9 10 "" "\HMajor Mode Help      S-f2" f major-mode-help
     !else
         osd 9 10 "D"
     !endif

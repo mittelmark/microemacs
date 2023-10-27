@@ -218,8 +218,6 @@ global-bind-key osd-close "C-w"
 global-bind-key cut "C-x"
 global-bind-key osd-redo "C-y"
 global-bind-key osd-undo "C-z"
-global-bind-key split-window-horizontally "C-h" ; fix DG
-global-bind-key split-window-vertically "C-t" ; fix DG
 global-bind-key help "S-f1" ; fix DG
 global-bind-key major-mode-help "S-f2"
 global-bind-key grep  "f2"
@@ -235,10 +233,27 @@ global-bind-key execute-named-command "C-d"
 global-bind-key file-browser "f10"
 global-bind-key delete-window "C-0"
 global-bind-key delete-other-windows "C-1"
-global-bind-key next-window "C-4"
-global-bind-key previous-window "C-3"
-global-bind-key next-buffer "C-7"
+global-bind-key split-window-vertically "C-2" ; fix DG
+global-bind-key split-window-horizontally "C-3" ; fix DG
+global-bind-key previous-window "C-4"
+global-bind-key next-window "C-5"
 global-bind-key previous-buffer "C-6"
+global-bind-key next-buffer "C-7"
+
+; free to use C-t, C-h
+3 global-bind-key prefix "C-h"
+global-bind-key describe-bindings "C-h b"
+global-bind-key list-buffers      "C-h C-b"
+global-bind-key list-commands     "C-h c"
+global-bind-key list-variables    "C-h v"
+global-bind-key command-apropos   "C-h a"
+global-bind-key describe-key      "C-h k"
+global-bind-key describe-variable "C-h d"
+global-bind-key describe-word     "C-h w"
+global-bind-key help-command      "C-h C-c"
+global-bind-key help-variable     "C-h C-v"
+; fix for terminal required
+global-bind-key set-mark          "C-space"
 
 ; reconfigure the buffer bindings
 set-variable .buffer-bind-key.map-from "|C-c C-c|C-c C-d|"
