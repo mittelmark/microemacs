@@ -66,6 +66,11 @@ static char meHelpPage[]=
 #if MEOPT_EXTENDED
 "  -       : Read input from stdin into *stdin* buffer\n"
 #endif
+#ifdef _ME_CONSOLE
+#ifdef _TCAP
+"  -A      : Disable use of alternative screen buffer\n"
+#endif
+#endif
 #ifdef _NANOEMACS
 "  -a      : Enable auto-saving\n"
 "  -B      : Enable back-up file creation\n"
@@ -92,6 +97,7 @@ static char meHelpPage[]=
 #endif
 #ifdef _ME_WINDOW
 #ifdef _ME_CONSOLE
+
 #ifdef _WIN32
 "  -n      : For no MS window, use console instead\n"
 #endif
@@ -1331,6 +1337,13 @@ mesetup(int argc, char *argv[])
         {
             switch (argv[carg][1])
             {
+#ifdef _ME_CONSOLE
+#ifdef _TCAP
+            case 'A':
+                meSystemCfg |= meSYSTEM_NOALTSBUF;
+                break ;
+#endif /* _TCAP */ 
+#endif /* _ME_CONSOLE */   
             case 'a':
                 meModeToggle(globMode,MDAUTOSV) ;
                 break ;

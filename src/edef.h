@@ -134,6 +134,7 @@ extern  meUInt  meSystemCfg;            /* ME system config variable    */
 #define meSYSTEM_NOEMPTYANK 0x400000    /* Don't allow empty yank (ext) */
 #define meSYSTEM_NOCLIPBRD  0x800000    /* Don't use the sys clip-board */
 #define meSYSTEM_PIPEDMODE  0x1000000   /* -p or -P piped mode          */
+#define meSYSTEM_NOALTSBUF  0x10000000  /* No Alternative screen buffer */
 
 #ifdef _UNIX
 #if MEOPT_CLIENTSERVER

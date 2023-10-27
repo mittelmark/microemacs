@@ -107,3 +107,7 @@ TCAP_STRING(TCAPrmam,'R','A','\0')
 
 /* enter_am_mode/smam/SA/Turn on automatic margins */
 TCAP_STRING(TCAPsmam,'S','A','\0')
+
+/* Enable/Disable alternate screen buffer - NOTE: these must be last 2 */
+TCAP_STRING(TCAPasbe, 't','i','\0')
+TCAP_STRING(TCAPasbd, 't','e','\0')

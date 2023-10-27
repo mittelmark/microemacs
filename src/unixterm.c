@@ -2390,7 +2390,10 @@ TCAPstart(void)
     }
     /* Initialise the termcap strings */
     p = tcapbuf;
-    for (ii = 0; ii < TCAPmax; ii++)
+    ii = TCAPmax-1;
+    if(meSystemCfg & meSYSTEM_NOALTSBUF)
+        ii -= 2;
+    do
     {
         if (tcaptab[ii].type == TERMCAP_BOOLN)
             tcaptab[ii].code.value = tgetflag (tcaptab[ii].capKey);
@@ -2403,8 +2406,8 @@ TCAPstart(void)
                 (tcaptab[ii].code.str[0] == '\0'))
                 tcaptab[ii].code.str = NULL;
         }
-    }
-
+    } while(--ii >= 0);
+    
     /* Make sure that there was sufficient buffer space to process the strings */
     if (p >= &tcapbuf[TCAPSLEN])
     {
@@ -2581,7 +2584,10 @@ TCAPopen(void)
          ioctl (0, TIOCSETD, &ldisc);
      }
 #endif /*  NTTYDISC/TIOCSETD */
-
+    
+    if((tcaptab[TCAPasbe].code.str != NULL) && (tcaptab[TCAPasbd].code.str != NULL))
+        putpad(tcaptab[TCAPasbe].code.str);
+    
     /* If automatic margins are enabled then try to disable them */
     if ((tcaptab[TCAPam].code.value) &&
         (tcaptab[TCAPrmam].code.str != NULL) &&
@@ -2629,6 +2635,9 @@ TCAPclose(void)
         }
         TTaMarginsDisabled = 0;
     }
+    if(tcaptab[TCAPasbd].code.str != NULL)
+        putpad(tcaptab[TCAPasbd].code.str);
+    fflush(stdout); // Flush output, required if using alt-screen-buff
 
     /* Restore the terminal modes */
 #ifdef _USG
