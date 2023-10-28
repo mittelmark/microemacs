@@ -4996,6 +4996,65 @@ Miscellaneous Information
 
 cEDevelopment History cA
 
+    cDRelease - 31th October 2023 HalloweencA 
+    Release date specified  2009/10/22 - to avoid clashes with the new version
+    from 2023 which is maintained by Steven Phillips
+
+        * [231027] Adding suspend code from Me23 from Steven Phillips code
+        * [231024] Extending the Markdown mode by importing Steve's  code from me23
+        * [231023] Updating ChangeLog
+        * [231022] fixing CUA issues, allowing error less backs witches
+                   adding font resize support using C-+, C--, C-= for Windows and Linux
+                   updating version to 2009-12-21 
+        * [231021] Updating CUA  mapping,  remapping F1 back to menu for console and adding
+                   complete-command bindings
+        * [230928] extending EMF tutorial
+        * [230518] fixing parenthese issue in unixterm.c
+        * [230509] small fixes for Ayu Light scheme
+        * [230427] fixing -n command line argument hang issue in case of macro errors
+        * [230419] tutorial extension
+        * [230415] dict.emf added 
+        * [230407] starting tutorial for emf language
+        * [230403] adding mymd.emf for illustration
+        * [230328] adding imenu.emf file
+        * [230328] Markdown date updates for YAML header for YYYY-MM-DD HH:MM
+        * [230130] extending py.eaf and tcl.eaf
+        * [221217] extending Python template and more snippets
+        * [221007] adding Rd (R documentation) file hooks
+        * [220611] adding more R abbreviations and keywords
+        * [220302] adding more R abbreviations
+        * [220212] extending Python abrreviation file
+        * [220205] extending Tcl abbreviation file
+        * [211207] bfs building now working for Linux and Win32 
+           Github action for bfs building
+        * [211206] adding spelling dictionaries
+        * [211203] Update on bfs, README, binaries
+           .bashrc now with filehook shell
+        * [211124] adding White on Black Pastel scheme
+        * [211122] R comment fix, more R file patterns
+        * [211121] compiler fix for for strerror
+           new themes Ayu Light and Dracula
+           adding hkmd.emf for Markdown support
+           adding Python template  
+
+        * New changes were collected from various Github source: mittelmark/microemacs
+
+           
+        * [160407] extending Go hooks (goimport, gofmt, gobuild)
+        * [151116] adding golang mode
+        * [141010] font fix for X11
+
+        * New changes were collected from various Github source vitalyster
+        
+        * [091017] man page - added Linux hypenation for line continuation. 
+        * [091015] SQL  template  - added  some  missing  types and  standardised  the
+           hilighting a bit.
+        * [091015] Added missing accents to ISO complete for abbreviations.
+        * [091015] user-setup  -  removed  dead  Auto  buffer  mode  and   reorganised
+           remaining options
+        * [091015] notes - added 'i' binding to tree to insert new note.
+    
+    
 
     cDPatch Release - 11th October 2009cA
     Release date specified as 2009/10/11.
