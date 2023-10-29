@@ -30,7 +30,8 @@ jobs:
         mkdir binaries-Linux-x86_64
         mkdir binaries-Windows-32
         cp bfs/bfs binaries-Linux-x86_64/
-        cp me-linux.bin binaries-Linux-x86_64/me-linux.bin
+        cp src/.linux32-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
+        cp me-linux.bin binaries-Linux-x86_64/me-ubuntu-20.bin
         cp license.txt binaries-Linux-x86_64/
         cp README-standalone.md binaries-Linux-x86_64/
         cp me-windows.exe binaries-Windows-32/

@@ -15,13 +15,19 @@ This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https:
 
 It contains the following changes:
 
-* fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64
-  Fedora with gcc 10.3
+* improved  terminal mode for  suspend-emacs  with using alternative  terminal
+  buffer (thanks to Steven Phillips)
 * adding schemes (themes) [Ayu Light](https://github.com/ayu-theme/ayu-colors)
   and [Dracula](https://github.com/dracula/dracula-theme)
 * Markdown mode (folding, template file, syntax hilghlighting, outline
-  in item list, embedding Tcl and R code in fences with syntax highlight)
-
+  in item list, embedding Tcl, Python, R and Dot code in fences with syntax highlight)
+* font size increase and decrease using Ctrl-Plus and Ctrl-Minus keys
+* Darwin 20, 21, 22 builds using Github actions
+* Windows builds using cross compilation on Ubuntu with Github actions
+* fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64
+  Fedora with gcc 10.3
+* fix for hang on error bug if using the -n command line switch
+* updates on documentation  
 
 
 Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf)
