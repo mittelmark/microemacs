@@ -57,6 +57,12 @@ There is a stand alone single file executable build for the following platforms 
 
 The Windows 32 bit executable should work on 32 and 64 Windows systems.
 
+Just  download an  executable  for your  platform  which matches as closely as
+possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
+On Unix systems you make the file  executable  (chmod 755 filename) and rename
+it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
+Therafter you can run the me executable. More information will be added later.
+
 ## Pros and Cons of Jasspa MicroEmacs
 
 * Pro:
@@ -77,7 +83,7 @@ The Windows 32 bit executable should work on 32 and 64 Windows systems.
     
 ## Build
 
-I currently build only on Linux using the file _src/linux26.gmk_. Other Makefiles you should take from [https://github.com/ipstone/microemacs/tree/master/src](https://github.com/ipstone/microemacs/tree/master/src)
+I currently build on Fedora ad Ubuntu using the file _src/linux32gcc.gmk_. Other Makefiles you should take from [https://github.com/ipstone/microemacs/tree/master/src](https://github.com/ipstone/microemacs/tree/master/src)
 
 To build switch into the src directory and then run the Makefile for your plaform. On my Linux machine I did:
 
@@ -88,7 +94,7 @@ cd src && make -f linux32gcc.gmk
 Which  then  produces  in the  folder  .linux32gcc-release-mecw  the  required
 executable.
 
-You can as well cross compile on a Linux system for Windows assuming that you
+I as well cross compile on my Linux systems for Windows. You can do the same assuming that you
 have installed on your Linux system the mingw32 gcc compiler and the required tools. The you can do this:
 
 ```
@@ -100,7 +106,7 @@ Which  then  produces  in the  folder  .win32mingw-release-mew  and -mec the  re
 executables.
 
 If you place the file zlib1.dll and eventuall the file dssp-0.dll in the same folder as the executable that file should be run using wine directly
-on a Linux system. To check the executuable on Linux using wine you do
+on a Linux system. To check the executable on Linux using wine you do
 something like this:
 
 ```
