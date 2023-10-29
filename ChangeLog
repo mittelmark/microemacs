@@ -4,9 +4,11 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <231024.0719>
->
+>  Last Modified : <231028.1433>
+>  Authors:      : John Green, Steven Phillips, Detlef Groth
  
+  [231027] mittelmark: Adding suspend code from Me23 from Steven Phillips code
+  
   [231024] mittelmark: Extending the Markdown mode by importing Steve's  code from me23
 
   [231023] mittelmark: Updating ChangeLog

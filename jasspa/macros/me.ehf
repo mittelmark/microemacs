@@ -614,6 +614,7 @@ Miscellaneous Information
     lslmadd-color(2)le Create a new color
     lslmadd-color-scheme(2)le Create a new color scheme
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-size(2)le Change the font size X-Windows or Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -1858,6 +1859,7 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-size(2)le Change the screen font    
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -2268,6 +2270,7 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-size(2)le Change the font size X-Windows or Windows    
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-screen-depth(2)le Change the number of lines on the screen
@@ -3379,6 +3382,7 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-size(2)le Change the font size X-Windows or Windows    
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -12690,7 +12694,44 @@ $a
 cEcESEE ALSO cEcA
 
 
-    lslmchange-frame-width(2)le, lslmchange-frame-depth(2)le, lslm$result(5)le, lslmuser-setup(3)le.
+    lslmchange-font-size(2)le, lslmchange-frame-width(2)le, lslmchange-frame-depth(2)le, lslm$result(5)le, lslmuser-setup(3)le.
+! 2 change-font-size
+cEcENAME cEcA
+
+
+    change-font-size - Change the screen font in non-terminal mode
+$a
+
+
+cEcESYNOPSIS cEcA
+
+
+    cC[X-Windows, Microsoft Windows]cA
+    cCncA cDchange-font-sizecA
+     1cA cDchange-font-sizecA  (cDC-+cA)    
+    -1cA cDchange-font-size cA (cDC--cA)        
+     0cA cDchange-font-sizecA  (cDC-=cA)            
+
+
+
+cEcEDESCRIPTION cEcA
+
+
+    cDchange-font-sizecA  is a command  which  allows to resize the  current
+    MicroEmacs font using standard key-bindings, C-+, C-- and C-=.
+    The font-size is increased in case of C-+ and decreased in case of the C--
+    minus key  bindings.  For Unix systems the  variables   lslm%fonts(5)le
+    and lslm%font-index(5)le are used to cycle through some standard (Adobe
+    bold) fonts  or through a list of user  defined  fonts. On Windows  simply
+    the current font-size of the current font is changed.
+
+cEcESEE ALSO cEcA
+
+
+    lslmchange-font(2)le, lslm%font(5)le, lslm%font-index(5)le.
+
+
+
 ! 2 prefix
 cEcENAME cEcA
 
@@ -50845,7 +50886,7 @@ $a
 cEcESEE ALSO cEcA
 
 
-    lslm%change-font(2)le, lslmuser-setup(3)le.
+    lslmchange-font(2)le, lslmuser-setup(3)le.
 ! 5 %ftp-flags
 ! 5 %http-flags
 cEcENAME cEcA
