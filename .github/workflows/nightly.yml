@@ -32,16 +32,23 @@ jobs:
       run: |
         mkdir binaries-Linux-x86_64
         mkdir binaries-Windows-32
+        zip jasspa.zip jasspa/*
+        
+        cp jasspa.zip binaries-Linux-x86_64/
+        cp jasspa.zip binaries-Windows-32/
+        
+        cp COPYING binaries-Linux-x86_64/
+        cp license.txt binaries-Linux-x86_64/
+        cp README-standalone.md binaries-Linux-x86_64/
         cp bfs/bfs binaries-Linux-x86_64/
         cp src/.linux32gcc-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
         cp me-linux.bin binaries-Linux-x86_64/me-ubuntu-20.bin
-        cp license.txt binaries-Linux-x86_64/
-        cp README-standalone.md binaries-Linux-x86_64/
-        cp me-windows.exe binaries-Windows-32/
-        cp mec-windows.exe binaries-Windows-32/
-        cp bin/bfs.exe binaries-Windows-32/
+        cp COPYING binaries-Windows-32/
         cp license.txt binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
+        cp bin/bfs.exe binaries-Windows-32/
+        cp me-windows.exe binaries-Windows-32/
+        cp mec-windows.exe binaries-Windows-32/
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v3
       with: 
@@ -72,8 +79,8 @@ jobs:
            cd ..
            mkdir binaries-MacOS-11
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-11/
-           tar cfvz jasspa.tar.gz jasspa/*
-           cp jasspa.tar.gz binaries-MacOS-11/
+           zip jasspa.zip jasspa/*
+           cp jasspa.zip binaries-MacOS-11/
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
