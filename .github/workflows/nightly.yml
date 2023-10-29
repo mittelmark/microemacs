@@ -1,0 +1,93 @@
+name: Nightly
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '53 7 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: make bfs binary
+      run:  make bfs-bin
+      
+    - name: make me binary
+      run: |
+        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+        sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+        make me-bin
+        make mingw-w32-compile
+
+    - name: make me-standalone binary
+      run: make me-bfs-bin
+    
+    - name: Make me-standalone binary
+      run: |
+        mkdir binaries-Linux-x86_64
+        mkdir binaries-Windows-32
+        cp bfs/bfs binaries-Linux-x86_64/
+        cp src/.linux32gcc-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
+        cp me-linux.bin binaries-Linux-x86_64/me-ubuntu-20.bin
+        cp license.txt binaries-Linux-x86_64/
+        cp README-standalone.md binaries-Linux-x86_64/
+        cp me-windows.exe binaries-Windows-32/
+        cp mec-windows.exe binaries-Windows-32/
+        cp bin/bfs.exe binaries-Windows-32/
+        cp license.txt binaries-Windows-32/
+        cp README-standalone.md binaries-Windows-32/
+    - name: Upload Artifact GitHub Action
+      uses: actions/upload-artifact@v3
+      with: 
+        name: binaries-Linux-x86_64
+        path: binaries-Linux-x86_64
+    - name: Upload Artifact GitHub Action Windows
+      uses: actions/upload-artifact@v3
+      with: 
+        name: binaries-Windows-32
+        path: binaries-Windows-32
+
+  macos:
+
+    runs-on: macos-11
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
+        if: runner.os == 'macOS'
+        run: |
+           echo `uname -a`
+           ls
+           brew install xquartz
+           brew install gcc
+           brew install make
+           cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-10
+           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10
+           cd ..
+           mkdir binaries-MacOS-11
+           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-11/
+           tar cfvz jasspa.tar.gz jasspa/*
+           cp jasspa.tar.gz binaries-MacOS-11/
+           rm -rf jasspa/company
+           rm -rf jasspa/pixmaps
+           rm -rf jasspa/contrib           
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
+           cp me-macos.bin binaries-MacOS-11/
+           cp bfs/bfs binaries-MacOS-11/
+           chmod 755 ./me-macos.bin 
+           ./me-macos.bin -n -V
+           cp README-standalone.md binaries-MacOS-11/
+           echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
+           echo "exit-emacs" >> platform.emf
+           TERM=xterm ./me-macos.bin @platform.emf
+      - name: Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v3
+        with: 
+           name: binaries-MacOS-11
+           path: binaries-MacOS-11
