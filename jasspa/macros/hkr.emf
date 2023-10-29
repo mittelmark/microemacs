@@ -63,6 +63,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "break"        .scheme.keyword
     hilight .hilight.r 1 "cat"          .scheme.keyword
     hilight .hilight.r 1 "cbind"        .scheme.keyword
+    hilight .hilight.r 1 "class"        .scheme.keyword    
     hilight .hilight.r 1 "coef"         .scheme.keyword
     hilight .hilight.r 1 "colnames"     .scheme.keyword
     hilight .hilight.r 1 "contour"      .scheme.keyword
@@ -111,6 +112,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "median"       .scheme.keyword
     hilight .hilight.r 1 "min"          .scheme.keyword
     hilight .hilight.r 1 "mtext"        .scheme.keyword
+    hilight .hilight.r 1 "names"        .scheme.keyword        
     hilight .hilight.r 1 "ncol"         .scheme.keyword    
     hilight .hilight.r 1 "next"         .scheme.keyword
     hilight .hilight.r 1 "new.env"      .scheme.keyword
