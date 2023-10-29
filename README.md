@@ -45,26 +45,35 @@ build is folded by the indicated three dots:
 
 There is a stand alone single file executable build for the following platforms here: 
 
-* [Linux-x86_64](https://github.com/mittelmark/microemacs/suites/4587289431/artifacts/123655903)
-* [Windows-32bit](https://github.com/mittelmark/microemacs/suites/4587422309/artifacts/123662018)
+* [Linux-Fedora-30-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-30.bin)
+* [Linux-Fedora-38-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-38.bin)
+* [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-18.bin)
+* [Linux-Ubuntu-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-20.bin)
+* [MacOS-Darwin-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-20.bin)
+* [MacOS-Darwin-21-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-21.bin)
+* [MacOS-Darwin-22-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-22.bin)
+* [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows.exe)
+* [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows.exe)
 
-The Windows 32 bit executable should as well work in Windows 64bit system.
-
-Other platforms will follow.
+The Windows 32 bit executable should work on 32 and 64 Windows systems.
 
 ## Pros and Cons of Jasspa MicroEmacs
 
 * Pro:
+    * simple single file install
     * emacs like coding
-    * distraction free coding, no popups, no annoying updates - just you and the editor
+    * distraction  free coding, no popups, no annoying  updates - just you and
+      the editor
     * easy to extend, the file _USER.emf_ can is your friend
     * same features in terminal and in GUI mode
-    * small and fast
+    * small and fast 1-4 MB!! memory footprint
     * different color themes can be used and changed easily
-    * many platforms supported see here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html)
+    * CUA windows keybindings as fallback for total newbees
+    * support for Linux, MacOS and Windows
+    * many other platforms were recently supported as well, see here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html)
 * Cons:
-    * no unicode!
-    * no softwrap!
+    * no unicode! It is a MICRO-Emacs
+    * no softwrap! use `Esc q` for paragraph wrapping
     
 ## Build
 
@@ -73,23 +82,29 @@ I currently build only on Linux using the file _src/linux26.gmk_. Other Makefile
 To build switch into the src directory and then run the Makefile for your plaform. On my Linux machine I did:
 
 ```
-make -f linux26.gmk
+cd src && make -f linux32gcc.gmk
 ```
+
+Which  then  produces  in the  folder  .linux32gcc-release-mecw  the  required
+executable.
 
 You can as well cross compile on a Linux system for Windows assuming that you
 have installed on your Linux system the mingw32 gcc compiler and the required tools. The you can do this:
 
 ```
-mingw32-make -f mingw32.gmk
+cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
 ```
 
-This should produce an executable me32.exe. If you place the file zlib1.dll in
-the same folder as the executable that file should be run using wine directly
+Which  then  produces  in the  folder  .win32mingw-release-mew  and -mec the  required
+executables.
+
+If you place the file zlib1.dll and eventuall the file dssp-0.dll in the same folder as the executable that file should be run using wine directly
 on a Linux system. To check the executuable on Linux using wine you do
 something like this:
 
 ```
-MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/path/to/me32.exe
+MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/path/to/mew32.exe
 ```
 
 You can as well create an alias to shorten the command line.
@@ -114,6 +129,7 @@ Here the link to the original Jasspa MicroEmacs [README](README).
 
 ## License
 
-MicroEmacs is released with the GPL, see the file [license.txt](license.txt).
+MicroEmacs  is released with the GPL, see the file  [license.txt](license.txt)
+and [COPYING](COPYING).
 
 ## EOF
