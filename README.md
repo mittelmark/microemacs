@@ -67,19 +67,23 @@ Therafter you can run the me executable. More information will be added later.
 
 * Pro:
     * simple single file install
-    * emacs like coding
+    * support for Linux, MacOS and Windows
     * distraction  free coding, no popups, no annoying  updates - just you and
       the editor
-    * easy to extend, the file _USER.emf_ can is your friend
+    * Emacs like shortcuts
+    * CUA windows key-bindings as fallback for total newbees
+    * standard  menu entries on top for beginners who do not yet know all the
+      key bindings of Emacs
+    * easy to extend, the file _USER.emf_ is your friend
     * same features in terminal and in GUI mode
     * small and fast 1-4 MB!! memory footprint
     * different color themes can be used and changed easily
-    * CUA windows keybindings as fallback for total newbees
-    * support for Linux, MacOS and Windows
-    * many other platforms were recently supported as well, see here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html)
+    * sophisticated macro programming language
+    * inbuild sophisticated help system
+    * easy to configure file templates and snippets
 * Cons:
-    * no unicode! It is a MICRO-Emacs
-    * no softwrap! use `Esc q` for paragraph wrapping
+    * No unicode! It is a MICRO-Emacs!
+    * No softwrap! use `Esc q` for paragraph wrapping!
     
 ## Build
 
