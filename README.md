@@ -119,6 +119,37 @@ MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/path/to/mew32.
 
 You can as well create an alias to shorten the command line.
 
+## Terminal issues
+
+### Menu access
+
+The menu access is usually available using the F1 key, but sometimes this does
+not work as it is already bound by the terminal to some other  function. As an
+alternative  you can use the key  binding  "Esc =" to access  the main menu on
+top.
+
+### Backspace key
+
+The  backspace  key for  some  terminals  is not  mapped  to  delete  the last
+caracter, you might use instead `C-h` to delete the last character.
+
+
+### Color issues
+
+As the  capabilities of Terminals differ widely  MicroEmacs  starts usually in
+black/white  mode in the terminal. You can set this to color mode by selecting the
+"Tools -> User Setup -> Platform" Termcap option. If this does  not work you might
+in addition  declare the terminal type before starting me like so:  `TERM=rxvt  me -n` given me
+is you executable  that could be as well defined as an alias in your `.bashrc`
+file for instance like this:
+
+```
+### .bashrc
+alias mec="TERM=rxvt me -n"
+```
+
+
+
 ## Original README
 
 Here the link to the original Jasspa MicroEmacs [README](README).
