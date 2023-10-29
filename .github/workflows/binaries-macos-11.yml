@@ -32,6 +32,7 @@ jobs:
            rm -rf jasspa/contrib           
            ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
            cp me-macos.bin binaries-MacOS-11/
+           cp bfs/bfs binaries-MacOS-11/
            chmod 755 ./me-macos.bin 
            ./me-macos.bin -n -V
            cp README-standalone.md binaries-MacOS-11/
