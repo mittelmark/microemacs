@@ -66,9 +66,12 @@ Just  download an  executable  for your  platform  which matches as closely as
 possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
 On Unix systems you make the file  executable  (chmod 755 filename) and rename
 it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
-Therafter you can run the me executable. More information will be added later.
+Therafter you can run the me executable.  The first thing you have to do is to
+select the right  keyboard  configuration  after  starting your first session.
+Choose teh menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
+tab.
 
-The links  above  comes with an  American  dictionary  embedded.  To use other
+The executables linked  above  come with an embedded American  dictionary.  To use other
 dictionaries  download the dictionary  files for your language from the relase
 page: 
 [https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
