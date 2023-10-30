@@ -157,7 +157,8 @@ started via the cmd  Terminal on Windows. You should use in this case an alias
 like this in your .bashrc
 
 ```bash
-### we assume that you copied the executables
+### add this to your .bashrc
+### we assume that you copied the windows executables
 ### to the bin folder in your msys HOME
 function me {
     if [ $1 == "-n" ]; then
@@ -174,6 +175,7 @@ function me {
 For cygwin like environments like MobaXterm the following did work:
 
 ```bash
+### add this to your .bashrc
 function me {
     if [ $1 == "-n" ]; then
         shift 1

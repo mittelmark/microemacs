@@ -30,5 +30,8 @@ mingw-w32-compile:
 	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
 mingw-w32-run:	
 	cd src && MEPATH=Z:/home/groth/workspace/microemacs/jasspa/macros wine ./.win32mingw-release-mew/mew32.exe
-
+app-image:
+	chmod 755 jme.AppDir/AppRun
+	appimagetool-x86_64.AppImage jme.AppDir
+	./Jasspa_MicroEmacs-x86_64.AppImage -V -n
 

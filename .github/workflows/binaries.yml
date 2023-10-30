@@ -39,13 +39,26 @@ jobs:
         cp bin/bfs.exe binaries-Windows-32/
         cp license.txt binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
-    - name: Upload Artifact GitHub Action
+
+    - name: Make appimage
+      run: |
+        wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
+        chmod 755 appimagetool-x86_64.AppImage
+        ./appimagetool-x86_64.AppImage jme.AppDir
+        
+    - name: Upload Linux binaries
       uses: actions/upload-artifact@v3
       with: 
         name: binaries-Linux-x86_64
         path: binaries-Linux-x86_64
+    - name: Upload Linux Appimgage
+      uses: actions/upload-artifact@v3
+      with: 
+        name: Jasspa_MicroEmacs-x86_64.AppImage
+        path: Jasspa_MicroEmacs-x86_64.AppImage
     - name: Upload Artifact GitHub Action Windows
       uses: actions/upload-artifact@v3
       with: 
         name: binaries-Windows-32
         path: binaries-Windows-32
+    
