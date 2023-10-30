@@ -4,9 +4,9 @@
     "homepage": "https://github.com/mittelmark/microemacs",
     "license": "GPL-2.0-only",
     "architecture": {
-        "32bit": {
+        "32bit": { 
             "url": "https://github.com/mittelmark/microemacs/releases/download/v09.12.21/jme-09.12.21.zip",
-            "hash": "md5:04b1720f76446d748a4d7a2eb398b2f3"
+            "hash": "md5:f51568cc5d57d8b4f61858dbcde2c9ec"
         }
     },
     "extract_dir": "jme-09.12.21",
