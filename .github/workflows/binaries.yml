@@ -19,6 +19,7 @@ jobs:
       run: |
         sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
         sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+        sudo apt install desktop-file-utils
         make me-bin
         make mingw-w32-compile
 
