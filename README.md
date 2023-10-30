@@ -148,6 +148,55 @@ file for instance like this:
 alias mec="TERM=rxvt me -n"
 ```
 
+### Windows Terminal
+
+I usually  recommend  the   [Msys2](https://www.msys2.org)   environment  for
+developers if they have to use the Windows  operating  system. As the provided
+Windows build is a native  Windows build, the console  version of Me09 must be
+started via the cmd  Terminal on Windows. You should use in this case an alias
+like this in your .bashrc
+
+```bash
+### we assume that you copied the executables
+### to the bin folder in your msys HOME
+function me {
+    if [ $1 == "-n" ]; then
+        ## running terminal version
+        shift 1
+        cmd //C `cygpath -wa ~/bin/mec-windows.exe` "${@}"
+        
+    else
+        `cygpath -wa ~/bin/mew-windows.exe` "${@}" &
+    fi
+}
+```
+
+For cygwin like environments like MobaXterm the following did work:
+
+```bash
+function me {
+    if [ $1 == "-n" ]; then
+        shift 1
+        MPATH=`cygpath -wa ~/bin/mec-windows.exe`
+        MPATH=`echo $MPATH | sed 's.\\\./.g'`
+        # MobaXterm fix
+        if [ ! command -v conin &> /dev/null ]
+        then
+            # no conin try this
+            cmd //C $MPATH "${@}"
+        else
+            conin cmd /C $MPATH "${@}"
+        fi
+    else
+        ~/bin/mew-windows.exe "${@}" &
+    fi
+}
+```
+
+In case you are  interested  there might be a chance to create "native" Cygwin
+and          Msys          builds.          Please          create          an
+[issue](https://github.com/mittelmark/microemacs/issues) a the Github page.
+
 
 
 ## Original README
