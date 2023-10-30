@@ -1,79 +1,86 @@
 > -!- document; fill-mode:both; fill-column:78 -!-
 >
 >  Copyright 1998-2009 JASSPA (www.jasspa.com).
+>            2021-2023 Detlef Groth (https://github.com/mittelmark/microemacs)
+> 
+>  License:  GPL (see the file COPYING) 
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <231028.1433>
+>  Last Modified : <231030.1251>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
  
-  [231027] mittelmark: Adding suspend code from Me23 from Steven Phillips code
-  
-  [231024] mittelmark: Extending the Markdown mode by importing Steve's  code from me23
+  [231030] menu fix next and previous menu entry
+           Github action now build as well now on Darwin 20-22,
+           Linux AppImage using Github actions
 
-  [231023] mittelmark: Updating ChangeLog
+  [231029] docu updates, bfs now as well cross compiles
+  
+  [231027] adding suspend code from Me23 from Steven Phillips code
+  
+  [231024] extending the Markdown mode by importing Steve's  code from me23
+
+  [231023] Updating ChangeLog
  
-  [231022] mittelmark:
-           fixing CUA issues, allowing error less backs witches
+  [231022] fixing CUA issues, allowing error less backs witches
            adding font resize support using C-+, C--, C-= for Windows and Linux
            updating version to 2009-12-21 
 
-  [231021] mittelmark: Updating CUA  mapping,  remapping F1 back to menu for console and adding
+  [231021] Updating CUA  mapping,  remapping F1 back to menu for console and adding
            complete-command bindings
 
-  [230928] mittelmark: extending EMF tutorial
+  [230928] extending EMF tutorial
   
-  [230518] mittelmark: fixing parenthese issue in unixterm.c
+  [230518] fixing parenthese issue in unixterm.c
   
-  [230509] mittelmark: small fixes for Ayu Light scheme
+  [230509] small fixes for Ayu Light scheme
   
-  [230427] mittelmark: fixing -n command line argument hang issue in case of macro errors
+  [230427] fixing -n command line argument hang issue in case of macro errors
   
-  [230419] mittelmark: tutorial extension
+  [230419] tutorial extension
   
-  [230415] mittelmark: dict.emf added 
-  
-  [230407] mittelmark: starting tutorial for emf language
-  
-  [230403] mittelmark: adding mymd.emf for illustration
-  
-  [230328] mittelmark: adding imenu.emf file
-  
-  [230328] mittelmark: Markdown date updates for YAML header for YYYY-MM-DD HH:MM
-    
-  [230130] mittelmark: extending py.eaf and tcl.eaf
-
-  [221217] mittelmark: extending Python template and more snippets
-  
-  [221007] mittelmark: adding Rd (R documentation) file hooks
-  
-  [220611] mittelmark: adding more R abbreviations and keywords
-
-  [220302] mittelmark: adding more R abbreviations
-  
-  [220212] mittelmark: extending Python abrreviation file
-  
-  [220205] mittelmark: extending Tcl abbreviation file
-  
-  [211207] mittelmark: 
-           bfs building now working for Linux and Win32 
+  [230415] dict.emf added 
+          
+  [230407] starting tutorial for emf language
+          
+  [230403] adding mymd.emf for illustration
+          
+  [230328] adding imenu.emf file
+          
+  [230328] Markdown date updates for YAML header for YYYY-MM-DD HH:MM
+          
+  [230130] extending py.eaf and tcl.eaf
+          
+  [221217] extending Python template and more snippets
+          
+  [221007] adding Rd (R documentation) file hooks
+          
+  [220611] adding more R abbreviations and keywords
+          
+  [220302] adding more R abbreviations
+          
+  [220212] extending Python abrreviation file
+          
+  [220205] extending Tcl abbreviation file
+          
+  [211207] bfs building now working for Linux and Win32 
            Github action for bfs building
             
-  [211206] mittelmark: adding spelling dictionaries
+  [211206] adding spelling dictionaries
    
-  [211203] mittelmark: 
-           Update on bfs, README, binaries
+  [211203] update on bfs, README, binaries
            .bashrc now with filehook shell
     
-  [211124] mittelmark: adding White on Black Pastel scheme
+  [211124] adding White on Black Pastel scheme
   
-  [211122] mittelmark: R comment fix, more R file patterns
+  [211122] R comment fix, more R file patterns
     
-  [211121] mittelmark: 
-           compiler fix for for strerror
+  [211121] compiler fix for for strerror
            new themes Ayu Light and Dracula
            adding hkmd.emf for Markdown support
            adding Python template  
+  
+  [2021-23] changes now by mittelmark https://github.com/mittelmark/microemacs
 
   [160407] rmagee: extending Go hooks (goimport, gofmt, gobuild)
 
