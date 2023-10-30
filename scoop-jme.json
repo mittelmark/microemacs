@@ -1,0 +1,30 @@
+{
+    "version": "09.12.21",
+    "description": "Jasspa MicroEmacs like text editor with low footprint for terminal and with a graphical user interface.",
+    "homepage": "https://github.com/mittelmark/microemacs",
+    "license": "GPL-2.0-only",
+    "architecture": {
+        "32bit": {
+            "url": "https://github.com/mittelmark/microemacs/releases/download/v09.12.21/jme-win32.zip",
+            "hash": "md5:22605ca1bf656103d0b9655ed7a41590"
+        }
+    },
+    "extract_dir": "jme-09.12.21",
+    "bin": ["jmew.exe", "jmec.exe"],
+    "shortcuts": [
+        [
+            "jmew.exe"
+        ]
+    ],    
+    "checkver": {
+        "github": "https://github.com/github/microemacs"
+    },
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "url": "https://github.com/mittelmark/microemacs/releases/download/v$version/jme-win32.zip"
+            }
+        },
+        "extract_dir": "jme-$version"
+    }
+}
