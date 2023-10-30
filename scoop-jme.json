@@ -6,7 +6,7 @@
     "architecture": {
         "32bit": { 
             "url": "https://github.com/mittelmark/microemacs/releases/download/v09.12.21/jme-09.12.21.zip",
-            "hash": "43c63f9ddc3825f940429e6e53c6f1932e1ba39c76f5d2d4014d25eefdbfaf62"
+            "hash": "0d1e6d577aa3516a4dbec42441836e8c9bb4b68bdd36ce7e3a0259b7194c71da"
         }
     },
     "extract_dir": "jme-09.12.21",
