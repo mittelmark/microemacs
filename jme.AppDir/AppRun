@@ -2,7 +2,7 @@
 HERE="$(dirname "$(readlink -f "${0}")")"
 EXEC="${HERE}/usr/bin/jme" 
 export LD_LIBRARY_PATH="${HERE}/usr/lib64"
-if [ $1 == "-n" ]; then
+if [ "$1" == "-n" ]; then
     export TERM=rxvt
     exec  $EXEC "${@}"
 else
