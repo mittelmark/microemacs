@@ -45,19 +45,21 @@ build is folded by the indicated three dots:
 
 There is a stand alone single file executable build for the following platforms here: 
 
-* [Jasspa_MicroEmacs-x86_64.AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage)
-   - Linux AppImage which should work ion Debian, Ubuntu, Fedora and probably others
-* [Linux-Fedora-30-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-30.bin)
-* [Linux-Fedora-38-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-38.bin)
-* [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-18.bin)
-* [Linux-Ubuntu-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-20.bin)
-* [MacOS-Darwin-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-20.bin)
-* [MacOS-Darwin-21-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-21.bin)
-* [MacOS-Darwin-22-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-22.bin)
-* [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows.exe)
-* [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows.exe)
-
-The Windows 32 bit executable should work on 32 and 64 Windows systems.
+* Linux 64bit
+    * [Jasspa_MicroEmacs-x86_64.AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage) -
+        Linux  AppImage  which should work on Debian,  Ubuntu, Fedora and probably
+        others 64bit Linuxes as well
+    * [Linux-Fedora-30-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-30.bin)
+    * [Linux-Fedora-38-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-38.bin)
+    * [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-18.bin)
+    * [Linux-Ubuntu-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-20.bin)
+* MacOS 64bit
+    * [MacOS-Darwin-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-20.bin)
+    * [MacOS-Darwin-21-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-21.bin)
+    * [MacOS-Darwin-22-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-22.bin)
+* Windows 32 and 64bit
+    * [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows.exe)
+    * [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows.exe)
 
 Just  download an  executable  for your  platform  which matches as closely as
 possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
