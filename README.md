@@ -58,8 +58,10 @@ There is a stand alone single file executable build for the following platforms 
     * [MacOS-Darwin-21-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-21.bin)
     * [MacOS-Darwin-22-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-macos-darwin-22.bin)
 * Windows 32 and 64bit
-    * [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows.exe)
-    * [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows.exe)
+    * Install  using the scoop  package  manager on Windows  like this  `scoop install -a 32bit https://raw.githubusercontent.com/mittelmark/microemacs/master/scoop-jme.json`
+    * Downloading the single files:
+        * [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows.exe)
+        * [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows.exe)
 * Older builds for other OS are provided here [http://www.jasspa.com/](http://www.jasspa.com/)
 
 Just  download an  executable  for your  platform  which matches as closely as

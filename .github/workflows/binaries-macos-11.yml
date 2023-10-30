@@ -22,9 +22,11 @@ jobs:
            brew install make
            cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-10
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10
+           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10 BTYPE=c
            cd ..
            mkdir binaries-MacOS-11
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-11/
+           cp src/.macos32gcc-release-mec/mec binaries-MacOS-11/           
            tar cfvz jasspa.tar.gz jasspa/*
            cp jasspa.tar.gz binaries-MacOS-11/
            rm -rf jasspa/company
