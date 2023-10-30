@@ -45,7 +45,9 @@ jobs:
       run: |
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
         chmod 755 appimagetool-x86_64.AppImage
+        chmod 755 jme.AppDir/AppRun
         ./appimagetool-x86_64.AppImage jme.AppDir
+        
         
     - name: Upload Linux binaries
       uses: actions/upload-artifact@v3
