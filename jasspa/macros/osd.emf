@@ -487,8 +487,8 @@ osd 8 70  "-"
 osd 8 80  ""  "\HOne Window          C-x 1"       f delete-other-windows
 osd 8 90  ""  "\HDelete Window       C-x 0"       f delete-window
 osd 8 100 "-"
-osd 8 110 ""  "\HPrevious Window     C-x C-p"     f previous-window
-osd 8 120 ""  "\HNext Window         C-x C-o"     f next-window
+osd 8 110 ""  "\HPrevious Window     C-x p"     f previous-window
+osd 8 120 ""  "\HNext Window         C-x o"     f next-window
 !if &and &not &band $system 0x01 &opt "mwf"
     ; running a version that can support multiple frames
     osd 8 150 "-"
