@@ -10,10 +10,10 @@
         }
     },
     "extract_dir": "jme-09.12.21",
-    "bin": ["jmew.exe", "jmec.exe"],
+    "bin": [ "jmew.exe", "jmec.exe" ],
     "shortcuts": [
         [
-            "jmew.exe"
+            "Jasspa\\MicroEmacs", "jmew.exe"
         ]
     ],    
     "checkver": {
