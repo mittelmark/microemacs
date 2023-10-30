@@ -60,12 +60,21 @@ There is a stand alone single file executable build for the following platforms 
 * Windows 32 and 64bit
     * [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows.exe)
     * [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows.exe)
+* Older builds for other OS are provided here [http://www.jasspa.com/](http://www.jasspa.com/)
 
 Just  download an  executable  for your  platform  which matches as closely as
 possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
 On Unix systems you make the file  executable  (chmod 755 filename) and rename
 it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
 Therafter you can run the me executable. More information will be added later.
+
+The links  above  comes with an  American  dictionary  embedded.  To use other
+dictionaries  download the dictionary  files for your language from the relase
+page: 
+[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
+and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
+instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
+dictionary.
 
 ## Pros and Cons of Jasspa MicroEmacs
 
