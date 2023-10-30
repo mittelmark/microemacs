@@ -34,11 +34,13 @@ jobs:
         cp src/.linux32gcc-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
         cp me-linux.bin binaries-Linux-x86_64/me-ubuntu-20.bin
         cp license.txt binaries-Linux-x86_64/
+        cp COPYING binaries-Linux-x86_64/
         cp README-standalone.md binaries-Linux-x86_64/
         cp me-windows.exe binaries-Windows-32/
         cp mec-windows.exe binaries-Windows-32/
         cp bin/bfs.exe binaries-Windows-32/
         cp license.txt binaries-Windows-32/
+        cp COPYING binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
 
     - name: Make appimage
@@ -46,8 +48,8 @@ jobs:
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
         chmod 755 appimagetool-x86_64.AppImage
         chmod 755 jme.AppDir/AppRun
+        ./bin/bfs -a bin/mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa
         ./appimagetool-x86_64.AppImage jme.AppDir
-        
         
     - name: Upload Linux binaries
       uses: actions/upload-artifact@v3
