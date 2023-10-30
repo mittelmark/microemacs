@@ -1,4 +1,3 @@
-//  scoop package file for Windows
 {
     "version": "09.12.21",
     "description": "Jasspa MicroEmacs like text editor with low footprint for terminal and with a graphical user interface.",
