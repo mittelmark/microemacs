@@ -45,6 +45,8 @@ build is folded by the indicated three dots:
 
 There is a stand alone single file executable build for the following platforms here: 
 
+* [Jasspa_MicroEmacs-x86_64.AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage)
+   - Linux AppImage which should work ion Debian, Ubuntu, Fedora and probably others
 * [Linux-Fedora-30-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-30.bin)
 * [Linux-Fedora-38-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-fedora-38.bin)
 * [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/me-linux-ubuntu-18.bin)
