@@ -3,8 +3,20 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 EXEC="${HERE}/usr/bin/jme" 
 export LD_LIBRARY_PATH="${HERE}/usr/lib64"
 if [ "$1" == "-n" ]; then
-    export TERM=rxvt
-    exec  $EXEC "${@}"
+    TERM=rxvt $EXEC "${@}"
 else
-    exec $EXEC "${@}"
-fi
+    if [ -n $DISPLAY ]; then
+        if [ ! -d ~/.jasspa/ubuntu-fonts ]; then
+            cp -r "${HERE}/usr/share/ubuntu-fonts" ~/.jasspa/
+        fi
+        res=`xlsfonts | grep -E "ubuntu mono-bold.+17"`
+        if [ ! "$res" != "" ]; then
+            xset +fp ~/.jasspa/ubuntu-fonts/
+            xset fp rehash
+        fi
+        $EXEC "${@}"
+    else
+        TERM=xterm-256colors $EXEC "${0}"
+    fi
+fi    
+
