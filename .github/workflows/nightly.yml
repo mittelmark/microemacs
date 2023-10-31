@@ -40,7 +40,7 @@ jobs:
         
         cp jasspa.zip binaries-Linux-x86_64/
         cp jasspa.zip binaries-Windows-32/
-        cp jasspa.zip $(OSL)/        
+        cp jasspa.zip $OSL/        
         cp COPYING binaries-Linux-x86_64/
         cp license.txt binaries-Linux-x86_64/
         cp README-standalone.md binaries-Linux-x86_64/
