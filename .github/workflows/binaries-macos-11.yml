@@ -41,7 +41,7 @@ jobs:
            cp faq.txt license.txt binaries-MacOS-11/
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
-           TERM=xterm ./me-macos.bin @platform.emf
+           TERM=xterm-256color ./binaries-MacOS-11/mec-macos.bin @platform.emf
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
