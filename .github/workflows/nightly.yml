@@ -33,15 +33,15 @@ jobs:
     
     - name: Make me-standalone binary
       run: |
-        mkdir $OSL
-        mkdir $OSW
+        mkdir "$OSL"
+        mkdir "$OSW"
         zip jasspa.zip jasspa/*
         
-        cp jasspa.zip COPYING license.txt README-standalone.md  $OSL/
-        cp jasspa.zip COPYING license.txt README-standalone.md  $OSW/
-        cp bfs/bfs $OSL/
-        cp src/.linux32gcc-release-mecw/mecw $OSW/mecw-ubuntu-20
-        cp me-linux.bin $OSL/mecw-ubuntu-20.bin
+        cp jasspa.zip COPYING license.txt README-standalone.md  "$OSL/"
+        cp jasspa.zip COPYING license.txt README-standalone.md  "$OSW/"
+        cp bfs/bfs "$OSL/"
+        cp src/.linux32gcc-release-mecw/mecw "$OSW/mecw-ubuntu-20"
+        cp me-linux.bin "$OSL/mecw-ubuntu-20.bin"
         cp bin/bfs.exe $OSW/bfs.exe
         md5sum $OSW/bfs.exe > $OSW/bfs.md5
         cp me-windows.exe $OSW/jme.exe
