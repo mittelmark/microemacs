@@ -3,11 +3,8 @@ name: Test-Workflow
 on:
   workflow_dispatch
 
-env:
-  DAY_OF_WEEK: Monday
-
 jobs:
-  greeting_job:
+  linux-build
     runs-on: ubuntu-latest
     env:
       Greeting: Hello
@@ -17,13 +14,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: make bfs binary
         run:  make bfs-bin
-    - name: make me binary
-      run: |
-        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
-        sudo apt install libz-mingw-w64 libz-mingw-w64-dev
-        sudo apt install desktop-file-utils
-        make me-bin
-        make mingw-w32-compile
+      - name: make me binary
+        run: |
+          sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+          sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+          sudo apt install desktop-file-utils
+          make me-bin
+          make mingw-w32-compile
       - name: Make me-standalone binary
         run: |
           mkdir "$OSL"
