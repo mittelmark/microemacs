@@ -35,8 +35,8 @@ jobs:
            ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o binaries-MacOS-11/mecw-macos.bin ./jasspa
            ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o binaries-MacOS-11/mec-macos.bin ./jasspa           
            cp bfs/bfs binaries-MacOS-11/
-           chmod 755 ./me-macos.bin 
-           ./me-macos.bin -n -V
+           chmod 755 binaries-MacOS-11/mec-macos.bin
+           ./binaries-MacOS-11/mec-macos.bin  -n -V
            cp README-standalone.md binaries-MacOS-11/
            cp faq.txt license.txt binaries-MacOS-11/
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
