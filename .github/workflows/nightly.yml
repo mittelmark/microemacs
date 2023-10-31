@@ -7,7 +7,9 @@ on:
 
 permissions:
   contents: read
-
+env:
+  OSL: ubuntu-20-x86_64
+  WSL: windows-32
 jobs:
   linux:
 
@@ -33,8 +35,6 @@ jobs:
       run: |
         mkdir binaries-Linux-x86_64
         mkdir binaries-Windows-32
-        export OSL=`ubuntu-20-x86_64`
-        export OSW=`windows-32`
         mkdir $OSL
         zip jasspa.zip jasspa/*
         
