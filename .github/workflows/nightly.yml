@@ -33,15 +33,18 @@ jobs:
       run: |
         mkdir binaries-Linux-x86_64
         mkdir binaries-Windows-32
+        export OSL=`ubuntu-20-x86_64`
+        export OSW=`windows-32`
+        mkdir $OSL
         zip jasspa.zip jasspa/*
         
         cp jasspa.zip binaries-Linux-x86_64/
         cp jasspa.zip binaries-Windows-32/
-        
+        cp jasspa.zip $(OSL)/        
         cp COPYING binaries-Linux-x86_64/
         cp license.txt binaries-Linux-x86_64/
         cp README-standalone.md binaries-Linux-x86_64/
-        cp bfs/bfs binaries-Linux-x86_64/
+        cp bfs/bfs binaries-Linux-x86_64/bfs
         cp src/.linux32gcc-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
         cp me-linux.bin binaries-Linux-x86_64/mecw-ubuntu-20.bin
         cp COPYING binaries-Windows-32/
@@ -85,6 +88,11 @@ jobs:
       with: 
         name: binaries-Windows-32.md5
         path: binaries-Windows-32.md5
+    - name: Upload Ubuntu files
+      uses: actions/upload-artifact@v3
+      with: 
+        name: $(OSL)
+        path: $(OSL)
 
   macos:
     runs-on: macos-11
