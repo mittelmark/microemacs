@@ -36,9 +36,7 @@ set-variable %fonts "|-*-courier-bold-r-*-*-10-*-*-*-*-*-iso8859-1|"
 set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-12-*-*-*-*-*-iso8859-1|"
 set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-14-*-*-*-*-*-iso8859-1|"
 set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-17-*-*-*-*-*-iso8859-1|"
-set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-18-*-*-*-*-*-iso8859-1|"
 set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-20-*-*-*-*-*-iso8859-1|"
-set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-24-*-*-*-*-*-iso8859-1|"
 set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-25-*-*-*-*-*-iso8859-1|"
 set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-34-*-*-*-*-*-iso8859-1|"
 set-variable %font-index 3
@@ -53,6 +51,8 @@ set-variable %font-index 3
     global-unbind-key "C-z"
     0 global-bind-key suspend-emacs "C-z"
 !else
+    ; TODO: fix if the font was deleted!
+    ; try xset fp default
     !if &not &seq &set #l0 &reg &spr "/history/%s/font" $platform "" ""
         change-font #l0
     !endif
@@ -77,25 +77,59 @@ set-variable %font-index 3
             !endif
         !endif
     !emacro
-    define-macro change-font-toggle
-        !if &sin "courier" %fonts
-            set-variable %fonts &rep %fonts "*-courier" "*-lucidatypewriter"
-        !else
-            set-variable %fonts &rep %fonts "*-lucidatypewriter" "*-courier" 
+    define-macro change-font-courier
+        set-variable #l0 0
+        !if &sin "medium" %fonts
+            set-variable #l0 1
+        !endif
+        set-variable %fonts "|-*-courier-bold-r-*-*-11-*-*-*-*-*-iso8859-1|"
+        set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-14-*-*-*-*-*-iso8859-1|"
+        set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-17-*-*-*-*-*-iso8859-1|"
+        set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-20-*-*-*-*-*-iso8859-1|"
+        set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-25-*-*-*-*-*-iso8859-1|"
+        set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-34-*-*-*-*-*-iso8859-1|"
+        !if #l0
+            set-variable %fonts &rep %fonts "bold" "medium"
         !endif
         set-variable #l0 &lget %fonts %font-index 
         change-font #l0
     !emacro
-    define-macro change-font-toggle-bold
-        !if &sin "bold" %fonts
-            set-variable %fonts &rep %fonts "-bold-" "-medium-"
-        !else
-            set-variable %fonts &rep %fonts "-medium-" "-bold-" 
+    define-macro change-font-lucida
+        change-font-courier
+        set-variable %fonts &rep %fonts "*-courier" "*-lucidatypewriter"
+        set-variable #l0 &lget %fonts %font-index 
+        change-font #l0
+    !emacro
+    
+    define-macro change-font-ubuntu 
+        set-variable #l0 0
+        !if &sin "medium" %fonts
+            set-variable #l0 1
+        !endif
+        set-variable %fonts "|-freetype-ubuntu mono-bold-r-normal--11-80-100-100-p-52-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--14-100-100-100-p-66-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--17-120-100-100-p-78-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--19-140-100-100-p-87-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--22-160-100-100-p-100-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--25-180-100-100-p-113-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--30-220-100-100-p-139-iso10646-1|"
+        set-variable %fonts &cat %fonts "-freetype-ubuntu mono-bold-r-normal--33-240-100-100-p-148-iso10646-1|"
+        !if #l0
+            set-variable %fonts &rep %fonts "bold" "medium"
         !endif
         set-variable #l0 &lget %fonts %font-index 
         change-font #l0
     !emacro
     
+    define-macro change-font-bold
+        !if &sin "medium" &lget %fonts 1
+            set-variable %fonts &rep %fonts "medium" "bold"
+        !else
+            set-variable %fonts &rep %fonts "bold" "medium"
+        !endif
+        set-variable #l0 &lget %fonts %font-index 
+        change-font #l0
+    !emacro
     1 global-bind-key change-font-size "C-+"
     0 global-bind-key change-font-size "C-="
     -1 global-bind-key change-font-size "C--"

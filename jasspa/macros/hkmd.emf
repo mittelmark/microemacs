@@ -29,7 +29,7 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
 !if &sin "f" .fhook-md.setup
   ; setup emf collapsing
   set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
-  set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\)"
+  set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\|\\'\\)"
   set-variable .fhook-md.collapse-mnext "-1"
 !endif
 
@@ -72,10 +72,10 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
       hilight .hilight.md 0x180 &spr "```{\\.%s[, ][^}]+}" #l1 &ind &cat ".hilight." #l0 .scheme.hide
       hilight &ind &cat ".hilight." #l0 0x180 "```" .hilight.md .scheme.hide
     !else
-      hilight .hilight.md 0x104 &spr "```{%s}" #l0 "```" "" .scheme.quote
-      hilight .hilight.md 0x104 &spr "```{\\.%s}" #l0 "```" "" .scheme.quote
-      hilight .hilight.md 0x104 &spr "```{%s[, ][^}]+}" #l0 "```" "" .scheme.quote
-      hilight .hilight.md 0x104 &spr "```{\\.%s[, ][^}]+}" #l0 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{%s}" #l1 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{\\.%s}" #l1 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{%s[, ][^}]+}" #l1 "```" "" .scheme.quote
+      hilight .hilight.md 0x104 &spr "```{\\.%s[, ][^}]+}" #l1 "```" "" .scheme.quote
     !endif
   !emacro
   md-add-file-support "tcl"
