@@ -21,13 +21,12 @@ jobs:
           sudo apt install desktop-file-utils
           make me-bin
           make mingw-w32-compile
-      - name: make me-standalone binary
-        run: make me-bfs-bin
+          make me-bfs-bin          
       - name: prepare folders with binaries
         run: |
           mkdir "$OSL"
           mkdir "$OSW"
-          zip jasspa.zip jasspa/*
+          zip -r jasspa.zip jasspa/*
           cp jasspa.zip COPYING license.txt README-standalone.md  "$OSL/"
           cp jasspa.zip COPYING license.txt README-standalone.md  "$OSW/"
           cp bfs/bfs "$OSL/"
