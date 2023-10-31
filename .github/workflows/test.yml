@@ -1,3 +1,5 @@
+name: Test-Workflow
+
 on:
   workflow_dispatch
 
@@ -10,7 +12,7 @@ jobs:
     env:
       Greeting: Hello
       OSL: ubuntu-20-x86_64
-      WSL: windows-32
+      OSW: windows-32
     steps:
       - name: "Say Hello Mona it's Monday"
         run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! OSL=$OSL OSW=$OSW"
@@ -21,3 +23,8 @@ jobs:
         env:
           First_Name: Mona
      
+      - name: Make me-standalone binary
+        run: |
+          mkdir "$OSL"
+          mkdir "$OSW"
+          ls 
