@@ -15,15 +15,20 @@ jobs:
       OSW: windows-32
     steps:
       - uses: actions/checkout@v3
-      - name: "Say Hello Mona it's Monday 2"
-        run: echo "$Greeting $First_Name again. Today is $DAY_OF_WEEK!"
-        env:
-          First_Name: Mona
       - name: make bfs binary
         run:  make bfs-bin
+    - name: make me binary
+      run: |
+        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+        sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+        sudo apt install desktop-file-utils
+        make me-bin
+        make mingw-w32-compile
       - name: Make me-standalone binary
         run: |
           mkdir "$OSL"
           mkdir "$OSW"
           zip jasspa.zip jasspa/*
           cp jasspa.zip COPYING license.txt README-standalone.md  "$OSL/"
+          cp jasspa.zip COPYING license.txt README-standalone.md  "$OSW/"
+          cp bfs/bfs "$OSL/"
