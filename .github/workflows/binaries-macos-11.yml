@@ -32,8 +32,8 @@ jobs:
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
-           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o binaries-MaxOS-11/mecw-macos.bin ./jasspa
-           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o binaries-MaxOS-11/mec-macos.bin ./jasspa           
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o binaries-MacOS-11/mecw-macos.bin ./jasspa
+           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o binaries-MacOS-11/mec-macos.bin ./jasspa           
            cp bfs/bfs binaries-MacOS-11/
            chmod 755 ./me-macos.bin 
            ./me-macos.bin -n -V
