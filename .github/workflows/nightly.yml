@@ -47,7 +47,7 @@ jobs:
         cp COPYING binaries-Windows-32/
         cp license.txt binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
-        cp bin/bfs.exe binaries-Windows-32/
+        cp bin/bfs.exe binaries-Windows-32/y
         cp me-windows.exe binaries-Windows-32/jme.exe
         cp mec-windows.exe binaries-Windows-32/jmc.exe
         zip binaries-Windows-32.zip binaries-Windows-32/*
@@ -80,7 +80,7 @@ jobs:
       with: 
         name: binaries-Windows-32.zip
         path: binaries-Windows-32.zip
-    - name: Upload Artifact GitHub Action Windows
+    - name: Upload Artifact GitHub Action Windows md5
       uses: actions/upload-artifact@v3
       with: 
         name: binaries-Windows-32.md5
