@@ -33,28 +33,21 @@ jobs:
     
     - name: Make me-standalone binary
       run: |
-        mkdir binaries-Linux-x86_64
-        mkdir binaries-Windows-32
         mkdir $OSL
+        mkdir $OSW
         zip jasspa.zip jasspa/*
         
-        cp jasspa.zip binaries-Linux-x86_64/
-        cp jasspa.zip binaries-Windows-32/
-        cp jasspa.zip $OSL/        
-        cp COPYING binaries-Linux-x86_64/
-        cp license.txt binaries-Linux-x86_64/
-        cp README-standalone.md binaries-Linux-x86_64/
-        cp bfs/bfs binaries-Linux-x86_64/bfs
-        cp src/.linux32gcc-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
-        cp me-linux.bin binaries-Linux-x86_64/mecw-ubuntu-20.bin
-        cp COPYING binaries-Windows-32/
-        cp license.txt binaries-Windows-32/
-        cp README-standalone.md binaries-Windows-32/
-        cp bin/bfs.exe binaries-Windows-32/y
-        cp me-windows.exe binaries-Windows-32/jme.exe
-        cp mec-windows.exe binaries-Windows-32/jmc.exe
-        zip binaries-Windows-32.zip binaries-Windows-32/*
-        md5sum binaries-Windows-32.zip > binaries-Windows-32.md5
+        cp jasspa.zip COPYING license.txt README-standalone.md  $OSL/
+        cp jasspa.zip COPYING license.txt README-standalone.md  $OSW/
+        cp bfs/bfs $OSL/
+        cp src/.linux32gcc-release-mecw/mecw $OSW/mecw-ubuntu-20
+        cp me-linux.bin $OSL/mecw-ubuntu-20.bin
+        cp bin/bfs.exe $OSW/bfs.exe
+        md5sum $OSW/bfs.exe > $OSW/bfs.md5
+        cp me-windows.exe $OSW/jme.exe
+        md5sum $OSW/jme.exe > $OSW/jme.md5
+        cp mec-windows.exe $OSW/jmc.exe
+        md5sum $OSW/jmc.exe > $OSW/jmc.md5
     - name: Make appimage
       run: |
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
@@ -72,12 +65,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with: 
         name: Jasspa_MicroEmacs-x86_64.AppImage
-        path: Jasspa_MicroEmacs-x86_64.AppImage
-    - name: Upload Linux Appimage Md5 hash
-      uses: actions/upload-artifact@v3
-      with: 
-        name: Jasspa_MicroEmacs-x86_64.Appimage.md5
-        path: Jasspa_MicroEmacs-x86_64.Appimage.md5
+        path: Jasspa_MicroEmacs-x86_64.AppImage Jasspa_MicroEmacs-x86_64.AppImage.md5
     - name: Upload Artifact GitHub Action Windows
       uses: actions/upload-artifact@v3
       with: 
