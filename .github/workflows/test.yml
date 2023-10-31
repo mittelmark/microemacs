@@ -14,6 +14,7 @@ jobs:
       OSL: ubuntu-20-x86_64
       OSW: windows-32
     steps:
+    - uses: actions/checkout@v3
       - name: "Say Hello Mona it's Monday"
         run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! OSL=$OSL OSW=$OSW"
         env:
@@ -22,7 +23,8 @@ jobs:
         run: echo "$Greeting $First_Name again. Today is $DAY_OF_WEEK!"
         env:
           First_Name: Mona
-     
+      - name: make bfs binary
+        run:  make bfs-bin
       - name: Make me-standalone binary
         run: |
           mkdir "$OSL"
