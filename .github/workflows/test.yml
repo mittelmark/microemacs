@@ -21,7 +21,9 @@ jobs:
           sudo apt install desktop-file-utils
           make me-bin
           make mingw-w32-compile
-      - name: Make me-standalone binary
+      - name: make me-standalone binary
+        run: make me-bfs-bin
+      - name: prepare folders with binaries
         run: |
           mkdir "$OSL"
           mkdir "$OSW"
@@ -31,6 +33,7 @@ jobs:
           cp bfs/bfs "$OSL/"
           cp src/.linux32gcc-release-mecw/mecw "$OSL/mecw-ubuntu-20"
           cp me-linux.bin "$OSL/mecw-ubuntu-20.bin"
+          md5sum $OSL/mecw-ubuntu-20.bin > $OSL/mecw-ubuntu-20.md5
           cp bin/bfs.exe $OSW/bfs.exe
           md5sum $OSW/bfs.exe > $OSW/bfs.md5
           cp me-windows.exe $OSW/jme.exe
