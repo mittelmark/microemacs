@@ -73,8 +73,8 @@ jobs:
     - name: Upload Linux Appimage Md5 hash
       uses: actions/upload-artifact@v3
       with: 
-        name: Jasspa_MicroEmacs-x86_64.md5
-        path: Jasspa_MicroEmacs-x86_64.md5
+        name: Jasspa_MicroEmacs-x86_64.Appimage.md5
+        path: Jasspa_MicroEmacs-x86_64.Appimage.md5
     - name: Upload Artifact GitHub Action Windows
       uses: actions/upload-artifact@v3
       with: 
