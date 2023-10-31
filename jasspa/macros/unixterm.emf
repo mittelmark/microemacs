@@ -32,12 +32,15 @@ add-file-hook ".C" fhook-cpp
 ;set-variable %fonts &cat %fonts "-freetype-courier prime-medium-r-normal--33-240-100-100-p-157-iso10646-1|"
 
 ; TODO check on more platforms
-set-variable %fonts "|-adobe-courier-bold-r-normal--11-80-100-100-m-60-iso8859-1|"
-set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--14-100-100-100-m-90-iso8859-1|"
-set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--17-120-100-100-m-100-iso8859-1|"
-set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--20-140-100-100-m-110-iso8859-1|"
-set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--25-180-100-100-m-150-iso8859-1|"
-set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--34-240-100-100-m-200-iso8859-1|"
+set-variable %fonts "|-*-courier-bold-r-*-*-10-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-12-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-14-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-17-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-18-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-20-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-24-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-25-*-*-*-*-*-iso8859-1|"
+set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-34-*-*-*-*-*-iso8859-1|"
 set-variable %font-index 3
 
 !if &band $system 0x01
@@ -74,6 +77,25 @@ set-variable %font-index 3
             !endif
         !endif
     !emacro
+    define-macro change-font-toggle
+        !if &sin "courier" %fonts
+            set-variable %fonts &rep %fonts "*-courier" "*-lucidatypewriter"
+        !else
+            set-variable %fonts &rep %fonts "*-lucidatypewriter" "*-courier" 
+        !endif
+        set-variable #l0 &lget %fonts %font-index 
+        change-font #l0
+    !emacro
+    define-macro change-font-toggle-bold
+        !if &sin "bold" %fonts
+            set-variable %fonts &rep %fonts "-bold-" "-medium-"
+        !else
+            set-variable %fonts &rep %fonts "-medium-" "-bold-" 
+        !endif
+        set-variable #l0 &lget %fonts %font-index 
+        change-font #l0
+    !emacro
+    
     1 global-bind-key change-font-size "C-+"
     0 global-bind-key change-font-size "C-="
     -1 global-bind-key change-font-size "C--"

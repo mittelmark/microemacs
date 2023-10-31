@@ -36,7 +36,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;add-file-hook ".h .def"  fhook-cpp 
 
-!if &seq $platform "linux"
+1000 ml-write &sin "this is" "|this is a string|hello|"
+!if &lfind "|linux|darwin|" %platform 
     ; two possible font lists you might use on a Linux X11 system 
     ; try to uncomment either the first or the second list on Linux
     ; then use Ctrl-+ and Ctrl-- or Ctrl-= to change the font sizes, the Ctrl-= uses the
@@ -46,24 +47,28 @@
     ; alternatively you might use a tool like xfontsel to select some fonts
     ; misc-fixed-medium (too small for high resolutions but usually on most systems)
     ;set-variable %fonts "|-misc-fixed-medium-r-normal--8-80-75-75-c-50-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--10-100-75-75-c-60-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--13-120-75-75-c-70-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--14-130-75-75-c-70-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--18-120-100-100-c-90-iso8859-1|"
-    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--10-*-*-*-*-*-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--13-*-*-*-*-*-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--13-*-*-*-*-*-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--14-*-*-*-*-*-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--15-*-*-*-*-*-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--18-*-*-*-*-*-iso8859-1|"
+    ;set-variable %fonts &cat %fonts "-misc-fixed-medium-r-normal--20-*-*-*-*-*-iso8859-1|"
     
+    ; lucida-type-writer should work as well
     ; adobe-courier-bold - wide range of character sizes
     ; found with find /usr -name "fonts.dir" | xargs cat |  grep pcf  | grep -Eo '.-adobe-courier-.+-r-.+iso8859-1$'
     ; replace bold with medium to get non-bold fonts
     ; uncomment if Ctrl-+, Ctrl-- and Ctrl-= do not work
-    set-variable %fonts "|-adobe-courier-bold-r-normal--11-80-100-100-m-60-iso8859-1|"
-    set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--14-100-100-100-m-90-iso8859-1|"
-    set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--17-120-100-100-m-100-iso8859-1|"
-    set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--20-140-100-100-m-110-iso8859-1|"
-    set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--25-180-100-100-m-150-iso8859-1|"
-    set-variable %fonts &cat %fonts "-adobe-courier-bold-r-normal--34-240-100-100-m-200-iso8859-1|"
+    set-variable %fonts "|-*-courier-bold-r-*-*-10-*-*-*-*-*-iso8859-1|"
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-12-*-*-*-*-*-iso8859-1|"    
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-14-*-*-*-*-*-iso8859-1|"
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-17-*-*-*-*-*-iso8859-1|"
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-18-*-*-*-*-*-iso8859-1|"    
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-20-*-*-*-*-*-iso8859-1|"
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-24-*-*-*-*-*-iso8859-1|"    
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-25-*-*-*-*-*-iso8859-1|"
+    set-variable %fonts &cat %fonts "-*-courier-bold-r-*-*-34-*-*-*-*-*-iso8859-1|"
     ; now the list element from the font list above which should be the default font access with C-=
     set-variable %font-index 3 
 !endif
