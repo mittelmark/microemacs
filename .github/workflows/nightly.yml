@@ -43,7 +43,7 @@ jobs:
         cp README-standalone.md binaries-Linux-x86_64/
         cp bfs/bfs binaries-Linux-x86_64/
         cp src/.linux32gcc-release-mecw/mecw binaries-Linux-x86_64/mecw-ubuntu-20
-        cp me-linux.bin binaries-Linux-x86_64/me-ubuntu-20.bin
+        cp me-linux.bin binaries-Linux-x86_64/mecw-ubuntu-20.bin
         cp COPYING binaries-Windows-32/
         cp license.txt binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
@@ -70,11 +70,21 @@ jobs:
       with: 
         name: Jasspa_MicroEmacs-x86_64.AppImage
         path: Jasspa_MicroEmacs-x86_64.AppImage
+    - name: Upload Linux Appimage Md5 hash
+      uses: actions/upload-artifact@v3
+      with: 
+        name: Jasspa_MicroEmacs-x86_64.md5
+        path: Jasspa_MicroEmacs-x86_64.md5
     - name: Upload Artifact GitHub Action Windows
       uses: actions/upload-artifact@v3
       with: 
         name: binaries-Windows-32.zip
         path: binaries-Windows-32.zip
+    - name: Upload Artifact GitHub Action Windows
+      uses: actions/upload-artifact@v3
+      with: 
+        name: binaries-Windows-32.md5
+        path: binaries-Windows-32.md5
 
   macos:
 
