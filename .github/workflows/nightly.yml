@@ -48,9 +48,10 @@ jobs:
         cp license.txt binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
         cp bin/bfs.exe binaries-Windows-32/
-        cp me-windows.exe binaries-Windows-32/
-        cp mec-windows.exe binaries-Windows-32/
-
+        cp me-windows.exe binaries-Windows-32/jme.exe
+        cp mec-windows.exe binaries-Windows-32/jmc.exe
+        zip binaries-Windows-32.zip binaries-Windows-32/*
+        md5sum binaries-Windows-32.zip > binaries-Windows-32.md5
     - name: Make appimage
       run: |
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
@@ -58,6 +59,7 @@ jobs:
         chmod 755 jme.AppDir/AppRun
         ./bin/bfs -a bin/mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa
         ./appimagetool-x86_64.AppImage jme.AppDir
+        md5sum Jasspa_MicroEmacs-x86_64.AppImage > Jasspa_MicroEmacs-x86_64.AppImage.md5
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v3
       with: 
@@ -71,12 +73,10 @@ jobs:
     - name: Upload Artifact GitHub Action Windows
       uses: actions/upload-artifact@v3
       with: 
-        name: binaries-Windows-32
-        path: binaries-Windows-32
+        name: binaries-Windows-32.zip
+        path: binaries-Windows-32.zip
 
   macos:
-
-    runs-on: macos-11
 
     steps:
       - uses: actions/checkout@v3
@@ -90,25 +90,29 @@ jobs:
            brew install make
            cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-10
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10
+           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10 BTYP=c
            cd ..
            mkdir binaries-MacOS-11
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-11/
-           zip jasspa.zip jasspa/*
-           cp jasspa.zip binaries-MacOS-11/
+           cp src/.macos32gcc-release-mec/mec binaries-MacOS-11/           
+           tar cfvz jasspa.tar.gz jasspa/*
+           cp jasspa.tar.gz binaries-MacOS-11/
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
-           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
-           cp me-macos.bin binaries-MacOS-11/
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o binaries-MacOS-11/mecw-macos.bin ./jasspa
+           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o binaries-MacOS-11/mec-macos.bin ./jasspa           
            cp bfs/bfs binaries-MacOS-11/
-           chmod 755 ./me-macos.bin 
-           ./me-macos.bin -n -V
+           chmod 755 binaries-MacOS-11/mec-macos.bin
+           ./binaries-MacOS-11/mec-macos.bin  -n -V
            cp README-standalone.md binaries-MacOS-11/
+           cp faq.txt license.txt binaries-MacOS-11/
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
-           TERM=xterm ./me-macos.bin @platform.emf
+           TERM=xterm-256color ./binaries-MacOS-11/mec-macos.bin @platform.emf
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
            name: binaries-MacOS-11
            path: binaries-MacOS-11
+           
