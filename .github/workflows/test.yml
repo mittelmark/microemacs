@@ -39,8 +39,14 @@ jobs:
           md5sum $OSW/jme.exe > $OSW/jme.md5
           cp mec-windows.exe $OSW/jmc.exe
           md5sum $OSW/jmc.exe > $OSW/jmc.md5
+          echo `ls`
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with: 
-          name: $OSL
-          path: $OSL
+          name: ubuntu-20-x86_64
+          path: ubuntu-20-x86_64
+      - name: Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v3
+        with: 
+          name: "$OSL"
+          path: "$OSL"
