@@ -7,13 +7,13 @@ on:
 
 permissions:
   contents: read
-env:
-  OSL: ubuntu-20-x86_64
-  WSL: windows-32
+
 jobs:
   linux:
-
     runs-on: ubuntu-20.04
+    env:
+      OSL: ubuntu-20-x86_64
+      WSL: windows-32
     steps:
     - uses: actions/checkout@v3
 
