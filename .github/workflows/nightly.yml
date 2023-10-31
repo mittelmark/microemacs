@@ -87,7 +87,7 @@ jobs:
         path: binaries-Windows-32.md5
 
   macos:
-
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
