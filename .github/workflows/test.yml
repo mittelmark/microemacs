@@ -9,9 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       Greeting: Hello
+      OSL: ubuntu-20-x86_64
+      WSL: windows-32
     steps:
       - name: "Say Hello Mona it's Monday"
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! OSL=$OSL OSW=$OSW"
         env:
           First_Name: Mona
       - name: "Say Hello Mona it's Monday 2"
