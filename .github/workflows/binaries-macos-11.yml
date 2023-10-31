@@ -34,12 +34,13 @@ jobs:
            rm -rf jasspa/contrib           
            ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
            ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos.bin ./jasspa           
-           cp me-macos.bin binaries-MacOS-11/mecw-macos-darwin-11.bin
-           cp mec-macos.bin binaries-MacOS-11/mec-macos-darwin-11.bin           
+           cp me-macos.bin binaries-MacOS-11/mecw-macos-11.bin
+           cp mec-macos.bin binaries-MacOS-11/mec-macos-11.bin           
            cp bfs/bfs binaries-MacOS-11/
            chmod 755 ./me-macos.bin 
            ./me-macos.bin -n -V
            cp README-standalone.md binaries-MacOS-11/
+           cp faq.txt license.txt binaries-MacOS-12/
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
            TERM=xterm ./me-macos.bin @platform.emf
