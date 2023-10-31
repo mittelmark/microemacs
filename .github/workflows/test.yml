@@ -15,10 +15,6 @@ jobs:
       OSW: windows-32
     steps:
       - uses: actions/checkout@v3
-      - name: "Say Hello Mona it's Monday"
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK! OSL=$OSL OSW=$OSW"
-        env:
-          First_Name: Mona
       - name: "Say Hello Mona it's Monday 2"
         run: echo "$Greeting $First_Name again. Today is $DAY_OF_WEEK!"
         env:
@@ -29,4 +25,5 @@ jobs:
         run: |
           mkdir "$OSL"
           mkdir "$OSW"
-          ls 
+          zip jasspa.zip jasspa/*
+          cp jasspa.zip COPYING license.txt README-standalone.md  "$OSL/"
