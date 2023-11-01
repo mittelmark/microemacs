@@ -15,16 +15,18 @@ if [ "$1" == "-n" ]; then
 else
     if [ -n $DISPLAY ]; then
         if [ ! -d ~/.jasspa/ubuntu-fonts ]; then
-            cp -r "${HERE}/usr/share/ubuntu-fonts" ~/.jasspa/
+            cp -r "${HERE}/usr/share/ubuntu-fonts" ~/.jasspa/fonts
         fi
-        res=`xlsfonts | grep -E "ubuntu mono-bold.+17"`
-        if [ ! "$res" != "" ]; then
-            xset +fp ~/.jasspa/ubuntu-fonts/
-            xset fp rehash
+        if [ command -v xlsfonts &> /dev/null ] && [ command -v xset &> /dev/null ]; then
+            res=`xlsfonts | grep -E "ubuntu mono-bold.+17"`
+            if [ ! "$res" != "" ]; then
+                xset +fp ~/.jasspa/fonts/
+                xset fp rehash
+            fi
         fi
         $EXEC "${@}"
     else
-        TERM=rxvt $EXEC "${0}"
+        TERM=rxvt $EXEC -n "${0}"
     fi
 fi    
 
