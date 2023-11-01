@@ -16,7 +16,7 @@ osd 1 90  ""  "Save \HAs...      A-C-s" f osd-save-as    ; Save new file
 osd 1 140 ""  "\HPrint           C-p"   f print-buffer   ; Print
 osd 1 160 ""  "File \HBrowser    F10"   f file-browser   ; File browser
 osd 1 170 ""  "Ftp Bro\Hwser        "   f ftp            ; Ftp connection
-osd 1 210 ""  "E\Hxit            A-f4"  f save-buffers-exit-emacs
+osd 1 210 ""  "E\Hxit            C-q"  f save-buffers-exit-emacs
 ; Edit
 osd 2 10  ""  "\HUndo                C-z"   1 osd-undo       ; Undo the last command
 osd 2 20  ""  "Redo                  C-y"                    ; Re-do the last osd-undo
@@ -82,19 +82,33 @@ osd 8 120 ""  "\HNext Window        C-5"       f next-window
     osd 8 180 ""  "Ne\Hxt Frame"       f next-frame
 !endif
 ; Help
-;osd 9 10  ""  "\HMajor Mode Help      S-f2"    f major-mode-help
-osd 9 20  ""  "General \HHelp         S-f1"    f osd-help
-osd 9 40  ""  "List \HBindings        C-h b"   f describe-bindings
-osd 9 50  ""  "List Bu\Hffers         C-h C-b" f list-buffers
-osd 9 60  ""  "List \HCommands        C-h c"   f list-commands
-osd 9 80  ""  "List \HVariables       C-h v"   f list-variables
-osd 9 90  ""  "Command Apropo\Hs...   C-h a"   f command-apropos
-osd 9 110 ""  "Describe \HKey...      C-h k"   f describe-key
-osd 9 120 ""  "Describe Var\Hiable... C-h d"   f describe-variable
-osd 9 130 ""  "Describe \HWord...     C-h w"   f describe-word
-osd 9 140 ""  "Help on C\Hommand...   C-h C-c" f help-command
-osd 9 150 ""  "Help on Variab\Hle...  C-h C-v" f help-variable
-
+!if &band $system 0x01
+    ;osd 9 10  ""  "\HMajor Mode Help      S-f2"    f major-mode-help
+    osd 9 20  ""  "General \HHelp         C-t ?"   f osd-help
+    osd 9 40  ""  "List \HBindings        C-t b"   f describe-bindings
+    osd 9 50  ""  "List Bu\Hffers         C-t C-b" f list-buffers
+    osd 9 60  ""  "List \HCommands        C-t c"   f list-commands
+    osd 9 80  ""  "List \HVariables       C-t v"   f list-variables
+    osd 9 90  ""  "Command Apropo\Hs...   C-t a"   f command-apropos
+    osd 9 110 ""  "Describe \HKey...      C-t k"   f describe-key
+    osd 9 120 ""  "Describe Var\Hiable... C-t d"   f describe-variable
+    osd 9 130 ""  "Describe \HWord...     C-t w"   f describe-word
+    osd 9 140 ""  "Help on C\Hommand...   C-t C-c" f help-command
+    osd 9 150 ""  "Help on Variab\Hle...  C-t C-v" f help-variable
+!else
+    osd 9 20  ""  "General \HHelp         C-h ?"   f osd-help
+    osd 9 40  ""  "List \HBindings        C-h b"   f describe-bindings
+    osd 9 50  ""  "List Bu\Hffers         C-h C-b" f list-buffers
+    osd 9 60  ""  "List \HCommands        C-h c"   f list-commands
+    osd 9 80  ""  "List \HVariables       C-h v"   f list-variables
+    osd 9 90  ""  "Command Apropo\Hs...   C-h a"   f command-apropos
+    osd 9 110 ""  "Describe \HKey...      C-h k"   f describe-key
+    osd 9 120 ""  "Describe Var\Hiable... C-h d"   f describe-variable
+    osd 9 130 ""  "Describe \HWord...     C-h w"   f describe-word
+    osd 9 140 ""  "Help on C\Hommand...   C-h C-c" f help-command
+    osd 9 150 ""  "Help on Variab\Hle...  C-h C-v" f help-variable
+!endif
+    
 ; define a main menu initialisation macro - main use of this is to insert the
 ; find tag if a tags file exists & call specific file type open and close
 ; commands to customize the main menu. The name of the commands must be
