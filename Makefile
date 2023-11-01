@@ -34,7 +34,15 @@ mingw-w32-run:
 	cd src && MEPATH=Z:/home/groth/workspace/microemacs/jasspa/macros wine ./.win32mingw-release-mew/mew32.exe
 app-image:
 	chmod 755 jme.AppDir/AppRun
-	./bin/bfs -a bin/mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa
+	cp -r jasspa jasspa-bfs
+	cp jasspa/spelling/* jasspa-bfs/macros/
+	rm -rf jasspa-bfs/contrib
+	rm -rf jasspa-bfs/company
+	rm -rf jasspa-bfs/pixmaps
+	rm -rf jasspa-bfs/spelling
+	rm -f jasspa-bfs/macros/*~
+	./bin/bfs -a bin/mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
 	appimagetool-x86_64.AppImage jme.AppDir
 	./Jasspa_MicroEmacs-x86_64.AppImage -V -n
+	rm -rf jasspa-bfs
 

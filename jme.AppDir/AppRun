@@ -1,7 +1,11 @@
 #!/bin/bash
 HERE="$(dirname "$(readlink -f "${0}")")"
+## me executuable "
 EXEC="${HERE}/usr/bin/jme" 
 export LD_LIBRARY_PATH="${HERE}/usr/lib64"
+if [ ! -d "${HOME}/.jasspa" ]; then 
+    mkdir "${HOME}/.jasspa"
+fi    
 if [ "$1" == "-n" ]; then
     TERM=rxvt $EXEC "${@}"
 else
@@ -16,7 +20,7 @@ else
         fi
         $EXEC "${@}"
     else
-        TERM=xterm-256colors $EXEC "${0}"
+        TERM=rxvt $EXEC "${0}"
     fi
 fi    
 
