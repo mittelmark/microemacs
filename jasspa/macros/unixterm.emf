@@ -54,7 +54,7 @@ set-variable %font-index 3
     ; TODO: fix if the font was deleted!
     ; try xset fp default
     !if &not &seq &set #l0 &reg &spr "/history/%s/font" $platform "" ""
-        change-font #l0
+        !force change-font #l0
     !endif
     define-macro change-font-size
         !if &equal @# 0
@@ -71,7 +71,8 @@ set-variable %font-index 3
         !else
             change-font #l0
             !if $status
-                500 ml-write &cat "current font is: " #l0
+                500 ml-write &cat "current font is new: " #l0
+                set-registry &spr "/history/%s/font" $platform #l0
             !else
                 500 ml-write "Font is unchanged!"
             !endif
@@ -93,12 +94,14 @@ set-variable %font-index 3
         !endif
         set-variable #l0 &lget %fonts %font-index 
         change-font #l0
+        set-registry &spr "/history/%s/font" $platform #l0
     !emacro
     define-macro change-font-lucida
         change-font-courier
         set-variable %fonts &rep %fonts "*-courier" "*-lucidatypewriter"
         set-variable #l0 &lget %fonts %font-index 
         change-font #l0
+        set-registry &spr "/history/%s/font" $platform #l0        
     !emacro
     
     define-macro change-font-ubuntu 
@@ -119,6 +122,7 @@ set-variable %font-index 3
         !endif
         set-variable #l0 &lget %fonts %font-index 
         change-font #l0
+        set-registry &spr "/history/%s/font" $platform #l0        
     !emacro
     
     define-macro change-font-bold
@@ -129,6 +133,7 @@ set-variable %font-index 3
         !endif
         set-variable #l0 &lget %fonts %font-index 
         change-font #l0
+        set-registry &spr "/history/%s/font" $platform #l0
     !emacro
     1 global-bind-key change-font-size "C-+"
     0 global-bind-key change-font-size "C-="
