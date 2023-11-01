@@ -35,7 +35,7 @@ mingw-w32-run:
 app-image:
 	chmod 755 jme.AppDir/AppRun
 	cp -r jasspa jasspa-bfs
-	cp jasspa/spelling/* jasspa-bfs/macros/
+	cp -r jasspa/spelling jme.AppDir/usr/share/
 	rm -rf jasspa-bfs/contrib
 	rm -rf jasspa-bfs/company
 	rm -rf jasspa-bfs/pixmaps
