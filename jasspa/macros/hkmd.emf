@@ -8,7 +8,13 @@
 ; Synopsis:   Markdown file hook (https://www.markdownguide.org/)
 ;
 define-macro fhook-md
-  @# buffer-init "md"
+  set-variable #l0 &isin ".rmd" $buffer-bname "rmd" "md"
+  ml-write #l0
+  !if #l0
+      @# buffer-init "md" "rmd"
+  !else
+      @# buffer-init "md" "md"
+  !endif
   buffer-init-hooks
 !emacro
 

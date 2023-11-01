@@ -298,7 +298,7 @@ add-file-hook ".r .R .Rtk"                                    fhook-r
 add-file-hook ".cfm .cfml .cfc"                               fhook-cfm
 add-file-hook ".iss"                                          fhook-iss
 add-file-hook ".go"                                           fhook-go
-add-file-hook ".md .Rmd .Tmd"                                 fhook-md
+add-file-hook ".md .rmd .Rmd .tmd .Tmd"                       fhook-md
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
