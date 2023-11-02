@@ -41,7 +41,7 @@ build is folded by the indicated three dots:
 
 ![](images/dracula.png)
 
-## Download 
+## Download MicroEmacs Executables
 
 There is a stand alone single file executable build for the following platforms here: 
 
@@ -77,6 +77,26 @@ page:
 and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
 instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
 dictionary.
+
+## BFS executables 
+
+The BFS executables can be used to extract the binary and the macro files from the
+MicroEmacs  executables and to build you own executables with other dictionary
+files, other user templates, or additional macro files.
+
+Here an example on how to do so:
+
+```bash
+### extract the arcive from the file me-linux.bin
+bfs -x jasspa me-linux.bin
+### add new spellings
+cd jasspa/spelling
+unzip ..//ls_dede.zip
+### create the new file
+bfs -a me-linux.bin ./jasspa -o me-linux2.bin
+### test the terminal
+MEPATH="" TERM=rxvt ./me-linux2.bin -n
+```
 
 ## Pros and Cons of Jasspa MicroEmacs
 
