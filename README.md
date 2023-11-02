@@ -87,11 +87,13 @@ files, other user templates, or additional macro files.
 Here an example on how to do so:
 
 ```bash
+### get the German dictionary files
+wget http://www.jasspa.com/spelling/ls_dede.zip
 ### extract the arcive from the file me-linux.bin
 bfs -x jasspa me-linux.bin
 ### add new spellings
 cd jasspa/spelling
-unzip ..//ls_dede.zip
+unzip ../../ls_dede.zip
 ### create the new file
 bfs -a me-linux.bin ./jasspa -o me-linux2.bin
 ### test the terminal
