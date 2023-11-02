@@ -48,12 +48,12 @@ There is a stand alone single file executable build for the following platforms 
 * Linux 64bit
     * [Jasspa_MicroEmacs-x86_64.AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage) -
         Linux  AppImage  which should work on Debian,  Ubuntu, Fedora and probably others 64bit Linuxes as well
-    * [Linux-Fedora-38-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-linux-fedora-38-2023-11-02.bin)
-    * [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-linux-ubuntu-18-2023-11-02.bin)
-    * [Linux-Ubuntu-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-linux-ubuntu-20-2023-11-02.bin)
+    * [Linux-Fedora-38-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-fedora-38-2023-11-02.bin)
+    * [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-ubuntu-18-2023-11-02.bin)
+    * [Linux-Ubuntu-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-ubuntu-20-2023-11-02.bin)
 * MacOS 11 64bit (should work on MacOS 12 and 13 as well)
-    * [MacOS-Darwin-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-macos-11-2023-11-02.bin)
-    * [MacOS-Darwin-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-macos-11-2023-11-02.bin)
+    * [MacOS-Darwin-20-x86_64 -  console only](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-macos-11-2023-11-02.bin)
+    * [MacOS-Darwin-20-x86_64 - console and XQuartz version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-macos-11-2023-11-02.bin)
 * Windows 32 and 64bit
     * Install  using the scoop  package  manager on Windows  like this  `scoop install -a 32bit https://raw.githubusercontent.com/mittelmark/microemacs/master/scoop-jme.json`
     * Downloading the single files:
