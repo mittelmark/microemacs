@@ -4,7 +4,7 @@
 * [Jasspa homepage](http://www.jasspa.com)
 * [new mailing list](https://groups.google.com/g/jasspa-microemacs)
 * [old downloads](http://www.jasspa.com/downlatest.html)
-* [standalone executables](http://www.jasspa.com/zeroinst.html)
+* standalone executables from [2009](http://www.jasspa.com/zeroinst.html) and [2023](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/)
 * [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
 * [spelling dictionaries](http://www.jasspa.com/spelling.html)
 * [online help](https://www.dgroth.de/me2009/me/index.htm)
@@ -22,6 +22,7 @@ It contains the following changes:
 * Markdown mode (folding, template file, syntax hilghlighting, outline
   in item list, embedding Tcl, Python, R and Dot code in fences with syntax highlight)
 * font size increase and decrease using Ctrl-Plus and Ctrl-Minus keys
+* AppImage for easy install, installs as well Ubuntu Mono fonts.
 * Darwin 20, 21, 22 builds using Github actions
 * Windows builds using cross compilation on Ubuntu with Github actions
 * fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64
