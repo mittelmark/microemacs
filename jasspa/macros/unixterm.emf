@@ -14,7 +14,6 @@ add-file-hook ".C" fhook-cpp
     ipipe-shell-command &spr "\"%s\" %s" $progname @1 @mna
 !emacro
 
-
 ; TODO check on more platforms
 ; found it on MacOS Quartz, Ubuntu 18, Fedora 30, Fedora 38
 set-variable %font-default "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*"
@@ -56,7 +55,7 @@ set-variable %font-index 4
             set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
             change-font #l0
             !if $status
-                500 ml-write &cat "current font: " #l0
+                100 ml-write &cat "current font: " #l0
                 set-registry &spr "/history/%s/font" $platform #l0
                 ; TODO: How to place this in user-setup font field???
             !else
@@ -93,7 +92,6 @@ set-variable %font-index 4
             set-variable %fonts &rep %fonts "bold" "medium"
         !endif
         set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
-        1500 ml-write &cat "current font: " #l0
         change-font #l0
         set-registry &spr "/history/%s/font" $platform #l0        
     !emacro
@@ -114,12 +112,12 @@ set-variable %font-index 4
     !emacro
     
     define-macro change-font-bold
-        !if &sin "medium" &lget %fonts 1
+        !if &sin "medium" %fonts
             set-variable %fonts &rep %fonts "medium" "bold"
         !else
             set-variable %fonts &rep %fonts "bold" "medium"
         !endif
-        set-variable #l0 &lget %fonts %font-index 
+        set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
         change-font #l0
         set-registry &spr "/history/%s/font" $platform #l0
     !emacro
