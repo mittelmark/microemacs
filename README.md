@@ -4,7 +4,7 @@
 * [Jasspa homepage](http://www.jasspa.com)
 * [new mailing list](https://groups.google.com/g/jasspa-microemacs)
 * [old downloads](http://www.jasspa.com/downlatest.html)
-* standalone executables from [2009](http://www.jasspa.com/zeroinst.html) and [2023](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/)
+* standalone executables from [2009](http://www.jasspa.com/zeroinst.html) and [2023](https://github.com/mittelmark/microemacs/releases/tag/v09.12.21)
 * [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
 * [spelling dictionaries](http://www.jasspa.com/spelling.html)
 * [online help](https://www.dgroth.de/me2009/me/index.htm)
