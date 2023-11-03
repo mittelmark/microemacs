@@ -1,0 +1,41 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : Detlef Groth
+;  Created By    : Detlef Groth
+;  Created       : Thu Nov 2 04:32:26 2023
+;  Last Modified : <231103.2058>
+;
+;  Description   : This function can be placed in your <user>.emf file
+;                  The font files in this folder can be added to the X-font
+;                  path using the commands:
+;                  xset +fp FONTPATH
+;                  xset fp rehash
+;  Notes         : The code and the font files are an illustration on how to add
+;                  your own fonts to the X-Windows system so that they can be used 
+;                  MicroEmacs
+;  History       : 2023-11-02 - initial version
+;
+;  Copyright (c) 2023 <unknown>.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+define-macro change-font-ubuntu 
+    set-variable #l0 0
+    !if &sin "medium" %fonts
+        set-variable #l0 1
+    !endif
+    set-variable %fonts "-*-ubuntu mono-bold-*-*-*-%d-*-*-*-*-*-*-*"
+    set-variable %font-sizes "|11|14|17|19|22|25|30|33|"
+    !if #l0
+        set-variable %fonts &rep %fonts "bold" "medium"
+    !endif
+    set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
+    change-font #l0
+    set-registry &spr "/history/%s/font" $platform #l0        
+!emacro
+
+; set your default font:
+set-variable %font-index 5
+change-font-ubuntu
+;
+
