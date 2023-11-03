@@ -37,30 +37,25 @@
 ;add-file-hook ".h .def"  fhook-cpp 
 
 !if &lfind "|linux|darwin|" %platform 
-    ; two possible font lists you might use on a Linux X11 system 
-    ; try to uncomment either the first or the second list on Linux
-    ; then use Ctrl-+ and Ctrl-- or Ctrl-= to change the font sizes, the Ctrl-= uses the
-    ; third font on the list
+    ; font selection uncomment if Ctrl-+, Ctrl-- and Ctrl-= do not work
     ; to find out what fonts are on your system use in the terminal
     ; find /usr -name "fonts.dir" | xargs cat |  grep pcf 
-    ; alternatively you might use a tool like xfontsel to select some fonts
-    ; some font suggestions
+    ; alternatively you might use a tool like xfontsel to select some fonts some font suggestions
     ; misc-fixed-medium (too small for high resolutions but usually on most systems)
     ; set-variable %fonts "-misc-fixed-medium-r-normal--%d-*-*-*-*-*-*"
+    ; must be eight sizes so we repeat 20 two times
     ; set-variable %font-sizes  "|8|10|13|14|15|18|20|20|"
-    ; lucida-type-writer should work as well
-    ; adobe-courier-bold - wide range of character sizes
-    ; found with find /usr -name "fonts.dir" | xargs cat |  grep pcf  | grep -Eo '.-adobe-courier-.+-r-.+iso8859-1$'
     ; replace bold with medium to get non-bold fonts
-    ; uncomment if Ctrl-+, Ctrl-- and Ctrl-= do not work
+    ; lucidatypewriter should be available on all X11 systems
     set-variable %fonts "-*-lucidatypewriter-bold-r-*-*-%d-*-*-*-*-*-*"
     ; set-variable %fonts "-*-lucidatypewriter-medium-r-*-*-%d-*-*-*-*-*-*"
+    ; must be eight sizes
     set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
-    ; or courier-bold
+    ; or courier-bold or medium
     ; set-variable %fonts "-*-courier-medium-r-*-*-%d-*-*-*-*-*-*"
     ; set-variable %fonts "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*"
     ; set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
     ; now the list element from the font list above which should be the default font access with C-=
-    set-variable %font-index 5
-    change-font-size
+    set-variable %font-index 4
 !endif
+

@@ -3,7 +3,7 @@
 ;  Author        : Detlef Groth
 ;  Created By    : Detlef Groth
 ;  Created       : Thu Nov 2 04:32:26 2023
-;  Last Modified : <231103.2058>
+;  Last Modified : <231103.2137>
 ;
 ;  Description   : This function can be placed in your <user>.emf file
 ;                  The font files in this folder can be added to the X-font
@@ -20,6 +20,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 define-macro change-font-ubuntu 
+    ; check if medium or bold
     set-variable #l0 0
     !if &sin "medium" %fonts
         set-variable #l0 1
@@ -36,6 +37,5 @@ define-macro change-font-ubuntu
 
 ; set your default font:
 set-variable %font-index 5
-change-font-ubuntu
-;
+!force change-font-ubuntu
 

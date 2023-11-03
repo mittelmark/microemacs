@@ -614,6 +614,9 @@ Miscellaneous Information
     lslmadd-color(2)le Create a new color
     lslmadd-color-scheme(2)le Create a new color scheme
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-bold(2)le Change the font weight on X-Windows
+    lslmchange-font-courier(2)le Change the font to Adobe Courier
+    lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
     lslmchange-font-size(2)le Change the font size X-Windows or Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
@@ -1859,6 +1862,9 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-bold(2)le Change the font weight on X-Windows
+    lslmchange-font-courier(2)le Change the font to Adobe Courier
+    lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
     lslmchange-font-size(2)le Change the screen font    
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
@@ -2270,6 +2276,9 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
+    lslmchange-font-bold(2)le Change the font weight on X-Windows
+    lslmchange-font-courier(2)le Change the font to Adobe Courier
+    lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
     lslmchange-font-size(2)le Change the font size X-Windows or Windows    
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
@@ -2822,8 +2831,9 @@ Miscellaneous Information
     lslm%cygwin-path(5)le Cygwin root directory
     lslm%cygwin-prompt(5)le Cygwin shell prompt
     lslm%diff-com(5)le Diff command line
-    lslm%fonts(5)le X11 system, list of fonts
-    lslm%font-index(5)le X11 system, current font index
+    lslm%fonts(5)le X11 system, font-string used for resizing
+    lslm%font-sizes(5)le X11 system, list of font-sizes for the fonts variable
+    lslm%font-index(5)le X11 system, current font-sizes index
     lslm%ftp-flags(5)le Configure the FTP console
     lslm%gdiff-com(5)le Gdiff command line
     lslm%http-flags(5)le Configure the HTTP console
@@ -3159,8 +3169,9 @@ Miscellaneous Information
     lslm%cygwin-path(5)le Cygwin root directory
     lslm%cygwin-prompt(5)le Cygwin shell prompt
     lslm%diff-com(5)le Diff command line
-    lslm%fonts(5)le X11 system, list of fonts
-    lslm%font-index(5)le X11 system, current font index
+    lslm%fonts(5)le X11 system, font-string used for resizing
+    lslm%font-sizes(5)le X11 system, list of font-sizes for the fonts variable
+    lslm%font-index(5)le X11 system, current font-sizes index
     lslm%ftp-flags(5)le Configure the FTP console
     lslm%gdiff-com(5)le Gdiff command line
     lslm%http-flags(5)le Configure the HTTP console
@@ -3382,7 +3393,9 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
-    lslmchange-font-size(2)le Change the font size X-Windows or Windows    
+    lslmchange-font-courier(2)le Change the font size on X-Windows to Courier
+    lslmchange-font-lucida(2)le Change the font size on X-Windows to lucidatypewriter
+    lslmchange-font-size(2)le Change the font size X-Windows or Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -12695,6 +12708,77 @@ $a
 
 
     lslmchange-font-size(2)le, lslmchange-frame-width(2)le, lslmchange-frame-depth(2)le, lslm$result(5)le, lslmuser-setup(3)le.
+! 2 change-font-courier
+! 2 change-font-lucida
+! 2 change-font-bold
+cEcENAME cEcA
+
+
+    change-font-bold    - Change the screen font from bold to medium and back
+    change-font-courier - Change the screen font in non-terminal mode to adobe courier
+    change-font-lucida  - Change the screen font in non-terminal mode to lucidatypewriter
+$a
+
+
+cEcESYNOPSIS cEcA
+
+
+    cC[X-Windows]cA
+    cCcAcDchange-font-boldcA
+    cCcAcDchange-font-couriercA
+    cCcAcDchange-font-lucidacA    
+
+
+cEcEDESCRIPTION cEcA
+
+
+    cDchange-font-boldcA  is a command  which  toggles fonts between bold and
+    medium weighted fonts.
+
+    cDchange-font-couriercA  sets the  default  font for  resizing  to Adobe
+    courier.
+
+    cDchange-font-lucidacA  sets the  default  font for  resizing  to lucidatypewriter
+    
+    The font-size is increased in case of C-+ and decreased in case of the C--
+    minus key  bindings.  For Unix systems the  variables   lslm%fonts(5)le
+    and lslm%font-index(5)le are used to cycle through two standard fonts, Adobe
+    courier  and  lucidatypewriter.  The user can define  their own short font
+    commands and their list of sizes. 
+
+cEcEEXAMPLE cEcA
+
+sB
+        ; Function to change to Ubuntu mono font
+        ; should be placed in your user.emf file
+        define-macro change-font-ubuntu 
+            ; toogles check if medium or bold
+            set-variable #l0 0
+            !if &sin "medium" %fonts
+                set-variable #l0 1
+            !endif
+            set-variable %fonts "-*-ubuntu mono-bold-*-*-*-%d-*-*-*-*-*-*-*"
+            set-variable %font-sizes "|11|14|17|19|22|25|30|33|"
+            !if #l0
+                set-variable %fonts &rep %fonts "bold" "medium"
+            !endif
+            set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
+            change-font #l0
+            set-registry &spr "/history/%s/font" $platform #l0        
+        !emacro
+        
+        ; set your default font size:
+        set-variable %font-index 5
+        !force change-font-ubuntu
+sA
+
+cEcESEE ALSO cEcA
+
+
+    lslmchange-font(2)le, lslm%font(5)le, lslm%font-index(5)le.
+
+
+
 ! 2 change-font-size
 cEcENAME cEcA
 
@@ -50837,56 +50921,54 @@ $a
 
 
 |%fonts
-    %fonts - "List of fonts to cycle through using Ctrl-+ and Ctrl-- on X11 systems"
+    %fonts - "Font string to cycle through sizes using Ctrl-+ and Ctrl-- on X11 systems"
 |%font-index
     %font-index - "Current index for the %fonts variable"
+|%font-sizes
+    %font-sizes - "List of font-sizes with 8 values to cycle through"
 $a
 
 
 cEcESYNOPSIS cEcA
 
     cC[X-Windows]cA
-    cDset-variable %fontscA "|font1[font2|font3|" ; List of X11 fonts
-    cDset-variable %font-indexcA 3 ; Default is 3 if undefined.
+    cDset-variable %fontscA "X11-fontstring with %d for size" 
+    cDset-variable %font-indexcA 4 ; Default is 4 if undefined.
+    cDset-variable %font-sizescA "list of 8 font-values"
 
 
 cEcEDESCRIPTION cEcA
 
 
-    The  cD%fontscA  and  cD%font-indexcA  variables  allow  you to  cycle
+    The  cD%fontscA, cD%font-sizescA   and  cD%font-indexcA  variables  allow  you to  cycle
     through a set of fonts on X11 systems more easily using the keybindings
-    C-+ (Ctrl-Plus), C-- (Ctrl-Minus) increase the index and cycle through the
-    availble font-names, Ctrl-=  choose font index 3.
+    C-+ (Ctrl-Plus), C-- (Ctrl-Minus) which increase the index and cycle through the
+    available (usually 8) font-sizes, Ctrl-=  choose font index 4 as the default.
 
 cEcEEXAMPLE cEcA
 
-    Here an example which you might try out in your USER.emf file:
+    Here an example which you might try out in your USER.emf file if you 
+    have the Ubuntu fonts as X11 fonts installed:
 
 cEsB
-        set-variable %fonts "|-*-ubuntu mono-*-*-*-*-14-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-17-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-19-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-22-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-25-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-28-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-30-*-*-*-*-*-*-*|"
-        set-variable %fonts &cat %fonts "-*-ubuntu mono-*-*-*-*-33-*-*-*-*-*-*-*|"
+        set-variable %fonts "-*-ubuntu mono-*-*-*-*-%d-*-*-*-*-*-*-*"
+        set-variable %font-sizes "|11|14|17|19|22|25|30|33|"
+        set-variable %font-index 4
 sA        
 
 cEcENOTES cEcA
 
     Chosing a  non-existing  font might cause problems on some systems. If you
-    observe  difficluties and errors, try to change the default fonts (Usually
-    adobe-bold  fonts  for  X11  systems).  On Unix  systems  the  application
-    xfontsel can be used to browse the existing  fonts on your system. You can
-    have as well a look into all fonts.dir files on your system.
-    
+    observe  difficulties and errors, try to change the default fonts (usually
+    adobe-bold or lucidatypewriter fonts for X11 systems). On Unix systems the
+    application  xfontsel  can be used to browse  the  existing  fonts on your
+    system.  You can  have as well a look  into  all  fonts.dir  files on your
+    system to find  new fonts.
 
 
 cEcESEE ALSO cEcA
 
-
-    lslmchange-font(2)le, lslmuser-setup(3)le.
+    lslmchange-font(2)le,  lslmchange-font-bold(2)le, lslmchange-font-courier(2)le, ls   lmchange-font-lucida(2)le,lslmuser-setup(3)le.
 ! 5 %ftp-flags
 ! 5 %http-flags
 cEcENAME cEcA
