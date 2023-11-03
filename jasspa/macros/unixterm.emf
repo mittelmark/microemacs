@@ -96,20 +96,6 @@ set-variable %font-index 4
         set-registry &spr "/history/%s/font" $platform #l0        
     !emacro
     
-    define-macro change-font-ubuntu 
-        set-variable #l0 0
-        !if &sin "medium" %fonts
-            set-variable #l0 1
-        !endif
-        set-variable %fonts "-*-ubuntu mono-bold-*-*-*-%d-*-*-*-*-*-*-*"
-        set-variable %font-sizes "|11|14|17|19|22|25|30|33|"
-        !if #l0
-            set-variable %fonts &rep %fonts "bold" "medium"
-        !endif
-        set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
-        change-font #l0
-        set-registry &spr "/history/%s/font" $platform #l0        
-    !emacro
     
     define-macro change-font-bold
         !if &sin "medium" %fonts
