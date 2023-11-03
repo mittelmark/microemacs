@@ -12741,10 +12741,10 @@ $a
     cDchange-font-lucidacA  sets the  default  font for  resizing  to lucidatypewriter
     
     The font-size is increased in case of C-+ and decreased in case of the C--
-    minus key  bindings.  For Unix systems the  variables   lslm%fonts(5)le
-    and lslm%font-index(5)le are used to cycle through two standard fonts, Adobe
-    courier  and  lucidatypewriter.  The user can define  their own short font
-    commands and their list of sizes. 
+    minus key  bindings.  For Unix systems the  variables  lslm%fonts(5)le,
+    lslm%font-sizes(5)le,  and  lslm%font-index(5)le  are  used to cycle
+    through two standard fonts, Adobe courier and  lucidatypewriter.  The user
+    can define their own short font commands and their list of sizes. 
 
 cEcEEXAMPLE cEcA
 
@@ -50917,6 +50917,7 @@ $a
     lslmnarrow-buffer(2)le.
 ! 5 %fonts
 ! 5 %font-index
+! 5 %font-sizes
 cEcENAME cEcA
 
 
