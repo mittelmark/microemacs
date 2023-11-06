@@ -1,5 +1,6 @@
 ; BDF version of the Chivo Mono fonts
 ; place one of the following lines  at the end of your USERNAME.emf file
 ; remove the semikolon at the beginning which is a comment character
+; fonts are from https://github.com/Omnibus-Type/Chivo/tree/master
 change-font-type "chivo mono-medium" "|10|14|17|19|22|25|28|33|" 19
 ;change-font-type "chivo mono-bold" "|10|14|17|19|22|25|28|33|" 19
