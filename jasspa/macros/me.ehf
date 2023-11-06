@@ -618,6 +618,7 @@ Miscellaneous Information
     lslmchange-font-courier(2)le Change the font to Adobe Courier
     lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
     lslmchange-font-size(2)le Change the font size X-Windows or Windows
+    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -1866,6 +1867,7 @@ Miscellaneous Information
     lslmchange-font-courier(2)le Change the font to Adobe Courier
     lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
     lslmchange-font-size(2)le Change the screen font    
+    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -2280,6 +2282,7 @@ Miscellaneous Information
     lslmchange-font-courier(2)le Change the font to Adobe Courier
     lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
     lslmchange-font-size(2)le Change the font size X-Windows or Windows    
+    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-screen-depth(2)le Change the number of lines on the screen
@@ -3396,6 +3399,7 @@ Miscellaneous Information
     lslmchange-font-courier(2)le Change the font size on X-Windows to Courier
     lslmchange-font-lucida(2)le Change the font size on X-Windows to lucidatypewriter
     lslmchange-font-size(2)le Change the font size X-Windows or Windows
+    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -5013,10 +5017,19 @@ Miscellaneous Information
 
 cEDevelopment History cA
 
+        * [231104] new function change-font-type for easier access to resize fonts
+
     cDRelease - 31th October 2023 HalloweencA 
     Release date specified  2009/10/22 - to avoid clashes with the new version
     from 2023 which is maintained by Steven Phillips
 
+        * [231031] lucidatypewriter support on X-Window for resizing, Markdown
+                   folding to the end of the file, adding Rmd  template  (thanks
+                   to Steven Phillips)
+        * [231030] fixing  hidden  scheme issue in terminal  mode, osd window
+                   switching keys fixed, Windows Scoop package file
+        * [231029] Update R keywords
+        * [231028] Changelog update in help page
         * [231027] Adding suspend code from Me23 from Steven Phillips code
         * [231024] Extending the Markdown mode by importing Steve's  code from me23
         * [231023] Updating ChangeLog
@@ -5043,10 +5056,10 @@ Miscellaneous Information
         * [220212] extending Python abrreviation file
         * [220205] extending Tcl abbreviation file
         * [211207] bfs building now working for Linux and Win32 
-           Github action for bfs building
+                   Github action for bfs building
         * [211206] adding spelling dictionaries
         * [211203] Update on bfs, README, binaries
-           .bashrc now with filehook shell
+                   .bashrc now with filehook shell
         * [211124] adding White on Black Pastel scheme
         * [211122] R comment fix, more R file patterns
         * [211121] compiler fix for for strerror
@@ -12711,12 +12724,15 @@ $a
 ! 2 change-font-courier
 ! 2 change-font-lucida
 ! 2 change-font-bold
+! 2 change-font-type
 cEcENAME cEcA
 
 
     change-font-bold    - Change the screen font from bold to medium and back
     change-font-courier - Change the screen font in non-terminal mode to adobe courier
-    change-font-lucida  - Change the screen font in non-terminal mode to lucidatypewriter
+    change-font-lucida  - Change  the  screen  font in  non-terminal  mode to
+                          lucidatypewriter
+    change-font-type    - Change the font used for resizing on a X-Window system
 $a
 
 
@@ -12727,56 +12743,40 @@ $a
     cCcAcDchange-font-boldcA
     cCcAcDchange-font-couriercA
     cCcAcDchange-font-lucidacA    
-
+    cCcAcDchange-font-typecA    cC"family-weight" cA cC"size-list"cA cCsize
 
 cEcEDESCRIPTION cEcA
 
 
     cDchange-font-boldcA  is a command  which  toggles fonts between bold and
-    medium weighted fonts.
+                      medium weighted fonts.
 
-    cDchange-font-couriercA  sets the  default  font for  resizing  to Adobe
-    courier.
+    cDchange-font-couriercA sets the  default  font for  resizing  to Adobe
+                        courier.
 
     cDchange-font-lucidacA  sets the  default  font for  resizing  to lucidatypewriter
+    
+    cDchange-font-typecA    allows an easier switching of font and gives a list for resizing
     
     The font-size is increased in case of C-+ and decreased in case of the C--
     minus key  bindings.  For Unix systems the  variables  lslm%fonts(5)le,
     lslm%font-sizes(5)le,  and  lslm%font-index(5)le  are  used to cycle
     through two standard fonts, Adobe courier and  lucidatypewriter.  The user
-    can define their own short font commands and their list of sizes. 
+    can define  their own short fonts using just the family and the weight and
+    give the their list of available sizes through which they like to cycle through. 
 
 cEcEEXAMPLE cEcA
-
 sB
-        ; Function to change to Ubuntu mono font
-        ; should be placed in your user.emf file
-        define-macro change-font-ubuntu 
-            ; toogles check if medium or bold
-            set-variable #l0 0
-            !if &sin "medium" %fonts
-                set-variable #l0 1
-            !endif
-            set-variable %fonts "-*-ubuntu mono-bold-*-*-*-%d-*-*-*-*-*-*-*"
-            set-variable %font-sizes "|11|14|17|19|22|25|30|33|"
-            !if #l0
-                set-variable %fonts &rep %fonts "bold" "medium"
-            !endif
-            set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
-            change-font #l0
-            set-registry &spr "/history/%s/font" $platform #l0        
-        !emacro
-        
-        ; set your default font size:
-        set-variable %font-index 5
-        !force change-font-ubuntu
-sA
+        ; Call to change the resize font to Ubuntu mono bold
+        ; could be placed in your user.emf file
+        ; arguments are: short font-string (family-weigth) sizelist startsize
+        change-font-type "ubuntu mono-bold" "|11|14|17|19|22|25|30|33|" 22
+        change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
+        sA
 
 cEcESEE ALSO cEcA
 
-
     lslmchange-font(2)le, lslm%font(5)le, lslm%font-index(5)le.
-
 
 
 ! 2 change-font-size

@@ -39,7 +39,9 @@ set-variable %font-index 4
         ; seems to work
         !force !force change-font #l0
     !endif
-    define-macro change-font-size
+    ; might be called like this:
+    ; change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
+    define-macro change-font-type
         !if &equal @# 0
             set-variable %font-index 4
         !else
@@ -95,8 +97,20 @@ set-variable %font-index 4
         change-font #l0
         set-registry &spr "/history/%s/font" $platform #l0        
     !emacro
-    
-    
+    define-macro change-font-type
+        set-variable %fonts &spr "-*-%s-*-*-*-%%d-*-*-*-*-*-*-*" @1
+        set-variable %font-sizes @2
+        set-variable %font-index &lfind %font-sizes @3
+        set-variable #l0 &spr %fonts @3
+        !force change-font #l0
+        !if &not $status 
+            1500 ml-write &spr "Error: Install X11 font %s first!" @1
+        !else
+            ml-write &cat "Font: " &reg  &spr "/history/%s/font" $platform ""
+            set-registry &spr "/history/%s/font" $platform #l0        
+        !endif
+        
+    !emacro
     define-macro change-font-bold
         !if &sin "medium" %fonts
             set-variable %fonts &rep %fonts "medium" "bold"
