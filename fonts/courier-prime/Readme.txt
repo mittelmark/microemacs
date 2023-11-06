@@ -29,3 +29,9 @@ If your then press `Esc x execute-buffer<RETURN><RETURN>`  the fonts should be
 visible  within your  MicroEmacs  session. This needs to be done only for your
 current  MicroEmacs  session.  All  new  sessions  will  load  the  last  line
 automatically from your USERNAME.emf file.
+
+To choose the fonts with medium weight use:
+
+```
+change-font-type "courier prime-medium" "|10|14|17|19|22|25|28|33|" 22
+```

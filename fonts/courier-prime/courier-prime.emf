@@ -1,4 +1,4 @@
-; BDF version of the Chivo Mono fonts for MicroEmacs
+; BDF version of the X11 Courier Prime fonts for MicroEmacs
 ; place one of the following lines  at the end of your USERNAME.emf file
 ; remove the semikolon at the beginning which is a comment character
 ; fonts are from https://fonts.google.com/specimen/Courier+Prime
