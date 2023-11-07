@@ -23,6 +23,6 @@ jobs:
         ls
         cd ..
         cd src
-        build.bat
+        Start-Process -FilePath build.bat
         
     
