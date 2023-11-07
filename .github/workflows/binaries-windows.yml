@@ -23,14 +23,8 @@ jobs:
         Get-ChildItem -Force
         ls
         cd ..
-        curl -OL https://github.com/madler/zlib/archive/refs/heads/master.zip
-        unzip master.zip
-        cd zlib-master
-        ./configure
-        mingw32-make
-        mingw32-make install
         Get-ChildItem -Force        
-        cd ../src
+        cd src
         Start-Process -FilePath build.bat -Wait
         mingw32-make -f win32mingw.mak
         Get-ChildItem -Force
