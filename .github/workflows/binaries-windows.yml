@@ -19,17 +19,15 @@ jobs:
         $Env:PATH += ";$pwd/mingw32/bin"
         gcc --version
         cd bfs
-        mingw32-make -f Makefile.mingw
+        mingw32-make -f Makefile.mingw RC=windres STRIP=strip
         Get-ChildItem -Force
         ls
         cd ..
         Get-ChildItem -Force        
         cd src
-        Start-Process -FilePath build.bat -Wait
-        mingw32-make -f win32mingw.mak
+        mingw32-make -f win32mingw.mak RC=windres STRIP=strip
         Get-ChildItem -Force
         mingw32-make -f win32mingw.mak BTYP=c
-        Start-Process -FilePath build.bat -ArgumentList "-t c" -Wait
         Get-ChildItem -Force
         Start-Process ./win32mingw-release-mec/mec32.exe -ArgumentList "-V" -Wait
         ls
