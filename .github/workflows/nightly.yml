@@ -33,21 +33,21 @@ jobs:
     
     - name: Make me-standalone binary
       run: |
-        mkdir "$OSL"
-        mkdir "$OSW"
+        mkdir ubuntu-20-x86_64
+        mkdir windows-32
         zip jasspa.zip jasspa/*
         
-        cp jasspa.zip COPYING license.txt README-standalone.md  "$OSL/"
-        cp jasspa.zip COPYING license.txt README-standalone.md  "$OSW/"
-        cp bfs/bfs "$OSL/"
-        cp src/.linux32gcc-release-mecw/mecw "$OSW/mecw-ubuntu-20"
-        cp me-linux.bin "$OSL/mecw-ubuntu-20.bin"
-        cp bin/bfs.exe $OSW/bfs.exe
-        md5sum $OSW/bfs.exe > $OSW/bfs.md5
-        cp me-windows.exe $OSW/jme.exe
-        md5sum $OSW/jme.exe > $OSW/jme.md5
-        cp mec-windows.exe $OSW/jmc.exe
-        md5sum $OSW/jmc.exe > $OSW/jmc.md5
+        cp jasspa.zip COPYING license.txt README-standalone.md  "ubuntu-20-x86_64/"
+        cp jasspa.zip COPYING license.txt README-standalone.md  "windows-32"
+        cp bfs/bfs "ubuntu-20-x86_64/"
+        cp src/.linux32gcc-release-mecw/mecw "windows-32/mecw-ubuntu-20"
+        cp me-linux.bin "ubuntu-20-x86_64/mecw-ubuntu-20.bin"
+        cp bin/bfs.exe windows-32/bfs.exe
+        md5sum windows-32/bfs.exe > windows-32/bfs.md5
+        cp me-windows.exe windows-32/jme.exe
+        md5sum windows-32/jme.exe > windows-32/jme.md5
+        cp mec-windows.exe windows-32/jmc.exe
+        md5sum windows-32/jmc.exe > windows-32/jmc.md5
     - name: Make appimage
       run: |
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
@@ -79,8 +79,8 @@ jobs:
     - name: Upload Ubuntu files
       uses: actions/upload-artifact@v3
       with: 
-        name: $(OSL)
-        path: $(OSL)
+        name: ubuntu-20-x86_64
+        path: ubuntu-20-x86_64
 
   macos:
     runs-on: macos-11
