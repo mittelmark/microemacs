@@ -70,7 +70,8 @@ CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
 LDFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../3rdparty/zlib/.win32mingw-release -lz
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../3rdparty/zlib/.win32mingw-release/zlib.a
+### -lz
 ARFLAGSR = rcs
 ARFLAGSD = rcs
 RCFLAGS  = --input-format rc --output-format coff -D_MINGW
