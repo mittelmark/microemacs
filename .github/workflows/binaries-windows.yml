@@ -35,6 +35,7 @@ jobs:
     - name: compile mew/mec        
       run: |
         cd src
+        PATH=%PATH%;%cd%\mingw32\bin
         mingw32-make -f win32mingw.mak RC=windres STRIP=strip
         dir
         mingw32-make -f win32mingw.mak BTYP=c RC=windres STRIP=strip
