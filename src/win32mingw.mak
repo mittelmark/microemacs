@@ -64,7 +64,7 @@ endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 
-CCDEFS   = -D_MINGW -Wall -I/usr/i686-w64-mingw32/sys-root/mingw/include
+CCDEFS   = -D_MINGW -Wall -I/usr/i686-w64-mingw32/sys-root/mingw/include -I../3rdparty/zlib
 CCFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 

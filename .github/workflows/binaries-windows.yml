@@ -31,7 +31,7 @@ jobs:
         mingw32-make -f win32mingw.mak BTYP=c
         Start-Process -FilePath build.bat -ArgumentList "-t c" -Wait
         Get-ChildItem -Force
-        Start-Process win32mingw-release-mec/mec32.exe -ArgumentList "-V" -Wait
+        Start-Process ./win32mingw-release-mec/mec32.exe -ArgumentList "-V" -Wait
         ls
         
         
