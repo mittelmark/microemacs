@@ -20,16 +20,24 @@ jobs:
         gcc --version
         cd bfs
         mingw32-make -f Makefile.mingw
+        Get-ChildItem -Force
         ls
         cd ..
-        cd src
+        curl -OL https://github.com/madler/zlib/archive/refs/heads/master.zip
+        unzip master.zip
+        cd zlib-master
+        ./configure
+        mingw32-make
+        mingw32-make install
+        Get-ChildItem -Force        
+        cd ../src
         Start-Process -FilePath build.bat -Wait
         mingw32-make -f win32mingw.mak
         Get-ChildItem -Force
         mingw32-make -f win32mingw.mak BTYP=c
         Start-Process -FilePath build.bat -ArgumentList "-t c" -Wait
         Get-ChildItem -Force
-        Start-Process win32mingw-release-mec/mec32.exe -V
+        Start-Process win32mingw-release-mec/mec32.exe -ArgumentList "-V" -Wait
         ls
         
         
