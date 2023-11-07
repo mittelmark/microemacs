@@ -36,12 +36,13 @@ jobs:
       run: |
         cd src
         mingw32-make -f win32mingw.mak RC=windres STRIP=strip
-        Get-ChildItem -Force
+        dir
         mingw32-make -f win32mingw.mak BTYP=c RC=windres STRIP=strip
-        Get-ChildItem -Force 
-        Get-ChildItem -Force .win32*/*
-        Start-Process .win32mingw-release-mec/mec32.exe -ArgumentList "-V" -Wait
-        ls
+        dir
+        dir 
+        cd .win32mingw-release-mec 
+        mec32.exe -V
+        shell: cmd
         
         
         
