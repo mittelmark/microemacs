@@ -24,7 +24,8 @@ jobs:
         cd ..
         cd src
         Start-Process -FilePath build.bat
-        Start-Process -FilePath build.bat -t c
+        ls
+        Start-Process -FilePath build.bat -ArgumentList -t c
         ls
         
         
