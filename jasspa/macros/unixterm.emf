@@ -41,7 +41,7 @@ set-variable %font-index 4
     !endif
     ; might be called like this:
     ; change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
-    define-macro change-font-type
+    define-macro change-font-size
         !if &equal @# 0
             set-variable %font-index 4
         !else
