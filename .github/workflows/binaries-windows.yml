@@ -18,16 +18,25 @@ jobs:
         unzip -q winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
         $Env:PATH += ";$pwd/mingw32/bin"
         gcc --version
+    - name: compile zlib
+      run:  |
+        cd 3rdparty/zlib 
+        mingw32-make -f win32mingw.mak
+        Get-ChildItem -Force
+        Get-ChildItem -Force .mingw*/*
+        cd ../../
+    - name: compile bfs
+      run:  |
         cd bfs
         mingw32-make -f Makefile.mingw RC=windres STRIP=strip
         Get-ChildItem -Force
         ls
         cd ..
-        Get-ChildItem -Force        
+    - name: compile mew/mec        
         cd src
         mingw32-make -f win32mingw.mak RC=windres STRIP=strip
         Get-ChildItem -Force
-        mingw32-make -f win32mingw.mak BTYP=c
+        mingw32-make -f win32mingw.mak BTYP=c RC=windres STRIP=strip
         Get-ChildItem -Force 
         Get-ChildItem -Force .win32*/*
         Start-Process .win32mingw-release-mec/mec32.exe -ArgumentList "-V" -Wait
