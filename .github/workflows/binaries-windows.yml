@@ -24,9 +24,9 @@ jobs:
         cd ..
         cd src
         Start-Process -FilePath build.bat -Wait
-        ls -la
+        Get-ChildItem -Force
         Start-Process -FilePath build.bat -ArgumentList "-t c" -Wait
-        ls -la
+        Get-ChildItem -Force
         
         
     
