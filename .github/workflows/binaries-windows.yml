@@ -34,17 +34,17 @@ jobs:
         cd ..
     - name: compile mew/mec        
       run: |
+        $Env:PATH += ";$pwd/mingw32/bin"
+        Get-ChildItem -Force
         cd src
-        PATH=%PATH%;%cd%\mingw32\bin
         mingw32-make -f win32mingw.mak RC=windres STRIP=strip
         dir
         mingw32-make -f win32mingw.mak BTYP=c RC=windres STRIP=strip
         dir
         dir 
         cd .win32mingw-release-mec 
-        mec32.exe -V
-        shell: cmd
-        
+        Start-Process mec32.exe -Arguments "-V" -wait
+
         
         
     
