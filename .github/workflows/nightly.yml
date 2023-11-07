@@ -33,21 +33,24 @@ jobs:
     
     - name: Make me-standalone binary
       run: |
-        mkdir ubuntu-20-x86_64
-        mkdir windows-32
+        mkdir binaries-Ubuntu-20-x86_64
+        mkdir binaries-Windows-32
         zip jasspa.zip jasspa/*
         
-        cp jasspa.zip COPYING license.txt README-standalone.md  "ubuntu-20-x86_64/"
-        cp jasspa.zip COPYING license.txt README-standalone.md  "windows-32"
-        cp bfs/bfs "ubuntu-20-x86_64/"
-        cp src/.linux32gcc-release-mecw/mecw "windows-32/mecw-ubuntu-20"
-        cp me-linux.bin "ubuntu-20-x86_64/mecw-ubuntu-20.bin"
-        cp bin/bfs.exe windows-32/bfs.exe
-        md5sum windows-32/bfs.exe > windows-32/bfs.md5
-        cp me-windows.exe windows-32/jme.exe
-        md5sum windows-32/jme.exe > windows-32/jme.md5
-        cp mec-windows.exe windows-32/jmc.exe
-        md5sum windows-32/jmc.exe > windows-32/jmc.md5
+        cp jasspa.zip COPYING license.txt README-standalone.md  "binaries-Ubuntu-20-x86_64/"
+        cp jasspa.zip COPYING license.txt README-standalone.md  "binaries-Windows-32/"
+        cp bfs/bfs "binaries-Ubuntu-20-x86_64/"
+        md5sum binaries-Ubuntu-20-x86_64/bfs > binaries-Ubuntu-20-x86_64/bfs.md5
+        cp src/.linux32gcc-release-mecw/mecw "binaries-Ubuntu-20-x86_64/mecw-ubuntu-20"
+        md5sum binaries-Ubuntu-20-x86_64/mecw-ubuntu-20 > binaries-Ubuntu-20-x86_64/mecw-ubuntu-20.md5
+        cp me-linux.bin "binaries-Ubuntu-20-x86_64/mecw-ubuntu-20.bin"
+        md5sum binaries-Ubuntu-20-x86_64/mecw-ubuntu-20.bin > binaries-Ubuntu-20-x86_64/mecw-ubuntu-20.md5
+        cp bin/bfs.exe binaries-Windows-32/bfs.exe
+        md5sum binaries-Windows-32/bfs.exe > binaries-Windows-32/bfs.md5
+        cp me-windows.exe binaries-Windows-32/jme.exe
+        md5sum binaries-Windows-32/jme.exe > binaries-Windows-32/jme.md5
+        cp mec-windows.exe binaries-Windows-32/jmc.exe
+        md5sum binaries-Windows-32/jmc.exe > binaries-Windows-32/jmc.md5
     - name: Make appimage
       run: |
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
@@ -59,28 +62,18 @@ jobs:
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v3
       with: 
-        name: binaries-Linux-x86_64
-        path: binaries-Linux-x86_64
+        name: binaries-Ubuntu-20-x86_64
+        path: binaries-Ubuntu-20-x86_64
     - name: Upload Linux Appimgage
       uses: actions/upload-artifact@v3
       with: 
         name: Jasspa_MicroEmacs-x86_64.AppImage
-        path: Jasspa_MicroEmacs-x86_64.AppImage Jasspa_MicroEmacs-x86_64.AppImage.md5
+        path: Jasspa_MicroEmacs-x86_64.AppImage
     - name: Upload Artifact GitHub Action Windows
       uses: actions/upload-artifact@v3
       with: 
-        name: binaries-Windows-32.zip
-        path: binaries-Windows-32.zip
-    - name: Upload Artifact GitHub Action Windows md5
-      uses: actions/upload-artifact@v3
-      with: 
-        name: binaries-Windows-32.md5
-        path: binaries-Windows-32.md5
-    - name: Upload Ubuntu files
-      uses: actions/upload-artifact@v3
-      with: 
-        name: ubuntu-20-x86_64
-        path: ubuntu-20-x86_64
+        name: binaries-Windows-32
+        path: binaries-Windows-32
 
   macos:
     runs-on: macos-11
