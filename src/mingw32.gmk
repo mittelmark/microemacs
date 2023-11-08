@@ -52,7 +52,7 @@ STRIP         =	i686-w64-mingw32-strip
 INSTALL       =	install
 CDEBUG        =	-g -Wall
 COPTIMISE     =	-O3 -DNDEBUG=1 -Wall -Wno-uninitialized
-CDEFS         = -D_MINGW -I. -I../zlib
+CDEFS         = -D_MINGW -I. -I../3rdparty/zlib
 CONSOLE_DEFS  = -D_ME_CONSOLE
 WINDOW_DEFS   = -D_ME_WINDOW
 MICROEMACS_DEFS= -D_SOCKET
