@@ -37,6 +37,8 @@ jobs:
     - name: compile mecw
       shell: cmd
       run: |
+        PATH=%CD%\mingw32\bin;%PATH%
+        gcc -v
         cd src
         i686-w64-mingw32-gcc -O3 -DNDEBUG=1 -Wall -Wno-uninitialized -D_MINGW -I. -I../3rdparty/zlib -D_SOCKET -D_ME_WINDOW  -c -o abbrev.ow abbrev.c
         ls 
