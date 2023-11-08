@@ -16,10 +16,8 @@ add-file-hook ".C" fhook-cpp
 
 ; TODO check on more platforms
 ; found it on MacOS Quartz, Ubuntu 18, Fedora 30, Fedora 38
-set-variable %font-default "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*"
-set-variable %fonts %font-default
-set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
-set-variable %font-index 4
+set-variable .change-font.size 17
+set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-iso8859-*"
 
 !if &band $system 0x01
     ; Not using X
@@ -42,84 +40,67 @@ set-variable %font-index 4
     ; might be called like this:
     ; change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
     define-macro change-font-size
+        set-variable #l0 1
+        set-variable .new-size .change-font.size
+        set-variable .old-size .change-font.size
         !if &equal @# 0
-            set-variable %font-index 4
-        !else
-            set-variable %font-index &add %font-index @#
+            set-variable .change-font.size &add .change-font.size -1
+        !elif &equal @# -1
+            set-variable #l0 -1 
         !endif
-        !if &less %font-index 1
-            set-variable %font-index 1
-        !endif
-        set-variable #l0 &lget %font-sizes %font-index
-        !if &seq #l0 ""
-            set-variable %font-index &add %font-index -1
-        !else
-            set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
-            change-font #l0
+        set-variable #l2 0
+        !while &less #l2 10
+            ; maximal eight size steps
+            set-variable #l2 &add #l2 1
+            set-variable .change-font.size &add .change-font.size #l0
+            set-variable #l1 &spr .change-font.sz-font .change-font.size
+            !force change-font #l1
             !if $status
-                100 ml-write &cat "current font: " #l0
-                set-registry &spr "/history/%s/font" $platform #l0
-                ; TODO: How to place this in user-setup font field???
-            !else
-                500 ml-write "Font is unchanged!"
+                200 ml-write &cat "current font: " #l1
+                set-registry &spr "/history/%s/font" $platform #l1
+                set-variable .new-size .change-font.size
+                set-variable #l2 10
+            !elif &gre .change-font.size 36
+                set-variable #l2 10 ; break
+            !elif &less .change-font.size 8
+                set-variable #l2 10 ; break
             !endif
+        !done
+        !if &equal .new-size .old-size
+            ml-write "Font was not changed"
+            set-variable .change-font.size .old-size
         !endif
     !emacro
     define-macro change-font-courier
-        set-variable #l2 0
-        ; current font is medium
-        !if &sin "medium" %fonts
+        ; check if current font is medium
+        !if &sin "medium" .change-font.sz-font
             set-variable #l2 1
         !endif
-        set-variable %fonts %font-default
-        set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
-        set-variable #l0 &lget %font-sizes %font-index
-        set-variable #l0 &spr %fonts #l0
+        set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-iso8859-*"
         !if #l2
-            set-variable #l0 &rep #l0 "bold" "medium"
+            set-variable #l0 &rep .change-font.sz-font "bold" "medium"
         !endif
-        1500 ml-write &cat "current font: " #l0
-        change-font #l0
-        set-registry &spr "/history/%s/font" $platform #l0
+        0 change-font-size #l0
     !emacro
     define-macro change-font-lucida
-        set-variable #l0 0
-        ; current font is medium
-        !if &sin "medium" %fonts
-            set-variable #l0 1
+        ; check if current font is medium
+        !if &sin "medium" .change-font.sz-font
+            set-variable #l2 1
         !endif
-        set-variable %fonts "-*-lucidatypewriter-bold-*-*-*-%d-*-*-*-*-*-*-*"
-        set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
-        !if #l0
-            set-variable %fonts &rep %fonts "bold" "medium"
+        set-variable .change-font.sz-font "-*-lucidatypewriter-bold-r-*-*-%d-*-*-*-*-iso8859-*"
+        !if #l2
+            set-variable #l0 &rep .change-font.sz-font "bold" "medium"
         !endif
-        set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
-        change-font #l0
-        set-registry &spr "/history/%s/font" $platform #l0        
-    !emacro
-    define-macro change-font-type
-        set-variable %fonts &spr "-*-%s-*-*-*-%%d-*-*-*-*-*-*-*" @1
-        set-variable %font-sizes @2
-        set-variable %font-index &lfind %font-sizes @3
-        set-variable #l0 &spr %fonts @3
-        !force change-font #l0
-        !if &not $status 
-            1500 ml-write &spr "Error: Install X11 font %s first!" @1
-        !else
-            ml-write &cat "Font: " &reg  &spr "/history/%s/font" $platform ""
-            set-registry &spr "/history/%s/font" $platform #l0        
-        !endif
-        
+        0 change-font-size #l0
     !emacro
     define-macro change-font-bold
-        !if &sin "medium" %fonts
-            set-variable %fonts &rep %fonts "medium" "bold"
+        !if &sin "medium" .change-font.sz-font
+            set-variable .change-font.sz-font &rep .change-font.sz-font "medium" "bold"
         !else
-            set-variable %fonts &rep %fonts "bold" "medium"
+            set-variable .change-font.sz-font &rep .change-font.sz-font "bold" "medium"
         !endif
-        set-variable #l0 &spr %fonts &lget %font-sizes %font-index 
-        change-font #l0
-        set-registry &spr "/history/%s/font" $platform #l0
+        0 change-font-size
+        200 ml-write &spr "Current font %s" &spr .change-font.sz-font .change-font.size
     !emacro
     1 global-bind-key change-font-size "C-+"
     0 global-bind-key change-font-size "C-="
