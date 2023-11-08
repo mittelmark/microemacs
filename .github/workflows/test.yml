@@ -34,6 +34,14 @@ jobs:
         mingw32-make -f Makefile.mingw RC=windres STRIP=strip
         ls
         cd ..
+    - name: compile mecw
+      shell: cmd
+      run: \
+        cd src
+        mingw32-make -f win32mingw.mak RC=windres STRIP=strip
+        ls 
+        ls .win32mingw-release-mecw
+        
 
         
         
