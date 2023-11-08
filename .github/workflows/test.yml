@@ -41,9 +41,6 @@ jobs:
         cd src
         mingw32-make -f mingw32.gmk RC=windres STRIP=strip
         ls 
-        ls .win32*/*
-        mingw32-make -f win32mingw.mak RC=windres STRIP=strip BTYP=c
-        ls .win32*/*
         
 
         
