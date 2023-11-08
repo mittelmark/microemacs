@@ -36,7 +36,7 @@ jobs:
         cd ..
     - name: compile mecw
       shell: cmd
-      run: \
+      run: |
         cd src
         mingw32-make -f win32mingw.mak RC=windres STRIP=strip
         ls 
