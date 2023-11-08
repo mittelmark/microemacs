@@ -33,7 +33,7 @@ jobs:
         mingw32-make -f Makefile.mingw RC=windres STRIP=strip
         ls
         cd ..
-    - name: compile mecw
+    - name: compile mew
       shell: cmd
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
