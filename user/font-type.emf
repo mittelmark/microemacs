@@ -1,0 +1,61 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : $Author$
+;  Created By    : groth
+;  Created       : Tue Nov 7 10:11:28 2023
+;  Last Modified : <231108.1931>
+;
+;  Description
+;
+;  Notes
+;
+;  History
+;
+;  Copyright (c) 2023 groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+define-macro change-font-type-size
+    set-variable #l0 1
+    set-variable .new-size .i
+    set-variable .old-size .i
+    !if &equal @# 0
+        set-variable .i 14
+    !elif &equal @# -1
+        set-variable #l0 -1 
+    !endif
+    set-variable #l2 0
+    !while &less #l2 10
+        ; maximal eight size steps
+        set-variable #l2 &add #l2 1
+        set-variable .i &add .i #l0
+        set-variable #l1 &spr .font .i
+        !force change-font #l1
+        !if $status
+            200 ml-write &cat "current font: " #l1
+            set-variable .new-size .i
+            set-variable #l2 10
+        !elif &gre .i 36
+            set-variable #l2 10 ; break
+        !elif &less .i 8
+            set-variable #l2 10 ; break
+        !endif
+    !done
+    !if &equal .new-size .old-size
+        200 ml-write "font was not changed"
+        set-variable .i .old-size
+    !endif
+!emacro
+
+set-variable .change-font-type-size.i 14
+;set-variable .change-font-type-size.font "-*-courier-medium-r-*-*-%d-*-*-*-*-*-*"
+;set-variable .change-font-type-size.font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*"
+;set-variable .change-font-type-size.font "-*-lucidatypewriter-medium-r-*-*-%d-*-*-*-*-*-*"
+set-variable .change-font-type-size.font "-*-lucidatypewriter-bold-r-*-*-%d-*-*-*-*-*-*"
+
+1 global-bind-key change-font-type-size "C-h +"
+0 global-bind-key change-font-type-size "C-h ="
+-1 global-bind-key change-font-type-size "C-h -"
+
+change-font-type-size
+
