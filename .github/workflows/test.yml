@@ -25,7 +25,6 @@ jobs:
         cd 3rdparty/zlib 
         mingw32-make -f win32mingw.mak
         ls .win32mingw-release\*
-        copy .win32mingw-release\zlib.a ..\..\mingw32\lib\libz.a
         cd ../../
     - name: compile bfs
       shell:  cmd
@@ -40,7 +39,7 @@ jobs:
         PATH=%CD%\mingw32\bin;%PATH%
         gcc -v
         cd src
-        mingw32-make -f win32mingw.mak RC=windres STRIP=strip
+        mingw32-make -f mingw32.gmk RC=windres STRIP=strip
         ls 
         ls .win32*/*
         mingw32-make -f win32mingw.mak RC=windres STRIP=strip BTYP=c
