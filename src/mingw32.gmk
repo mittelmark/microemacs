@@ -60,7 +60,7 @@ NANOEMACS_DEFS= -D_NANOEMACS
 LDDEBUG       = -g
 LDOPTIMISE    = -O3
 LDFLAGS       =
-LIBS          = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../3rdparty/zlib/.win32mingw-release -lz
+LIBS          = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -fstack-protector -lssp -lz
 CONSOLE_LIBS  = 
 WINDOW_LIBS   = 
 #
