@@ -16,9 +16,9 @@ add-file-hook ".C" fhook-cpp
 
 ; TODO check on more platforms
 ; found it on MacOS Quartz, Ubuntu 18, Fedora 30, Fedora 38
-set-variable .change-font.size 17
+set-variable .change-font.sz-size 17
 set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-iso8859-*"
-
+set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewriter-medium|lucidatypewriter-bold|"
 !if &band $system 0x01
     ; Not using X
     !if &not &band $system 0x02
@@ -41,10 +41,11 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-iso8859-*"
     ; change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
     define-macro change-font-size
         set-variable #l0 1
-        set-variable .new-size .change-font.size
-        set-variable .old-size .change-font.size
+        set-variable .new-size .change-font.sz-size
+        set-variable .old-size .change-font.sz-size
+        ; TODO: alter variable sz-size at the end only if success
         !if &equal @# 0
-            set-variable .change-font.size &add .change-font.size -1
+            set-variable .change-font.sz-size &add .change-font.sz-size -1
         !elif &equal @# -1
             set-variable #l0 -1 
         !endif
@@ -52,23 +53,51 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-iso8859-*"
         !while &less #l2 10
             ; maximal eight size steps
             set-variable #l2 &add #l2 1
-            set-variable .change-font.size &add .change-font.size #l0
-            set-variable #l1 &spr .change-font.sz-font .change-font.size
+            set-variable .change-font.sz-size &add .change-font.sz-size #l0
+            set-variable #l1 &spr .change-font.sz-font .change-font.sz-size
             !force change-font #l1
             !if $status
                 200 ml-write &cat "current font: " #l1
                 set-registry &spr "/history/%s/font" $platform #l1
-                set-variable .new-size .change-font.size
+                set-variable .new-size .change-font.sz-size
                 set-variable #l2 10
-            !elif &gre .change-font.size 36
+            !elif &gre .change-font.sz-size 36
                 set-variable #l2 10 ; break
-            !elif &less .change-font.size 8
+            !elif &less .change-font.sz-size 8
                 set-variable #l2 10 ; break
             !endif
         !done
         !if &equal .new-size .old-size
             ml-write "Font was not changed"
-            set-variable .change-font.size .old-size
+            set-variable .change-font.sz-size .old-size
+        !endif
+    !emacro
+    define-macro change-font-type
+        !force set-variable .font @1
+        !if &not $status
+            set-variable .font @ml19 "Select font: " "courier" .change-font.sz-fonts 
+        !endif
+        !force set-variable .size @3
+        !if &not $status
+            !force set-variable .size @2
+        !endif
+        !if &not $status
+            !force set-variable .size 17
+        !endif
+        !if &less &sin "-" .font 1
+            set-variable .font &cat .font "-medium"
+        !endif
+        set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-iso8859-*" .font .size
+        !force change-font #l0
+        !if $status
+            set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-iso8859-*" .font
+            set-variable .change-font.sz-size .size
+            !if &not &lfind .change-font.sz-fonts .font
+                set-variable .change-font.sz-fonts &linsert .change-font.sz-fonts -1 .font
+            !endif
+            200 ml-write &cat "current font: " #l0
+        !else
+            200 ml-write &spr "font is not available: %s" #l0
         !endif
     !emacro
     define-macro change-font-courier

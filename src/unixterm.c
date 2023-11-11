@@ -3497,11 +3497,12 @@ changeFont(int f, int n)
      * base size, minimum size and increment size.
      */
     meFrameLoopBegin() ;
-
     meFrameLoopContinue(loopFrame->flags & meFRAME_HIDDEN) ;
-
+    
+#if 0
+    //  DG: breaks layout on tiling window managers see me23
     meFrameSetWindowSize(loopFrame) ;
-
+#endif
     /* Make the current font invalid and force a complete redraw */
     meFrameSetXGCFont(loopFrame,0) ;
     meFrameSetXGCFontId(loopFrame,mecm.fontId) ;
@@ -3514,14 +3515,33 @@ changeFont(int f, int n)
      * event and the X-Window may be re-mapped. Unmap the window ready to
      * change the size hints for the font. Note that the hint values are the
      * same irrespective of the number of windows. */
+#if 0
+    /* Steve 2023-04-18: Found that calling XSetWMNormalHints on mapped windows works fine on macOS with XQuartz.
+     * Also can't find any docs suggesting XSetWMNormalHints can only be called on an Unmapped window, may be this
+     * was the case but doesn't seem to be any more */
+    /* In order for us to change the hints for a font change then the
+     * X-Window has to be un-mapped. Therefore on a font change unmap the
+     * window, the hints size is then changed when we receive the MapNotify
+     * event and the X-Window may be re-mapped. Unmap the window ready to
+     * change the size hints for the font. Note that the hint values are the
+     * same irrespective of the number of windows. */
+   
     if (meFrameGetXMapState(loopFrame) == meXMAP_MAP)
     {
         /* Tell the Unmap event that this is a font change mapping and then
          * unmap the window. */
         meFrameSetXMapState(loopFrame, meXMAP_FONT);
         XUnmapWindow (mecm.xdisplay, meFrameGetXWindow(loopFrame));
+    } else 
+#endif    
+    {
+        sizeHints.base_width = sizeHints.width = mecm.fwidth*loopFrame->width;
+        sizeHints.base_height = sizeHints.height = mecm.fdepth*(loopFrame->depth+1);
+        XSetWMNormalHints(mecm.xdisplay,meFrameGetXWindow(loopFrame),&sizeHints);
+        meFrameSetWindowSize(loopFrame);
     }
-    
+        
+
     meFrameLoopEnd() ;
 
     sgarbf = meTRUE;

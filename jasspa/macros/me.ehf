@@ -12743,7 +12743,7 @@ $a
     cCcAcDchange-font-boldcA
     cCcAcDchange-font-couriercA
     cCcAcDchange-font-lucidacA    
-    cCcAcDchange-font-typecA    cC"family-weight" cA cC"size-list"cA cCsize
+    cCcAcDchange-font-typecA    cC"family-weight"cAcA cCsize
 
 cEcEDESCRIPTION cEcA
 
@@ -12756,11 +12756,12 @@ $a
 
     cDchange-font-lucidacA  sets the  default  font for  resizing  to lucidatypewriter
     
-    cDchange-font-typecA    allows an easier switching of font and gives a list for resizing
+    cDchange-font-typecA    allows an easier  switching  of font just giving
+    the main font and an optional font-size
     
     The font-size is increased in case of C-+ and decreased in case of the C--
-    minus key  bindings.  For Unix systems the  variables  lslm%fonts(5)le,
-    lslm%font-sizes(5)le,  and  lslm%font-index(5)le  are  used to cycle
+    minus    key     bindings.     For    Unix    systems    the     variables
+    lslm.change-font.sz-font(5)le and lslm.change-font.size(5)le  are  used to cycle
     through two standard fonts, Adobe courier and  lucidatypewriter.  The user
     can define  their own short fonts using just the family and the weight and
     give the their list of available sizes through which they like to cycle through. 
@@ -12769,9 +12770,11 @@ $a
 sB
         ; Call to change the resize font to Ubuntu mono bold
         ; could be placed in your user.emf file
-        ; arguments are: short font-string (family-weigth) sizelist startsize
-        change-font-type "ubuntu mono-bold" "|11|14|17|19|22|25|30|33|" 22
-        change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
+        ; arguments are: short font-string (family-weigth) startsize
+        change-font-type "ubuntu mono-bold" 22
+        ;change-font-type "roboto mono-bold" 25
+        ; change-font-type "courier" ; should always work
+        ; change-font-type "lucidatypewriter" - should always work
         sA
 
 cEcESEE ALSO cEcA

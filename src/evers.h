@@ -40,11 +40,16 @@
 /* THESE MAY ONLY BE MODIFIED BY JASSPA THEY REPRESENT THE CURRENT 
  * RELEASE OF THE BUILD AND ARE USED AS A REFERENCE POINT WHEN
  * PROBLEMS OCCUR. THESE VALUES ARE NOT INTENDED TO REPRESENT 
- * THE BUILD DATE OF THE SOFTWARE AND MUST NOT BE MODIFIED AS SUCH */
+ * THE BUILD DATE OF THE SOFTWARE AND MUST NOT BE MODIFIED AS SUCH 
+ * Groth: Since 2023 - they are not following the build date, but are
+ *        a version indicator, they are not updated, to a new year 
+ *        as we have now a version 2023 in preparation. This version will
+ *        be called ME 2009 and stick with the year 2009  as the version.
+ */
 #define meCENTURY       "20"          /* Current century. Y2 complient :-) */
 #define meYEAR          "09"          /* Current year */
 #define meMONTH         "12"          /* Current month */
-#define meDAY           "21"          /* Day of the month */
+#define meDAY           "22"          /* Day of the month */
 
 /* Version information - Date of build */
 #define	meDATE          meYEAR "/" meMONTH "/" meDAY 
