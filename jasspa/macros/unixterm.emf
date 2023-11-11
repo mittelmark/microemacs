@@ -84,6 +84,13 @@ set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewrite
         !if &not $status
             !force set-variable .size 17
         !endif
+        !if &gre &lfind "|ubuntu|chivo|prime|" .font 0
+            !if &seq .font "prime"
+                set-variable .font "courier prime"
+            !else
+                set-variable .font &cat .font " mono"
+            !end
+        !endif
         !if &less &sin "-" .font 1
             set-variable .font &cat .font "-medium"
         !endif
