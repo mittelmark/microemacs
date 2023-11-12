@@ -767,6 +767,7 @@ Miscellaneous Information
     lslmdelete-some-buffers(2)le Delete buffers with query
     lslmexecute-buffer(2)le Execute script lines from a buffer
     lslmexecute-line(2)le Execute a typed in script line
+    lslmexecute-region(3)le Execute marked script lines    
     lslmfind-buffer(2)le (cDC-x bcA) Switch to a named buffer
     lslminsert-file-name(2)le (cDC-x C-ycA) Insert filename into current buffer
     lslmlist-buffers(2)le (cDC-x C-bcA) List all buffers and show their status
@@ -997,6 +998,7 @@ Miscellaneous Information
     lslmexecute-kbd-macro(2)le (cDC-x ecA) Execute a keyboard macro
     lslmexecute-line(2)le Execute a typed in script line
     lslmexecute-named-command(2)le [cDesc xcA] Execute a named command
+    lslmexecute-region(3)le Execute marked script lines
     lslminsert-macro(2)le Insert keyboard macro into buffer
     lslmkbd-macro-query(2)le (cDC-x qcA) Query termination of keyboard macro
     lslmname-kbd-macro(2)le Assign a name to the last keyboard macro
@@ -1949,6 +1951,7 @@ Miscellaneous Information
     lslmexecute-kbd-macro(2)le (cDC-x ecA) Execute a keyboard macro
     lslmexecute-line(2)le Execute a typed in script line
     lslmexecute-named-command(2)le [cDesc xcA] Execute a named command
+    lslmexecute-region(3)le Execute marked script lines
     lslmexecute-string(2)le Execute a string as a command
     lslmexecute-tool(3)le Execute a user defined shell tool
     lslmexit-emacs(2)le Exit MicroEmacs
@@ -2324,6 +2327,7 @@ Miscellaneous Information
     lslmexecute-kbd-macro(2)le (cDC-x ecA) Execute a keyboard macro
     lslmexecute-line(2)le Execute a typed in script line
     lslmexecute-named-command(2)le [cDesc xcA] Execute a named command
+    lslmexecute-region(3)le Execute marked script lines  
     lslmexecute-string(2)le Execute a string as a command
     lslmexit-emacs(2)le Exit MicroEmacs
     lslmexpand-abbrev(2)le Expand an abbreviation
@@ -3519,6 +3523,7 @@ Miscellaneous Information
     lslmexecute-kbd-macro(2)le (cDC-x ecA) Execute a keyboard macro
     lslmexecute-line(2)le Execute a typed in script line
     lslmexecute-named-command(2)le [cDesc xcA] Execute a named command
+    lslmexecute-region(3)le Execute marked script lines      
     lslmexecute-string(2)le Execute a string as a command
     lslmexecute-tool(3)le Execute a user defined shell tool
     lslmexit-emacs(2)le Exit MicroEmacs
@@ -14664,6 +14669,7 @@ $a
     lslmset-mark(2)le, lslmcopy-region(2)le, lslm$window-mark-col(5)le, lslm$window-mark-line(5)le.
 ! 2 execute-buffer
 ! 2 execute-line
+! 3 execute-region
 cEcENAME cEcA
 
 
@@ -14671,6 +14677,8 @@ $a
     execute-buffer - Execute script lines from a buffer
 |execute-line
     execute-line - Execute a script line from the command line
+|execute-region
+    execute-region - Execute marked script lines from a buffer
 $a
 
 
@@ -14679,7 +14687,7 @@ $a
 
     cDexecute-buffercA "cCbuffer-namecA"
     cDexecute-linecA ["cCcommand-linecA"]
-
+    cDexecute-regioncA 
 
 cEcEDESCRIPTION cEcA
 
@@ -14691,6 +14699,10 @@ $a
     cDexecute-linecA executes a in script line entered from the command line.
     Typically this is used in macros.
 
+    cDexecute-regioncA executes Macro commands in a marked buffer region.
+    Typically this is used in macro development. Please note that all possible
+    narrows, hidden regions,  are removed after execution, so show up again.
+    cDexecute-regioncA is implemented in misc.emf.
 
 cEcESEE ALSO cEcA
 

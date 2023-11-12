@@ -158,3 +158,25 @@ define-macro write-region
     delete-buffer $buffer-bname
     goto-position "\x88"
 !emacro
+
+; execute-region - mark a aregion of code and the execute it
+; useful in macro development
+; code taken from me23
+; implemented by Steven Phillips
+define-macro execute-region
+    set-alpha-mark "a"
+    3 narrow-buffer
+    !force !force !force execute-buffer $buffer-bname
+    !if &set #l0 &not $status 
+        set-alpha-mark "a"
+    !endif
+    end-of-buffer
+    forward-line
+    2 narrow-buffer ; me23 it is 2?
+    goto-alpha-mark "a"
+    !if #l0
+        ml-write &spr "[Error executing region in %s, line %d]" $buffer-bname $window-line
+        !abort
+    !endif
+    
+!emacro
