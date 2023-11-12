@@ -1048,6 +1048,7 @@ Miscellaneous Information
     lslmhilight(2)le Manage the buffer hilighting schemes
     lslminsert-space(2)le Insert space(s) into current buffer
     lslminsert-string(2)le Insert character string into current buffer
+    lslminsert-template(3)le Insert templates into current buffer    
     lslmlanguageTemplates(2)le File Language Templates
     lslmlocaleSupport(2)le Locale Support
     lslmnewline(2)le (cDreturncA) Insert a new line
@@ -1136,6 +1137,7 @@ Miscellaneous Information
     lslm%company-name(5)le Name of company for template
     lslm.ascii-time.format(5)le Set the format of the date string
     lslm.calc.result(5)le Last calc calculation result
+    lslm.insert-template.templates(5)le Set the templates for interactive selection
 !   Help Information
 cEcEHELP INFORMATION cEcA
 
@@ -2027,6 +2029,7 @@ Miscellaneous Information
     lslminsert-string(2)le Insert character string into current buffer
     lslminsert-symbol(3)le Insert an ASCII character
     lslminsert-tab(2)le (cDC-icA) Insert tab(s) into current buffer
+    lslminsert-template(3)le Insert templates into current buffer    
     lslmipipe-kill(2)le Kill a incremental pipe
     lslmipipe-shell-command(2)le (cDesc \cA) Incremental pipe (non-suspending
     system call)
@@ -2592,6 +2595,7 @@ Miscellaneous Information
     lslminfo-on(3)le Display Info on a given topic
     lslminsert-password(3)le Create and insert a new password string
     lslminsert-symbol(3)le Insert an ASCII character
+    lslminsert-template(3)le Insert templates into current buffer    
     lslmishell(3)le Open a Cygwin BASH window
     lslmline-scheme(3)le Apply line annotation in current buffer
     lslmMahjongg(3)le MicroEmacs 2009 version of the solitaire Mah Jongg game
@@ -3260,6 +3264,7 @@ Miscellaneous Information
     lslm.Xdefaults(8)le UNIX Window Manager defaults file
     lslm.ascii-time.format(5)le Set the format of the date string
     lslm.calc.result(5)le Last calc calculation result
+    lslm.insert-template.templates(5)le Set the templates for interactive selection    
     lslm.which.result(5)le Program path
     lslm0-9(9)le UNIX t/nroff file
     lslm2dos(3f)le Convert text files to DOS format files.
@@ -3620,6 +3625,7 @@ Miscellaneous Information
     lslminsert-string(2)le Insert character string into current buffer
     lslminsert-symbol(3)le Insert an ASCII character
     lslminsert-tab(2)le (cDC-icA) Insert tab(s) into current buffer
+    lslminsert-template(3)le Insert templates into current buffer    
     lslmipipe-kill(2)le Kill a incremental pipe
     lslmipipe-shell-command(2)le (cDesc \cA) Incremental pipe (non-suspending
     system call)
@@ -5017,7 +5023,24 @@ Miscellaneous Information
 
 cEDevelopment History cA
 
-        * [231104] new function change-font-type for easier access to resize fonts
+        * [231212] new function with interactive selection: lslminsert-template(3)le 
+                   using lslm.insert-template.templates(5)le variable
+                   docu update for changelogs and insert-template
+                   
+        * [231111] version bump in C-code for next release to v09.12.22
+                   fixing frame resize issue by removing it after font-change
+                   taking code from me23 from Steve
+                   improved change-font-type, now this works 
+                   change-font-type "chivo"
+        
+        * [231108] little fix for Dracula them for link background,
+                   lslmchange-font-type(3)le now works as well like this
+                   `change-font-type "ubuntu mono"` and using an interactive menu
+          
+        * [231106] new function  lslmchange-font-type(3)le  for easier access to resize
+                   fonts, docu  updates,  adding font  examples  ubuntu  mono,
+                   courier prime and chivo mono
+        
 
     cDRelease - 31th October 2023 HalloweencA 
     Release date specified  2009/10/22 - to avoid clashes with the new version
@@ -5068,7 +5091,6 @@ Miscellaneous Information
            adding Python template  
 
         * New changes were collected from various Github source: mittelmark/microemacs
-
            
         * [160407] extending Go hooks (goimport, gofmt, gobuild)
         * [151116] adding golang mode
@@ -12757,7 +12779,8 @@ $a
     cDchange-font-lucidacA  sets the  default  font for  resizing  to lucidatypewriter
     
     cDchange-font-typecA    allows an easier  switching  of font just giving
-    the main font and an optional font-size
+                        the main font and an optional font-size or using an 
+                        interactive menu if no arguments are given
     
     The font-size is increased in case of C-+ and decreased in case of the C--
     minus    key     bindings.     For    Unix    systems    the     variables
@@ -12771,9 +12794,11 @@ $a
         ; Call to change the resize font to Ubuntu mono bold
         ; could be placed in your user.emf file
         ; arguments are: short font-string (family-weigth) startsize
-        change-font-type "ubuntu mono-bold" 22
+        change-font-type ; interactice selection from courier, lucida etc
+        ; change-font-type "ubuntu mono-bold" 22
         ;change-font-type "roboto mono-bold" 25
         ; change-font-type "courier" ; should always work
+        ; change-font-type "courier-bold" ; should always work
         ; change-font-type "lucidatypewriter" - should always work
         sA
 
@@ -32468,11 +32493,15 @@ $a
 
     lslmcalc(3)le, lslm$line-scheme(5)le, lslmnarrow-buffer(2)le.
 ! 3 etfinsrt
+! 3 insert-template
 ! 5 %company-name
+! 5 .insert-template.templates
 cEcENAME cEcA
 
 
-    etfinsrt - Insert template file into current buffer
+    etfinsrt        - Insert template file into current buffer
+    insert-template - insert template with a interactive menu
+    .insert-template.templates - list of user defined templates
 $a
 
 
@@ -32480,6 +32509,8 @@ $a
 
 
     cDetfinsrtcA "cCtemplatecA"
+    cCn cDinsert-templatecA 
+    set-variable .insert-templates.templates "|template-list|"
 
 
 cEcEDESCRIPTION cEcA
@@ -32518,6 +32549,10 @@ $a
         To leave the cursor at this point, only one of these tokens should be
         used in the template and the token is removed.
 
+    cDinsert-templatecA can be used to insert a different than the default language
+    templates  by  adding  these   template  names  to  the  global   variable
+    lslm.insert-template.templates(5)le for instance in the "username.emf" file.
+    
 
 cEcEEXAMPLE cEcA
 
@@ -32535,13 +32570,20 @@ $a
             1 buffer-mode "indent"
             1 buffer-mode "time"
         !emacro
-
+        
+        ; example for a list of templates in the users jasspa config folder
+        set-variable .insert-templates.template "|PyApp|PyTkApp|Rapp|TclApp|TkApp|"
+        ; for every  template  shoold be a file with the etf  extension in the
+        ; config folder
+        insert-template
 sA
 
 cEcENOTES cEcA
 
 
     cDetfinsrtcA is a macro defined in cGetfinsrt.emfcA.
+    
+    cDinsert-macrocA is a macro defined in cGetfinsrt.emfcA.
 
     lslmmagic(2m)le mode is always used to perform the the search/replace so the
     replace strings should be appropriate for cDmagiccA.
@@ -32550,7 +32592,7 @@ $a
 cEcESEE ALSO cEcA
 
 
-    lslm.ascii-time.format(5)le, lslm$buffer-fhook(5)le, lslm&find(4)le, lslmascii-time(3)le.
+    lslm.ascii-time.format(5)le,  lm$buffer-fhook(5)le, lslm&find(4)le, lslmascii-time(3)le.
 ! 3 ascii-time
 ! 5 .ascii-time.format
 cEcENAME cEcA

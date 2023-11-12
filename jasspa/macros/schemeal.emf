@@ -59,7 +59,7 @@ add-color-scheme .scheme.error .col12 .col8 .col12 .col9 .col12 .col18 .col12 .c
 ; Formatted Text
 add-color-scheme .scheme.header .col2 .col8 .col2 .col9 .col2 .col18 .col2 .col18 1 9 1 9 1 9 1 9
 add-color-scheme .scheme.link .col6 .col8 .col14 .col9 .col6 .col18 .col14 .col18 16 24 16 24 16 24 16 24
-add-color-scheme .scheme.bold .col7 .col8 .col7 .col9 .col7 .col9 .col15 .col9 1 9 1 9 1 9 1 9
+add-color-scheme .scheme.bold .col7 .col8 .col7 .col9 .col7 .col18 .col15 .col18 1 9 1 9 1 9 1 9
 add-color-scheme .scheme.italic .col3 .col8 .col11 .col9 .col3 .col18 .col11 .col18 2 10 2 10 2 10 2 10
 add-color-scheme .scheme.under .col2 .col8 .col10 .col9 .col2 .col18 .col10 .col18 16 24 16 24 16 24 16 24
 add-color-scheme .scheme.bold-italic .col7 .col8 .col15 .col9 .col7 .col18 .col15 .col18 3 11 3 11 3 11 3 11

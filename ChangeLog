@@ -7,12 +7,45 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <231030.1251>
+>  Last Modified : <231112.0701>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
- 
+
+  [231111] version bump in C-code for next release to v09.12.22
+           fixing frame resize issue by removing it after font-change
+           taking code from me23 from Steve
+           improved change-font-type, now this works 
+           change-font-type "chivo"
+
+  [231108] little fix for Dracula them for link background,
+           change-font-type now works as well like this
+           change-font-type "ubuntu mono" and using an interactive menu
+  
+  [231107] adding 3rdpart zlib for compile on  Windows-Server  (which does not
+           work yet)
+  
+  [231106] new command: change-font-type for simpler font switching
+           emf highlight within Markdown documents
+           adding chivo mono font example
+           
+  [231103] documentation update for font functionality
+           adding  font  examples  to the repo,  ubuntu  mono and
+           courier prime, adding converter to repo
+  [231102] unixterm.emf font selection now with %d as placeholder for font size
+              and easier bold font selection
+           fix newuser.etf font issue
+               
+  [231101] adding Rmd template as second choice for fhook-md
+           Cua-bindings with C-t for the help functions
+
+  [231031] separate build for mec on MacOS
+           functions for lucida(typewriter) and (adobe) courier font loading
+           taking Steve's fix for file to the file end in Markdown files
+            
   [231030] menu fix next and previous menu entry
            Github action now build as well now on Darwin 20-22,
-           Linux AppImage using Github actions
+           Linux AppImage using Github actions and raw mecw Ubuntu-18 build
+           Scoop manifest file to install on Linux
+           install file for Linux
 
   [231029] docu updates, bfs now as well cross compiles
   

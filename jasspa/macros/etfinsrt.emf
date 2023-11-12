@@ -132,6 +132,12 @@ define-macro insert-template
     !if @?
         @# etfinsrt-i &rig $buffer-fhook 6
     !else
-        etfinsrt-i &rig $buffer-fhook 6
+        !force set-variable #l0 .templates
+        !if &not &seq #l0 "ERROR"
+            set-variable #l0 @ml19 "Template name (press tab to see all): " &lget .templates 1 .templates
+            etfinsrt #l0
+        !else
+            etfinsrt-i &rig $buffer-fhook 6
+        !endif
     !endif
 !emacro
