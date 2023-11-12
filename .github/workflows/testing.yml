@@ -1,0 +1,29 @@
+name: Testing Action features
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  linux:
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: check uname Ubuntu
+        run:  |
+          uname -a
+          uname -n
+          uname -s
+  macos:
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v3
+      - name: check uname mac-os-11
+        run:  |
+          uname -a
+          uname -n
+          uname -s
+      
+    
