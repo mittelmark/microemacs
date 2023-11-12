@@ -7,14 +7,18 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <231112.0701>
+>  Last Modified : <231112.0840>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
+  [231112] adding new command execute-region, insert-template now interactive
+           using macro variable .insert-template.templates, docu updates for
+           change-font-type, insert-macro, execute-region
+
   [231111] version bump in C-code for next release to v09.12.22
-           fixing frame resize issue by removing it after font-change
+           fixing frame resize issue after font-change by removing it 
            taking code from me23 from Steve
            improved change-font-type, now this works 
-           change-font-type "chivo"
+           change-font-type "chivo" if Chivo Mono font is installed as X11-font
 
   [231108] little fix for Dracula them for link background,
            change-font-type now works as well like this

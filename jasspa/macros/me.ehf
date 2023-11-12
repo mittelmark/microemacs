@@ -5030,7 +5030,9 @@ Miscellaneous Information
 
         * [231212] new function with interactive selection: lslminsert-template(3)le 
                    using lslm.insert-template.templates(5)le variable
-                   docu update for changelogs and insert-template
+                   adding new function  lslmexecute-region(3)le  for easier
+                   macro development, docu update for changelogs  and insert-template,
+                   execute-region, change-font-type
                    
         * [231111] version bump in C-code for next release to v09.12.22
                    fixing frame resize issue by removing it after font-change
