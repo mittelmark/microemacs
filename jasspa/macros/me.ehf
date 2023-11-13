@@ -1,4 +1,3 @@
-!   me
 !   home
 !   MicroEmacs
 !   Contents
@@ -614,11 +613,11 @@ Miscellaneous Information
     lslmadd-color(2)le Create a new color
     lslmadd-color-scheme(2)le Create a new color scheme
     lslmchange-font(2)le Change the screen font
-    lslmchange-font-bold(2)le Change the font weight on X-Windows
-    lslmchange-font-courier(2)le Change the font to Adobe Courier
-    lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
-    lslmchange-font-size(2)le Change the font size X-Windows or Windows
-    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
+    lslmchange-font-bold(3)le Change the font weight on X-Windows
+    lslmchange-font-courier(3)le Change the font to Adobe Courier
+    lslmchange-font-lucida(3)le Change the font to Lucidatypewriter
+    lslmchange-font-size(3)le Change the font size X-Windows or Windows
+    lslmchange-font-type(3)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -1867,11 +1866,11 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
-    lslmchange-font-bold(2)le Change the font weight on X-Windows
-    lslmchange-font-courier(2)le Change the font to Adobe Courier
-    lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
-    lslmchange-font-size(2)le Change the screen font    
-    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
+    lslmchange-font-bold(3)le Change the font weight on X-Windows
+    lslmchange-font-courier(3)le Change the font to Adobe Courier
+    lslmchange-font-lucida(3)le Change the font to Lucidatypewriter
+    lslmchange-font-size(3)le Change the screen font    
+    lslmchange-font-type(3)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -2284,11 +2283,11 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
-    lslmchange-font-bold(2)le Change the font weight on X-Windows
-    lslmchange-font-courier(2)le Change the font to Adobe Courier
-    lslmchange-font-lucida(2)le Change the font to Lucidatypewriter
-    lslmchange-font-size(2)le Change the font size X-Windows or Windows    
-    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
+    lslmchange-font-bold(3)le Change the font weight on X-Windows
+    lslmchange-font-courier(3)le Change the font to Adobe Courier
+    lslmchange-font-lucida(3)le Change the font to Lucidatypewriter
+    lslmchange-font-size(3)le Change the font size X-Windows or Windows    
+    lslmchange-font-type(3)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-screen-depth(2)le Change the number of lines on the screen
@@ -2842,9 +2841,6 @@ Miscellaneous Information
     lslm%cygwin-path(5)le Cygwin root directory
     lslm%cygwin-prompt(5)le Cygwin shell prompt
     lslm%diff-com(5)le Diff command line
-    lslm%fonts(5)le X11 system, font-string used for resizing
-    lslm%font-sizes(5)le X11 system, list of font-sizes for the fonts variable
-    lslm%font-index(5)le X11 system, current font-sizes index
     lslm%ftp-flags(5)le Configure the FTP console
     lslm%gdiff-com(5)le Gdiff command line
     lslm%http-flags(5)le Configure the HTTP console
@@ -3180,9 +3176,6 @@ Miscellaneous Information
     lslm%cygwin-path(5)le Cygwin root directory
     lslm%cygwin-prompt(5)le Cygwin shell prompt
     lslm%diff-com(5)le Diff command line
-    lslm%fonts(5)le X11 system, font-string used for resizing
-    lslm%font-sizes(5)le X11 system, list of font-sizes for the fonts variable
-    lslm%font-index(5)le X11 system, current font-sizes index
     lslm%ftp-flags(5)le Configure the FTP console
     lslm%gdiff-com(5)le Gdiff command line
     lslm%http-flags(5)le Configure the HTTP console
@@ -3405,10 +3398,10 @@ Miscellaneous Information
     lslmchange-buffer-name(2)le (cDesc C-ncA) Change name of current buffer
     lslmchange-file-name(2)le (cDC-x ncA) Change the file name of the current buffer
     lslmchange-font(2)le Change the screen font
-    lslmchange-font-courier(2)le Change the font size on X-Windows to Courier
-    lslmchange-font-lucida(2)le Change the font size on X-Windows to lucidatypewriter
-    lslmchange-font-size(2)le Change the font size X-Windows or Windows
-    lslmchange-font-type(2)le Change the font used for resizing on X-Windows
+    lslmchange-font-courier(3)le Change the font size on X-Windows to Courier
+    lslmchange-font-lucida(3)le Change the font size on X-Windows to lucidatypewriter
+    lslmchange-font-size(3)le Change the font size X-Windows or Windows
+    lslmchange-font-type(3)le Change the font used for resizing on X-Windows
     lslmchange-frame-depth(2)le Change the number of lines on the current frame
     lslmchange-frame-width(2)le Change the number of columns on the current frame
     lslmchange-scheme(3)le Change the current highlight scheme
@@ -4406,7 +4399,7 @@ Miscellaneous Information
         Public License instead of this License.
 
 
-cEGNU Free Documentation License (GFDL) cA
+cEGNU Free Documentation License (GFDL) cAsA
 
 
     All documentation is covered by the GFDL.
@@ -4756,7 +4749,8 @@ Miscellaneous Information
         to permit their use in free software.
 
 
-cEcELicense History cEcA
+ 
+cEcELicense HistorycA
 
 
     JASSPA MicroEmacs is derived from the MicroEmacs 3.8 source base of 1998.
@@ -5028,28 +5022,31 @@ Miscellaneous Information
 
 cEDevelopment History cA
 
-        * [231212] new function with interactive selection: lslminsert-template(3)le 
-                   using lslm.insert-template.templates(5)le variable
-                   adding new function  lslmexecute-region(3)le  for easier
-                   macro development, docu update for changelogs  and insert-template,
-                   execute-region, change-font-type
-                   
-        * [231111] version bump in C-code for next release to v09.12.22
-                   fixing frame resize issue by removing it after font-change
-                   taking code from me23 from Steve
-                   improved change-font-type, now this works 
-                   change-font-type "chivo"
-        
-        * [231108] little fix for Dracula them for link background,
-                   lslmchange-font-type(3)le now works as well like this
-                   `change-font-type "ubuntu mono"` and using an interactive menu
-          
-        * [231106] new function  lslmchange-font-type(3)le  for easier access to resize
-                   fonts, docu  updates,  adding font  examples  ubuntu  mono,
-                   courier prime and chivo mono
-        
+    * [231112] 
+        * new function with interactive selection: lslminsert-template(3)le 
+        * using lslm.insert-template.templates(5)le variable
+        * adding new function  lslmexecute-region(3)le  for easier
+        * macro development, docu update for changelogs  and insert-template,
+        * execute-region, change-font-type
+             
+    * [231111] version bump in C-code for next release to v09.12.22
+        * fixing frame resize issue by removing it after font-change
+        * taking code from me23 from Steve
+        * improved change-font-type, now this works 
+        * change-font-type "chivo"
+  
+    * [231108] 
+        * little fix for Dracula them for link background,
+        * lslmchange-font-type(3)le now works as well like this
+        * change-font-type "ubuntu mono" and using an interactive menu
+    
+    * [231106] 
+        * new function  lslmchange-font-type(3)le  for easier access to resize
+        * fonts, docu  updates,  adding font  examples  ubuntu  mono, courier prime and chivo mono
+    
 
     cDRelease - 31th October 2023 HalloweencA 
+    
     Release date specified  2009/10/22 - to avoid clashes with the new version
     from 2023 which is maintained by Steven Phillips
 
@@ -10302,13 +10299,13 @@ $a
 
     When cDabort-commandcA is invoked a warning is automatically given alerting
     the user, this may be an audible or a visual warning depending on the
-    global state of the ls$quiet(5)lmquiet(5)le global variable.
+    global state of the ls$quiet(5)lm$quiet(5)le global variable.
 
 
 cEcESEE ALSO cEcA
 
 
-    lslmbuffer-mode(2)le, ls$quiet(5)lmquiet(5)le.
+    lslmbuffer-mode(2)le, ls$quiet(5)lm$quiet(5)le.
 ! 2 add-color
 ! 2 add-color-scheme
 cEcENAME cEcA
@@ -12749,11 +12746,11 @@ $a
 cEcESEE ALSO cEcA
 
 
-    lslmchange-font-size(2)le, lslmchange-frame-width(2)le, lslmchange-frame-depth(2)le, lslm$result(5)le, lslmuser-setup(3)le.
-! 2 change-font-courier
-! 2 change-font-lucida
-! 2 change-font-bold
-! 2 change-font-type
+    lslmchange-font-size(3)le, lslmchange-frame-width(2)le, lslmchange-frame-depth(2)le, lslm$result(5)le, lslmuser-setup(3)le.
+! 3 change-font-courier
+! 3 change-font-lucida
+! 3 change-font-bold
+! 3 change-font-type
 cEcENAME cEcA
 
 
@@ -12791,7 +12788,7 @@ $a
     
     The font-size is increased in case of C-+ and decreased in case of the C--
     minus    key     bindings.     For    Unix    systems    the     variables
-    lslm.change-font.sz-font(5)le and lslm.change-font.size(5)le  are  used to cycle
+    lslm.change-font.sz-font(5)le and lslm.change-font.sz-size(5)le  are  used to cycle
     through two standard fonts, Adobe courier and  lucidatypewriter.  The user
     can define  their own short fonts using just the family and the weight and
     give the their list of available sizes through which they like to cycle through. 
@@ -12811,14 +12808,20 @@ $a
 
 cEcESEE ALSO cEcA
 
-    lslmchange-font(2)le, lslm%font(5)le, lslm%font-index(5)le.
+    lslmchange-font(2)le
 
 
-! 2 change-font-size
+! 3 change-font-size
+! 5 .change-font.sz-font
+! 5 .change-font.sz-fonts
+! 5 .change-font.sz-size
 cEcENAME cEcA
 
 
     change-font-size - Change the screen font in non-terminal mode
+    .change-font.sz-font  - Current font used for resizing
+    .change-font.sz-fonts - List of fonts used for resizing
+    .change-font.sz-size  - Current size of font
 $a
 
 
@@ -12826,11 +12829,11 @@ $a
 
 
     cC[X-Windows, Microsoft Windows]cA
-    cCncA cDchange-font-sizecA
+     cCncA cDchange-font-sizecA
      1cA cDchange-font-sizecA  (cDC-+cA)    
     -1cA cDchange-font-size cA (cDC--cA)        
-     0cA cDchange-font-sizecA  (cDC-=cA)            
-
+     0cA cDchange-font-sizecA  (cDC-=cA)      
+     set-variable  cC.change-font.sz-fontcE  "fontname"
 
 
 cEcEDESCRIPTION cEcA
@@ -12839,15 +12842,15 @@ $a
     cDchange-font-sizecA  is a command  which  allows to resize the  current
     MicroEmacs font using standard key-bindings, C-+, C-- and C-=.
     The font-size is increased in case of C-+ and decreased in case of the C--
-    minus key  bindings.  For Unix systems the  variables   lslm%fonts(5)le
-    and lslm%font-index(5)le are used to cycle through some standard (Adobe
+    minus key  bindings.  For Unix systems the  variables   lslm.change-font.sz-font(5)le
+    and lslm.change-font.sz-size(5)le are used to cycle through some standard (Adobe
     bold) fonts  or through a list of user  defined  fonts. On Windows  simply
     the current font-size of the current font is changed.
 
 cEcESEE ALSO cEcA
 
 
-    lslmchange-font(2)le, lslm%font(5)le, lslm%font-index(5)le.
+    lslmchange-font(2)le.
 
 
 
@@ -18421,7 +18424,7 @@ $a
 cEMiscellaneous cA
 
 
-        * abort input, returning failure to the input, lsabort-command(2)lmabort-commandle (cDC-gcA)
+        * abort input, returning failure to the input, lsabort-command(2)lmabort-command(2)le (cDC-gcA)
         * re-fresh the message line, command: lsrecenter(2)lmrecenterle (cDC-lcA)
         * finish input, command lsnewline(2)lmnewlinele (cDC-mcA, cDreturncA)
         * set mark, command: lsset-mark(2)lmset-markle (cDC-spacecA)
@@ -30369,7 +30372,7 @@ $a
         * String - interprets arguments as strings i.e. to concatenate two
           strings together lslm&cat(4)le.
         * Logical - boolean operators i.e. greater than lslm&great(4)le.
-        * Key - key bindings i.e. key binding of command ls&cbind(4)lmkbind(4)le.
+        * Key - key bindings i.e. key binding of command ls&cbind(4)lm&kbind(4)le.
         * Bitwise - bit-wise numerical operators i.e. bitwise AND lslm&band(4)le.
         * File - file interaction i.e. find a file lslm&find(4)le.
         * Lists - string item lists i.e. find item in list lslm&lfind(4)le.
@@ -46978,9 +46981,9 @@ $a
 
 
     lslm@mn(4)le.
-!44 &cbind
-!44 &kbind
-!44 &nbind
+!4 &cbind
+!4 &kbind
+!4 &nbind
 cEcENAME cEcA
 
 
@@ -50974,62 +50977,6 @@ $a
 
     lslm$frame-depth(5)le, lslm$window-depth(5)le, lslm$window-width(5)le, lslm$window-y-scroll(5)le,
     lslmnarrow-buffer(2)le.
-! 5 %fonts
-! 5 %font-index
-! 5 %font-sizes
-cEcENAME cEcA
-
-
-|%fonts
-    %fonts - "Font string to cycle through sizes using Ctrl-+ and Ctrl-- on X11 systems"
-|%font-index
-    %font-index - "Current index for the %fonts variable"
-|%font-sizes
-    %font-sizes - "List of font-sizes with 8 values to cycle through"
-$a
-
-
-cEcESYNOPSIS cEcA
-
-    cC[X-Windows]cA
-    cDset-variable %fontscA "X11-fontstring with %d for size" 
-    cDset-variable %font-indexcA 4 ; Default is 4 if undefined.
-    cDset-variable %font-sizescA "list of 8 font-values"
-
-
-cEcEDESCRIPTION cEcA
-
-
-    The  cD%fontscA, cD%font-sizescA   and  cD%font-indexcA  variables  allow  you to  cycle
-    through a set of fonts on X11 systems more easily using the keybindings
-    C-+ (Ctrl-Plus), C-- (Ctrl-Minus) which increase the index and cycle through the
-    available (usually 8) font-sizes, Ctrl-=  choose font index 4 as the default.
-
-cEcEEXAMPLE cEcA
-
-    Here an example which you might try out in your USER.emf file if you 
-    have the Ubuntu fonts as X11 fonts installed:
-
-cEsB
-        set-variable %fonts "-*-ubuntu mono-*-*-*-*-%d-*-*-*-*-*-*-*"
-        set-variable %font-sizes "|11|14|17|19|22|25|30|33|"
-        set-variable %font-index 4
-sA        
-
-cEcENOTES cEcA
-
-    Chosing a  non-existing  font might cause problems on some systems. If you
-    observe  difficulties and errors, try to change the default fonts (usually
-    adobe-bold or lucidatypewriter fonts for X11 systems). On Unix systems the
-    application  xfontsel  can be used to browse  the  existing  fonts on your
-    system.  You can  have as well a look  into  all  fonts.dir  files on your
-    system to find  new fonts.
-
-
-cEcESEE ALSO cEcA
-
-    lslmchange-font(2)le,  lslmchange-font-bold(2)le, lslmchange-font-courier(2)le, ls   lmchange-font-lucida(2)le,lslmuser-setup(3)le.
-! 5 %ftp-flags
 ! 5 %http-flags
 cEcENAME cEcA
 

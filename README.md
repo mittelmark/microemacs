@@ -1,15 +1,8 @@
 
 ## MicroEmacs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="images/logo.png" width="30px" style="margin-top:15px;margin-left:50px;" />
 
-* [Jasspa homepage](http://www.jasspa.com)
-* [new mailing list](https://groups.google.com/g/jasspa-microemacs)
-* [old downloads](http://www.jasspa.com/downlatest.html)
-* standalone executables from [2009](http://www.jasspa.com/zeroinst.html) and [2023](https://github.com/mittelmark/microemacs/releases/tag/v09.12.21)
-* [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
-* [spelling dictionaries](http://www.jasspa.com/spelling.html)
-* [online help](https://www.dgroth.de/me2009/me/index.htm)
-* [MicroEmacs help chm-file (2009)](https://www.dgroth.de/downloads/me2009.chm)
-* [WIP tutorial on the Macro Language](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/microemacs/master/docs/emf-tutorial.html)
+Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
+file executable for Windows, Linux and MacOS.
 
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
@@ -17,19 +10,33 @@ It contains the following changes:
 
 * improved  terminal mode for  suspend-emacs  with using alternative  terminal
   buffer (thanks to Steven Phillips)
-* adding schemes (themes) [Ayu Light](https://github.com/ayu-theme/ayu-colors)
+* fix for frame resize on X11 if the font changes (thanks to Steven Phillips)
+* easier addition of own user  templates with interactive template selection using the command "insert-template"
+* easier font-selection on X11 and easier resize on X11 (Mac and Linux) and Windows
+* so font size increase and decrease using Ctrl-Plus and Ctrl-Minus keys
+* more schemes (themes) [Ayu Light](https://github.com/ayu-theme/ayu-colors)
   and [Dracula](https://github.com/dracula/dracula-theme)
 * Markdown mode (folding, template file, syntax hilghlighting, outline
   in item list, embedding Tcl, Python, R and Dot code in fences with syntax highlight)
-* font size increase and decrease using Ctrl-Plus and Ctrl-Minus keys
-* AppImage for easy install, installs as well Ubuntu Mono fonts.
-* Darwin 20, 21, 22 builds using Github actions
+* AppImage for easy install o Linux systems
+* example fonts Chivo  Mono, Ubuntu Mono and Courier Prime for better display on X11
+* Linux, Windows, Darwin 20, 21, 22 builds using Github actions
 * Windows builds using cross compilation on Ubuntu with Github actions
 * fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64
   Fedora with gcc 10.3
 * fix for hang on error bug if using the -n command line switch
 * updates on documentation  
 
+New important macro commands (see the internal help pages - version v09.12.22):
+
+- `change-font-size` can be done as well with key bindings `C-Plus` and `C-Minus`
+- X11 only
+    - `change-font-bold`
+    - `change-font-courier`
+    - `change-font-lucida`
+    - `change-font-type`
+- `execute-region` - for macro development
+- `insert-template` - easier definition of user templates
 
 Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf)
 
@@ -83,7 +90,7 @@ dictionary.
 
 The BFS executables can be used to extract the binary and the macro files from the
 MicroEmacs  executables and to build you own executables with other dictionary
-files, other user templates, or additional macro files.
+files, other user templates, or additional macro files. So you can customize your MicroEmacs version.
 
 Here an example on how to do so:
 
@@ -105,7 +112,11 @@ MEPATH="" TERM=rxvt ./me-linux2.bin -n
 
 * Pro:
     * simple single file install
+    * small and fast 1-4 MB!! memory footprint
     * support for Linux, MacOS and Windows
+    * almost same usage in terminal and GUI mode
+    * menu access to use command File, Edit etc commands A-f, A-e in GUI mode or "esc =" in terminal mode
+    * internal interactive help system
     * distraction  free coding, no popups, no annoying  updates - just you and
       the editor
     * Emacs like shortcuts
@@ -113,15 +124,25 @@ MEPATH="" TERM=rxvt ./me-linux2.bin -n
     * standard  menu entries on top for beginners who do not yet know all the
       key bindings of Emacs
     * easy to extend, the file _USER.emf_ is your friend
-    * same features in terminal and in GUI mode
-    * small and fast 1-4 MB!! memory footprint
     * different color themes can be used and changed easily
     * sophisticated macro programming language
-    * inbuild sophisticated help system
     * easy to configure file templates and snippets
 * Cons:
     * No unicode! It is a MICRO-Emacs!
-    * No softwrap! use `Esc q` for paragraph wrapping!
+    * No softwrap! Use `Esc q` for paragraph wrapping! Or use the wrap buffer mode
+
+## Links
+
+* [Original Jasspa homepage (outdated currently)](http://www.jasspa.com)
+* [new mailing list](https://groups.google.com/g/jasspa-microemacs)
+* [old downloads](http://www.jasspa.com/downlatest.html)
+* standalone executables from [2009](http://www.jasspa.com/zeroinst.html) and [2023](https://github.com/mittelmark/microemacs/releases/tag/v09.12.21)
+* [quick start](http://www.jasspa.com/release_20090909/jasspame.pdf)
+* [spelling dictionaries](http://www.jasspa.com/spelling.html)
+* [online help](https://www.dgroth.de/me2009/me/index.htm)
+* [MicroEmacs help chm-file (2009)](https://www.dgroth.de/downloads/me2009.chm)
+* [WIP tutorial on the Macro Language](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/microemacs/master/docs/emf-tutorial.html)
+
     
 ## Build
 
