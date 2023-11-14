@@ -132,6 +132,7 @@ define-macro insert-template
     !if @?
         @# etfinsrt-i &rig $buffer-fhook 6
     !else
+        etf-get-files
         !force set-variable #l0 .templates
         !if &not &seq #l0 "ERROR"
             set-variable #l0 @ml19 "Template name (press tab to see all): " &lget .templates 1 .templates
@@ -140,4 +141,14 @@ define-macro insert-template
             etfinsrt-i &rig $buffer-fhook 6
         !endif
     !endif
+!emacro
+
+0 define-macro etf-get-files
+    set-variable $file-names &cat $user-path ".*.etf"
+    set-variable .insert-template.templates "|"
+    !while &not &seq &set #l0 $file-names ""
+        set-variable .insert-template.templates &cat &cat .insert-template.templates #l0 "|"
+    !done
+    set-variable .insert-template.templates &rep .insert-template.templates ".etf" ""
+    1000 ml-write .insert-template.templates
 !emacro

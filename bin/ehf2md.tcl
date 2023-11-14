@@ -22,7 +22,8 @@ include-before: |
     [Macro-Dev](amicr034.htm)
     [Glossary](amicr035.htm)
     </FONT></P>
-    <HR />
+    
+    ---
 ---
 }
 
@@ -184,20 +185,23 @@ proc process {filename indexfile dirname} {
                 links
                 set line [regsub {^\s{5,10}\[} $line "> - \["]
                 set line [regsub {^\s{0,4}\[} $line "- \["]
-                set line [regsub -all {AMPERS} $line "ampis"]          
             }
             if {$txt && !$pre && $elines > 2 && [regexp {^[\s]{10,}[^\s]} $line]} {
                 set line [regsub -all {\033c[A-G]} $line ""]
                 puts $out $line
                 set elines 0
                 set pre true
-            } elseif {$txt && !$pre && [regexp {^[\s]{1,4}[^\s]} $line]} {
+            } elseif {$txt && !$pre && [regexp {^[\s]{1,8}[^\s]} $line]} {
                 set line [regsub {^   } $line ""]
+                set line [regsub {^ {0,2}\* } $line "- "]
+                set line [regsub {^ {2,10}\* } $line "    - "]
                 set line [regsub -all {.cD(.+?).cA} $line "__\\1__"]
                 set line [regsub -all {.cG(.+?).cA} $line "`\\1`"]                
                 set line [regsub -all {\033cC(.*?)\033cA} $line "_\\1_"]                
                 set line [regsub -all {\033c[A-G]} $line ""]                
-                set line [regsub -all {&} $line {AMPERS}]
+                #set line [regsub -all {<} $line {&lt;} $line]
+                #set line [regsub -all {>} $line {&gt;} $line]
+                #set line [regsub -all {&} $line {AMPERS}]
                 #set line [regsub {AMPERS} $line {&amp;}]
                 #set line [regsub {^\s{0,12}\[} $line "- \["]
                 puts $out "$line"
