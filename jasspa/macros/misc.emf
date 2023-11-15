@@ -171,8 +171,8 @@ define-macro execute-region
         set-alpha-mark "a"
     !endif
     end-of-buffer
-    forward-line
-    2 narrow-buffer ; me23 it is 2?
+    ;forward-line
+    1 narrow-buffer ; me23 it is 2?
     goto-alpha-mark "a"
     !if #l0
         ml-write &spr "[Error executing region in %s, line %d]" $buffer-bname $window-line

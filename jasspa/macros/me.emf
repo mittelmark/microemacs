@@ -50,7 +50,7 @@ define-macro-file clearcs cc-state cc-update cc-checkout cc-checkin cc-add cc-di
 define-macro-file cvs cvs cvs-setup cvs-add cvs-annotate cvs-checkout cvs-commit cvs-diff cvs-gdiff cvs-log cvs-remove cvs-resolve-conflicts cvs-state cvs-status cvs-tag cvs-update
 define-macro-file osdmisc insert-symbol buffer-setup alarm browse alias-path-setup file-type-setup file-tool-setup file-tool-menu shell-tool-setup find-setup
 define-macro-file tools compile which diff rdiff xdiff diff-changes execute-tool uniq find-bfile find-cfile reread-file reread-all save-kbd-macro
-define-macro-file misc save-all encase open-line check-line-length number-items time compare-windows-exact display-whitespaces write-region
+define-macro-file misc save-all encase open-line check-line-length number-items time compare-windows-exact display-whitespaces write-region execute-region
 define-macro-file abbrev expand-abbrev-handle expand-iso-accents expand-look-back expand-word iso-accents-mode
 define-macro-file comment comment-line uncomment-line comment-to-end-of-line comment-start comment-restyle
 define-macro-file rect string-rectangle space-rectangle copy-rectangle yank-rectangle-overwrite

@@ -63,3 +63,5 @@ app-image:
 docu-html:
 	tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm
 	for file in `ls htm/*.md` ; do pandoc $$file -f gfm -o htm/`basename $$file .md`.htm -s --css null.css; done
+run-tuser:
+	MENAME=tuser MEPATH=`pwd`/tuser:`pwd`/jasspa/macros src/.linux32gcc-release-mecw/mecw
