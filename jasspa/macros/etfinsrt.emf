@@ -150,5 +150,4 @@ define-macro insert-template
         set-variable .insert-template.templates &cat &cat .insert-template.templates #l0 "|"
     !done
     set-variable .insert-template.templates &rep .insert-template.templates ".etf" ""
-    1000 ml-write .insert-template.templates
 !emacro
