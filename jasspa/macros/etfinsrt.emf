@@ -149,5 +149,11 @@ define-macro insert-template
     !while &not &seq &set #l0 $file-names ""
         set-variable .insert-template.templates &cat &cat .insert-template.templates #l0 "|"
     !done
+    set-variable #l0 &rep $buffer-fhook "fhook-" ""
+    set-variable #l1  &cat &cat &cat $user-path #l0 "/" ".*.etf"
+    set-variable $file-names #l1
+    !while &not &seq &set #l2 $file-names ""
+        set-variable .insert-template.templates &cat &cat &cat &cat .insert-template.templates #l0 "/" #l2 "|"
+    !done
     set-variable .insert-template.templates &rep .insert-template.templates ".etf" ""
 !emacro

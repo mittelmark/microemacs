@@ -32572,7 +32572,12 @@ $a
     cDinsert-templatecA can be used to insert a different than the default language
     templates  by  adding  these   template  files with the etf  extension  to
     the users users-path folder. If not given a numeric argument it invokes 
-    a menu for interactive template selection.
+    a menu for interactive  template selection. Templates can be as well added
+    to sub  folders in the  users-path  directory  whre the folder name has to
+    correspond  to the  file-hook  name, so emf templates  must be in a folder
+    "emf", Markdown templates in a folder "md" etc.
+    
+    
     
 
 cEcEEXAMPLE cEcA
