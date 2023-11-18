@@ -10273,7 +10273,8 @@ include:
 ## SEE ALSO
 
 
- [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MENAME(5)]($MENAME(5)), [$MEPATH(5)]($MEPATH(5)), [$MEUSERPATH(5)]($MEUSERPATH(5)), [emf(8)](emf(8)),
+ [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MENAME(5)]($MENAME(5)), [$MEPATH(5)]($MEPATH(5)), 
+ [$MEUSERPATH(5)]($MEUSERPATH(5)), [emf(8)](emf(8)),
  __emacs(1)__ [GNU], __more(1)__, [me(1)](me(1)), __vi(1)__.
  [Command Line Filters](Command Line Filters).
 !! me-id: m2cmd000
@@ -10281,35 +10282,36 @@ include:
 ## NAME
 
 
- abort-command - Abort command
+  abort-command - Abort command
 $a
 
 
 ## SYNOPSIS
 
 
- __abort-command__ (__C-g__)
+  __abort-command__ (__C-g__)
 
 
 ## DESCRIPTION
 
 
- Aborts the current command, when in trouble, this command will usually
- limit the damage. If you find yourself in a position where you do not want
- to be then this command will usually take you back to a sane state. This
- command rings the bell and stops keyboard macros.
+  Aborts the current command, when in trouble, this command will usually
+  limit the damage. If you find yourself in a position where you do not want
+  to be then this command will usually take you back to a sane state. This
+  command rings the bell and stops keyboard macros.
 
- Avoid re-binding this key where possible as it is used in other places.
+  Avoid re-binding this key where possible as it is used in other places.
 
- When __abort-command__ is invoked a warning is automatically given alerting
- the user, this may be an audible or a visual warning depending on the
- global state of the [$quiet(5)]($quiet(5)) global variable.
+  When __abort-command__ is invoked a warning is automatically given alerting
+  the user, this may be an audible or a visual warning depending on the
+  global state of the [$quiet(5)]($quiet(5)) global variable.
 
 
 ## SEE ALSO
 
 
-- [buffer-mode(2)](buffer-mode(2)), [$quiet(5)]($quiet(5)).
+  [buffer-mode(2)](buffer-mode(2)), [$quiet(5)]($quiet(5)).
+!! me-id: m2cmd001  
 ! 2 add-color
 ! 2 add-color-scheme
 ## NAME
@@ -10325,97 +10327,103 @@ $a
 ## SYNOPSIS
 
 
- __add-color__ "_col-no_" "_red_" "_green_" "_blue_"
- _n_ __add-color-scheme__ "_schemeNum_" "_fore_" "_back_" "_current-fore_" "_current-back_"
-            "selected-fore" "selected-back"
+  __add-color__ "_col-no_" "_red_" "_green_" "_blue_"  
+  _n_ __add-color-scheme__ "_schemeNum_" "_fore_" "_back_" 
+           "_current-fore_" "_current-back_"  "selected-fore" "selected-back"
             "current-selected-fore" "current-selected-back"
             [ "fm-fore" "fm-back" "fm-cur-fore" "fm-cur-back"
             "fm-sel-fore" "fm-sel-back"
             "fm-cur-sel-fore" "fm-cur-sel-back" ]
 
-
 ## DESCRIPTION
 
 
- __add-color__ creates a new color and inserts it into MicroEmacs 2009 colors
- table, where _red_, _green_ and _blue_ are the color components and _col-no_ is
- the MicroEmacs 2009 color table number. The color table contains 256
- entries indexed by _col-no_ in the range 0-255.
+  __add-color__ creates a new color and inserts it into MicroEmacs 2009 colors
+  table, where _red_, _green_ and _blue_ are the color components and _col-no_ is
+  the MicroEmacs 2009 color table number. The color table contains 256
+  entries indexed by _col-no_ in the range 0-255.
 
- On some platforms (DOS and UNIX termcap) the number of colors is
- physically limited by the hardware to less than 256 (typically 16), in
- this case all 256 colors can be defined and for each created color the
- closest system color is used.
+  On some platforms (DOS and UNIX termcap) the number of colors is
+  physically limited by the hardware to less than 256 (typically 16), in
+  this case all 256 colors can be defined and for each created color the
+  closest system color is used.
 
- By default, only color 0 (white) and 1 (black) are defined. Once created,
- the colors may be used to create color schemes, this is the sole use of
- colors.
+  By default, only color 0 (white) and 1 (black) are defined. Once created,
+  the colors may be used to create color schemes, this is the sole use of
+  colors.
 
- __add-color__ may be used to modify an existing _col-no_ index by re-assignment,
- the existing color definition is over-written with the new color
- definition. __add-color-scheme__ creates a color scheme entry used by
-- [hilight(2)](hilight(2)), [screen-poke(2)](screen-poke(2)), [osd(2)](osd(2)) and variables such as
-- [$global-scheme(5)]($global-scheme(5)), [$buffer-scheme(5)]($buffer-scheme(5)), [$ml-scheme(5)]($ml-scheme(5)).
+  __add-color__ may be used to modify an existing _col-no_ index by re-assignment,
+  the existing color definition is over-written with the new color
+  definition. 
+  
+  __add-color-scheme__ creates a color scheme entry used by
+  [hilight(2)](hilight(2)), [screen-poke(2)](screen-poke(2)), [osd(2)](osd(2)) and variables such as
+  [$global-scheme(5)]($global-scheme(5)), [$buffer-scheme(5)]($buffer-scheme(5)), [$ml-scheme(5)]($ml-scheme(5)).
 
- The command takes an index number "_schemeNum_" and eight color values
- (defined by __add-color__) alternating between foreground and background
- colors. The 8 colors represent the 4 color paired states of foreground and
- background that may appear in a text buffer. The paired states correspond
- to current and selected lines (or permutations thereof). If an argument _n_
- is given to the command then _schemeNum_ is set to a duplicate of the _n_th
- scheme, no other arguments are required.
+  The command takes an index number "_schemeNum_" and eight color values
+  (defined by __add-color__) alternating between foreground and background
+  colors. The 8 colors represent the 4 color paired states of foreground and
+  background that may appear in a text buffer. The paired states correspond
+  to current and selected lines (or permutations thereof). If an argument _n_
+  is given to the command then _schemeNum_ is set to a duplicate of the _n_th
+  scheme, no other arguments are required.
 
- _schemeNum_ is the identifying index that is used to recognize the scheme.
- By default only two color schemes are defined at initialization, they are
- a monochrome scheme and inverse scheme with indices 0 and 1 using white as
- foreground and black as background, selected text is inverted. When
- defining a color scheme, if an existing _schemeNum_ index is used then that
- scheme is modified.
+  _schemeNum_ is the identifying index that is used to recognize the scheme.
+  By default only two color schemes are defined at initialization, they are
+  a monochrome scheme and inverse scheme with indices 0 and 1 using white as
+  foreground and black as background, selected text is inverted. When
+  defining a color scheme, if an existing _schemeNum_ index is used then that
+  scheme is modified.
 
- The next eight arguments must be given, they specify foreground and
- background color pairs for the four different situations, as follows:-
+  The next eight arguments must be given, they specify foreground and
+  background color pairs for the four different situations, as follows:-
 
- Default
-     Color combination used when none of the following three are
-     applicable.
+  Default    
+  
+  >   Color combination used when none of the following three are
+      applicable.
 
  Current
-     Color combination used when the text is on the same line as the
+ 
+ >   Color combination used when the text is on the same line as the
      cursor. It is also used by the [$mode-line-scheme(5)]($mode-line-scheme(5)) for the current
      window's mode line and for the current selection on an [osd(2)](osd(2)) dialog.
 
  Selected
-     Color combination used when the text is in the current selected
+ 
+ >   Color combination used when the text is in the current selected
      region, but is not on the current line. Also used by __osd__ for
      non-current item Hot keys.
 
  Current-selected
-     Color combination used when the text is on the current line and in the
+ 
+ >    Color combination used when the text is on the current line and in the
      current selected region. Also used by __osd__ for the current item's Hot
      key.
 
- The following 8 arguments set up fonts and are optional, any missing
- arguments are defaulted to 0. Each argument is a bitmask indicating which
- font should be enabled, where each bit is as follows:
+  The following 8 arguments set up fonts and are optional, any missing
+  arguments are defaulted to 0. Each argument is a bitmask indicating which
+  font should be enabled, where each bit is as follows:
 
-     `0x01` Enable bold font.
-     `0x02` Enable italic font.
-     `0x04` Enable light font.
-     `0x08` Enable reverse font.
-     `0x10` Enable underlining.
+       `0x01` Enable bold font.
+       `0x02` Enable italic font.
+       `0x04` Enable light font.
+       `0x08` Enable reverse font.
+       `0x10` Enable underlining.
 
- Normally only the foreground value is used, i.e. the first, third, fifth
- and seventh values. But [screen-poke(2)](screen-poke(2)) can be used to draw reversed color
- scheme in which case the background values are used.
+  Normally only the foreground value is used, i.e. the first, third, fifth
+  and seventh values. But [screen-poke(2)](screen-poke(2)) can be used to draw reversed color
+  scheme in which case the background values are used.
 
 
 ## EXAMPLE
 
 
- The color palette is typically created at start-up via the configuration
- file __scheme___X___.emf__. These files are not easily read as they are
- automatically generated via the [scheme-editor(3)](scheme-editor(3)) dialog. A more readable
- form of "`schemed.emf`" would be as follows:-
+  The color palette is typically created at start-up via the configuration
+  file __scheme___X___.emf__. These files are not easily read as they are
+  automatically generated via the [scheme-editor(3)](scheme-editor(3)) dialog. A more readable
+  form of "`schemed.emf`" would be as follows:-
+
 ```{.emf}
         ; Standard colors
         add-color &set .white     0 200 200 200
@@ -10456,42 +10464,43 @@ $a
 ## NOTES
 
 
- Color schemes can be created and altered using the [scheme-editor(3)](scheme-editor(3))
- dialog, the created color scheme can then the used from start-up by using
- the [user-setup(3)](user-setup(3)) dialog. Therefore direct use of these commands is
- largely redundant.
+  Color schemes can be created and altered using the [scheme-editor(3)](scheme-editor(3))
+  dialog, the created color scheme can then the used from start-up by using
+  the [user-setup(3)](user-setup(3)) dialog. Therefore direct use of these commands is
+  largely redundant.
 
- The existence of a color or scheme index is checked as each entry is
- submitted, therefore any color or scheme used must have been previously
- been created, otherwise a default value is substituted.
+  The existence of a color or scheme index is checked as each entry is
+  submitted, therefore any color or scheme used must have been previously
+  been created, otherwise a default value is substituted.
 
- Changing any existing color definitions causes all references to the color
- from a scheme to adopt the new color.
+  Changing any existing color definitions causes all references to the color
+  from a scheme to adopt the new color.
 
- Changing any existing color-scheme definitions changes the rendered color
- of any [hilight(2)](hilight(2)) etc., that was using that color-scheme.
+  Changing any existing color-scheme definitions changes the rendered color
+  of any [hilight(2)](hilight(2)) etc., that was using that color-scheme.
 
- A negative color scheme value (i.e. _-n_) uses the previous '_n_'th entry that
- is defined in the color block. i.e. if _current-fore_ was specified as -2
- then it would inherit the _fore_ field color.
+  A negative color scheme value (i.e. _-n_) uses the previous '_n_'th entry that
+  is defined in the color block. i.e. if _current-fore_ was specified as -2
+  then it would inherit the _fore_ field color.
 
- Not all UNIX terminals support all the above fonts.
+  Not all UNIX terminals support all the above fonts.
 
- On some telnet packages color is not directly supported and some of the
- termcap display attributes such as bold and italic are represented by a
- color (e.g. italic text is shown in green). Using this translation it is
- possible to achieve reasonable color support on a VT100 terminal - it is a
- little awkward but is worth while if you have to use this type of
- connection frequently.
+  On some telnet packages color is not directly supported and some of the
+  termcap display attributes such as bold and italic are represented by a
+  color (e.g. italic text is shown in green). Using this translation it is
+  possible to achieve reasonable color support on a VT100 terminal - it is a
+  little awkward but is worth while if you have to use this type of
+  connection frequently.
 
 
 ## SEE ALSO
 
 
-- [scheme-editor(3)](scheme-editor(3)), [user-setup(3)](user-setup(3)), [change-font(2)](change-font(2)), [hilight(2)](hilight(2)),
-- [screen-poke(2)](screen-poke(2)), [$buffer-hilight(5)]($buffer-hilight(5)), [$cursor-color(5)]($cursor-color(5)), [$global-scheme(5)]($global-scheme(5)),
-- [$trunc-scheme(5)]($trunc-scheme(5)), [$ml-scheme(5)]($ml-scheme(5)), [$osd-scheme(5)]($osd-scheme(5)), [$mode-line-scheme(5)]($mode-line-scheme(5)),
-- [$scroll-bar-scheme(5)]($scroll-bar-scheme(5)), [$system(5)]($system(5)).
+  [scheme-editor(3)](scheme-editor(3)), [user-setup(3)](user-setup(3)), [change-font(2)](change-font(2)), [hilight(2)](hilight(2)),
+  [screen-poke(2)](screen-poke(2)), [$buffer-hilight(5)]($buffer-hilight(5)), [$cursor-color(5)]($cursor-color(5)), [$global-scheme(5)]($global-scheme(5)),
+  [$trunc-scheme(5)]($trunc-scheme(5)), [$ml-scheme(5)]($ml-scheme(5)), [$osd-scheme(5)]($osd-scheme(5)), [$mode-line-scheme(5)]($mode-line-scheme(5)),
+  [$scroll-bar-scheme(5)]($scroll-bar-scheme(5)), [$system(5)]($system(5)).
+!! me-id: m2cmd002
 ! 2 add-dictionary
 ## NAME
 
@@ -10503,60 +10512,60 @@ $a
 ## SYNOPSIS
 
 
- _n_ __add-dictionary__ "_file_"
+  _n_ __add-dictionary__ "_file_"
 
 
 ## DESCRIPTION
 
 
- __add-dictionary__ adds the given dictionary (specified by the given _file_) to
- the dictionary list. Note that the _file_ may omit the __.edf__ extension, this
- is automatically added.
+  __add-dictionary__ adds the given dictionary (specified by the given _file_) to
+  the dictionary list. Note that the _file_ may omit the __.edf__ extension, this
+  is automatically added.
 
- The command accepts a numeric argument '_n_' which determines the actions to
- be undertaken. When _n_ is omitted then the dictionary is marked for loading
- (on demand) - this is the standard invocation used in the start up files.
+  The command accepts a numeric argument '_n_' which determines the actions to
+  be undertaken. When _n_ is omitted then the dictionary is marked for loading
+  (on demand) - this is the standard invocation used in the start up files.
 
- If an argument of __0__ is given the dictionary is created but it is not
- marked for loading, this can be used to create an empty dictionary.
+  If an argument of __0__ is given the dictionary is created but it is not
+  marked for loading, this can be used to create an empty dictionary.
 
- If an argument of __-1__ is given the contents of the dictionary are dumped
- into the current buffer, used for dictionary maintenance. The two main
- uses of this command are discussed below.
+  If an argument of __-1__ is given the contents of the dictionary are dumped
+  into the current buffer, used for dictionary maintenance. The two main
+  uses of this command are discussed below.
 
 
 ## Dictionary Loading 
 
 
- A call to __add-dictionary__ with no numeric argument does not perform an
- immediate load of the dictionary, instead the dictionary is only loaded on
- demand, i.e. when a call to [spell(2)](spell(2)) (usually via [spell-word(3)](spell-word(3)) or
-- [spell-buffer(3)](spell-buffer(3))) is made, this ensures that the start up time for
- MicroEmacs does not become too long. When the dictionary is loaded it is
- checked for efficiency, if found to be inefficient it is automatically
- optimized and flagged as changed. On exiting MicroEmacs, the user is
- prompted to save any dictionary that has be altered or optimized.
+  A call to __add-dictionary__ with no numeric argument does not perform an
+  immediate load of the dictionary, instead the dictionary is only loaded on
+  demand, i.e. when a call to [spell(2)](spell(2)) (usually via [spell-word(3)](spell-word(3)) or
+  [spell-buffer(3)](spell-buffer(3))) is made, this ensures that the start up time for
+  MicroEmacs does not become too long. When the dictionary is loaded it is
+  checked for efficiency, if found to be inefficient it is automatically
+  optimized and flagged as changed. On exiting MicroEmacs, the user is
+  prompted to save any dictionary that has be altered or optimized.
 
- The spelling search order is made from the last dictionary added to the
- first, as soon as a word is found in a dictionary the search is halted.
- This implies that if a word has been defined incorrectly in one
- dictionary, but correct in another, the order in which the dictionaries
- are added determines the result.
+  The spelling search order is made from the last dictionary added to the
+  first, as soon as a word is found in a dictionary the search is halted.
+  This implies that if a word has been defined incorrectly in one
+  dictionary, but correct in another, the order in which the dictionaries
+  are added determines the result.
 
- The number of dictionaries allowed is unlimited but note that any words
- added are always added to the LAST dictionary. The size of the dictionary
- is restricted to about 16Mb, the size is NOT tested when words are added
- and if this size is exceeded the results are undefined. However, it is
- unlikely that this limit will be reached, the largest dictionary created
- to date is 0.8Mb.
+  The number of dictionaries allowed is unlimited but note that any words
+  added are always added to the LAST dictionary. The size of the dictionary
+  is restricted to about 16Mb, the size is NOT tested when words are added
+  and if this size is exceeded the results are undefined. However, it is
+  unlikely that this limit will be reached, the largest dictionary created
+  to date is 0.8Mb.
 
- A new main dictionary may be created as follows:-
+  A new main dictionary may be created as follows:-
 
- __1)__
-     Find a file containing an __ispell(1)__ compatible list of words.
+  __1)__
+    Find a file containing an __ispell(1)__ compatible list of words.
 
  __2)__
-> - [execute-file(2)](execute-file(2)) spellutl.emf to define macro [spell-add-word(3)](spell-add-word(3)).
+   [execute-file(2)](execute-file(2)) spellutl.emf to define macro [spell-add-word(3)](spell-add-word(3)).
 
  __3)__
      Start up MicroEmacs 2009 and execute the command __add-dictionary__ giving
@@ -10564,7 +10573,7 @@ $a
 
  __4)__
      Load up the file containing the words and execute the command
-> - [spell-add-word(3)](spell-add-word(3)) with a very large argument so all the words are
+    [spell-add-word(3)](spell-add-word(3)) with a very large argument so all the words are
      added.
 
  __5)__
@@ -10575,37 +10584,38 @@ $a
 ## Dictionary Dump 
 
 
- A call to __add-dictionary__ with a numeric argument _n_ of -1 causes the
- contents of the given dictionary to be dumped into the current buffer
- (make sure you are in an empty buffer or __*scratch*__) where:
+  A call to __add-dictionary__ with a numeric argument _n_ of -1 causes the
+  contents of the given dictionary to be dumped into the current buffer
+  (make sure you are in an empty buffer or __*scratch*__) where:
 
-     `xxxx` - Good word `xxxx` with no spell rules allowed
-     `xxxx/abc` - Good word `xxxx` with spell rules `abc` allowed
-     `xxxx>yyyy` - Erroneous word with an auto-replace to `yyyy`
+       `xxxx` - Good word `xxxx` with no spell rules allowed
+       `xxxx/abc` - Good word `xxxx` with spell rules `abc` allowed
+       `xxxx>yyyy` - Erroneous word with an auto-replace to `yyyy`
 
- The dump of the dictionary may be edited, allowing erroneous entries to be
- removed. The macro file `spellutl.emf` contains macros [edit-dictionary(3)](edit-dictionary(3))
- and [restore-dictionary(3)](restore-dictionary(3)) which enable the user to edit a dictionary.
+  The dump of the dictionary may be edited, allowing erroneous entries to be
+  removed. The macro file `spellutl.emf` contains macros [edit-dictionary(3)](edit-dictionary(3))
+  and [restore-dictionary(3)](restore-dictionary(3)) which enable the user to edit a dictionary.
 
 
 ## NOTES
 
 
- MicroEmacs 2009 is supplied with a dictionaries for American and British
- English, it is strongly suggested that these dictionaries are __NOT__ modified
- in anyway. Ensure that the dictionary is protected by loading the base
- dictionaries first, followed by a personal dictionary. New words added
- during spelling will then be added to the personal dictionary rather than
- the main dictionary.
+  MicroEmacs 2009 is supplied with a dictionaries for American and British
+  English, it is strongly suggested that these dictionaries are __NOT__ modified
+  in anyway. Ensure that the dictionary is protected by loading the base
+  dictionaries first, followed by a personal dictionary. New words added
+  during spelling will then be added to the personal dictionary rather than
+  the main dictionary.
 
 
 ## EXAMPLE
 
 
- The MicroEmacs 2009 start-up file __me.emf__ executes __language.emf__ which in
- turn executes the user language setup file, for example __american.emf__,
- which adds the main language dictionaries and rules. __language.emf__ then
- adds the user's dictionary, this process can be simplified to:-
+  The MicroEmacs 2009 start-up file __me.emf__ executes __language.emf__ which in
+  turn executes the user language setup file, for example __american.emf__,
+  which adds the main language dictionaries and rules. __language.emf__ then
+  adds the user's dictionary, this process can be simplified to:-
+
 ```{.emf}
         ; add the main American dictionary
         add-dictionary "lsdmenus"
@@ -10625,86 +10635,92 @@ $a
 ## SEE ALSO
 
 
-- [add-spell-rule(2)](add-spell-rule(2)), [save-dictionary(2)](save-dictionary(2)), [spell-add-word(3)](spell-add-word(3)),
-- [edit-dictionary(3)](edit-dictionary(3)), [spell-buffer(3)](spell-buffer(3)).
+  [add-spell-rule(2)](add-spell-rule(2)), [save-dictionary(2)](save-dictionary(2)), [spell-add-word(3)](spell-add-word(3)),
+  [edit-dictionary(3)](edit-dictionary(3)), [spell-buffer(3)](spell-buffer(3)).
+!! me-id: m2cmd003  
 ! 2 add-file-hook
 ## NAME
 
 
- add-file-hook - Declare file name context dependent configuration
+  add-file-hook - Declare file name context dependent configuration
 $a
 
 
 ## SYNOPSIS
 
 
- _n_ __add-file-hook__ "_extensions_" "_fhook-name_"
+  _n_ __add-file-hook__ "_extensions_" "_fhook-name_"
 
 
 ## DESCRIPTION
 
 
- __add-file-hook__ defines a macro binding between a file name or file type and
- a set of macros. This binding enables file type dependent screen
- highlighting and key bindings to be performed. For a higher level
- introduction refer to [File Hooks](fileHooks(2)).
+  __add-file-hook__ defines a macro binding between a file name or file type and
+  a set of macros. This binding enables file type dependent screen
+  highlighting and key bindings to be performed. For a higher level
+  introduction refer to [File Hooks](fileHooks(2)).
 
  __add-file-hook__ operates in two different modes to establish the type of
- file:-
+  file:-
 
-    - Content recognition, by examination of the contents of the file.
-    - File extension recognition.
+  - Content recognition, by examination of the contents of the file.
+  - File extension recognition.
 
- Content recognition has the highest priority and is used in preference to
- the file extension.
+  Content recognition has the highest priority and is used in preference to
+  the file extension.
 
- __add-file-hook__ is called multiple times to add new recognition rules. The
- rules are interrogated in last-in-first-out (LIFO) order, hence the
- extension added last has a greater precedence than those added first. This
- ordering allows default rules to be over-ridden.
+  __add-file-hook__ is called multiple times to add new recognition rules. The
+  rules are interrogated in last-in-first-out (LIFO) order, hence the
+  extension added last has a greater precedence than those added first. This
+  ordering allows default rules to be over-ridden.
 
 
 ## Initialization 
 
 
- __add-file-hook__ must be initialized prior to the first call, using an
- invocation of the form:-
+  __add-file-hook__ must be initialized prior to the first call, using an
+  invocation of the form:-
+
 ```{.emf}
         0 add-file-hook
 
 ```
- with a numeric argument _n_ of 0, and no arguments. This invocation resets
- the file hooks by deleting all of the installed hooks.
+
+  with a numeric argument _n_ of 0, and no arguments. This invocation resets
+  the file hooks by deleting all of the installed hooks.
 
 
 ## File Extension Recognition 
 
 
- __add-file-hook__ with no numerical argument _n_ allows the extension of a file
- (or the base file name if there is no extension) to be used to determine
- which user defined setup macro is to be executed. The _extensions_ argument
- is a space separated list of _file endings_ (as opposed to true extensions)
- and is usually specified with the extension separator. For example, the
- extension "`.doc`" may indicate that the file is a document and therefore
- the [indent](indent(2m)), [wrap](wrap(2m)) and [justify](justify(2m)) buffer modes are required. This may be
- performed automatically by defining a macro which adds these modes and
- adding a file hook to automatically execute this macro whenever a file
- "`*.doc`" is loaded.
+  __add-file-hook__ with no numerical argument _n_ allows the extension of a file
+  (or the base file name if there is no extension) to be used to determine
+  which user defined setup macro is to be executed. The _extensions_ argument
+  is a space separated list of _file endings_ (as opposed to true extensions)
+  and is usually specified with the extension separator. For example, the
+  extension "`.doc`" may indicate that the file is a document and therefore
+  the [indent](indent(2m)), [wrap](wrap(2m)) and [justify](justify(2m)) buffer modes are required. This may be
+  performed automatically by defining a macro which adds these modes and
+  adding a file hook to automatically execute this macro whenever a file
+  "`*.doc`" is loaded.
 
- The command arguments are defined as follows:-
+  The command arguments are defined as follows:-
 
- _extensions_
-     A space separated list of file extensions, which are to be checked,
+  _extensions_
+  
+  >  A space separated list of file extensions, which are to be checked,
      this list includes the extension separator (typically dot ('`.`'). It
      should be noted that the extension search is actually a comparison of
      the tail of the string, as such files such as _makefile_, which do not
      have an extension, are specified literally.
 
- _fhook-name_
-     The name of the file hook to execute. This is the name of the macro to
+  _fhook-name_
+  
+  >  The name of the file hook to execute. This is the name of the macro to
      execute that initializes the buffer.
 
- As an example:-
+  As an example:-
+
 ```{.emf}
         define-macro fhook-doc
             1 buffer-mode "indent"
@@ -10715,26 +10731,28 @@ $a
         add-file-hook ".doc" "fhook-doc"
 
 ```
- It is quite possible that the same macro should be executed for a text
- file, i.e. "`*.txt`" this is achieved by a single __add-file-hook__ as the space
- (' ') character is used as an extension separator, e.g.
+  It is quite possible that the same macro should be executed for a text
+  file, i.e. "`*.txt`" this is achieved by a single __add-file-hook__ as the space
+  (' ') character is used as an extension separator, e.g.
+
 ```{.emf}
         add-file-hook ".doc .txt" "fhook-doc"
 
 ```
- There are three special file hooks, which are __fhook-binary__, __fhook-rbin__ and
- __fhook-default__, these are not predefined, but if the user defines them then
- they are executed whenever a file is loaded in [binary](binary(2m)) or [reduced binary](rbin(2m))
- mode (see [buffer-mode(2)](buffer-mode(2))) or the extension does not match any of those
- defined.
+  There are three special file hooks, which are __fhook-binary__, __fhook-rbin__ and
+  __fhook-default__, these are not predefined, but if the user defines them then
+  they are executed whenever a file is loaded in [binary](binary(2m)) or [reduced binary](rbin(2m))
+  mode (see [buffer-mode(2)](buffer-mode(2))) or the extension does not match any of those
+  defined.
 
- Considering the `fhook-XXX` prefix, the initial '__f__' character must be
- present as this is changed to a '__b__' and an '__e__' when looking for the enter
- (begin) buffer and exit buffer hooks. These hooks are executed whenever
- the user swaps to or from a buffer (including creating and deleting). So
- for the given example, if the fill ignore characters are to be changed
- then this operation this is performed by defining the `bhook-XXX` and
- `ehook-XXX` macros, e.g.:-
+  Considering the `fhook-XXX` prefix, the initial '__f__' character must be
+  present as this is changed to a '__b__' and an '__e__' when looking for the enter
+  (begin) buffer and exit buffer hooks. These hooks are executed whenever
+  the user swaps to or from a buffer (including creating and deleting). So
+  for the given example, if the fill ignore characters are to be changed
+  then this operation this is performed by defining the `bhook-XXX` and
+  `ehook-XXX` macros, e.g.:-
+
 ```{.emf}
         ; Begin hook - entering the buffer - save the current fill-ignore characters
         define-macro bhook-java
@@ -10759,92 +10777,94 @@ $a
         !endif
 
 ```
- File hooks are often used to setup the desired _buffer modes_, _hilighting_,
- _local key bindings_, _abbreviation file_, etc.
 
- Buffer hooks are usually used to set and restore conflicting global
- variables.
+  File hooks are often used to setup the desired _buffer modes_, _hilighting_,
+  _local key bindings_, _abbreviation file_, etc.
+
+  Buffer hooks are usually used to set and restore conflicting global
+  variables.
 
 
 ## File Content Recognition 
 
+  __add-file-hook__ with a non-zero numerical argument _n_ defines a macro binding
+  between the content in a file and a set of macros. This binding enables
+  file type dependent screen hi-lighting and key binding to be performed.
+  For a full description of file hooks refer to [File Hooks](fileHooks(2)), for file
+  extension dependent hooking refer to [add-file-hook(2)](add-file-hook(2)).
 
- __add-file-hook__ with a non-zero numerical argument _n_ defines a macro binding
- between the content in a file and a set of macros. This binding enables
- file type dependent screen hi-lighting and key binding to be performed.
- For a full description of file hooks refer to [File Hooks](fileHooks(2)), for file
- extension dependent hooking refer to [add-file-hook(2)](add-file-hook(2)).
+  The content defined file hooks interrogate the contents of a file on
+  loading and search for a _magic_ string identifier embedded in the text
+  which uniquely identifies the file type.
 
- The content defined file hooks interrogate the contents of a file on
- loading and search for a _magic_ string identifier embedded in the text
- which uniquely identifies the file type.
+  The recognition process performs a search of the first _n_ (numerical
+  argument) non-blank lines of the file, searching for the regular
+  expression specified by the _extensions_ argument. The sign of the numerical
+  argument _n_ is interpreted as follows:-
 
- The recognition process performs a search of the first _n_ (numerical
- argument) non-blank lines of the file, searching for the regular
- expression specified by the _extensions_ argument. The sign of the numerical
- argument _n_ is interpreted as follows:-
+  - __-ve__ - Case insensitive search
+  - __+ve__ - Case sensitive search
 
-    - __-ve__ - Case insensitive search
-    - __+ve__ - Case sensitive search
+  The command arguments are defined as follows:-
 
- The command arguments are defined as follows:-
+  _extensions_ 
 
- _extensions_
-     A regular expression string defining the text to be searched for.
+  > A regular expression string defining the text to be searched for.
 
- _fhook-name_
-     The name of the file hook to execute. This is the name of the macro to
+  _fhook-name_ 
+
+  >  The name of the file hook to execute. This is the name of the macro to
      execute that will initialize the buffer.
 
- The search commences from the first non-blank line in the file, if the
- regular expression, defined by _extensions_ is located then the file hook
- _fhook-name_ is invoked. This is typically used to identify files which do
- not have file extensions i.e. UNIX shell script files. To identify a shell
- script file which commences with:-
+  The search commences from the first non-blank line in the file, if the
+  regular expression, defined by _extensions_ is located then the file hook
+  _fhook-name_ is invoked. This is typically used to identify files which do
+  not have file extensions i.e. UNIX shell script files. To identify a shell
+  script file which commences with:-
 
-     #!/bin/sh
-
-
- The following file hook is used:-
-
-     __1 add-file-hook__ "__#!/.*sh__" "__fhook-shell__"
-
- Note that "`.*sh`" also matches `/bin/csh`, `/usr/local/bin/zsh` etc, so care
- should be taken to ensure that the regular expression string is
- sufficiently well specified to recognize the file type.
-
- The second class of embedded text are explicit identifiers embedded into
- the text. The embedded strings take the form:
-
-     `-*-` _mode_ `-*`
-     `-*-` __Mode:__ _mode_; ... `-*-`
-     `-!-` _mode_ `-!-`
-
- The `-*-` notation belongs to GNU Emacs, but MicroEmacs 2009 recognizes the
- construct and extracts the string correctly. The `-!-` notation is
- MicroEmacs 2009 specific and is provided so as not to cause conflict with
- GNU Emacs. MicroEmacs 2009 searches for either construct on the first
- non-blank line of the file.
-
- The explicit strings are defined with a negative numerical argument _n_,
- which identifies them as __explicit__ rather than __magic__ text strings. The
- _string_ should be defined in lower case and matches a case insensitive
- string take from the file. e.g. to define a file hook for a make file:
-
-     #_____________________________-!-Makefile-!-________________________________
-     #
-     # Make file for MicroEmacs using the Microsoft MSCV 2.0/4.0 development kit.
-     #
-     # Author      : Jon Green
-     # Created     :  020197.1002
-     # Last Edited : <150297.1942>
-     # File        : makefile.w32
-     ....
+        #!/bin/sh
 
 
- might be defined as:
+  The following file hook is used:-
 
-     -1 __add-file-hook__ "-!-[ \t]*makefile.*-!-" fhook-make
+  __1 add-file-hook__ "__#!/.*sh__" "__fhook-shell__"
+
+  Note that "`.*sh`" also matches `/bin/csh`, `/usr/local/bin/zsh` etc, so care
+  should be taken to ensure that the regular expression string is
+  sufficiently well specified to recognize the file type.
+
+  The second class of embedded text are explicit identifiers embedded into
+  the text. The embedded strings take the form:
+
+     `-*-` _mode_ `-*`  
+     `-*-` __Mode:__ _mode_; ... `-*-`  
+     `-!-` _mode_ `-!-`  
+
+  The `-*-` notation belongs to GNU Emacs, but MicroEmacs 2009 recognizes the
+  construct and extracts the string correctly. The `-!-` notation is
+  MicroEmacs 2009 specific and is provided so as not to cause conflict with
+  GNU Emacs. MicroEmacs 2009 searches for either construct on the first
+  non-blank line of the file.
+
+  The explicit strings are defined with a negative numerical argument _n_,
+  which identifies them as __explicit__ rather than __magic__ text strings. The
+  _string_ should be defined in lower case and matches a case insensitive
+  string take from the file. e.g. to define a file hook for a make file:
+
+        #_____________________________-!-Makefile-!-________________________________
+        #
+        # Make file for MicroEmacs using the Microsoft MSCV 2.0/4.0 development kit.
+        #
+        # Author      : Jon Green
+        # Created     :  020197.1002
+        # Last Edited : <150297.1942>
+        # File        : makefile.w32
+        ....
+
+
+  might be defined as:
+
+  -1 __add-file-hook__ "-!-[ \t]*makefile.*-!-" fhook-make
 
 
 ## NOTES
@@ -10853,23 +10873,24 @@ $a
 ## Automatic Macro File Loading 
 
 
- __add-file-hook__ performs an automatic load of a macro file if the __fhook__
- macro is not present in memory. The file name of the command file
- containing the macro is automatically derived from the _name_ component of
- the __fhook__ macro name. The __fhook-__ part of the name is stripped off and
- prepended with __hk__ and suffixed with __.emf__. Hence, macro __fhook-doc__ would be
- searched for in file `hkdoc.emf` within the MicroEmacs 2009 directory. The
- command file is automatically loaded and executed.
+  __add-file-hook__ performs an automatic load of a macro file if the __fhook__
+  macro is not present in memory. The file name of the command file
+  containing the macro is automatically derived from the _name_ component of
+  the __fhook__ macro name. The __fhook-__ part of the name is stripped off and
+  prepended with __hk__ and suffixed with __.emf__. Hence, macro __fhook-doc__ would be
+  searched for in file `hkdoc.emf` within the MicroEmacs 2009 directory. The
+  command file is automatically loaded and executed.
 
- In cases where the fhook macro is not located in an equivalent hook file,
- the file location of the macro may be explicitly defined for auto loading
- via a [define-macro-file(2)](define-macro-file(2)) invocation.
+  In cases where the fhook macro is not located in an equivalent hook file,
+  the file location of the macro may be explicitly defined for auto loading
+  via a [define-macro-file(2)](define-macro-file(2)) invocation.
 
- As an example, consider the C-mode file hook, used to load `.c` files. The
- loading of a C header file (`.h`) utilizes the same highlighting modes, but
- it's startup sequence is slightly different when handling new files. In
- this case the __fhook-cmode__ for `.c` and __fhook-hmode__ for `.h` files are located
- in the same hook file namely `hkcmode.emf`.
+  As an example, consider the C-mode file hook, used to load `.c` files. The
+  loading of a C header file (`.h`) utilizes the same highlighting modes, but
+  it's startup sequence is slightly different when handling new files. In
+  this case the __fhook-cmode__ for `.c` and __fhook-hmode__ for `.h` files are located
+  in the same hook file namely `hkcmode.emf`.
+
 ```{.emf}
         define-macro-file hkcmode fhook-hmode
 
@@ -10877,84 +10898,86 @@ $a
         add-file-hook ".h .hpp"                         "fhook-hmode"
 
 ```
- In this case the [define-macro-file](define-macro-file(2)) has been used to inform MicroEmacs 2009
- of the location of the __fhook-hmode__ macro thereby overriding the automatic
- load of a file called __hkhmode.emf__. The __fhook-cmode__ macro requires no such
- definition as it is located in a hook file that matches the mode name,
- `hkcmode.emf`.
+
+  In this case the [define-macro-file](define-macro-file(2)) has been used to inform MicroEmacs 2009
+  of the location of the __fhook-hmode__ macro thereby overriding the automatic
+  load of a file called __hkhmode.emf__. The __fhook-cmode__ macro requires no such
+  definition as it is located in a hook file that matches the mode name,
+  `hkcmode.emf`.
 
 
 ## Extending a standard hook definition 
 
 
- The standard file hook files __hk___XXX___.emf__ should not be modified. The
- standard file hooks may be extended with local definitions by defining a
- file __my___XXX___.emf__, which is an extension to the hook file __hk___XXX___.emf__. This is
- automatically executed after __hk___XXX___.emf__. Refer to sections lslanguageTemplates(2)lmLanguageln
- lnTemplatesle and [File Hooks](fileHooks(2)) for details.
+  The standard file hook files __hk___XXX___.emf__ should not be modified. The
+  standard file hooks may be extended with local definitions by defining a
+  file __my___XXX___.emf__, which is an extension to the hook file __hk___XXX___.emf__. This is
+  automatically executed after __hk___XXX___.emf__. Refer to sections
+  [languageTemplates(2)](Language Templates) and [File Hooks](fileHooks(2)) for details.
 
 
 ## File Extensions 
 
 
- The file extensions are specified as a space separated list of file name
- endings. Back-up file endings such as tilde (`~`) are not classed as correct
- file endings and are skipped by the file hook search, hence a file ending
- "`.c~`" invokes the same hook function as a "`.c`" file. It is therefore not
- necessary to add the backup and auto-save endings to the file hook
- definition.
+  The file extensions are specified as a space separated list of file name
+  endings. Back-up file endings such as tilde (`~`) are not classed as correct
+  file endings and are skipped by the file hook search, hence a file ending
+  "`.c~`" invokes the same hook function as a "`.c`" file. It is therefore not
+  necessary to add the backup and auto-save endings to the file hook
+  definition.
 
- The extension separator, usually dot (`.`), is typically added to the
- _extensions_ list, they may be omitted with effect where a file always ends
- in the same set of characters. A notable example is "`makefile`" which
- includes no extension, as such, MicroEmacs 2009 applies the same hook
- function to a file called `Imakefile` as the endings are the same.
+  The extension separator, usually dot (`.`), is typically added to the
+  _extensions_ list, they may be omitted with effect where a file always ends
+  in the same set of characters. A notable example is "`makefile`" which
+  includes no extension, as such, MicroEmacs 2009 applies the same hook
+  function to a file called `Imakefile` as the endings are the same.
 
 
 ## Binary Files 
 
 
- It is sometimes useful to associate file types as binary files, so that
- they are immediately loaded in binary. In this case, both file extension
- and content recognition methods (i.e. of a magic string) are applicable.
- In both cases the file is bound to the well known hook `fhook-binary` which
- automatically loads the file in a binary mode.
+  It is sometimes useful to associate file types as binary files, so that
+  they are immediately loaded in binary. In this case, both file extension
+  and content recognition methods (i.e. of a magic string) are applicable.
+  In both cases the file is bound to the well known hook `fhook-binary` which
+  automatically loads the file in a binary mode.
 
- Note, that for the content recognition process for a binary hook, the load
- time is doubled as the file is initially loaded in the default text mode,
- the binary hook function forces a second load operation in binary.
+  Note, that for the content recognition process for a binary hook, the load
+  time is doubled as the file is initially loaded in the default text mode,
+  the binary hook function forces a second load operation in binary.
 
 
 ## SUMMARY
 
 
- __add-file-hook__ is summarized as follows:-
+  __add-file-hook__ is summarized as follows:-
 
-    - Binds one or more extensions to a macro called fhook-_xxxx_.
-    - Extensions are typically specified with the dot (`.`) separator.
-    - Multiple extensions are specified as a space separated list.
-    - Binds a regular expression search string to a macro called
-          fhook-xxxx.
-    - The absolute value of the numerical argument determines the number
-          of lines in the file over which the regular expression search is
-          made.
-    - The sign of the numerical argument determines if the regular
-          expression search is case (in)sensitive.
-    - When one of the files with a known file extension, or recognized
-          content, is loaded macro fhook-xxxx is executed.
-    - __fhook-xxxx__, if undefined, is automatically searched for in file
-          hkxxxx.emf.
-    - When the buffer containing the known file is entered (i.e. gains
-          focus), then entry macro bhook-xxxx is executed.
-    - When the buffer containing the known file is exited (i.e. looses
-          focus), then the exit macro ehook-xxxx is executed.
+  - Binds one or more extensions to a macro called fhook-_xxxx_.
+  - Extensions are typically specified with the dot (`.`) separator.
+  - Multiple extensions are specified as a space separated list.
+  - Binds a regular expression search string to a macro called
+        fhook-xxxx.
+  - The absolute value of the numerical argument determines the number
+        of lines in the file over which the regular expression search is
+        made.
+  - The sign of the numerical argument determines if the regular
+        expression search is case (in)sensitive.
+  - When one of the files with a known file extension, or recognized
+        content, is loaded macro fhook-xxxx is executed.
+  - __fhook-xxxx__, if undefined, is automatically searched for in file
+        hkxxxx.emf.
+  - When the buffer containing the known file is entered (i.e. gains
+        focus), then entry macro bhook-xxxx is executed.
+  - When the buffer containing the known file is exited (i.e. looses
+        focus), then the exit macro ehook-xxxx is executed.
 
 
 ## EXAMPLE
 
 
- The standard set of supported file types by MicroEmacs 2009, at the time
- of writing, is defined as:-
+  The standard set of supported file types by MicroEmacs 2009, at the time
+  of writing, is defined as:-
+
 ```{.emf}
         ; reset the file hook list
         0 add-file-hook
@@ -11011,31 +11034,32 @@ $a
 ## OBSCURE INFORMATION
 
 
- This section includes some low-level information which is so obscure it is
- not relevant to the typical user.
+  This section includes some low-level information which is so obscure it is
+  not relevant to the typical user.
 
 
 ## Resolving Loading Order Problems 
 
 
- There is a potential loading order problem involving auto-loading of file
- libraries and the setting up of __bhook__ and __ehook__. E.g. if the main fhook
- function has been defined as a [define-macro-file(2)](define-macro-file(2)), but the bhook or
- ehooks have not the when a buffer is created as only the fhook is define,
- only the fhook is set, the rest remain disabled even though the execution
- of the macro file will define these extra hooks.
+  There is a potential loading order problem involving auto-loading of file
+  libraries and the setting up of __bhook__ and __ehook__. E.g. if the main fhook
+  function has been defined as a [define-macro-file(2)](define-macro-file(2)), but the bhook or
+  ehooks have not the when a buffer is created as only the fhook is define,
+  only the fhook is set, the rest remain disabled even though the execution
+  of the macro file will define these extra hooks.
 
- To solve this problem simply define the bhook/ehooks as well. Note that
- automatically loaded hooks do not suffer from this problem as the macro
- file is executed before the hooks are assigned, thereby ensuring the all
- the hooks are defined.
+  To solve this problem simply define the bhook/ehooks as well. Note that
+  automatically loaded hooks do not suffer from this problem as the macro
+  file is executed before the hooks are assigned, thereby ensuring the all
+  the hooks are defined.
 
 
 ## SEE ALSO
 
 
-- [File Hooks](fileHooks(2)), [Language Templates](languageTemplates(2)), [$buffer-bhook(5)]($buffer-bhook(5)), [$buffer-ehook(5)]($buffer-ehook(5)),
-- [$buffer-fhook(5)]($buffer-fhook(5)).
+  [File Hooks](fileHooks(2)), [Language Templates](languageTemplates(2)), [$buffer-bhook(5)]($buffer-bhook(5)), [$buffer-ehook(5)]($buffer-ehook(5)),
+  [$buffer-fhook(5)]($buffer-fhook(5)).
+!! me-id: m2cmd004
 ! 2 osd-bind-key
 ! 2 osd-unbind-key
 ## NAME
@@ -11051,43 +11075,44 @@ $a
 ## SYNOPSIS
 
 
- __osd-bind-key__ _n_ "_command_" "_key_"
- __osd-unbind-key__ _n_ "_key_"
+  __osd-bind-key__ _n_ "_command_" "_key_"
+  __osd-unbind-key__ _n_ "_key_"
 
 
 ## DESCRIPTION
 
 
- __osd-bind-key__ creates a local key binding for a given [osd dialog](osd(2)), binding
- the command _command_ to the keyboard input _key_. Only the current root
- dialog's local bindings are used, local bindings of included dialogs or
- other root dialogs currently displayed are ignored.
+  __osd-bind-key__ creates a local key binding for a given [osd dialog](osd(2)), binding
+  the command _command_ to the keyboard input _key_. Only the current root
+  dialog's local bindings are used, local bindings of included dialogs or
+  other root dialogs currently displayed are ignored.
 
- Osd local bindings take priority over default osd bindings, local bindings
- created using [ml-bind-key(2)](ml-bind-key(2)) are also used, but any current buffer local
- bindings created using [buffer-bind-key(2)](buffer-bind-key(2)) are ignored.
+  Osd local bindings take priority over default osd bindings, local bindings
+  created using [ml-bind-key(2)](ml-bind-key(2)) are also used, but any current buffer local
+  bindings created using [buffer-bind-key(2)](buffer-bind-key(2)) are ignored.
 
 
 ## NOTES
 
 
- The prefix commands cannot be rebound with this command.
+  The prefix commands cannot be rebound with this command.
 
- Key response time linearly increases with each osd binding added.
+  Key response time linearly increases with each osd binding added.
 
- As only the root dialog's bindings are used, creating note-book page
- specific bindings can be awkward. Typically all required keys are bound to
- the same command which, depending on the page that is currently being
- displayed, checks if the key pressed is bound on the current page and if
- so calls the required command. See [organizer(3)](organizer(3)), defined in `organize.emf`
- for an example of this operation.
+  As only the root dialog's bindings are used, creating note-book page
+  specific bindings can be awkward. Typically all required keys are bound to
+  the same command which, depending on the page that is currently being
+  displayed, checks if the key pressed is bound on the current page and if
+  so calls the required command. See [organizer(3)](organizer(3)), defined in `organize.emf`
+  for an example of this operation.
 
 
 ## SEE ALSO
 
 
-- [osd(2)](osd(2)), [global-bind-key(2)](global-bind-key(2)), [ml-bind-key(2)](ml-bind-key(2)), [buffer-bind-key(2)](buffer-bind-key(2)),
-- [global-unbind-key(2)](global-unbind-key(2)).
+  [osd(2)](osd(2)), [global-bind-key(2)](global-bind-key(2)), [ml-bind-key(2)](ml-bind-key(2)), [buffer-bind-key(2)](buffer-bind-key(2)),
+  [global-unbind-key(2)](global-unbind-key(2)).
+!! me-id: m2cmd005
 ! 2 global-mode
 ! 3 add-global-mode
 ! 3 delete-global-mode
@@ -11106,27 +11131,28 @@ $a
 ## SYNOPSIS
 
 
- _n_ __global-mode__ "_mode_" (__esc m__)
- __add-global-mode__ "_mode_"
- __delete-global-mode__ "_mode_"
+  _n_ __global-mode__ "_mode_" (__esc m__)
+  __add-global-mode__ "_mode_"
+  __delete-global-mode__ "_mode_"
 
 
 ## DESCRIPTION
 
 
- __global-mode__ changes the state of one of the hereditary global modes. A
- buffer's modes are initialized to the global modes when first created.
- This command is very useful in changing some of the default behavior such
- as case sensitive searching (see the example below). See [Operating Modes](Operating Modes)
- for a full list and description of modes. Also see [buffer-mode(2)](buffer-mode(2)) for a
- full description of the use of the argument _n_.
+  __global-mode__ changes the state of one of the hereditary global modes. A
+  buffer's modes are initialized to the global modes when first created.
+  This command is very useful in changing some of the default behavior such
+  as case sensitive searching (see the example below). See [Operating Modes](Operating Modes)
+  for a full list and description of modes. Also see [buffer-mode(2)](buffer-mode(2)) for a
+  full description of the use of the argument _n_.
 
- The [about(2)](about(2)) command gives a list of the current global and buffer modes.
+  The [about(2)](about(2)) command gives a list of the current global and buffer modes.
 
- __add-global-mode__ and __delete-global-mode__ are macros defined in meme3_8.emf
- which use global-mode to add or remove a global mode. They are defined for
- backward compatibility with MicroEMACS v3.8 and for ease of use; they are
- simple macros, add-global-mode is defined as follows:
+  __add-global-mode__ and __delete-global-mode__ are macros defined in meme3_8.emf
+  which use global-mode to add or remove a global mode. They are defined for
+  backward compatibility with MicroEMACS v3.8 and for ease of use; they are
+  simple macros, add-global-mode is defined as follows:
+
 ```{.emf}
         define-macro add-global-mode
             ; Has the require mode been given as an argument, if so add it
@@ -11142,9 +11168,10 @@ $a
 ## EXAMPLE
 
 
- The following example globally disables [exact(2m)](exact(2m)) and [magic(2m)](magic(2m)) modes, if
- these lines are copied to the user setup file then are searches will be
- simple and case insensitive by default:
+  The following example globally disables [exact(2m)](exact(2m)) and [magic(2m)](magic(2m)) modes, if
+  these lines are copied to the user setup file then are searches will be
+  simple and case insensitive by default:
+
 ```{.emf}
         -1 global-mode "exact"
         -1 global-mode "magic"
@@ -11154,21 +11181,22 @@ $a
 ## NOTES
 
 
- Globally adding [binary(2m)](binary(2m)), [crypt(2m)](crypt(2m)) and [rbin(2m)](rbin(2m)) modes is strongly
- discouraged as any file loaded would be assigned these modes. Instead use
- the numeric argument of command [find-file(2)](find-file(2)) or commands [find-bfile(3)](find-bfile(3)) and
-- [find-cfile(3)](find-cfile(3)).
+  Globally adding [binary(2m)](binary(2m)), [crypt(2m)](crypt(2m)) and [rbin(2m)](rbin(2m)) modes is strongly
+  discouraged as any file loaded would be assigned these modes. Instead use
+  the numeric argument of command [find-file(2)](find-file(2)) or commands [find-bfile(3)](find-bfile(3)) and
+  [find-cfile(3)](find-cfile(3)).
 
-- [auto(2m)](auto(2m)), [autosv(2m)](autosv(2m)), [backup(2m)](backup(2m)), [exact(2m)](exact(2m)), [magic(2m)](magic(2m)), [quiet(5)]($quiet(5)), [tab(2m)](tab(2m))
- and [undo(2m)](undo(2m)) modes are present on all platforms by default. On Windows and
- DOS platforms [cr(2m)](cr(2m)) and [lf(2m)](lf(2m)) is also present and on DOS [ctrlz(2m)](ctrlz(2m)) is
- also present.
+  [auto(2m)](auto(2m)), [autosv(2m)](autosv(2m)), [backup(2m)](backup(2m)), [exact(2m)](exact(2m)), [magic(2m)](magic(2m)), [quiet(5)]($quiet(5)), [tab(2m)](tab(2m))
+  and [undo(2m)](undo(2m)) modes are present on all platforms by default. On Windows and
+  DOS platforms [cr(2m)](cr(2m)) and [lf(2m)](lf(2m)) is also present and on DOS [ctrlz(2m)](ctrlz(2m)) is
+  also present.
 
 
 ## SEE ALSO
 
 
-- [Operating Modes](Operating Modes), [buffer-mode(2)](buffer-mode(2)), [find-bfile(3)](find-bfile(3)), [find-cfile(3)](find-cfile(3)), [about(2)](about(2)).
+  [Operating Modes](Operating Modes), [buffer-mode(2)](buffer-mode(2)), [find-bfile(3)](find-bfile(3)), [find-cfile(3)](find-cfile(3)), [about(2)](about(2)).
+!! me-id: m2cmd006  
 ! 2 buffer-mode
 ! 2 named-buffer-mode
 ! 3 add-mode
@@ -11193,24 +11221,24 @@ $a
 ## SYNOPSIS
 
 
- _n_ __buffer-mode__ "_mode_" (__C-x m__)
- _n_ __named-buffer-mode__ "_buffer-name_" "_mode_"
- __add-mode__ "_mode_"
- __delete-mode__ "_mode_"
- __unmark-buffer__
+  _n_ __buffer-mode__ "_mode_" (__C-x m__)  
+  _n_ __named-buffer-mode__ "_buffer-name_" "_mode_"  
+  __add-mode__ "_mode_"  
+  __delete-mode__ "_mode_"  
+  __unmark-buffer__
 
 
 ## DESCRIPTION
 
 
- __buffer-mode__ changes the state of a given buffer mode, affecting only the
- current buffer. A buffer's mode affects the behavior of MicroEmacs 2009.
- The [about(2)](about(2)) command gives a list of the current global and buffer modes.
- Refer to [Operating Modes](Operating Modes) for a description of the buffer modes.
+  __buffer-mode__ changes the state of a given buffer mode, affecting only the
+  current buffer. A buffer's mode affects the behavior of MicroEmacs 2009.
+  The [about(2)](about(2)) command gives a list of the current global and buffer modes.
+  Refer to [Operating Modes](Operating Modes) for a description of the buffer modes.
 
- The argument _n_ when given, has the following meaning:
+  The argument _n_ when given, has the following meaning:
 
-     Delete    Add    toggle    Mode
+        Delete    Add    toggle    Mode
 
           -1       1         0     Use "mode"
           -2       2       130     autosv
@@ -11240,17 +11268,20 @@ $a
           -27      27      155     wrap
 
 
- Note that when omitted the default argument is 0, i.e. prompt for and
- toggle a mode.
+  Note that when omitted the default argument is 0, i.e. prompt for and
+  toggle a mode.
 
- __named-buffer-mode__ changes the state of a given buffer mode for a given
- buffer which may not be the current buffer.
+  __named-buffer-mode__ changes the state of a given buffer mode for a given
+  buffer which may not be the current buffer.
 
- __add-mode__ and __delete-mode__ are macros which use buffer-mode to add and
- remove a buffer mode. __unmark-buffer__ is also a macro which removes the edit
- flag from the current buffer. They are defined for backward compatibility
- with MicroEMACS v3.8 and can be found in meme3_8.emf; add-mode is defined
- as follows:
+  __add-mode__ and __delete-mode__ are macros which use buffer-mode to add and
+  remove a buffer mode. 
+  
+  __unmark-buffer__ is also a macro which removes the edit
+  flag from the current buffer. They are defined for backward compatibility
+  with MicroEMACS v3.8 and can be found in meme3_8.emf; add-mode is defined
+  as follows:
+
 ```{.emf}
         define-macro add-mode
             ; Has the require mode been given as an argument, if so add it
@@ -11266,123 +11297,133 @@ $a
 ## NOTES
 
 
- When a buffer is created it inherits the current global mode state.
+  When a buffer is created it inherits the current global mode state.
 
 
 ## SEE ALSO
 
 
-- [Operating Modes](Operating Modes), [global-mode(2)](global-mode(2)), [about(2)](about(2)), [&bmode(4)](&bmode(4)).
+  [Operating Modes](Operating Modes), [global-mode(2)](global-mode(2)), [about(2)](about(2)), [&bmode(4)](&bmode(4)).
+!! me-id: m2cmd007
 ! 2 add-next-line
 ## NAME
 
 
- add-next-line - Define the searching behavior of command output
+  add-next-line - Define the searching behavior of command output
 $a
 
 
 ## SYNOPSIS
 
 
- _n_ __add-next-line__ "_buffer-name_" [ "_string_" ]
+  _n_ __add-next-line__ "_buffer-name_" [ "_string_" ]
 
 
 ## DESCRIPTION
 
 
- __add-next-line__ is used to set up the _next-line_ functionality which is used
- by the [get-next-line(2)](get-next-line(2)) command. The _next-line_ feature is aimed at giving
- the user easy access to file locations which are stored in another buffer.
- This buffer may typically be the output from the __grep(1)__ command or a
- compiler (e.g. __cc(1)__) and needs to contain the file name and line number
- of the required location.
+  __add-next-line__ is used to set up the _next-line_ functionality which is used
+  by the [get-next-line(2)](get-next-line(2)) command. The _next-line_ feature is aimed at giving
+  the user easy access to file locations which are stored in another buffer.
+  This buffer may typically be the output from the __grep(1)__ command or a
+  compiler (e.g. __cc(1)__) and needs to contain the file name and line number
+  of the required location.
 
- As long as the format of the buffer is consistent and there is a maximum
- of one location per line, the _next-line_ feature can be successfully
- configured.
+  As long as the format of the buffer is consistent and there is a maximum
+  of one location per line, the _next-line_ feature can be successfully
+  configured.
 
- The first argument, "_buffer-name_", gives the name the aforementioned
- buffer, this is "__*grep*__" for the [grep(3)](grep(3)) command etc. There is no limit on
- the number of next-line formats, nor on the number of __add-next-line__
- strings which are given. While there is no real need to initialize each
- new type, it is advised that the first __add-next-line__ is called with a
- numerical argument of zero, e.g.:
+  The first argument, "_buffer-name_", gives the name the aforementioned
+  buffer, this is "__*grep*__" for the [grep(3)](grep(3)) command etc. There is no limit on
+  the number of next-line formats, nor on the number of __add-next-line__
+  strings which are given. While there is no real need to initialize each
+  new type, it is advised that the first __add-next-line__ is called with a
+  numerical argument of zero, e.g.:
+
 ```{.emf}
         0 add-next-line "*grep*"
         add-next-line "*grep*" "....."
 
 ```
- This tells MicroEmacs to reinitialize the type by freeing off any strings
- currently stored, note that the "_string_" argument is not used in this
- case. Resetting the next-line type safe guards against duplicate strings
- being added to it, a common problem if MicroEmacs is reinitialized.
+  
+  This tells MicroEmacs to reinitialize the type by freeing off any strings
+  currently stored, note that the "_string_" argument is not used in this
+  case. Resetting the next-line type safe guards against duplicate strings
+  being added to it, a common problem if MicroEmacs is reinitialized.
 
- Following is a typical output from grep:
+  Following is a typical output from grep:
 
-     foo.c: 45:      printf("hello world\n") ;
-     foo.c: 46:      printf("hello again\n") ;
-
-
- If we replace the file name with "`%f`" and the line number with "`%l`", this
- becomes:
-
-     %f: %l:      printf("hello world\n") ;
+       foo.c: 45:      printf("hello world\n") ;
+       foo.c: 46:      printf("hello again\n") ;
 
 
-- [get-next-line](get-next-line(2)) works on a left to right basis, as soon as it has enough
- information from the line it does not need to continue. Therefore the
- previous example can be reduced to just "`%f: %l:`". This is the string
- argument that should be given for the above example, i.e.:
+  If we replace the file name with "`%f`" and the line number with "`%l`", this
+  becomes:
+
+       %f: %l:      printf("hello world\n") ;
+
+
+  [get-next-line](get-next-line(2)) works on a left to right basis, as soon as it has enough
+  information from the line it does not need to continue. Therefore the
+  previous example can be reduced to just "`%f: %l:`". This is the string
+  argument that should be given for the above example, i.e.:
+
 ```{.emf}
         add-next-line "*grep*" "%f: %l:"
 
 ```
-- [get-next-line](get-next-line(2)) takes the given string and replaces the "%f" with
-- [$file-template(5)]($file-template(5)) and the "%l" with the [$line-template(5)]($line-template(5)) and then uses
- the resultant string as a regular expression search string to find the
- next location. Crudely these could be set to "`foo.c`" and "`45`" respectively
- to find the first example, but this would fail to find any other. As a
- result the templates are usually magic search strings which will match any
- file and line number.
 
- Similarly, following is an example output of the __gcc(1)__ compiler:
+  [get-next-line](get-next-line(2)) takes the given string and replaces the "%f" with
+  [$file-template(5)]($file-template(5)) and the "%l" with the [$line-template(5)]($line-template(5)) and then uses
+  the resultant string as a regular expression search string to find the
+  next location. Crudely these could be set to "`foo.c`" and "`45`" respectively
+  to find the first example, but this would fail to find any other. As a
+  result the templates are usually magic search strings which will match any
+  file and line number.
 
-     basic.c:522: warning: `jj' might be used uninitialized in this command
-     display.c:833: warning: implicit declaration of function `ScreenPutChar'
+  Similarly, following is an example output of the __gcc(1)__ compiler:
+
+       basic.c:522: warning: `jj' might be used uninitialized in this command
+       display.c:833: warning: implicit declaration of function `ScreenPutChar'
 
 
- In this case the __add-next-line__ given needs to be:
+  In this case the __add-next-line__ given needs to be:
+
 ```{.emf}
         add-next-line "*compile*" "%f:%l:"
 
 ```
- If a negative numerical argument is given to __add-next-line__ the given
- 'next-line' is ignored, this can be useful when some warnings are to be
- ignored. For example a common warning from gcc is given when a variable
- might be used uninitialized, given as follows:
 
-     bind.c:578: warning: `ssc' might be used uninitialized in this function
+  If a negative numerical argument is given to __add-next-line__ the given
+  'next-line' is ignored, this can be useful when some warnings are to be
+  ignored. For example a common warning from gcc is given when a variable
+  might be used uninitialized, given as follows:
+
+       bind.c:578: warning: `ssc' might be used uninitialized in this function
 
 
- These warnings can be ignored using the following:
+  These warnings can be ignored using the following:
+
 ```{.emf}
         -1 add-next-line "*compile*" ...
             ... "%f:%l: warning: `.*' might be used uninitialized in this function"
 
 ```
- Some versions of __grep(1)__ give the file name first and then the lines on
- the following lines. This is not a major problem as __get-next-line__
- remembers the last file name. The only problem occurs when skipping some
- parts of the list at which point the last file name parsed may not be the
- current file. Following is an example output of such a __grep__ and the setup
- required:
 
-     File foo.c:
-     Line 45:      printf("hello world\n") ;
-     Line 46:      printf("hello again\n") ;
+  Some versions of __grep(1)__ give the file name first and then the lines on
+  the following lines. This is not a major problem as __get-next-line__
+  remembers the last file name. The only problem occurs when skipping some
+  parts of the list at which point the last file name parsed may not be the
+  current file. Following is an example output of such a __grep__ and the setup
+  required:
+
+       File foo.c:
+       Line 45:      printf("hello world\n") ;
+       Line 46:      printf("hello again\n") ;
 
 
- The configuration to locate the lines is defined as:
+  The configuration to locate the lines is defined as:
+
 ```{.emf}
         0 add-next-line "*grep*"
         add-next-line "*grep*" "File %f:"
@@ -11393,8 +11434,9 @@ $a
 ## NOTES
 
 
- The reinitialize command format of this command changed in January 2001,
- the format changed from:
+  The reinitialize command format of this command changed in January 2001,
+  the format changed from:
+
 ```{.emf}
         add-next-line "*grep*" ""
 
@@ -11403,102 +11445,107 @@ $a
 ## SEE ALSO
 
 
-- [$file-template(5)]($file-template(5)), [$line-template(5)]($line-template(5)), cc(1), [compile(3)](compile(3)), [get-next-line(2)](get-next-line(2)),
- __grep(1)__, [grep(3)](grep(3)).
+  [$file-template(5)]($file-template(5)), [$line-template(5)]($line-template(5)), cc(1), [compile(3)](compile(3)), [get-next-line(2)](get-next-line(2)),
+  __grep(1)__, [grep(3)](grep(3)).
+!! me-id: m2cmd008
 ! 2 save-registry
 ## NAME
 
 
- save-registry - Write a registry definition file
+  save-registry - Write a registry definition file
 $a
 
 
 ## SYNOPSIS
 
 
- _n_ __save-registry__ ["_root_" "_file_"]
+  _n_ __save-registry__ ["_root_" "_file_"]
 
 
 ## DESCRIPTION
 
 
- __save-registry__ saves a registry tree, defined by _root_, to a registry file
- _file_ in the [erf(8)](erf(8)) format. By default the user is prompted for the
- registry _root_ to save, which must already exist. If the _file_ given is the
- empty string `""`, the registry node _root_ must be a root node with an
- associated file name stored, this file name is used.
+  __save-registry__ saves a registry tree, defined by _root_, to a registry file
+  _file_ in the [erf(8)](erf(8)) format. By default the user is prompted for the
+  registry _root_ to save, which must already exist. If the _file_ given is the
+  empty string `""`, the registry node _root_ must be a root node with an
+  associated file name stored, this file name is used.
 
- The argument _n_ may be used to control the effect of the command, _n_ is a
- bit based flag defined as follows:-
+  The argument _n_ may be used to control the effect of the command, _n_ is a
+  bit based flag defined as follows:-
 
- __0x01__
-     Enables prompting before saving, only used when saving all registries.
+  __0x01__
+ 
+  >  Enables prompting before saving, only used when saving all registries.
 
- __0x02__
-     Save all changed registries except the history node which should be
+  __0x02__
+
+  >  Save all changed registries except the history node which should be
      saved using the command [save-session(3)](save-session(3)).
 
 
 ## NOTES
 
 
- This command is called to save all registry changes whenever MicroEmacs is
- exited.
+  This command is called to save all registry changes whenever MicroEmacs is
+  exited.
 
 
 ## SEE ALSO
 
 
-- [copy-registry(3)](copy-registry(3)), [delete-registry(2)](delete-registry(2)), [list-registry(2)](list-registry(2)), [mark-registry(2)](mark-registry(2)),
-- [read-registry(2)](read-registry(2)), [save-session(3)](save-session(3)), [set-registry(2)](set-registry(2)), [&reg(4)](&reg(4)), [erf(8)](erf(8)).
+  [copy-registry(3)](copy-registry(3)), [delete-registry(2)](delete-registry(2)), [list-registry(2)](list-registry(2)), [mark-registry(2)](mark-registry(2)),
+  [read-registry(2)](read-registry(2)), [save-session(3)](save-session(3)), [set-registry(2)](set-registry(2)), [&reg(4)](&reg(4)), [erf(8)](erf(8)).
+!! me-id: m2cmd009
 ! 2 command-apropos
 ## NAME
 
 
- command-apropos - List commands involving a concept
+  command-apropos - List commands involving a concept
 $a
 
 
 ## SYNOPSIS
 
 
- _n_ __command-apropos__ "_string_" (__C-h a__)
+  _n_ __command-apropos__ "_string_" (__C-h a__)
 
 
 ## DESCRIPTION
 
 
- __command-apropos__ compiles a list of all commands with _string_ in their name,
- also giving their current key bindings. Only commands that are not hidden
- are displayed, if a numeric argument of 0 is supplied then all commands
- are displayed, irrespective of their visibility.
+  __command-apropos__ compiles a list of all commands with _string_ in their name,
+  also giving their current key bindings. Only commands that are not hidden
+  are displayed, if a numeric argument of 0 is supplied then all commands
+  are displayed, irrespective of their visibility.
 
 
 ## EXAMPLE
 
 
- To find all of the commands with "`command`" in their name space then issue
- the command "`C-h a command`" which generates a list of commands such as:-
+  To find all of the commands with "`command`" in their name space then issue
+  the command "`C-h a command`" which generates a list of commands such as:-
 
-     abort-command ................. "C-g"
-                                        "esc C-g"
-                                        "C-x C-g"
-     command-apropos ............... "C-h a"
-     command-complete
-     execute-named-command ......... "esc x"
-     help-command .................. "C-h C-c"
-     ipipe-shell-command ........... "esc \\"
-     list-commands ................. "C-h c"
-     pipe-shell-command ............ "esc !"
+       abort-command ................. "C-g"
+                                          "esc C-g"
+                                          "C-x C-g"
+       command-apropos ............... "C-h a"
+       command-complete
+       execute-named-command ......... "esc x"
+       help-command .................. "C-h C-c"
+       ipipe-shell-command ........... "esc \\"
+       list-commands ................. "C-h c"
+       pipe-shell-command ............ "esc !"
                                         "esc @"
                                         "C-x @"
-     shell-command
+       shell-command
 
 
 ## SEE ALSO
 
 
-- [describe-bindings(2)](describe-bindings(2)).
+  [describe-bindings(2)](describe-bindings(2)).
+!! me-id: m2cmd010  
 ! 2 forward-char
 ! 2 backward-char
 ## NAME
@@ -11514,33 +11561,34 @@ $a
 ## SYNOPSIS
 
 
- _n_ __forward-char__ (__C-f__)
- _n_ __backward-char__ (__C-b__)
+  _n_ __forward-char__ (__C-f__)  
+  _n_ __backward-char__ (__C-b__)
 
 
 ## DESCRIPTION
 
 
- __backward-char__ moves the cursor _n_ characters to the left. Move to the end
- of the previous line if the cursor was at the beginning of the current
- line.
+  __backward-char__ moves the cursor _n_ characters to the left. Move to the end
+  of the previous line if the cursor was at the beginning of the current
+  line.
 
- __forward-char__ moves the cursor _n_ characters to the right. Move to the
- beginning of the next line if the cursor was already at the end of the
- current line.
+  __forward-char__ moves the cursor _n_ characters to the right. Move to the
+  beginning of the next line if the cursor was already at the end of the
+  current line.
 
 
 ## NOTES
 
 
- __backward-char__ is also bound to __left__.
- __forward-char__ is also bound to __right__.
+  __backward-char__ is also bound to __left__.  
+  __forward-char__ is also bound to __right__.
 
 
 ## SEE ALSO
 
 
-- [forward-line(2)](forward-line(2)), [backward-line(2)](backward-line(2)).
+  [forward-line(2)](forward-line(2)), [backward-line(2)](backward-line(2)).
+!! me-id: m2cmd011
 ! 2 start-kbd-macro
 ! 2 end-kbd-macro
 ## NAME
@@ -11556,50 +11604,51 @@ $a
 ## SYNOPSIS
 
 
- __start-kbd-macro__ (__C-x (__)
- __end-kbd-macro__ (__C-x )__)
+  __start-kbd-macro__ (__C-x (__)  
+  __end-kbd-macro__ (__C-x )__)
 
 
 ## DESCRIPTION
 
 
- A keyboard macro is a short hand way to repeat a series of characters. In
- effect, a _recording_ is made of the sequence of keys that you hit while
- defining a keyboard macro. The recording is started with __start-kbd-macro__
- and ended with __end-kbd-macro__. The recording is then repeated whenever you
- execute the keyboard macro using [execute-kbd-macro(2)](execute-kbd-macro(2)).
+  A keyboard macro is a short hand way to repeat a series of characters. In
+  effect, a _recording_ is made of the sequence of keys that you hit while
+  defining a keyboard macro. The recording is started with __start-kbd-macro__
+  and ended with __end-kbd-macro__. The recording is then repeated whenever you
+  execute the keyboard macro using [execute-kbd-macro(2)](execute-kbd-macro(2)).
 
- Since it is key-strokes that are being saved, you can freely intermix
- commands and text to be inserted into the buffer.
+  Since it is key-strokes that are being saved, you can freely intermix
+  commands and text to be inserted into the buffer.
 
- You can save a keyboard macro for later using the [name-kbd-macro(2)](name-kbd-macro(2))
- command, which saves the keyboard macro as a named macro. Otherwise if you
- start another keyboard macro recording session, the previously defined
- macro is lost. So make sure that you are done with the current keyboard
- macro before defining another one. If you have a series of commands that
- you would like to _record_ for later use, [insert-macro(2)](insert-macro(2)) can be used to
- insert the macro into a text file and can be reloaded using the
-- [execute-file(2)](execute-file(2)) or [execute-buffer(2)](execute-buffer(2)) commands.
+  You can save a keyboard macro for later using the [name-kbd-macro(2)](name-kbd-macro(2))
+  command, which saves the keyboard macro as a named macro. Otherwise if you
+  start another keyboard macro recording session, the previously defined
+  macro is lost. So make sure that you are done with the current keyboard
+  macro before defining another one. If you have a series of commands that
+  you would like to _record_ for later use, [insert-macro(2)](insert-macro(2)) can be used to
+  insert the macro into a text file and can be reloaded using the
+  [execute-file(2)](execute-file(2)) or [execute-buffer(2)](execute-buffer(2)) commands.
 
- Recording commences with __start-kbd-macro__ (`C-x (`) and terminates when an
- __end-kbd-macro__ (`C-x )` is encountered.
+  Recording commences with __start-kbd-macro__ (`C-x (`) and terminates when an
+  __end-kbd-macro__ (`C-x )` is encountered.
 
 
 ## NOTES
 
 
- Once __start-kbd-macro__ has been executed, the mouse is disabled until
- __end-kbd-macro__ is executed. This is because the mouse events cannot be
- successfully recorded in macros. The main menu can still be used, but only
- via the keyboard bindings and hot-keys (note that the layout of the menu
- may change).
+  Once __start-kbd-macro__ has been executed, the mouse is disabled until
+  __end-kbd-macro__ is executed. This is because the mouse events cannot be
+  successfully recorded in macros. The main menu can still be used, but only
+  via the keyboard bindings and hot-keys (note that the layout of the menu
+  may change).
 
 
 ## SEE ALSO
 
 
-- [execute-kbd-macro(2)](execute-kbd-macro(2)), [insert-macro(2)](insert-macro(2)), [kbd-macro-query(2)](kbd-macro-query(2)),
-- [name-kbd-macro(2)](name-kbd-macro(2)).
+  [execute-kbd-macro(2)](execute-kbd-macro(2)), [insert-macro(2)](insert-macro(2)), [kbd-macro-query(2)](kbd-macro-query(2)),
+  [name-kbd-macro(2)](name-kbd-macro(2)).
+!! me-id: m2cmd012  
 ! 2 beginning-of-buffer
 ! 2 end-of-buffer
 ## NAME
@@ -11615,29 +11664,29 @@ $a
 ## SYNOPSIS
 
 
- __beginning-of-buffer__ (__esc <__)
- __end-of-buffer__ (__esc >__)
+  __beginning-of-buffer__ (__esc <__)  
+  __end-of-buffer__ (__esc >__)
 
 
 ## DESCRIPTION
 
 
- __beginning-of-buffer__ places the cursor at the beginning of the buffer/file.
-
- __end-of-buffer__ places the cursor at the end of the buffer/file.
+  __beginning-of-buffer__ places the cursor at the beginning of the buffer/file.  
+  __end-of-buffer__ places the cursor at the end of the buffer/file.
 
 
 ## NOTES
 
 
- __beginning-of-buffer__ is typically bound to __home__.
- __end-of-buffer__ is typically bound to __end__.
+  __beginning-of-buffer__ is typically bound to __home__.  
+  __end-of-buffer__ is typically bound to __end__.
 
 
 ## SEE ALSO
 
 
-- [beginning-of-line(2)](beginning-of-line(2)), [end-of-line(2)](end-of-line(2)).
+  [beginning-of-line(2)](beginning-of-line(2)), [end-of-line(2)](end-of-line(2)).
+!! me-id: m2cmd013
 ! 2 global-bind-key
 ! 2 global-unbind-key
 ## NAME
@@ -11653,113 +11702,121 @@ $a
 ## SYNOPSIS
 
 
- _n_ __global-bind-key__ "_command_" "_key_" (__esc k__)
- _n_ __global-unbind-key__ "_key_" (__esc C-k__)
+  _n_ __global-bind-key__ "_command_" "_key_" (__esc k__)  
+  _n_ __global-unbind-key__ "_key_" (__esc C-k__)
 
 
 ## DESCRIPTION
 
 
- __global-bind-key__ takes one of the named commands and binds it to a key.
- Thereafter, whenever that key is struck, the bound command is executed. If
- an argument _n_ is given then the bound command is executed _n_ times when the
- key is struck. (i.e. the command is passed the numeric argument '_n_').
+  __global-bind-key__ takes one of the named commands and binds it to a key.
+  Thereafter, whenever that key is struck, the bound command is executed. If
+  an argument _n_ is given then the bound command is executed _n_ times when the
+  key is struck. (i.e. the command is passed the numeric argument '_n_').
 
- __global-unbind-key__ unbinds (detaches) a user entered _key_ sequence (i.e. C-x
- C-f) from any command to which it may be bound. This does not work with
-- [buffer](buffer-bind-key(2)) or [message line](ml-bind-key(2)) key bindings, see [buffer-unbind-key(2)](buffer-unbind-key(2)) and
-- [ml-unbind-key(2)](ml-unbind-key(2)). If an argument of 0 is given to global-unbind-key, only
- a single key is obtained for the user, if the character is currently bound
- to the [prefix](prefix(2)) command, the prefix binding and any sub-bindings are
- removed. __global-bind-key__ calls __global-unbind-key__ first if the key to be
- bound is already bound to something else.
+  __global-unbind-key__ unbinds (detaches) a user entered _key_ sequence (i.e. C-x
+  C-f) from any command to which it may be bound. This does not work with
+  [buffer](buffer-bind-key(2)) or [message line](ml-bind-key(2)) key bindings, see [buffer-unbind-key(2)](buffer-unbind-key(2)) and
+  [ml-unbind-key(2)](ml-unbind-key(2)). If an argument of 0 is given to global-unbind-key, only
+  a single key is obtained for the user, if the character is currently bound
+  to the [prefix](prefix(2)) command, the prefix binding and any sub-bindings are
+  removed. __global-bind-key__ calls __global-unbind-key__ first if the key to be
+  bound is already bound to something else.
 
- If a negative argument is given to __global-unbind-key__ then all bindings are
- removed, __caution__ - removing all bindings interactively will render the
- current MicroEmacs session unusable. This can only be used within macro
- development where new bindings are created immediately afterwards.
+  If a negative argument is given to __global-unbind-key__ then all bindings are
+  removed, __caution__ - removing all bindings interactively will render the
+  current MicroEmacs session unusable. This can only be used within macro
+  development where new bindings are created immediately afterwards.
 
- The __global-bind-key__ command, currently bound to `esc k`, prompts the user
- for the named command and the key to which it is to be bound. This help
- file gives a complete list of all built in commands, and some useful
- macros, a complete list of all commands and macros can be obtained by
- using the command completion (type `esc x` `tab` `tab`, see [ml-bind-key(2)](ml-bind-key(2))) or
- using the command [describe-bindings(2)](describe-bindings(2)).
+  The __global-bind-key__ command, currently bound to `esc k`, prompts the user
+  for the named command and the key to which it is to be bound. This help
+  file gives a complete list of all built in commands, and some useful
+  macros, a complete list of all commands and macros can be obtained by
+  using the command completion (type `esc x` `tab` `tab`, see [ml-bind-key(2)](ml-bind-key(2))) or
+  using the command [describe-bindings(2)](describe-bindings(2)).
 
- The mouse buttons are considered to be _keys_, there is a _key_ for each
- button press and release event, use [describe-key(2)](describe-key(2)) to get the binding key
- string.
+  The mouse buttons are considered to be _keys_, there is a _key_ for each
+  button press and release event, use [describe-key(2)](describe-key(2)) to get the binding key
+  string.
 
- The non-ASCII standard keys such as the cursor keys have 'standard' key
- names to make cross platform binding support easy. Some systems such as
- _termcap_ do not have fixed key-bindings, for these key the users must use
- the command [translate-key(2)](translate-key(2)) to convert the system key binding to the
- standard key binding.
+  The non-ASCII standard keys such as the cursor keys have 'standard' key
+  names to make cross platform binding support easy. Some systems such as
+  _termcap_ do not have fixed key-bindings, for these key the users must use
+  the command [translate-key(2)](translate-key(2)) to convert the system key binding to the
+  standard key binding.
 
- Permanent changes are done indirectly through the `me.emf` file. This is a
- file that MicroEmacs 2009 reads and executes (see [execute-file(2)](execute-file(2))) during
- startup and hence results in the appearance of a permanent change in the
- key bindings. The syntax of commands in the `me.emf` file is described under
- the [execute-file](execute-file(2)) command. Of principal concern here are the two commands
- __global-bind-key__ and __global-unbind-key__. The primary difference between the
- way parameters are passed to these commands in the `me.emf` file is that the
- keys are not typed in directly (as in the _control-I_ key when you want `C-i`)
- but by symbolic names. Every key has a unique name which can be easily
- obtained with the current binding by using the command [describe-key(2)](describe-key(2)).
+  Permanent changes are done indirectly through the `me.emf` file. This is a
+  file that MicroEmacs 2009 reads and executes (see [execute-file(2)](execute-file(2))) during
+  startup and hence results in the appearance of a permanent change in the
+  key bindings. The syntax of commands in the `me.emf` file is described under
+  the [execute-file](execute-file(2)) command. Of principal concern here are the two commands
+  __global-bind-key__ and __global-unbind-key__. The primary difference between the
+  way parameters are passed to these commands in the `me.emf` file is that the
+  keys are not typed in directly (as in the _control-I_ key when you want `C-i`)
+  but by symbolic names. Every key has a unique name which can be easily
+  obtained with the current binding by using the command [describe-key(2)](describe-key(2)).
 
- See help on [Key Names](keyNames(2)) for a description of the symbolic naming system and
- a complete list of valid key names. Also see [Bindings](Bindings(2)) for a complete list
- of default key bindings.
+  See help on [Key Names](keyNames(2)) for a description of the symbolic naming system and
+  a complete list of valid key names. Also see [Bindings](Bindings(2)) for a complete list
+  of default key bindings.
 
 
 ## EXAMPLE
 
 
- __Alt P__
+  __Alt P__
+
 ```{.emf}
         global-bind-key "func" "A-p"
 
 ```
- __Control F2__
+
+  __Control F2__
+
 ```{.emf}
         global-bind-key "func" "C-f3"
 
 ```
- __Shift Alt Left Cursor__
+
+  __Shift Alt Left Cursor__
+
 ```{.emf}
         global-bind-key "func" "A-S-left"
 
 ```
- __Control Alt Delete__
+  __Control Alt Delete__
+
 ```{.emf}
         global-bind-key "func" "C-A-delete"
 
 ```
-     Note that binding __Control-Alt-Delete__ is not recommended for MS-DOS
-     systems for obvious reasons.
+
+  Note that binding __Control-Alt-Delete__ is not recommended for MS-DOS
+  systems for obvious reasons.
 
 
 ## NOTES
 
 
- Some ASCII keys, such as `<CR>` (C-m), `<tab>` (C-i), `<BACKSPACE>` (C-h) have
- non-ASCII key bindings, namely "__return__", "__tab__", "__backspace__" etc. this is
- to allow separate key-bindings for the real "__C-m__" etc.
+  Some ASCII keys, such as '<CR>' (C-m), `<tab>` (C-i), `<BACKSPACE>` (C-h) have
+  non-ASCII key bindings, namely "__return__", "__tab__", "__backspace__" etc. this is
+  to allow separate key-bindings for the real "__C-m__" etc.
 
- Be very careful in binding and unbinding keys since you could get into
- some very peculiar situations such as being unable to abort out of a
- command (if you unbind CTRL-G or bind it to something else) or recover
- from the bad binding/unbinding if you unbind [execute-named-command(2)](execute-named-command(2)) or
- the __global-unbind-key__ command. As long as you leave yourself the
- opportunity to do both of the last two commands, you can recover from
- disastrous bindings/unbindings.
+  Be very careful in binding and unbinding keys since you could get into
+  some very peculiar situations such as being unable to abort out of a
+  command (if you unbind CTRL-G or bind it to something else) or recover
+  from the bad binding/unbinding if you unbind [execute-named-command(2)](execute-named-command(2)) or
+  the __global-unbind-key__ command. As long as you leave yourself the
+  opportunity to do both of the last two commands, you can recover from
+  disastrous bindings/unbindings.
 
 
 ## SEE ALSO
 
 
-- [buffer-bind-key(2)](buffer-bind-key(2)), [buffer-unbind-key(2)](buffer-unbind-key(2)), [describe-bindings(2)](describe-bindings(2)),
-- [describe-key(2)](describe-key(2)), [ml-bind-key(2)](ml-bind-key(2)), [ml-unbind-key(2)](ml-unbind-key(2)), [translate-key(2)](translate-key(2)).
+  [buffer-bind-key(2)](buffer-bind-key(2)), [buffer-unbind-key(2)](buffer-unbind-key(2)), [describe-bindings(2)](describe-bindings(2)),
+  [describe-key(2)](describe-key(2)), [ml-bind-key(2)](ml-bind-key(2)), [ml-unbind-key(2)](ml-unbind-key(2)), [translate-key(2)](translate-key(2)).
+!! me.id: m2cmd014
 ! 2 buffer-info
 ## NAME
 
