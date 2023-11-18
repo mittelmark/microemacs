@@ -1,20 +1,32 @@
 ; -!- emf -!-
 ; This is part of the JASSPA MicroEmacs macro files
 ; Copyright (C) 1997-2009 JASSPA (www.jasspa.com)
+;               2023  Detlef Groth
 ; See the file me.emf for copying and conditions.
 ;
 ; Created:     Mon Dec 15 1997
 ; Synopsis:    Finds, inserts & edits the magic variables in a template file.
-; Authors:     Jon Green & Steven Phillips
+; Authors:     Jon Green, Steven Phillips & Detlef Groth
 ;
 ; Usage:
 ;      etfinsrt "<etf-name>"
 ;      n insert-templete "<template-name>"
+;      insert-template 
 ;
 ; The <etf-name> is typically the fhook label, i.e. emf or c etc, the template
 ; file <etf-name>.etf is found and inserted. insert-template uses the $buffer-fhook
 ; name. etfinsrt always inserts the first template in the etf file, whereas
 ; insert-template inserts the n'th template or prompts the user if n is not given.
+; 
+; New since 2023:
+; Calling `insert-template` without numerical argument selects etf files from the users
+; config folder via an interactive menu. So files author.etf, md/report.etf, md/pres.etf
+; in ~/.jasspa would allow the user to choose one of these three templates from the command
+; line in an interactive manner.
+; Installation of new templates can be done by copying the files into the ~/.jasspa folder
+; or in subfolders belonging to the fhook, so latex template etf files go in ~/.jasspa/latex, 
+; Python files go into ~/.jasspa/python etc
+
 0 define-macro etfinsrt-i
     ; Insert the template file
     set-variable #l8 $window-line
