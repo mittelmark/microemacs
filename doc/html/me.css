@@ -1,0 +1,13 @@
+body {
+    color: #444;
+    font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+    line-height: 1.2;
+    padding: 1em;
+    margin: auto;
+    max-width:  1200px;
+}
+
+pre, code { font-family: "Ubuntu Mono", Monaco, Courier, monospace; }
+pre { margin-left: 40px }
+div.links { display: none }
+h1 { display: none; }
