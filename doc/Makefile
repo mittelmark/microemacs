@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : groth
 #  Created       : Sat Nov 18 16:50:59 2023
-#  Last Modified : <231121.0633>
+#  Last Modified : <231121.0805>
 #
 #  Description	
 #
@@ -33,5 +33,16 @@
 page=m1cmd000
 default:
 	bash ../bin/me-tools.sh mds2html me.smd $(page) html
-amicr:
-	bash ../bin/me-tools.sh amicr2html me.smd html
+all:
+	bash ../bin/me-tools.sh me2html me.smd html amicr 0 85
+	bash ../bin/me-tools.sh me2html me.smd html m1cmd 0 2	
+	bash ../bin/me-tools.sh me2html me.smd html m2cmd 0 163	
+	bash ../bin/me-tools.sh me2html me.smd html m2cmd 200 203
+	bash ../bin/me-tools.sh me2html me.smd html m2nar 0 12
+	bash ../bin/me-tools.sh me2html me.smd html m3fcl 1 12	
+	bash ../bin/me-tools.sh me2html me.smd html m3mac 0 94	
+	bash ../bin/me-tools.sh me2html me.smd html m3osd 0 17		
+	bash ../bin/me-tools.sh me2html me.smd html m4fil 0 37
+	bash ../bin/me-tools.sh me2html me.smd html m5var 0 12
+	bash ../bin/me-tools.sh me2html me.smd html m5var 19 93
+	bash ../bin/me-tools.sh me2html me.smd html m9typ 0 48	
