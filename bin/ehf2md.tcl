@@ -176,7 +176,7 @@ proc process {filename indexfile dirname} {
                 continue
             } elseif {$txt && $pre && [regexp {^\033sA} $line]} {
                 # MicroEmacs code in help section
-                puts $out "```"
+                puts $out "```\n"
                 set pre false
                 continue
                 
