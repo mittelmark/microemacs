@@ -49,6 +49,7 @@ amicr032.html	Split Command Glossary
 amicr032.html	split listing
 amicr033.html	[Variables]
 amicr033.html	Variable Glossary
+amicr033.html	Variable
 amicr034.html	[Macro-Dev]
 amicr034.html	Macro Language Glossary
 amicr034.html	Directives

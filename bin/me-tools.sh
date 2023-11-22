@@ -53,22 +53,26 @@ function smd2ehf {
     else
         cat $1
         perl -ne '
+        BEGIN { $link = 1 };
         $x++<4 and next; # skip header links
         m/^!!/ and next;
+        m/^! / and $link = 1;
         s/^```{.emf}/\033sB/ and print and $pre = 1 and  next;
         s/^```\s*$/\033sA/ and print and $pre = - 1 and next;
         m/^\s*$/ and $empty = 1;
         m/^ {0,2}[^\s]/ and $pre = -1 and $empty = 0;
         m/^ {4,}/ and $empty and $pre = 1;
-        s/^## (.+)/\033cE$1\033cA/ and print and next;
+        $link == 1 and s/^## (.+)/\033cE\033cE$1 \033cE\033cA/ and $link = -1 and print and next;
+        $link == -1 and s/^## (.+)/\033cE$1 \033cA/ and print and next;
         s/^  > > /     / ;
         s/^  > /    / ;
         $pre < 0 and s/___([^ ].*?[^ ])___/\033cB$1\033cA/g ;
         $pre < 0 and s/__([^ ].*?[^ ])__/\033cD$1\033cA/g;
-        $pre < 0 and s/_([^ ].[^ ])_/\033cC$1\033cA/g; 
-        $pre < 0 and s/_([^ ].[^ ])_/\033cC$1\033cA/g; 
-        $pre < 0 and s/`([^ ].[^ ])`/\033cG$1\033cA/g;                   
-        $pre < 0 and s/\[(.+?)\]\((.+?\))/\033ls$2\033lm$1\033le/g;
+        $pre < 0 and s/_([^ ].*[^ ])_/\033cC$1\033cA/g; 
+         $pre < 0 and s/_([0-9a-zA-Z])_/\033cC$1\033cA/g; 
+        $pre < 0 and s/`([^ ].*[^ ])`/\033cG$1\033cA/g;                   
+        $pre < 0 and s/\[(.+?)\]\((.+?)\)\)/\033ls$2)\033lm$1\033le/g;
+        $pre < 0 and s/\[(.+?)\]\((.+?)\)/\033ls$2\033lm$1\033le/g;
         s/^  /    /;
         print;
         ' $2

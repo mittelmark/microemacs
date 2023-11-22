@@ -10,9 +10,7 @@
   The following sections describe the topics that are available as part of
   the on-line __MicroEmacs__ manual pages.
 
-  [Acknowledgments](MicroEmacs - Acknowledgments), 
-  [Copyright](Copyright), [History](MicroEmacs - History)
-  and [Contact Information](Contact Information).  
+  [Acknowledgments](MicroEmacs - Acknowledgments), [Copyright](Copyright), [History](MicroEmacs - History) and [Contact Information](Contact Information).  
   [Frequently Asked Questions](Frequently Asked Questions).
 
   See [Help!](Help!) for some information on using the hypertext manual pages.
@@ -94,11 +92,11 @@
      take you back to the main [MicroEmacs](MicroEmacs) page (Only present on HTML and
      Windows help pages).
 
-  __Title __
+  __Title__
   
   >  The title identifies the title of the topic that you are viewing.
 
-  __[link] __
+  __[link]__
   
   >  The link line provides quick links to other related material in the
      on-line manual pages. Use these to take you to a chosen topic. The
@@ -1721,6 +1719,7 @@
   [zsh(9)](zsh(9)) Z-Shell file  
 !! me-id: amicr031
 !   MicroEmacs - Command Glossary
+!   Command G
 ## COMMAND GLOSSARY
 
 
@@ -2610,6 +2609,7 @@
   [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
 !! me-id: amicr033
 !   MicroEmacs - Variable Glossary
+!   Variable 
 ## VARIABLE GLOSSARY
 
 
@@ -2760,6 +2760,7 @@
   [.calc.result(5)](.calc.result(5)) Last calc calculation result  
 !! me-id: amicr034
 !   MicroEmacs - Macro Language Glossary
+!   Macro Lan
 ## MACRO LANGUAGE GLOSSARY
 
 
@@ -2924,6 +2925,7 @@
   [Variables(4)](Variables(4)) User defined macro variables  
 !! me-id: amicr035
 !   MicroEmacs - Global Glossary
+!   Global G
 ## GLOSSARY
 
 
@@ -4726,6 +4728,7 @@
 
 !! me-id: amicr038
 !   MicroEmacs - Contact Information
+!   Contact Information
 ## CONTACT INFORMATION
 
 
@@ -28689,7 +28692,7 @@ $a
      [$user-name(5)]($user-name(5)). The environment variable [$MENAME(5)]($MENAME(5)) may be defined
      alter the default user configuration file name.
 
-  __DOS __
+  __DOS__
  
   >   MS-DOS typically has no concept of the user name. The user name may be
       defined in the `autoexec.bat` file, choose a name of 8 characters or
@@ -28701,7 +28704,7 @@ $a
   >  Remember to re-boot the system before the new command takes effect.
      (see the next step, there is another change to `autoexec.bat`).
 
-  __Microsoft Windows __
+  __Microsoft Windows__
 
   >  Microsoft windows environments may, or may not, have login enabled. If
      login is enabled then [$user-name(5)]($user-name(5)) is set to the login user name. The
@@ -28731,7 +28734,7 @@ $a
   special location then the [$MEUSERPATH(5)]($MEUSERPATH(5)) environment variable should be
   defined and set to point at this directory location.
 
-  __UNIX __
+  __UNIX__
   
   >  In the UNIX environment then the local directory is typically created
      in the users home directory obtained from the `/etc/passwd` file and is
@@ -28740,7 +28743,7 @@ $a
      location may be overridden by setting the environment variable
      [$MEUSERPATH(5)]($MEUSERPATH(5)) to reference a different directory location.
 
-  __DOS __
+  __DOS__
  
   >  For MS-DOS environments, there is typically no user directory, it is
      suggested that the user directory is created in the MicroEmacs
@@ -28755,7 +28758,7 @@ $a
             SET MEUSERPATH=c:\jasspa\fred
 
 
-  __Windows __
+  __Windows__
 
   >  In Microsoft Windows environment using Explorer 4.0 or later then a
      user application data directory exists (`$APPDATA`) and MicroEmacs will
@@ -40949,7 +40952,7 @@ $a
   MicroEmacs will fill in the __%__ arguments with their correct values on
   invocation.
 
-  __UNIX __
+  __UNIX__
   
   >  UNIX environments may use __xdiff(1)__ which is available from
      __http://reality.sgiweb.org/rudy/xdiff/__. The variable command line may
@@ -40962,7 +40965,7 @@ $a
 
   The __-wb__ options will ignore while space and trailing blanks.
 
-  __Microsoft Windows __
+  __Microsoft Windows__
   
   >  Microsoft Windows environments may use something like __Beyond Compare__.
      The variable command line may be defined as:
@@ -44538,7 +44541,7 @@ $a
   >  Opens a dialog enabling the user to select files for opening into
      MicroEmacs. By default the dialog opens the selected file using
      command [find-file(2)](find-file(2)), but if the view option is selected the
-    [view-file(2)](view-file(2)) command is used. The binary or encrypt options configure
+     [view-file(2)](view-file(2)) command is used. The binary or encrypt options configure
      whether the files are to be loaded with [binary(2m)](binary(2m)) or [crypt(2m)](crypt(2m)) modes
      enabled.
 
@@ -44547,7 +44550,7 @@ $a
   >  Opens a sub-menu list all user file types (defined in [user-setup(3)](user-setup(3))).
      Selecting one will open another sub-dialog list all files of that type
      in the current directory, selecting a file will open it using command
-    [find-file(2)](find-file(2)).
+     [find-file(2)](find-file(2)).
 
   `Favorites`
   
