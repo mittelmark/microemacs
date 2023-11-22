@@ -1,4 +1,4 @@
-function mds2html {
+function smd2html {
     if [ -z $3 ]; then 
         echo "Usage: me.smd me-id folder"
         echo "        where me-id is soething like amicr000"
@@ -38,24 +38,53 @@ function mds2html {
 }           
 
 function me2html {
-    # generic function but does not work
+    # generic function 
     i=$4
     while [ $i -le $5 ]; do
-        mds2html $1 $(printf "$3%03d" "$i") $2
+        smd2html $1 $(printf "$3%03d" "$i") $2
         i=$(( i + 1 ))
     done 
     echo "processed $3 with $i files"
 }
 
+function smd2ehf {
+    if [ -z $2 ]; then
+        echo "Usage: $0 smd2ehf header me.smd "
+    else
+        cat $1
+        perl -ne '
+        $x++<4 and next; # skip header links
+        m/^!!/ and next;
+        s/^```{.emf}/\033sB/ and print and $pre = 1 and  next;
+        s/^```\s*$/\033sA/ and print and $pre = - 1 and next;
+        m/^\s*$/ and $empty = 1;
+        m/^ {0,2}[^\s]/ and $pre = -1 and $empty = 0;
+        m/^ {4,}/ and $empty and $pre = 1;
+        s/^## (.+)/\033cE$1\033cA/ and print and next;
+        s/^  > > /     / ;
+        s/^  > /    / ;
+        $pre < 0 and s/___([^ ].*?[^ ])___/\033cB$1\033cA/g ;
+        $pre < 0 and s/__([^ ].*?[^ ])__/\033cD$1\033cA/g;
+        $pre < 0 and s/_([^ ].[^ ])_/\033cC$1\033cA/g; 
+        $pre < 0 and s/_([^ ].[^ ])_/\033cC$1\033cA/g; 
+        $pre < 0 and s/`([^ ].[^ ])`/\033cG$1\033cA/g;                   
+        $pre < 0 and s/\[(.+?)\]\((.+?\))/\033ls$2\033lm$1\033le/g;
+        s/^  /    /;
+        print;
+        ' $2
+    fi
+}
 if  [ -z "$3" ]; then
     echo "Usage:"
     echo "   single html side:"
-    echo "      mds2html me.smd ME-ID FOLDER"
+    echo "      smd2html me.smd ME-ID FOLDER"
     echo "   set of files:"
     echo "      me2html me.smd FOLDER prefix from to"
     echo "      where prefix might be amicr, m1cmd, m2cmd etc"
     echo "   example:"
     echo "      me2html me.smd html amicr 0 85"    
+    echo "   convert to ehf file"
+    echo "      smd2ehf header.txt me.smd > me.ehf" 
 else    
     "$@"
 fi

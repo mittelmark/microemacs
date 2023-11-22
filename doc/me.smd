@@ -17,41 +17,41 @@
 
   See [Help!](Help!) for some information on using the hypertext manual pages.
 
-  [Installation Information](Installation(1))  
-  [Installation Patching Information](Patching(1))  
-  [Setting Up A User Profile](UserProfiles(2))  
-  [Setting Up a Company Profile](CompanyProfiles(2))  
+  >  [Installation Information](Installation(1))  
+     [Installation Patching Information](Patching(1))  
+     [Setting Up A User Profile](UserProfiles(2))  
+     [Setting Up a Company Profile](CompanyProfiles(2))  
 
-> [Top Main Menu](MainMenu(3))  
-  [Essential Commands](Essential Commands)  
-  [Help Information](Help Information)  
-  [Key Bindings](Bindings(2))  
+  >  [Top Main Menu](MainMenu(3))  
+     [Essential Commands](Essential Commands)  
+     [Help Information](Help Information)  
+     [Key Bindings](Bindings(2))  
 
-> [File Handling Commands](File Handling Commands)  
-  [Dialogs and Menus](Dialogs and Menus)  
-  [Cursor Movement Commands](Cursor Movement Commands)  
-  [Insertion and Deletion Commands](Insertion and Deletion Commands)  
-  [Paragraph and Text Formatting Commands](Paragraph and Text Formatting Commands)  
-  [Capitalization and Transposition Commands](Capitalization and Transposition Commands)  
-  [Searching and Replacing](Searching and Replacing)  
-  [Macro Commands](Macro Commands)  
-  [Buffer Manipulation Commands](Buffer Manipulation Commands)  
-  [Window Commands](Window Commands)  
+  >  [File Handling Commands](File Handling Commands)  
+     [Dialogs and Menus](Dialogs and Menus)  
+     [Cursor Movement Commands](Cursor Movement Commands)  
+     [Insertion and Deletion Commands](Insertion and Deletion Commands)  
+     [Paragraph and Text Formatting Commands](Paragraph and Text Formatting Commands)  
+     [Capitalization and Transposition Commands](Capitalization and Transposition Commands)  
+     [Searching and Replacing](Searching and Replacing)  
+     [Macro Commands](Macro Commands)  
+     [Buffer Manipulation Commands](Buffer Manipulation Commands)  
+     [Window Commands](Window Commands)  
 
-> [Keyboard Binding Commands](Keyboard Binding Commands)  
-  [Operating Modes](Operating Modes)  
-  [Shell and Command Controls](Shell and Command Controls)  
-  [Spelling Commands](Spelling Commands)  
-  [Hilighting, Color and Screen Appearance](Hilighting, Color and Screen Appearance)  
-  [Comparison and Differencing Commands](Comparison and Differencing)  
-  [Short Cuts and Abbreviations](Short Cuts and Abbreviations)  
-  [Message Line Commands](Message Line Commands)  
-  [Printing Commands](Printing Commands)  
-  [Writing MicroEmacs Macros](macroWriting(4))  
-  [Macro Development Commands](Macro Development Commands)  
-  [Registry Commands](Registry)  
-  [Command Line Filters](Command Line Filters)  
-  [Games](MicroEmacs - Games)  
+  >  [Keyboard Binding Commands](Keyboard Binding Commands)  
+     [Operating Modes](Operating Modes)  
+     [Shell and Command Controls](Shell and Command Controls)  
+     [Spelling Commands](Spelling Commands)  
+     [Hilighting, Color and Screen Appearance](Hilighting, Color and Screen Appearance)  
+     [Comparison and Differencing Commands](Comparison and Differencing)  
+     [Short Cuts and Abbreviations](Short Cuts and Abbreviations)  
+     [Message Line Commands](Message Line Commands)  
+     [Printing Commands](Printing Commands)  
+     [Writing MicroEmacs Macros](macroWriting(4))  
+     [Macro Development Commands](Macro Development Commands)  
+     [Registry Commands](Registry)  
+     [Command Line Filters](Command Line Filters)  
+     [Games](MicroEmacs - Games)  
 
 ## Glossaries 
 
@@ -63,41 +63,44 @@
 
 ## Miscellaneous Information 
 
-The following topics provide more in depth information:-
+  The following topics provide more in depth information:-
 
-  [Language Templates](languageTemplates(2))  
-  [File Hooks](fileHooks(2))  
-  [Editor Files](Editor File Types)  
-  [Compatibility with the original MicroEMACS](Compatibility(2))  
-  [Interfacing to external components](Interfacing(2))  
-  [Supported File Types](MicroEmacs - Supported File Types)  
-  [Client-Server Interface](Client-Server(2))  
-  [Regular Expressions](RegularExpressions(2))  
-  [Building the source](Build(2))  
+  >  [Language Templates](languageTemplates(2))  
+     [File Hooks](fileHooks(2))  
+     [Editor Files](Editor File Types)  
+     [Compatibility with the original MicroEMACS](Compatibility(2))  
+     [Interfacing to external components](Interfacing(2))  
+     [Supported File Types](MicroEmacs - Supported File Types)  
+     [Client-Server Interface](Client-Server(2))  
+     [Regular Expressions](RegularExpressions(2))  
+     [Building the source](Build(2))  
 
 !! me-id: amicr000
 !   Help!
 ## Help!
 
 
-The on-line manual pages are defined as follows:-
+  The on-line manual pages are defined as follows:-
 
   > _[logo]_ Title  
-   _[link1] [link2]..[linkn]_
+    _[link1] [link2]..[linkn]_
 
   The components of the header are defined as follows:-
 
   _[logo]_
-  :  The MicroEmacs Logo in the top left hand corner of the screen exists
+
+  >  The MicroEmacs Logo in the top left hand corner of the screen exists
      on every page and hides a hypertext link. Selecting this item will
      take you back to the main [MicroEmacs](MicroEmacs) page (Only present on HTML and
      Windows help pages).
 
   __Title __
-  :  The title identifies the title of the topic that you are viewing.
+  
+  >  The title identifies the title of the topic that you are viewing.
 
-   __[link] __
-  :  The link line provides quick links to other related material in the
+  __[link] __
+  
+  >  The link line provides quick links to other related material in the
      on-line manual pages. Use these to take you to a chosen topic. The
      __[home]__ link returns to the contents page of the currently viewed
      topic, this is equivalent to the __Contents__ button when viewing
@@ -110,21 +113,21 @@ The on-line manual pages are defined as follows:-
   The section numbering conventions used in these pages is defined as
   follows:-
 
-       (1) - Executable command line.
-       (2) - Editor built in commands.
+       (1)  - Executable command line.
+       (2)  - Editor built in commands.
        (2m) - Editor built in modes.
-       (3) - Editor commands implemented as macros.
-       (4) - Editor macro language syntax
-       (5) - Editor variables
-       (8) - Editor specific file formats
+       (3)  - Editor commands implemented as macros.
+       (4)  - Editor macro language syntax
+       (5)  - Editor variables
+       (8)  - Editor specific file formats
 
 !! me-id: amicr001
 !   Essential Commands
 ## ESSENTIAL COMMANDS
 
 
-The very essential commands which are the most important commands to know
-include:
+  The very essential commands which are the most important commands to know
+  include:
 
   [abort-command(2)](abort-command(2)) (C-g) Abort command  
   [backward-char(2)](backward-char(2)) (C-b) Move the cursor left  
@@ -206,7 +209,7 @@ include:
 
 
   [backward-delete-char(2)](backward-delete-char(2)) (backspace) Delete the previous character at the
- cursor position  
+  cursor position  
   [backward-delete-tab(2)](backward-delete-tab(2)) (S-tab) Delete white space to previous tab-stop  
   [backward-kill-word(2)](backward-kill-word(2)) (esc backspace) Delete the previous word at the  
    cursor position  
