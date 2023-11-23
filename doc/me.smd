@@ -4,8 +4,8 @@
 !   Contents
 ## MICROEMACS
 
-  __MicroEmacs__, JASSPA Distribution, is defined as follows, refer to 
-  [me(1)](me(1)) for a description of the command line variables.
+  __MicroEmacs__, JASSPA Distribution, is defined as follows, refer to [me(1)](me(1)) for
+  a description of the command line variables.
 
   The following sections describe the topics that are available as part of
   the on-line __MicroEmacs__ manual pages.
@@ -1719,7 +1719,7 @@
   [zsh(9)](zsh(9)) Z-Shell file  
 !! me-id: amicr031
 !   MicroEmacs - Command Glossary
-!   Command G
+!9  Command Glossary - MicroEmacs
 ## COMMAND GLOSSARY
 
 
@@ -2609,7 +2609,8 @@
   [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
 !! me-id: amicr033
 !   MicroEmacs - Variable Glossary
-!   Variable 
+!   Variable
+!9  Variable Glossary - MicroEmacs
 ## VARIABLE GLOSSARY
 
 
@@ -2760,7 +2761,7 @@
   [.calc.result(5)](.calc.result(5)) Last calc calculation result  
 !! me-id: amicr034
 !   MicroEmacs - Macro Language Glossary
-!   Macro Lan
+!9  Macro Language Glossary - MicroEmacs
 ## MACRO LANGUAGE GLOSSARY
 
 
@@ -2925,7 +2926,7 @@
   [Variables(4)](Variables(4)) User defined macro variables  
 !! me-id: amicr035
 !   MicroEmacs - Global Glossary
-!   Global G
+!8  Global Glossary - MicroEmacs
 ## GLOSSARY
 
 
@@ -3937,6 +3938,7 @@
   months.
 !! me-id: amicr037
 !   MicroEmacs - Copyright
+!9  Copyright - MicroEmacs
 ## COPYRIGHT
 
 
