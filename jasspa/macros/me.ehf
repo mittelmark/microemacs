@@ -5020,6 +5020,19 @@ Miscellaneous Information
 
 cEDevelopment History cA
 
+    * [231128]
+      * fix for Markdown mode adding italic highlighting for single underlines
+      
+    * [231123]
+      * implementing documentation system based on Markdown (not used yet for release)
+      
+    * [231118]
+      * insert-template with subfolder support
+      
+    * [231115] 
+      * execute-region narrow fix
+      * adding insert-template to edit menu
+             
     * [231114] 
       * removed  necessity  for  lslminsert-template(3)le  of  setting  the
         macro    variable    .templates,    now   all   etf    files    in 
