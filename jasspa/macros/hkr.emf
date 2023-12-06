@@ -45,7 +45,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 4 "\"" "\"" "\\" .scheme.string
     hilight .hilight.r 4 "'" "'" "\\" .scheme.string    
     !if &band .hilight.flags 0x04
-        hilight .hilight.r 1 "\\w+\\s+<-\\s+function"   .scheme.function
+        hilight .hilight.r 1 "[a-zA-Z0-9_\\$.]+\\s+<-\\s+function"   .scheme.function
     !endif
     hilight .hilight.r 2 "^library"     .scheme.prepro
     hilight .hilight.r 1 "abline"       .scheme.keyword
@@ -92,6 +92,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "grid"         .scheme.keyword
     hilight .hilight.r 1 "gsub"         .scheme.keyword
     hilight .hilight.r 1 "hist"         .scheme.keyword
+    hilight .hilight.r 1 "head"         .scheme.keyword    
     hilight .hilight.r 1 "if"           .scheme.keyword
     hilight .hilight.r 1 "image"        .scheme.keyword
     hilight .hilight.r 1 "intersect"    .scheme.keyword
@@ -107,6 +108,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "log10"        .scheme.keyword    
     hilight .hilight.r 1 "loadhistory"  .scheme.keyword
     hilight .hilight.r 1 "lsfit"        .scheme.keyword
+    hilight .hilight.r 1 "ls"        .scheme.keyword    
     hilight .hilight.r 1 "matrix"       .scheme.keyword
     hilight .hilight.r 1 "max"          .scheme.keyword
     hilight .hilight.r 1 "median"       .scheme.keyword
@@ -159,6 +161,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     hilight .hilight.r 1 "substr"        .scheme.keyword    
     hilight .hilight.r 1 "summary"      .scheme.keyword
     hilight .hilight.r 1 "table"        .scheme.keyword
+    hilight .hilight.r 1 "tail"        .scheme.keyword    
     hilight .hilight.r 1 "tapply"       .scheme.keyword
     hilight .hilight.r 1 "title"        .scheme.keyword
     hilight .hilight.r 1 "unlist"       .scheme.keyword
