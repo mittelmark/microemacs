@@ -4914,6 +4914,9 @@
 
 ## Development History 
 
+- [231206] 
+    - fix for nested highlighting in Markdown files
+    
 - [231128]
     - fix for Markdown mode adding italic highlighting for single underlines
       

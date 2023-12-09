@@ -7,8 +7,22 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <231112.0840>
+>  Last Modified : <231209.0952>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+  [231206] fix for nested highlighting in Markdown files
+    
+  [231128] fix for Markdown mode adding italic highlighting for single underlines
+      
+  [231123] implementing documentation system based on Markdown (not used yet for release)
+      
+  [231118] insert-template with subfolder support
+      
+  [231115] execute-region narrow fix, adding insert-template to edit menu
+             
+  [231114] removed  necessity  for  [insert-template(3)](insert-template(3))
+           of setting the macro variable .templates,  now all etf files in 
+           the $user-path folder are used per default 
 
   [231112] adding new command execute-region, insert-template now interactive
            using macro variable .insert-template.templates, docu updates for
