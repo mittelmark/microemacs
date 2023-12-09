@@ -29,6 +29,7 @@ me-bfs-linux:
 	-mkdir me-bfs/jasspa/spelling
 	cp -r jasspa/macros me-bfs/jasspa/
 	rm -f me-bfs/jasspa/macros/*~
+	rm -f me-bfs/jasspa/macros/*.bak
 	-rm me-bfs/jasspa/macros/null
 	#cp -r jasspa/contrib me-bfs/jasspa/
 	cp jasspa/spelling/*$(dict)*f me-bfs/jasspa/spelling/
@@ -56,6 +57,7 @@ app-image:
 	rm -rf jasspa-bfs/pixmaps
 	rm -rf jasspa-bfs/spelling
 	rm -f jasspa-bfs/macros/*~
+	rm -f jasspa-bfs/macros/*.bak
 	./bin/bfs -a bin/mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
 	appimagetool-x86_64.AppImage jme.AppDir
 	./Jasspa_MicroEmacs-x86_64.AppImage -V -n
