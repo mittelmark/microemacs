@@ -40,10 +40,17 @@ jobs:
         cp README-standalone.md binaries-Linux-x86_64/
         cp mew-bfs-windows.exe binaries-Windows-32/
         cp mec-bfs-windows.exe binaries-Windows-32/
+        cp src/.win32mingw-release-mew/mew32.exe binaries-Windows-32/mew-windows.exe
+        cp src/.win32mingw-release-mec/mec32.exe binaries-Windows-32/mec-windows.exe
         cp bin/bfs.exe binaries-Windows-32/
         cp license.txt binaries-Windows-32/
         cp COPYING binaries-Windows-32/
         cp README-standalone.md binaries-Windows-32/
+        cd jasspa 
+        zip macros.zip macros/*
+        cd ..
+        cp jasspa/macros.zip binaries-Windows-32/
+        cp jasspa/macros.zip binaries-Linux-x86_64/
 
     - name: Make appimage
       run: |
