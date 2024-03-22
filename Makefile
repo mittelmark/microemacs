@@ -19,8 +19,12 @@ bfs-bin:
 	cd bfs && make
 	cp bfs/bfs bin/
 me-bin:
-	cd src && make -f linux32gcc.gmk
-	cp src/.linux32gcc-release-mecw/mecw bin/
+	cd src && make -f linux32gcc.gmk 
+	cd src && make -f linux32gcc.gmk BTYP=c
+	#cd src && make -f linux32gcc.gmk BTYP=w
+	cp src/.linux32gcc-release-mecw/mecw bin/mew
+	cp src/.linux32gcc-release-mec/mec bin/
+	#cp src/.linux32gcc-release-mew/mew bin/	
 
 me-bfs-linux:
 	-rm -rf me-bfs/*
@@ -33,13 +37,17 @@ me-bfs-linux:
 	-rm me-bfs/jasspa/macros/null
 	#cp -r jasspa/contrib me-bfs/jasspa/
 	cp jasspa/spelling/*$(dict)*f me-bfs/jasspa/spelling/
-	cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mecw/mecw -o ../me-linux.bin ./jasspa
-	cp me-linux.bin me-$(os).bin
+	cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mec/mec -o ../mec-linux.bin ./jasspa
+	cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mecw/mecw -o ../mew-linux.bin ./jasspa	
+	#cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mew/mew-o ../mew-linux.bin ./jasspa	
+	cp mec-linux.bin mec-$(os).bin
+	cp mew-linux.bin mew-$(os).bin	
+	#cp mecw-linux.bin mecw-$(os).bin		
 	cd me-bfs && ../bin/bfs -c macros-`date +%Y-%m-%d`.bfs ./jasspa
 	cp me-bfs/macros-`date +%Y-%m-%d`.bfs .
 
 me-bfs-bin: me-bfs-linux
-	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mew/mew32.exe -o ../me-windows.exe ./jasspa
+	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mew/mew32.exe -o ../mew-windows.exe ./jasspa
 	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mec/mec32.exe -o ../mec-windows.exe ./jasspa
 	#rm -rf me-bfs/*
 mingw-w32-compile:
