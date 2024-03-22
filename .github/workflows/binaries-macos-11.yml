@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
         if: runner.os == 'macOS'
         run: |
@@ -43,7 +43,7 @@ jobs:
            echo "exit-emacs" >> platform.emf
            TERM=xterm-256color ./binaries-MacOS-11/mec-macos.bin @platform.emf
       - name: Upload Artifact GitHub Action
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with: 
            name: binaries-MacOS-11
            path: binaries-MacOS-11
