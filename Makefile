@@ -47,8 +47,8 @@ me-bfs-linux:
 	cp me-bfs/macros-`date +%Y-%m-%d`.bfs .
 
 me-bfs-bin: me-bfs-linux
-	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mew/mew32.exe -o ../mew-windows.exe ./jasspa
-	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mec/mec32.exe -o ../mec-windows.exe ./jasspa
+	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mew/mew32.exe -o ../mew-bfs-windows.exe ./jasspa
+	cd me-bfs && ../bin/bfs -a ../src/.win32mingw-release-mec/mec32.exe -o ../mec-bfs-windows.exe ./jasspa
 	#rm -rf me-bfs/*
 mingw-w32-compile:
 	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
