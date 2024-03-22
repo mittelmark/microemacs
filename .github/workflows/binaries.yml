@@ -10,7 +10,7 @@ jobs:
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
      
     - name: make bfs binary
       run:  make bfs-bin
@@ -61,17 +61,17 @@ jobs:
         ./appimagetool-x86_64.AppImage jme.AppDir
         
     - name: Upload Linux binaries
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with: 
         name: binaries-Linux-x86_64
         path: binaries-Linux-x86_64
     - name: Upload Linux Appimgage
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with: 
         name: Jasspa_MicroEmacs-x86_64.AppImage
         path: Jasspa_MicroEmacs-x86_64.AppImage
     - name: Upload Artifact GitHub Action Windows
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with: 
         name: binaries-Windows-32
         path: binaries-Windows-32
