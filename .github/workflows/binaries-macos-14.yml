@@ -27,7 +27,7 @@ jobs:
            mkdir binaries-MacOS-14
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-14/mew
            cp src/.macos32gcc-release-mec/mec binaries-MacOS-14/           
-           cd src 
+           cd jasspa
            zip -r ../macros.zip macros/*
            cd ..
            cp jasspa.zip binaries-MacOS-14/
