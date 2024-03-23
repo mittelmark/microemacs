@@ -22,29 +22,31 @@ jobs:
            brew install make
            cd bfs && gmake CC=gcc-13
            cd ../src && gmake -f macos32gcc.gmk  CC=gcc-13
-           cd ../src && macos32gcc.gmk  CC=gcc-13 BTYP=c
+           cd ../src && gmake -f macos32gcc.gmk  CC=gcc-13 BTYP=c
            cd ..
-           mkdir binaries-MacOS-11
-           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-11/
-           cp src/.macos32gcc-release-mec/mec binaries-MacOS-11/           
-           tar cfvz jasspa.tar.gz jasspa/*
-           cp jasspa.tar.gz binaries-MacOS-11/
+           mkdir binaries-MacOS-14
+           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-14/mew
+           cp src/.macos32gcc-release-mec/mec binaries-MacOS-14/           
+           cd src 
+           zip -r ../macros.zip macros/*
+           cd ..
+           cp jasspa.zip binaries-MacOS-14/
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
-           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o binaries-MacOS-11/mecw-macos.bin ./jasspa
-           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o binaries-MacOS-11/mec-macos.bin ./jasspa           
-           cp bfs/bfs binaries-MacOS-11/
-           chmod 755 binaries-MacOS-11/mec-macos.bin
-           ./binaries-MacOS-11/mec-macos.bin  -n -V
-           cp README-standalone.md binaries-MacOS-11/
-           cp faq.txt license.txt binaries-MacOS-11/
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o binaries-MacOS-14/mew-macos-14.bin ./jasspa
+           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o binaries-MacOS-11/mec-macos-14.bin ./jasspa           
+           cp bfs/bfs binaries-MacOS-14/
+           chmod 755 binaries-MacOS-14/mec-macos-14.bin
+           ./binaries-MacOS-14/mec-macos-14.bin  -n -V
+           cp README-standalone.md binaries-MacOS-14/
+           cp faq.txt license.txt binaries-MacOS-14/
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
-           TERM=xterm-256color ./binaries-MacOS-11/mec-macos.bin @platform.emf
+           TERM=xterm-256color ./binaries-MacOS-14/mec-macos-14.bin @platform.emf
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v4
         with: 
-           name: binaries-MacOS-11
-           path: binaries-MacOS-11
+           name: binaries-MacOS-14
+           path: binaries-MacOS-14
            
