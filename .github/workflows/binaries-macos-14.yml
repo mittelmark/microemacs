@@ -20,9 +20,9 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
-           cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-10
-           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10
-           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-10 BTYP=c
+           cd bfs && gmake CC=gcc-13
+           cd ../src && gmake -f macos32gcc.gmk  CC=gcc-13
+           cd ../src && macos32gcc.gmk  CC=gcc-13 BTYP=c
            cd ..
            mkdir binaries-MacOS-11
            cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-11/
