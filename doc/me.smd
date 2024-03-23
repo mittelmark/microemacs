@@ -774,7 +774,7 @@
   [$MEUSERPATH(5)]($MEUSERPATH(5)) MicroEmacs user directory  
   [$auto-time(5)]($auto-time(5)) Automatic buffer save time  
   [$file-ignore(5)]($file-ignore(5)) File extensions to ignore  
-  [$home(5)]($home(5)) Users `home' directory location  
+  [$home(5)]($home(5)) Users 'home' directory location  
   [$kept-versions(5)]($kept-versions(5)) Number of backups to be kept  
   [$search-path(5)]($search-path(5)) MicroEmacs search path  
   [$timestamp(5)]($timestamp(5)) Time stamp string  
@@ -1577,7 +1577,7 @@
   [$MEUSERPATH(5)]($MEUSERPATH(5)) MicroEmacs user directory  
   [$auto-time(5)]($auto-time(5)) Automatic buffer save time  
   [$file-ignore(5)]($file-ignore(5)) File extensions to ignore  
-  [$home(5)]($home(5)) Users `home' directory location  
+  [$home(5)]($home(5)) Users 'home' directory location  
   [$kept-versions(5)]($kept-versions(5)) Number of backups to be kept  
   [$search-path(5)]($search-path(5)) MicroEmacs search path  
   [$timestamp(5)]($timestamp(5)) Time stamp string  
@@ -2672,7 +2672,7 @@
   [$frame-width(5)]($frame-width(5)) Number of columns on the current frame canvas  
   [$global-fmod(5)]($global-fmod(5)) Global file modes (or attributes)  
   [$global-scheme(5)]($global-scheme(5)) Global buffer color scheme  
-  [$home(5)]($home(5)) Users `home' directory location  
+  [$home(5)]($home(5)) Users 'home' directory location 
   [$idle-time(5)]($idle-time(5)) System idle event delay time  
   [$indent-width(5)]($indent-width(5)) Global indentation width in characters  
   [$kept-versions(5)]($kept-versions(5)) Number of backups to be kept  
@@ -3008,7 +3008,7 @@
   [$frame-width(5)]($frame-width(5)) Number of columns on the current frame canvas  
   [$global-fmod(5)]($global-fmod(5)) Global file modes (or attributes)  
   [$global-scheme(5)]($global-scheme(5)) Global buffer color scheme  
-  [$home(5)]($home(5)) Users `home' directory location  
+  [$home(5)]($home(5)) Users 'home' directory location  
   [$idle-time(5)]($idle-time(5)) System idle event delay time  
   [$indent-width(5)]($indent-width(5)) Global indentation width in characters  
   [$kept-versions(5)]($kept-versions(5)) Number of backups to be kept  
