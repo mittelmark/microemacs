@@ -25142,75 +25142,75 @@ $a
   The gross changes to __MicroEmacs 2009__ are summarized as follows:-
 
   - Macro language interpreter re-written allowing an unlimited number
-    of named macros to be supported. The macro implementation allows new
-    commands to be created by the user, as opposed to continually
-    extending the underlying command set. The named macros are
-    transparent to the user, appearing as built in commands on the
-    command line. Macro command set significantly increased. Support for
-    global, buffer and register variables within the macro language.
+   of named macros to be supported. The macro implementation allows new
+   commands to be created by the user, as opposed to continually
+   extending the underlying command set. The named macros are
+   transparent to the user, appearing as built in commands on the
+   command line. Macro command set significantly increased. Support for
+   global, buffer and register variables within the macro language.
 
   - Display drivers re-written providing color hilighting support on
-    most platforms. A macro interface allows information to be written
-    directly to the display canvas allowing the screen to be annotated
-    with additional transient information.
+   most platforms. A macro interface allows information to be written
+   directly to the display canvas allowing the screen to be annotated
+   with additional transient information.
 
   - Support for X-Window screen type in UNIX environments. Microsoft
-    Window's environments (3.x, '95, NT) treated in the same was as
-    X-Windows - this may be unorthodox for existing Window's users, UNIX
-    users will find it more comfortable.
+   Window's environments (3.x, '95, NT) treated in the same was as
+   X-Windows - this may be unorthodox for existing Window's users, UNIX
+   users will find it more comfortable.
 
   - Introduction of integrated spell checker. Support includes
-        correction word guessing, word auto-correction and double word
-        detection. Ignore and personal dictionaries supported.
+   correction word guessing, word auto-correction and double word
+   detection. Ignore and personal dictionaries supported.
 
   - Horizontal window splitting.
 
   - Introduction of scroll bars on all platforms that support a mouse.
-        The scroll bar implementation is platform independent.
+   The scroll bar implementation is platform independent.
 
   - Command and file completion available on all platforms. Most
-        commands support a command history allowing previous command
-        invocations to be recalled.
+   commands support a command history allowing previous command
+   invocations to be recalled.
 
   - Session history file kept, allowing the previous edit session to be
-        reinstated.
+   reinstated.
 
   - Undo capability, allows previous edits to be undone when mistakes
-        are made.
+   are made.
 
   - Backup capability, Includes a periodic timed backup while an editing
-        session is in progress. The timed backup is automatically recovered
-        by the next session in situations where the system (or editor)
-        crashes.
+   session is in progress. The timed backup is automatically recovered
+   by the next session in situations where the system (or editor)
+   crashes.
 
   - A regular expression incremental search becomes the default search
-        forward mechanism.
+   forward mechanism.
 
   - Support for abbreviation files allowing frequently used constructs
-        to be automatically expanded.
+   to be automatically expanded.
 
   - Automatic time stamping of files, allowing the edit time to be
-        automatically maintained in the source file(s).
+   automatically maintained in the source file(s).
 
   - Introduction of an electric 'C' mode. Editor intelligently handles
-        the layout of 'C' files (under user control).
+   the layout of 'C' files (under user control).
 
   - Improved documentation text mode providing left/right/center and
-        both justification methods with inclusion for bullet points.
-        Automatic justification may be continually performed as text is
-        entered, thereby maintaining the paragraph in the correct format.
+   both justification methods with inclusion for bullet points.
+   Automatic justification may be continually performed as text is
+   entered, thereby maintaining the paragraph in the correct format.
 
   - Integrated on-line help facilities. All commands are documented
-        on-line. New macros may be documented within the macro files and
-        become part of the help system.
+   on-line. New macros may be documented within the macro files and
+   become part of the help system.
 
   - File type determination system, based on either the file name or
-        embedded file text allows file type specific macros (hooks) to be
-        applied, thereby configuring the editor into the correct mode for
-        the file type.
+   embedded file text allows file type specific macros (hooks) to be
+   applied, thereby configuring the editor into the correct mode for
+   the file type.
 
   - Introduction of special MicroEmacs search path allowing all of the
-          standard configuration files to be utilized from a shared directory.
+   standard configuration files to be utilized from a shared directory.
 
   The name space of JASSPA MicroEmacs differs from the original MicroEMACS
   and has become more compliant with the GNU implementation of Emacs. A list
