@@ -30,7 +30,7 @@ jobs:
            cd jasspa
            zip -r ../macros.zip macros/*
            cd ..
-           cp jasspa.zip binaries-MacOS-14/
+           cp macros.zip binaries-MacOS-14/
            rm -rf jasspa/company
            rm -rf jasspa/pixmaps
            rm -rf jasspa/contrib           
