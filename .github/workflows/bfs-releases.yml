@@ -46,23 +46,25 @@ jobs:
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-ubuntu20-mewb.zip
-        path: MicroEmacs09_091223_Linux-ubuntu20-mewb
+        name: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu20-mewb.zip
+        path: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu20-mewb
         
     - name: Upload Windows Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_windows-32-mecb.zip
-        path: MicroEmacs09_091223_windows-32-mecb
+        name: MicroEmacs09_${{ env.VERSION }}_windows-32-mecb.zip
+        path: MicroEmacs09_${{ env.VERSION }}_windows-32-mecb
         
     - name: Upload Windows Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_windows-32-mewb.zip
-        path: MicroEmacs09_091223_windows-32-mewb
+        name: MicroEmacs09_${{ env.VERSION }}_windows-32-mewb.zip
+        path: MicroEmacs09_${{ env.VERSION }}_windows-32-mewb
         
   build-ub22:
     runs-on: ubuntu-22.04
+    env: 
+        VERSION: "091223"
     steps:
     - uses: actions/checkout@v4
      
@@ -81,17 +83,19 @@ jobs:
     - name: Upload Linux Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-ubuntu22-mecb.zip
-        path: MicroEmacs09_091223_Linux-ubuntu22-mecb
+        name: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu22-mecb.zip
+        path: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu22-mecb
         
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-ubuntu22-mewb.zip
-        path: MicroEmacs09_091223_Linux-ubuntu22-mewb
+        name: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu22-mewb.zip
+        path: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu22-mewb
         
   build-os11:
     runs-on: macos-11
+    env: 
+        VERSION: "091223"
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -126,17 +130,19 @@ jobs:
       - name: Upload mecb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_20091223_macos-11-mecb.zip
-           path: MicroEmacs09_20091223_macos-11-mecb
+           name: MicroEmacs09_${{ env.VERSION }}_macos-11-mecb.zip
+           path: MicroEmacs09_${{ env.VERSION }}_macos-11-mecb
 
       - name: Upload mewb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_20091223_macos-11-mewb.zip
-           path: MicroEmacs09_20091223_macos-11-mewb
+           name: MicroEmacs09_${{ env.VERSION }}_macos-11-mewb.zip
+           path: MicroEmacs09_${{ env.VERSION }}_macos-11-mewb
 
   build-os12:
     runs-on: macos-12
+    env: 
+        VERSION: "091223"
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -171,17 +177,19 @@ jobs:
       - name: Upload mecb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_20091223_macos-12-mecb.zip
-           path: MicroEmacs09_20091223_macos-12-mecb
+           name: MicroEmacs09_${{ env.VERSION }}-12-mecb.zip
+           path: MicroEmacs09_${{ env.VERSION }}_macos-12-mecb
 
       - name: Upload mewb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_20091223_macos-12-mewb.zip
-           path: MicroEmacs09_20091223_macos-12-mewb
+           name: MicroEmacs09_${{ env.VERSION }}_macos-12-mewb.zip
+           path: MicroEmacs09_${{ env.VERSION }}_macos-12-mewb
 
   build-os14-arm:
     runs-on: macos-14
+    env: 
+        VERSION: "091223"
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
