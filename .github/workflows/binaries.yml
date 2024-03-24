@@ -52,6 +52,11 @@ jobs:
         cp jasspa/macros.zip binaries-Windows-32/
         cp jasspa/macros.zip binaries-Linux-x86_64/
 
+    - name: Make zipimage
+      run: |
+        make zip-unix
+        make zip-windows
+        
     - name: Make appimage
       run: |
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage          
@@ -59,6 +64,30 @@ jobs:
         chmod 755 jme.AppDir/AppRun
         ./bin/bfs -a bin/mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa
         ./appimagetool-x86_64.AppImage jme.AppDir
+
+    - name: Upload Linux Mecb Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_Linux-5-mecb
+        path: MicroEmacs09_091223_Linux-5-mecb
+        
+    - name: Upload Linux Mecw Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_Linux-5-mecw
+        path: MicroEmacs09_091223_Linux-5-mecw
+        
+    - name: Upload Windows Mecb Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_windows-32-mecb
+        path: MicroEmacs09_091223_windows-32-mecb
+        
+    - name: Upload Windows Mecw Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_windows-32-mecw
+        path: MicroEmacs09_091223_windows-32-mecw
         
     - name: Upload Linux binaries
       uses: actions/upload-artifact@v4

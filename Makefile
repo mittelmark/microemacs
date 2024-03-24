@@ -79,9 +79,21 @@ docu-html:
 run-tuser:
 	MENAME=tuser MEPATH=`pwd`/tuser:`pwd`/jasspa/macros src/.linux32gcc-release-mecw/mecw
 zip-unix:
-	mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mecb
-	mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mewb	
-	cp mec-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mecb/mecb
-	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mewb/mewb
-	cp license.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mecb/ 	
-	cp license.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mewb/ 		
+	-mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb
+	-mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb	
+	cp mec-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/mecb
+	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/mewb
+	cp license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/ 	
+	cp license.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
+	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
+	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
+zip-windows:
+	-mkdir MicroEmacs09_$(version)_windows-32-mecb
+	-mkdir MicroEmacs09_$(version)_windows-32-mewb	
+	cp mew-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mewb/mewb.exe
+	cp mec-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mecb/mewb.exe	
+	cp README.txt license.txt MicroEmacs09_$(version)_windows-32-mewb/
+	cp README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/	
+	zip MicroEmacs09_$(version)_windows-32-mewb.zip MicroEmacs09_$(version)_windows-32-mewb/*
+	zip MicroEmacs09_$(version)_windows-32-mecb.zip MicroEmacs09_$(version)_windows-32-mecb/*
+	
