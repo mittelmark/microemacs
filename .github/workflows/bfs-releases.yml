@@ -1,4 +1,4 @@
-name: BFS-releases
+name: ME-BFS-releases
 
 on:
   workflow_dispatch:
@@ -104,7 +104,9 @@ jobs:
     - uses: actions/checkout@v4
      
     - name: make bfs binary
-      run:  make bfs-bin
+      run:  |
+        echo `uname -a`
+        make bfs-bin
       
     - name: make me binaries Linux and Windows
       run: |
@@ -177,5 +179,49 @@ jobs:
         name: MicroEmacs09_091223_Linux-5.15-mewb
         path: MicroEmacs09_091223_Linux-5.15-mewb
         
+  build-os12:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
+        if: runner.os == 'macOS'
+        run: |
+           echo `uname -a`
+           ls
+           brew install xquartz
+           brew install gcc
+           brew install make
+           cd bfs && gmake CC=gcc-12
+           cd ../src && gmake -f macos32gcc.gmk  CC=gcc-12
+           cd ../src && gmake -f macos32gcc.gmk  CC=gcc-12 BTYP=c
+           cd ..
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o mew-macos-12.bin ./jasspa
+           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos-12.bin ./jasspa
+           chmod 755 mec-macos-12.bin
+           ./mec-macos-12.bin -V 
+           echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
+           echo "exit-emacs" >> platform.emf
+           TERM=xterm-256color ./mec-macos-12.bin @platform.emf
+
+      - name: Make zipimage
+        run: |
+           mkdir MicroEmacs09_20091223_macos-12-mecb/
+           mkdir MicroEmacs09_20091223_macos-12-mewb/
+           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-12-mecb/
+           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-12-mewb/           
+           cp ./mew-macos-12.bin MicroEmacs09_20091223_macos-12-mewb/mewb
+           cp ./mec-macos-12.bin MicroEmacs09_20091223_macos-12-mecb/mecb
+           
+      - name: Upload mecb
+        uses: actions/upload-artifact@v4
+        with: 
+           name: MicroEmacs09_20091223_macos-12-mecb
+           path: MicroEmacs09_20091223_macos-12-mecb
+
+      - name: Upload mewb
+        uses: actions/upload-artifact@v4
+        with: 
+           name: MicroEmacs09_20091223_macos-12-mewb
+           path: MicroEmacs09_20091223_macos-12-mewb
         
 
