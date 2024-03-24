@@ -84,7 +84,7 @@ zip-unix:
 	cp mec-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/mecb
 	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/mewb
 	cp license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/ 	
-	cp license.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
+	cp license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
 	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
 	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
 zip-windows:

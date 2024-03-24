@@ -74,8 +74,8 @@ jobs:
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-5-mecw
-        path: MicroEmacs09_091223_Linux-5-mecw
+        name: MicroEmacs09_091223_Linux-5-mewb
+        path: MicroEmacs09_091223_Linux-5-mewb
         
     - name: Upload Windows Mecb Zips
       uses: actions/upload-artifact@v4
@@ -86,8 +86,8 @@ jobs:
     - name: Upload Windows Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_windows-32-mecw
-        path: MicroEmacs09_091223_windows-32-mecw
+        name: MicroEmacs09_091223_windows-32-mewb
+        path: MicroEmacs09_091223_windows-32-mewb
         
     - name: Upload Linux binaries
       uses: actions/upload-artifact@v4
