@@ -25,6 +25,7 @@ jobs:
         sudo apt install desktop-file-utils
         make me-bin
         make mingw-w32-compile
+        make bfs-win-bin
 
     - name: make me-standalone binary Linux and Windows
       run: make me-bfs-bin

@@ -20,8 +20,15 @@ default:
 	echo "Usage make bfs-bin|me-bin|me-standalone"
 	echo $(kernel)
 bfs-bin:
+	-mkdir bin
 	cd bfs && make
 	cp bfs/bfs bin/
+	
+bfs-win-bin:
+	-mkdir bin
+	cd bfs && make clean
+	cd bfs && make -f Makefile.mingw CC=i686-w64-mingw32-gcc
+	cp bfs/bfs.exe bin/
 me-bin:
 	cd src && make -f linux32gcc.gmk 
 	cd src && make -f linux32gcc.gmk BTYP=c
@@ -84,8 +91,8 @@ zip-unix:
 	-mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb	
 	cp mec-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/mecb
 	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/mewb
-	cp license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/ 	
-	cp license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
+	cp bfs/bfs-readme.md bfs/bfs license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/ 	
+	cp bfs/bfs-readme.md bfs/bfs license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
 	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
 	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
 zip-windows:
@@ -93,8 +100,8 @@ zip-windows:
 	-mkdir MicroEmacs09_$(version)_windows-32-mewb	
 	cp mew-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mewb/mewb.exe
 	cp mec-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mecb/mewb.exe	
-	cp README.txt license.txt MicroEmacs09_$(version)_windows-32-mewb/
-	cp README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/	
+	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mewb/
+	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/	
 	zip MicroEmacs09_$(version)_windows-32-mewb.zip MicroEmacs09_$(version)_windows-32-mewb/*
 	zip MicroEmacs09_$(version)_windows-32-mecb.zip MicroEmacs09_$(version)_windows-32-mecb/*
 	
