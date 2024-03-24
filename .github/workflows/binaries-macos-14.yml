@@ -51,8 +51,8 @@ jobs:
            mkdir MicroEmacs09_20091223_macos-14-mewb/
            cp license.txt README.txt MicroEmacs09_20091223_macos-14-mecb/
            cp license.txt README.txt MicroEmacs09_20091223_macos-14-mewb/           
-           cp binaries-MacOS-14/mew-macos.bin MicroEmacs09_20091223_macos-14-mewb/mewb
-           cp binaries-MacOS-14/mec-macos.bin MicroEmacs09_20091223_macos-14-mecb/mecb
+           cp binaries-MacOS-14/mew-macos-14.bin MicroEmacs09_20091223_macos-14-mewb/mewb
+           cp binaries-MacOS-14/mec-macos-14.bin MicroEmacs09_20091223_macos-14-mecb/mecb
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4
