@@ -176,7 +176,7 @@ jobs:
            name: MicroEmacs09_20091223_macos-12-mewb
            path: MicroEmacs09_20091223_macos-12-mewb
   build-os13-arm:
-    runs-on: macos-13-xlarge
+    runs-on: macos-latest-xlarge
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -193,7 +193,7 @@ jobs:
            cd ..
            ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o mew-macos-13-arm.bin ./jasspa
            ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos-13-arm.bin ./jasspa
-           chmod 755 mec-macos-12.bin
+           chmod 755 mec-macos-13.bin
            ./mec-macos-arm-13.bin -V 
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
@@ -238,7 +238,7 @@ jobs:
            ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o mew-macos-14-arm.bin ./jasspa
            ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos-14-arm.bin ./jasspa
            chmod 755 mec-macos-14-arm.bin
-           ./mec-macos-14.bin -V 
+           ./mec-macos-14-arm.bin -V 
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
            TERM=xterm-256color ./mec-macos-14-arm.bin @platform.emf 
@@ -249,8 +249,8 @@ jobs:
            mkdir MicroEmacs09_20091223_macos-14-arm-mewb/
            cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-14-arm-mecb/
            cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-14-armm-mewb/           
-           cp ./mew-macos-14.bin MicroEmacs09_20091223_macos-14-arm-mewb/mewb
-           cp ./mec-macos-14.bin MicroEmacs09_20091223_macos-14-arm-mecb/mecb
+           cp ./mew-macos-14-arm.bin MicroEmacs09_20091223_macos-14-arm-mewb/mewb
+           cp ./mec-macos-14-arm.bin MicroEmacs09_20091223_macos-14-arm-mecb/mecb
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4
