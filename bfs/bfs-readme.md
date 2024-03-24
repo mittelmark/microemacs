@@ -1,6 +1,6 @@
 # BFS command line utility for creating standalone ME applications
 
-The __bfs_: utility can be used to customize  your __me__  executable  adding your own
+The __bfs__: utility can be used to customize  your __me__  executable  adding your own
 dictionary files and your own macro files.
 
 ## Introduction
