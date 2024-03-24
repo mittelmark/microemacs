@@ -96,4 +96,54 @@ jobs:
         with: 
            name: MicroEmacs09_20091223_macos-14-mewb
            path: MicroEmacs09_20091223_macos-14-mewb
+  build-ub20:
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: make bfs binary
+      run:  make bfs-bin
+      
+    - name: make me binaries Linux and Windows
+      run: |
+        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+        sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+        sudo apt install desktop-file-utils
+        make me-bin
+        make mingw-w32-compile
+
+    - name: make me-standalone binary Linux and Windows
+      run: make me-bfs-bin
+    
+    - name: Make zipimage
+      run: |
+        make zip-unix
+        make zip-windows
+        
+    - name: Upload Linux Mecb Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_Linux-5-mecb
+        path: MicroEmacs09_091223_Linux-5-mecb
+        
+    - name: Upload Linux Mecw Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_Linux-5-mewb
+        path: MicroEmacs09_091223_Linux-5-mewb
+        
+    - name: Upload Windows Mecb Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_windows-32-mecb
+        path: MicroEmacs09_091223_windows-32-mecb
+        
+    - name: Upload Windows Mecw Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_windows-32-mewb
+        path: MicroEmacs09_091223_windows-32-mewb
+        
 
