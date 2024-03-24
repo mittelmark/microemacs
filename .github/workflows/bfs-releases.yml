@@ -52,7 +52,6 @@ jobs:
         with: 
            name: MicroEmacs09_20091223_macos-11-mewb
            path: MicroEmacs09_20091223_macos-11-mewb
-  build:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
