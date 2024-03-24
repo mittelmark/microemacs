@@ -25051,7 +25051,7 @@ $a
   `C-x [` [scroll-up](scroll-down(2)) Move backward by one screen.  
   `C-x ]` [scroll-down](scroll-down(2)) Move forward by one screen.  
   `C-x ^` [grow-window-vertically](change-window-depth(2)) Enlarge the current window by a line.  
-  `C-x TODO &bt;` [get-next-line](get-next-line(2)) Find the next command line.  
+  ``C-x ` `` [get-next-line](get-next-line(2)) Find the next command line.  
   `C-x a` [goto-alpha-mark](goto-alpha-mark(2)) Move the cursor to an alphabetic mark.  
   `C-x b` [find-buffer](next-buffer(2)) Switch window to a buffer.  
   `C-x c` [shell](shell(2)) Start a new command processor.  
