@@ -84,8 +84,8 @@ jobs:
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-5.15-mewb
-        path: MicroEmacs09_091223_Linux-5.15-mewb
+        name: MicroEmacs09_091223_Linux-ubuntu22-mewb
+        path: MicroEmacs09_091223_Linux-ubuntu22-mewb
         
   build-os11:
     runs-on: macos-11
@@ -176,51 +176,6 @@ jobs:
         with: 
            name: MicroEmacs09_20091223_macos-12-mewb
            path: MicroEmacs09_20091223_macos-12-mewb
-
-  build-os13-arm:
-    runs-on: macos-13-xlarge
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
-        if: runner.os == 'macOS'
-        run: |
-           echo `uname -a`
-           ls
-           brew install xquartz
-           brew install gcc
-           brew install make
-           cd bfs && gmake CC=gcc-12
-           cd ../src && gmake -f macos32gcc.gmk  CC=gcc-12
-           cd ../src && gmake -f macos32gcc.gmk  CC=gcc-12 BTYP=c
-           cd ..
-           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o mew-macos-13-arm.bin ./jasspa
-           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos-13-arm.bin ./jasspa
-           chmod 755 mec-macos-13.bin
-           ./mec-macos-arm-13.bin -V 
-           echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
-           echo "exit-emacs" >> platform.emf
-           TERM=xterm-256color ./mec-macos-13-arm.bin @platform.emf
-
-      - name: Make zipimage
-        run: |
-           mkdir MicroEmacs09_20091223_macos-13-arm-mecb/
-           mkdir MicroEmacs09_20091223_macos-13-arm-mewb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-13-arm-mecb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-13-arm-mewb/           
-           cp ./mew-macos-13-arm.bin MicroEmacs09_20091223_macos-13-arm-mewb/mewb
-           cp ./mec-macos-13-arm.bin MicroEmacs09_20091223_macos-13-arm-mecb/mecb
-           
-      - name: Upload mecb
-        uses: actions/upload-artifact@v4
-        with: 
-           name: MicroEmacs09_20091223_macos-13-arm-mecb
-           path: MicroEmacs09_20091223_macos-13-arm-mecb
-
-      - name: Upload mewb
-        uses: actions/upload-artifact@v4
-        with: 
-           name: MicroEmacs09_20091223_macos-13-arm-mewb
-           path: MicroEmacs09_20091223_macos-13-arm-mewb
 
   build-os14-arm:
     runs-on: macos-14
