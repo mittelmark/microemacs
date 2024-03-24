@@ -116,8 +116,8 @@ jobs:
         run: |
            mkdir MicroEmacs09_20091223_macos-11-mecb/
            mkdir MicroEmacs09_20091223_macos-11-mewb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-11-mecb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-11-mewb/           
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_20091223_macos-11-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_20091223_macos-11-mewb/           
            cp ./mew-macos-11.bin MicroEmacs09_20091223_macos-11-mewb/mewb
            cp ./mec-macos-11.bin MicroEmacs09_20091223_macos-11-mecb/mecb
            
@@ -161,8 +161,8 @@ jobs:
         run: |
            mkdir MicroEmacs09_20091223_macos-12-mecb/
            mkdir MicroEmacs09_20091223_macos-12-mewb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-12-mecb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-12-mewb/           
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_20091223_macos-12-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_20091223_macos-12-mewb/           
            cp ./mew-macos-12.bin MicroEmacs09_20091223_macos-12-mewb/mewb
            cp ./mec-macos-12.bin MicroEmacs09_20091223_macos-12-mecb/mecb
            
@@ -206,8 +206,8 @@ jobs:
         run: |
            mkdir MicroEmacs09_20091223_macos-14-arm-mecb/
            mkdir MicroEmacs09_20091223_macos-14-arm-mewb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-14-arm-mecb/
-           cp faq.txt license.txt README.txt MicroEmacs09_20091223_macos-14-arm-mewb/           
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_20091223_macos-14-arm-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_20091223_macos-14-arm-mewb/
            cp ./mew-macos-14-arm.bin MicroEmacs09_20091223_macos-14-arm-mewb/mewb
            cp ./mec-macos-14-arm.bin MicroEmacs09_20091223_macos-14-arm-mecb/mecb
            
