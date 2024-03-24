@@ -10,6 +10,8 @@ permissions:
 jobs:
   build-ub20:
     runs-on: ubuntu-20.04
+    env: 
+        VERSION: 091223
     steps:
     - uses: actions/checkout@v4
      
@@ -38,8 +40,8 @@ jobs:
     - name: Upload Linux Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-ubuntu20-mecb.zip
-        path: MicroEmacs09_091223_Linux-ubuntu20-mecb
+        name: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu20-mecb.zip
+        path: MicroEmacs09_${{ env.VERSION }}_Linux-ubuntu20-mecb
         
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
