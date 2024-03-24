@@ -111,13 +111,13 @@
   The section numbering conventions used in these pages is defined as
   follows:-
 
-       (1)  - Executable command line.
-       (2)  - Editor built in commands.
-       (2m) - Editor built in modes.
-       (3)  - Editor commands implemented as macros.
-       (4)  - Editor macro language syntax
-       (5)  - Editor variables
-       (8)  - Editor specific file formats
+  - (1)  - Executable command line.
+  - (2)  - Editor built in commands.
+  - (2m) - Editor built in modes.
+  - (3)  - Editor commands implemented as macros.
+  - (4)  - Editor macro language syntax
+  - (5)  - Editor variables
+  - (8)  - Editor specific file formats
 
 !! me-id: amicr001
 !   Essential Commands
@@ -209,8 +209,8 @@
   [backward-delete-char(2)](backward-delete-char(2)) (backspace) Delete the previous character at the
   cursor position  
   [backward-delete-tab(2)](backward-delete-tab(2)) (S-tab) Delete white space to previous tab-stop  
-  [backward-kill-word(2)](backward-kill-word(2)) (esc backspace) Delete the previous word at the  
-   cursor position  
+  [backward-kill-word(2)](backward-kill-word(2)) (esc backspace) Delete the previous word at the
+  cursor position  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [copy-rectangle(3)](copy-rectangle(3)) Copy a rectangular region of text  
   [delete-blank-lines(2)](delete-blank-lines(2)) (C-x C-o) Delete blank lines about cursor  
@@ -283,8 +283,8 @@
   [copy-rectangle(3)](copy-rectangle(3)) Copy a rectangular region of text  
   [copy-region(2)](copy-region(2)) (esc w) Copy a region of the buffer  
   [count-words(2)](count-words(2)) (esc C-c) Count the number of words in a region  
-  [exchange-point-and-mark(2)](exchange-point-and-mark(2)) (C-x C-x) Exchange the cursor and marked  
-   position
+  [exchange-point-and-mark(2)](exchange-point-and-mark(2)) (C-x C-x) Exchange the cursor and marked
+  position  
   [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
   [kill-rectangle(2)](kill-rectangle(2)) (esc C-w) Delete a column of text  
   [kill-region(2)](kill-region(2)) (C-w) Delete all characters in the marked region  
@@ -445,25 +445,25 @@
   [item-list(3)](item-list(3)) (F7) Abbreviated search and list buffer contents  
   [item-list-close(3)](item-list-close(3)) (esc F7) Close the item list  
   [item-list-find(3)](item-list-find(3)) Find the selected item in the item list  
-  [narrow-search-backward(3)](narrow-search-backward(3)) (C-c r) Search for a string in the backward  
-    direction
-  [narrow-search-forward(3)](narrow-search-forward(3)) (C-c s) Search for a string in the forward  
-    direction
+  [narrow-search-backward(3)](narrow-search-backward(3)) (C-c r) Search for a string in the backward
+    direction  
+  [narrow-search-forward(3)](narrow-search-forward(3)) (C-c s) Search for a string in the forward
+    direction  
   [occur(3)](occur(3)) Regular expression search for occurrences  
   [osd-search(3)](osd-search(3)) Search and annotate the current buffer  
-  [page-file-isearch-backward(3)](page-file-isearch-backward(3)) (C-r) Page search backwards incrementally  
-    (interactive)
-  [page-file-isearch-forward(3)](page-file-isearch-forward(3)) (C-s) Page search forward incrementally  
-    (interactive)
-  [page-file-search-backward(3)](page-file-search-backward(3)) (C-x r) Page search for a string in the  
-    backward direction
+  [page-file-isearch-backward(3)](page-file-isearch-backward(3)) (C-r) Page search backwards incrementally
+    (interactive)  
+  [page-file-isearch-forward(3)](page-file-isearch-forward(3)) (C-s) Page search forward incrementally
+    (interactive)  
+  [page-file-search-backward(3)](page-file-search-backward(3)) (C-x r) Page search for a string in the
+  backward direction  
   [page-file-search-buffer(3)](page-file-search-buffer(3)) Search the page file buffer  
-  [page-file-search-forward(3)](page-file-search-forward(3)) (C-x s) Page search for a string in the  
-    forward direction
+  [page-file-search-forward(3)](page-file-search-forward(3)) (C-x s) Page search for a string in the
+    forward direction  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
-  [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  
-    across files
+  [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings
+    across files  
   [RegularExpressions(2)](RegularExpressions(2)) Regular Expressions  
   [replace-all-pairs(3)](replace-all-pairs(3)) Replace string pairs in a list of files  
   [replace-all-string(3)](replace-all-string(3)) Replace string with new string in a list of files  
@@ -976,19 +976,19 @@
   [page-file-forward-line(3)](page-file-forward-line(3)) (C-n) Move forwards one line in paged buffer  
   [page-file-goto-byte(3)](page-file-goto-byte(3)) Page to the buffer byte offset  
   [page-file-goto-page(3)](page-file-goto-page(3)) Move to page  
-  [page-file-isearch-backward(3)](page-file-isearch-backward(3)) (C-r) Page search backwards incrementally  
-   (interactive)
-  [page-file-isearch-forward(3)](page-file-isearch-forward(3)) (C-s) Page search forward incrementally  
-   (interactive)
-  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to  
-   file
+  [page-file-isearch-backward(3)](page-file-isearch-backward(3)) (C-r) Page search backwards incrementally
+    (interactive)  
+  [page-file-isearch-forward(3)](page-file-isearch-forward(3)) (C-s) Page search forward incrementally
+    (interactive)  
+  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to
+     file  
   [page-file-scroll-down(3)](page-file-scroll-down(3)) (C-n) Scroll paged buffer down  
   [page-file-scroll-up(3)](page-file-scroll-up(3)) (C-p) Scroll paged buffer up  
-  [page-file-search-backward(3)](page-file-search-backward(3)) (C-x r) Page search for a string in the  
-   backward direction
+  [page-file-search-backward(3)](page-file-search-backward(3)) (C-x r) Page search for a string in the
+     backward direction  
   [page-file-search-buffer(3)](page-file-search-buffer(3)) Search the page file buffer  
-  [page-file-search-forward(3)](page-file-search-forward(3)) (C-x s) Page search for a string in the  
-   forward direction
+  [page-file-search-forward(3)](page-file-search-forward(3)) (C-x s) Page search for a string in the
+     forward direction  
   [popup-window(2)](popup-window(2)) Pop-up a window on the screen  
   [screen-poke(2)](screen-poke(2)) Immediate write string to the screen  
   [screen-update(2)](screen-update(2)) (redraw) Force screen update  
@@ -1186,8 +1186,8 @@
   [generate-tags-file(3)](generate-tags-file(3)) Generate a tags file  
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
   [ipipe-kill(2)](ipipe-kill(2)) Kill a incremental pipe  
-  [ipipe-shell-command(2)](ipipe-shell-command(2)) (esc \) Incremental pipe (non-suspending  
-    system call)
+  [ipipe-shell-command(2)](ipipe-shell-command(2)) (esc \) Incremental pipe (non-suspending
+    system call)  
   [ipipe-write(2)](ipipe-write(2)) Write a string to an incremental pipe  
   [ishell(3)](ishell(3)) Open a Cygwin BASH window  
   [item-list(3)](item-list(3)) (F7) Abbreviated search and list buffer contents  
@@ -1210,7 +1210,7 @@
 
 
   [$ME_ISHELL(5)]($ME_ISHELL(5)) Windows ishell command.com  
-  [$ME_PIPE_STDERR(5)]($ME_PIPE_STDERR(5)) Command line diversion to stderr symbol  
+  [$ME\_PIPE\_STDERR(5)]($ME_PIPE_STDERR(5)) Command line diversion to stderr symbol  
   [$buffer-ipipe(5)]($buffer-ipipe(5)) Divert buffer incremental pipe input through macro  
   [$file-template(5)]($file-template(5)) Regular expression file search string  
   [$line-template(5)]($line-template(5)) Command line regular expression search string  
@@ -1298,8 +1298,8 @@
   [page-file-scroll-up(3)](page-file-scroll-up(3)) (C-p) Scroll paged buffer up  
   [previous-window(2)](previous-window(2)) (C-x p) Move the cursor to the previous window  
   [resize-all-windows(2)](resize-all-windows(2)) Resize all windows (automatic change)  
-  [resize-window-horizontally(2)](resize-window-horizontally(2)) Resize current window horizontally  
-   (absolute)
+  [resize-window-horizontally(2)](resize-window-horizontally(2)) Resize current window horizontally
+    (absolute)  
   [resize-window-vertically(2)](resize-window-vertically(2)) Resize the current window (absolute change)  
   [scroll-down(2)](scroll-down(2)) (C-n) Move the window down (scrolling)  
   [scroll-left(2)](scroll-left(2)) (C-x <) Move the window left (scrolling)  
@@ -1307,11 +1307,11 @@
   [scroll-next-window-up(2)](scroll-next-window-up(2)) (esc C-z) Scroll next window up  
   [scroll-right(2)](scroll-right(2)) (C-x >) Move the window right (scrolling)  
   [scroll-up(2)](scroll-up(2)) (C-p) Move the window up (scrolling)  
-  [shrink-window-horizontally(2)](shrink-window-horizontally(2)) Shrink current window horizontally  
-   (relative)
+  [shrink-window-horizontally(2)](shrink-window-horizontally(2)) Shrink current window horizontally
+    (relative)  
   [shrink-window-vertically(2)](shrink-window-vertically(2)) Shrink the current window (relative change)  
-  [split-window-horizontally(2)](split-window-horizontally(2)) (C-x 3) Split current window into two  
-   (horizontally)
+  [split-window-horizontally(2)](split-window-horizontally(2)) (C-x 3) Split current window into two
+    (horizontally)  
   [split-window-vertically(2)](split-window-vertically(2)) (C-x 2) Split the current window into two  
 
 
@@ -1549,15 +1549,13 @@
   [insert-file-name(2)](insert-file-name(2)) (C-x C-y) Insert filename into current buffer  
   [page-bfile(3)](page-bfile(3)) Load a large binary file as binary data  
   [page-file(3)](page-file(3)) Load a large file in page mode  
-  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to  
-    file
+  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to file  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [reread-all(3)](reread-all(3)) Reload all files  
   [reread-file(3)](reread-file(3)) Reload the current buffer's file  
   [save-all(3)](save-all(3)) Save all modified files (with query)  
   [save-buffer(2)](save-buffer(2)) (C-x C-s) Save contents of changed buffer to file  
-  [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with  
-    query)
+  [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with query)  
   [set-encryption-key(2)](set-encryption-key(2)) (esc e) Define the encryption key  
   [suspend-emacs(2)](suspend-emacs(2)) Suspend editor and place in background  
   [view-file(2)](view-file(2)) (C-x C-v) Load a file read only  
@@ -1724,7 +1722,7 @@
 
 
   The following is a list of all of the commands (built-in and macro)
-  provided by __MicroEmacs__ (See [split listing](MicroEmacs - Split Command Glossary)):
+  provided by __MicroEmacs__:
 
   [abbrev-list(3)](abbrev-list(3)) Create a list of abbreviations  
   [abort-command(2)](abort-command(2)) (C-g) Abort command  
@@ -1748,10 +1746,10 @@
   [auto-spell-menu(3)](auto-spell-menu(3)) Auto-spell context menu  
   [auto-spell-reset(3)](auto-spell-reset(3)) Auto-spell hilight reset  
   [backward-char(2)](backward-char(2)) (C-b) Move the cursor left  
-  [backward-delete-char(2)](backward-delete-char(2)) (backspace) Delete the previous character at the  
-   cursor position  
+  [backward-delete-char(2)](backward-delete-char(2)) (backspace) Delete the previous character at the
+     cursor position  
   [backward-delete-tab(2)](backward-delete-tab(2)) (S-tab) Delete white space to previous tab-stop  
-  [backward-kill-word(2)](backward-kill-word(2)) (esc backspace) Delete the previous word at the  
+  [backward-kill-word(2)](backward-kill-word(2)) (esc backspace) Delete the previous word at the
    cursor position  
   [backward-line(2)](backward-line(2)) (C-p) Move the cursor to the previous line  
   [backward-paragraph(2)](backward-paragraph(2)) (esc p) Move the cursor to the previous paragraph  
@@ -1803,10 +1801,10 @@
   [change-window-depth(2)](change-window-depth(2)) Change the depth of the current window  
   [change-window-width(2)](change-window-width(2)) Change the width of the current window  
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
-  [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character  
-   set  
-  [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character  
-   set  
+  [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character
+     set  
+  [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character
+     set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [collapse-all(3)](collapse-all(3)) (f3) (Un)Fold all regions in the current buffer  
@@ -1867,8 +1865,8 @@
   [end-of-buffer(2)](end-of-buffer(2)) (esc >) Move to end of buffer/file  
   [end-of-line(2)](end-of-line(2)) (C-e) Move to end of line  
   [etfinsrt(3)](etfinsrt(3)) Insert template file into current buffer  
-  [exchange-point-and-mark(2)](exchange-point-and-mark(2)) (C-x C-x) Exchange the cursor and marked  
- position  
+  [exchange-point-and-mark(2)](exchange-point-and-mark(2)) (C-x C-x) Exchange the cursor and marked
+    position  
   [execute-buffer(2)](execute-buffer(2)) Execute script lines from a buffer  
   [execute-file(2)](execute-file(2)) (esc /) Execute script lines from a file  
   [execute-kbd-macro(2)](execute-kbd-macro(2)) (C-x e) Execute a keyboard macro  
@@ -1910,7 +1908,7 @@
   [fold-open(3)](fold-open(3)) (f2) Open fold (in-line)  
   [fold-remove(3)](fold-remove(3)) (esc C-f3) Remove the fold, maintaining content  
   [forward-char(2)](forward-char(2)) (C-f) Move the cursor right  
-  [forward-delete-char(2)](forward-delete-char(2)) (C-d) Delete the next character at the cursor  
+  [forward-delete-char(2)](forward-delete-char(2)) (C-d) Delete the next character at the cursor
    position  
   [forward-kill-word(2)](forward-kill-word(2)) (esc d) Delete the next word at the cursor position  
   [forward-line(2)](forward-line(2)) (C-n) Move the cursor to the next line  
@@ -1957,8 +1955,8 @@
   [insert-tab(2)](insert-tab(2)) (C-i) Insert tab(s) into current buffer  
   [insert-template(3)](insert-template(3)) Insert templates into current buffer      
   [ipipe-kill(2)](ipipe-kill(2)) Kill a incremental pipe  
-  [ipipe-shell-command(2)](ipipe-shell-command(2)) (esc \) Incremental pipe (non-suspending  
- system call)  
+  [ipipe-shell-command(2)](ipipe-shell-command(2)) (esc \) Incremental pipe (non-suspending
+    system call)  
   [ipipe-write(2)](ipipe-write(2)) Write a string to an incremental pipe  
   [isearch-backward(2)](isearch-backward(2)) (C-r) Search backwards incrementally (interactive)  
   [isearch-forward(2)](isearch-forward(2)) (C-s) Search forward incrementally (interactive)  
@@ -1992,10 +1990,10 @@
   [name-kbd-macro(2)](name-kbd-macro(2)) Assign a name to the last keyboard macro  
   [named-buffer-mode(2)](named-buffer-mode(2)) Change a named buffer mode  
   [narrow-buffer(2)](narrow-buffer(2)) Hide buffer lines  
-  [narrow-search-backward(3)](narrow-search-backward(3)) (C-c r) Search for a string in the backward  
- direction  
-  [narrow-search-forward(3)](narrow-search-forward(3)) (C-c s) Search for a string in the forward  
- direction  
+  [narrow-search-backward(3)](narrow-search-backward(3)) (C-c r) Search for a string in the backward
+    direction  
+  [narrow-search-forward(3)](narrow-search-forward(3)) (C-c s) Search for a string in the forward
+    direction  
   [newline(2)](newline(2)) (return) Insert a new line  
   [next-buffer(2)](next-buffer(2)) (C-x x) Switch to the next buffer  
   [next-frame(2)](next-frame(2)) (C-x 5 o) Change the focus to the next frame  
@@ -2028,18 +2026,18 @@
   [page-file-forward-line(3)](page-file-forward-line(3)) (C-n) Move forwards one line in paged buffer  
   [page-file-goto-byte(3)](page-file-goto-byte(3)) Page to the buffer byte offset  
   [page-file-goto-page(3)](page-file-goto-page(3)) Move to page  
-  [page-file-isearch-backward(3)](page-file-isearch-backward(3)) (C-r) Page search backwards incrementally  
-   (interactive)  
-  [page-file-isearch-forward(3)](page-file-isearch-forward(3)) (C-s) Page search forward incrementally  
-   (interactive)  
-  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to  
-   file  
+  [page-file-isearch-backward(3)](page-file-isearch-backward(3)) (C-r) Page search backwards incrementally
+     (interactive)  
+  [page-file-isearch-forward(3)](page-file-isearch-forward(3)) (C-s) Page search forward incrementally
+     (interactive)  
+  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to
+     file  
   [page-file-scroll-down(3)](page-file-scroll-down(3)) (C-n) Scroll paged buffer down  
   [page-file-scroll-up(3)](page-file-scroll-up(3)) (C-p) Scroll paged buffer up  
-  [page-file-search-backward(3)](page-file-search-backward(3)) (C-x r) Page search for a string in the  
-    backward direction  
+  [page-file-search-backward(3)](page-file-search-backward(3)) (C-x r) Page search for a string in the
+     backward direction  
   [page-file-search-buffer(3)](page-file-search-buffer(3)) Search the page file buffer  
-  [page-file-search-forward(3)](page-file-search-forward(3)) (C-x s) Page search for a string in the  
+  [page-file-search-forward(3)](page-file-search-forward(3)) (C-x s) Page search for a string in the
      forward direction  
   [paragraph-to-line(3)](paragraph-to-line(3)) Convert a paragraph to a single line  
   [password-to-phonic(3)](password-to-phonic(3)) Convert a password to phonic string  
@@ -2054,7 +2052,7 @@
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
-  [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  
+  [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings
     across files  
   [quick-exit(2)](quick-exit(2)) (esc z) Exit the editor writing changes  
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
@@ -2071,7 +2069,7 @@
   [reread-all(3)](reread-all(3)) Reload all files  
   [reread-file(3)](reread-file(3)) Reload the current buffer's file  
   [resize-all-windows(2)](resize-all-windows(2)) Resize all windows (automatic change)  
-  [resize-window-horizontally(2)](resize-window-horizontally(2)) Resize current window horizontally  
+  [resize-window-horizontally(2)](resize-window-horizontally(2)) Resize current window horizontally
     (absolute)  
   [resize-window-vertically(2)](resize-window-vertically(2)) Resize the current window (absolute change)  
   [restore-dictionary(3)](restore-dictionary(3)) Save dictionary user changes  
@@ -2081,13 +2079,13 @@
   [rgrep(3)](rgrep(3)) Execute recursive grep command  
   [save-all(3)](save-all(3)) Save all modified files (with query)  
   [save-buffer(2)](save-buffer(2)) (C-x C-s) Save contents of changed buffer to file  
-  [save-buffers-exit-emacs(2)](save-buffers-exit-emacs(2)) (esc z) Exit the editor prompt user to write  
-   changes  
+  [save-buffers-exit-emacs(2)](save-buffers-exit-emacs(2)) (esc z) Exit the editor prompt user to write
+     changes  
   [save-dictionary(2)](save-dictionary(2)) Save changed spelling dictionaries  
   [save-registry(2)](save-registry(2)) Write a registry definition file  
   [save-session(3)](save-session(3)) Write session information to session file  
-  [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with  
-    query)  
+  [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with
+     query)  
   [scheme-editor(3)](scheme-editor(3)) Color Scheme Editor  
   [screen-poke(2)](screen-poke(2)) Immediate write string to the screen  
   [screen-update(2)](screen-update(2)) (redraw) Force screen update  
@@ -2114,8 +2112,8 @@
   [shell-command(2)](shell-command(2)) Perform an operating system command  
   [show-cursor(2)](show-cursor(2)) Change the visibility of the cursor  
   [show-region(2)](show-region(2)) Show the current copy region  
-  [shrink-window-horizontally(2)](shrink-window-horizontally(2)) Shrink current window horizontally  
-    (relative)  
+  [shrink-window-horizontally(2)](shrink-window-horizontally(2)) Shrink current window horizontally
+     (relative)  
   [shrink-window-vertically(2)](shrink-window-vertically(2)) Shrink the current window (relative change)  
   [shut-down(3)](shut-down(3)) Editor exit callback command  
   [sort-lines(2)](sort-lines(2)) Alphabetically sort lines  
@@ -2126,8 +2124,8 @@
   [spell-buffer(3)](spell-buffer(3)) Spell check the current buffer  
   [spell-edit-word(3)](spell-edit-word(3)) Edits a spell word entry  
   [spell-word(3)](spell-word(3)) (esc $) Spell check a single word  
-  [split-window-horizontally(2)](split-window-horizontally(2)) (C-x 3) Split current window into two  
-   (horizontally)  
+  [split-window-horizontally(2)](split-window-horizontally(2)) (C-x 3) Split current window into two
+     (horizontally)  
   [split-window-vertically(2)](split-window-vertically(2)) (C-x 2) Split the current window into two  
   [start-kbd-macro(2)](start-kbd-macro(2)) (C-x () Start recording keyboard macro  
   [start-up(3)](start-up(3)) Editor startup callback command  
@@ -2625,7 +2623,7 @@
   [$MEPATH(5)]($MEPATH(5)) MicroEmacs search path  
   [$MEUSERPATH(5)]($MEUSERPATH(5)) MicroEmacs user directory  
   [$ME_ISHELL(5)]($ME_ISHELL(5)) Windows ishell command.com  
-  [$ME_PIPE_STDERR(5)]($ME_PIPE_STDERR(5)) Command line diversion to stderr symbol  
+  [$ME\_PIPE\_STDERR(5)]($ME_PIPE_STDERR(5)) Command line diversion to stderr symbol  
   [$auto-time(5)]($auto-time(5)) Automatic buffer save time  
   [$box-chars(5)]($box-chars(5)) Characters used to draw lines  
   [$buffer-backup(5)]($buffer-backup(5)) Buffer backup file name  
@@ -2672,7 +2670,7 @@
   [$frame-width(5)]($frame-width(5)) Number of columns on the current frame canvas  
   [$global-fmod(5)]($global-fmod(5)) Global file modes (or attributes)  
   [$global-scheme(5)]($global-scheme(5)) Global buffer color scheme  
-  [$home(5)]($home(5)) Users 'home' directory location 
+  [$home(5)]($home(5)) Users 'home' directory location  
   [$idle-time(5)]($idle-time(5)) System idle event delay time  
   [$indent-width(5)]($indent-width(5)) Global indentation width in characters  
   [$kept-versions(5)]($kept-versions(5)) Number of backups to be kept  
@@ -2961,7 +2959,7 @@
   [$MEPATH(5)]($MEPATH(5)) MicroEmacs search path  
   [$MEUSERPATH(5)]($MEUSERPATH(5)) MicroEmacs user directory  
   [$ME_ISHELL(5)]($ME_ISHELL(5)) Windows ishell command.com  
-  [$ME_PIPE_STDERR(5)]($ME_PIPE_STDERR(5)) Command line diversion to stderr symbol  
+  [$ME\_PIPE\_STDERR(5)]($ME_PIPE_STDERR(5)) Command line diversion to stderr symbol  
   [$auto-time(5)]($auto-time(5)) Automatic buffer save time  
   [$box-chars(5)]($box-chars(5)) Characters used to draw lines  
   [$buffer-backup(5)]($buffer-backup(5)) Buffer backup file name  
@@ -19708,7 +19706,7 @@ $a
 
 
   pipe-shell-command - Execute a single operating system command  
-  $ME_PIPE_STDERR - Command line diversion to stderr symbol
+  $ME\_PIPE\_STDERR - Command line diversion to stderr symbol
 $a
 
 
@@ -19719,8 +19717,8 @@ $a
  _n_ __pipe-shell-command__ "_command_" ["_buffer-name_"] (__esc @__)
 |$ME_PIPE_STDERR
  _[MS-DOS and Win32s Only]_
-|$ME_PIPE_STDERR
- __$ME_PIPE_STDERR__ "_string_"; Default is undefined.
+|$ME\_PIPE\_STDERR
+ __$ME\_PIPE\_STDERR__ "_string_"; Default is undefined.
 
 
 ## DESCRIPTION
@@ -25011,7 +25009,7 @@ $a
   `esc y` [reyank](reyank(2)) Kill current yank data and restore previous kill buffer data.  
   `esc z` [quick-exit](quick-exit(2)) Save all buffers and exit.  
 
-  `esc ~` [buffer-mode](buffer-mode(2)) Remove edited status from current buffer.
+  `esc ~` [buffer-mode](buffer-mode(2)) Remove edited status from current buffer.  
   `esc backspace` [backward-kill-word](forward-kill-word(2)) Delete the word under the cursor.  
   `esc esc` [expand-abbrev](expand-abbrev(2)) Expand an abbreviation.  
   `esc space` [set-mark](set-mark(2)) Set the start of a region.  
@@ -25040,7 +25038,7 @@ $a
   `C-x 0` [delete-window](delete-window(2)) Delete the current window.  
   `C-x 1` [delete-other-windows](delete-window(2)) Delete other windows.  
   `C-x 2` [split-window-vertically](split-window-vertically(2)) Split the current window into two.  
-  `C-x 3` [split-window-horizontally](split-window-horizontally(2)) Split current window horizontally into two.
+  `C-x 3` [split-window-horizontally](split-window-horizontally(2)) Split current window horizontally into two.  
   `C-x 5-1` [create-frame](create-frame(2)) Create a new internal frame.  
   `C-x 5-2` [create-frame](create-frame(2)) Create a new external frame.  
   `C-x 8` [find-cfile](find-bfile(3)) Find and load an encrypted file for editing.  
@@ -25053,7 +25051,7 @@ $a
   `C-x [` [scroll-up](scroll-down(2)) Move backward by one screen.  
   `C-x ]` [scroll-down](scroll-down(2)) Move forward by one screen.  
   `C-x ^` [grow-window-vertically](change-window-depth(2)) Enlarge the current window by a line.  
-  `C-x `` [get-next-line](get-next-line(2)) Find the next command line.  
+  `C-x TODO &bt;` [get-next-line](get-next-line(2)) Find the next command line.  
   `C-x a` [goto-alpha-mark](goto-alpha-mark(2)) Move the cursor to an alphabetic mark.  
   `C-x b` [find-buffer](next-buffer(2)) Switch window to a buffer.  
   `C-x c` [shell](shell(2)) Start a new command processor.  
@@ -28624,6 +28622,7 @@ $a
      name and hook functions for any new file types that have been defined
      for the company, an example company file for __Jasspa__ might be defined
      as:-
+
 ```{.emf}
             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
             ;

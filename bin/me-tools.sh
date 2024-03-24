@@ -66,6 +66,7 @@ function smd2ehf {
         $link == -1 and s/^## (.+)/\033cE$1 \033cA/ and print and next; # subsequent headers
         s/^  > > /     / ; # two indents
         s/^  > /    / ;    # one indent
+        $pre < 0 and s/ME\\_PIPE\\_STDERR/ME_PIPE_STDERR/g;
         $pre < 0 and s/([^A-Za-z0-9])___([^ ].*?[^ ])___/$1\033cB$2\033cA/g ; # if not in chunks do formatting
         $pre < 0 and s/([^A-Za-z0-9])__([^ ].*?[^ ])__/$1\033cD$2\033cA/g;
         $pre < 0 and s/[ ]__(.)__/ \033cD$1\033cA/g;                 
