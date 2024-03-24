@@ -11,7 +11,10 @@ endif
 ifeq ($(nodename),guitar)
 	os=fedora-30-x86_64
 endif
-	
+kernel=$(shell uname -r | perl -pe 's/\..+//')
+version=091223
+kernelname=$(shell uname -s)
+machine=$(uname -m)
 default:
 	echo "Makefile for Linux systems"
 	echo "Usage make bfs-bin|me-bin|me-standalone"
@@ -75,3 +78,10 @@ docu-html:
 	for file in `ls htm/*.md` ; do pandoc $$file -f gfm -o htm/`basename $$file .md`.htm -s --css null.css; done
 run-tuser:
 	MENAME=tuser MEPATH=`pwd`/tuser:`pwd`/jasspa/macros src/.linux32gcc-release-mecw/mecw
+zip-unix:
+	mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mecb
+	mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mewb	
+	cp mec-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mecb/mecb
+	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mewb/mewb
+	cp license.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mecb/ 	
+	cp license.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)-mewb/ 		

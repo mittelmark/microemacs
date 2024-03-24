@@ -4912,6 +4912,10 @@
 
 ## Development History 
 
+- [240324]
+    - documentation fixes, update help file
+    - version changed to 2009-12-23
+    
 - [231206] 
     - fix for nested highlighting in Markdown files
     
