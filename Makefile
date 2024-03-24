@@ -11,13 +11,14 @@ endif
 ifeq ($(nodename),guitar)
 	os=fedora-30-x86_64
 endif
-kernel=$(shell uname -r | perl -pe 's/\..+//')
+kernel=$(shell uname -a | perl -pe 's/.+(ubuntu[0-9]+).+/$$1/; s/.+fc([0-9]+).+/fedora$$1/')
 version=091223
 kernelname=$(shell uname -s)
 machine=$(uname -m)
 default:
 	echo "Makefile for Linux systems"
 	echo "Usage make bfs-bin|me-bin|me-standalone"
+	echo $(kernel)
 bfs-bin:
 	cd bfs && make
 	cp bfs/bfs bin/

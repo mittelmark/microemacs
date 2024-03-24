@@ -53,6 +53,8 @@ jobs:
            cp license.txt README.txt MicroEmacs09_20091223_macos-14-mewb/           
            cp binaries-MacOS-14/mew-macos-14.bin MicroEmacs09_20091223_macos-14-mewb/mewb
            cp binaries-MacOS-14/mec-macos-14.bin MicroEmacs09_20091223_macos-14-mecb/mecb
+           mkdir bfs_202403_macos-14/
+           cp bfs/bfs
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4

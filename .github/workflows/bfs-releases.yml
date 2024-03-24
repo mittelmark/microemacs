@@ -125,14 +125,14 @@ jobs:
     - name: Upload Linux Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-5-mecb
-        path: MicroEmacs09_091223_Linux-5-mecb
+        name: MicroEmacs09_091223_Linux-ubuntu20-mecb
+        path: MicroEmacs09_091223_Linux-ubuntu20-mecb
         
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_091223_Linux-5-mewb
-        path: MicroEmacs09_091223_Linux-5-mewb
+        name: MicroEmacs09_091223_Linux-ubuntu20-mewb
+        path: MicroEmacs09_091223_Linux-ubuntu20-mewb
         
     - name: Upload Windows Mecb Zips
       uses: actions/upload-artifact@v4
@@ -145,5 +145,37 @@ jobs:
       with: 
         name: MicroEmacs09_091223_windows-32-mewb
         path: MicroEmacs09_091223_windows-32-mewb
+        
+  build-ub22:
+    runs-on: ubuntu-22.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: make bfs binary
+      run:  make bfs-bin
+      
+    - name: make me binaries Linux
+      run: |
+        make me-bin
+        make me-bfs-linux
+
+    - name: Make zipimage
+      run: |
+        make zip-unix
+        
+    - name: Upload Linux Mecb Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_Linux-ubuntu22-mecb
+        path: MicroEmacs09_091223_Linux-ubuntu22-mecb
+        
+    - name: Upload Linux Mecw Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09_091223_Linux-5.15-mewb
+        path: MicroEmacs09_091223_Linux-5.15-mewb
+        
         
 
