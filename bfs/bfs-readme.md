@@ -23,7 +23,7 @@ You can list the content of the application with the `-l' switch: `bfs -l me-exe
 Here an example output:
 
 ```
-[groth@bariuke microemacs]$ ./bin/bfs -l mew-linux.bin | head
+[microemacs]$ ./bin/bfs -l mew-linux.bin | head
 d /macros
 f /macros/2dos.emf
 f /macros/2mac.emf
@@ -39,19 +39,29 @@ Let's add for example now an other dictionary to an executable,  let's say the
 German dictionary and then rebuild the bfs-me executable.
 
 ```
-### make a copy, just in case things go wrong
-cp mew-linux.bin mew-bfs.bin
-### extract the macro files and the dictionary files
-### to a folder called archive
-bfs -x archive mew-bfs.bin
-ls archive | head
-### copy the spelling files to the spelling folder of the archive
-cp ../jasspa/spelling/lsdmdede.edf archive/spelling/
-cp ../jasspa/spelling/lsdxdede.edf archive/spelling/
-cp ../jasspa/spelling/lsrdede.emf archive/spelling/
-### add the archive folder now to the current executable
-### replacing the old one
-bfs -a me-bfs.bin ./archive | tail -n 6
+$ ### make a copy, just in case things go wrong
+$ cp mew-linux.bin mew-bfs.bin
+$ ### extract the macro files and the dictionary files
+$ ### to a folder called archive
+$ bfs -x archive mew-bfs.bin
+$ ls -R archive/ | head
+archive/:
+macros
+spelling
+
+archive/macros:
+2dos.emf
+2mac.emf
+2unix.emf
+2win.emf
+abbrev.emf
+$ ### copy the spelling files to the spelling folder of the archive
+$ cp ../jasspa/spelling/lsdmdede.edf archive/spelling/
+$ cp ../jasspa/spelling/lsdxdede.edf archive/spelling/
+$ cp ../jasspa/spelling/lsrdede.emf archive/spelling/
+$ ### add the archive folder now to the current executable
+$ ### replacing the old one
+$ bfs -a me-bfs.bin ./archive | tail -n 6
 Compressed file "./archive/macros/zfile.emf" 23665=>3672 (644%)
 Compressed file "./archive/spelling/lsdmdede.edf" 667590=>393488 (169%)
 Compressed file "./archive/spelling/lsdmenus.edf" 469152=>297860 (157%)
