@@ -120,12 +120,12 @@ jobs:
 
       - name: Make zipimage
         run: |
-           mkdir MicroEmacs09_091223_macos-11-mecb/
-           mkdir MicroEmacs09_091223_macos-11-mewb/
+           mkdir MicroEmacs09_${VERSION}_macos-11-mecb/
+           mkdir MicroEmacs09_${VERSION}_macos-11-mewb/
            cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_091223_macos-11-mecb/
            cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_091223_macos-11-mewb/           
-           cp ./mew-macos-11.bin MicroEmacs09_091223_macos-11-mewb/mewb
-           cp ./mec-macos-11.bin MicroEmacs09_091223_macos-11-mecb/mecb
+           cp ./mew-macos-11.bin MicroEmacs09_${VERSION}_macos-11-mewb/mewb
+           cp ./mec-macos-11.bin MicroEmacs09_${VERSION}_macos-11-mecb/mecb
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4
