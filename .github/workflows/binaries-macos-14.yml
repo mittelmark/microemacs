@@ -44,6 +44,28 @@ jobs:
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
            TERM=xterm-256color ./binaries-MacOS-14/mec-macos-14.bin @platform.emf
+
+      - name: Make zipimage
+        run: |
+           mkdir MicroEmacs09_20091223_macos-11-mecb/
+           mkdir MicroEmacs09_20091223_macos-11-mewb/
+           cp license.txt README.txt MicroEmacs09_20091223_macos-11-mecb/
+           cp license.txt README.txt MicroEmacs09_20091223_macos-11-mewb/           
+           cp binaries-MacOS-11/mecw-macos.bin MicroEmacs09_20091223_macos-11-mewb/mewb
+           cp binaries-MacOS-11/mec-macos.bin MicroEmacs09_20091223_macos-11-mecb/mecb
+           
+      - name: Upload mecb
+        uses: actions/upload-artifact@v4
+        with: 
+           name: MicroEmacs09_20091223_macos-11-mecb
+           path: MicroEmacs09_20091223_macos-11-mecb
+
+      - name: Upload mewb
+        uses: actions/upload-artifact@v4
+        with: 
+           name: MicroEmacs09_20091223_macos-11-mewb
+           path: MicroEmacs09_20091223_macos-11-mewb
+
       - name: Upload Artifact GitHub Action
         uses: actions/upload-artifact@v4
         with: 
