@@ -8,7 +8,7 @@
  *  Author        : $Author$
  *  Created By    : Jon Green
  *  Created       : Sat Nov 7 21:02:27 2009
- *  Last Modified : <091108.1749>
+ *  Last Modified : <240326.1357>
  *
  *  Description   : Module lists the archive
  *
@@ -20,11 +20,8 @@
  *
  *  Copyright (c) 2009 Jon Green.
  *
- *  All Rights Reserved.
  *
- * This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
- * reproduced,  translated,  or  reduced to any  electronic  medium or machine
- * readable form without prior written consent from Jon Green.
+ *  License: GPL - see file license.txt in the same folder as this file
  *
  ****************************************************************************/
 

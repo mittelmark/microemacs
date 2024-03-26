@@ -474,7 +474,7 @@
   [search-forward(2)](search-forward(2)) (C-x s) Search for a string in the forward direction  
 !! me-id: amicr009
 !   Comparison and Differencing
-## Comparison and Differe
+## Comparison and Differencing
 
 
   Commands that perform comparisons and differences:-
@@ -1961,6 +1961,9 @@
   [isearch-backward(2)](isearch-backward(2)) (C-r) Search backwards incrementally (interactive)  
   [isearch-forward(2)](isearch-forward(2)) (C-s) Search forward incrementally (interactive)  
   [ishell(3)](ishell(3)) Open a Cygwin BASH window  
+  [jeany-bindings(3)](jeany-bindings(3)) CUA like bindings with the C-j prefix
+  [jeany-osd(3)](jeany-osd(3))  Update  OSD for  jeany-bindings  with  the C-j prefix  
+  [jeany-osd-undo(3)](jeany-osd-undo(3))  Change  back to normal OSD  shortcut entries  
   [kbd-macro-query(2)](kbd-macro-query(2)) (C-x q) Query termination of keyboard macro  
   [kill-line(2)](kill-line(2)) (C-k) Delete all characters to the end of the line  
   [kill-paragraph(2)](kill-paragraph(2)) Delete a paragraph  
@@ -2510,6 +2513,9 @@
   [insert-symbol(3)](insert-symbol(3)) Insert an ASCII character  
   [insert-template(3)](insert-template(3)) Insert templates into current buffer      
   [ishell(3)](ishell(3)) Open a Cygwin BASH window  
+  [jeany-bindings(3)](jeany-bindings(3)) CUA like bindings with the C-j prefix
+  [jeany-osd(3)](jeany-osd(3))  Update  OSD for  jeany-bindings  with  the C-j prefix  
+  [jeany-osd-undo(3)](jeany-osd-undo(3))  Change  back to normal OSD  shortcut entries  
   [line-scheme(3)](line-scheme(3)) Apply line annotation in current buffer  
   [Mahjongg(3)](Mahjongg(3)) MicroEmacs 2009 version of the solitaire Mah Jongg game  
   [MainMenu(3)](MainMenu(3)) The top main menu  
@@ -3536,6 +3542,9 @@
   [jav(9)](jav(9)) Java programming language  
   [java(9)](java(9)) Java programming language  
   [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
+  [jeany-bindings(3)](jeany-bindings(3)) CUA like bindings with the C-j prefix
+  [jeany-osd(3)](jeany-osd(3))  Update  OSD for  jeany-bindings  with  the C-j prefix  
+  [jeany-osd-undo(3)](jeany-osd-undo(3))  Change  back to normal OSD  shortcut entries  
   [jst(9)](jst(9)) JASSPA Structred Text  
   [justify(2m)](justify(2m)) Justification Mode  
   [kbd-macro-query(2)](kbd-macro-query(2)) (C-x q) Query termination of keyboard macro  
@@ -4913,6 +4922,7 @@
 ## Development History 
 
 - [240324]
+    - adding jeany-bindings documentation
     - documentation fixes, update help file
     - version changed to 2009-12-23
     
@@ -33858,7 +33868,7 @@ $a
 
 
   etfinsrt        - Insert template file into current buffer  
-  insert-template - insert template with a interactive menu
+  insert-template - insert template with an interactive menu
 $a
 
 
@@ -33915,7 +33925,7 @@ $a
    templates  by  adding  these   template  files with the etf  extension  to
    the users users-path folder. If not given a numeric argument it invokes 
    a menu for interactive template selection. Templates can be as well added
-   to sub  folders in the  users-path  directory  whre the folder name has to
+   to sub  folders in the  users-path  directory  where the folder name has to
    correspond  to the  file-hook  name, so emf templates  must be in a folder
    "emf", Markdown templates in a folder "md" etc.
     
@@ -33923,7 +33933,7 @@ $a
 ## EXAMPLE
 
 
-  The following is taken from hkmake.emf and inserts the "_makefile.etf_"
+  The following is taken from "_hkmake.emf_" and inserts the "_makefile.etf_"
   template if the buffer has been created.
 
 ```{.emf}
@@ -33937,14 +33947,15 @@ $a
             1 buffer-mode "indent"
             1 buffer-mode "time"
         !emacro
-        
-        ; example for a list of templates in the users jasspa config folder
-        set-variable .insert-templates.template "|PyApp|PyTkApp|Rapp|TclApp|TkApp|"
-        ; for every  template  shoold be a file with the etf  extension in the
-        ; config folder
-        insert-template
 ```
-
+  
+  For a set of Python  template  files  create a folder  "python" in your Jasspa
+  users  folder, on Linux  usually  _~/.jasspa_  in this folder place a set of
+  etf-files like for instance  "class.etf",  "funcdoc.etf". If you now execute
+  the command  __insert-template__  these two files will be  suggested  in the
+  interactive menu at the command line if you press two times the TAB key.
+  
+   
 ## NOTES
 
 
@@ -42066,6 +42077,94 @@ $a
 
 
 ## SEE ALSO
+
+!! me-id: m3mac095
+! 3 jeany-bindings
+! 3 jeany-osd
+! 3 jeany-osd-undo
+## NAME
+
+
+  jeany-bindings    - create Geany like bindings with a C-j prefix
+  jeany-osd         - create menu entries for the new jeany bindings
+  jeany-osd-undo    - create the original menu entries again
+$a
+
+
+## SYNOPSIS
+
+
+  __jeany-bindings__  
+  __jeany-osd__  
+  __jeany-osd-undo__
+
+## DESCRIPTION
+
+  __jeany-bindings__  install  key-bindings similar to the bindings you find in
+  the Geany text editor which is probably  more similar to that what new users
+  expect. To no break the original Emacs  key-bindings all Geany key-bings are
+  prefixed  with the _Ctrl-j_ key. The menu  entries can be as well adapted to
+  show the changed key-bindings using the command __jeany-osd__, these changed
+  menu  entries can be restored to its normal key  bindings  using the command
+  __jeany-osd-undo__. The following key-bindings are currently available
+  
+  __File menu commands:__
+
+  - _Ctrl-j C-n_ - find-file (creates a new file if it does not yet exists)
+  - _Ctrl-j C-o_ - find-file (open a file)
+  - _Ctrl-j C-w_ - delete-buffer (close it)
+  - _Ctrl-j C-s_ - save-buffer
+  - _Ctrl-j C-r_ - reread-file
+  - _Ctrl-j C-p_ - print-buffer
+  - _Ctrl-j C-q_ - exit-emacs 
+  
+  __Edit menu commands:__
+  
+  - _Ctrl-j Ctrl-z_ - undo (undo editing possible until last save)
+  - _Ctrl-j Ctrl-x_ - kill-region (cut marked text)
+  - _Ctrl-j Ctrl-c_ - copy-region (copy marked text)
+  - _Ctrl-j Ctrl-v_ - yank (paste text)
+  - _Ctrl-j V_ - reyank (paste previous copied text(s))
+  - _Ctrl-j Ctrl-a_ - jeany-select-all (mark all text)
+  
+  __Search menu commands:__
+ 
+  - _Ctrl-j Ctrl-f_ - isearch-forward (search forward)
+  - _Ctrl-j Ctrl-g_ - hunt-forward (search again)
+  - _Ctrl-j G_ - hunt-backward (repeat search backward)
+  - _Ctrl-j Ctrl-l_ - goto-line
+  
+  __Font size commands:__
+  
+  - _Ctrl-j Ctrl-+_ - increase font-size
+  - _Ctrl-j Ctrl--_ - decrease font-size
+   
+
+## EXAMPLE
+
+
+```{.emf}
+  jeany-bindings
+  jeany-osd
+```
+
+## NOTES
+
+
+  __jeany-bindings__  and the osd macros __jeany-osd__ and __jeany-osd-undo__ 
+  are macros  defined in  `jeany.emf`.  The osd macros are only  available  if
+  __jeany-bindings__ was called before by the user.
+  
+  In case you have trouble using  Ctrl-Space to start your text  selection you
+  can, for a more conventional  region selection use i the user-setup the
+  "Start-Up" option "MS Shift region" to begin your text selection.
+
+
+## SEE ALSO
+
+  For    other    more     invasive     changes    of     key-bindings     see
+  [user-setup(3)](user-setup(3))  where  the  selection  of  completely  other
+  key-bindings is explained.
 
 !! me-id: m3osd000
 ! 3 user-setup

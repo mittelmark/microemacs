@@ -8,7 +8,7 @@
  *  Author        : $Author$
  *  Created By    : Jon Green
  *  Created       : Wed Oct 21 16:54:05 2009
- *  Last Modified : <091110.0034>
+ *  Last Modified : <240326.1356>
  *
  *  Description
  *
@@ -20,11 +20,8 @@
  *
  *  Copyright (c) 2009 Jon Green.
  *
- *  All Rights Reserved.
  *
- * This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
- * reproduced,  translated,  or  reduced to any  electronic  medium or machine
- * readable form without prior written consent from Jon Green.
+ *  License: GPL - see file license.txt in the same folder as this file
  *
  ****************************************************************************/
 
