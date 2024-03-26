@@ -55,14 +55,20 @@ If you prefer to compile the code yourself here are the required  commands for
 instance on a Ubuntu-like system:
 
 ```bash
+### install packages
 sudo apt install git libz-dev libxt-dev libncurses-dev
+### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
-make  me-bin     ###  builds  mecw  (mew  -  X-Windows)  and  mec  (terminal) executables
-make bfs-bin     ### builds the bfs executable for making stand-alone me
-make    me-fs-linux ### makes stand-alone exes with embedded macrofiles (mec-linux.bin/mew-linux.bin)
+###  builds  mecw  (mew  -  X-Windows)  and  mec  (terminal) executables
+make  me-bin 
+### builds the bfs executable for making stand-alone me
+make bfs-bin     
+### makes stand-alone exes with embedded macrofiles (mec-linux.bin/mew-linux.bin)
+make me-bfs-linux 
 ```
-Otherwise you might just download pre-build executables (see below)
+
+Otherwise you  might just download pre-build executables (see below).
 
 ## Download MicroEmacs Executables
 
