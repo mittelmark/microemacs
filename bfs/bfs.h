@@ -8,7 +8,7 @@
  *  Author        : $Author$
  *  Created By    : Jon Green
  *  Created       : Fri Oct 23 22:01:33 2009
- *  Last Modified : <091109.2217>
+ *  Last Modified : <240326.1353>
  *
  *  Description   : This API provides access to the BFS file system when
  *                  compiled into a programme.
@@ -21,11 +21,8 @@
  *
  *  Copyright (c) 2009 Jon Green.
  *
- *  All Rights Reserved.
  *
- * This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
- * reproduced,  translated,  or  reduced to any  electronic  medium or machine
- * readable form without prior written consent from Jon Green.
+ *  License: GPL - see file license.txt in the same folder as this file
  *
  ****************************************************************************/
 

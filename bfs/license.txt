@@ -1,0 +1,16 @@
+JASSPA's MicroEMACS is distributed under the GNU GENERAL PUBLIC LICENSE (GPL).
+A copy of the GPL license may be found in the file COPYING.
+
+This  license  is  valid  from  January  1st 2002 and  applies  to the  JASSPA
+Distribution  of  MicroEmacs  only. These  license terms may not be applied to
+other  versions of MicroEmacs or  retrospectively  to older versions of JASSPA
+MicroEmacs which fall under their own licensing terms.
+
+Special  thanks go to Danial M.  Lawrence,  the  original  author and  license
+holder of MicroEMACS,  who granted JASSPA  permission to move the code base to
+GPL on 19th  December  2001.  Permission  was granted on the grounds that code
+base is nearly 14 years diverged from the original and has been  substantially
+modified.
+
+Jon Green & Steve Philips (JASSPA - www.jasspa.com)
+30th December 2001
