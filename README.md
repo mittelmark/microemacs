@@ -49,6 +49,21 @@ build is folded by the indicated three dots:
 
 ![](images/dracula.png)
 
+## Compilation
+
+If you prefer to compile the code yourself here are the required  commands for
+instance on a Ubuntu-like system:
+
+```bash
+sudo apt install git libz-dev libxt-dev libncurses-dev
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+make  me-bin     ###  builds  mecw  (mew  -  X-Windows)  and  mec  (terminal) executables
+make bfs-bin     ### builds the bfs executable for making stand-alone me
+make    me-fs-linux ### makes stand-alone exes with embedded macrofiles (mec-linux.bin/mew-linux.bin)
+```
+Otherwise you might just download pre-build executables (see below)
+
 ## Download MicroEmacs Executables
 
 There is a stand alone single file executable build for the following platforms here: 
