@@ -580,7 +580,7 @@ Miscellaneous Information
     lssearch-buffer(2)lmsearch-buffer(2)le Search the current buffer for a string  
     lssearch-forward(2)lmsearch-forward(2)le (C-x s) Search for a string in the forward direction  
 !   Comparison and Differencing
-cEcEComparison and Differe cEcA
+cEcEComparison and Differencing cEcA
 
 
     Commands that perform comparisons and differences:-
@@ -2044,6 +2044,9 @@ Miscellaneous Information
     lsisearch-backward(2)lmisearch-backward(2)le (C-r) Search backwards incrementally (interactive)  
     lsisearch-forward(2)lmisearch-forward(2)le (C-s) Search forward incrementally (interactive)  
     lsishell(3)lmishell(3)le Open a Cygwin BASH window  
+    lsjeany-bindings(3)lmjeany-bindings(3)le CUA like bindings with the C-j prefix
+    lsjeany-osd(3)lmjeany-osd(3)le  Update  OSD for  jeany-bindings  with  the C-j prefix  
+    lsjeany-osd-undo(3)lmjeany-osd-undo(3)le  Change  back to normal OSD  shortcut entries  
     lskbd-macro-query(2)lmkbd-macro-query(2)le (C-x q) Query termination of keyboard macro  
     lskill-line(2)lmkill-line(2)le (C-k) Delete all characters to the end of the line  
     lskill-paragraph(2)lmkill-paragraph(2)le Delete a paragraph  
@@ -2592,6 +2595,9 @@ Miscellaneous Information
     lsinsert-symbol(3)lminsert-symbol(3)le Insert an ASCII character  
     lsinsert-template(3)lminsert-template(3)le Insert templates into current buffer      
     lsishell(3)lmishell(3)le Open a Cygwin BASH window  
+    lsjeany-bindings(3)lmjeany-bindings(3)le CUA like bindings with the C-j prefix
+    lsjeany-osd(3)lmjeany-osd(3)le  Update  OSD for  jeany-bindings  with  the C-j prefix  
+    lsjeany-osd-undo(3)lmjeany-osd-undo(3)le  Change  back to normal OSD  shortcut entries  
     lsline-scheme(3)lmline-scheme(3)le Apply line annotation in current buffer  
     lsMahjongg(3)lmMahjongg(3)le MicroEmacs 2009 version of the solitaire Mah Jongg game  
     lsMainMenu(3)lmMainMenu(3)le The top main menu  
@@ -3615,6 +3621,9 @@ Miscellaneous Information
     lsjav(9)lmjav(9)le Java programming language  
     lsjava(9)lmjava(9)le Java programming language  
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
+    lsjeany-bindings(3)lmjeany-bindings(3)le CUA like bindings with the C-j prefix
+    lsjeany-osd(3)lmjeany-osd(3)le  Update  OSD for  jeany-bindings  with  the C-j prefix  
+    lsjeany-osd-undo(3)lmjeany-osd-undo(3)le  Change  back to normal OSD  shortcut entries  
     lsjst(9)lmjst(9)le JASSPA Structred Text  
     lsjustify(2m)lmjustify(2m)le Justification Mode  
     lskbd-macro-query(2)lmkbd-macro-query(2)le (C-x q) Query termination of keyboard macro  
@@ -4987,6 +4996,11 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+- [240324]
+      - adding jeany-bindings documentation
+      - documentation fixes, update help file
+      - version changed to 2009-12-23
+      
 - [231206] 
       - fix for nested highlighting in Markdown files
       
@@ -33418,7 +33432,7 @@ $a
 
 
     etfinsrt        - Insert template file into current buffer  
-    insert-template - insert template with a interactive menu
+    insert-template - insert template with an interactive menu
 $a
 
 
@@ -33475,7 +33489,7 @@ $a
      templates  by  adding  these   template  files with the etf  extension  to
      the users users-path folder. If not given a numeric argument it invokes 
      a menu for interactive template selection. Templates can be as well added
-     to sub  folders in the  users-path  directory  whre the folder name has to
+     to sub  folders in the  users-path  directory  where the folder name has to
      correspond  to the  file-hook  name, so emf templates  must be in a folder
      "emf", Markdown templates in a folder "md" etc.
       
@@ -33483,7 +33497,7 @@ $a
 cEEXAMPLE cA
 
 
-    The following is taken from hkmake.emf and inserts the "cCmakefile.etfcA"
+    The following is taken from "cChkmake.emfcA" and inserts the "cCmakefile.etfcA"
     template if the buffer has been created.
 
 sB
@@ -33497,13 +33511,14 @@ $a
               1 buffer-mode "indent"
               1 buffer-mode "time"
           !emacro
-          
-          ; example for a list of templates in the users jasspa config folder
-          set-variable .insert-templates.template "|PyApp|PyTkApp|Rapp|TclApp|TkApp|"
-          ; for every  template  shoold be a file with the etf  extension in the
-          ; config folder
-          insert-template
-sA
+sA    
+    For a set of Python  template  files  create a folder  "python" in your Jasspa
+    users  folder, on Linux  usually  cC~/.jasspacA  in this folder place a set of
+    etf-files like for instance  "class.etf",  "funcdoc.etf". If you now execute
+    the command  cDinsert-templatecA  these two files will be  suggested  in the
+    interactive menu at the command line if you press two times the TAB key.
+    
+     
 cENOTES cA
 
 
@@ -41497,6 +41512,95 @@ $a
 
 
 cESEE ALSO cA
+
+! 3 jeany-bindings
+! 3 jeany-osd
+! 3 jeany-osd-undo
+cEcENAME cEcA
+
+
+    jeany-bindings    - creates Geany like bindings with a C-j prefix
+    jeany-osd         - creates menu entries for the new jeany bindings
+    jeany-osd-undo    - restores the original MicroEmacs menu entries again
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDjeany-bindingscA  
+    cDjeany-osdcA  
+    cDjeany-osd-undocA
+
+cEDESCRIPTION cA
+
+    The command cDjeany-bindingscA installs key-bindings similar to the bindings
+    you find in the Geany text editor but with a 'C-j' prefix. Such key-bindings
+    are probably  more  similar to that what new users  expect.  To  not  break
+    the original Emacs  key-bindings all Geany key-bindings are prefixed with the
+    cCCtrl-jcA  key. The menu  entries can be as well  adapted to show the changed
+    key-bindings using the command cDjeany-osdcA, these changed menu entries can
+    be reverted to the normal key bindings using the command cDjeany-osd-undocA.
+    The  following  key-bindings  are  currently  available  if you  execute the
+    command cDjeany-bindingscA:
+    
+    
+    cDFile menu commands:cA
+
+    - cCCtrl-j C-ncA - find-file (creates a new file if it does not yet exists)
+    - cCCtrl-j C-ocA - find-file (open a file)
+    - cCCtrl-j C-wcA - delete-buffer (close it)
+    - cCCtrl-j C-scA - save-buffer
+    - cCCtrl-j C-rcA - reread-file (refresh the buffer if it has been modified)
+    - cCCtrl-j C-pcA - print-buffer
+    - cCCtrl-j C-qcA - exit-emacs 
+    
+    cDEdit menu commands:cA
+    
+    - cCCtrl-j Ctrl-zcA - undo (undo editing possible until last save)
+    - cCCtrl-j Ctrl-xcA - kill-region (cut marked text)
+    - cCCtrl-j Ctrl-ccA - copy-region (copy marked text)
+    - cCCtrl-j Ctrl-vcA - yank (paste text)
+    - cCCtrl-j VcA      - reyank (paste previous copied text(s))
+    - cCCtrl-j Ctrl-acA - jeany-select-all (mark all text)
+    
+    cDSearch menu commands:cA
+ 
+    - cCCtrl-j Ctrl-fcA - isearch-forward (search forward)
+    - cCCtrl-j Ctrl-gcA - hunt-forward (search again)
+    - cCCtrl-j GcA      - hunt-backward (repeat search backward)
+    - cCCtrl-j Ctrl-lcA - goto-line
+    
+    cDFont size commands:cA
+    
+    - cCCtrl-j Ctrl-+cA - increase font-size
+    - cCCtrl-j Ctrl--cA - decrease font-size
+     
+
+cEEXAMPLE cA
+
+
+sB
+    jeany-bindings
+    jeany-osd
+sA
+cENOTES cA
+
+
+    cDjeany-bindingscA  and the osd macros cDjeany-osdcA and cDjeany-osd-undocA 
+    are macros  defined in  `jeany.emf`.  The osd macros are only  available  if
+    cDjeany-bindingscA was called before by the user.
+    
+    In case you have trouble using  Ctrl-Space to start your text  selection you
+    can, for a more conventional  region selection use i the user-setup the
+    "Start-Up" option "MS Shift region" to begin your text selection.
+
+
+cESEE ALSO cA
+
+    For    other    more     invasive     changes    of     key-bindings     see
+    lsuser-setup(3)lmuser-setup(3)le  where  the  selection  of  completely  other
+    key-bindings is explained.
 
 ! 3 user-setup
 cEcENAME cEcA

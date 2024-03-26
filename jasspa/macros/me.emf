@@ -89,6 +89,8 @@ define-macro-file gdiff
 define-macro-file calc
 define-macro-file draw
 define-macro-file ftp
+define-macro-file jeany jeany-bindings 
+;jeany-osd jeany-osd-undo
 
 ; More useful than execute-file - helps in fixing problems.
 0 define-macro exec-file

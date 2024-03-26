@@ -42085,9 +42085,9 @@ $a
 ## NAME
 
 
-  jeany-bindings    - create Geany like bindings with a C-j prefix
-  jeany-osd         - create menu entries for the new jeany bindings
-  jeany-osd-undo    - create the original menu entries again
+  jeany-bindings    - creates Geany like bindings with a C-j prefix
+  jeany-osd         - creates menu entries for the new jeany bindings
+  jeany-osd-undo    - restores the original MicroEmacs menu entries again
 $a
 
 
@@ -42100,13 +42100,16 @@ $a
 
 ## DESCRIPTION
 
-  __jeany-bindings__  install  key-bindings similar to the bindings you find in
-  the Geany text editor which is probably  more similar to that what new users
-  expect. To no break the original Emacs  key-bindings all Geany key-bings are
-  prefixed  with the _Ctrl-j_ key. The menu  entries can be as well adapted to
-  show the changed key-bindings using the command __jeany-osd__, these changed
-  menu  entries can be restored to its normal key  bindings  using the command
-  __jeany-osd-undo__. The following key-bindings are currently available
+  The command __jeany-bindings__ installs key-bindings similar to the bindings
+  you find in the Geany text editor but with a 'C-j' prefix. Such key-bindings
+  are probably  more  similar to that what new users  expect.  To  not  break
+  the original Emacs  key-bindings all Geany key-bindings are prefixed with the
+  _Ctrl-j_  key. The menu  entries can be as well  adapted to show the changed
+  key-bindings using the command __jeany-osd__, these changed menu entries can
+  be reverted to the normal key bindings using the command __jeany-osd-undo__.
+  The  following  key-bindings  are  currently  available  if you  execute the
+  command __jeany-bindings__:
+  
   
   __File menu commands:__
 
@@ -42114,7 +42117,7 @@ $a
   - _Ctrl-j C-o_ - find-file (open a file)
   - _Ctrl-j C-w_ - delete-buffer (close it)
   - _Ctrl-j C-s_ - save-buffer
-  - _Ctrl-j C-r_ - reread-file
+  - _Ctrl-j C-r_ - reread-file (refresh the buffer if it has been modified)
   - _Ctrl-j C-p_ - print-buffer
   - _Ctrl-j C-q_ - exit-emacs 
   
@@ -42124,14 +42127,14 @@ $a
   - _Ctrl-j Ctrl-x_ - kill-region (cut marked text)
   - _Ctrl-j Ctrl-c_ - copy-region (copy marked text)
   - _Ctrl-j Ctrl-v_ - yank (paste text)
-  - _Ctrl-j V_ - reyank (paste previous copied text(s))
+  - _Ctrl-j V_      - reyank (paste previous copied text(s))
   - _Ctrl-j Ctrl-a_ - jeany-select-all (mark all text)
   
   __Search menu commands:__
  
   - _Ctrl-j Ctrl-f_ - isearch-forward (search forward)
   - _Ctrl-j Ctrl-g_ - hunt-forward (search again)
-  - _Ctrl-j G_ - hunt-backward (repeat search backward)
+  - _Ctrl-j G_      - hunt-backward (repeat search backward)
   - _Ctrl-j Ctrl-l_ - goto-line
   
   __Font size commands:__
