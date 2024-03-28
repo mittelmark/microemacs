@@ -17,7 +17,7 @@ add-file-hook ".C" fhook-cpp
 ; TODO check on more platforms
 ; found it on MacOS Quartz, Ubuntu 18, Fedora 30, Fedora 38
 set-variable .change-font.sz-size 17
-set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-iso8859-*"
+set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
 set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewriter-medium|lucidatypewriter-bold|"
 !if &band $system 0x01
     ; Not using X
@@ -55,6 +55,7 @@ set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewrite
             set-variable #l2 &add #l2 1
             set-variable .change-font.sz-size &add .change-font.sz-size #l0
             set-variable #l1 &spr .change-font.sz-font .change-font.sz-size
+            200 ml-write &cat "try font: " #l1
             !force change-font #l1
             !if $status
                 200 ml-write &cat "current font: " #l1
@@ -94,10 +95,10 @@ set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewrite
         !if &less &sin "-" .font 1
             set-variable .font &cat .font "-medium"
         !endif
-        set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-iso8859-*" .font .size
+        set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-*-*" .font .size
         !force change-font #l0
         !if $status
-            set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-iso8859-*" .font
+            set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-*-*" .font
             set-variable .change-font.sz-size .size
             !if &not &lfind .change-font.sz-fonts .font
                 set-variable .change-font.sz-fonts &linsert .change-font.sz-fonts -1 .font

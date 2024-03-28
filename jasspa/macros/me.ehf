@@ -618,9 +618,9 @@ Miscellaneous Information
     lsadd-color-scheme(2)lmadd-color-scheme(2)le Create a new color scheme  
     lschange-font(2)lmchange-font(2)le Change the screen font  
     lschange-font-bold(3)lmchange-font-bold(3)le Change the font weight on X-Windows  
-    lschange-font-courier(3)lmchange-font-courier(3)le Change the font to Adobe Courier  
-    lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter  
-    lschange-font-size(3)lmchange-font-size(3)le Change the font size X-Windows or Windows  
+    lschange-font-courier(3)lmchange-font-courier(3)le Change the font to Adobe Courier on X11   
+    lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter on X11   
+    lschange-font-size(3)lmchange-font-size(3)le Change the font size on X-Windows or Windows  
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
     lschange-frame-width(2)lmchange-frame-width(2)le Change the number of columns on the current frame  
@@ -1871,9 +1871,9 @@ Miscellaneous Information
     lschange-buffer-name(2)lmchange-buffer-name(2)le (esc C-n) Change name of current buffer  
     lschange-file-name(2)lmchange-file-name(2)le (C-x n) Change the file name of the current buffer  
     lschange-font(2)lmchange-font(2)le Change the screen font  
-    lschange-font-bold(3)lmchange-font-bold(3)le Change the font weight on X-Windows  
-    lschange-font-courier(3)lmchange-font-courier(3)le Change the font to Adobe Courier  
-    lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter  
+    lschange-font-bold(3)lmchange-font-bold(3)le Change the font weight on X-Windows (X11)    
+    lschange-font-courier(3)lmchange-font-courier(3)le Change the font to Adobe Courier on X11  
+    lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter on X11  
     lschange-font-size(3)lmchange-font-size(3)le Change the screen font      
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
@@ -2289,9 +2289,9 @@ Miscellaneous Information
     lschange-buffer-name(2)lmchange-buffer-name(2)le (esc C-n) Change name of current buffer  
     lschange-file-name(2)lmchange-file-name(2)le (C-x n) Change the file name of the current buffer  
     lschange-font(2)lmchange-font(2)le Change the screen font  
-    lschange-font-bold(3)lmchange-font-bold(3)le Change the font weight on X-Windows  
-    lschange-font-courier(3)lmchange-font-courier(3)le Change the font to Adobe Courier  
-    lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter  
+    lschange-font-bold(3)lmchange-font-bold(3)le Change the font weight on X-Windows (X11)   
+    lschange-font-courier(3)lmchange-font-courier(3)le Change the font to Adobe Courier on X11  
+    lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter on X11    
     lschange-font-size(3)lmchange-font-size(3)le Change the font size X-Windows or Windows      
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
@@ -4996,6 +4996,9 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+- [240328]
+      - documentation update, faq for changing font
+      
 - [240324]
       - adding jeany-bindings documentation
       - documentation fixes, update help file
@@ -8258,6 +8261,8 @@ Miscellaneous Information
     lsfaq41(0f)lmfaq41le - Home/End Keys; How do I change the default bindings ??  
     lsfaq42(0f)lmfaq42le - tags; How do I generate a MicroEmacs compatible tags file ??  
     lsfaq43(0f)lmfaq43le - ne; how can I enable line wrapping in NE ??  
+    lsfaq44(0f)lmfaq44le - Why is MicroEmacs called still MicroEmacs 09 in 2024 ??  
+    lsfaq45(0f)lmfaq45le - What are the main new features of MicroEmacs 09 in 2024 ??  
 ! 0ffaq00
 cEcEQUESTION (00) cEcA
 
@@ -8268,10 +8273,10 @@ Miscellaneous Information
 cEANSWER cA
 
 
- There are a lot of new features in this distribution. Assuming that you
- just want to use the editor (and have cottoned onto the fact that there
- are now scroll bars etc.) then the most frequent commands that we use
- are:-
+    There are a lot of new features in this distribution. Assuming that you
+    just want to use the editor (and have cottoned onto the fact that there
+    are now scroll bars etc.) then the most frequent commands that we use
+    are:-
 
     lsgrep(3)lmgrep(3)le - May need to set up in cC<user>.emfcA.  
     lsdiff(3)lmdiff(3)le - May need to set up in cC<user>.emfcA.  
@@ -8285,10 +8290,10 @@ Miscellaneous Information
 
     Other useful macros include:-
 
- lstabs-to-spaces(3)lmtabs-to-spaces(3)le - Good for sorting out the mess made by Microsoft Developer Studio.  
- lssort-lines(2)lmsort-lines(2)le - Two versions of this, allows marked lines to be sorted alphabetically.  
+    lstabs-to-spaces(3)lmtabs-to-spaces(3)le - Good for sorting out the mess made by Microsoft Developer Studio.  
+    lssort-lines(2)lmsort-lines(2)le - Two versions of this, allows marked lines to be sorted alphabetically.  
 
- Be wary of:-
+    Be wary of:-
 
      cDesc-ocA - lsfill-paragraph(2)lmfill-paragraph(2)le. The default mode is an automatic
     mode  which attempts to guess at the format required. It works most of the time. 
@@ -8298,6 +8303,9 @@ Miscellaneous Information
     processor, indentation control, color hilighting, indentation control,  
     auto-saving etc.
 
+    To have a look at the features developed since 2009 have a look at lsfaq44(0f)lmfaq44le and 
+    lsfaq45(0f)lmfaq45le.
+    
  lsFrequently Asked Questionslm[FAQ Index]le.
 ! 0ffaq01
 cEcEQUESTION (01) cEcA
@@ -8619,7 +8627,9 @@ Miscellaneous Information
     enable "Termcap Color". This will give you basic colors.
 
     You may also try enabling "With Bold" - this may increase the range of
-    colors.
+    colors. If still there are no colors you might try to run emacs with a
+    different terminal setting, for instance using `TERM=rxvt me -n` or
+    `TERM=rxvt mec` in dependence what type of me you are using.
 
     lsFrequently Asked Questionslm[FAQ Index]le.
 ! 0ffaq15
@@ -9146,7 +9156,36 @@ Miscellaneous Information
 
     If you are running on Microsoft platforms ensure that the cDOEM/ANSIcA flag
     matches the settings of the cDDisplay Font SetcA entry.
+    
+    With MicroEmacs releases after 2022 you might as well use a function 
+    lschange-font-type(3)lmchange-font-type(3)le which allows you to switch the font
+    in an interactive menu on X-Windows systems. You can as well use a tool like
+    `xfontsel` on X-Windows systems and select a monospaced font, then pasting the
+    font-string into the user-setup form field for the font name. 
+    
+    Per default in this menu only The fonts "Adobe Courier" and "Lucida Typwriter" 
+    are available as these seem to exist on all platforms which I could test, such
+    as macOS with XQuartz, Fedora and Ubuntu Linux.
+    
+    In case you are not satisified with this minimal font selection you might install your own
+    X11-fonts using for instance the provided fonts "Ubuntu Mono", "Courier Prime" or
+    "Chivo Mono" which are provided at the Github project page.
+    
+    The fonts can be download from here: 
+    
+    - https://github.com/mittelmark/microemacs/releases/download/v09.12.21/chivo-mono-fonts.zip
+    - https://github.com/mittelmark/microemacs/releases/download/v09.12.21/courier-prime-fonts.zip
+    - https://github.com/mittelmark/microemacs/releases/download/v09.12.21/ubuntu-mono-fonts.zip
+    
+    The Readme explains on how to install them:
+    https://github.com/mittelmark/microemacs/blob/master/fonts/chivo-mono/Readme.txt
 
+    After installing these fonts you can use
+    lschange-font-type(3)lmchange-font-typele command and write as well "ubuntu",
+    "chivo" or "prime" (for courier prime) to use these fonts. To switch to bold
+    fonts use the command lschange-font-bold(3)lmchange-font-boldle.
+    
+    
     lsFrequently Asked Questionslm[FAQ Index]le.
 ! 0ffaq34
 cEcEQUESTION (34) cEcA
@@ -9442,6 +9481,63 @@ Miscellaneous Information
     of the documentation or suggestions for improvements where you think the
     documentation is deficient.
 
+    lsFrequently Asked Questionslm[FAQ Index]le.
+! 0ffaq44
+cEcEQUESTION (44) cEcA
+
+
+    Why is MicroEmacs called MicroEmacs 09 in 2024 ??
+
+
+cEANSWER cA
+
+    MicroEmacs was mainly developed by John Green and Steven Phillips in the 1990ies
+    and in the 2010s. The last official release was in 2009. Since then the development
+    was stalled mainly do to the closing of yahoogroups as the communication was lost
+    within the small user base. On Github are a few forks which did some fixes but which
+    were not coordinated. Currently the branch at https://github.com/mittelmark/microemacs
+    is the one which is developed. As there exists another newer branch with more features
+    like https, SVN and Git support I (Detlef Groth) decided to stick with the old name
+    MicroEmacs and add the last release years at the end. So the versions will stick with
+    09 to distinguish it from the new version which will be hopefully released in 2024 as
+    MicroEmacs 24. So the versioning scheme of this MicroEmacs is v09.12.XX - where I will
+    count up the XX from 23 to 31 of neccessary. Currently we (Steven Phillips and me)
+    focus on the release of MicroEmacs 24. MicroEmacs 09 will contain just bug fixes.
+
+    The last official 09 release from 2009 can be download from http://www.jasspa.com -
+    the updated release from https://github.com/mittelmark/microemacs
+    
+    lsFrequently Asked Questionslm[FAQ Index]le.
+! 0ffaq45
+cEcEQUESTION (45) cEcA
+
+
+    What are the main new features of MicroEmacs 09 in 2024 ??  
+
+
+cEANSWER cA
+
+
+    MicroEmacs 09 in 2024 contains a few fixes to compile it with the modern
+    GCC. It contains the following new features (often added by Steven Phillips
+    to the new MicroEmacs and then backported by me to MicroEmacs 09):
+    
+    - in terminal mode on Unix using the alternate buffer feature whch supports
+      suspension without editor traces, so the buffer clears during suspension
+    - fixing frame resize on X-Windows which might before destroy the window layout
+      on some tiling window managers
+    - simplified font selection on X-windows using lschange-font-type(3)lmchange-font-type(3)le
+    - font-resize with Ctrl-Plus and Ctrl-Minus
+    - more editor schemes, mainly interesting Dracula scheme and Ayu-Light
+    - improved template handling using an interactive menu to select templates
+      from the users config directory (.jasspa in your HOME directory)
+    - new binary builds for macOS 11-14 (as well as for Windows and Ubuntu and Fedora Linuxes)
+    - much improved Markdown mode
+    - improved CUA bindings - shortcut emulation more common in standard GUI
+      applications like C-c, C-x, C-v for copy, cut and paste 
+    - new lsjeany-bindings(3)lmjeany-bindings(3)le command which supports a few CUA bindings
+      after the C-j prefix so copy, cut and paste are `C-j C-c`, `C-j C-x` and `C-j C-v`.
+    
     lsFrequently Asked Questionslm[FAQ Index]le.
 ! 1 me
 cEcENAME cEcA

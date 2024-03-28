@@ -104,4 +104,6 @@ zip-windows:
 	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/	
 	zip MicroEmacs09_$(version)_windows-32-mewb.zip MicroEmacs09_$(version)_windows-32-mewb/*
 	zip MicroEmacs09_$(version)_windows-32-mecb.zip MicroEmacs09_$(version)_windows-32-mecb/*
-	
+me-ehf:
+	cd doc && make ehf
+	cp doc/me.ehf jasspa/macros/
