@@ -177,7 +177,7 @@ jobs:
       - name: Upload mecb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}-12-mecb.zip
+           name: MicroEmacs09_${{ env.VERSION }}-macos-12-mecb.zip
            path: MicroEmacs09_${{ env.VERSION }}_macos-12-mecb
 
       - name: Upload mewb
