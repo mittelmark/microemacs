@@ -6,7 +6,7 @@
  *  Author        : John Green, Detlef Groth
  *  Created By    : Jon Green
  *  Created       : Sat Nov 7 19:24:43 2009
- *  Last Modified : <240328.1957>
+ *  Last Modified : <240328.2002>
  *
  *  Description
  *
@@ -82,24 +82,24 @@ usage (FILE *fp)
     fprintf (fp, "  file.bfs  - bfs archiv file\n");    
     fprintf (fp, "  dir       - jasspa directory with macros and (optional) spelling etc subfolders\n\n");    
     fprintf (fp, "Options:\n");
-    fprintf (fp, "-a <file.bin> <dir>            : Append archive to end of existing file\n");
-    fprintf (fp, "-c <file.bfs> <dir>            : Create a standalone archive\n");
-    fprintf (fp, "-f <file.bfs> <file.bbin>      : Extract archive to a file.\n");
-    fprintf (fp, "-i <file.bfs>                  : Print archive information.\n");
-    fprintf (fp, "-l <file.bfs|file.bbin>        : List the contents of the archive.\n");
-    fprintf (fp, "-n/-N                          : Exclude(n)/Allow(N) zero length files, exclude by default\n");
-    fprintf (fp, "-o <file.bbin>                 : The name of the output file (optionally used with -a).\n");
-    fprintf (fp, "-q                             : Quiet, minimise messages.\n");
-    fprintf (fp, "-s <file.bbin>                 : Strip an archive from the end of a file.\n");
-    fprintf (fp, "                                 This modifies file.bbin directly.\n");
-    fprintf (fp, "-t <file.bfs|file.bbin>        : Test the archive\n");
-    fprintf (fp, "-v                             : Enable verbose information.\n");    
-    fprintf (fp, "-x <dir> <file.bfs|file.bbin>  : Extract archive from file to a directory.\n");
-    fprintf (fp, "-z <type>                      : Compression options (default is -z9f)\n");
+    fprintf (fp, "  -a <file.bin> <dir>            : Append archive to end of existing file\n");
+    fprintf (fp, "  -c <file.bfs> <dir>            : Create a standalone archive\n");
+    fprintf (fp, "  -f <file.bfs> <file.bbin>      : Extract archive to a file.\n");
+    fprintf (fp, "  -i <file.bfs>                  : Print archive information.\n");
+    fprintf (fp, "  -l <file.bfs|file.bbin>        : List the contents of the archive.\n");
+    fprintf (fp, "  -n/-N                          : Exclude(n)/Allow(N) zero length files, exclude by default\n");
+    fprintf (fp, "  -o <file.bbin>                 : The name of the output file (optionally used with -a).\n");
+    fprintf (fp, "  -q                             : Quiet, minimise messages.\n");
+    fprintf (fp, "  -s <file.bbin>                 : Strip an archive from the end of a file.\n");
+    fprintf (fp, "                                   This modifies file.bbin directly.\n");
+    fprintf (fp, "  -t <file.bfs|file.bbin>        : Test the archive\n");
+    fprintf (fp, "  -v                             : Enable verbose information.\n");    
+    fprintf (fp, "  -x <dir> <file.bfs|file.bbin>  : Extract archive from file to a directory.\n");
+    fprintf (fp, "  -z <type>                      : Compression options (default is -z9f)\n");
     fprintf (fp, "           d - Compress directories\n");
     fprintf (fp, "           f - Compress file\n");
     fprintf (fp, "           0-9 Compression level, 9 is maximum, 0 is none\n"); 
-    fprintf (fp, "-h/-?                          : Help information\n");
+    fprintf (fp, "  -h/-?                          : Help information\n");
     fprintf (fp, "\n");
 
     /* No return */
