@@ -3866,9 +3866,10 @@
   >  Dave Conroy (Original Author)  
      Daniel M. Lawrence (Original Maintainer)  
      Martin House  
-     __Jon Green__ - _Current Maintainer_  
+     __Jon Green__ - _Maintainer (until 2010)_  
      Callen McNally  
      __Steven Phillips__ - _Current Maintainer_  
+     __Detlef Groth__ - _Maintainer (since 2020)_       
 
   Additional contributions have been made as follows, in chrononlogical
   order:-
@@ -3890,6 +3891,7 @@
             Latex features and excellent feedback.
             Document support.
             Fixed PERL abbreviations.
+            Maintainer since 2020.
 
      Mike Hopkirk
             Macro execution speed up suggestions.
@@ -4682,12 +4684,12 @@
      with the permission of the current author.
 
 
-## License Terms 1998-2001 
+## License Terms 1998-2024
 
 
   The following notices apply after 1988 to 31st December 2001
 
-   __Copyright (C) 1988 - 2001, JASSPA__
+   __Copyright (C) 1988 - 2001, JASSPA __
   
      JASSPA MicroEmacs can be copied and distributed freely for any
      non-commercial purposes. Commercial users may use JASSPA MicroEmacs
@@ -4744,60 +4746,32 @@
   The following contact point may be used to report all problems and request
   information:-
 
-     `Email:support@jasspa.com`
+     `https://github.com/mittelmark/microemacs/issues` or via `Email:support@jasspa.com`
 
   Also visit our web site's on the Internet:-
 
-    ` http://www.jasspa.com`
+    `http://www.jasspa.com` and the project page `https://github.com/mittelmark/microemacs`
 
-  This page carries the latest information and patches on the distribution.
-
-
-## E-Mail Reflector 
-
-
-  A E-Mail reflector is available onto which questions, suggestions and code
-  fragments may be posted. This is an un-moderated E-Mail group. The mailing
-  list archives may be found at:-
-
-    ` http://groups.yahoo.com/group/jasspa/`
-
-  These should be referenced before posting any questions, as an answer may
-  have already been given. This mailing list is likely to contain the most
-  up-to-date information available, as JASSPA will use this for any
-  notifications.
-
-  If you want to join the E-Mail reflector then mail a request, with an
-  empty message body to:-
-
-    ` jasspa-subscribe@yahoogroups.com`
-
-  This should add you to the mailing list. If you want to be subsequently
-  removed from the mailing list then mail an empty message to:-
-
-    ` jasspa-unsubscribe@yahoogroups.com`
-
-  and you will be removed from the lists. There are facilities on the site
-  to allow you to receive digests, rather than multiple posts to the group
-  once you have subscribed.
-
-  The mailing list is hosted by __YAHOO! Groups__. General help information on
-  the mailgroup is available at their site:-
-
-     ` http://groups.yahoo.com`
+  This pages carries the latest information and patches on the distribution.
+  
+  The web page `http://www.jasspa.com` contains information about all releases before 2010
+  and provides as well platforms for old platforms like DOS, Win3.1, Solaris, HP and others.
 
 
 ## Help, FAQ and other queries 
 
+  From 1997 to 2000 at egroups.com and from 2001 to 2010 there was a very
+  active discussion group for MicroEmacs. After a lot of face-lifting and the
+  final closing of yahoogroups there is no news groups any more. You can
+  retrieve the old news group content of yahoogroups (without attachments)
+  with a Tcl script which is explained here:
+  
+  `https://wiki.tcl-lang.org/page/yahoogroups%2Dreader`
 
-  Please use __YAHOO! Groups__ help information for any queries about the
-  mailing lists, JASSPA have simply registered and E-Mail group at the site
-  and have not investigated fully all of the facilities that may be
-  available.
-
-  Please check the [Frequently Asked Questions](Frequently Asked Questions). list and the home page FAQ
-  before you submit any information to JASSPA, your problem may have already
-  been addressed in these pages.
+  For problems with the current release  use the `https://github.com/mittelmark/microemacs/issues` 
+  facilities of the Github project page but lease check the [Frequently Asked Questions](Frequently Asked Questions). 
+  list and the home page FAQ   before you submit any information to JASSPA,
+  your problem may have already been addressed in these pages.
 
   Every effort will be made to deal with your problem as soon as possible.
   Please send mail with the titles indicated below so that it maybe
@@ -4812,6 +4786,8 @@
 
 ## Reporting Problems 
 
+Either use the issues link at Github https://github.com/mittelmark/microemacs/issues
+or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
   Mail as:-
 
@@ -4921,8 +4897,15 @@
 
 ## Development History 
 
+ __Release - 29th March 2024 Easter Egg__ 
+
+- [2024029] 
+    - using Markdown instead of nroff for documention writing
+    - update contact and news group information
+        
 - [240328]
     - documentation update, faq for changing font
+    - fix for change-font-type
     
 - [240324]
     - adding jeany-bindings documentation
@@ -4946,9 +4929,9 @@
       * adding insert-template to edit menu
              
 - [231114] 
-    - removed  necessity  for  [insert-template(3)](insert-template(3))  of  setting  the
-     macro    variable    .templates,    now   all   etf    files    in 
-     the  [$user-path]($user-path) folder are used per default 
+    - removed necessity for [insert-template(3)](insert-template(3)) of setting the
+      macro  variable .templates, now all etf files in the  [$user-path]($user-path)
+      folder are used per default 
 
 - [231112] 
     - new function with interactive selection: [insert-template(3)](insert-template(3)) 
