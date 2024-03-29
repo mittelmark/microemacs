@@ -70,9 +70,40 @@ make me-bfs-linux
 
 Otherwise you  might just download pre-build executables (see below).
 
-## Download MicroEmacs Executables
+## Download Prebuild MicroEmacs Executables
 
-There is a stand alone single file executable build for the following platforms here: 
+There  are  stand-alone   single  file  executable  build  for  the  following
+platforms (all should work on 64 bit machines): 
+
+- Linux
+    - Ubuntu 20
+    - Ununtu 22
+    - Fedora 30
+    - Fedora 38
+- macOS
+    - macOS 11
+    - macOS 12
+    - macOS 14    
+- Windows
+
+Build  for  other   platforms   might  be  provided  if  requested  using  the
+[issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
+repository.
+
+Release 2024-03-29 (v09.12.23):
+
+| OS      | Platform    | (X)-Windows Binary | Terminal Binary |
+|:-------:|:------------|:-------------------|:----------------|
+| Linux   | Ubuntu 20   | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu20-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu20-mecb.zip)|
+|         | Ubuntu 22   | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu22-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu22-mecb.zip)|
+|         | Fedora 30   | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora30-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora30-mecb.zip)|
+|         | Fedora 39   | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora39-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora39-mecb.zip)|
+| macOS   | macOS 11    | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-11-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_Linux-macos-11-mecb.zip)|
+|         | macOS 12    | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-12-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-12-mecb.zip)|
+|         | macOS 14    | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-14-arm-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-14-arm-mecb.zip)|
+| Windows | Win32/Win64 | [mecw.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_windows-32-mecw.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_windows-32-mecb.zip)|
+
+Release 2023-10-31 (v09.12.21):
 
 * Linux 64bit
     * [Jasspa_MicroEmacs-x86_64.AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage) -
@@ -81,8 +112,8 @@ There is a stand alone single file executable build for the following platforms 
     * [Linux-Ubuntu-18-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-ubuntu-18-2023-11-02.bin)
     * [Linux-Ubuntu-20-x86_64](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-ubuntu-20-2023-11-02.bin)
 * MacOS 11 64bit (should work on MacOS 12 and 13 as well)
-    * [MacOS-Darwin-20-x86_64 -  console only](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-macos-11-2023-11-02.bin)
-    * [MacOS-Darwin-20-x86_64 - console and XQuartz version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-macos-11-2023-11-02.bin)
+    * [MacOS-Darwin-20-x86_64 -  console only](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-macos-12-2023-11-02.bin)
+    * [MacOS-Darwin-20-x86_64 - console and XQuartz version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mecw-macos-12-2023-11-02.bin)
 * Windows 32 and 64bit
     * Install  using the scoop  package  manager on Windows  like this  `scoop install -a 32bit https://raw.githubusercontent.com/mittelmark/microemacs/master/scoop-jme.json`
     * Downloading the single files:
