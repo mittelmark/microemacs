@@ -16,7 +16,7 @@ ifeq ($(nodename),micky)
 endif
 kernel=$(shell uname -a | perl -pe 's/.+(ubuntu[0-9]+).+/$$1/; s/.+fc([0-9]+).+/fedora$$1/; s/.+(2[0-9])\..+Ubuntu.+/ubuntu$$1/')
 version=091223
-kernelname=$(shell uname -s)
+kernelname=$(shell uname -s | perl -pe 's/Linux/linux/')
 machine=$(uname -m)
 default:
 	echo "Makefile for Linux systems"
