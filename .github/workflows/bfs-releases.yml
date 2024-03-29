@@ -211,6 +211,7 @@ jobs:
            cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-14-arm-mewb/
            cp ./mew-macos-14-arm.bin MicroEmacs09_${VERSION}_macos-14-arm-mewb/mewb
            cp ./mec-macos-14-arm.bin MicroEmacs09_${VERSION}_macos-14-arm-mecb/mecb
+           echo `ls`
            
       - name: Upload mecb macOS 14
         uses: actions/upload-artifact@v4
