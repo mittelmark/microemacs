@@ -88,12 +88,13 @@ platforms (all should work on 64 bit machines):
 
 Build  for  other   platforms   might  be  provided  if  requested  using  the
 [issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
-repository.
+repository. The AppImage  should work on most Linux platforms.
 
 Release 2024-03-29 (v09.12.23):
 
 | OS      | Platform    | (X)-Windows Binary | Terminal Binary |
 |:-------:|:------------|:-------------------|:----------------|
+| Linux   | AppImage    | [AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage)||
 | Linux   | Ubuntu 18   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu18-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu18-mecb.zip)|
 |         | Ubuntu 20   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu20-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu20-mecb.zip)|
 |         | Ubuntu 22   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu22-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu22-mecb.zip)|
