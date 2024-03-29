@@ -6,12 +6,11 @@ on:
 
 permissions:
   contents: read
-
+env: 
+    VERSION: "091223"
 jobs:
   build-ub20:
     runs-on: ubuntu-20.04
-    env: 
-        VERSION: "091223"
     steps:
     - uses: actions/checkout@v4
      
@@ -63,8 +62,6 @@ jobs:
         
   build-ub22:
     runs-on: ubuntu-22.04
-    env: 
-        VERSION: "091223"
     steps:
     - uses: actions/checkout@v4
      
@@ -94,8 +91,6 @@ jobs:
         
   build-os11:
     runs-on: macos-11
-    env: 
-        VERSION: "091223"
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -141,8 +136,6 @@ jobs:
 
   build-os12:
     runs-on: macos-12
-    env: 
-        VERSION: "091223"
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -188,8 +181,6 @@ jobs:
 
   build-os14-arm:
     runs-on: macos-14
-    env: 
-        VERSION: "091223"
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
