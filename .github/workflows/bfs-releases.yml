@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
 env: 
-    VERSION: "091224"
+    VERSION: "091223"
 jobs:
   build-ub20:
     runs-on: ubuntu-20.04
@@ -222,7 +222,7 @@ jobs:
       - name: Upload mewb macOS 14
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_{{ env.VERSION }}_macos-14-arm-mewb
-           path: MicroEmacs09_{{ env.VERSION }}_macos-14-arm-mewb
+           name: MicroEmacs09_${{ env.VERSION }}_macos-14-arm-mewb
+           path: MicroEmacs09_${{ env.VERSION }}_macos-14-arm-mewb
         
 
