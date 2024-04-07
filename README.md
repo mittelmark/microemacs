@@ -56,7 +56,7 @@ instance on a Ubuntu-like system:
 
 ```bash
 ### install packages
-sudo apt install git libz-dev libxt-dev libncurses-dev
+sudo apt install git build-essential libz-dev libxt-dev libncurses-dev
 ### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
