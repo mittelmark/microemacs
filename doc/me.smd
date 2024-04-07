@@ -9766,13 +9766,13 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
           export PATH $PATH:/usr/name/me
 
- > Within MS-DOS or Microsoft Windows environments it is defined in the
-   `AUTOEXEC.BAT` file. e.g.
+  > Within MS-DOS or Microsoft Windows environments it is defined in the
+    `AUTOEXEC.BAT` file. e.g.
 
           set PATH=%PATH%;c:\me
 
-  __MicroEmacs 2009__ utilizes information in the __$PATH__ environment variable
-  to locate the start-up files, dictionaries etc.
+  > __MicroEmacs 2009__ utilizes information in the __$PATH__ environment variable
+    to locate the start-up files, dictionaries etc.
 
   __TERM__
   
@@ -9908,6 +9908,16 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
      header information, copyright notices etc. that are placed at the head
      of files. The 'C' programming language is called `c.etf`
 
+## USER FILES
+
+  - ~/.jasspa/username.eaf  - MicroEmacs user abbreviation file
+  - ~/.jasspa/username.eff  - MicroEmacs user favorites file
+  - ~/.jasspa/username.emf  - MicroEmacs user configuration and macro file
+  - ~/.jasspa/username.enf  - MicroEmacs user notes file
+  - ~/.jasspa/username.erf  - MicroEmacs user registry file
+  - ~/.jasspa/username.esf  - MicroEmacs user session file
+  - ~/.jasspa/langname.etf  - MicroEmacs programming language template file
+
 
 ## MICROSOFT WINDOWS
 
@@ -9965,13 +9975,27 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
   used) and added session support by extending the `-c` option with an
   optional _sessionName_ argument.
 
+  In 2021 Detlef Groth joined the maintainer team and adds a Github repository
+  at https://github.com/mittelmark/microemacs
+ 
+  The 2023 release adds an alternative screen buffer option -A
+
+## BUGS
+
+See GitHub Issues: <https://github.com/mittelmark/microemacs/issues>
+
+## AUTHORS
+
+John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 
 ## SEE ALSO
 
 
   [read-session(3)](read-session(3)), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MENAME(5)]($MENAME(5)), [$MEPATH(5)]($MEPATH(5)),
   [$MEUSERPATH(5)]($MEUSERPATH(5)), [emf(8)](emf(8)), [erf(8)](erf(8)), [esf(8)](esf(8)), [$home(5)]($home(5)), emacs(1) [GNU], more(1),
-  [ne(1)](ne(1)), vi(1), [Client-Server Interface](Client-Server(2)), [Command Line Filters](Command-Line-Filters).
+  [Client-Server Interface](Client-Server(2)), [Command Line Filters](Command-Line-Filters).
+
+  And __vi(1)__, __vim(1)__,__nano(1)__. 
 
 !! me-id: m1cmd001  
 ! 1 memsdev
