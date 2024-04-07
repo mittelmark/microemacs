@@ -59,9 +59,9 @@ Also, any and all the commands can be used by any key stroke by
 changing, or re-binding, what commands various keys invoke.
 .PP
 Special features are also available to perform a diverse set of
-operations such as file encryption, automatic backup file gen\[hy]
-eration, en-tabbing and de-tabbing lines, executing operating system
-commands and filtering of text through other programs.
+operations such as file encryption, automatic backup file generation,
+en-tabbing and de-tabbing lines, executing operating system commands and
+filtering of text through other programs.
 .PP
 The command line options to MicroEmacs are defined as follows:-
 .TP
@@ -133,9 +133,9 @@ The -c option is generally used with windowing interfaces
 .RS
 .PP
 If the optional session name sessionName is specified then the session
-file sessionName.esf is loaded restoring the previ\[hy] ous editing
-session including the buffer window size, position and layout, the
-buffer mark and cursor location, main window size.
+file sessionName.esf is loaded restoring the previous editing session
+including the buffer window size, position and layout, the buffer mark
+and cursor location, main window size.
 When the sessionName includes space characters then the command line
 option should be bracketed e.g.\  \[lq]-cFoo Bar\[rq].
 .RE
@@ -278,7 +278,7 @@ orac% me -V MicroEmacs 06 - Date 2006/08/10 - sunos
 UNIX environments.
 Disable the capture of signals.
 MicroEmacs 2009 by default captures an handles all illicit signal
-in\[hy] terrupts.
+interrupts.
 The option is enabled when debugging the source code allowing exception
 conditions to be trapped within the debugger.
 .TP
@@ -310,8 +310,8 @@ performed in the AUTOEXEC.BAT file.
 \f[B]PATH\f[R]
 The $PATH environment variable is used on most operating systems as a
 search path for executable files.
-This $PATH environ\[hy] ment variable must be defined with MicroEmacs
-2009 on the search path.
+This $PATH environment variable must be defined with MicroEmacs 2009 on
+the search path.
 Under UNIX this is set in the .login, .cshrc or .profile file i.e.
 .RS
 .IP
@@ -383,7 +383,7 @@ The environment variable sets the MicroEmacs variable
 .TP
 \f[B]MEPATH\f[R]
 is an environment variable that may be used to define the absolute
-search path for MicroEmacs macro files and affects the set\[hy] ting of
+search path for MicroEmacs macro files and affects the setting of
 $search-path.
 The path should include the system macros location(s) and should include
 the user directory location as the first path when the environment
@@ -391,7 +391,7 @@ variable is not defined.
 If $MEUSERPATH is defined then this path name appears before the $MEPATH
 variable to define the user directory location.
 $MEPATH is not searching, so ALL directories to be searched must be
-in\[hy] cluded in the path specification.
+included in the path specification.
 .RS
 .PP
 is the preferred method used to defined the user directory.
@@ -404,7 +404,7 @@ Within the UNIX $INFOPATH is a semi-colon separated list of directories
 which are used to search for the MicroEmacs 2009 macro files.
 The path is searched from left to right.
 The environment variable is typically defined in the in the .login,
-\&.cshrc or .pro\[hy] file file i.e.
+\&.cshrc or .profile file i.e.
 .RS
 .PP
 export INFOPATH /usr/local/info:$HOME/info
@@ -514,9 +514,9 @@ mode line or main menu, see Invoking
 \f[R]
 .fi
 .PP
-where is the name of the session (the or system login name) will restore
-all of of the buffers, windows layout, point and mark positions, main
-window size etc.
+where <mySessionName> is the name of the session (the or system login
+name) will restore all of of the buffers, windows layout, point and mark
+positions, main window size etc.
 at the point of the last shut down.
 e.g.\ given a system login name of jasspa then
 .IP
@@ -541,8 +541,8 @@ has been destroyed by the introduction of the new file
 \[lq]morefiles.txt\[rq].
 This type of command with another file behaves as the old \[lq]me
 -c\[rq] command prior to the 2006 release that did not support sessions.
-If is not specified then the buffers are restored but the window layout
-is not re\[hy] stored.
+If <mySessionName> is not specified then the buffers are restored but
+the window layout is not restored.
 .SH HISTORY
 .PP
 The 2006 release removed the -d command line option for debugging (not

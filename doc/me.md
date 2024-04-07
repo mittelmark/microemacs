@@ -418,7 +418,7 @@ menu, see Invoking
 
        me -c<mySessionName>
 
-where  <mySessionName>  is the name of the session (the or system  login name)
+where  \<mySessionName\>  is the name of the session (the or system  login name)
 will restore all of of the buffers,  windows layout, point and mark positions,
 main  window size etc. at the point of the last shut down. e.g. given a system
 login name of jasspa then
@@ -434,7 +434,7 @@ command line
 restores the buffers but does not restore the window  layout  because this has
 been destroyed by the introduction of the new file  "morefiles.txt". This type
 of command  with another file behaves as the old "me -c" command  prior to the
-2006  release  that  did  not  support  sessions.  If  <mySessionName>  is not
+2006  release  that  did  not  support  sessions.  If  \<mySessionName\>  is not
 specified  then the buffers are  restored  but the window  layout is not restored.
 
 HISTORY
