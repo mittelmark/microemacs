@@ -73,9 +73,12 @@ Otherwise you  might just download pre-build executables (see below).
 ## Download Prebuild MicroEmacs Executables
 
 There  are  stand-alone   single  file  executable  build  for  the  following
-platforms (all should work on 64 bit machines): 
+platforms (if not mentioned otherwise the build platforms are 64 bit machines): 
 
 - Linux
+    - Antix 23 (32bit)
+    - Ubuntu 16 (32bit)
+    - Ubuntu 18
     - Ubuntu 20
     - Ununtu 22
     - Fedora 30
