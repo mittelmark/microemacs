@@ -42,7 +42,7 @@ MicroEmacs  behaves.  Also,  any and all the  commands  can be used by any key
 stroke by changing, or re-binding, what commands various keys invoke.
 
 Special  features  are also  available to perform a diverse set of  operations
-such as file encryption,  automatic backup file gen‐ eration, en-tabbing and
+such as file encryption,  automatic backup file generation, en-tabbing and
 de-tabbing  lines, executing  operating  system commands and filtering of text
 through other programs.
 
@@ -107,7 +107,7 @@ The command line options to MicroEmacs are defined as follows:-
   (X-Windows/Microsoft Windows) as the shortcut icon invocation.
 
 > If the optional  session name sessionName is specified then the session file
-  sessionName.esf  is  loaded  restoring  the  previ‐  ous  editing  session
+  sessionName.esf  is  loaded  restoring  the  previous  editing  session
   including  the buffer window size,  position and layout, the buffer mark and
   cursor  location,  main window  size. When the  sessionName  includes  space
   characters  then the command  line option  should be  bracketed  e.g. 
@@ -234,7 +234,7 @@ The command line options to MicroEmacs are defined as follows:-
 -x
 
 : UNIX  environments.  Disable  the  capture of  signals.  MicroEmacs  2009 by
-  default captures an handles all illicit signal in‐ terrupts. The option is
+  default captures an handles all illicit signal interrupts. The option is
   enabled when debugging the source code allowing  exception  conditions to be
   trapped within the debugger.
 
@@ -268,7 +268,7 @@ __MENAME__
 __PATH__
 
 : The $PATH  environment  variable  is used on most  operating  systems  as a
-  search path for executable  files. This $PATH environ‐ ment variable must
+  search path for executable  files. This $PATH environment variable must
   be defined with  MicroEmacs 2009 on the search path. Under UNIX this is set
   in the .login, .cshrc or .profile file i.e.
 
@@ -316,12 +316,12 @@ __MEUSERPATH__
 __MEPATH__
 
 : is an environment variable that may be used to define the absolute search path
-  for MicroEmacs  macro files and affects the set‐ ting of  $search-path.  The
+  for MicroEmacs  macro files and affects the setting of  $search-path.  The
   path should include the system macros  location(s) and should include the user
   directory  location  as the first path when the  environment  variable  is not
   defined. If  $MEUSERPATH  is defined  then this path name  appears  before the
   $MEPATH  variable  to  define  the user  directory  location.  $MEPATH  is not
-  searching, so ALL  directories to be searched must be in‐ cluded in the path
+  searching, so ALL  directories to be searched must be included in the path
   specification.
 
 > is the preferred method used to defined the user directory.
@@ -332,7 +332,7 @@ __INFOPATH__
   used to search for GNU Info files.  Within the UNIX  $INFOPATH is a semi-colon
   separated list of directories which are used to search for the MicroEmacs 2009
   macro files. The path is searched from left to right. The environment variable
-  is typically defined in the in the .login, .cshrc or .pro‐ file file i.e.
+  is typically defined in the in the .login, .cshrc or .profile file i.e.
 
        export INFOPATH /usr/local/info:$HOME/info
 
@@ -349,9 +349,9 @@ FILES
 
 
 All of the macro files and  dictionaries  are located in the  MicroEmacs  home
-  directory. The standard file extensions that are utilized are:-
+directory. The standard file extensions that are utilized are:-
 
- _.eaf_ MicroEmacs 2009 abbreviation  file, defines  completion  definitions
+_.eaf_ MicroEmacs 2009 abbreviation  file, defines  completion  definitions
    for buffer dependent text expansion.
 
 _.edf_  A  MicroEmacs  2009  spelling  dictionary.   <language>.edf  provide
@@ -435,8 +435,7 @@ restores the buffers but does not restore the window  layout  because this has
 been destroyed by the introduction of the new file  "morefiles.txt". This type
 of command  with another file behaves as the old "me -c" command  prior to the
 2006  release  that  did  not  support  sessions.  If  <mySessionName>  is not
-specified  then the buffers are  restored  but the window  layout is not re‐
-stored.
+specified  then the buffers are  restored  but the window  layout is not restored.
 
 HISTORY
 =======
