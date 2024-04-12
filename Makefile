@@ -96,6 +96,8 @@ folder-unix:
 	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/mewb
 	cp bfs/bfs-readme.md bin/bfs license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/ 	
 	cp bfs/bfs-readme.md bin/bfs license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
+	cp doc/me.1 MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/
+	cp doc/me.1 MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/
 zip-unix: folder-unix
 	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
 	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
