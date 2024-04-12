@@ -107,7 +107,9 @@ folder-windows:
 	cp mew-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mewb/mewb.exe
 	cp mec-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mecb/mewb.exe	
 	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mewb/
-	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/	
+	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/
+	cp doc/me.1 MicroEmacs09_$(version)_windows-32-mewb/
+	cp doc/me.1 MicroEmacs09_$(version)_windows-32-mecb/
 zip-windows: folder-windows
 	zip MicroEmacs09_$(version)_windows-32-mewb.zip MicroEmacs09_$(version)_windows-32-mewb/*
 	zip MicroEmacs09_$(version)_windows-32-mecb.zip MicroEmacs09_$(version)_windows-32-mecb/*
