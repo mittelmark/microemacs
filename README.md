@@ -51,8 +51,10 @@ build is folded by the indicated three dots:
 
 ## Compilation
 
+### Debian systems
+
 If you prefer to compile the code yourself here are the required  commands for
-instance on a Ubuntu-like system:
+a Debian or Debian derived system like MX Linux, Linux Mint or Ubuntu system:
 
 ```bash
 ### install packages
@@ -68,7 +70,25 @@ make bfs-bin
 make me-bfs-linux 
 ```
 
-Otherwise you  might just download pre-build executables (see below).
+### Redhat systems
+
+Here some  required  code to compile on Red Hat  systems  like  CentOS or Alma
+Linux:
+
+```bash
+### download last github code
+wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
+sudo yum install zlib-devel
+make bfs-bin       ## build the bfs executable to create standalone ME
+sudo yum install libXt-devel ncurses-devel
+make me-bin        ## build mecw (mew) and mec executables
+make me-bfs-linux  ## build standalone bfs-executables
+./mew-linux.bin -V ## check executable
+cp mew-linux.bin ~/bin/me ## installiing `me -n` (runs console version)
+```
+
+If you do not want to build these  executables  yourself you can just download
+pre-build executables (see below).
 
 ## Download Prebuild MicroEmacs Executables
 
@@ -83,6 +103,15 @@ platforms (if not mentioned otherwise the build platforms are 64 bit machines):
     - Ununtu 22
     - Fedora 30
     - Fedora 38
+    - AlmaLinux 8.9 
+    
+[Ubuntu](https://ubuntu.com/)            builds            should           be
+[Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
+Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
+compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
+[CentOS](https://www.centos.org)  compatible.  Fedora  builds  probably can be
+probably only used on Fedora without problems.
+
 - macOS
     - macOS 11
     - macOS 12
@@ -105,6 +134,7 @@ Release 2024-03-29 (v09.12.23):
 |         | Ubuntu 22   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu22-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-ubuntu22-mecb.zip) |
 |         | Fedora 30   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora30-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora30-mecb.zip) |
 |         | Fedora 38   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora38-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora38-mecb.zip) |
+|         | AlmaLinux 8.9 | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-alma89-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-alma89-mecb.zip) |
 | macOS   | macOS 11    | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-11-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_Linux-macos-11-mecb.zip) |
 |         | macOS 12    | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-12-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-12-mecb.zip) |
 |         | macOS 14    | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-14-arm-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-14-arm-mecb.zip) |
