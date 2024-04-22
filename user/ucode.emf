@@ -1,0 +1,210 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;  Author        : Detlef Groth
+;  Created       : Mon Apr 22 08:02:57 2024
+;  Last Modified : <240422.0806>
+;
+;  Description   : converts ASCII characters in the range
+;                  of 151-256 if from Unicode to ISI8859-15
+;
+;  Notes         : Windows-1252 (Euro, Dagger) currently not supported
+;
+;  History       : 2024-04-22 first version
+;
+;  Copyright (c) 2024 Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+define-macro ucode-ascii
+    ; converts UTF-8 strings in buffer
+    ; in the range of 161-256 into their 
+    ; ISO-8859-15 equivalents
+    ; TODO: make list and then while loop over them
+    ; TODO: add more chars ascii 128 (Euro?) - 277
+    ; the latter are not available on X-Win but should
+    ; be available on Windows using Windows-1252
+    set-position "\x81"
+    beginning-of-buffer
+    replace-string "Â¡"    "¡"
+    beginning-of-buffer
+    replace-string "Â¢"    "¢"
+    beginning-of-buffer
+    replace-string "Â£"    "£"
+    beginning-of-buffer
+    replace-string "Â¤"    "¤"
+    beginning-of-buffer
+    replace-string "Â¥"    "¥"
+    beginning-of-buffer
+    replace-string "Â¦"    "¦"
+    beginning-of-buffer
+    replace-string "Â§"    "§"
+    beginning-of-buffer
+    replace-string "Â©"    "©"
+    beginning-of-buffer
+    replace-string "Âª"    "ª"
+    beginning-of-buffer
+    replace-string "Â«"    "«"
+    beginning-of-buffer
+    replace-string "Â¬"    "¬"
+    beginning-of-buffer
+    replace-string "Â°"    "°"
+    beginning-of-buffer
+    replace-string "Â®"    "®"
+    beginning-of-buffer
+    replace-string "Â¯"    "¯"
+    beginning-of-buffer
+    replace-string "Â±"    "±"
+    beginning-of-buffer
+    replace-string "Â²"    "²"
+    beginning-of-buffer
+    replace-string "Â³"    "³"
+    beginning-of-buffer
+    replace-string "Âµ"    "µ"
+    beginning-of-buffer
+    replace-string "Â¶"    "¶"
+    beginning-of-buffer
+    replace-string "Â·"    "·"
+    beginning-of-buffer
+    replace-string "Â¹"    "¹"
+    beginning-of-buffer
+    replace-string "Âº"    "º"
+    beginning-of-buffer
+    replace-string "Â»"    "»"
+    beginning-of-buffer
+    replace-string "Â¼"    "¼"
+    beginning-of-buffer
+    replace-string "Â½"    "½"
+    beginning-of-buffer
+    replace-string "Â¾"    "¾"
+    beginning-of-buffer
+    replace-string "Â¿"    "¿"
+    beginning-of-buffer
+    replace-string "Ã€" "À"
+    beginning-of-buffer 
+    replace-string "Ã" "À"
+    beginning-of-buffer 
+    replace-string "Ã‚" "Â"
+    beginning-of-buffer 
+    replace-string "Ãƒ" "Ã"
+    beginning-of-buffer 
+    replace-string "Ã„" "Ä"
+    beginning-of-buffer 
+    replace-string "Ã…" "Å"
+    beginning-of-buffer 
+    replace-string "Ã†" "Æ"
+    beginning-of-buffer 
+    replace-string "Ã‡" "Ç"
+    beginning-of-buffer 
+    replace-string "Ãˆ" "È"
+    beginning-of-buffer 
+    replace-string "Ã‰" "É"
+    beginning-of-buffer 
+    replace-string "ÃŠ" "Ê"
+    beginning-of-buffer 
+    replace-string "Ã‹" "Ë"
+    beginning-of-buffer 
+    replace-string "ÃŒ" "Ì"
+    beginning-of-buffer 
+    replace-string "Ã" "Í"
+    beginning-of-buffer 
+    replace-string "Ã" "Î"
+    beginning-of-buffer 
+    replace-string "Ã" "Ï"
+    beginning-of-buffer 
+    replace-string "Ã" "Ğ"
+    beginning-of-buffer 
+    replace-string "Ã‘" "Ñ"
+    beginning-of-buffer 
+    replace-string "Ã’" "Ò"
+    beginning-of-buffer 
+    replace-string "Ã“" "Ó"
+    beginning-of-buffer 
+    replace-string "Ã”" "Ô"
+    beginning-of-buffer 
+    replace-string "Ã•" "Õ"
+    beginning-of-buffer 
+    replace-string "Ã–" "Ö"
+    beginning-of-buffer 
+    replace-string "Ã—" "×"
+    beginning-of-buffer 
+    replace-string "Ã˜" "Ø"
+    beginning-of-buffer 
+    replace-string "Ã™" "Ù"
+    beginning-of-buffer 
+    replace-string "Ãš" "Ú"
+    beginning-of-buffer 
+    replace-string "Ã›" "Û"
+    beginning-of-buffer 
+    replace-string "Ãœ" "Ü"
+    beginning-of-buffer 
+    replace-string "Ã" "İ"
+    beginning-of-buffer 
+    replace-string "Ã" "Ş"
+    beginning-of-buffer 
+    replace-string "ÃŸ" "ß"
+    beginning-of-buffer 
+    replace-string "Ã " "à"
+    beginning-of-buffer 
+    replace-string "Ã¡"    "á"
+    beginning-of-buffer 
+    replace-string "Ã¢"    "â"
+    beginning-of-buffer 
+    replace-string "Ã£"    "ã"
+    beginning-of-buffer 
+    replace-string "Ã¢"    "â"
+    beginning-of-buffer 
+    replace-string "Ã¤"    "ä"
+    beginning-of-buffer 
+    replace-string "Ã¥"    "å"
+    beginning-of-buffer 
+    replace-string "Ã¦"    "æ"
+    beginning-of-buffer 
+    replace-string "Ã§"    "ç"
+    beginning-of-buffer 
+    replace-string "Ã¨"    "è"
+    beginning-of-buffer 
+    replace-string "Ã©"    "é"
+    beginning-of-buffer 
+    replace-string "Ãª"    "ê"
+    beginning-of-buffer 
+    replace-string "Ã«"    "ë"
+    beginning-of-buffer 
+    replace-string "Ã¬"    "ì"
+    beginning-of-buffer 
+    replace-string "Ã­"    "í"
+    beginning-of-buffer 
+    replace-string "Ã®"    "î"
+    beginning-of-buffer 
+    replace-string "Ã¯"    "ï"
+    beginning-of-buffer 
+    replace-string "Ã°"    "ğ"
+    beginning-of-buffer 
+    replace-string "Ã±"    "ñ"
+    beginning-of-buffer 
+    replace-string "Ã²"    "ò"
+    beginning-of-buffer 
+    replace-string "Ã³"    "ó"
+    beginning-of-buffer 
+    replace-string "Ã´"    "ô"
+    beginning-of-buffer 
+    replace-string "Ãµ"    "õ"
+    beginning-of-buffer 
+    replace-string "Ã¶"    "ö"
+    beginning-of-buffer 
+    replace-string "Ã·"    "÷"
+    beginning-of-buffer 
+    replace-string "Ã¸"    "ø"
+    beginning-of-buffer 
+    replace-string "Ã¹"    "ù"
+    beginning-of-buffer 
+    replace-string "Ãº"    "ú"
+    beginning-of-buffer 
+    replace-string "Ã»"    "û"
+    beginning-of-buffer
+    replace-string "Ã¼"    "ü"
+    beginning-of-buffer
+    replace-string "Ã½"    "ı"
+    beginning-of-buffer
+    replace-string "Ã¾"    "ş"
+    beginning-of-buffer
+    replace-string "Ã¿"    "ÿ"
+    goto-position "\x81"
+!emacro
