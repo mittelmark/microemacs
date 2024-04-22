@@ -51,7 +51,7 @@ build is folded by the indicated three dots:
 
 ## Compilation
 
-### Debian systems
+### Debian Systems
 
 If you prefer to compile the code yourself here are the required  commands for
 a Debian or Debian derived system like MX Linux, Linux Mint or Ubuntu system:
@@ -70,10 +70,10 @@ make bfs-bin
 make me-bfs-linux 
 ```
 
-### Redhat systems
+### Red Hat Systems
 
-Here some  required  code to compile on Red Hat  systems  like  CentOS or Alma
-Linux:
+Here the steps  required to compile the editor on Red Hat compatible systems  like CentOS
+or AlmaLinux, For Fedora builds replace `yum` with `dnf`:
 
 ```bash
 ### download last github code
