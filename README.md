@@ -78,6 +78,8 @@ or AlmaLinux, For Fedora builds replace `yum` with `dnf`:
 ```bash
 ### download last github code
 wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
+unzip master.zip
+cd microemacs-master
 sudo yum install zlib-devel
 make bfs-bin       ## build the bfs executable to create standalone ME
 sudo yum install libXt-devel ncurses-devel
