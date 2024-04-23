@@ -85,6 +85,9 @@ make me-bin        ## build mecw (mew) and mec executables
 make me-bfs-linux  ## build standalone bfs-executables
 ./mew-linux.bin -V ## check executable
 cp mew-linux.bin ~/bin/me ## installiing `me -n` (runs console version)
+### for more fonts
+sudo yum install xorg-x11-apps ## xfontsel
+sudo yum install xorg-x11-fonts* ## Lucidatypewriter and Adobe courier fonts
 ```
 
 If you do not want to build these  executables  yourself you can just download
