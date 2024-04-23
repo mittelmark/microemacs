@@ -110,12 +110,14 @@ platforms (if not mentioned otherwise the build platforms are 64 bit machines):
     - Fedora 38
     - AlmaLinux 8.9 
     
-[Ubuntu](https://ubuntu.com/)            builds            should           be
+[Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
 [Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
 Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
 compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
-[CentOS](https://www.centos.org)  compatible.  Fedora  builds  probably can be
-probably only used on Fedora without problems.
+[CentOS](https://www.centos.org)                                           and
+[RHEL](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
+compatible.  [Fedora](https://www.fedora.org) builds can be probably only used
+on Fedora without problems.
 
 - macOS
     - macOS 11
