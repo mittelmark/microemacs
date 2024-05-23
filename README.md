@@ -76,8 +76,8 @@ Here the steps  required to compile the editor on Red Hat compatible systems  li
 or AlmaLinux, For Fedora builds replace `yum` with `dnf`:
 
 ```bash
-### install make and unzip
-sudo yum install make unzip
+### install make, unzip, gcc
+sudo yum install make unzip gcc
 ### download last github code
 wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
 unzip master.zip
