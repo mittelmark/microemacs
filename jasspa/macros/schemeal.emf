@@ -78,7 +78,7 @@ add-color-scheme .scheme.dir-open .col2 .col9 .col10 .col9 .col2 .col18 .col10 .
 add-color-scheme .scheme.dir-closed .col3 .col9 .col11 .col9 .col3 .col18 .col11 .col18 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.dir-uknown .col4 .col9 .col12 .col9 .col4 .col18 .col12 .col18 0 8 0 8 0 8 0 8
 ; Line Schemes
-add-color-scheme .scheme.hide .col5 .col8 .col5 .col9 .col1 .col9 .col5 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hide .col5 .col8 .col5 .col9 .col1 .col18 .col5 .col18 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.fold-close .col3 .col9 .col11 .col9 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.fold-open .col4 .col9 .col12 .col9 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.trace .col4 .col9 .col12 .col9 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
