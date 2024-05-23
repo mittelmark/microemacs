@@ -14,9 +14,10 @@ endif
 ifeq ($(nodename),micky)
 	os=fedora-39-x86_64
 endif
-kernel=$(shell uname -a | perl -pe 's/.+[uU]buntu-?([0-9]+).+/ubuntu$$1/; s/.+fc([0-9]+).+/fedora$$1/; s/.+(2[0-9])\..+Ubuntu.+/ubuntu$$1/; s/.+(el[8-9])_([0-9]+).+/el${1}_$2/')
+#kernel=$(shell uname -a | perl -pe 's/.+[uU]buntu-?([0-9]+).+/ubuntu$$1/; s/.+fc([0-9]+).+/fedora$$1/; s/.+(2[0-9])\..+Ubuntu.+/ubuntu$$1/; s/.+(el[8-9])_([0-9]+).+/el${1}_$2/')
+kernel=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/' | sed -E 's/.+[uU]buntu-?([0-9]+).+/ubuntu\1/;' | sed -E 's/.+(el[8-9])_([0-9]+).+/el\1_\2/')
 version=091223
-kernelname=$(shell uname -s | perl -pe 's/Linux/linux/')
+kernelname=$(shell uname -s | sed 's/Linux/linux/')
 machine=$(uname -m)
 default:
 	echo "Makefile for Linux systems"
