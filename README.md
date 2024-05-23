@@ -77,7 +77,7 @@ or AlmaLinux, For Fedora builds replace `yum` with `dnf`:
 
 ```bash
 ### install make, unzip, gcc
-sudo yum install make unzip gcc
+sudo yum install make zip unzip gcc
 ### download last github code
 wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
 unzip master.zip
@@ -110,7 +110,7 @@ platforms (if not mentioned otherwise the build platforms are 64 bit machines):
     - Ununtu 22
     - Fedora 30
     - Fedora 38
-    - AlmaLinux 8.9 
+    - AlmaLinux 8.9 and 9.4
     
 [Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
 [Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
