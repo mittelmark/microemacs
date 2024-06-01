@@ -106,6 +106,7 @@ jobs:
       
     - name: make me binaries Linux
       run: |
+        sudo apt install libxt-dev
         make me-bin
         make me-bfs-linux
 
@@ -197,8 +198,8 @@ jobs:
         run: |
            mkdir MicroEmacs09-${VERSION}-macos12-mecb/
            mkdir MicroEmacs09_${VERSION}_macos12-mewb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos-mecb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos-mewb/           
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos12-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos12-mewb/           
            cp ./mew-macos-12.bin MicroEmacs09-${VERSION}-macos12-mewb/mewb
            cp ./mec-macos-12.bin MicroEmacs09-${VERSION}-macos12-mecb/mecb
            
@@ -240,24 +241,24 @@ jobs:
 
       - name: Make zipimage
         run: |
-           mkdir MicroEmacs09_${VERSION}_macos-14-arm-mecb/
-           mkdir MicroEmacs09_${VERSION}_macos-14-arm-mewb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-14-arm-mecb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-14-arm-mewb/
-           cp ./mew-macos-14-arm.bin MicroEmacs09_${VERSION}_macos-14-arm-mewb/mewb
-           cp ./mec-macos-14-arm.bin MicroEmacs09_${VERSION}_macos-14-arm-mecb/mecb
+           mkdir MicroEmacs09-${VERSION}-macos14-mecb/
+           mkdir MicroEmacs09-${VERSION}-macos14-mewb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos14-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos14-mewb/
+           cp ./mew-macos-14-arm.bin MicroEmacs09-${VERSION}-macos14-mewb/mewb
+           cp ./mec-macos-14-arm.bin MicroEmacs09-${VERSION}-macos14-mecb/mecb
            echo `ls`
            
       - name: Upload mecb macOS 14
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}_macos-14-arm-mecb
-           path: MicroEmacs09_${{ env.VERSION }}_macos-14-arm-mecb
+           name: MicroEmacs09-${{ env.VERSION }}-macos14-mecb
+           path: MicroEmacs09-${{ env.VERSION }}-macos14-mecb
 
       - name: Upload mewb macOS 14
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}_macos-14-arm-mewb
-           path: MicroEmacs09_${{ env.VERSION }}_macos-14-arm-mewb
+           name: MicroEmacs09-${{ env.VERSION }}-macos14-mewb
+           path: MicroEmacs09-${{ env.VERSION }}-macos14-mewb
         
 
