@@ -22,7 +22,7 @@ machine=$(uname -m)
 OSVERSION=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/;' | sed -E 's/.+(2[02468]).+-Ubuntu.+/ubuntu\1/;')
 OS=$(shell uname -o | sed 's/GNU.Linux/linux/')
 VERSION=$(shell grep -e '^version=' Makefile | sed 's/version=//')
-OSV=$(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID=([0-9]+).*/\1/')
+OSV=$(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
 DIST=$(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
 OSVERSION="$(DIST)$(OSV)"
 default:

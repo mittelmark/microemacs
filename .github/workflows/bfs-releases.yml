@@ -198,7 +198,7 @@ jobs:
       - name: Make zipimage
         run: |
            mkdir MicroEmacs09-${VERSION}-macos12-mecb/
-           mkdir MicroEmacs09_${VERSION}_macos12-mewb/
+           mkdir MicroEmacs09-${VERSION}-macos12-mewb/
            cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos12-mecb/
            cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos12-mewb/           
            cp ./mew-macos-12.bin MicroEmacs09-${VERSION}-macos12-mewb/mewb
