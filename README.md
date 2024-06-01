@@ -127,9 +127,12 @@ platforms (if not mentioned otherwise the build platforms are 64 bit machines):
     - Ubuntu 18
     - Ubuntu 20
     - Ununtu 22
+    - Ununtu 24    
     - Fedora 30
     - Fedora 38
-    - AlmaLinux 8.9 and 9.4
+    - Fedora 40    
+    - AlmaLinux 8.9
+    - AlmaLinux 9.4
     
 [Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
 [Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
@@ -163,6 +166,7 @@ Release 2024-03-29 (v09.12.23):
 |         | Ubuntu 24   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09-091223-linux-ubuntu24-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09-091223-linux-ubuntu24-mecb.zip) |
 |         | Fedora 30   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora30-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora30-mecb.zip) |
 |         | Fedora 38   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora38-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-fedora38-mecb.zip) |
+|         | Fedora 40   | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09-091223-linux-fedora40-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09-091223-linux-fedora40-mecb.zip) |
 |         | AlmaLinux 8.9 | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-alma89-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-alma89-mecb.zip) |
 |         | AlmaLinux 9.4 | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-alma9_4-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_linux-alma9_4-mecb.zip) |
 | macOS   | macOS 11    | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-11-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_Linux-macos-11-mecb.zip) |
