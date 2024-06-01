@@ -102,6 +102,7 @@ jobs:
       run: |
         echo `uname -a`
         echo `uname -o`
+        cat /etc/os-release
         make bfs-bin
       
     - name: make me binaries Linux
