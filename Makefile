@@ -108,8 +108,8 @@ folder-unix:
 	cp doc/me.1 MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mewb/
 	cp doc/me.1 MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mecb/
 zip-unix: folder-unix
-	zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
-	zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
+	zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)mewb.zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mewb/*
+	zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)mecb.zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mecb/*	
 folder-windows:
 	-mkdir MicroEmacs09-$(VERSION)-windows-mecb
 	-mkdir MicroEmacs09-$(VERSION)-windows-mewb	
