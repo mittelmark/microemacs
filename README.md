@@ -97,6 +97,25 @@ sudo yum install xorg-x11-fonts* ## Lucidatypewriter and Adobe courier fonts
 If you do not want to build these  executables  yourself you can just download
 pre-build executables (see below).
 
+## Cross-compilation on Linux for Windows:
+
+You need the  Mingw32 GCC  compiler  and the Zip  library.  Here an install on
+Fedora:
+
+```
+sudo dnf install mingw32-gcc mingw32-zlib
+```
+
+On Debian systems like Ubuntu:
+
+```
+sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+sudo apt install desktop-file-utils
+```
+
+Thereafter you might execute `make mingw32-compile` and `make me-bfs-bin`.
+
 ## Download Prebuild MicroEmacs Executables
 
 There  are  stand-alone   single  file  executable  build  for  the  following

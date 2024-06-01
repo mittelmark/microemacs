@@ -17,6 +17,7 @@ jobs:
     - name: make bfs binary
       run:  |
         echo `uname -a`
+        echo `uname -o`
         make bfs-bin
       
     - name: make me binaries Linux and Windows
@@ -33,32 +34,32 @@ jobs:
     
     - name: Make zipimage
       run: |
-        make folder-unix version=${VERSION}
-        make folder-windows version=${VERSION}
+        make folder-unix
+        make folder-windows
         
     - name: Upload Linux Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu20-mecb
-        path: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu20-mecb
+        name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu20-mecb
+        path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu20-mecb
         
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu20-mewb
-        path: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu20-mewb
+        name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu20-mewb
+        path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu20-mewb
         
     - name: Upload Windows Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_${{ env.VERSION }}_windows-32-mecb
-        path: MicroEmacs09_${{ env.VERSION }}_windows-32-mecb
+        name: MicroEmacs09-${{ env.VERSION }}-windows-mecb
+        path: MicroEmacs09-${{ env.VERSION }}-windows-mecb
         
     - name: Upload Windows Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_${{ env.VERSION }}_windows-32-mewb
-        path: MicroEmacs09_${{ env.VERSION }}_windows-32-mewb
+        name: MicroEmacs09-${{ env.VERSION }}-windows-mewb
+        path: MicroEmacs09-${{ env.VERSION }}-windows-mewb
         
   build-ub22:
     runs-on: ubuntu-22.04
@@ -66,7 +67,10 @@ jobs:
     - uses: actions/checkout@v4
      
     - name: make bfs binary
-      run:  make bfs-bin
+      run: |
+        echo `uname -a`
+        echo `uname -o`
+        make bfs-bin
       
     - name: make me binaries Linux
       run: |
@@ -80,14 +84,14 @@ jobs:
     - name: Upload Linux Mecb Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu22-mecb
-        path: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu22-mecb
+        name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu22-mecb
+        path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu22-mecb
         
     - name: Upload Linux Mecw Zips
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu22-mewb
-        path: MicroEmacs09_${{ env.VERSION }}_linux-ubuntu22-mewb
+        name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu22-mewb
+        path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu22-mewb
         
   build-os11:
     runs-on: macos-11
@@ -115,24 +119,24 @@ jobs:
 
       - name: Make zipimage
         run: |
-           mkdir MicroEmacs09_${VERSION}_macos-11-mecb/
-           mkdir MicroEmacs09_${VERSION}_macos-11-mewb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-11-mecb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-11-mewb/           
-           cp ./mew-macos-11.bin MicroEmacs09_${VERSION}_macos-11-mewb/mewb
-           cp ./mec-macos-11.bin MicroEmacs09_${VERSION}_macos-11-mecb/mecb
+           mkdir MicroEmacs09-${VERSION}-macos11-mecb/
+           mkdir MicroEmacs09-${VERSION}-macos11-mewb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos11-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}-macos11-mewb/           
+           cp ./mew-macos-11.bin MicroEmacs09-${VERSION}-macos11-mewb/mewb
+           cp ./mec-macos-11.bin MicroEmacs09-${VERSION}-macos11-mecb/mecb
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}_macos-11-mecb
-           path: MicroEmacs09_${{ env.VERSION }}_macos-11-mecb
+           name: MicroEmacs09-${{ env.VERSION }}-macos11-mecb
+           path: MicroEmacs09-${{ env.VERSION }}-macos11-mecb
 
       - name: Upload mewb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}_macos-11-mewb
-           path: MicroEmacs09_${{ env.VERSION }}_macos-11-mewb
+           name: MicroEmacs09-${{ env.VERSION }}-macos-11-mewb
+           path: MicroEmacs09-${{ env.VERSION }}-macos-11-mewb
 
   build-os12:
     runs-on: macos-12

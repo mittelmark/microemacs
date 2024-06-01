@@ -19,10 +19,15 @@ kernel=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/' | sed -E 's/.+[uU]
 version=091223
 kernelname=$(shell uname -s | sed 's/Linux/linux/')
 machine=$(uname -m)
+OSVERSION=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/;' | sed -E 's/.+(2[2468]).+-Ubuntu.+/ubuntu\1/')
+OS=$(shell uname -o | sed 's/GNU.Linux/linux/')
+VERSION=$(shell grep -e '^version=' Makefile | sed 's/version=//')
 default:
 	echo "Makefile for Linux systems"
 	echo "Usage make bfs-bin|me-bin|me-standalone"
-	echo $(kernel)
+	echo `uname -a`
+	echo `uname -o`
+	echo "$(VERSION) OS $(OS) OSV $(OSVERSION)"
 bfs-bin:
 	-mkdir bin
 	cd bfs && make
@@ -91,29 +96,29 @@ docu-html:
 run-tuser:
 	MENAME=tuser MEPATH=`pwd`/tuser:`pwd`/jasspa/macros src/.linux32gcc-release-mecw/mecw
 folder-unix:
-	-mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb
-	-mkdir MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb	
-	cp mec-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/mecb
-	cp mew-linux.bin MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/mewb
-	cp bfs/bfs-readme.md bin/bfs license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/ 	
-	cp bfs/bfs-readme.md bin/bfs license.txt README.txt MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/ 		
-	cp doc/me.1 MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/
-	cp doc/me.1 MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/
+	-mkdir MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mecb
+	-mkdir MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mewb	
+	cp mec-linux.bin MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mecb/mecb
+	cp mew-linux.bin MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mewb/mewb
+	cp bfs/bfs-readme.md bin/bfs license.txt README.txt MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mecb/ 	
+	cp bfs/bfs-readme.md bin/bfs license.txt README.txt MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mewb/ 		
+	cp doc/me.1 MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mewb/
+	cp doc/me.1 MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)-mecb/
 zip-unix: folder-unix
-	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
-	zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
+	zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)mewb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mewb/*
+	zip MicroEmacs09-$(VERSION)-$(OS)-$(OSVERSION)mecb.zip MicroEmacs09_$(version)_$(kernelname)-$(kernel)-$(machine)mecb/*	
 folder-windows:
-	-mkdir MicroEmacs09_$(version)_windows-32-mecb
-	-mkdir MicroEmacs09_$(version)_windows-32-mewb	
-	cp mew-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mewb/mewb.exe
-	cp mec-bfs-windows.exe MicroEmacs09_$(version)_windows-32-mecb/mewb.exe	
-	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mewb/
-	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09_$(version)_windows-32-mecb/
-	cp doc/me.1 MicroEmacs09_$(version)_windows-32-mewb/
-	cp doc/me.1 MicroEmacs09_$(version)_windows-32-mecb/
+	-mkdir MicroEmacs09-$(VERSION)-windows-mecb
+	-mkdir MicroEmacs09-$(VERSION)-windows-mewb	
+	cp mew-bfs-windows.exe MicroEmacs09-$(VERSION)-windows-mewb/mewb.exe
+	cp mec-bfs-windows.exe MicroEmacs09-$(VERSION)-windows-mecb/mewb.exe	
+	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09-$(VERSION)-windows-mewb/
+	cp bfs/bfs-readme.md bin/bfs.exe README.txt license.txt MicroEmacs09-$(VERSION)-windows-mecb/
+	cp doc/me.1 MicroEmacs09-$(VERSION)-windows-mewb/
+	cp doc/me.1 MicroEmacs09-$(VERSION)-windows-mecb/
 zip-windows: folder-windows
-	zip MicroEmacs09_$(version)_windows-32-mewb.zip MicroEmacs09_$(version)_windows-32-mewb/*
-	zip MicroEmacs09_$(version)_windows-32-mecb.zip MicroEmacs09_$(version)_windows-32-mecb/*
+	zip MicroEmacs09-$(VERSION)-windows-mewb.zip MicroEmacs09-$(VERSION)-windows-mewb/*
+	zip MicroEmacs09-$(VERSION)-windows-mecb.zip MicroEmacs09-$(VERSION)-windows-mecb/*
 me-ehf:
 	cd doc && make ehf
 	cp doc/me.ehf jasspa/macros/
