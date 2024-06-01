@@ -122,7 +122,7 @@ jobs:
            mkdir MicroEmacs09-${VERSION}-macos11-mecb/
            mkdir MicroEmacs09-${VERSION}-macos11-mewb/
            cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos11-mecb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}-macos11-mewb/           
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos11-mewb/           
            cp ./mew-macos-11.bin MicroEmacs09-${VERSION}-macos11-mewb/mewb
            cp ./mec-macos-11.bin MicroEmacs09-${VERSION}-macos11-mecb/mecb
            
