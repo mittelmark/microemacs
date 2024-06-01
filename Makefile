@@ -19,7 +19,7 @@ kernel=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/' | sed -E 's/.+[uU]
 version=091223
 kernelname=$(shell uname -s | sed 's/Linux/linux/')
 machine=$(uname -m)
-OSVERSION=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/;' | sed -E 's/.+(2[2468]).+-Ubuntu.+/ubuntu\1/')
+OSVERSION=$(shell uname -a | sed -E 's/.+fc([0-9]+).+/fedora\1/;' | sed -E 's/.+(2[02468]).+-Ubuntu.+/ubuntu\1/;')
 OS=$(shell uname -o | sed 's/GNU.Linux/linux/')
 VERSION=$(shell grep -e '^version=' Makefile | sed 's/version=//')
 default:
