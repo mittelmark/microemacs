@@ -93,6 +93,38 @@ jobs:
         name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu22-mewb
         path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu22-mewb
         
+  build-ub24:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: make bfs binary
+      run: |
+        echo `uname -a`
+        echo `uname -o`
+        make bfs-bin
+      
+    - name: make me binaries Linux
+      run: |
+        make me-bin
+        make me-bfs-linux
+
+    - name: Make zipimage
+      run: |
+        make folder-unix version=${VERSION}
+        
+    - name: Upload Linux Mecb Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu24-mecb
+        path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu24-mecb
+        
+    - name: Upload Linux Mecw Zips
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu24-mewb
+        path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu24-mewb
+        
   build-os11:
     runs-on: macos-11
     steps:
@@ -135,8 +167,8 @@ jobs:
       - name: Upload mewb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09-${{ env.VERSION }}-macos-11-mewb
-           path: MicroEmacs09-${{ env.VERSION }}-macos-11-mewb
+           name: MicroEmacs09-${{ env.VERSION }}-macos11-mewb
+           path: MicroEmacs09-${{ env.VERSION }}-macos11-mewb
 
   build-os12:
     runs-on: macos-12
@@ -148,7 +180,6 @@ jobs:
            echo `uname -a`
            ls
            brew install xquartz
-           brew install gcc
            brew install make
            cd bfs && gmake CC=gcc-12
            cd ../src && gmake -f macos32gcc.gmk  CC=gcc-12
@@ -164,24 +195,24 @@ jobs:
 
       - name: Make zipimage
         run: |
-           mkdir MicroEmacs09_${VERSION}_macos-12-mecb/
-           mkdir MicroEmacs09_${VERSION}_macos-12-mewb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-12-mecb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09_${VERSION}_macos-12-mewb/           
-           cp ./mew-macos-12.bin MicroEmacs09_${VERSION}_macos-12-mewb/mewb
-           cp ./mec-macos-12.bin MicroEmacs09_${VERSION}_macos-12-mecb/mecb
+           mkdir MicroEmacs09-${VERSION}-macos12-mecb/
+           mkdir MicroEmacs09_${VERSION}_macos12-mewb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos-mewb/           
+           cp ./mew-macos-12.bin MicroEmacs09-${VERSION}-macos12-mewb/mewb
+           cp ./mec-macos-12.bin MicroEmacs09-${VERSION}-macos12-mecb/mecb
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}_macos-12-mecb
-           path: MicroEmacs09_${{ env.VERSION }}_macos-12-mecb
+           name: MicroEmacs09-${{ env.VERSION }}-macos12-mecb
+           path: MicroEmacs09-${{ env.VERSION }}-macos12-mecb
 
       - name: Upload mewb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09_${{ env.VERSION }}_macos-12-mewb
-           path: MicroEmacs09_${{ env.VERSION }}_macos-12-mewb
+           name: MicroEmacs09-${{ env.VERSION }}-macos12-mewb
+           path: MicroEmacs09-${{ env.VERSION }}-macos12-mewb
 
   build-os14-arm:
     runs-on: macos-14
