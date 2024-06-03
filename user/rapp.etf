@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
 ## This is an example template for MicroEmacs to create R terminal
 ## applications.
-## Place the file into a folder ~/.jasspa/r as rapp.etf for instance
-## The after opening a new R file you use the command insert-template
-## to select that template for inserting it into your current R-file
+## Place the file into a folder ~/.jasspa/r as rapp.etf for instance.
+## Then, after opening a new R file, you can use the command insert-template
+## to select that template for inserting it into your current R-file.
 ## 
 ## Help page begins here:
 #' 
