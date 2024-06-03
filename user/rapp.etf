@@ -1,0 +1,84 @@
+#!/usr/bin/env Rscript
+## This is an example template for MicroEmacs to create R terminal
+## applications.
+## Place the file into a folder ~/.jasspa/r as rapp.etf for instance
+## The after opening a new R file you use the command insert-template
+## to select that template for inserting it into your current R-file
+## 
+## Help page begins here:
+#' 
+#' NAME
+#'       appname - Short Description
+#' 
+#' SYNOPSIS
+#'       appname [-ai] -c cval
+#' 
+#' DESCRIPTION
+#'       Longer description\n\n")
+#' 
+#' OPTIONS
+#'      -h, --help        Display help page
+#'      -i, --interactive Start interactive mode
+#' 
+#' AUTHOR
+#'      Max Musterman, University of Mustercity, Musterland
+#'
+#' LICENSE
+#'      MIT License
+#' 
+#' HOMEPAGE
+#'      https://github.com/username/project
+
+## fix for readline not working with Rscript
+input <- function (prompt="Enter: ") {
+    if (interactive() ){
+        return(readline(prompt))
+    } else {
+        cat(prompt);
+        return(readLines("stdin",n=1))
+    }
+}
+
+## read help page on top
+help <- function (argv) {
+    fin  = file(argv[1], "r")
+    while(length((line = readLines(fin,n=1)))>0) {
+        if (grepl("^#'",line)) {
+           cat(substr(line,3,nchar(line)),"\n")      
+        }   
+    }
+    close(fin)
+}
+usage <- function (argv) {
+   return(sprintf("Usage: %s [--help|--interactive] [--cmd value]\n",argv[1]))
+}
+
+main <- function (argv) {
+    ## just appname 
+    if (length(argv) == 1) {
+        cat(usage(argv))
+    } else {
+        if (argv[2] %in% c("-h","--help")) {
+            help(argv)
+        } else if (argv[2] %in% c("-i","--interactive")) {
+            ## Homework:
+            ## implement interactive usage
+        } else if (argv[2] %in% c("-c","--cmd")) {
+            ## implement command line usage
+            if (length(argv) != 4) {
+                # not two arguments given for --cmd
+                usage(argv)
+            } else {
+                ## perform command line usage
+            }
+        } else {
+            ## unknown argument
+            cat(sprintf("Error: Unknown argument '%s'!",argv[2]))
+        }
+    }
+}
+if (sys.nframe() == 0L && !interactive()) {
+    ## extract applications filename
+    binname=gsub("--file=","",grep("--file",commandArgs(),value=TRUE)[1])
+    main(c(binname,commandArgs(trailingOnly=TRUE)))
+}
