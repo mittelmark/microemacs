@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;  Author        : Detlef Groth
 ;  Created       : Mon Apr 22 08:02:57 2024
-;  Last Modified : <240422.0806>
+;  Last Modified : <240604.0715>
 ;
 ;  Description   : converts ASCII characters in the range
 ;                  of 151-256 if from Unicode to ISI8859-15
@@ -206,5 +206,13 @@ define-macro ucode-ascii
     replace-string "þ"    "�"
     beginning-of-buffer
     replace-string "ÿ"    "�"
+    beginning-of-buffer    
+    replace-string "´"    "'"
+    beginning-of-buffer
+    replace-string "–"    "--"
+    beginning-of-buffer
+    replace-string "‘"    "'"
+    beginning-of-buffer
+    replace-string " "    " "
     goto-position "\x81"
 !emacro
