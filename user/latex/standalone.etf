@@ -1,0 +1,9 @@
+\documentclass{standalone}
+% this is a latex template file for
+% MicroEmacs 2009
+% place it into ~/.jasspa/latex folder
+% then you can insert it with:
+% Esc x insert-template 
+\begin{document}
+$ E = mc^2 $
+\end{document}
