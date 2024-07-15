@@ -127,8 +127,8 @@ jobs:
         name: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu24-mewb
         path: MicroEmacs09-${{ env.VERSION }}-linux-ubuntu24-mewb
         
-  build-os11:
-    runs-on: macos-11
+  build-os13:
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -143,34 +143,34 @@ jobs:
            cd ../src && gmake -f macos32gcc.gmk  CC=gcc-10
            cd ../src && gmake -f macos32gcc.gmk  CC=gcc-10 BTYP=c
            cd ..
-           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o mew-macos-11.bin ./jasspa
-           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos-11.bin ./jasspa
-           chmod 755 mec-macos-11.bin
-           ./mec-macos-11.bin -V 
+           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o mew-macos-13.bin ./jasspa
+           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos-13.bin ./jasspa
+           chmod 755 mec-macos-13.bin
+           ./mec-macos-13.bin -V 
            echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
            echo "exit-emacs" >> platform.emf
-           TERM=xterm-256color ./mec-macos-11.bin @platform.emf
+           TERM=xterm-256color ./mec-macos-13.bin @platform.emf
 
       - name: Make zipimage
         run: |
-           mkdir MicroEmacs09-${VERSION}-macos11-mecb/
-           mkdir MicroEmacs09-${VERSION}-macos11-mewb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos11-mecb/
-           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos11-mewb/           
-           cp ./mew-macos-11.bin MicroEmacs09-${VERSION}-macos11-mewb/mewb
-           cp ./mec-macos-11.bin MicroEmacs09-${VERSION}-macos11-mecb/mecb
+           mkdir MicroEmacs09-${VERSION}-macos13-mecb/
+           mkdir MicroEmacs09-${VERSION}-macos13-mewb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos13-mecb/
+           cp bfs/bfs bfs/bfs-readme.md faq.txt license.txt README.txt MicroEmacs09-${VERSION}-macos13-mewb/           
+           cp ./mew-macos-13.bin MicroEmacs09-${VERSION}-macos13-mewb/mewb
+           cp ./mec-macos-13.bin MicroEmacs09-${VERSION}-macos13-mecb/mecb
            
       - name: Upload mecb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09-${{ env.VERSION }}-macos11-mecb
-           path: MicroEmacs09-${{ env.VERSION }}-macos11-mecb
+           name: MicroEmacs09-${{ env.VERSION }}-macos13-mecb
+           path: MicroEmacs09-${{ env.VERSION }}-macos13-mecb
 
       - name: Upload mewb
         uses: actions/upload-artifact@v4
         with: 
-           name: MicroEmacs09-${{ env.VERSION }}-macos11-mewb
-           path: MicroEmacs09-${{ env.VERSION }}-macos11-mewb
+           name: MicroEmacs09-${{ env.VERSION }}-macos13-mewb
+           path: MicroEmacs09-${{ env.VERSION }}-macos13-mewb
 
   build-os12:
     runs-on: macos-12
