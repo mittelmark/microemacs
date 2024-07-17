@@ -41,14 +41,35 @@ bfs-win-bin:
 	cd bfs && make clean
 	cd bfs && make -f Makefile.mingw CC=i686-w64-mingw32-gcc
 	cp bfs/bfs.exe bin/
-me-bin:
+mec-bin:
+	cd src && bash build -t c
+	if ! [ -d src/.linux32gcc-release-mec ]; then cd src && mkdir .linux32gcc-release-mec/ ; fi
+	cd src && cp mec .linux32gcc-release-mec/
+	cp src/.linux32gcc-release-mec/mec bin/
+mew-bin:
+	cd src && bash build -t w
+	cd src && mkdir ./linux32gcc-release-mew/
+	cd src && cp mec ./linux32gcc-release-mew/
+	cp src/.linux32gcc-release-mew/mew bin/
+me-bin: mec-bin
 	cd src && make -f linux32gcc.gmk 
-	cd src && make -f linux32gcc.gmk BTYP=c
 	#cd src && make -f linux32gcc.gmk BTYP=w
 	cp src/.linux32gcc-release-mecw/mecw bin/mew
-	cp src/.linux32gcc-release-mec/mec bin/
 	#cp src/.linux32gcc-release-mew/mew bin/	
 
+mec-bfs-linux:
+	-rm -rf me-bfs/*
+	-mkdir me-bfs
+	-mkdir me-bfs/jasspa
+	-mkdir me-bfs/jasspa/spelling
+	cp -r jasspa/macros me-bfs/jasspa/
+	rm -f me-bfs/jasspa/macros/*~
+	rm -f me-bfs/jasspa/macros/*.bak
+	-rm me-bfs/jasspa/macros/null
+	#cp -r jasspa/contrib me-bfs/jasspa/
+	cp jasspa/spelling/*$(dict)*f me-bfs/jasspa/spelling/
+	cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mec/mec -o ../mec-linux.bin ./jasspa
+	cp mec-linux.bin mec-$(OSVERSION).bin
 me-bfs-linux:
 	-rm -rf me-bfs/*
 	-mkdir me-bfs
@@ -63,7 +84,6 @@ me-bfs-linux:
 	cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mec/mec -o ../mec-linux.bin ./jasspa
 	cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mecw/mecw -o ../mew-linux.bin ./jasspa	
 	#cd me-bfs && ../bin/bfs -a ../src/.linux32gcc-release-mew/mew-o ../mew-linux.bin ./jasspa	
-	cp mec-linux.bin mec-$(os).bin
 	cp mew-linux.bin mew-$(os).bin	
 	#cp mecw-linux.bin mecw-$(os).bin		
 	cd me-bfs && ../bin/bfs -c macros-`date +%Y-%m-%d`.bfs ./jasspa
