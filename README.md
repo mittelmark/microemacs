@@ -130,18 +130,19 @@ or AlmaLinux, For Fedora builds replace `yum` with `dnf`:
 
 ```bash
 ### install make, unzip, gcc
-sudo yum install make zip unzip gcc
+sudo yum install make zip unzip gcc zlib-devel
 ### download last github code
 wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
 unzip master.zip
 cd microemacs-master
-sudo yum install zlib-devel
+make mec-bin       ## build mec executable
 make bfs-bin       ## build the bfs executable to create standalone ME
+make mec-bfs-linux ## build standalone mec-osname.bin with macros embedded
 sudo yum install libXt-devel ncurses-devel
 make me-bin        ## build mecw (mew) and mec executables
 make me-bfs-linux  ## build standalone bfs-executables
 ./mew-linux.bin -V ## check executable
-cp mew-linux.bin ~/bin/me ## installiing `me -n` (runs console version)
+cp mew-linux.bin ~/bin/me ## installing `me -n` (runs console version)
 ### for more fonts
 sudo yum install xorg-x11-apps ## xfontsel
 sudo yum install xorg-x11-fonts* ## Lucidatypewriter and Adobe courier fonts
