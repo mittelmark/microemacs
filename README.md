@@ -1,12 +1,36 @@
 
 ## MicroEmacs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="images/logo.png" width="30px" style="margin-top:15px;margin-left:50px;" />
 
-Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
-file executable for Windows, Linux and MacOS.
-
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
-It contains the following changes:
+Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
+file  executable  for Windows,  Linux and MacOS.  
+
+Main features:
+
+- small!! and fast!!
+- same user interface in terminal and in GUI mode
+- Windows, Linux, macOS versions
+- single file installs possible
+- Emacs (default) or CUA key bindings available
+- menu entries for all main functions (Esc = in Terminal mode for menu)
+- extensible programming language
+- themes, customizations, templates, snippets menu or GUI accessible
+- for its size the text editor with most features without being bloated
+
+Executables  can be of three types:
+
+- _mec_ - console  only (around 600kb without macro files)
+- _mew_ - X11/Windows  only (around  630kb without macro files)
+- _mecw_  Terminal and X11 enabled - for Mac with XQuartz and for Linux with X11
+ (650kb w/o macro files)
+
+The bfs  executables (mecb and mewb) have as well all macro files, the internal help file and
+the American  dictionary  embedded  (file size around  2.5Mb). For  simplicity
+reasons all downloads on the release page are bfs-builds.
+
+In  comparison to the version at the Jasspa  website it contains the following
+changes / extensions:
 
 * improved  terminal mode for  suspend-emacs  with using alternative  terminal
   buffer (thanks to Steven Phillips)
@@ -81,7 +105,6 @@ Try the version flag:
 ```bash
 ./mec-debian.bin -V
 ```
-
 
 Now lets build a combined windows/terminal version which can be as well run as
 a X11 application.
