@@ -11,7 +11,7 @@ Main features:
 - small!! and fast!!
 - same user interface in terminal and in GUI mode
 - Windows, Linux, macOS versions
-- single file installs possible
+- single file installs possible (2.5MB file size)
 - Emacs (default) or CUA key bindings available
 - menu entries for all main functions (Esc = in Terminal mode for menu)
 - extensible programming language
