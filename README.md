@@ -56,9 +56,39 @@ build is folded by the indicated three dots:
 If you prefer to compile the code yourself here are the required  commands for
 a Debian or Debian derived system like MX Linux, Linux Mint or Ubuntu system:
 
+Let's first build a console version:
+
 ```bash
 ### install packages
-sudo apt install git build-essential libz-dev libxt-dev libncurses-dev
+sudo apt install git build-essential libz-dev libncurses-dev
+### fetch repo
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+###  builds  mec  terminal executable
+make  mec-bin 
+### builds the bfs executable for making stand-alone mec-os.bin
+make bfs-bin     
+### makes stand-alone exes with embedded macrofiles (mec-linux.bin/mew-linux.bin)
+make mec-bfs-linux 
+```
+
+You  should  now  have a file  like  mec-debian12.bin  which  is a  standalone
+executable  which has included as macro files and the help file and can be run
+into the terminal by simply executing it.
+
+Try the version flag:
+
+```bash
+./mec-debian.bin -V
+```
+
+
+Now lets build a combined windows/terminal version which can be as well run as
+a X11 application.
+
+```bash
+### install packages for X11 build
+sudo apt install libxt-dev
 ### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
