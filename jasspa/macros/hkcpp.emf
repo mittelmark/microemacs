@@ -133,7 +133,6 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "delete"       .scheme.keyword
     hilight .hilight.cpp    1 "do"           .scheme.keyword
     hilight .hilight.cpp    1 "else"         .scheme.keyword
-    hilight .hilight.cpp    1 "false"        .scheme.keyword    
     hilight .hilight.cpp    1 "for"          .scheme.keyword
     hilight .hilight.cpp    1 "goto"         .scheme.keyword
     hilight .hilight.cpp    1 "if"           .scheme.keyword
@@ -147,7 +146,6 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "switch"       .scheme.keyword
     hilight .hilight.cpp    1 "this"         .scheme.keyword
     hilight .hilight.cpp    1 "throw"        .scheme.keyword
-    hilight .hilight.cpp    1 "true"         .scheme.keyword    
     hilight .hilight.cpp    1 "try"          .scheme.keyword
     hilight .hilight.cpp    1 "while"        .scheme.keyword
     ; types
@@ -180,6 +178,7 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "void"         .scheme.type
     hilight .hilight.cpp    1 "volatile"     .scheme.type
     ;
+    
     hilight .hilight.cpp    1 "static_cast"      .scheme.type
     hilight .hilight.cpp    1 "dynamic_cast"     .scheme.type
     hilight .hilight.cpp    1 "const_cast"       .scheme.type
@@ -196,6 +195,11 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    0 "__STDC__"     .scheme.prepro
     hilight .hilight.cpp    0 "__TIME__"     .scheme.prepro
     hilight .hilight.cpp    0 "NULL"         .scheme.prepro
+    
+    ; boolean constants
+    hilight .hilight.cpp    1 "true"         .scheme.constant   
+    hilight .hilight.cpp    1 "true"         .scheme.constant   
+
     !if &band .hilight.flags 0x08
         ; hilight constants, e.g. numbers
         hilight .hilight.cpp 1 "\\d+"        .scheme.constant
