@@ -133,6 +133,7 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "delete"       .scheme.keyword
     hilight .hilight.cpp    1 "do"           .scheme.keyword
     hilight .hilight.cpp    1 "else"         .scheme.keyword
+    hilight .hilight.cpp    1 "explicit"     .scheme.keyword    
     hilight .hilight.cpp    1 "for"          .scheme.keyword
     hilight .hilight.cpp    1 "goto"         .scheme.keyword
     hilight .hilight.cpp    1 "if"           .scheme.keyword
@@ -147,6 +148,7 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "this"         .scheme.keyword
     hilight .hilight.cpp    1 "throw"        .scheme.keyword
     hilight .hilight.cpp    1 "try"          .scheme.keyword
+    hilight .hilight.cpp    1 "using"        .scheme.keyword    
     hilight .hilight.cpp    1 "while"        .scheme.keyword
     ; types
     hilight .hilight.cpp    1 "auto"         .scheme.type
@@ -155,6 +157,7 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "class"        .scheme.type
     hilight .hilight.cpp    1 "complex"      .scheme.type
     hilight .hilight.cpp    1 "const"        .scheme.type
+    hilight .hilight.cpp    1 "constexpr"    .scheme.type
     hilight .hilight.cpp    1 "double"       .scheme.type
     hilight .hilight.cpp    1 "enum"         .scheme.type
     hilight .hilight.cpp    1 "extern"       .scheme.type
@@ -172,13 +175,27 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "struct"       .scheme.type
     hilight .hilight.cpp    1 "template"     .scheme.type
     hilight .hilight.cpp    1 "typedef"      .scheme.type
+    hilight .hilight.cpp    1 "typeid"       .scheme.type    
+    hilight .hilight.cpp    1 "typename"     .scheme.type    
     hilight .hilight.cpp    1 "union"        .scheme.type
     hilight .hilight.cpp    1 "unsigned"     .scheme.type
     hilight .hilight.cpp    1 "virtual"      .scheme.type
     hilight .hilight.cpp    1 "void"         .scheme.type
     hilight .hilight.cpp    1 "volatile"     .scheme.type
-    ;
+    ; operators
+    hilight .hilight.cpp    1 "&&"          .scheme.operator
+    hilight .hilight.cpp    1 "||"          .scheme.operator    
+    hilight .hilight.cpp    1 "and"          .scheme.operator
+    hilight .hilight.cpp    1 "and_eq"       .scheme.operator    
+    hilight .hilight.cpp    1 "or"           .scheme.operator
+    hilight .hilight.cpp    1 "or_eq"        .scheme.operator    
+    hilight .hilight.cpp    1 "not"          .scheme.operator
+    hilight .hilight.cpp    1 "not_eq"       .scheme.operator
     
+    ; true/false boolean constant
+    hilight .hilight.cpp    1 "false"        .scheme.constant      
+    hilight .hilight.cpp    1 "true"         .scheme.constant      
+    ; types
     hilight .hilight.cpp    1 "static_cast"      .scheme.type
     hilight .hilight.cpp    1 "dynamic_cast"     .scheme.type
     hilight .hilight.cpp    1 "const_cast"       .scheme.type
