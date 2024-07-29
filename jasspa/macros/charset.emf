@@ -36,6 +36,8 @@ set-variable .change-font.type 0
     set-variable #l1 0
 !elif &seq #l0 "Win-ANSI"
     set-char-mask "M" ""
+    set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ"
+    ;set-char-mask "M" ""
 !elif &seq #l0 "Win-OEM"
     set-char-mask "M" "£œª¦«®¬ª®©°§±ñ²ı³ü´îµæ¶õ·ú¸ı¹û»¯¼¬½«¾ó¿¨À·ÁÂŠÃ²ÄÆ’Ç€ÈÔÉÊÒËÑÌŞÍÖÎ×ÏØĞÑÑ¥ÒãÓàÔâÕåÖ™×ØÙëÚéÛêÜšİìŞçßÿà…á âƒä„å†æ‘ç‡èŠé‚êˆë‰ìí¡îŒï‹ñ¤ò•ó¢ô“õäö”÷öø›ù—ú£û–üıìşèÿ˜"
     set-variable $box-chars "³Ú¿ÀÙÂÃÅ´ÁÄ"
@@ -43,6 +45,7 @@ set-variable .change-font.type 0
     set-variable $system &band $system &bnot 0x10000
     set-variable .change-font.type 255
     set-variable #l1 0
+
 !elif &seq #l0 "Win-GREEK" ; ISO-7
     set-char-mask "M" ""
     set-variable .change-font.type 161
