@@ -1,4 +1,4 @@
-42
+62
 ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-adobe-standard
 ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-ascii-0
 ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso10646-1
@@ -33,6 +33,16 @@ chivo-mono-bold-18.bdf -freetype-chivo mono-bold-r-normal--25-180-100-100-p-127-
 chivo-mono-bold-20.bdf -freetype-chivo mono-bold-r-normal--28-200-100-100-p-141-iso10646-1
 chivo-mono-bold-24.bdf -freetype-chivo mono-bold-r-normal--33-240-100-100-p-167-iso10646-1
 chivo-mono-bold-7.bdf -freetype-chivo mono-bold-r-normal--10-70-100-100-p-52-iso10646-1
+chivo-mono-bold-cp1252-10.bdf -freetype-chivo mono cp1252-bold-r-normal--14-100-100-100-p-69-iso10646-1
+chivo-mono-bold-cp1252-12.bdf -freetype-chivo mono cp1252-bold-r-normal--17-120-100-100-p-82-iso10646-1
+chivo-mono-bold-cp1252-14.bdf -freetype-chivo mono cp1252-bold-r-normal--19-140-100-100-p-96-iso10646-1
+chivo-mono-bold-cp1252-16.bdf -freetype-chivo mono cp1252-bold-r-normal--22-160-100-100-p-108-iso10646-1
+chivo-mono-bold-cp1252-18.bdf -freetype-chivo mono cp1252-bold-r-normal--25-180-100-100-p-122-iso10646-1
+chivo-mono-bold-cp1252-20.bdf -freetype-chivo mono cp1252-bold-r-normal--28-200-100-100-p-135-iso10646-1
+chivo-mono-bold-cp1252-24.bdf -freetype-chivo mono cp1252-bold-r-normal--33-240-100-100-p-161-iso10646-1
+chivo-mono-bold-cp1252-30.bdf -freetype-chivo mono cp1252-bold-r-normal--42-300-100-100-p-199-iso10646-1
+chivo-mono-bold-cp1252-35.bdf -freetype-chivo mono cp1252-bold-r-normal--48-350-100-100-p-231-iso10646-1
+chivo-mono-bold-cp1252-7.bdf -freetype-chivo mono cp1252-bold-r-normal--10-70-100-100-p-50-iso10646-1
 chivo-mono-medium-10.bdf -freetype-chivo mono-medium-r-normal--14-100-100-100-p-67-iso10646-1
 chivo-mono-medium-12.bdf -freetype-chivo mono-medium-r-normal--17-120-100-100-p-81-iso10646-1
 chivo-mono-medium-14.bdf -freetype-chivo mono-medium-r-normal--19-140-100-100-p-93-iso10646-1
@@ -41,3 +51,13 @@ chivo-mono-medium-18.bdf -freetype-chivo mono-medium-r-normal--25-180-100-100-p-
 chivo-mono-medium-20.bdf -freetype-chivo mono-medium-r-normal--28-200-100-100-p-132-iso10646-1
 chivo-mono-medium-24.bdf -freetype-chivo mono-medium-r-normal--33-240-100-100-p-157-iso10646-1
 chivo-mono-medium-7.bdf -freetype-chivo mono-medium-r-normal--10-70-100-100-p-48-iso10646-1
+chivo-mono-regular-cp1252-10.bdf -freetype-chivo mono cp1252-medium-r-normal--14-100-100-100-p-65-iso10646-1
+chivo-mono-regular-cp1252-12.bdf -freetype-chivo mono cp1252-medium-r-normal--17-120-100-100-p-77-iso10646-1
+chivo-mono-regular-cp1252-14.bdf -freetype-chivo mono cp1252-medium-r-normal--19-140-100-100-p-89-iso10646-1
+chivo-mono-regular-cp1252-16.bdf -freetype-chivo mono cp1252-medium-r-normal--22-160-100-100-p-102-iso10646-1
+chivo-mono-regular-cp1252-18.bdf -freetype-chivo mono cp1252-medium-r-normal--25-180-100-100-p-114-iso10646-1
+chivo-mono-regular-cp1252-20.bdf -freetype-chivo mono cp1252-medium-r-normal--28-200-100-100-p-126-iso10646-1
+chivo-mono-regular-cp1252-24.bdf -freetype-chivo mono cp1252-medium-r-normal--33-240-100-100-p-150-iso10646-1
+chivo-mono-regular-cp1252-30.bdf -freetype-chivo mono cp1252-medium-r-normal--42-300-100-100-p-185-iso10646-1
+chivo-mono-regular-cp1252-35.bdf -freetype-chivo mono cp1252-medium-r-normal--48-350-100-100-p-216-iso10646-1
+chivo-mono-regular-cp1252-7.bdf -freetype-chivo mono cp1252-medium-r-normal--10-70-100-100-p-46-iso10646-1
