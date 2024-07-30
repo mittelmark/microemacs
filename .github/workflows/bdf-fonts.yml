@@ -40,7 +40,8 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/license.txt -O terminus-license.txt
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu.ttf        
-        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt        cd ..
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt  
+        cd ..
         ls
         pwd
     - name: creating bdf files
