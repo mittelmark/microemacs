@@ -1,4 +1,4 @@
-76
+64
 UbuntuMono-Bold.ttf -misc-ubuntu mono-bold-r-normal--0-0-0-0-m-0-adobe-standard
 UbuntuMono-Bold.ttf -misc-ubuntu mono-bold-r-normal--0-0-0-0-m-0-ascii-0
 UbuntuMono-Bold.ttf -misc-ubuntu mono-bold-r-normal--0-0-0-0-m-0-iso10646-1
@@ -39,39 +39,27 @@ UbuntuMono-Regular.ttf -misc-ubuntu mono-medium-r-normal--0-0-0-0-m-0-koi8-ru
 UbuntuMono-Regular.ttf -misc-ubuntu mono-medium-r-normal--0-0-0-0-m-0-koi8-u
 UbuntuMono-Regular.ttf -misc-ubuntu mono-medium-r-normal--0-0-0-0-m-0-koi8-uni
 UbuntuMono-Regular.ttf -misc-ubuntu mono-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
-ubuntu-mono-bold-10.bdf -freetype-ubuntu mono-bold-r-normal--14-100-100-100-p-66-iso10646-1
-ubuntu-mono-bold-12.bdf -freetype-ubuntu mono-bold-r-normal--17-120-100-100-p-78-iso10646-1
-ubuntu-mono-bold-14.bdf -freetype-ubuntu mono-bold-r-normal--19-140-100-100-p-87-iso10646-1
-ubuntu-mono-bold-16.bdf -freetype-ubuntu mono-bold-r-normal--22-160-100-100-p-100-iso10646-1
-ubuntu-mono-bold-18.bdf -freetype-ubuntu mono-bold-r-normal--25-180-100-100-p-113-iso10646-1
+ubuntu-mono-bold-10.bdf -freetype-ubuntu mono-bold-r-normal--14-100-100-100-p-57-windows-cp1252
+ubuntu-mono-bold-12.bdf -freetype-ubuntu mono-bold-r-normal--17-120-100-100-p-69-windows-cp1252
+ubuntu-mono-bold-14.bdf -freetype-ubuntu mono-bold-r-normal--19-140-100-100-p-77-windows-cp1252
+ubuntu-mono-bold-16.bdf -freetype-ubuntu mono-bold-r-normal--22-160-100-100-p-88-windows-cp1252
+ubuntu-mono-bold-18.bdf -freetype-ubuntu mono-bold-r-normal--25-180-100-100-p-100-windows-cp1252
+ubuntu-mono-bold-20.bdf -freetype-ubuntu mono-bold-r-normal--28-200-100-100-p-111-windows-cp1252
 ubuntu-mono-bold-22.bdf -freetype-ubuntu mono-bold-r-normal--30-220-100-100-p-139-iso10646-1
-ubuntu-mono-bold-24.bdf -freetype-ubuntu mono-bold-r-normal--33-240-100-100-p-148-iso10646-1
+ubuntu-mono-bold-24.bdf -freetype-ubuntu mono-bold-r-normal--33-240-100-100-p-131-windows-cp1252
+ubuntu-mono-bold-30.bdf -freetype-ubuntu mono-bold-r-normal--42-300-100-100-p-165-windows-cp1252
+ubuntu-mono-bold-35.bdf -freetype-ubuntu mono-bold-r-normal--48-350-100-100-p-192-windows-cp1252
+ubuntu-mono-bold-7.bdf -freetype-ubuntu mono-bold-r-normal--10-70-100-100-p-44-windows-cp1252
 ubuntu-mono-bold-8.bdf -freetype-ubuntu mono-bold-r-normal--11-80-100-100-p-52-iso10646-1
-ubuntu-mono-bold-cp1252-10.bdf -freetype-ubuntu mono cp1252-bold-r-normal--14-100-100-100-p-57-iso10646-1
-ubuntu-mono-bold-cp1252-12.bdf -freetype-ubuntu mono cp1252-bold-r-normal--17-120-100-100-p-69-iso10646-1
-ubuntu-mono-bold-cp1252-14.bdf -freetype-ubuntu mono cp1252-bold-r-normal--19-140-100-100-p-77-iso10646-1
-ubuntu-mono-bold-cp1252-16.bdf -freetype-ubuntu mono cp1252-bold-r-normal--22-160-100-100-p-88-iso10646-1
-ubuntu-mono-bold-cp1252-18.bdf -freetype-ubuntu mono cp1252-bold-r-normal--25-180-100-100-p-100-iso10646-1
-ubuntu-mono-bold-cp1252-20.bdf -freetype-ubuntu mono cp1252-bold-r-normal--28-200-100-100-p-111-iso10646-1
-ubuntu-mono-bold-cp1252-24.bdf -freetype-ubuntu mono cp1252-bold-r-normal--33-240-100-100-p-131-iso10646-1
-ubuntu-mono-bold-cp1252-30.bdf -freetype-ubuntu mono cp1252-bold-r-normal--42-300-100-100-p-165-iso10646-1
-ubuntu-mono-bold-cp1252-35.bdf -freetype-ubuntu mono cp1252-bold-r-normal--48-350-100-100-p-192-iso10646-1
-ubuntu-mono-bold-cp1252-7.bdf -freetype-ubuntu mono cp1252-bold-r-normal--10-70-100-100-p-44-iso10646-1
-ubuntu-mono-regular-10.bdf -freetype-ubuntu mono-medium-r-normal--14-100-100-100-p-61-iso10646-1
-ubuntu-mono-regular-12.bdf -freetype-ubuntu mono-medium-r-normal--17-120-100-100-p-74-iso10646-1
-ubuntu-mono-regular-14.bdf -freetype-ubuntu mono-medium-r-normal--19-140-100-100-p-82-iso10646-1
-ubuntu-mono-regular-16.bdf -freetype-ubuntu mono-medium-r-normal--22-160-100-100-p-94-iso10646-1
-ubuntu-mono-regular-18.bdf -freetype-ubuntu mono-medium-r-normal--25-180-100-100-p-107-iso10646-1
+ubuntu-mono-regular-10.bdf -freetype-ubuntu mono-medium-r-normal--14-100-100-100-p-53-windows-cp1252
+ubuntu-mono-regular-12.bdf -freetype-ubuntu mono-medium-r-normal--17-120-100-100-p-65-windows-cp1252
+ubuntu-mono-regular-14.bdf -freetype-ubuntu mono-medium-r-normal--19-140-100-100-p-72-windows-cp1252
+ubuntu-mono-regular-16.bdf -freetype-ubuntu mono-medium-r-normal--22-160-100-100-p-83-windows-cp1252
+ubuntu-mono-regular-18.bdf -freetype-ubuntu mono-medium-r-normal--25-180-100-100-p-94-windows-cp1252
+ubuntu-mono-regular-20.bdf -freetype-ubuntu mono-medium-r-normal--28-200-100-100-p-105-windows-cp1252
 ubuntu-mono-regular-22.bdf -freetype-ubuntu mono-medium-r-normal--30-220-100-100-p-131-iso10646-1
-ubuntu-mono-regular-24.bdf -freetype-ubuntu mono-medium-r-normal--33-240-100-100-p-140-iso10646-1
+ubuntu-mono-regular-24.bdf -freetype-ubuntu mono-medium-r-normal--33-240-100-100-p-123-windows-cp1252
+ubuntu-mono-regular-30.bdf -freetype-ubuntu mono-medium-r-normal--42-300-100-100-p-155-windows-cp1252
+ubuntu-mono-regular-35.bdf -freetype-ubuntu mono-medium-r-normal--48-350-100-100-p-181-windows-cp1252
+ubuntu-mono-regular-7.bdf -freetype-ubuntu mono-medium-r-normal--10-70-100-100-p-41-windows-cp1252
 ubuntu-mono-regular-8.bdf -freetype-ubuntu mono-medium-r-normal--11-80-100-100-p-50-iso10646-1
-ubuntu-mono-regular-cp1252-10.bdf -freetype-ubuntu mono cp1252-medium-r-normal--14-100-100-100-p-53-iso10646-1
-ubuntu-mono-regular-cp1252-12.bdf -freetype-ubuntu mono cp1252-medium-r-normal--17-120-100-100-p-65-iso10646-1
-ubuntu-mono-regular-cp1252-14.bdf -freetype-ubuntu mono cp1252-medium-r-normal--19-140-100-100-p-72-iso10646-1
-ubuntu-mono-regular-cp1252-16.bdf -freetype-ubuntu mono cp1252-medium-r-normal--22-160-100-100-p-83-iso10646-1
-ubuntu-mono-regular-cp1252-18.bdf -freetype-ubuntu mono cp1252-medium-r-normal--25-180-100-100-p-94-iso10646-1
-ubuntu-mono-regular-cp1252-20.bdf -freetype-ubuntu mono cp1252-medium-r-normal--28-200-100-100-p-105-iso10646-1
-ubuntu-mono-regular-cp1252-24.bdf -freetype-ubuntu mono cp1252-medium-r-normal--33-240-100-100-p-123-iso10646-1
-ubuntu-mono-regular-cp1252-30.bdf -freetype-ubuntu mono cp1252-medium-r-normal--42-300-100-100-p-155-iso10646-1
-ubuntu-mono-regular-cp1252-35.bdf -freetype-ubuntu mono cp1252-medium-r-normal--48-350-100-100-p-181-iso10646-1
-ubuntu-mono-regular-cp1252-7.bdf -freetype-ubuntu mono cp1252-medium-r-normal--10-70-100-100-p-41-iso10646-1
