@@ -1,0 +1,34 @@
+name: Building BDF fonts
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: install font toolsmake bfs binary
+      run:  |
+        sudo apt install otf2bdf mkfontscale wget
+        
+      
+    - name: download fonts
+      run: |
+        mkdir bdf-fonts
+        cd bdf-fonts
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime.ttf 
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime-bold.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/License.txt -o License-courier-prime.txt
+        bash ../fonts/ttf2bdf.sh "courier prime" courier-prime.ttf "courier-prime-medium"
+        bash ../fonts/ttf2bdf.sh "courier prime" courier-prime-bold.ttf "courier-prime-bold"
+        cd ..
+    - name: Upload BDF fonts
+      uses: actions/upload-artifact@v4
+      with: 
+        name: bdf-fonts
+        path: bdf-fonts
