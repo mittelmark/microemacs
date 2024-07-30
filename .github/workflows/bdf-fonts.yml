@@ -23,6 +23,9 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime.ttf 
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/LICENSE.txt -O License-courier-prime.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-OFL.txt
         cd ..
         ls
         pwd
@@ -33,6 +36,8 @@ jobs:
         ls ../fonts
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime.ttf "courier-prime-medium"
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime-bold.ttf "courier-prime-bold"
+        bash ../fonts/ttf2bdf.sh "chivo mono" chivo.ttf "chivo-mono-medium"
+        bash ../fonts/ttf2bdf.sh "chivo mono" chivo-bold.ttf "chivo-mono-bold"
         cd ..
     - name: Upload BDF fonts
       uses: actions/upload-artifact@v4
