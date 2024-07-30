@@ -14,7 +14,7 @@ jobs:
      
     - name: install font toolsmake bfs binary
       run:  |
-        sudo apt install otf2bdf xfont-utils wget
+        sudo apt install otf2bdf xfonts-utils wget
       
     - name: download fonts
       run: |
