@@ -31,7 +31,7 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono.ttf        
-        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia/LICENSE -O julia-mono-license.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/LICENSE -O julia-mono-license.txt
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/license.txt -O inconsolata-go-license.txt
