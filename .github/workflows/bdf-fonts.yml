@@ -25,7 +25,12 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/LICENSE.txt -O License-courier-prime.txt
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf
-        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-OFL.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O OFL-chivo.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu-bold.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu.ttf        
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O License-ubuntu.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go-bold.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/license.txt -O License-inconsolata-go.txt
         cd ..
         ls
         pwd
@@ -38,6 +43,11 @@ jobs:
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime-bold.ttf "courier-prime-bold"
         bash ../fonts/ttf2bdf.sh "chivo mono" chivo.ttf "chivo-mono-medium"
         bash ../fonts/ttf2bdf.sh "chivo mono" chivo-bold.ttf "chivo-mono-bold"
+        bash ../fonts/ttf2bdf.sh "ubuntu mono" ubuntu.ttf "ubuntu-mono-medium"
+        bash ../fonts/ttf2bdf.sh "ubuntu mono" ubuntu-bold.ttf "ubuntu-mono-bold"
+        bash ../fonts/ttf2bdf.sh "inconsolata go" inconsolata-go.ttf "inconsolata-go-medium"
+        bash ../fonts/ttf2bdf.sh "inconsolata go" inconsolata-go-bold.ttf "inconsolata-go-bold"
+        
         cd ..
     - name: Upload BDF fonts
       uses: actions/upload-artifact@v4
