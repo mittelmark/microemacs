@@ -22,7 +22,9 @@ jobs:
         cd bdf-fonts
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime.ttf 
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime-bold.ttf
-        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/License.txt -o License-courier-prime.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/License.txt -O License-courier-prime.txt
+    - name: creating bdf files
+      run: |  
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime.ttf "courier-prime-medium"
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime-bold.ttf "courier-prime-bold"
         cd ..
