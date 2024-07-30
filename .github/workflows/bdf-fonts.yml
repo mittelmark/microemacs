@@ -23,6 +23,10 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/license.txt -O anonymous-pro-license.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-dejavu/bront-dejavu.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-dejavu/LICENSE.txt -O bront-dejavu-license.txt
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/bront-ubuntu.ttf
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/LICENSE.txt -O bront-ubuntu-license.txt
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime.ttf 
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/LICENSE.txt -O courier-prime-license.txt
@@ -40,7 +44,7 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/license.txt -O terminus-license.txt
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu.ttf        
-        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt  
+        wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt
         cd ..
         ls
         pwd
@@ -51,6 +55,8 @@ jobs:
         ls ../fonts
         bash ../fonts/ttf2bdf.sh "anonymous pro" anonymous-pro.ttf "anonymous-pro-medium"
         bash ../fonts/ttf2bdf.sh "anonymous pro" anonymous-pro-bold.ttf "anonymous-pro-bold"
+        bash ../fonts/ttf2bdf.sh "bront dejavu"  bront-dejavu.ttf "bront-dejavu-medium"
+        bash ../fonts/ttf2bdf.sh "bront ubuntu"  bront-ubuntu.ttf "bront-ubuntu-medium"
         bash ../fonts/ttf2bdf.sh "chivo mono" chivo.ttf "chivo-mono-medium"
         bash ../fonts/ttf2bdf.sh "chivo mono" chivo-bold.ttf "chivo-mono-bold"
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime.ttf "courier-prime-medium"
