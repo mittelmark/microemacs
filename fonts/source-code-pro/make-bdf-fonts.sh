@@ -13,3 +13,5 @@ do
         bash ../ttf2bdf.sh "source code pro" source-code-pro-${w}.ttf "source-code-pro-{$w}-${cp}" -m ../${cp}.txt -f adobe -w ${w}
     done
 done
+
+
