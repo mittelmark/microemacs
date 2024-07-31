@@ -33,6 +33,9 @@ jobs:
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-license.txt
+        wget https://github.com/go-fonts/dejavu/raw/main/LICENSE-DejaVu -O dejavu-license.txt
+        wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmono/DejaVuSansMono.ttf -O dejavu-sans-mono.ttf
+        wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmonobold/DejaVuSansMono-Bold.ttf -O dejavu-sans-mono-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/license.txt -O inconsolata-go-license.txt
@@ -60,6 +63,9 @@ jobs:
         bash ../fonts/ttf2bdf.sh "chivo mono" chivo.ttf "chivo-mono-medium"
         bash ../fonts/ttf2bdf.sh "chivo mono" chivo-bold.ttf "chivo-mono-bold"
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime.ttf "courier-prime-medium"
+        bash ../fonts/ttf2bdf.sh "courier prime" courier-prime-bold.ttf "courier-prime-bold"
+        bash ../fonts/ttf2bdf.sh "dejavu sans mono"  dejavu-sans-mono.ttf "dejavu-sans-mono-medium"
+        bash ../fonts/ttf2bdf.sh "dejavu sans mono"  dejavu-sans-mono-bold.ttf "dejavu-sans-mono-bold"        
         bash ../fonts/ttf2bdf.sh "courier prime" courier-prime-bold.ttf "courier-prime-bold"
         bash ../fonts/ttf2bdf.sh "inconsolata go" inconsolata-go.ttf "inconsolata-go-medium"
         bash ../fonts/ttf2bdf.sh "inconsolata go" inconsolata-go-bold.ttf "inconsolata-go-bold"

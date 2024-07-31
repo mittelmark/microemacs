@@ -1,13 +1,18 @@
 function ttf2bdf {
     MAPFILE=`dirname $0`/cp1252.txt
     echo "Using $MAPFILE"
+    
     if [ -z $3 ]; then
         echo -e "ttf2bdf - create X11 fonts from TTF fonts and make then available for X11-apps"
         echo -e "Usage: ttf2bdf TYPENAME 'TTF-FILE' FILE-PREFIX"
         echo -e "\n   Example: ttf2bdf 'courier prime cp1252' 'Courier Prime.ttf' courier-prime-cp1252\n"
     else
         for x in 7 10 12 14 16 18 20 24 30 35; do 
-            otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf ; 
+            if [ -z $4 ]; then
+                otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf -w $4; 
+            else
+                otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf 
+            fi
         done
         #cd ~/fonts
         mkfontscale .
