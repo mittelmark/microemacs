@@ -1,0 +1,58 @@
+name: Binaries Ubuntu 64bit
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: developer library installs
+      run: |
+        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+        sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+        sudo apt install desktop-file-utils
+
+    - name: make bfs binary
+      run:  make -f win32mingw.gmk bfs/bin
+
+    - name: make mec binary       
+      run:  make -f win32mingw.gmk mec
+
+    - name: make mew binary       
+      run:  make -f win32mingw.gmk mew
+
+    - name: make mecb binary
+      run:  |
+        make -f win32mingw.gmk mecb
+    
+    - name: make mecw binary
+      run:  make -f win32mingw.gmk mewb
+    
+    - name: Make release
+      run: |
+        mkdir MicroEmacs09-091223-Windows
+        mkdir MicroEmacs09-091223-Windows/bin
+        cp bfs/bfs.exe MicroEmacs09-091223-Windows/bin/
+        cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-091223-Windows/bin/
+        cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-091223-Windows/bin/
+        cp me*.exe MicroEmacs09-091223-Windows/bin/
+        cp license.txt MicroEmacs09-091223-Windows/
+        cp COPYING MicroEmacs09-091223-Windows/
+        cp README-standalone.md MicroEmacs09-091223-Windows/
+        cd jasspa 
+        zip macros.zip macros/*
+        cd ..
+        cp jasspa/macros.zip MicroEmacs09-091223-Windows/
+
+    - name: Upload Windows Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-091223-Windows
+        path: MicroEmacs09-091223-Windows
+    
