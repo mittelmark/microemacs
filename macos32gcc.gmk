@@ -1,0 +1,47 @@
+##-*- makefile -*-############################################################
+#
+#  System        : 
+#  Module        : 
+#  Object Name   : $RCSfile$
+#  Revision      : $Revision$
+#  Date          : $Date$
+#  Author        : $Author$
+#  Created By    : Detlef Groth
+#  Created       : Wed Jul 31 21:47:07 2024
+#  Last Modified : <240731.2213>
+#
+#  Description	
+#
+#  Notes
+#
+#  History
+#	
+#  $Log$
+#
+##############################################################################
+#
+#  Copyright (c) 2024 Detlef Groth.
+# 
+#  All Rights Reserved.
+# 
+#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
+#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
+#  readable form without prior written consent from Detlef Groth.
+#
+##############################################################################
+version=091224b
+VERSION=$(shell grep -e '^version=' linux32gcc.gmk | sed 's/version=//')
+bfs:
+	cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-11
+
+mec: bfs
+        cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=gcc-11 BTYP=c
+
+mew: bfs
+        cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=gcc-11 BTYP=cw
+
+mecb: mec
+	./bin/bfs -a ./src/.macos32gcc-release-mec/mec -o mecb-macos-$(VERSION).bin ./jasspa
+
+mewb: mew
+	./bin/bfs -a ./src/.macos32gcc-release-mecw/mecw -o mecb-macos-$(VERSION).bin ./jasspa

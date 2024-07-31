@@ -1,0 +1,47 @@
+##-*- makefile -*-############################################################
+#
+#  System        : 
+#  Module        : 
+#  Object Name   : $RCSfile$
+#  Revision      : $Revision$
+#  Date          : $Date$
+#  Author        : $Author$
+#  Created By    : Detlef Groth
+#  Created       : Wed Jul 31 21:47:07 2024
+#  Last Modified : <240731.2154>
+#
+#  Description	
+#
+#  Notes
+#
+#  History
+#	
+#  $Log$
+#
+##############################################################################
+#
+#  Copyright (c) 2024 Detlef Groth.
+# 
+#  All Rights Reserved.
+# 
+#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
+#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
+#  readable form without prior written consent from Detlef Groth.
+#
+##############################################################################
+version=091224b
+VERSION=$(shell grep -e '^version=' linux32gcc.gmk | sed 's/version=//')
+bfs:
+	cd bfs && make
+
+mec: bfs
+	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
+
+mew: bfs
+	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+
+mecb: mec
+	./bin/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o mecb-windows-$(VERSION).exe ./jasspa
+
+mewb: mew
+	./bin/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o mecw-windows-$(VERSION).exe ./jasspa		
