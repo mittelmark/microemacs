@@ -32,7 +32,7 @@ define-macro fhook-shell
 ; buffer-init variables
 set-variable .fhook-shell.name "UNIX Shell"
 set-variable .fhook-shell.setup &reg "/history/fhook/shell" "ghiopx"
-set-variable .fhook-shell.setup-mask "aeghikmoptux"
+set-variable .fhook-shell.setup-mask "abeghikmoptux"
 set-variable .fhook-shell.comment "|#||#|# | #|r|"
 
 !if &and &sin "h" .fhook-shell.setup &band .hilight.flags 0x02 

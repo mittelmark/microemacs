@@ -1,0 +1,3 @@
+ "" "\ecCText Insertion\ecA"
+if "if \p ; then\r    \rfi\r\p" "  if"
+for "for \p in  ...\rdo\r\r\rdone\r\P" "  for"
