@@ -36,19 +36,19 @@ jobs:
     
     - name: Make release
       run: |
-        mkdir MicroEmacs-091223-Linux
-        mkdir MicroEmacs-091223-Linux/bin
-        cp bfs/bfs MicroEmacs-091223-Linux/bin/
-        cp src/.linux32gcc-release-mecw/mecw MicroEmacs-091223-Linux/bin/
-        cp src/.linux32gcc-release-mec/mec  MicroEmacs-091223-Linux/bin/
-        cp me*.bin MicroEmacs-091223-Linux/bin/
-        cp license.txt MicroEmacs-091223-Linux/
-        cp COPYING MicroEmacs-091223-Linux/
-        cp README-standalone.md MicroEmacs-091223-Linux/
+        mkdir MicroEmacs09-091223-Linux
+        mkdir MicroEmacs09-091223-Linux/bin
+        cp bfs/bfs MicroEmacs09-091223-Linux/bin/
+        cp src/.linux32gcc-release-mecw/mecw MicroEmacs09-091223-Linux/bin/
+        cp src/.linux32gcc-release-mec/mec  MicroEmacs09-091223-Linux/bin/
+        cp me*.bin MicroEmacs09-091223-Linux/bin/
+        cp license.txt MicroEmacs09-091223-Linux/
+        cp COPYING MicroEmacs09-091223-Linux/
+        cp README-standalone.md MicroEmacs09-091223-Linux/
         cd jasspa 
         zip macros.zip macros/*
         cd ..
-        cp jasspa/macros.zip MicroEmacs-091223-Linux/
+        cp jasspa/macros.zip MicroEmacs09-091223-Linux/
 
     - name: Upload Ubuntu Release files
       uses: actions/upload-artifact@v4
