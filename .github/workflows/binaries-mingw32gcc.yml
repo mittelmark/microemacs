@@ -1,4 +1,4 @@
-name: Binaries Ubuntu 64bit
+name: Binaries MIngw-Windows on Ubuntu 
 
 on:
   workflow_dispatch:
