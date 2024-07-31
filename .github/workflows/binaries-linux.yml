@@ -24,11 +24,14 @@ jobs:
     - name: make mec binary       
       run:  make -f linux32gcc.gmk mec
 
-    - name: make mecw binary       
-      run:  make -f linux32gcc.gmk mecw
+    - name: make mew binary       
+      run:  make -f linux32gcc.gmk mew
 
     - name: make mecb binary
-      run:  make -f linux32gcc.gmk mecb
+      run:  |
+        ls 
+        ls -l bfs
+        make -f linux32gcc.gmk mecb
     
     - name: make mecw binary
       run:  make -f linux32gcc.gmk mewb
