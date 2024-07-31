@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Jon Green
 #  Created       : Wed Oct 21 15:58:59 2009
-#  Last Modified : <231107.2227>
+#  Last Modified : <240731.2310>
 #
 #  Description   : Unix/Linux only
 #
@@ -54,7 +54,7 @@ BFSSRC=		bfsutil.c \
 		uxdir.c \
 		uxfile.c
 BFSOBJ=		$(BFSSRC:.c=.o)
-BFS=		bfs
+BFS=		bfs.exe
 #
 # Define the basic rules.
 #
