@@ -1,0 +1,24 @@
+version=091224b
+OS=$(shell uname -o | sed 's/GNU.Linux/linux/')
+VERSION=$(shell grep -e '^version=' Makefile | sed 's/version=//')
+OSV=$(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
+DIST=$(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
+OSVERSION="$(DIST)$(OSV)"
+default:
+	echo "Makefile for Linux systems"
+	echo "$(VERSION) OS $(OS) OSVERSION $(OSVERSION) OSV $(OSV)"
+bfs:
+	cd bfs && make
+mec:
+	cd src && make -f linux32gcc.gmk BTYP=c
+
+mecw:
+	cd src && make -f linux32gcc.gmk BTYPE=cw			
+
+mecb: bfs mec
+	./bin/bfs -a ./src/.linux32gcc-release-mec/mec -o mecb-$(OS)-$(DIST)-$(OSV)-$(VERSION).bin ./jasspa
+
+mewb: bfs mecw
+	./bin/bfs -a ./src/.linux32gcc-release-mecw/mecw -o mewb-$(OS)-$(DIST)-$(OSV)-$(VERSION).bin ./jasspa
+	
+
