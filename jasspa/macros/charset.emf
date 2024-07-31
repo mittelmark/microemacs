@@ -14,7 +14,7 @@
 ;
 !if &les @# 1
     ; if executed with an argument of 0 or less, return the list
-    set-variable %charset-names  "|ISO-8859|ISO-8859 with box chars|Windows ANSI|Windows OEM|Windows Greek|Windows Turkish|Windows Central Europe|Windows Cyrillic|DOS LatinUS CP437|DOS Latin1 CP850|DOS Cyrillic CP866|Cyrillic koi8-r|Plain Text|"
+    set-variable %charset-names  "|ISO-8859|ISO-8859 with box chars|Windows ANSI (cp1252)|Windows OEM|Windows Greek|Windows Turkish|Windows Central Europe (cp1250)|Windows Cyrillic (cp1251)|DOS LatinUS CP437|DOS Latin1 CP850|DOS Cyrillic CP866|Cyrillic koi8-r|Plain Text|"
     set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
     ; the windows font type
     set-variable %charset-types  "|||0|255|161|162|238|204|||||"
@@ -53,12 +53,15 @@ set-variable .change-font.type 0
     set-char-mask "M" ""
     set-variable .change-font.type 162
 !elif &seq #l0 "Win-CENTEUR"
-    ; map iso8859-2 -> win32 cp1250
-    set-char-mask "M" "\xA1\xA5\xA5\xBC\xA6\x8C\xA9\x8A\xAB\x8D\xAC\x8F\xAE\x8E\xB1\xB9\xB5\xBE\xB6\x9C\xB7\xA1\xB9\x9A\xBB\x9D\xBC\x9F\xBE\x9E"
+    ; map iso8859-2 -> win32 cp1250 
+    set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"
+    ;set-char-mask "M" "\xA1\xA5\xA5\xBC\xA6\x8C\xA9\x8A\xAB\x8D\xAC\x8F\xAE\x8E\xB1\xB9\xB5\xBE\xB6\x9C\xB7\xA1\xB9\x9A\xBB\x9D\xBC\x9F\xBE\x9E"
     set-variable .change-font.type 238
 !elif &seq #l0 "Win-CYR"
     ; map ISO8859-5 -> win32 cp1251
-    set-char-mask "M" "°À±Á²Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ÏÀÐÁÑÂÒÃÓÄÔÅÕÆÖÇ×ÈØÉÙÊÚËÛÌÜÍÝÎÞÏß¡¨ÐàÑáÒâÓãÔäÕåÖæ×çØèÙéÚêÛëÜìÝíÞîßïàðáñâòãóäôåõæöç÷èøéùêúëûìüíýîþïÿñ¸"
+    set-char-mask "M" ""
+    set-char-mask "dp" "€ƒ‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"
+    ;set-char-mask "M" "°À±Á²Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ÏÀÐÁÑÂÒÃÓÄÔÅÕÆÖÇ×ÈØÉÙÊÚËÛÌÜÍÝÎÞÏß¡¨ÐàÑáÒâÓãÔäÕåÖæ×çØèÙéÚêÛëÜìÝíÞîßïàðáñâòãóäôåõæöç÷èøéùêúëûìüíýîþïÿñ¸"
     set-variable .change-font.type 204
 !elif &seq #l0 "PC-437"
     set-char-mask "M" "£œª¦«®¬ª°ø±ñ²ýµæ·ú»¯¼¬½«¿¨ÀAÁAÂAÃAÄŽÅÆ’AAÇ€ÈEÉÊEËEEEÌIÍIÎIÏIIIÑ¥ÒOÓOÔOÕOÖ™OOÙUÚUÛUÜšUUÝYßáà…á âƒãaä„åaæ‘aaç‡èŠé‚êˆë‰ìí¡îŒï‹ñ¤ò•ó¢ô“õoö”÷öøoooù—ú£û–üuuýyÿ˜yy"
