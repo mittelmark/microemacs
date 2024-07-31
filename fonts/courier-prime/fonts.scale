@@ -1,7 +1,6 @@
 22
 CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-adobe-standard
 CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-ascii-0
-CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-iso10646-1
 CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-iso8859-1
 CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-iso8859-13
 CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-iso8859-15
@@ -12,7 +11,6 @@ CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-iso8859-9
 CourierPrime-Bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-microsoft-cp1252
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-adobe-standard
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-ascii-0
-CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso10646-1
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso8859-1
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso8859-13
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso8859-15
@@ -21,3 +19,5 @@ CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso885
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso8859-3
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso8859-9
 CourierPrime-Regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+courier-prime-bold.ttf -misc-courier prime-bold-r-normal--0-0-0-0-m-0-iso10646-1
+courier-prime-regular.ttf -misc-courier prime-medium-r-normal--0-0-0-0-m-0-iso10646-1
