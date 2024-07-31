@@ -9,9 +9,9 @@ function ttf2bdf {
     else
         for x in 7 10 12 14 16 18 20 24 30 35; do 
             if [ -z $4 ]; then
-                otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf -w $4; 
+                otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf ; 
             else
-                otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf 
+                otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf $4 $5 $6 $7 $8 $9
             fi
         done
         #cd ~/fonts

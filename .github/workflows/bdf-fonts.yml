@@ -45,6 +45,13 @@ jobs:
         wget https://github.com/go-fonts/liberation/raw/main/LICENSE-SIL -o liberation-mono-license.txt
         wget https://github.com/go-fonts/liberation/raw/main/liberationmonoregular/LiberationMono-Regular.ttf -O liberation-mono.ttf
         wget https://github.com/go-fonts/liberation/raw/main/liberationmonobold/LiberationMono-Bold.ttf -O liberation-mono-bold.ttf
+        wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector-Regular.ttf -O proggy-vector-regular.ttf
+        wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector_Licence.txt -O proggy-vector-license.txt
+        wget https://github.com/adobe-fonts/source-code-pro/raw/release/LICENSE.md -O source-code-pro-license.txt
+        wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Bold.ttf -O source-code-pro-bold.ttf
+        wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Medium.ttf -O source-code-pro-medium.ttf        
+        wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Regular.ttf -O source-code-pro-regular.ttf                
+        wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Semibold.ttf -O source-code-pro-semibold.ttf                        
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/terminus-bold.ttf
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/terminus.ttf        
         wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/license.txt -O terminus-license.txt
@@ -76,6 +83,11 @@ jobs:
         bash ../fonts/ttf2bdf.sh "julia mono" julia-mono-bold.ttf "julia-mono-bold"
         bash ../fonts/ttf2bdf.sh "liberation mono" liberation-mono.ttf "liberation-mono-medium"
         bash ../fonts/ttf2bdf.sh "liberation mono" liberation-mono-bold.ttf "liberation-mono-bold"
+        bash ../fonts/ttf2bdf.sh "proggy vector" proggy-vector-regular.ttf "proggy-vector"        
+        bash ../fonts/ttf2bdf.sh "source code pro" source-code-pro-regular.ttf "source-code-pro-regular" -w regular -f adobe
+        bash ../fonts/ttf2bdf.sh "source code pro" source-code-pro-medium.ttf "source-code-pro-regular" -w medium -f adobe       
+        bash ../fonts/ttf2bdf.sh "source code pro" source-code-pro-semibold.ttf "source-code-pro-semibold" -w semibold -f adobe
+        bash ../fonts/ttf2bdf.sh "source code pro" source-code-pro-bold.ttf "source-code-pro-bold" -w bold -f adobe
         bash ../fonts/ttf2bdf.sh "terminus" terminus.ttf "terminus-medium"
         bash ../fonts/ttf2bdf.sh "terminus" terminus-bold.ttf "terminus-bold"
         bash ../fonts/ttf2bdf.sh "ubuntu mono" ubuntu.ttf "ubuntu-mono-medium"
