@@ -19,7 +19,7 @@ jobs:
         sudo apt install desktop-file-utils
 
     - name: make bfs binary
-      run:  make -f linux32gcc.gmk bfs
+      run:  make -f linux32gcc.gmk bfs/bin
 
     - name: make mec binary       
       run:  make -f linux32gcc.gmk mec
