@@ -34,6 +34,9 @@ jobs:
     - name: make mecw binary
       run:  make -f win32mingw.gmk mewb
     
+    - name: make mecw binary
+      run:  make -f win32mingw.gmk bfs/exe
+    
     - name: Make release
       run: |
         mkdir MicroEmacs09-091223-Windows
