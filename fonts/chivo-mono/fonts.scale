@@ -1,27 +1,66 @@
-26
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-adobe-standard
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-ascii-0
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso10646-1
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-1
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-10
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-13
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-15
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-16
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-2
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-3
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-4
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-9
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-microsoft-cp1252
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-adobe-standard
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-ascii-0
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso10646-1
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-10
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-13
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-15
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-16
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-2
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-3
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-4
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-9
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+65
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-microsoft-cp1252

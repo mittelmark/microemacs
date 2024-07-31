@@ -1,47 +1,196 @@
-46
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-adobe-standard
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-ascii-0
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso10646-1
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-1
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-10
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-13
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-15
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-16
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-2
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-3
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-4
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-9
-ChivoMono-Bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-microsoft-cp1252
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-adobe-standard
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-ascii-0
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso10646-1
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-10
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-13
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-15
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-16
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-2
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-3
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-4
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-9
-ChivoMono-Regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
-chivo-mono-bold-10.bdf -freetype-chivo mono-bold-r-normal--14-100-100-100-p-69-windows-cp1252
-chivo-mono-bold-12.bdf -freetype-chivo mono-bold-r-normal--17-120-100-100-p-82-windows-cp1252
-chivo-mono-bold-14.bdf -freetype-chivo mono-bold-r-normal--19-140-100-100-p-96-windows-cp1252
-chivo-mono-bold-16.bdf -freetype-chivo mono-bold-r-normal--22-160-100-100-p-108-windows-cp1252
-chivo-mono-bold-18.bdf -freetype-chivo mono-bold-r-normal--25-180-100-100-p-122-windows-cp1252
-chivo-mono-bold-20.bdf -freetype-chivo mono-bold-r-normal--28-200-100-100-p-135-windows-cp1252
-chivo-mono-bold-24.bdf -freetype-chivo mono-bold-r-normal--33-240-100-100-p-161-windows-cp1252
-chivo-mono-bold-30.bdf -freetype-chivo mono-bold-r-normal--42-300-100-100-p-199-windows-cp1252
-chivo-mono-bold-35.bdf -freetype-chivo mono-bold-r-normal--48-350-100-100-p-231-windows-cp1252
-chivo-mono-bold-7.bdf -freetype-chivo mono-bold-r-normal--10-70-100-100-p-50-windows-cp1252
-chivo-mono-medium-10.bdf -freetype-chivo mono-medium-r-normal--14-100-100-100-p-65-windows-cp1252
-chivo-mono-medium-12.bdf -freetype-chivo mono-medium-r-normal--17-120-100-100-p-77-windows-cp1252
-chivo-mono-medium-14.bdf -freetype-chivo mono-medium-r-normal--19-140-100-100-p-89-windows-cp1252
-chivo-mono-medium-16.bdf -freetype-chivo mono-medium-r-normal--22-160-100-100-p-102-windows-cp1252
-chivo-mono-medium-18.bdf -freetype-chivo mono-medium-r-normal--25-180-100-100-p-114-windows-cp1252
-chivo-mono-medium-20.bdf -freetype-chivo mono-medium-r-normal--28-200-100-100-p-126-windows-cp1252
-chivo-mono-medium-24.bdf -freetype-chivo mono-medium-r-normal--33-240-100-100-p-150-windows-cp1252
-chivo-mono-medium-30.bdf -freetype-chivo mono-medium-r-normal--42-300-100-100-p-185-windows-cp1252
-chivo-mono-medium-35.bdf -freetype-chivo mono-medium-r-normal--48-350-100-100-p-216-windows-cp1252
-chivo-mono-medium-7.bdf -freetype-chivo mono-medium-r-normal--10-70-100-100-p-46-windows-cp1252
+195
+chivo-mono-bold-cp1250-07.bdf -misc-chivo mono-bold-r-normal--10-70-100-100-p-52-windows-cp1250
+chivo-mono-bold-cp1250-10.bdf -misc-chivo mono-bold-r-normal--14-100-100-100-p-70-windows-cp1250
+chivo-mono-bold-cp1250-12.bdf -misc-chivo mono-bold-r-normal--17-120-100-100-p-84-windows-cp1250
+chivo-mono-bold-cp1250-14.bdf -misc-chivo mono-bold-r-normal--19-140-100-100-p-93-windows-cp1250
+chivo-mono-bold-cp1250-15.bdf -misc-chivo mono-bold-r-normal--21-150-100-100-p-103-windows-cp1250
+chivo-mono-bold-cp1250-16.bdf -misc-chivo mono-bold-r-normal--22-160-100-100-p-107-windows-cp1250
+chivo-mono-bold-cp1250-18.bdf -misc-chivo mono-bold-r-normal--25-180-100-100-p-123-windows-cp1250
+chivo-mono-bold-cp1250-20.bdf -misc-chivo mono-bold-r-normal--28-200-100-100-p-136-windows-cp1250
+chivo-mono-bold-cp1250-22.bdf -misc-chivo mono-bold-r-normal--30-220-100-100-p-148-windows-cp1250
+chivo-mono-bold-cp1250-24.bdf -misc-chivo mono-bold-r-normal--33-240-100-100-p-159-windows-cp1250
+chivo-mono-bold-cp1250-26.bdf -misc-chivo mono-bold-r-normal--36-260-100-100-p-172-windows-cp1250
+chivo-mono-bold-cp1250-28.bdf -misc-chivo mono-bold-r-normal--39-280-100-100-p-186-windows-cp1250
+chivo-mono-bold-cp1250-30.bdf -misc-chivo mono-bold-r-normal--42-300-100-100-p-201-windows-cp1250
+chivo-mono-bold-cp1252-07.bdf -misc-chivo mono-bold-r-normal--10-70-100-100-p-52-windows-cp1252
+chivo-mono-bold-cp1252-10.bdf -misc-chivo mono-bold-r-normal--14-100-100-100-p-69-windows-cp1252
+chivo-mono-bold-cp1252-12.bdf -misc-chivo mono-bold-r-normal--17-120-100-100-p-84-windows-cp1252
+chivo-mono-bold-cp1252-14.bdf -misc-chivo mono-bold-r-normal--19-140-100-100-p-93-windows-cp1252
+chivo-mono-bold-cp1252-15.bdf -misc-chivo mono-bold-r-normal--21-150-100-100-p-103-windows-cp1252
+chivo-mono-bold-cp1252-16.bdf -misc-chivo mono-bold-r-normal--22-160-100-100-p-107-windows-cp1252
+chivo-mono-bold-cp1252-18.bdf -misc-chivo mono-bold-r-normal--25-180-100-100-p-122-windows-cp1252
+chivo-mono-bold-cp1252-20.bdf -misc-chivo mono-bold-r-normal--28-200-100-100-p-136-windows-cp1252
+chivo-mono-bold-cp1252-22.bdf -misc-chivo mono-bold-r-normal--30-220-100-100-p-148-windows-cp1252
+chivo-mono-bold-cp1252-24.bdf -misc-chivo mono-bold-r-normal--33-240-100-100-p-159-windows-cp1252
+chivo-mono-bold-cp1252-26.bdf -misc-chivo mono-bold-r-normal--36-260-100-100-p-172-windows-cp1252
+chivo-mono-bold-cp1252-28.bdf -misc-chivo mono-bold-r-normal--39-280-100-100-p-186-windows-cp1252
+chivo-mono-bold-cp1252-30.bdf -misc-chivo mono-bold-r-normal--42-300-100-100-p-200-windows-cp1252
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-bold.ttf -misc-chivo mono-bold-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-light-cp1250-07.bdf -misc-chivo mono-light-r-normal--10-70-100-100-p-47-windows-cp1250
+chivo-mono-light-cp1250-10.bdf -misc-chivo mono-light-r-normal--14-100-100-100-p-64-windows-cp1250
+chivo-mono-light-cp1250-12.bdf -misc-chivo mono-light-r-normal--17-120-100-100-p-77-windows-cp1250
+chivo-mono-light-cp1250-14.bdf -misc-chivo mono-light-r-normal--19-140-100-100-p-86-windows-cp1250
+chivo-mono-light-cp1250-15.bdf -misc-chivo mono-light-r-normal--21-150-100-100-p-95-windows-cp1250
+chivo-mono-light-cp1250-16.bdf -misc-chivo mono-light-r-normal--22-160-100-100-p-98-windows-cp1250
+chivo-mono-light-cp1250-18.bdf -misc-chivo mono-light-r-normal--25-180-100-100-p-112-windows-cp1250
+chivo-mono-light-cp1250-20.bdf -misc-chivo mono-light-r-normal--28-200-100-100-p-125-windows-cp1250
+chivo-mono-light-cp1250-22.bdf -misc-chivo mono-light-r-normal--30-220-100-100-p-138-windows-cp1250
+chivo-mono-light-cp1250-24.bdf -misc-chivo mono-light-r-normal--33-240-100-100-p-146-windows-cp1250
+chivo-mono-light-cp1250-26.bdf -misc-chivo mono-light-r-normal--36-260-100-100-p-158-windows-cp1250
+chivo-mono-light-cp1250-28.bdf -misc-chivo mono-light-r-normal--39-280-100-100-p-171-windows-cp1250
+chivo-mono-light-cp1250-30.bdf -misc-chivo mono-light-r-normal--42-300-100-100-p-184-windows-cp1250
+chivo-mono-light-cp1252-07.bdf -misc-chivo mono-light-r-normal--10-70-100-100-p-47-windows-cp1252
+chivo-mono-light-cp1252-10.bdf -misc-chivo mono-light-r-normal--14-100-100-100-p-64-windows-cp1252
+chivo-mono-light-cp1252-12.bdf -misc-chivo mono-light-r-normal--17-120-100-100-p-77-windows-cp1252
+chivo-mono-light-cp1252-14.bdf -misc-chivo mono-light-r-normal--19-140-100-100-p-86-windows-cp1252
+chivo-mono-light-cp1252-15.bdf -misc-chivo mono-light-r-normal--21-150-100-100-p-95-windows-cp1252
+chivo-mono-light-cp1252-16.bdf -misc-chivo mono-light-r-normal--22-160-100-100-p-98-windows-cp1252
+chivo-mono-light-cp1252-18.bdf -misc-chivo mono-light-r-normal--25-180-100-100-p-112-windows-cp1252
+chivo-mono-light-cp1252-20.bdf -misc-chivo mono-light-r-normal--28-200-100-100-p-125-windows-cp1252
+chivo-mono-light-cp1252-22.bdf -misc-chivo mono-light-r-normal--30-220-100-100-p-137-windows-cp1252
+chivo-mono-light-cp1252-24.bdf -misc-chivo mono-light-r-normal--33-240-100-100-p-146-windows-cp1252
+chivo-mono-light-cp1252-26.bdf -misc-chivo mono-light-r-normal--36-260-100-100-p-157-windows-cp1252
+chivo-mono-light-cp1252-28.bdf -misc-chivo mono-light-r-normal--39-280-100-100-p-171-windows-cp1252
+chivo-mono-light-cp1252-30.bdf -misc-chivo mono-light-r-normal--42-300-100-100-p-184-windows-cp1252
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-light.ttf -misc-chivo mono light-light-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-medium-cp1250-07.bdf -misc-chivo mono-medium-r-normal--10-70-100-100-p-49-windows-cp1250
+chivo-mono-medium-cp1250-10.bdf -misc-chivo mono-medium-r-normal--14-100-100-100-p-67-windows-cp1250
+chivo-mono-medium-cp1250-12.bdf -misc-chivo mono-medium-r-normal--17-120-100-100-p-80-windows-cp1250
+chivo-mono-medium-cp1250-14.bdf -misc-chivo mono-medium-r-normal--19-140-100-100-p-89-windows-cp1250
+chivo-mono-medium-cp1250-15.bdf -misc-chivo mono-medium-r-normal--21-150-100-100-p-98-windows-cp1250
+chivo-mono-medium-cp1250-16.bdf -misc-chivo mono-medium-r-normal--22-160-100-100-p-102-windows-cp1250
+chivo-mono-medium-cp1250-18.bdf -misc-chivo mono-medium-r-normal--25-180-100-100-p-117-windows-cp1250
+chivo-mono-medium-cp1250-20.bdf -misc-chivo mono-medium-r-normal--28-200-100-100-p-129-windows-cp1250
+chivo-mono-medium-cp1250-22.bdf -misc-chivo mono-medium-r-normal--30-220-100-100-p-143-windows-cp1250
+chivo-mono-medium-cp1250-24.bdf -misc-chivo mono-medium-r-normal--33-240-100-100-p-152-windows-cp1250
+chivo-mono-medium-cp1250-26.bdf -misc-chivo mono-medium-r-normal--36-260-100-100-p-165-windows-cp1250
+chivo-mono-medium-cp1250-28.bdf -misc-chivo mono-medium-r-normal--39-280-100-100-p-178-windows-cp1250
+chivo-mono-medium-cp1250-30.bdf -misc-chivo mono-medium-r-normal--42-300-100-100-p-192-windows-cp1250
+chivo-mono-medium-cp1252-07.bdf -misc-chivo mono-medium-r-normal--10-70-100-100-p-49-windows-cp1252
+chivo-mono-medium-cp1252-10.bdf -misc-chivo mono-medium-r-normal--14-100-100-100-p-67-windows-cp1252
+chivo-mono-medium-cp1252-12.bdf -misc-chivo mono-medium-r-normal--17-120-100-100-p-80-windows-cp1252
+chivo-mono-medium-cp1252-14.bdf -misc-chivo mono-medium-r-normal--19-140-100-100-p-89-windows-cp1252
+chivo-mono-medium-cp1252-15.bdf -misc-chivo mono-medium-r-normal--21-150-100-100-p-98-windows-cp1252
+chivo-mono-medium-cp1252-16.bdf -misc-chivo mono-medium-r-normal--22-160-100-100-p-102-windows-cp1252
+chivo-mono-medium-cp1252-18.bdf -misc-chivo mono-medium-r-normal--25-180-100-100-p-117-windows-cp1252
+chivo-mono-medium-cp1252-20.bdf -misc-chivo mono-medium-r-normal--28-200-100-100-p-129-windows-cp1252
+chivo-mono-medium-cp1252-22.bdf -misc-chivo mono-medium-r-normal--30-220-100-100-p-143-windows-cp1252
+chivo-mono-medium-cp1252-24.bdf -misc-chivo mono-medium-r-normal--33-240-100-100-p-151-windows-cp1252
+chivo-mono-medium-cp1252-26.bdf -misc-chivo mono-medium-r-normal--36-260-100-100-p-165-windows-cp1252
+chivo-mono-medium-cp1252-28.bdf -misc-chivo mono-medium-r-normal--39-280-100-100-p-178-windows-cp1252
+chivo-mono-medium-cp1252-30.bdf -misc-chivo mono-medium-r-normal--42-300-100-100-p-192-windows-cp1252
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-medium.ttf -misc-chivo mono medium-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-regular-cp1250-07.bdf -misc-chivo mono-regular-r-normal--10-70-100-100-p-49-windows-cp1250
+chivo-mono-regular-cp1250-10.bdf -misc-chivo mono-regular-r-normal--14-100-100-100-p-65-windows-cp1250
+chivo-mono-regular-cp1250-12.bdf -misc-chivo mono-regular-r-normal--17-120-100-100-p-79-windows-cp1250
+chivo-mono-regular-cp1250-14.bdf -misc-chivo mono-regular-r-normal--19-140-100-100-p-88-windows-cp1250
+chivo-mono-regular-cp1250-15.bdf -misc-chivo mono-regular-r-normal--21-150-100-100-p-96-windows-cp1250
+chivo-mono-regular-cp1250-16.bdf -misc-chivo mono-regular-r-normal--22-160-100-100-p-101-windows-cp1250
+chivo-mono-regular-cp1250-18.bdf -misc-chivo mono-regular-r-normal--25-180-100-100-p-114-windows-cp1250
+chivo-mono-regular-cp1250-20.bdf -misc-chivo mono-regular-r-normal--28-200-100-100-p-127-windows-cp1250
+chivo-mono-regular-cp1250-22.bdf -misc-chivo mono-regular-r-normal--30-220-100-100-p-140-windows-cp1250
+chivo-mono-regular-cp1250-24.bdf -misc-chivo mono-regular-r-normal--33-240-100-100-p-149-windows-cp1250
+chivo-mono-regular-cp1250-26.bdf -misc-chivo mono-regular-r-normal--36-260-100-100-p-162-windows-cp1250
+chivo-mono-regular-cp1250-28.bdf -misc-chivo mono-regular-r-normal--39-280-100-100-p-176-windows-cp1250
+chivo-mono-regular-cp1250-30.bdf -misc-chivo mono-regular-r-normal--42-300-100-100-p-188-windows-cp1250
+chivo-mono-regular-cp1252-07.bdf -misc-chivo mono-regular-r-normal--10-70-100-100-p-48-windows-cp1252
+chivo-mono-regular-cp1252-10.bdf -misc-chivo mono-regular-r-normal--14-100-100-100-p-66-windows-cp1252
+chivo-mono-regular-cp1252-12.bdf -misc-chivo mono-regular-r-normal--17-120-100-100-p-79-windows-cp1252
+chivo-mono-regular-cp1252-14.bdf -misc-chivo mono-regular-r-normal--19-140-100-100-p-88-windows-cp1252
+chivo-mono-regular-cp1252-15.bdf -misc-chivo mono-regular-r-normal--21-150-100-100-p-96-windows-cp1252
+chivo-mono-regular-cp1252-16.bdf -misc-chivo mono-regular-r-normal--22-160-100-100-p-101-windows-cp1252
+chivo-mono-regular-cp1252-18.bdf -misc-chivo mono-regular-r-normal--25-180-100-100-p-114-windows-cp1252
+chivo-mono-regular-cp1252-20.bdf -misc-chivo mono-regular-r-normal--28-200-100-100-p-127-windows-cp1252
+chivo-mono-regular-cp1252-22.bdf -misc-chivo mono-regular-r-normal--30-220-100-100-p-140-windows-cp1252
+chivo-mono-regular-cp1252-24.bdf -misc-chivo mono-regular-r-normal--33-240-100-100-p-149-windows-cp1252
+chivo-mono-regular-cp1252-26.bdf -misc-chivo mono-regular-r-normal--36-260-100-100-p-162-windows-cp1252
+chivo-mono-regular-cp1252-28.bdf -misc-chivo mono-regular-r-normal--39-280-100-100-p-175-windows-cp1252
+chivo-mono-regular-cp1252-30.bdf -misc-chivo mono-regular-r-normal--42-300-100-100-p-187-windows-cp1252
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-regular.ttf -misc-chivo mono-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+chivo-mono-semibold-cp1250-07.bdf -misc-chivo mono-semibold-r-normal--10-70-100-100-p-51-windows-cp1250
+chivo-mono-semibold-cp1250-10.bdf -misc-chivo mono-semibold-r-normal--14-100-100-100-p-69-windows-cp1250
+chivo-mono-semibold-cp1250-12.bdf -misc-chivo mono-semibold-r-normal--17-120-100-100-p-82-windows-cp1250
+chivo-mono-semibold-cp1250-14.bdf -misc-chivo mono-semibold-r-normal--19-140-100-100-p-91-windows-cp1250
+chivo-mono-semibold-cp1250-15.bdf -misc-chivo mono-semibold-r-normal--21-150-100-100-p-101-windows-cp1250
+chivo-mono-semibold-cp1250-16.bdf -misc-chivo mono-semibold-r-normal--22-160-100-100-p-105-windows-cp1250
+chivo-mono-semibold-cp1250-18.bdf -misc-chivo mono-semibold-r-normal--25-180-100-100-p-118-windows-cp1250
+chivo-mono-semibold-cp1250-20.bdf -misc-chivo mono-semibold-r-normal--28-200-100-100-p-133-windows-cp1250
+chivo-mono-semibold-cp1250-22.bdf -misc-chivo mono-semibold-r-normal--30-220-100-100-p-146-windows-cp1250
+chivo-mono-semibold-cp1250-24.bdf -misc-chivo mono-semibold-r-normal--33-240-100-100-p-155-windows-cp1250
+chivo-mono-semibold-cp1250-26.bdf -misc-chivo mono-semibold-r-normal--36-260-100-100-p-169-windows-cp1250
+chivo-mono-semibold-cp1250-28.bdf -misc-chivo mono-semibold-r-normal--39-280-100-100-p-183-windows-cp1250
+chivo-mono-semibold-cp1250-30.bdf -misc-chivo mono-semibold-r-normal--42-300-100-100-p-196-windows-cp1250
+chivo-mono-semibold-cp1252-07.bdf -misc-chivo mono-semibold-r-normal--10-70-100-100-p-51-windows-cp1252
+chivo-mono-semibold-cp1252-10.bdf -misc-chivo mono-semibold-r-normal--14-100-100-100-p-68-windows-cp1252
+chivo-mono-semibold-cp1252-12.bdf -misc-chivo mono-semibold-r-normal--17-120-100-100-p-82-windows-cp1252
+chivo-mono-semibold-cp1252-14.bdf -misc-chivo mono-semibold-r-normal--19-140-100-100-p-91-windows-cp1252
+chivo-mono-semibold-cp1252-15.bdf -misc-chivo mono-semibold-r-normal--21-150-100-100-p-100-windows-cp1252
+chivo-mono-semibold-cp1252-16.bdf -misc-chivo mono-semibold-r-normal--22-160-100-100-p-105-windows-cp1252
+chivo-mono-semibold-cp1252-18.bdf -misc-chivo mono-semibold-r-normal--25-180-100-100-p-119-windows-cp1252
+chivo-mono-semibold-cp1252-20.bdf -misc-chivo mono-semibold-r-normal--28-200-100-100-p-132-windows-cp1252
+chivo-mono-semibold-cp1252-22.bdf -misc-chivo mono-semibold-r-normal--30-220-100-100-p-145-windows-cp1252
+chivo-mono-semibold-cp1252-24.bdf -misc-chivo mono-semibold-r-normal--33-240-100-100-p-154-windows-cp1252
+chivo-mono-semibold-cp1252-26.bdf -misc-chivo mono-semibold-r-normal--36-260-100-100-p-168-windows-cp1252
+chivo-mono-semibold-cp1252-28.bdf -misc-chivo mono-semibold-r-normal--39-280-100-100-p-182-windows-cp1252
+chivo-mono-semibold-cp1252-30.bdf -misc-chivo mono-semibold-r-normal--42-300-100-100-p-196-windows-cp1252
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-adobe-standard
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-ascii-0
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso10646-1
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-1
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-10
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-13
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-15
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-16
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-2
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-3
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-4
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-iso8859-9
+chivo-mono-semibold.ttf -misc-chivo mono semibold-semibold-r-normal--0-0-0-0-m-0-microsoft-cp1252
