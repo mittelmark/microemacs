@@ -29,8 +29,6 @@ jobs:
 
     - name: make mecb binary
       run:  |
-        ls 
-        ls -l bfs
         make -f linux32gcc.gmk mecb
     
     - name: make mecw binary
