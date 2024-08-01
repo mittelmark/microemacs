@@ -1,0 +1,92 @@
+##-*- makefile -*-############################################################
+#
+#  System        : Built-in File System
+#  Module        : Make rules for the bfs command line utility.
+#  Object Name   : $RCSfile$
+#  Revision      : $Revision$
+#  Date          : $Date$
+#  Author        : $Author$
+#  Created By    : Jon Green
+#  Created       : Wed Oct 21 15:58:59 2009
+#  Last Modified : <240801.0649>
+#
+#  Description   : Unix/Linux only
+#
+#  Notes
+#
+#  History
+#
+##############################################################################
+#
+#  Copyright (c) 2009 Jon Green.
+#
+#  All Rights Reserved.
+#
+#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
+#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
+#  readable form without prior written consent from Jon Green.
+#
+##############################################################################
+
+#
+# Define the build definitions.
+#
+TOOLKIT=        win32mingw
+OUTDIR   =      .$(TOOLKIT)-release
+
+CC=		i686-w64-mingw32-gcc
+CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include -I../3rdparty/zlib
+LIBS=		-fstack-protector -lssp -lz #win32/lib/libz.a
+#
+# Some useful commands
+#
+RM=		rm -f
+RMDIR=          rm -r -f
+
+#
+# Define the source and object files.
+#
+BFSSRC=		bfsutil.c \
+		bfs.c \
+		uappend.c \
+		ubuild.c \
+		ucopy.c \
+		ucreate.c \
+		uinfo.c \
+		ulist.c \
+		ustrip.c \
+		utest.c \
+		uxdir.c \
+		uxfile.c
+BFS=		$(OUTDIR)/bfs.exe
+#
+#############################################################################
+# Rules for the bfsbuild utility.
+#
+PRGHDRS  = bfs.h bfsutil.h
+
+PRGOBJS  = $(OUTDIR)/bfs.o $(OUTDIR)/bfsutil.o  $(OUTDIR)/uappend.o  $(OUTDIR)/ubuild.o  $(OUTDIR)/ucopy.o  $(OUTDIR)/ucreate.o \
+	   $(OUTDIR)/uinfo.o  $(OUTDIR)/ulist.o  $(OUTDIR)/ustrip.o  $(OUTDIR)/utest.o  $(OUTDIR)/uxdir.o  $(OUTDIR)/uxfile.o 
+
+# Define the basic rules.
+#
+all:		$(PRGOBJS) $(BFS)
+#
+clean:
+		$(RMDIR) $(OUTDIR)
+#
+spotless:	clean
+		$(RM) *~
+		$(RM) core
+		$(RM) tags
+$(BFS):		$(OUTDIR) $(PRGOBJS)
+		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) $(LIBS) -fstack-protector -lssp 
+#
+$(PRGOBJS): $(PRGHDRS) 
+
+$(OUTDIR)/%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OUTDIR):
+	-mkdir $(OUTDIR)
+#
