@@ -53,9 +53,41 @@ jobs:
         cd ..
         cp jasspa/macros.zip MicroEmacs09-091223-Windows/
 
+    - name: Make mecb release
+      run: |
+        mkdir MicroEmacs09-091223-Windows-mecb
+        mkdir MicroEmacs09-091223-Windows-mecb/bin
+        cp bfs/bfs.exe MicroEmacs09-091223-Windows-mecb/bin/
+        cp mec*.exe MicroEmacs09-091223-Windows-mecb/bin/
+        cp license.txt MicroEmacs09-091223-Windows-mecb/
+        cp COPYING MicroEmacs09-091223-Windows-mecb/
+        cp README-standalone.md MicroEmacs09-091223-Windows-mecb/
+
+    - name: Make mewb release
+      run: |
+        mkdir MicroEmacs09-091223-Windows-mew
+        mkdir MicroEmacs09-091223-Windows-mew/bin
+        cp bfs/bfs.exe MicroEmacs09-091223-Windows-mew/bin/
+        cp mecw.exe MicroEmacs09-091223-Windows-mewb/bin/
+        cp license.txt MicroEmacs09-091223-Windows-mewb/
+        cp COPYING MicroEmacs09-091223-Windows-mewb/
+        cp README-standalone.md MicroEmacs09-091223-Windows-mewb/
+
     - name: Upload Windows Release files
       uses: actions/upload-artifact@v4
       with: 
         name: MicroEmacs09-091223-Windows
         path: MicroEmacs09-091223-Windows
     
+
+    - name: Upload Windows mecb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-091223-Windows-mecb
+        path: MicroEmacs09-091223-Windows-mecb
+    
+    - name: Upload Windows mewb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-091223-Windows-mewb
+        path: MicroEmacs09-091223-Windows-mewb
