@@ -1,4 +1,4 @@
-name: Binaries Mingw-Windows on Ubuntu 
+name: Binaries Windows (win32mingw)
 
 on:
   workflow_dispatch:

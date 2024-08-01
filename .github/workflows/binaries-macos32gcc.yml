@@ -11,17 +11,23 @@ jobs:
   build:
     runs-on: macos-12
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
-        if: runner.os == 'macOS'
         run: |
            echo `uname -a`
            ls
            brew install xquartz
            brew install gcc
            brew install make
-           cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=gcc-11
-           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-11
+
+      - name: make bfs binary
+        run: make -f macos32gcc.gmk bfs/bin CC=gcc-11   
+
+      - name: make mec binary
+        run:  make -f macos32gcc.gmk mec
+
+      - name: make mew binary
+        run: |
            cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-11 BTYP=c
            cd ..
            mkdir binaries-MacOS-12
