@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Jon Green
 #  Created       : Wed Oct 21 15:58:59 2009
-#  Last Modified : <240801.0649>
+#  Last Modified : <240801.0653>
 #
 #  Description   : Unix/Linux only
 #
@@ -70,7 +70,7 @@ PRGOBJS  = $(OUTDIR)/bfs.o $(OUTDIR)/bfsutil.o  $(OUTDIR)/uappend.o  $(OUTDIR)/u
 
 # Define the basic rules.
 #
-all:		$(PRGOBJS) $(BFS)
+all:		$(OUTDIR) $(PRGOBJS) $(BFS)
 #
 clean:
 		$(RMDIR) $(OUTDIR)
@@ -81,6 +81,7 @@ spotless:	clean
 		$(RM) tags
 $(BFS):		$(OUTDIR) $(PRGOBJS)
 		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) $(LIBS) -fstack-protector -lssp 
+		cp $(BFS) .
 #
 $(PRGOBJS): $(PRGHDRS) 
 

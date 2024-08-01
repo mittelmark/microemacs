@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240731.2318>
+#  Last Modified : <240801.0651>
 #
 #  Description	
 #
@@ -33,9 +33,8 @@ version=091224b
 VERSION=$(shell grep -e '^version=' linux32gcc.gmk | sed 's/version=//')
 
 bfs/exe:
-	rm bfs/*.o
-	cd bfs && make -f Makefile.mingw CC=i686-w64-mingw32-gcc clean	
-	cd bfs && make -f Makefile.mingw CC=i686-w64-mingw32-gcc
+	cd bfs && make -f win32mingw.gmk clean	
+	cd bfs && make -f win32mingw.gmk
 bfs/bin:
 	cd bfs && make
 
