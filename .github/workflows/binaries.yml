@@ -1,4 +1,4 @@
-name: Binaries Linux and Windows
+name: (deprecated) Binaries Linux and Windows
 
 on:
   workflow_dispatch:
