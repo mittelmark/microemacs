@@ -27,14 +27,14 @@ jobs:
         run: make -f macos32gcc.gmk bfs/bin CC=gcc-11   
 
       - name: make mec binary
-        run:  make -f macos32gcc.gmk mec
+        run:  /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mec
 
       - name: make mew binary
-        run: make -f macos32gcc.gmk mew
+        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mew
         
       - name: make mecb binary 
-        run: make -f macos32gcc.gmk mecb
+        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mecb
         
       - name: make mewb binary 
-        run: make -f macos32gcc.gmk mewb
+        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mewb
         
