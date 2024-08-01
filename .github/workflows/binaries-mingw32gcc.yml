@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
     branches: [ master ]
 
+env: 
+    VERSION: "091223"
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -39,8 +42,8 @@ jobs:
     
     - name: Make release
       run: |
-        mkdir MicroEmacs09-091223-Windows
-        mkdir MicroEmacs09-091223-Windows/bin
+        mkdir MicroEmacs09-${VERSION}-Windows
+        mkdir MicroEmacs09-${VERSION}-Windows/bin
         cp bfs/bfs.exe MicroEmacs09-091223-Windows/bin/
         cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-091223-Windows/bin/
         cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-091223-Windows/bin/
