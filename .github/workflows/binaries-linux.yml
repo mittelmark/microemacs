@@ -66,7 +66,7 @@ jobs:
         mkdir MicroEmacs09-${VERSION}-Linux-mewb
         mkdir MicroEmacs09-${VERSION}-Linux-mewb/bin
         cp bfs/bfs MicroEmacs09-${VERSION}-Linux-mewb/bin/
-        cp mec*.bin MicroEmacs09-${VERSION}-Linux-mewb/bin/
+        cp mew*.bin MicroEmacs09-${VERSION}-Linux-mewb/bin/
         cp license.txt MicroEmacs09-${VERSION}-Linux-mewb/
         cp COPYING MicroEmacs09-${VERSION}-Linux-mewb/
         cp README-standalone.md MicroEmacs09-${VERSION}-Linux-mewb/
