@@ -3,7 +3,8 @@ name: Binaries Ubuntu 64bit
 on:
   workflow_dispatch:
     branches: [ master ]
-
+env:
+   VERSION: "091224b"
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -36,23 +37,54 @@ jobs:
     
     - name: Make release
       run: |
-        mkdir MicroEmacs09-091223-Linux
-        mkdir MicroEmacs09-091223-Linux/bin
-        cp bfs/bfs MicroEmacs09-091223-Linux/bin/
-        cp src/.linux32gcc-release-mecw/mecw MicroEmacs09-091223-Linux/bin/
-        cp src/.linux32gcc-release-mec/mec  MicroEmacs09-091223-Linux/bin/
-        cp me*.bin MicroEmacs09-091223-Linux/bin/
-        cp license.txt MicroEmacs09-091223-Linux/
-        cp COPYING MicroEmacs09-091223-Linux/
-        cp README-standalone.md MicroEmacs09-091223-Linux/
+        mkdir MicroEmacs09-${VERSION}-Linux
+        mkdir MicroEmacs09-${VERSION}-Linux/bin
+        cp bfs/bfs MicroEmacs09-${VERSION}-Linux/bin/
+        cp src/.linux32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-Linux/bin/
+        cp src/.linux32gcc-release-mec/mec  MicroEmacs09-${VERSION}-Linux/bin/
+        cp me*.bin MicroEmacs09-${VERSION}-Linux/bin/
+        cp license.txt MicroEmacs09-${VERSION}-Linux/
+        cp COPYING MicroEmacs09-${VERSION}-Linux/
+        cp README-standalone.md MicroEmacs09-${VERSION}-Linux/
         cd jasspa 
         zip macros.zip macros/*
         cd ..
-        cp jasspa/macros.zip MicroEmacs09-091223-Linux/
+        cp jasspa/macros.zip MicroEmacs09-${VERSION}-Linux/
+
+    - name: Make mecb release
+      run: |
+        mkdir MicroEmacs09-${VERSION}-Linux-mecb
+        mkdir MicroEmacs09-${VERSION}-Linux-mecb/bin
+        cp bfs/bfs MicroEmacs09-${VERSION}-Linux-mecb/bin/
+        cp mec*.bin MicroEmacs09-${VERSION}-Linux-mecb/bin/
+        cp license.txt MicroEmacs09-${VERSION}-Linux-mecb/
+        cp COPYING MicroEmacs09-${VERSION}-Linux-mecb/
+        cp README-standalone.md MicroEmacs09-${VERSION}-Linux-mecb/
+
+    - name: Make mewb release
+      run: |
+        mkdir MicroEmacs09-${VERSION}-Linux-mewb
+        mkdir MicroEmacs09-${VERSION}-Linux-mewb/bin
+        cp bfs/bfs MicroEmacs09-${VERSION}-Linux-mewb/bin/
+        cp mec*.bin MicroEmacs09-${VERSION}-Linux-mewb/bin/
+        cp license.txt MicroEmacs09-${VERSION}-Linux-mewb/
+        cp COPYING MicroEmacs09-${VERSION}-Linux-mewb/
+        cp README-standalone.md MicroEmacs09-${VERSION}-Linux-mewb/
 
     - name: Upload Ubuntu Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09-091223-Linux
-        path: MicroEmacs09-091223-Linux
+        name: MicroEmacs09-${{ env.VERSION }}-Linux
+        path: MicroEmacs09-${{ env.VERSION }}-Linux
     
+    - name: Upload Ubuntu mecb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-Linux-mecb
+        path: MicroEmacs09-${{ env.VERSION }}-Linux-mecb
+
+    - name: Upload Ubuntu mewb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-Linux-mewb
+        path: MicroEmacs09-${{ env.VERSION }}-Linux-mewb
