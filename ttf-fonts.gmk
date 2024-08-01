@@ -1,0 +1,123 @@
+##-*- makefile -*-############################################################
+#
+#  System        : 
+#  Module        : 
+#  Object Name   : $RCSfile$
+#  Revision      : $Revision$
+#  Date          : $Date$
+#  Author        : $Author$
+#  Created By    : Detlef Groth
+#  Created       : Thu Aug 1 07:16:30 2024
+#  Last Modified : <240801.1012>
+#
+#  Description	
+#
+#  Notes
+#
+#  History
+#	
+#  $Log$
+#
+##############################################################################
+#
+#  Copyright (c) 2024 Detlef Groth.
+# 
+#  All Rights Reserved.
+# 
+#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
+#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
+#  readable form without prior written consent from Detlef Groth.
+#
+##############################################################################
+
+anonymous: anonymous-pro-medium.ttf
+anonymous-pro-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro.ttf -O anonymous-pro-medium.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/license.txt -O anonymous-pro-license.txt
+
+dejavu: dejavu-sans-mono-medium.ttf
+dejavu-sans-mono-medium.ttf:
+	wget https://github.com/go-fonts/dejavu/raw/main/LICENSE-DejaVu -O dejavu-sans-mono-license.txt
+	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmono/DejaVuSansMono.ttf -O dejavu-sans-mono-medium.ttf
+	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmonobold/DejaVuSansMono-Bold.ttf -O dejavu-sans-mono-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-dejavu/bront-dejavu.ttf -O bront-dejavu-medium.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-dejavu/LICENSE.txt -O bront-dejavu-license.txt
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/bront-ubuntu.ttf -O bront-ubuntu-medium.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/LICENSE.txt -O bront-ubuntu-license.txt
+
+courier-prime: courier-prime-medium.ttf
+courier-prime-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime.ttf -O courier-prime-medium.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/LICENSE.txt -O courier-prime-license.txt
+
+chivo-mono: chivo-mono-medium.ttf
+chivo-mono-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo.ttf -O chivo-mono-medium.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf -O chivo-mono-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-mono-license.txt
+
+inconsolata: inconsolata-go-medium.ttf
+inconsolata-go-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go.ttf -O inconsolata-go-medium.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/license.txt -O inconsolata-go-license.txt
+	
+julia-mono: julia-mono-medium.ttf
+julia-mono-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono.ttf  -O julia-mono-medium.ttf      
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/LICENSE -O julia-mono-license.txt
+
+liberation-mono: liberation-mono-medium.ttf
+liberation-mono-medium.ttf:
+	wget https://github.com/go-fonts/liberation/raw/main/LICENSE-SIL -o liberation-mono-license.txt
+	wget https://github.com/go-fonts/liberation/raw/main/liberationmonoregular/LiberationMono-Regular.ttf -O liberation-mono-medium.ttf
+	wget https://github.com/go-fonts/liberation/raw/main/liberationmonobold/LiberationMono-Bold.ttf -O liberation-mono-bold.ttf
+
+proggy-vector: proggy-vector-medium.ttf
+proggy-vector-medium.ttf:
+	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector-Regular.ttf -O proggy-vector-medium.ttf
+	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector_Licence.txt -O proggy-vector-license.txt
+
+source-code-pro: source-code-pro-medium.ttf
+source-code-pro-medium.ttf:
+	wget https://github.com/adobe-fonts/source-code-pro/raw/release/LICENSE.md -O source-code-pro-license.txt
+	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Bold.ttf -O source-code-pro-bold.ttf
+	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Medium.ttf -O source-code-pro-medium.ttf        
+	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Regular.ttf -O source-code-pro-regular.ttf                
+	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Semibold.ttf -O source-code-pro-semibold.ttf                        
+
+terminus: terminus-medium.ttf    
+terminus-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/terminus-bold.ttf 
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/terminus.ttf    -O terminus-medium.ttf    
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/license.txt -O terminus-license.txt
+
+ubuntu-mono: ubuntu-mono-medium.ttf
+ubuntu-mono-medium.ttf:
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu-bold.ttf -O ubuntu-mono-bold.ttf
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu.ttf    -O ubuntu-mono-medium.ttf    
+	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt
+
+index:
+	mkfontscale .
+	mkfontdir .
+
+package:
+	-rm -rf ttf-fonts
+	mkdir ttf-fonts
+	cp *.ttf ttf-fonts
+	cp fonts.* ttf-fonts/
+	cp *-license.txt ttf-fonts/	
+	echo "Installation of these fonts as X11-fonts" > Readme.txt
+	echo -e 'Run inside the folder ttf-fonts:\n\n  xset +fp `pwd`\n  xset fp rehash\n\n' >> Readme.txt
+	echo -e "Afterwards you might use these fonts. Check the file fonts.dir to see the available fonts!\n" >> Readme.txt
+	echo "Or use xfontsel to see the fonts and have a preview." >> Readme.txt
+	cp Readme.txt ttf-fonts/Readme.txt
+	zip ttf-fonts.zip ttf-fonts/*
+
+all: anonymous dejavu courier-prime chivo-mono inconsolata julia-mono liberation-mono proggy-vector \
+	source-code-pro terminus ubuntu-mono \
+	index package
