@@ -1,0 +1,27 @@
+name: Fonts for X11 
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+env:
+   VERSION: "091224b"
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: developer library installs
+      run: |
+        sudo apt install xfonts-utils
+
+    - name: make ttf zip filebinary
+      run:  make -f ttf-fonts.gmk all
+
+    - name: Upload ttf zip file
+      uses: actions/upload-artifact@v4
+      with: 
+        name: ttf-fonts
+        path: ttf-fonts
