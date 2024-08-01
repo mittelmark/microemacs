@@ -15,8 +15,7 @@ jobs:
      
     - name: developer library installs
       run: |
-        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
-        sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+        sudo apt install build-essential
         sudo apt install desktop-file-utils
 
     - name: make bfs binary
@@ -32,7 +31,7 @@ jobs:
       run:  |
         make -f linux32gcc.gmk mecb
     
-    - name: make mecw binary
+    - name: make mewb binary
       run:  make -f linux32gcc.gmk mewb
     
     - name: Make release
