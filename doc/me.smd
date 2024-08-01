@@ -9481,26 +9481,32 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 ## ANSWER
 
 
-  MicroEmacs 09 in 2024 contains a few fixes to compile it with the modern
-  GCC. It contains the following new features (often added by Steven Phillips
-  to the new MicroEmacs and then backported by me to MicroEmacs 09):
+  MicroEmacs  09 in 2024  contains  a few fixes to  compile it with the modern
+  GCC. It contains the following new features (often added by Steven  Phillips
+  to the new MicroEmacs 24 (which is not published yet) and then backported by
+  me to MicroEmacs 09):
   
-  - in terminal mode on Unix using the alternate buffer feature whch supports
-    suspension without editor traces, so the buffer clears during suspension
+  - in terminal mode on Unix using the alternate buffer feature which supports
+    suspension  without editor traces, so the buffer clears during  suspension
+    with Ctrl-z
   - fixing frame resize on X-Windows which might before destroy the window layout
     on some tiling window managers
   - simplified font selection on X-windows using [change-font-type(3)](change-font-type(3))
   - font-resize with Ctrl-Plus and Ctrl-Minus
-  - more editor schemes, mainly interesting Dracula scheme and Ayu-Light
+  - support for  Windows-cp1252  encodings if the font  supports it, so you an
+    get an Euro symbol ...
+  - more editor schemes, mainly interesting Dracula and Ayu-Light schemes 
   - improved template handling using an interactive menu to select templates
-    from the users config directory (.jasspa in your HOME directory)
+    from the users config directory (.jasspa in your HOME directory), create a
+    subfolder r for R templates and place your etf files there
   - new binary builds for macOS 11-14 (as well as for Windows and Ubuntu and Fedora Linuxes)
-  - much improved Markdown mode
+  - much improved C++, Python, R and Markdown mode, support for highlighting R
+    or Python  code chunks in Markdown documents
   - improved CUA bindings - shortcut emulation more common in standard GUI
     applications like C-c, C-x, C-v for copy, cut and paste 
   - new [jeany-bindings(3)](jeany-bindings(3)) command which supports a few CUA bindings
     after the C-j prefix so copy, cut and paste are `C-j C-c`, `C-j C-x` and `C-j C-v`.
-  
+
   [[FAQ Index]](Frequently Asked Questions).
 !! me-id: m1cmd000 
 ! 1 me
@@ -28169,9 +28175,66 @@ $a
   This page describes introductory notes for the installation and setup of
   MicroEmacs 2009.
 
+## Single File Binary Install
 
-## Quick Install 
+  Since 2009 the prefered way for  installation  is the use of the single file
+  binaries.       The        background        is       described        here:
+  [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html).
+  The  MicroEmacs  executable  in this case contains the binary as well as all
+  macro files and optionally as well some dictionary files and the help file.
+  So the user only needs to  download a binary for its own  platform,  make it
+  executable and place it into a directory  belonging to its PATH variable. In
+  2024 the following platforms and binaries are supportet:
+  
+  - _Linux_ - Terminal (mecb) and Terminal and X11 version (mewb) were mainly 
+    Debian and Red Hat based distros are provided  which might be used on many
+    other distros - we provide kernel 5 builds for x86_64 platforms
+  - _MacOS_ - Terminal  (mecb) and  Terminal and X11 version  (mewb), the latter
+    requires the XQuartz extension, MacOS 12 to 14 builds are currently available
+  - _Windows_ - Terminal (mecb) and Windows version (mewb) they should work on
+    all recent Windows systems, we regular check only on Wine emulator
+  
+  Just download the file for your platform  and make it executable and run it.
 
+  You will be asked  initially  for your user name and the default  user path,
+  usually it is  ~/.jasspa.  As it a first step it is usually  required to run
+  the command `"Esc x" user-setup` to select the default  keyboad and language
+  in the  dialog. You can as well use the menu entry  "Tools->User  Setup". If
+  you run the terminal version you can as well execute the menu with `"Esc ="`
+  and using the cursor keys. To get Termcap  colors you might in the  terminal
+  version  as well  select  in the "User  Setup -  Platform  Tab" the  Termcap
+  colors. Thereafter your should restart the editor and in case you do not get
+  the Termcap colors you can try to start the terminal version like this:
+  
+          TERM=rxvt mec FILENAME
+  
+  Your user settings are stored in the folder ~/.jasspa usually, although this
+  can be changed by changing the MEPATH environment variable.
+  
+  If you run an  Ubuntu  executable  build  on the  Github  server  you  might
+  sometimes  see for  instance on a Fedora  system a  libterminfo  warning you
+  might through this away by writing a Bash function in your .bashrc like this:
+  
+         function mecn {
+            TERM=rxvt mec "$@" 2> /dev/null
+         }
+  
+  __Getting Help__
+  
+  In case of trouble use the issue link on the Githu project page:
+  https::/github.com/mittelmark/microemacs/issues
+
+  Below is the old  descfription of an installation  for a simple me (mec, mew)
+  executable  (terminal or  X11/Windows  version)  together  with the required
+  macro files described. If you prefere the single file install just described
+  above, you do not need to read further. 
+  
+  Hint: All macro files for the  standalone  builds are  accessible  using the
+  bfs://macros path within your MicroEmacs text editor.
+  
+## Quick Install of Me and Macro Files
+
+  2024: These information below is mostly outdated.
 
   The quickest way to install MicroEmacs for testing without reading the
   rest of this document is to:-
@@ -28195,13 +28258,13 @@ $a
   >  See [Contact Information](Contact Information) for full contact information. A mail archive
      exists at:-
 
-            http://groups.yahoo.com/group/jasspa/
+            http://groups.yahoo.com/group/jasspa/ (not existing anymore)
 
 
   >  If you wish to participate in the list then you must first register by
      sending an empty mail message body to:-
 
-            jasspa-subscribe@yahoogroups.com
+            jasspa-subscribe@yahoogroups.com (not exiting anymore)
 
 
   >  You will then be able to mail any questions into the group.
