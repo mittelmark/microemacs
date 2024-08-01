@@ -15,9 +15,7 @@ jobs:
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
         run: |
            echo `uname -a`
-           uname -m
            uname -r
-           uname -p
            brew install xquartz
            brew install gcc
            brew install make
