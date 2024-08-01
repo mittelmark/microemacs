@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240801.0838>
+#  Last Modified : <240801.0847>
 #
 #  Description	
 #
@@ -36,10 +36,10 @@ bfs/bin:
 	cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=$(CC)
 
 mec: 
-        cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=$(CC) BTYP=c
+        cd src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=$(CC) BTYP=c
 
 mew: 
-        cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=$(CC) BTYP=cw
+        cd src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=$(CC) BTYP=cw
 
 mecb: mec bfs/bin
 	./bfs/bfs -a ./src/.macos32gcc-release-mec/mec -o mecb-macos-$(VERSION).bin ./jasspa
