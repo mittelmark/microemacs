@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240801.0651>
+#  Last Modified : <240801.0744>
 #
 #  Description	
 #
@@ -48,4 +48,4 @@ mecb: bfs/bin mec
 	./bfs/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o mecb-windows-$(VERSION).exe ./jasspa
 
 mewb: bfs/bin mew
-	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o mecw-windows-$(VERSION).exe ./jasspa		
+	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o mewb-windows-$(VERSION).exe ./jasspa		

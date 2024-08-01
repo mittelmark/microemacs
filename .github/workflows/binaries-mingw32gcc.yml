@@ -68,9 +68,9 @@ jobs:
 
     - name: Make mewb release
       run: |
-        mkdir MicroEmacs09-${VERSION}-Windows-mew
-        mkdir MicroEmacs09-${VERSION}-Windows-mew/bin
-        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mew/bin/
+        mkdir MicroEmacs09-${VERSION}-Windows-mewb
+        mkdir MicroEmacs09-${VERSION}-Windows-mewb/bin
+        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp mew*.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp license.txt MicroEmacs09-${VERSION}-Windows-mewb/
         cp COPYING MicroEmacs09-${VERSION}-Windows-mewb/
