@@ -27,32 +27,11 @@ jobs:
         run:  make -f macos32gcc.gmk mec
 
       - name: make mew binary
-        run: |
-           cd ../src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk  CC=gcc-11 BTYP=c
-           cd ..
-           mkdir binaries-MacOS-12
-           cp src/.macos32gcc-release-mecw/mecw binaries-MacOS-12/
-           cp src/.macos32gcc-release-mec/mec binaries-MacOS-12/
-           tar cfvz jasspa.tar.gz jasspa/*
-           cp jasspa.tar.gz binaries-MacOS-12/
-           rm -rf jasspa/company
-           rm -rf jasspa/pixmaps
-           rm -rf jasspa/contrib           
-           ./bfs/bfs -a src/.macos32gcc-release-mecw/mecw -o me-macos.bin ./jasspa
-           ./bfs/bfs -a src/.macos32gcc-release-mec/mec   -o mec-macos.bin ./jasspa           
-           cp me-macos.bin binaries-MacOS-12/mecw-macos-12.bin
-           cp mec-macos.bin binaries-MacOS-12/mec-macos-12.bin           
-           cp bfs/bfs binaries-MacOS-12/
-           chmod 755 ./me-macos.bin 
-           ./me-macos.bin -n -V
-           cp README-standalone.md binaries-MacOS-12/
-           cp faq.txt license.txt binaries-MacOS-12/
-           echo '-1 ml-write &cat "Platform:" $platform' > platform.emf
-           echo "exit-emacs" >> platform.emf
-           TERM=xterm ./me-macos.bin @platform.emf
-      - name: Upload Artifact GitHub Action
-        uses: actions/upload-artifact@v3
-        with: 
-           name: binaries-MacOS-12
-           path: binaries-MacOS-12
-           
+        run: make -f macos32gcc.gmk mew
+        
+      - name: make mecb binary 
+        run: make -f macos32gcc.gmk mecb
+        
+      - name: make mewb binary 
+        run: make -f macos32gcc.gmk mewb
+        
