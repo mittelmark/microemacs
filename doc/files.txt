@@ -115,7 +115,12 @@ amicr081.html	ffaq40
 amicr082.html	ffaq41
 amicr083.html	ffaq42
 amicr084.html	ffaq43
+amicr085.html	ffaq43
 amicr085.html	0fFAQs
+amicr086.html	ffaq44
+amicr087.html	ffaq45
+amicr088.html	ffaq46
+amicr089.html	ffaq47
 m1cmd000.html	me(1)
 m1cmd001.html	memsdev(1)
 m1cmd001.html	memsdev
@@ -645,6 +650,9 @@ m3mac094.html	change-font-size(3)
 m3mac094.html	.change-font.sz-font(5)
 m3mac094.html	.change-font.sz-size(5)
 m3mac094.html	.change-font.sz-fonts(5)
+m3mac095.html	jeany-bindings(3)
+m3mac095.html	jeany-osd(3)
+m3mac095.html	jeany-osd-undo(3)
 m3osd000.html	user-setup(3)
 m3osd001.html	organizer(3)
 m3osd002.html	find-word(3)

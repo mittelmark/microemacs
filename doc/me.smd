@@ -4897,9 +4897,35 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
 ## Development History 
 
+- [240801]
+    - docu and faq extended about  installation  of bfs  executuables  and TTF
+      font support
+    - new  server  builds  Linux,  MacOS and  Windows  (via Mingw on Linux) on
+      Github are ready      
+
+- [240730]
+    - refined  build  structure  for Linux, Macos and Windows with three small
+      make files
+    - support for True Type Fonts using a preprocced  fonts zip file create as
+      Github action
+      
+- [240729]
+    - implementing cp1252, cp1251 and cp1250 encodings
+    - updating  fonts  Chivo,  Courier  Prime and  Ubuntu to support  these if
+      possible using bdf files
+    
+- [240717]
+    - split and cleanup Linux mec, mecb and mew and mewb builds
+    - extensive C++ abbreviation file and keyword updates for some of the 
+      new C++14 and C+17 keywords
+      
+- [240601] 
+    - adding R application template
+    - adding LaTeX template
+
  __Release - 29th March 2024 Easter Egg__ 
 
-- [2024029] 
+- [240329] 
     - using Markdown instead of nroff for documention writing
     - update contact and news group information
         
@@ -8173,6 +8199,7 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
   [faq44](faq44(0f)) - Why is MicroEmacs called still MicroEmacs 09 in 2024 ??  
   [faq45](faq45(0f)) - What are the main new features of MicroEmacs 09 in 2024  ??  
   [faq46](faq46(0f)) - What is a bfs executuable?  
+  [faq47](faq47(0f)) - How can I use True Type Fonts within MicroEmacs on a X11 system ??  
 !! me-id: amicr041
 ! 0ffaq00
 ## QUESTION (00)
@@ -9112,7 +9139,7 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
   `xfontsel` on X-Windows systems and select a monospaced font, then pasting the
   font-string into the user-setup form field for the font name. 
   
-  Per default in this menu only The fonts "Adobe Courier" and "Lucida Typwriter" 
+  Per default in this menu only the fonts "Adobe Courier" and "Lucida Typwriter" 
   are available as these seem to exist on all platforms which I could test, such
   as macOS with XQuartz, Fedora and Ubuntu Linux.
   
@@ -9134,6 +9161,9 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
   "chivo" or "prime" (for courier prime) to use these fonts. To switch to bold
   fonts use the command [change-font-bold](change-font-bold(3)).
   
+  If you are interested to directly use True Type Fonts within MicroEmacs have
+  a  look  at  [faq47](faq47(0f))  - How  can I use  True  Type  Fonts  within
+  MicroEmacs.
   
   [[FAQ Index]](Frequently Asked Questions).
 !! me-id: amicr075
@@ -9483,7 +9513,7 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
 
   MicroEmacs  09 in 2024  contains  a few fixes to  compile it with the modern
-  GCC. It contains the following new features (often added by Steven  Phillips
+  GCC. It provides the following new features (often added by Steven  Phillips
   to the new MicroEmacs 24 (which is not published yet) and then backported by
   me to MicroEmacs 09):
   
@@ -9492,10 +9522,13 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
     with Ctrl-z
   - fixing frame resize on X-Windows which might before destroy the window layout
     on some tiling window managers
+  - better font support on X11 using true type fonts as well as the old pixmaps fonts
   - simplified font selection on X-windows using [change-font-type(3)](change-font-type(3))
   - font-resize with Ctrl-Plus and Ctrl-Minus
   - support for  Windows-cp1252  encodings if the font  supports it, so you an
-    get an Euro symbol ...
+    get an Euro symbol ...,  Windows-cp1250  (Central European - Polish, Czech
+    etc) and Windows-cp1251  (Cyrillian) are as well now available if the user
+    has a monospaced font with these encodings
   - more editor schemes, mainly interesting Dracula and Ayu-Light schemes 
   - improved template handling using an interactive menu to select templates
     from the users config directory (.jasspa in your HOME directory), create a
@@ -9716,8 +9749,58 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
   correctly and not silently fail. If you wish to re-build the binary with the
   default font then edit unixterm.c::2976 and change the default font string.
 
+  [[FAQ Index]](Frequently Asked Questions).
+!! me-id: amicr089
+! 0ffaq47
+## QUESTION (47)
 
+  How can I use True Type Fonts within MicroEmacs on a X11 system ??  
+  
+  Wheras  in the  terminal  you use your  terminal  emulator  to choose a nice
+  looking font, for the  X11-Windows  application  you are on your own. If you
+  are on  Linux  with an X11  server  the  availability  of  fonts  to be used
+  directly within  MicroEmacs is first rather limited and restricted mostly to Bitmap
+  fonts like misc-fixed or or -bitstream-courier.. To graphically  explore
+  the available  fonts you can use a tool like xfontsel.  Using an other tool,
+  mkfontscale, you can however index as well True or Open Type Fonts to be
+  used  within  X11  applications.  You can  place  your ttf and otf fonts for
+  instance  in the  `~/fonts`  folder  within  your  home  directory  and  run
+  thereafter the tools mkfontscale, mkfontdir and xset like this:
+  
+        cd ~/.fonts
+        mkfontdir .         # indexing filenames
+        mkfontscale .       # indexing encodings
+        xset +fp `pwd`      # extend the font search path
+        xset fp rehash      # let the X-server know about
+  
+  In case of trouble you can reset the font search path to the original search
+  path by writing this:
 
+        xset fp default
+        xset fp rehash
+
+  You can now inspect the file  fonts.dir  to see the  available  font strings
+  usuable by X11 applications:
+  
+  For instance my fonts.dir contains the line:
+  
+      CCONSOLA.TTF -microsoft-consolas-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+
+  Indicating that I can use this font with a cp1252 encodingm the extended ISO
+  encoding by  Microsoft.  I can write this string into the user setup  dialog
+  together  with a fontsize  which  should  come  directly  after the two minus
+  digits:
+  
+      CCONSOLA.TTF -microsoft-consolas-medium-r-normal--22-0-0-0-m-0-microsoft-cp1252
+    
+  Selecting  Windows  ANSI as the  character  set  allows me to use the extend
+  character set within my  application. If you use "esc x  insert-symbol"  you
+  see for instance that the Euro symbol is available.
+  
+  On the Github  project  page,  https://github.com/mittelmark/microemacs  you
+  will find a download link for some indexed monospaced TTF fonts.
+  
+  [[FAQ Index]](Frequently Asked Questions).
 !! me-id: m1cmd000 
 ! 1 me
 ## NAME

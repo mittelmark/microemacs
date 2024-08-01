@@ -4972,9 +4972,35 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
 cEDevelopment History  cA
 
+- [240801]
+      - docu and faq extended about  installation  of bfs  executuables  and TTF
+        font support
+      - new  server  builds  Linux,  MacOS and  Windows  (via Mingw on Linux) on
+        Github are ready      
+
+- [240730]
+      - refined  build  structure  for Linux, Macos and Windows with three small
+        make files
+      - support for True Type Fonts using a preprocced  fonts zip file create as
+        Github action
+        
+- [240729]
+      - implementing cp1252, cp1251 and cp1250 encodings
+      - updating  fonts  Chivo,  Courier  Prime and  Ubuntu to support  these if
+        possible using bdf files
+      
+- [240717]
+      - split and cleanup Linux mec, mecb and mew and mewb builds
+      - extensive C++ abbreviation file and keyword updates for some of the 
+        new C++14 and C+17 keywords
+        
+- [240601] 
+      - adding R application template
+      - adding LaTeX template
+
  cDRelease - 29th March 2024 Easter EggcA 
 
-- [2024029] 
+- [240329] 
       - using Markdown instead of nroff for documention writing
       - update contact and news group information
           
@@ -8245,7 +8271,9 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
     lsfaq42(0f)lmfaq42le - tags; How do I generate a MicroEmacs compatible tags file ??  
     lsfaq43(0f)lmfaq43le - ne; how can I enable line wrapping in NE ??  
     lsfaq44(0f)lmfaq44le - Why is MicroEmacs called still MicroEmacs 09 in 2024 ??  
-    lsfaq45(0f)lmfaq45le - What are the main new features of MicroEmacs 09 in 2024 ??  
+    lsfaq45(0f)lmfaq45le - What are the main new features of MicroEmacs 09 in 2024  ??  
+    lsfaq46(0f)lmfaq46le - What is a bfs executuable?  
+    lsfaq47(0f)lmfaq47le - How can I use True Type Fonts within MicroEmacs on a X11 system ??  
 ! 0ffaq00
 cEcEQUESTION (00) cEcA
 
@@ -9146,7 +9174,7 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
     `xfontsel` on X-Windows systems and select a monospaced font, then pasting the
     font-string into the user-setup form field for the font name. 
     
-    Per default in this menu only The fonts "Adobe Courier" and "Lucida Typwriter" 
+    Per default in this menu only the fonts "Adobe Courier" and "Lucida Typwriter" 
     are available as these seem to exist on all platforms which I could test, such
     as macOS with XQuartz, Fedora and Ubuntu Linux.
     
@@ -9168,6 +9196,9 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
     "chivo" or "prime" (for courier prime) to use these fonts. To switch to bold
     fonts use the command lschange-font-bold(3)lmchange-font-boldle.
     
+    If you are interested to directly use True Type Fonts within MicroEmacs have
+    a  look  at  lsfaq47(0f)lmfaq47le  - How  can I use  True  Type  Fonts  within
+    MicroEmacs.
     
     lsFrequently Asked Questionslm[FAQ Index]le.
 ! 0ffaq34
@@ -9501,25 +9532,291 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 cEANSWER cA
 
 
-    MicroEmacs 09 in 2024 contains a few fixes to compile it with the modern
-    GCC. It contains the following new features (often added by Steven Phillips
-    to the new MicroEmacs and then backported by me to MicroEmacs 09):
+    MicroEmacs  09 in 2024  contains  a few fixes to  compile it with the modern
+    GCC. It provides the following new features (often added by Steven  Phillips
+    to the new MicroEmacs 24 (which is not published yet) and then backported by
+    me to MicroEmacs 09):
     
-    - in terminal mode on Unix using the alternate buffer feature whch supports
-      suspension without editor traces, so the buffer clears during suspension
+    - in terminal mode on Unix using the alternate buffer feature which supports
+      suspension  without editor traces, so the buffer clears during  suspension
+      with Ctrl-z
     - fixing frame resize on X-Windows which might before destroy the window layout
       on some tiling window managers
+    - better font support on X11 using true type fonts as well as the old pixmaps fonts
     - simplified font selection on X-windows using lschange-font-type(3)lmchange-font-type(3)le
     - font-resize with Ctrl-Plus and Ctrl-Minus
-    - more editor schemes, mainly interesting Dracula scheme and Ayu-Light
+    - support for  Windows-cp1252  encodings if the font  supports it, so you an
+      get an Euro symbol ...,  Windows-cp1250  (Central European - Polish, Czech
+      etc) and Windows-cp1251  (Cyrillian) are as well now available if the user
+      has a monospaced font with these encodings
+    - more editor schemes, mainly interesting Dracula and Ayu-Light schemes 
     - improved template handling using an interactive menu to select templates
-      from the users config directory (.jasspa in your HOME directory)
+      from the users config directory (.jasspa in your HOME directory), create a
+      subfolder r for R templates and place your etf files there
     - new binary builds for macOS 11-14 (as well as for Windows and Ubuntu and Fedora Linuxes)
-    - much improved Markdown mode
+    - much improved C++, Python, R and Markdown mode, support for highlighting R
+      or Python  code chunks in Markdown documents
     - improved CUA bindings - shortcut emulation more common in standard GUI
       applications like C-c, C-x, C-v for copy, cut and paste 
     - new lsjeany-bindings(3)lmjeany-bindings(3)le command which supports a few CUA bindings
       after the C-j prefix so copy, cut and paste are `C-j C-c`, `C-j C-x` and `C-j C-v`.
+
+    lsFrequently Asked Questionslm[FAQ Index]le.
+! 0ffaq46
+cEcEQUESTION (46) cEcA
+
+ 
+    What is a bfs executuable?
+    
+    Here the text from John Green from the MicroEmacs website from 2009:
+    
+    The  motivation  behind  this  latest  development  was to  produce  a fully
+    featured  version  of JASSPA  MicroEmacs  which  included  all of the macros
+    (which do most of the work) in a single  executable  package  that  could be
+    transported to different systems without  installing  anything. i.e. copy it
+    onto the system and run it.  Secondly  we  realised  that we also  wanted to
+    customise the macros contained within such that we could carry round our own
+    extensions but did not necessarily want to re-build the binary as the target
+    systems we wanted to run on might not  contain  all of the  necessary  build
+    tools and libraries to re-build the image. Thirdly  anything we added to the
+    executable must contain a hierarchical file structure and must be a platform
+    independent  format which may be constructed and manipulated on any platform
+    whilst being space efficient.
+
+    The  solution  was to  obviously  tack the  information  onto the end of the
+    executable as we know where the  executable  is. The next problem was how to
+    append  information  onto the  executable  that we can  retrieve at runtime.
+    There was obviously  conventional  archive formats, but they are not so good
+    at run-time traversal, in addition there were no tools to add and remove the
+    archive. A cat would of course append  information to the end of a file, but
+    removal  is much more  difficult.  In the end we came up with a new  archive
+    format that performed with conventional file system commands such as listing
+    a directory  and reading files in addition  added  compression  such that we
+    could  efficiently  reduce the size of the data  attachment.  Given that the
+    archive is being  placed at the bottom of the  executable  then the  archive
+    must be located  from the bottom. The end result is a built-in  file  system
+    format  called bfs, this in  hindsight  was  probably not a really good name
+    because it conflicts with the BEoS file system  (latterly we have settled on
+    the Tacky  (Tacked-on)  File  System or tfs but have yet to perform the name
+    space move).
+
+    The bfs command line utility is used to manipulate the archive and attach it
+    to the  executable,  its basic  operation is outlined  below. The  following
+    examples  use me.exe as a clearer  example of which item is the  executable.
+    Obviously  in a UNIX type  environment  then the .exe suffix is not used and
+    does not exist.
+
+    To build a bfs archive then simply  unpack the metree and remove things that
+    you do not want in the archive:
+
+         % tar zxvf jasspa-metree-20091017.tar.gz
+         % rm -rf ./jasspa/pixmaps        # Delete the pixmaps not required.
+         % rm -rf  ./jasspa/spelling      # Delete the empty spelling directory.
+         % rm -rf  ./jasspa/company       # Delete the empty company directory.
+         % rm -f ./jasspa/macros/null     # Delete the null file.
+              
+    You can add new things  such as a spelling  dictionary,  some of your  private
+    files etc. DO NOT add the dynamic  files such as user.erf or the session files
+    as the archive is READ-ONLY and cannot write back any saved session or history
+    information.
+
+    Build the  archive  and add to an  executable  from a different  directory  to
+    create a new executable with BFS archive attached:
+
+         % bfs -a mypath/mecw.exe -o me.exe ./jasspa
+      
+    Append an already existing archive to the executable:
+
+         % bfs -a mypath/mecw.exe -o me.exe jasspa-metree-20091117.bfs
+      
+    This  should now be a stand alone  executable.  If you append  again it will
+    remove the old archive and add a new one.
+
+    The archive may be updated in place using  either a directory  or a .bfs file.
+    This will  remove the  existing  archive and replace it with the new  archive.
+    i.e.
+
+         % bfs -a me.exe ./jasspa          # Add a new archive from directory.
+         % bfs -a me.exe jasspa.bfs        # Add a pre-built archive.
+        
+    You can list the archive attached to the executable:
+
+         % bfs -l me.exe
+      
+    You can test the archive attached to the executable:
+
+         % bfs -t me.exe
+      
+    You can get some information on the archive attached to the executable:
+
+         % bfs -i me.exe
+      
+    You can remove (or strip) the archive attached to the executable:
+
+         % bfs -s me.exe
+      
+    You can extract the archive  attached to the executable which will extract the
+    directory tree in the archive to a new directory called oldarch.
+
+         % bfs -x oldarch me.exe        # Extract to directory called "oldarch"
+         % bfs -f oldarch.bfs me.exe    # Extract to a file called "oldarch.bfs"
+        
+    We  mentioned in the preamble  that bfs is  architecture  independent  and a
+    little  endian Linux  executable or big endian Sun sparc  executable  may be
+    safely manipulated and appended by a Windows version of bfs, and vice versa.
+    bfs treats all files as binary hence care should be taken with line endings,
+    although  MicroEmacs is not directly  affected by the different  line ending
+    forms.
+
+cECustomizing the executable cA
+
+    The standard bfs archive built by JASSPA contains the standard macros but no
+    customization  so when a user  wishes  to bundle  their  macros  and  common
+    extensions the following steps outline how to do it.
+
+    Firstly lets assume that the user starts from the supplied attached archive,
+    the first thing to do is to extract it and then modify it.
+
+          % bfs -x myarch me.exe      # Extract to directory called "myarch"
+      
+    The extracted tree will have two directories:
+
+          myarch/macros
+          myarch/contrib
+        
+    Assuming that the user wants to add a spelling dictionary, then create a new
+    directory called spelling and place the required  spelling  dictionary files
+    in this new  directory (we selected the US  dictionary  here). Note that you
+    can include more than one spelling dictionary file set in here:
+
+         % mkdir myarch/spelling
+         % (cd myarch/spelling; tar zxvf pathto/ls_enus.tar.gz)
+        
+    If you have some company wide files then create a directory  called  company
+    and place the macro files into this directory:
+
+        % mkdir myarch/company
+        % cp pathto/companyfiles* myarch/company
+        
+    If you have your own private  extensions then it is suggested that you place
+    these at the top level i.e. in the myarch  directory.  Note that the private
+    files  include  a user  name  component  so some may not be found if you are
+    logged in as a different  user, so consider  carefully the files to transfer
+    across. DO NOT place any  dynamic  files into the archive as it is read only
+    i.e.  user.erf as these cannot be written. It is strongly  recommended  that
+    the files in the  myarch/macros are not changed as this enables user changes
+    that do not work to be  easily  backed  out;  placing  a file in the  myarch
+    directory  is  used  in  preference  to, and  overrides,  the  same  file in
+    myarch/macros.
+
+         % cp pathto/myfiles* myarch
+      
+    With the archive  directory  composed  then we simply add it to the end of the
+    executable, this operation displaces any old archive with the new one:
+
+         % bfs -a me.exe ./myarch
+      
+    Now  when  you run the  executable  it will  contain  the  archive  that you
+    constructed.  Note that the  attached  archive is last in the search path so
+    any macro  files  found in the file  system in the normal  search  path will
+    override the same macro files that exist in the archive.
+
+    
+cEAccessing  the file  system  from within  MicroEmacs cA
+
+    The bfs file  system is  accessible  from  within  MicroEmacs  using the URL
+    bfs://. The directory location may be traversed by the user and files may be
+    copied out and executed within the editor from this location. i.e.
+
+          C-x C-f bfs://
+      
+    results in a directory listing of the file system:
+
+          Directory listing of: bfs://
+          4833  used in 0 files and 4 dirs (Not-Filtered)
+      
+          Attr    Size             Modified Name
+          dr-x      21  2009/11/21 18:16:38 ../
+          dr-x     152  2009/11/21 18:16:38 contrib/
+          dr-x    4639  2009/11/21 18:16:38 macros/
+            
+    Note that the bfs://  location  is  automatically  placed on the file search
+    path in the colon  separated  list and is  referenced  as {bfs} in the colon
+    separated search path list.
+
+cEKnown Issues cA
+
+
+    JASSPA MicroEmacs is not starting up in a X-Windows mode on Fedora 11/12 and
+    possibly some other RedHat  systems. On executing me then it silently  fails
+    to start. The reason for this is that the  built-in  default  font cannot be
+    resolved. In order to fix this then the following steps may be taken:
+
+    Create a file .Xresources in the $HOME directory if it does not already exist.
+    Add the line
+
+
+          MicroEmacs*font: -*-fixed-medium-r-*-*-*-*-*-*-*-*-*
+
+    to the .Xresources file.
+
+    Merge the local resources definitions to the XServer with the command:
+
+          % xrdb -merge $HOME/.Xresources
+
+    After  performing  these  steps then any  pre-built  MicroEmacs  will run up
+    correctly and not silently fail. If you wish to re-build the binary with the
+    default font then edit unixterm.c::2976 and change the default font string.
+
+    lsFrequently Asked Questionslm[FAQ Index]le.
+! 0ffaq47
+cEcEQUESTION (47) cEcA
+
+    How can I use True Type Fonts within MicroEmacs on a X11 system ??  
+    
+    Wheras  in the  terminal  you use your  terminal  emulator  to choose a nice
+    looking font, for the  X11-Windows  application  you are on your own. If you
+    are on  Linux  with an X11  server  the  availability  of  fonts  to be used
+    directly within  MicroEmacs is first rather limited and restricted mostly to Bitmap
+    fonts like misc-fixed or or -bitstream-courier.. To graphically  explore
+    the available  fonts you can use a tool like xfontsel.  Using an other tool,
+    mkfontscale, you can however index as well True or Open Type Fonts to be
+    used  within  X11  applications.  You can  place  your ttf and otf fonts for
+    instance  in the  `~/fonts`  folder  within  your  home  directory  and  run
+    thereafter the tools mkfontscale, mkfontdir and xset like this:
+    
+          cd ~/.fonts
+          mkfontdir .         # indexing filenames
+          mkfontscale .       # indexing encodings
+          xset +fp `pwd`      # extend the font search path
+          xset fp rehash      # let the X-server know about
+    
+    In case of trouble you can reset the font search path to the original search
+    path by writing this:
+
+          xset fp default
+          xset fp rehash
+
+    You can now inspect the file  fonts.dir  to see the  available  font strings
+    usuable by X11 applications:
+    
+    For instance my fonts.dir contains the line:
+    
+        CCONSOLA.TTF -microsoft-consolas-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+
+    Indicating that I can use this font with a cp1252 encodingm the extended ISO
+    encoding by  Microsoft.  I can write this string into the user setup  dialog
+    together  with a fontsize  which  should  come  directly  after the two minus
+    digits:
+    
+        CCONSOLA.TTF -microsoft-consolas-medium-r-normal--22-0-0-0-m-0-microsoft-cp1252
+      
+    Selecting  Windows  ANSI as the  character  set  allows me to use the extend
+    character set within my  application. If you use "esc x  insert-symbol"  you
+    see for instance that the Euro symbol is available.
+    
+    On the Github  project  page,  https://github.com/mittelmark/microemacs  you
+    will find a download link for some indexed monospaced TTF fonts.
     
     lsFrequently Asked Questionslm[FAQ Index]le.
 ! 1 me
@@ -9784,13 +10081,13 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
             export PATH $PATH:/usr/name/me
 
- > Within MS-DOS or Microsoft Windows environments it is defined in the
-     `AUTOEXEC.BAT` file. e.g.
+      Within MS-DOS or Microsoft Windows environments it is defined in the
+      `AUTOEXEC.BAT` file. e.g.
 
             set PATH=%PATH%;c:\me
 
-    cDMicroEmacs 2009cA utilizes information in the cD$PATHcA environment variable
-    to locate the start-up files, dictionaries etc.
+      cDMicroEmacs 2009cA utilizes information in the cD$PATHcA environment variable
+      to locate the start-up files, dictionaries etc.
 
     cDTERMcA
     
@@ -9926,6 +10223,16 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
        header information, copyright notices etc. that are placed at the head
        of files. The 'C' programming language is called `c.etf`
 
+cEUSER FILES cA
+
+    - ~/.jasspa/username.eaf  - MicroEmacs user abbreviation file
+    - ~/.jasspa/username.eff  - MicroEmacs user favorites file
+    - ~/.jasspa/username.emf  - MicroEmacs user configuration and macro file
+    - ~/.jasspa/username.enf  - MicroEmacs user notes file
+    - ~/.jasspa/username.erf  - MicroEmacs user registry file
+    - ~/.jasspa/username.esf  - MicroEmacs user session file
+    - ~/.jasspa/langname.etf  - MicroEmacs programming language template file
+
 
 cEMICROSOFT WINDOWS cA
 
@@ -9983,13 +10290,27 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
     used) and added session support by extending the `-c` option with an
     optional cCsessionNamecA argument.
 
+    In 2021 Detlef Groth joined the maintainer team and adds a Github repository
+    at https://github.com/mittelmark/microemacs
+ 
+    The 2023 release adds an alternative screen buffer option -A
+
+cEBUGS cA
+
+See GitHub Issues: <https://github.com/mittelmark/microemacs/issues>
+
+cEAUTHORS cA
+
+John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 
 cESEE ALSO cA
 
 
     lsread-session(3)lmread-session(3)le, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEPATH(5)lm$MEPATH(5)le,
     ls$MEUSERPATH(5)lm$MEUSERPATH(5)le, lsemf(8)lmemf(8)le, lserf(8)lmerf(8)le, lsesf(8)lmesf(8)le, ls$home(5)lm$home(5)le, emacs(1) [GNU], more(1),
-    lsne(1)lmne(1)le, vi(1), lsClient-Server(2)lmClient-Server Interfacele, lsCommand-Line-FilterslmCommand Line Filtersle.
+    lsClient-Server(2)lmClient-Server Interfacele, lsCommand-Line-FilterslmCommand Line Filtersle.
+
+    And cDvi(1)cA, cDvim(1)cA,cDnano(1)cA. 
 
 ! 1 memsdev
 cEcENAME cEcA
@@ -27796,9 +28117,66 @@ $a
     This page describes introductory notes for the installation and setup of
     MicroEmacs 2009.
 
+cESingle File Binary Install cA
 
-cEQuick Install  cA
+    Since 2009 the prefered way for  installation  is the use of the single file
+    binaries.       The        background        is       described        here:
+    lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
+    The  MicroEmacs  executable  in this case contains the binary as well as all
+    macro files and optionally as well some dictionary files and the help file.
+    So the user only needs to  download a binary for its own  platform,  make it
+    executable and place it into a directory  belonging to its PATH variable. In
+    2024 the following platforms and binaries are supportet:
+    
+    - cCLinuxcA - Terminal (mecb) and Terminal and X11 version (mewb) were mainly 
+      Debian and Red Hat based distros are provided  which might be used on many
+      other distros - we provide kernel 5 builds for x86_64 platforms
+    - cCMacOScA - Terminal  (mecb) and  Terminal and X11 version  (mewb), the latter
+      requires the XQuartz extension, MacOS 12 to 14 builds are currently available
+    - cCWindowscA - Terminal (mecb) and Windows version (mewb) they should work on
+      all recent Windows systems, we regular check only on Wine emulator
+    
+    Just download the file for your platform  and make it executable and run it.
 
+    You will be asked  initially  for your user name and the default  user path,
+    usually it is  ~/.jasspa.  As it a first step it is usually  required to run
+    the command `"Esc x" user-setup` to select the default  keyboad and language
+    in the  dialog. You can as well use the menu entry  "Tools->User  Setup". If
+    you run the terminal version you can as well execute the menu with `"Esc ="`
+    and using the cursor keys. To get Termcap  colors you might in the  terminal
+    version  as well  select  in the "User  Setup -  Platform  Tab" the  Termcap
+    colors. Thereafter your should restart the editor and in case you do not get
+    the Termcap colors you can try to start the terminal version like this:
+    
+            TERM=rxvt mec FILENAME
+    
+    Your user settings are stored in the folder ~/.jasspa usually, although this
+    can be changed by changing the MEPATH environment variable.
+    
+    If you run an  Ubuntu  executable  build  on the  Github  server  you  might
+    sometimes  see for  instance on a Fedora  system a  libterminfo  warning you
+    might through this away by writing a Bash function in your .bashrc like this:
+    
+           function mecn {
+              TERM=rxvt mec "$@" 2> /dev/null
+           }
+    
+    cDGetting HelpcA
+    
+    In case of trouble use the issue link on the Githu project page:
+    https::/github.com/mittelmark/microemacs/issues
+
+    Below is the old  descfription of an installation  for a simple me (mec, mew)
+    executable  (terminal or  X11/Windows  version)  together  with the required
+    macro files described. If you prefere the single file install just described
+    above, you do not need to read further. 
+    
+    Hint: All macro files for the  standalone  builds are  accessible  using the
+    bfs://macros path within your MicroEmacs text editor.
+    
+cEQuick Install of Me and Macro Files cA
+
+    2024: These information below is mostly outdated.
 
     The quickest way to install MicroEmacs for testing without reading the
     rest of this document is to:-
@@ -27822,13 +28200,13 @@ $a
        See lsContact InformationlmContact Informationle for full contact information. A mail archive
        exists at:-
 
-              http://groups.yahoo.com/group/jasspa/
+              http://groups.yahoo.com/group/jasspa/ (not existing anymore)
 
 
        If you wish to participate in the list then you must first register by
        sending an empty mail message body to:-
 
-              jasspa-subscribe@yahoogroups.com
+              jasspa-subscribe@yahoogroups.com (not exiting anymore)
 
 
        You will then be able to mail any questions into the group.
