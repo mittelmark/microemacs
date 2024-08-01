@@ -21,6 +21,7 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
+           export PATH=/usr/local/opt/make/libexec/gnubin/:PATH
 
       - name: make bfs binary
         run: make -f macos32gcc.gmk bfs/bin CC=gcc-11   

@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240801.0847>
+#  Last Modified : <240801.0853>
 #
 #  Description	
 #
@@ -32,14 +32,15 @@
 version=091224b
 VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
 CC=gcc-11
+MAKE=/usr/local/opt/make/libexec/gnubin/make
 bfs/bin:
-	cd bfs && /usr/local/opt/make/libexec/gnubin/make CC=$(CC)
+	cd bfs && $(MAKE) CC=$(CC)
 
 mec: 
-        cd src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=$(CC) BTYP=c
+        cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=c
 
 mew: 
-        cd src && /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk CC=$(CC) BTYP=cw
+        cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=cw
 
 mecb: mec bfs/bin
 	./bfs/bfs -a ./src/.macos32gcc-release-mec/mec -o mecb-macos-$(VERSION).bin ./jasspa
