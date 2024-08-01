@@ -1,4 +1,4 @@
-name: (defunct) Binaries on Windows Server
+name: z: defunct - Binaries on Windows Server
 
 on:
   workflow_dispatch:
