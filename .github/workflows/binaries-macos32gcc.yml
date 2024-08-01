@@ -6,7 +6,9 @@ on:
 
 permissions:
   contents: read
-
+env:
+   VERSION: "091224b"
+   OS: "macos-12"
 jobs:
   build:
     runs-on: macos-12
@@ -36,3 +38,56 @@ jobs:
       - name: make mewb binary 
         run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mewb
         
+     - name: Make release
+       run: |
+         mkdir MicroEmacs09-${VERSION}-${OS}
+         mkdir MicroEmacs09-${VERSION}-${OS}/bin
+         cp bfs/bfs MicroEmacs09-${VERSION}-${OS}/bin/
+         cp src/.${OS}32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-${OS}/bin/
+         cp src/.${OS}32gcc-release-mec/mec  MicroEmacs09-${VERSION}-${OS}/bin/
+         cp me*.bin MicroEmacs09-${VERSION}-${OS}/bin/
+         cp license.txt MicroEmacs09-${VERSION}-${OS}/
+         cp COPYING MicroEmacs09-${VERSION}-${OS}/
+         cp README-standalone.md MicroEmacs09-${VERSION}-${OS}/
+         cd jasspa 
+         zip macros.zip macros/*
+         cd ..
+         cp jasspa/macros.zip MicroEmacs09-${VERSION}-${OS}/
+
+     - name: Make mecb release
+       run: |
+         mkdir MicroEmacs09-${VERSION}-${OS}-mecb
+         mkdir MicroEmacs09-${VERSION}-${OS}-mecb/bin
+         cp bfs/bfs MicroEmacs09-${VERSION}-${OS}-mecb/bin/
+         cp mec*.bin MicroEmacs09-${VERSION}-${OS}-mecb/bin/
+         cp license.txt MicroEmacs09-${VERSION}-${OS}-mecb/
+         cp COPYING MicroEmacs09-${VERSION}-${OS}-mecb/
+         cp README-standalone.md MicroEmacs09-${VERSION}-${OS}-mecb/
+
+     - name: Make mewb release
+       run: |
+         mkdir MicroEmacs09-${VERSION}-${OS}-mewb
+         mkdir MicroEmacs09-${VERSION}-${OS}-mewb/bin
+         cp bfs/bfs MicroEmacs09-${VERSION}-${OS}-mewb/bin/
+         cp mew*.bin MicroEmacs09-${VERSION}-${OS}-mewb/bin/
+         cp license.txt MicroEmacs09-${VERSION}-${OS}-mewb/
+         cp COPYING MicroEmacs09-${VERSION}-${OS}-mewb/
+         cp README-standalone.md MicroEmacs09-${VERSION}-${OS}-mewb/
+
+     - name: Upload Ubuntu Release files
+       uses: actions/upload-artifact@v4
+       with: 
+         name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}
+         path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}
+    
+     - name: Upload Ubuntu mecb Release files
+       uses: actions/upload-artifact@v4
+       with: 
+         name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mecb
+         path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mecb
+
+     - name: Upload Ubuntu mewb Release files
+       uses: actions/upload-artifact@v4
+       with: 
+         name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mewb
+         path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mewb
