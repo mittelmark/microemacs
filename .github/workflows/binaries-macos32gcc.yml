@@ -29,13 +29,13 @@ jobs:
         run:  make -f macos32gcc.gmk mec
 
       - name: make mew binary
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mew
+        run: make -f macos32gcc.gmk mew
         
       - name: make mecb binary 
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mecb
+        run: make -f macos32gcc.gmk mecb
         
       - name: make mewb binary 
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mewb
+        run: make -f macos32gcc.gmk mewb
         
       - name: Make release
         run: |
