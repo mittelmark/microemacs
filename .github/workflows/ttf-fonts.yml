@@ -24,4 +24,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
         name: ttf-fonts
-        path: ttf-fonts
+        path: ttf-fonts.zip
