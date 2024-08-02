@@ -21,22 +21,22 @@ jobs:
            brew install xquartz
            brew install gcc
            brew install make
-           export PATH=/usr/local/opt/make/libexec/gnubin/:PATH
+           export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
 
       - name: make bfs binary
-        run: make -f macos32gcc.gmk bfs/bin CC=gcc-12   
+        run:  make -f macos32gcc.gmk bfs/bin CC=gcc-14
 
       - name: make mec binary
-        run:  /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mec CC=gcc-12
+        run:  make -f macos32gcc.gmk mec CC=gcc-14
 
       - name: make mew binary
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mew CC=gcc-12
+        run:  make -f macos32gcc.gmk mew CC=gcc-14
         
       - name: make mecb binary 
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mecb CC=gcc-12
+        run:  make -f macos32gcc.gmk mecb
         
       - name: make mewb binary 
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mewb CC-gcc-12
+        run: make -f macos32gcc.gmk mewb 
         
       - name: Make release
         run: |
