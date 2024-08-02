@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Thu Aug 1 07:16:30 2024
-#  Last Modified : <240801.1012>
+#  Last Modified : <240802.0459>
 #
 #  Description	
 #
@@ -46,11 +46,20 @@ dejavu-sans-mono-medium.ttf:
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/bront-ubuntu.ttf -O bront-ubuntu-medium.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/LICENSE.txt -O bront-ubuntu-license.txt
 
+## ths version works
 courier-prime: courier-prime-medium.ttf
 courier-prime-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime.ttf -O courier-prime-medium.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/courier-prime-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/courier-prime/LICENSE.txt -O courier-prime-license.txt
+	wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Regular.ttf -O courier-prime-medium.ttf
+	wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Bold.ttf -O courier-prime-bold.ttf
+	wget https://github.com/quoteunquoteapps/CourierPrime/blob/master/OFL.txt -O courier-prime-license.txt
+
+## there are two versions of the fonts, a smaller file sized (60kb in fonts/courie-prime) which work, the others do not work
+#courier-prime-medium.ttf: 
+#	wget https://quoteunquoteapps.com/courierprime/downloads/courier-prime.zip
+#	unzip -p courier-prime.zip "Courier Prime/Courier Prime Bold.ttf" > courier-prime-bold.tff
+#	unzip -p courier-prime.zip "Courier Prime/Courier Prime.ttf" > courier-prime-medium.tff
+#	unzip -p courier-prime.zip "Courier Prime/LICENSE/OFL.txt" > courier-prime-license.txt
+#	rm courier-prime.zip
 
 chivo-mono: chivo-mono-medium.ttf
 chivo-mono-medium.ttf:
@@ -58,17 +67,35 @@ chivo-mono-medium.ttf:
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf -O chivo-mono-bold.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-mono-license.txt
 
+fira-code: fira-code-medium.ttf
+fira-code-medium.ttf:
+	wget https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip
+	mkdir fira
+	cd fira && unzip ../Fira_Code_v6.2.zip
+	cp fira/ttf/FiraCode-Regular.ttf fira-code-medium.ttf
+	cp fira/ttf/FiraCode-Bold.ttf fira-code-bold.ttf
+	rm -rf fira
+	wget https://github.com/tonsky/FiraCode/raw/master/LICENSE -O fira-code-license.txt
+
+#inconsolata: inconsolata-medium.ttf
+#inconsolata-medium.ttf:
+#	wget https://github.com/googlefonts/Inconsolata/blob/main/fonts/ttf/Inconsolata-Medium.ttf -O inconsolata-medium.ttf
+#	wget https://github.com/googlefonts/Inconsolata/blob/main/fonts/ttf/Inconsolata-Bold.ttf -O inconsolata-bold.ttf
+#	wget https://github.com/googlefonts/Inconsolata/raw/main/OFL.txt -O inconsolata-license.txt
+
+## works, but inconsolata above does not work 
 inconsolata: inconsolata-go-medium.ttf
 inconsolata-go-medium.ttf:
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go.ttf -O inconsolata-go-medium.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go-bold.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/license.txt -O inconsolata-go-license.txt
-	
-julia-mono: julia-mono-medium.ttf
-julia-mono-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono.ttf  -O julia-mono-medium.ttf      
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/LICENSE -O julia-mono-license.txt
+
+# do not work wide spacing	
+#julia-mono: julia-mono-medium.ttf
+#julia-mono-medium.ttf:
+#	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono-bold.ttf
+#	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono.ttf  -O julia-mono-medium.ttf      
+#	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/LICENSE -O julia-mono-license.txt
 
 liberation-mono: liberation-mono-medium.ttf
 liberation-mono-medium.ttf:
@@ -81,13 +108,17 @@ proggy-vector-medium.ttf:
 	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector-Regular.ttf -O proggy-vector-medium.ttf
 	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector_Licence.txt -O proggy-vector-license.txt
 
+#roboto-mono: roboto-mono-medium.ttf
+#roboto-mono-medium.ttf:
+#	wget https://github.com/googlefonts/RobotoMono/raw/main/LICENSE.txt -O roboto-mono-license.txt
+#	wget https://github.com/googlefonts/RobotoMono/blob/main/fonts/ttf/RobotoMono-Bold.ttf -O roboto-mono-bold.ttf
+#	wget https://github.com/googlefonts/RobotoMono/blob/main/fonts/ttf/RobotoMono-Medium.ttf -O roboto-mono-medium.ttf
+
 source-code-pro: source-code-pro-medium.ttf
 source-code-pro-medium.ttf:
 	wget https://github.com/adobe-fonts/source-code-pro/raw/release/LICENSE.md -O source-code-pro-license.txt
 	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Bold.ttf -O source-code-pro-bold.ttf
-	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Medium.ttf -O source-code-pro-medium.ttf        
-	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Regular.ttf -O source-code-pro-regular.ttf                
-	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Semibold.ttf -O source-code-pro-semibold.ttf                        
+	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Regular.ttf -O source-code-pro-medium.ttf        
 
 terminus: terminus-medium.ttf    
 terminus-medium.ttf:
@@ -118,6 +149,6 @@ package:
 	cp Readme.txt ttf-fonts/Readme.txt
 	zip ttf-fonts.zip ttf-fonts/*
 
-all: anonymous dejavu courier-prime chivo-mono inconsolata julia-mono liberation-mono proggy-vector \
-	source-code-pro terminus ubuntu-mono \
+all: anonymous dejavu courier-prime chivo-mono inconsolata inconsolata-go julia-mono liberation-mono proggy-vector \
+	roboto-mono source-code-pro terminus ubuntu-mono \
 	index package
