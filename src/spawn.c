@@ -97,7 +97,7 @@ __mkTempName (meUByte *buf, meUByte *name)
     else
     {
         strcpy((char *)buf, "/tmp/meXXXXXX") ;
-        mktemp((char *)buf) ;
+        mkstemp((char *)buf) ;
     }
 }
 
@@ -2059,11 +2059,11 @@ doPipeCommand(meUByte *comStr, meUByte *path, meUByte *bufName, int ipipeFunc, i
     /* if no data is piped in then pipe in /dev/null */
     if(meStrchr(cl,'<') == NULL)
     {
-        meStrncpy(cl+ll," </dev/null",11) ;
+        memcpy(cl+ll," </dev/null",11) ;
         ll += 11 ;
     }
     /* merge stderr and stdout */
-    meStrncpy(cl+ll," 2>&1",5) ;
+    memcpy(cl+ll," 2>&1",5) ;
     ll += 5 ;
     meStrcpy(cl+ll,ss) ;
     
