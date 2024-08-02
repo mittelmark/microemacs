@@ -1,4 +1,4 @@
-name: Binaries Ubuntu (linux32gcc)
+name: Binaries Ubuntu 20 (linux32gcc)
 
 on:
   workflow_dispatch:

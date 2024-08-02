@@ -8,10 +8,10 @@ permissions:
   contents: read
 env:
    VERSION: "091224b"
-   OS: "macos-12"
+   OS: "macos-14"
 jobs:
   build:
-    runs-on: macos-12
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -24,19 +24,19 @@ jobs:
            export PATH=/usr/local/opt/make/libexec/gnubin/:PATH
 
       - name: make bfs binary
-        run: make -f macos32gcc.gmk bfs/bin CC=gcc-11   
+        run: make -f macos32gcc.gmk bfs/bin CC=gcc-12   
 
       - name: make mec binary
-        run:  /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mec
+        run:  /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mec CC=gcc-12
 
       - name: make mew binary
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mew
+        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mew CC=gcc-12
         
       - name: make mecb binary 
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mecb
+        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mecb CC=gcc-12
         
       - name: make mewb binary 
-        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mewb
+        run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mewb CC-gcc-12
         
       - name: Make release
         run: |
