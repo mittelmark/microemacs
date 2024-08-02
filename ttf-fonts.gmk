@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Thu Aug 1 07:16:30 2024
-#  Last Modified : <240802.0505>
+#  Last Modified : <240802.0508>
 #
 #  Description	
 #
@@ -150,5 +150,5 @@ package:
 	zip ttf-fonts.zip ttf-fonts/*
 
 all: anonymous dejavu courier-prime chivo-mono fira-code inconsolata liberation-mono proggy-vector \
-	roboto-mono source-code-pro terminus ubuntu-mono \
+	source-code-pro terminus ubuntu-mono \
 	index package
