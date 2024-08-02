@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Thu Aug 1 07:16:30 2024
-#  Last Modified : <240802.0508>
+#  Last Modified : <240802.0515>
 #
 #  Description	
 #
@@ -41,10 +41,6 @@ dejavu-sans-mono-medium.ttf:
 	wget https://github.com/go-fonts/dejavu/raw/main/LICENSE-DejaVu -O dejavu-sans-mono-license.txt
 	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmono/DejaVuSansMono.ttf -O dejavu-sans-mono-medium.ttf
 	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmonobold/DejaVuSansMono-Bold.ttf -O dejavu-sans-mono-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-dejavu/bront-dejavu.ttf -O bront-dejavu-medium.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-dejavu/LICENSE.txt -O bront-dejavu-license.txt
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/bront-ubuntu.ttf -O bront-ubuntu-medium.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/bront-ubuntu/LICENSE.txt -O bront-ubuntu-license.txt
 
 ## ths version works
 courier-prime: courier-prime-medium.ttf
