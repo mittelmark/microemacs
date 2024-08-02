@@ -17,8 +17,9 @@ add-file-hook ".C" fhook-cpp
 ; TODO check on more platforms
 ; found it on MacOS Quartz, Ubuntu 18, Fedora 30, Fedora 38
 set-variable .change-font.sz-size 17
+set-variable .change-font.sz-fonts "|courier|lucidatypewriter|"
 set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
-set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewriter-medium|lucidatypewriter-bold|"
+;set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewriter-medium|lucidatypewriter-bold|"
 !if &band $system 0x01
     ; Not using X
     !if &not &band $system 0x02
@@ -74,31 +75,32 @@ set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewrite
         !endif
     !emacro
     define-macro change-font-type
+        ;2000 ml-write &cat "font-type: " .change-font.type
         !force set-variable .font @1
         !if &not $status
-            set-variable .font @ml19 "Select font: " "courier" .change-font.sz-fonts 
+            set-variable .font @ml19 "Select font (for new fonts spaces as underlines): " &lget .change-font.sz-fonts 1 .change-font.sz-fonts
+            set-variable .font &rep .font "_" " "
+            ml-write .font
         !endif
         !force set-variable .size @3
         !if &not $status
             !force set-variable .size @2
         !endif
         !if &not $status
+            !force set-variable .size .change-font.sz-size
+        !endif
+        !if &not $status
             !force set-variable .size 17
         !endif
-        !if &gre &lfind "|ubuntu|chivo|prime|" .font 0
-            !if &seq .font "prime"
-                set-variable .font "courier prime"
-            !else
-                set-variable .font &cat .font " mono"
-            !end
+        !if &sin "bold" .change-font.sz-font
+            set-variable .fontname &cat .font "-bold"
+        !else
+            set-variable .fontname &cat .font "-medium"
         !endif
-        !if &less &sin "-" .font 1
-            set-variable .font &cat .font "-medium"
-        !endif
-        set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-*-*" .font .size
+        set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-*-*" .fontname .size
         !force change-font #l0
         !if $status
-            set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-*-*" .font
+            set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-*-*" .fontname
             set-variable .change-font.sz-size .size
             !if &not &lfind .change-font.sz-fonts .font
                 set-variable .change-font.sz-fonts &linsert .change-font.sz-fonts -1 .font
