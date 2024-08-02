@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240802.1147>
+#  Last Modified : <240802.1244>
 #
 #  Description	
 #
@@ -36,6 +36,7 @@ MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
 KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/')
 OS=macos-$(KERNEL)
+ifeq($(KERNEL),24)
 
 bfs/bin:
 	cd bfs && $(MAKE) CC=$(CC)
@@ -47,7 +48,7 @@ mew:
 	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=cw
 
 mecb: mec bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mec/mec -o mecb-$(OS)-$(VERSION).bin ./jasspa
+	./bfs/bfs -a ./src/.macos32gcc-release-mec/mec -o mecb-$(VERSION)-$(OS).bin ./jasspa
 
 mewb: mew bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mecw/mecw -o mewb-$(OS)-$(VERSION).bin ./jasspa
+	./bfs/bfs -a ./src/.macos32gcc-release-mecw/mecw -o mewb-$(VERSION)-$(OS).bin ./jasspa

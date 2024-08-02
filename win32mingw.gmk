@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240801.0744>
+#  Last Modified : <240802.1245>
 #
 #  Description	
 #
@@ -45,7 +45,7 @@ mew:
 	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
 
 mecb: bfs/bin mec
-	./bfs/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o mecb-windows-$(VERSION).exe ./jasspa
+	./bfs/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o mecb-$(VERSION)-windows.exe ./jasspa
 
 mewb: bfs/bin mew
-	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o mewb-windows-$(VERSION).exe ./jasspa		
+	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o mewb-$(VERSION)-windows.exe ./jasspa		
