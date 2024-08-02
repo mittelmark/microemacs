@@ -297,7 +297,7 @@ sortLines(int f, int n)
     {
 #if MEOPT_UNDO
         if(undoInfo != NULL)
-            *undoInfo++ = (meInt)(list[ii]->prev) ;
+            *undoInfo++ = meIntFromPtr(list[ii]->prev) ;
 #endif
         l->next = list[ii] ;
         list[ii]->prev = l ;

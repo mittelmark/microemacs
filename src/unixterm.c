@@ -435,7 +435,7 @@ meSetupPathsAndUser(char *progname)
      * provides a system call to get the absolute path then we use that (i.e.
      * the /proc file system, where the system does not then we fall back to
      * looking for the executable from the program name. */
-    if(((ii = execFilename (progname, evalResult, sizeof (evalResult))) == 0) &&
+    if(((ii = execFilename (progname, (char *) evalResult, sizeof (evalResult))) == 0) &&
        ((ii = executableLookup((meUByte *) progname,evalResult)) == 0))
     {
         /* Some shells, specifically zsh, will execute from the current
@@ -2022,8 +2022,8 @@ special_bound:
                     }
                     else
                         ii = keySym-'@' ;
-                        if (ss & Mod1Mask)
-                            ii |= ME_ALT;
+                    if (ss & Mod1Mask)
+                        ii |= ME_ALT;
                 }
                 else
                     ii = keySym ;

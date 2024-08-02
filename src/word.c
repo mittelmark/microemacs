@@ -736,7 +736,7 @@ lookahead(meInt fillState)
     char last_c;                        /* Last character */
     
     /* Nothing to do if there are no paragraph markers */
-    if (fillbullet == NULL)
+    if (fillbullet[0] == '\0')
         return fillState ;
     limit = frameCur->windowCur->dotOffset+fillbulletlen;/* Define the limit of search */
     if (limit > meLineGetLength(frameCur->windowCur->dotLine))
@@ -1038,7 +1038,7 @@ fillPara(int f, int n)
                 break;
         
         /* Skip non-formatting paragraphs */
-        if ((fillignore != NULL) &&
+        if ((fillignore[0] != '\0') &&
             (meStrchr (fillignore, meLineGetChar (frameCur->windowCur->dotLine, frameCur->windowCur->dotOffset)) != NULL))
         {
             frameCur->windowCur->dotLine = eopline;    /* Goto the end of the paragraph */

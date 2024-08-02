@@ -97,7 +97,7 @@ typedef struct {
     meUByte data[meWORD_SIZE_MAX+meWORD_SIZE_MAX] ;
 } meDictAddWord ;
 
-#define meDICTWORD_SIZE  ((int)(&((meDictWord *)0)->data))
+#define meDICTWORD_SIZE  meIntFromPtr(&((meDictWord *)0)->data)
 
 typedef struct meDictionary {
     meUByte   flags ;

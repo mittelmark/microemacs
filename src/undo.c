@@ -535,13 +535,13 @@ meUndo(int f, int n)
                     for(count=0 ; count<cun->count ; eln=meLineGetNext(eln),count++)
                     {
                         list[*lineSort++] = eln ;
-                        eln->prev = (meLine *) count ;
+                        eln->prev = (meLine *) mePtrFromInt(count) ;
                     }
                     for(count=0 ; count<cun->count ; ln=meLineGetNext(ln),count++)
                     {
                         if(undoInfo != NULL)
                         {
-                            dddd = (meInt) list[count]->prev ;
+                            dddd = meIntFromPtr(list[count]->prev );
                             *undoInfo++ = dddd ;
                         }
                         ln->next = list[count] ;
