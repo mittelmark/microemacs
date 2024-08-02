@@ -40,7 +40,7 @@ jobs:
         mkdir MicroEmacs09-${VERSION}-${OS}
         mkdir MicroEmacs09-${VERSION}-${OS}/bin
         cp bfs/bfs MicroEmacs09-${VERSION}-${OS}/bin/
-        cp src/.l¶inux32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-${OS}/bin/
+        cp src/.linux32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-${OS}/bin/
         cp src/.linux32gcc-release-mec/mec  MicroEmacs09-${VERSION}-${OS}/bin/
         cp me*.bin MicroEmacs09-${VERSION}-${OS}/bin/
         cp license.txt MicroEmacs09-${VERSION}-${OS}/
