@@ -165,7 +165,7 @@ getFileStats(meUByte *file, int flag, meStat *stats, meUByte *lname)
                 stats->stmtime = bfs_statbuf.st_utc_mtime;
 #endif
 #ifdef _UNIX
-                stats->stdev = (int) bfsdev;
+                stats->stdev = meIntFromPtr(bfsdev);
                 stats->stino = (meUInt) bfs_statbuf.st_bno;
                 stats->stmode |= S_IRGRP|S_IROTH|S_IRUSR;
                 if (file_type == meFILETYPE_REGULAR)

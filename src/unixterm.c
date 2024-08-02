@@ -464,7 +464,7 @@ meSetupPathsAndUser(char *progname)
     /* Initialise the built-in file system. Note for speed we only check the
      * header. Scope the "exepath" locally so it is discarded once the
      * pathname is passed to the mount and we exit the braces. */
-    bfsdev = bfs_mount (meProgName, BFS_CHECK_HEAD);
+    bfsdev = bfs_mount ((char *) meProgName, BFS_CHECK_HEAD);
 #endif
         
     if((meUserName == NULL) &&
