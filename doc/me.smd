@@ -4897,6 +4897,9 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
 ## Development History 
 
+- [240802]
+    - fixing all GCC compiler warnings mainly based on code from Steve for Me2024
+
 - [240801]
     - docu and faq extended about  installation  of bfs  executuables  and TTF
       font support
