@@ -1666,7 +1666,7 @@ adjustMode(meBuffer *bp, int nn)  /* change the editor mode status */
 	/* build the proper prompt string */
 	meStrcpy(prompt,"Buffer mode to ");
 	if(bp == NULL)
-	    meStrncpy(prompt,"Global",6);
+	    memcpy(prompt,"Global",6);
 	
 	if(func == 0)
 	    meStrcpy(prompt+15, "toggle");

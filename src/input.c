@@ -913,7 +913,7 @@ meGetStringFromUser(meUByte *prompt, int option, int defnum, meUByte *buf, int n
     if((defnum > 0) && (defnum <= numHist))
     {
         defaultStr = history[defnum-1] ;
-        meStrncpy(prom+ii," (default [",11) ;
+        memcpy(prom+ii," (default [",11) ;
         ii = expandexp(-1,defaultStr,meBUF_SIZE_MAX-5,ii+11,prom,-1,NULL,0) ;
         meStrcpy(prom+ii,"]): ") ;
     }
