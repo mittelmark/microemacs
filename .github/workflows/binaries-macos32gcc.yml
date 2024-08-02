@@ -19,7 +19,6 @@ jobs:
            echo `uname -a`
            uname -r
            brew install xquartz
-           brew install gcc
            brew install make
            export PATH=/usr/local/opt/make/libexec/gnubin/:PATH
 
@@ -27,7 +26,7 @@ jobs:
         run: make -f macos32gcc.gmk bfs/bin CC=gcc-11   
 
       - name: make mec binary
-        run:  /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mec
+        run:  make -f macos32gcc.gmk mec
 
       - name: make mew binary
         run: /usr/local/opt/make/libexec/gnubin/make -f macos32gcc.gmk mew

@@ -19,7 +19,6 @@ jobs:
            echo `uname -a`
            uname -r
            brew install xquartz
-           brew install gcc
            brew install make
            export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
 
