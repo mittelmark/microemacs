@@ -39,7 +39,6 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
         !force !force change-font #l0
     !endif
     ; might be called like this:
-    ; change-font-type "roboto mono-bold" "|10|14|17|19|22|25|28|33|" 25
     define-macro change-font-size
         set-variable #l0 1
         set-variable .new-size .change-font.sz-size
@@ -60,7 +59,7 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
             100 ml-write &cat "try font: " #l1
             !force change-font #l1
             !if $status
-                200 ml-write &cat "current font: " #l1
+                100 ml-write &cat "current font: " #l1
                 set-registry &spr "/history/%s/font" $platform #l1
                 set-variable .new-size .change-font.sz-size
                 set-variable #l2 10
@@ -136,22 +135,15 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
                 !force change-font &spr .change-font.sz-font  .change-font.sz-size
                 !if &not $status
                     ; failed try other sizes 14, 18 or 24 for bitmap fonts!
-                    !if &less .change-font.sz-size 17
-                        !force change-font &spr .change-font.sz-font 14
+                    set-variable #l1 &sub .change-font.sz-size 3
+                    set-variable #l2 &add .change-font.sz-size 4
+                    !repeat
+                        !force change-font &spr .change-font.sz-font #l1
                         !if $status
-                            set-variable .change-font.sz-size 14
+                            set-variable .change-font.sz-size #l1
                         !endif
-                    !elif &less .change-font.sz-size 23
-                        !force change-font &spr .change-font.sz-font 17
-                        !if $status
-                            set-variable .change-font.sz-size 17
-                        !endif
-                    !else
-                        !force change-font &spr .change-font.sz-font 25
-                        !if $status
-                            set-variable .change-font.sz-size 25
-                        !endif
-                    !endif
+                        set-variable #l1 &add #l1 1
+                    !until &less #l1 #l2
                 !endif
                 !if $status
                     1000 ml-write &cat "font: " &spr .change-font.sz-font  .change-font.sz-size
