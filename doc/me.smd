@@ -517,6 +517,7 @@
   [change-font-lucida(3)](change-font-lucida(3)) Change the font to Lucidatypewriter on X11   
   [change-font-size(3)](change-font-size(3)) Change the font size on X-Windows or Windows  
   [change-font-type(3)](change-font-type(3)) Change the font used for resizing on X-Windows  
+  [change-font-xfontsel(3)](change-font-xfontsel(3)) Change font using xfontsel tool on X-Windows  
   [change-frame-depth(2)](change-frame-depth(2)) Change the number of lines on the current frame  
   [change-frame-width(2)](change-frame-width(2)) Change the number of columns on the current frame  
   [change-scheme(3)](change-scheme(3)) Change the current highlight scheme  
@@ -1353,6 +1354,7 @@
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
 !! me-id: amicr026
 !   Introduction to Variable Functions
+!   Variable Functions
 ## VARIABLE FUNCTIONS
 
 
@@ -1793,6 +1795,7 @@
   [change-font-lucida(3)](change-font-lucida(3)) Change the font to Lucidatypewriter on X11  
   [change-font-size(3)](change-font-size(3)) Change the screen font      
   [change-font-type(3)](change-font-type(3)) Change the font used for resizing on X-Windows  
+  [change-font-xfontsel(3)](change-font-xfontsel(3)) Change font using xfontsel tool on X-Windows  
   [change-frame-depth(2)](change-frame-depth(2)) Change the number of lines on the current frame  
   [change-frame-width(2)](change-frame-width(2)) Change the number of columns on the current frame  
   [change-scheme(3)](change-scheme(3)) Change the current highlight scheme  
@@ -2212,6 +2215,7 @@
   [change-font-lucida(3)](change-font-lucida(3)) Change the font to Lucidatypewriter on X11    
   [change-font-size(3)](change-font-size(3)) Change the font size X-Windows or Windows      
   [change-font-type(3)](change-font-type(3)) Change the font used for resizing on X-Windows  
+  [change-font-xfontsel(3)](change-font-xfontsel(3)) Change font using xfontsel tool on X-Windows  
   [change-frame-depth(2)](change-frame-depth(2)) Change the number of lines on the current frame  
   [change-frame-width(2)](change-frame-width(2)) Change the number of columns on the current frame  
   [change-screen-depth(2)](change-screen-depth(2)) Change the number of lines on the screen  
@@ -3311,6 +3315,7 @@
   [change-font-lucida(3)](change-font-lucida(3)) Change the font size on X-Windows to lucidatypewriter  
   [change-font-size(3)](change-font-size(3)) Change the font size X-Windows or Windows  
   [change-font-type(3)](change-font-type(3)) Change the font used for resizing on X-Windows  
+  [change-font-xfontsel(3)](change-font-xfontsel(3)) Change font using xfontsel tool on X-Windows  
   [change-frame-depth(2)](change-frame-depth(2)) Change the number of lines on the current frame  
   [change-frame-width(2)](change-frame-width(2)) Change the number of columns on the current frame  
   [change-scheme(3)](change-scheme(3)) Change the current highlight scheme  
@@ -4897,6 +4902,11 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
 ## Development History 
 
+- [240803]
+    - documentation fixes for macro links
+    - adding change-font-xfontsel command
+    - fix for bitmap fonts if font resize is not available
+    
 - [240802]
     - fixing all GCC compiler warnings mainly based on code from Steve for Me2024
 
@@ -13322,14 +13332,16 @@ $a
 ! 3 change-font-lucida
 ! 3 change-font-bold
 ! 3 change-font-type
+! 3 change-font-xfontsel
 ## NAME
 
 
-  change-font-bold    - Change the screen font from bold to medium and back  
-  change-font-courier - Change the screen font in non-terminal mode to adobe courier  
-  change-font-lucida  - Change  the  screen  font in  non-terminal  mode to
+  change-font-bold     - Change the screen font from bold to medium and back  
+  change-font-courier  - Change the screen font in non-terminal mode to adobe courier  
+  change-font-lucida   - Change  the  screen  font in  non-terminal  mode to
                           lucidatypewriter  
-  change-font-type    - Change the font used for resizing on a X-Window system  
+  change-font-type     - Change the font used for resizing on a X-Window system  
+  change-font-xfontsel - Change the font using the xfontsel tool a X-Window system  
 $a
 
 
@@ -13341,21 +13353,25 @@ $a
   __change-font-courier__  
   __change-font-lucida__  
   __change-font-type__    _"family-weight"_ size
+  __change-font-xfontsel__
 
 ## DESCRIPTION
 
 
-  __change-font-bold__  is a command  which  toggles fonts between bold and
-                      medium weighted fonts.
+  __change-font-bold__     is a command  which  toggles fonts between bold and
+                       medium weighted fonts.
 
-  __change-font-courier__ sets the  default  font for  resizing  to Adobe
-                        courier.
+  __change-font-courier__  sets the  default  font for  resizing  to Adobe
+                       courier.
 
-  __change-font-lucida__  sets the  default  font for  resizing  to lucidatypewriter
+  __change-font-lucida__   sets the  default  font for  resizing  to lucidatypewriter
     
-  __change-font-type__    allows an easier  switching  of font just giving
-                        the main font and an optional font-size or using an 
-                        interactive menu if no arguments are given
+  __change-font-type__     allows an easier  switching  of font just giving
+                       the main font and an optional font-size or using an 
+                       interactive menu if no arguments are given
+
+  __change-font-xfontsel__  allow to chose the font if the X11 tool  xfontself
+                        is installed
     
   The font-size is increased in case of C-+ and decreased in case of the C--
   minus    key     bindings.     For    Unix    systems    the     variables
@@ -13372,15 +13388,13 @@ $a
         ; arguments are: short font-string (family-weigth) startsize
         change-font-type ; interactice selection from courier, lucida etc
         ; change-font-type "ubuntu mono-bold" 22
-        ;change-font-type "roboto mono-bold" 25
         ; change-font-type "courier" ; should always work
-        ; change-font-type "courier-bold" ; should always work
         ; change-font-type "lucidatypewriter" - should always work
 ```
 
 ## SEE ALSO
 
-  [change-font(2)](change-font(2))
+  [change-font(2)](change-font(2)), [change-font-size(3)](change-font-size(3))
 
 !! me-id: m3mac094
 ! 3 change-font-size
@@ -13411,25 +13425,27 @@ $a
 ## DESCRIPTION
 
 
-  change-font-size  is a command  which  allows to resize the  current
-  MicroEmacs font using standard key-bindings, C-+, C-- and C-=.
-  The font-size is increased in case of C-+ and decreased in case of the C--
+  __change-font-size__  is a command  which  allows to resize the  current
+  MicroEmacs font using standard key-bindings, `C-+`, `C--` and `C-=`.
+  The font-size is increased in case of `C-+` and decreased in case of the `C--`
   minus key  bindings.  For Unix systems the  variables   [.change-font.sz-font(5)](.change-font.sz-font(5))
   and [.change-font.sz-size(5)](.change-font.sz-size(5)) are used to cycle through some standard (Adobe
-  bold) fonts  or through a list of user  defined  fonts. On Windows  simply
+  courier and Lucidatypewriter) fonts  or through a list of user  defined  fonts. On Windows  simply
   the current font-size of the current font is changed.
 
 ## SEE ALSO
 
 
-  [change-font(2)](change-font(2)).
+  [change-font(2)](change-font(2)), 
+  
+  _X-Windows:_  [change-font-type(3)](change-font-type(3)], [change-font-xfontsel(3)](change-font-xfontsel(3)
 
 
 !! me-id: m2cmd028
 ! 2 prefix
 ## NAME
 
-
+|prefix
     prefix - Key prefix command
 |prefix2
     prefix2 - Control(2) prefix
@@ -47304,7 +47320,9 @@ $a
 ## SEE ALSO
 
 
-  [Operating Modes](Operating Modes), [Variable Functions](Introduction to Variable Functions), [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)).
+  [Operating Modes](Operating Modes), 
+  [Variable Functions](Introduction to Variable Functions),  
+  [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)).
 !! me-id: m4fil001
 ! 4 &abs
 ! 4 &add
@@ -47312,6 +47330,9 @@ $a
 ! 4 &mod
 ! 4 &inc
 ! 4 &dec
+! 4 &divide
+! 4 &negate
+! 4 &multiply
 ## NAME
 
 
@@ -47459,11 +47480,16 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&great(4)](&great(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&great(4)](&great(4)).
 !! me-id: m4fil002
 ! 4 &cat
 ! 4 &mid
 ! 4 &len
+! 4 &left
+! 4 &right
+! 4 &slower
+! 4 &trboth
 ## NAME
 
 
@@ -47637,15 +47663,20 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&sin(4)](&sin(4)), [&sequal(4)](&sequal(4)), [&lget(4)](&lget(4)), [&sprintf(4)](&sprintf(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&sin(4)](&sin(4)), [&sequal(4)](&sequal(4)), [&lget(4)](&lget(4)), 
+  [&sprintf(4)](&sprintf(4)).
 !! me-id: m4fil003
 ! 4 &and
 ! 4 &or
 ! 4 &not
+! 4 &equal
+! 4 &less
+! 4 &great
 ## NAME
 
 
-  &and, &or, &not, &equal, &sequal - Logical macro operators
+  &and, &or, &not, &equal, &great, &less - Logical macro operators
 
 
 ## SYNOPSIS
@@ -47755,8 +47786,10 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&add(4)](&add(4)), [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)), [&cond(4)](&cond(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&add(4)](&add(4)), [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)), [&cond(4)](&cond(4)).
 !! me-id: m4fil004 
+! 4 &sprintf
 ! 4 &spr
 ## NAME
 
@@ -47867,7 +47900,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&cat(4)](&cat(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&cat(4)](&cat(4)).
 !! me-id: m4fil005
 ! 4 &atoi
 ! 4 &bmode
@@ -48050,7 +48084,9 @@ $a
 ## SEE ALSO
 
 
-  [Operating Modes](Operating Modes), [Variable Functions](Introduction to Variable Functions), [&sprintf(4)](&sprintf(4)), [&equal(4)](&equal(4)).
+  [Operating Modes](Operating Modes), 
+  [Variable Functions](Introduction to Variable Functions), 
+  [&sprintf(4)](&sprintf(4)), [&equal(4)](&equal(4)).
 !! me-id: m4fil006
 ! 4 !emacro
 ! 4 !ehelp
@@ -48303,7 +48339,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Fuctions](Introduction to Variable Functions), [!goto(4)](!goto(4)), [&equal(4)](&equal(4)), [!return(4)](!return(4)), [$status(5)]($status(5)).
+  [Variable Fuctions](Introduction to Variable Functions), 
+  [!goto(4)](!goto(4)), [&equal(4)](&equal(4)), [!return(4)](!return(4)), [$status(5)]($status(5)).
 !! me-id: m4fil009
 ! 4 !goto
 ! 4 !tgoto
@@ -48393,8 +48430,9 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [!if(4)](!if(4)), [!jump(4)](!jump(4)), [!repeat(4)](!repeat(4)), [!return(4)](!return(4)), [!tjump(4)](!tjump(4)),
-  [!while(4)](!while(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [!if(4)](!if(4)), [!jump(4)](!jump(4)), [!repeat(4)](!repeat(4)),  
+  [!return(4)](!return(4)), [!tjump(4)](!tjump(4)), [!while(4)](!while(4)).
 !! me-id: m4fil010
 ! 4 !return
 ! 4 !abort  
@@ -49866,9 +49904,9 @@ $a
   [yank(2)](yank(2)), [MacroArguments](MacroArguments(4)), [MacroNumericArguments](MacroNumericArguments(4)), [define-macro(2)](define-macro(2)).
 !! me-id: m4fil021
 ! 4 &bor
-! 4 &ban
-! 4 &bxo
-! 4 &bno
+! 4 &band
+! 4 &bxor
+! 4 &bnot
 ## NAME
 
 
@@ -49919,7 +49957,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&add(4)](&add(4)), [&and(4)](&and(4)), [&negate(4)](&negate(4)), [&or(4)](&or(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&add(4)](&add(4)), [&and(4)](&and(4)), [&negate(4)](&negate(4)), [&or(4)](&or(4)).
 !! me-id: m4fil022
 ! 4 &cond
 ## NAME
@@ -49980,7 +50019,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&add(4)](&add(4)), [&great(4)](&great(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&add(4)](&add(4)), [&great(4)](&great(4)).
 !! me-id: m4fil023  
 ! 4 &set
 ## NAME
@@ -50028,7 +50068,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&inc(4)](&inc(4)), [set-variable(2)](set-variable(2)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&inc(4)](&inc(4)), [set-variable(2)](set-variable(2)).
 !! me-id: m4fil024
 ! 4 &find
 ## NAME
@@ -50036,8 +50077,8 @@ $a
 
 |&find
  &find - Find a file on the search path
-&which
 
+|&which
  &which - Find a program on the path
 $a
 
@@ -50100,7 +50141,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [find-file(2)](find-file(2)), [insert-file(2)](insert-file(2)), [$search-path(5)]($search-path(5)),
+  [Variable Functions](Introduction to Variable Functions), 
+  [find-file(2)](find-file(2)), [insert-file(2)](insert-file(2)), [$search-path(5)]($search-path(5)),
   [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MEUSERPATH(5)]($MEUSERPATH(5)).
 !! me-id: m4fil025
 ! 4 !nmacro
@@ -50228,7 +50270,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [global-bind-key(2)](global-bind-key(2)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [global-bind-key(2)](global-bind-key(2)).
 !! me-id: m4fil027
 ! 4 &stat  
 ## NAME
@@ -50391,7 +50434,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [find-file(2)](find-file(2)), [&bstat(4)](&bstat(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [find-file(2)](find-file(2)), [&bstat(4)](&bstat(4)).
 !! me-id: m4fil028
 ! 4 &reg
 ## NAME
@@ -50559,7 +50603,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&mid(4)](&mid(4)), [&cat(4)](&cat(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [&mid(4)](&mid(4)), [&cat(4)](&cat(4)).
 !! me-id: m4fil030
 ! 4 &sequal
 ! 4 &isequal
@@ -50691,7 +50736,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [&sin(4)](&sin(4)), [&slower(4)](&slower(4)), [&rep(4)](&rep(4)), [&add(4)](&add(4)), [&equal(4)](&equal(4)),
+  [Variable Functions](Introduction to Variable Functions), 
+  [&sin(4)](&sin(4)), [&slower(4)](&slower(4)), [&rep(4)](&rep(4)), [&add(4)](&add(4)), [&equal(4)](&equal(4)),
   [&cond(4)](&cond(4)), [Regular Expressions](RegularExpressions(2)).
 !! me-id: m4fil031
 ! 4 &sin
@@ -50796,7 +50842,9 @@ $a
 ## SEE ALSO
 
 
-  [Operating Modes](Operating Modes), [Variable Functions](Introduction to Variable Functions), [&sequal(4)](&sequal(4)), [&rep(4)](&rep(4)).
+  [Operating Modes](Operating Modes), 
+  [Variable Functions](Introduction to Variable Functions), 
+  [&sequal(4)](&sequal(4)), [&rep(4)](&rep(4)).
 !! me-id: m4fil032
 ! 4 !jump
 ! 4 !tjump
@@ -50909,7 +50957,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Fuctions](Introduction to Variable Functions), [!goto(4)](!goto(4)), [!if(4)](!if(4)), [!repeat(4)](!repeat(4)), [!return(4)](!return(4)), [!tgoto(4)](!tgoto(4)),
+  [Variable Fuctions](Introduction to Variable Functions), 
+  [!goto(4)](!goto(4)), [!if(4)](!if(4)), [!repeat(4)](!repeat(4)), [!return(4)](!return(4)), [!tgoto(4)](!tgoto(4)),
   [!while(4)](!while(4)).
 !! me-id: m4fil033
 ! 4 SearchGroups
@@ -51419,7 +51468,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), [find-file(2)](find-file(2)), [&stat(4)](&stat(4)).
+  [Variable Functions](Introduction to Variable Functions), 
+  [find-file(2)](find-file(2)), [&stat(4)](&stat(4)).
 !! me-id: m5var000  
 ! 5 $auto-time
 ## NAME
@@ -52494,9 +52544,8 @@ $a
 
 ## SEE ALSO
 
-
-  [$user-path(5)]($user-path(5)), [$user-name(5)]($user-name(5)), [$progname(5)]($progname(5)), [$MENAME(5)]($MENAME(5)), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)),
   [Variable Functions](Introduction to Variable Functions).
+  [$user-path(5)]($user-path(5)), [$user-name(5)]($user-name(5)), [$progname(5)]($progname(5)), [$MENAME(5)]($MENAME(5)), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)),
 !! me-id: m5var027
 ! 5 $scroll
 ## NAME

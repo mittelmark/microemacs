@@ -44,6 +44,7 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
         set-variable #l0 1
         set-variable .new-size .change-font.sz-size
         set-variable .old-size .change-font.sz-size
+        1000 ml-write .change-font.sz-size
         ; TODO: alter variable sz-size at the end only if success
         !if &equal @# 0
             set-variable .change-font.sz-size &add .change-font.sz-size -1
@@ -56,7 +57,7 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
             set-variable #l2 &add #l2 1
             set-variable .change-font.sz-size &add .change-font.sz-size #l0
             set-variable #l1 &spr .change-font.sz-font .change-font.sz-size
-            200 ml-write &cat "try font: " #l1
+            100 ml-write &cat "try font: " #l1
             !force change-font #l1
             !if $status
                 200 ml-write &cat "current font: " #l1
@@ -109,6 +110,64 @@ set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*-*"
         !else
             200 ml-write &spr "font is not available: %s" #l0
         !endif
+    !emacro
+    define-macro change-font-xfontsel
+        2 pipe-shell-command "xfontsel -print" "*xfontsel*"
+        !if $result
+            1000 ml-write "Error: xfontsel could not be exectuted!"
+            !abort
+        !endif
+        set-position "\x90"
+        find-buffer "*xfontsel*"
+        beginning-of-buffer
+        search-buffer "me" "^-"
+        !if $status
+            set-variable  .xfontsel.font @wl
+            ; -*-anonymous pro minus-bold-r-*-*-17-*-*-*-*-*-*-*
+            !if &xse .xfontsel.font "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
+                set-variable .change-font.sz-font &spr "%s*-*-%%d-*-*%s*%s" @s1 @s3 @s4
+                !if &seq @s2 "*"
+                    !if &not &exi .change-font.sz-size
+                        set-variable .change-font.sz-size 17
+                    !endif
+                !else
+                    set-variable .change-font.sz-size @s2
+                !endif
+                !force change-font &spr .change-font.sz-font  .change-font.sz-size
+                !if &not $status
+                    ; failed try other sizes 14, 18 or 24 for bitmap fonts!
+                    !if &less .change-font.sz-size 17
+                        !force change-font &spr .change-font.sz-font 14
+                        !if $status
+                            set-variable .change-font.sz-size 14
+                        !endif
+                    !elif &less .change-font.sz-size 23
+                        !force change-font &spr .change-font.sz-font 17
+                        !if $status
+                            set-variable .change-font.sz-size 17
+                        !endif
+                    !else
+                        !force change-font &spr .change-font.sz-font 25
+                        !if $status
+                            set-variable .change-font.sz-size 25
+                        !endif
+                    !endif
+                !endif
+                !if $status
+                    1000 ml-write &cat "font: " &spr .change-font.sz-font  .change-font.sz-size
+                !else
+                    1000 ml-write &cat "font not found: " &spr .change-font.sz-font  .change-font.sz-size
+                !endif
+            !else
+                ; should be not reached
+                change-font .xfontself.font
+                set-variable .change-font.sz-font ""
+            !endif
+        !else
+            1000 ml-write "Error: Failed to find font name - did you click on Selt and Quit?"
+        !endif
+        delete-buffer "*xfontsel*"
+        goto-position "\x90"
     !emacro
     define-macro change-font-courier
         ; check if current font is medium

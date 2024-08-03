@@ -622,6 +622,7 @@ Miscellaneous Information
     lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter on X11   
     lschange-font-size(3)lmchange-font-size(3)le Change the font size on X-Windows or Windows  
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
+    lschange-font-xfontsel(3)lmchange-font-xfontsel(3)le Change font using xfontsel tool on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
     lschange-frame-width(2)lmchange-frame-width(2)le Change the number of columns on the current frame  
     lschange-scheme(3)lmchange-scheme(3)le Change the current highlight scheme  
@@ -1441,6 +1442,7 @@ Miscellaneous Information
     lsprint-scheme(2)lmprint-scheme(2)le Create a new printer color and font scheme  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
 !   Introduction to Variable Functions
+!   Variable Functions
 cEcEVARIABLE FUNCTIONS cEcA
 
 
@@ -1876,6 +1878,7 @@ Miscellaneous Information
     lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter on X11  
     lschange-font-size(3)lmchange-font-size(3)le Change the screen font      
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
+    lschange-font-xfontsel(3)lmchange-font-xfontsel(3)le Change font using xfontsel tool on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
     lschange-frame-width(2)lmchange-frame-width(2)le Change the number of columns on the current frame  
     lschange-scheme(3)lmchange-scheme(3)le Change the current highlight scheme  
@@ -2294,6 +2297,7 @@ Miscellaneous Information
     lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font to Lucidatypewriter on X11    
     lschange-font-size(3)lmchange-font-size(3)le Change the font size X-Windows or Windows      
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
+    lschange-font-xfontsel(3)lmchange-font-xfontsel(3)le Change font using xfontsel tool on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
     lschange-frame-width(2)lmchange-frame-width(2)le Change the number of columns on the current frame  
     lschange-screen-depth(2)lmchange-screen-depth(2)le Change the number of lines on the screen  
@@ -3390,6 +3394,7 @@ Miscellaneous Information
     lschange-font-lucida(3)lmchange-font-lucida(3)le Change the font size on X-Windows to lucidatypewriter  
     lschange-font-size(3)lmchange-font-size(3)le Change the font size X-Windows or Windows  
     lschange-font-type(3)lmchange-font-type(3)le Change the font used for resizing on X-Windows  
+    lschange-font-xfontsel(3)lmchange-font-xfontsel(3)le Change font using xfontsel tool on X-Windows  
     lschange-frame-depth(2)lmchange-frame-depth(2)le Change the number of lines on the current frame  
     lschange-frame-width(2)lmchange-frame-width(2)le Change the number of columns on the current frame  
     lschange-scheme(3)lmchange-scheme(3)le Change the current highlight scheme  
@@ -4971,6 +4976,14 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
 
 
 cEDevelopment History  cA
+
+- [240803]
+      - documentation fixes for macro links
+      - adding change-font-xfontsel command
+      - fix for bitmap fonts if font resize is not available
+      
+- [240802]
+      - fixing all GCC compiler warnings mainly based on code from Steve for Me2024
 
 - [240801]
       - docu and faq extended about  installation  of bfs  executuables  and TTF
@@ -13272,14 +13285,16 @@ $a
 ! 3 change-font-lucida
 ! 3 change-font-bold
 ! 3 change-font-type
+! 3 change-font-xfontsel
 cEcENAME cEcA
 
 
-    change-font-bold    - Change the screen font from bold to medium and back  
-    change-font-courier - Change the screen font in non-terminal mode to adobe courier  
-    change-font-lucida  - Change  the  screen  font in  non-terminal  mode to
+    change-font-bold     - Change the screen font from bold to medium and back  
+    change-font-courier  - Change the screen font in non-terminal mode to adobe courier  
+    change-font-lucida   - Change  the  screen  font in  non-terminal  mode to
                             lucidatypewriter  
-    change-font-type    - Change the font used for resizing on a X-Window system  
+    change-font-type     - Change the font used for resizing on a X-Window system  
+    change-font-xfontsel - Change the font using the xfontsel tool a X-Window system  
 $a
 
 
@@ -13291,21 +13306,25 @@ $a
     cDchange-font-couriercA  
     cDchange-font-lucidacA  
     cDchange-font-typecA    cC"family-weight"cA size
+    cDchange-font-xfontselcA
 
 cEDESCRIPTION cA
 
 
-    cDchange-font-boldcA  is a command  which  toggles fonts between bold and
-                        medium weighted fonts.
+    cDchange-font-boldcA     is a command  which  toggles fonts between bold and
+                         medium weighted fonts.
 
-    cDchange-font-couriercA sets the  default  font for  resizing  to Adobe
-                          courier.
+    cDchange-font-couriercA  sets the  default  font for  resizing  to Adobe
+                         courier.
 
-    cDchange-font-lucidacA  sets the  default  font for  resizing  to lucidatypewriter
+    cDchange-font-lucidacA   sets the  default  font for  resizing  to lucidatypewriter
       
-    cDchange-font-typecA    allows an easier  switching  of font just giving
-                          the main font and an optional font-size or using an 
-                          interactive menu if no arguments are given
+    cDchange-font-typecA     allows an easier  switching  of font just giving
+                         the main font and an optional font-size or using an 
+                         interactive menu if no arguments are given
+
+    cDchange-font-xfontselcA  allow to chose the font if the X11 tool  xfontself
+                          is installed
       
     The font-size is increased in case of C-+ and decreased in case of the C--
     minus    key     bindings.     For    Unix    systems    the     variables
@@ -13322,14 +13341,12 @@ $a
           ; arguments are: short font-string (family-weigth) startsize
           change-font-type ; interactice selection from courier, lucida etc
           ; change-font-type "ubuntu mono-bold" 22
-          ;change-font-type "roboto mono-bold" 25
           ; change-font-type "courier" ; should always work
-          ; change-font-type "courier-bold" ; should always work
           ; change-font-type "lucidatypewriter" - should always work
 sA
 cESEE ALSO cA
 
-    lschange-font(2)lmchange-font(2)le
+    lschange-font(2)lmchange-font(2)le, lschange-font-size(3)lmchange-font-size(3)le
 
 ! 3 change-font-size
 ! 5 .change-font.sz-font
@@ -13359,24 +13376,26 @@ $a
 cEDESCRIPTION cA
 
 
-    change-font-size  is a command  which  allows to resize the  current
-    MicroEmacs font using standard key-bindings, C-+, C-- and C-=.
-    The font-size is increased in case of C-+ and decreased in case of the C--
+    cDchange-font-sizecA  is a command  which  allows to resize the  current
+    MicroEmacs font using standard key-bindings, `C-+`, `C--` and `C-=`.
+    The font-size is increased in case of `C-+` and decreased in case of the `C--`
     minus key  bindings.  For Unix systems the  variables   ls.change-font.sz-font(5)lm.change-font.sz-font(5)le
     and ls.change-font.sz-size(5)lm.change-font.sz-size(5)le are used to cycle through some standard (Adobe
-    bold) fonts  or through a list of user  defined  fonts. On Windows  simply
+    courier and Lucidatypewriter) fonts  or through a list of user  defined  fonts. On Windows  simply
     the current font-size of the current font is changed.
 
 cESEE ALSO cA
 
 
-    lschange-font(2)lmchange-font(2)le.
+    lschange-font(2)lmchange-font(2)le, 
+    
+    cCX-Windows:cA  lschange-font-type(3lmchange-font-type(3)le], lschange-font-xfontsel(3lmchange-font-xfontsel(3)le
 
 
 ! 2 prefix
 cEcENAME cEcA
 
-
+|prefix
       prefix - Key prefix command
 |prefix2
       prefix2 - Control(2) prefix
@@ -46706,13 +46725,18 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sequal(4lm&sequal(4)lelmOperating Modesle, ls&sin(4)lm&sin(4)le.
+    lsOperating ModeslmOperating Modesle, 
+    lsIntroduction to Variable FunctionslmVariable Functionsle,  
+    ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le.
 ! 4 &abs
 ! 4 &add
 ! 4 &sub
 ! 4 &mod
 ! 4 &inc
 ! 4 &dec
+! 4 &divide
+! 4 &negate
+! 4 &multiply
 cEcENAME cEcA
 
 
@@ -46855,10 +46879,15 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&great(4lm&great(4)lelmVariable Functionsle.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&great(4)lm&great(4)le.
 ! 4 &cat
 ! 4 &mid
 ! 4 &len
+! 4 &left
+! 4 &right
+! 4 &slower
+! 4 &trboth
 cEcENAME cEcA
 
 
@@ -47025,14 +47054,19 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&sin(4lm&sin(4)lelmVariable Functionsle, ls&sequal(4)lm&sequal(4)le, ls&lget(4)lm&lget(4)le, ls&sprintf(4)lm&sprintf(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&sin(4)lm&sin(4)le, ls&sequal(4)lm&sequal(4)le, ls&lget(4)lm&lget(4)le, 
+    ls&sprintf(4)lm&sprintf(4)le.
 ! 4 &and
 ! 4 &or
 ! 4 &not
+! 4 &equal
+! 4 &less
+! 4 &great
 cEcENAME cEcA
 
 
-    &and, &or, &not, &equal, &sequal - Logical macro operators
+    &and, &or, &not, &equal, &great, &less - Logical macro operators
 
 
 cESYNOPSIS cA
@@ -47138,7 +47172,9 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&add(4lm&add(4)lelmVariable Functionsle, ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le, ls&cond(4)lm&cond(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&add(4)lm&add(4)le, ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le, ls&cond(4)lm&cond(4)le.
+! 4 &sprintf
 ! 4 &spr
 cEcENAME cEcA
 
@@ -47246,7 +47282,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&cat(4lm&cat(4)lelmVariable Functionsle.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&cat(4)lm&cat(4)le.
 ! 4 &atoi
 ! 4 &bmode
 ! 4 &exist
@@ -47423,7 +47460,9 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sprintf(4lm&sprintf(4)lelmOperating Modesle, ls&equal(4)lm&equal(4)le.
+    lsOperating ModeslmOperating Modesle, 
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&sprintf(4)lm&sprintf(4)le, ls&equal(4)lm&equal(4)le.
 ! 4 !emacro
 ! 4 !ehelp
 cEcENAME cEcA
@@ -47668,7 +47707,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls!goto(4lm!goto(4)lelmVariable Fuctionsle, ls&equal(4)lm&equal(4)le, ls!return(4)lm!return(4)le, ls$status(5)lm$status(5)le.
+    lsIntroduction to Variable FunctionslmVariable Fuctionsle, 
+    ls!goto(4)lm!goto(4)le, ls&equal(4)lm&equal(4)le, ls!return(4)lm!return(4)le, ls$status(5)lm$status(5)le.
 ! 4 !goto
 ! 4 !tgoto
 cEcENAME cEcA
@@ -47756,8 +47796,9 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls!if(4lm!if(4)lelmVariable Functionsle, ls!jump(4)lm!jump(4)le, ls!repeat(4)lm!repeat(4)le, ls!return(4)lm!return(4)le, ls!tjump(4)lm!tjump(4)le,
-    ls!while(4)lm!while(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls!if(4)lm!if(4)le, ls!jump(4)lm!jump(4)le, ls!repeat(4)lm!repeat(4)le,  
+    ls!return(4)lm!return(4)le, ls!tjump(4)lm!tjump(4)le, ls!while(4)lm!while(4)le.
 ! 4 !return
 ! 4 !abort  
 cEcENAME cEcA
@@ -49184,9 +49225,9 @@ $a
 
     lsyank(2)lmyank(2)le, lsMacroArguments(4)lmMacroArgumentsle, lsMacroNumericArguments(4)lmMacroNumericArgumentsle, lsdefine-macro(2)lmdefine-macro(2)le.
 ! 4 &bor
-! 4 &ban
-! 4 &bxo
-! 4 &bno
+! 4 &band
+! 4 &bxor
+! 4 &bnot
 cEcENAME cEcA
 
 
@@ -49237,7 +49278,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&add(4lm&add(4)lelmVariable Functionsle, ls&and(4)lm&and(4)le, ls&negate(4)lm&negate(4)le, ls&or(4)lm&or(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&add(4)lm&add(4)le, ls&and(4)lm&and(4)le, ls&negate(4)lm&negate(4)le, ls&or(4)lm&or(4)le.
 ! 4 &cond
 cEcENAME cEcA
 
@@ -49295,7 +49337,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&add(4lm&add(4)lelmVariable Functionsle, ls&great(4)lm&great(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&add(4)lm&add(4)le, ls&great(4)lm&great(4)le.
 ! 4 &set
 cEcENAME cEcA
 
@@ -49341,15 +49384,16 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&inc(4lm&inc(4)lelmVariable Functionsle, lsset-variable(2)lmset-variable(2)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&inc(4)lm&inc(4)le, lsset-variable(2)lmset-variable(2)le.
 ! 4 &find
 cEcENAME cEcA
 
 
 |&find
  &find - Find a file on the search path
-&which
 
+|&which
  &which - Find a program on the path
 $a
 
@@ -49411,7 +49455,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), lsfind-file(2lmfind-file(2)lelmVariable Functionsle, lsinsert-file(2)lminsert-file(2)le, ls$search-path(5)lm$search-path(5)le,
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    lsfind-file(2)lmfind-file(2)le, lsinsert-file(2)lminsert-file(2)le, ls$search-path(5)lm$search-path(5)le,
     ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le, ls$MEUSERPATH(5)lm$MEUSERPATH(5)le.
 ! 4 !nmacro
 cEcENAME cEcA
@@ -49534,7 +49579,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), lsglobal-bind-key(2lmglobal-bind-key(2)lelmVariable Functionsle.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    lsglobal-bind-key(2)lmglobal-bind-key(2)le.
 ! 4 &stat  
 cEcENAME cEcA
 
@@ -49694,7 +49740,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), lsfind-file(2lmfind-file(2)lelmVariable Functionsle, ls&bstat(4)lm&bstat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    lsfind-file(2)lmfind-file(2)le, ls&bstat(4)lm&bstat(4)le.
 ! 4 &reg
 cEcENAME cEcA
 
@@ -49857,7 +49904,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&mid(4lm&mid(4)lelmVariable Functionsle, ls&cat(4)lm&cat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&mid(4)lm&mid(4)le, ls&cat(4)lm&cat(4)le.
 ! 4 &sequal
 ! 4 &isequal
 ! 4 &sgreat
@@ -49984,7 +50032,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls&sin(4lm&sin(4)lelmVariable Functionsle, ls&slower(4)lm&slower(4)le, ls&rep(4)lm&rep(4)le, ls&add(4)lm&add(4)le, ls&equal(4)lm&equal(4)le,
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&sin(4)lm&sin(4)le, ls&slower(4)lm&slower(4)le, ls&rep(4)lm&rep(4)le, ls&add(4)lm&add(4)le, ls&equal(4)lm&equal(4)le,
     ls&cond(4)lm&cond(4)le, lsRegularExpressions(2)lmRegular Expressionsle.
 ! 4 &sin
 ! 4 &isin
@@ -50087,7 +50136,9 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sequal(4lm&sequal(4)lelmOperating Modesle, ls&rep(4)lm&rep(4)le.
+    lsOperating ModeslmOperating Modesle, 
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    ls&sequal(4)lm&sequal(4)le, ls&rep(4)lm&rep(4)le.
 ! 4 !jump
 ! 4 !tjump
 cEcENAME cEcA
@@ -50198,7 +50249,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), ls!goto(4lm!goto(4)lelmVariable Fuctionsle, ls!if(4)lm!if(4)le, ls!repeat(4)lm!repeat(4)le, ls!return(4)lm!return(4)le, ls!tgoto(4)lm!tgoto(4)le,
+    lsIntroduction to Variable FunctionslmVariable Fuctionsle, 
+    ls!goto(4)lm!goto(4)le, ls!if(4)lm!if(4)le, ls!repeat(4)lm!repeat(4)le, ls!return(4)lm!return(4)le, ls!tgoto(4)lm!tgoto(4)le,
     ls!while(4)lm!while(4)le.
 ! 4 SearchGroups
 ! 4 @s0
@@ -50697,7 +50749,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable Functions), lsfind-file(2lmfind-file(2)lelmVariable Functionsle, ls&stat(4)lm&stat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    lsfind-file(2)lmfind-file(2)le, ls&stat(4)lm&stat(4)le.
 ! 5 $auto-time
 cEcENAME cEcA
 
@@ -51744,9 +51797,8 @@ $a
 
 cESEE ALSO cA
 
-
-    ls$user-path(5)lm$user-path(5)le, ls$user-name(5)lm$user-name(5)le, ls$progname(5)lm$progname(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le,
     lsIntroduction to Variable FunctionslmVariable Functionsle.
+    ls$user-path(5)lm$user-path(5)le, ls$user-name(5)lm$user-name(5)le, ls$progname(5)lm$progname(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le,
 ! 5 $scroll
 cEcENAME cEcA
 
