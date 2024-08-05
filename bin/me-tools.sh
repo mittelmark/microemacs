@@ -68,9 +68,10 @@ function smd2ehf {
         s/^  > /    / ;    # one indent
         $pre < 0 and s/ME\\_PIPE\\_STDERR/ME_PIPE_STDERR/g;
         $pre < 0 and s/``(.+) ` ``/`$1 ``/g; 
+        $pre < 0 and s/([^_])__([A-Za-z0-9])__/$1\033cD$2\033cA/g;
+        $pre < 0 and s/"`([^"`]+)`"/`$1`/g;
         $pre < 0 and s/([^A-Za-z0-9])___([^ ].*?[^ ])___/$1\033cB$2\033cA/g ; # if not in chunks do formatting
         $pre < 0 and s/([^A-Za-z0-9])__([^ ].*?[^ ])__/$1\033cD$2\033cA/g;
-        $pre < 0 and s/[ ]__(.)__/ \033cD$1\033cA/g;                 
         $pre < 0 and s/([^A-Za-z0-9])_([0-9a-zA-Z]+)_/$1\033cC$2\033cA/g; 
         $pre < 0 and s/[ ]_(.)_/ \033cC$1\033cA/g;         
         $pre < 0 and s/([^A-Za-z0-9])_([^ ].*?[^ ])_/$1\033cC$2\033cA/g; 

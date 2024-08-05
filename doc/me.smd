@@ -359,8 +359,7 @@
   defined by  [erf(8)](erf(8)).  The registry is a mechanism  which allows the
   binding of  information  to a  hierarchical  tree node, using a file  system
   metaphor  to  access  the data.  __MicroEmacs__  uses a  reserved  root node
-  `history`  to  save   session  information        (see
-  [save-session(3)](save-session(3))).
+  `history`  to  save  session  information (see [save-session(3)](save-session(3))).
 
 
 ## Commands 
@@ -387,9 +386,9 @@
 
   MicroEmacs may be invoked from the command line to perform a specific set of
   filtering   tasks,  under  control  of  a  dedicated  start  up  macro,  see
-  [me(1)](me(1)) and  [start-up(3)](start-up(3)).  A number of standard macros
-  are provided, most of which are invoked automatically from the editor itself
-  when  requested by the user. Having said that, it has not been unknown for a
+  [me(1)](me(1)) and  [start-up(3)](start-up(3)).  A number of standard macros  are provided, 
+  most of which are invoked automatically from the editor itself  when
+  requested by the user. Having said that, it has not been unknown for a
   colleague of mine to use the editor as a replacement for a more  intelligent
   __sed(1)__  filter,  with  12  hours  to go and a huge  ugly  3-D  geometric
   database to convert, what better way than run it through a set of MicroEmacs
@@ -652,8 +651,8 @@
 ## BUFFER MANIPULATION COMMANDS
 
 
-  A buffer is where MicroEmacs  stores text. Normally text is read from a file
-  and is visible in an editing [window](Window Commands). The name, associated
+  A buffer is where MicroEmacs  stores text. Normally text is read from
+  a file and is visible in an editing [window](Window Commands). The name, associated
   file and  operating  modes of the buffer, are  generally  shown in the
   [mode line](Mode Line).
 
@@ -894,9 +893,8 @@
 
 
   Everyday   macro   commands  used  by  the  user.  See  
-  [Macro Development Commands](Macro   Development   Commands)
-  for  commands  related  to  macro development.
-
+  [Macro Development Commands](Macro Development Commands) for  commands  related to
+  macro development.
 
 ## Commands 
 
@@ -931,9 +929,8 @@
   keyboard macros etc.
 
   An  additional  set of  commands  for use with  macros  is  outlined  in the
-  [Introduction  to Variable  Functions](Introduction  to Variable  Functions)
-  section. The [Macro Language  Glossary](Macro  Language Glossary) contains a
-  full list of macro related commands and special variables.
+  [Introduction to Variable Functions](Introduction to Variable Functions) section. The [Macro Language Glossary](Macro Language Glossary)
+  contains a full list of macro related commands and special variables.
 
 
 ## Commands 
@@ -1265,15 +1262,13 @@
 
 
   MicroEmacs uses windows to display and allow you to edit the contents of
-  [buffers](Buffer Manipulation Commands). Multiple windows may be present
-  on the [screen](Hilighting, Color and Screen Appearance) at once, each is
-  separated by a [mode line](Mode Line) which describes the contents of the
-  window above it.
+  [buffers](Buffer Manipulation Commands). Multiple windows may be present on the [screen](Hilighting, Color and Screen Appearance) at once, each is
+  separated by a [mode line](Mode Line) which describes the contents of the window above it.
 
-  You can scroll text vertically and horizontally within a window by using the
-  [cursor](Cursor  Movement  Commands)  commands.  Note that if a line of text
-  extends  beyond the boundary of a window, a dollar "__$__" sign is displayed
-  instead of the first/last visible character.
+  You can scroll text vertically and horizontally within a window by using
+  the [cursor](Cursor  Movement  Commands)  commands.  Note that if a line of text extends  beyond the
+  boundary of a window, a dollar "__$__" sign is displayed instead of the 
+  first/last visible character.
 
   Commands that operate on windows are defined as follows:
 
@@ -10201,7 +10196,7 @@ or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
        linux.emf, sunos.emf etc), Microsoft Windows (win32.emf), MS-DOS
        (dos.emf).
 
-  >  __hk___xxxxxx___.emf__
+  >  __hkxxxxxx.emf__
   
   >  Buffer context specific hook files to initialize a buffer with
      macros and highlighting appropriate to the contents of the file
@@ -11362,10 +11357,10 @@ $a
 ## Extending a standard hook definition 
 
 
-  The standard file hook files __hk___XXX___.emf__ should not be modified. The
+  The standard file hook files __hkXXX.emf__ should not be modified. The
   standard file hooks may be extended with local definitions by defining a
-  file __my___XXX___.emf__, which is an extension to the hook file __hk___XXX___.emf__. This is
-  automatically executed after __hk___XXX___.emf__. Refer to sections
+  file __myXXX.emf__, which is an extension to the hook file __hkXXX.emf__. This is
+  automatically executed after __hkXXX.emf__. Refer to sections
   [languageTemplates(2)](Language Templates) and [File Hooks](fileHooks(2)) for details.
 
 
@@ -25338,8 +25333,8 @@ $a
 
 
   The default key bindings are presented below in four alphabetical lists,
-  one for single key bindings and one for each of the 4 bound prefixes (`esc`,
-  `C-x`, `C-h` & `C-c`). See [Key Names](keyNames(2)) for a list of valid key names.
+  one for single key bindings and one for each of the 4 bound prefixes 
+  (`esc`, `C-x`, `C-h` & `C-c`). See [Key Names](keyNames(2)) for a list of valid key names.
 
 
 ## Single-Key Sequences 
@@ -25802,7 +25797,7 @@ $a
         completion and the previous current buffer is restored.
 
   The name of the file hook macro name is important, hook commands must
-  commence with the text __fhook-___mode_ where _mode_ is an identifier for the
+  commence with the text __fhook-mode__ where _mode_ is an identifier for the
   operating mode. The name space is decomposed as follows:-
 
   - The initial __f__ is removed and replaced with __b__ for the begin hook
@@ -26026,7 +26021,7 @@ $a
 ## FILE HOOK SCRIPTS
 
 
-  The buffer hook files __hk___name___.emf__ typically follow a standard layout, and
+  The buffer hook files __hkXXX.emf__ typically follow a standard layout, and
   are generally associated with hi-lighting as follows, __mode__ in this case is
   the name of the file mode associated with the file:-
 
@@ -26094,7 +26089,7 @@ $a
 
   The standard hook files supplied with MicroEmacs 2009 should not be
   modified, changes to the file hooks may be applied using a separate macro
-  file called __my___XXX.emf_, this is automatically executed after the __hk___XXX.emf_
+  file called __myXXX.emf__, this is automatically executed after the __hkXXX.emf__
   file is executed.
 
   The extended hook functions may be defined company wide, or by the user,
@@ -26356,11 +26351,11 @@ $a
   to equivalent `esc` keys then the following keys should be re-bound.
 
 ```{.emf}
-        global-bind-key forward-word "A-f"      ; Over-ride File menu binding
-        :                                       ; For all of the other menu items.
+        global-bind-key forward-word "A-f"    ; Over-ride File menu binding
+        :                                     ; for all of the other menu items.
         :
-        global-bind-key backward-word "A-b"     ; Over-ride the file browser.
-        global-bind-key replace-string "A-r"    ; Over-ride tools binding.
+        global-bind-key backward-word "A-b"   ; Over-ride the file browser.
+        global-bind-key replace-string "A-r"  ; Over-ride tools binding.
 
 ```
 
@@ -27911,7 +27906,7 @@ $a
   created. Create the language specific file with the same name as defined
   in the hooks, removing the __fhook-__ prefix and replacing it with __hk__, i.e.
   `fhook-foo` invokes the language specific file `hkfoo.emf`. Create, the file
-  and add the file hook macro. for example hk_foo_.emf contents may be defined
+  and add the file hook macro. for example `hkfoo.emf` contents may be defined
   as:
 
 ```{.emf}
@@ -27924,7 +27919,7 @@ $a
 ```
 
   The file hook may be tested by exiting and re-loading MicroEmacs 2009, or
-  simply by executing the file containing the `add-file-hook` function. Once
+  simply by executing the file containing the __add-file-hook__ function. Once
   the file bindings are installed a _foo_ file may be loaded and the hook
   message should be displayed.
 
@@ -27941,21 +27936,21 @@ $a
   hi-lighting tokens to encompass locally defined programming libraries or
   syntactical extensions, in addition to extending support macros that are
   associated with the file type. In this case, an extension to the hook
-  function is required. The hook file __my___XXX___.emf__, allows extensions to be
-  made to the __hk___XXX___.emf__, without editing the original file. This may be
+  function is required. The hook file __myXXX.emf__, allows extensions to be
+  made to the __hkXXX.emf__, without editing the original file. This may be
   considered to be an _include_ file and is executed, if it exists, after the
   __hk__ file has been executed. i.e. if the hook file __hkfoo.emf__ is already
   defined and extensions are added to __myfoo.emf__.
 
-  Note that the __my___XXX___.emf__ files do not typically include any __fhook-XXX__
+  Note that the __myXXX.emf__ files do not typically include any __fhook-XXX__
   functions, the original _fhook_ functions would be used. However, if a
   different buffer environment is required from the one created be the hook,
   such as a different setting of [tab(2m)](tab(2m)) mode, the hook function should be
-  copied to __my___XXX___.emf__ and altered appropriately.
+  copied to __myXXX.emf__ and altered appropriately.
 
   Most extensions and changes to the buffer environment may be performed
-  using __my___XXX___.emf__. If the extension macro file includes a macro definition
-  __my-fhook-___XXX_, then __my-fhook___XXX_ is automatically executed after __fhook___XXX_
+  using __myXXX.emf__. If the extension macro file includes a macro definition
+  __my-fhook-XXX__, then __my-fhookXXX__ is automatically executed after __fhookXXX__
   has been run.
 
 
@@ -27986,7 +27981,7 @@ $a
   The variable `.hilight.next` allocates unique hilighting numbers, typically
   a single hilighting number is consumed, incrementing the `.hilight.next`
   variable ready for the next allocation. The hilighting color scheme is
-  defined in a macro variable __.hilight.___ext_, where _ext_ is the name of the
+  defined in a macro variable `.hilight.ext`, where _ext_ is the name of the
   language scheme (i.e. _foo_).
 
   Given a hilighting number, the hilighting scheme may be defined. Each of
@@ -28318,7 +28313,7 @@ $a
   Other users of the file hook may need to modify or extend the file hook,
   the most common form is the addition of user specific hilight tokens.
   MicroEmacs uses a simple mechanism of executing a user hook extension file
-  if it exists. The extension file name must be of the form __my___XXX___.emf__, i.e.
+  if it exists. The extension file name must be of the form __myXXX.emf__, i.e.
   for our example it must be "`myfoo.emf`". This is performed at the end of
   the macro file so that anything within the file can be altered, it is
   executed as follows:-
@@ -28337,7 +28332,7 @@ $a
 
   The previous sections have presented the basic steps involved in setting
   up a new language file template. They cater for simple file types, for
-  more complex examples then browse the __hk___xxx_.emf files.
+  more complex examples then browse the __hkxxx.emf__ files.
 
   The completed files that should have been generated by following the
   previous examples are now presented:-
@@ -28589,7 +28584,7 @@ $a
 
   MicroEmacs is distributed in the following files:-
 
-  __Complete Installations __
+  __Complete Installations__
   
   >  The Microsoft 95/98/NT/2K/XP, Solaris, HP-UX, Linux and the more
      popular platforms may be installed using a package and do not require
@@ -28607,7 +28602,7 @@ $a
      `jasspa-mepkg-sun-sparc-58-YYYYMMDD.zip` - Sun 2.8(Sparc) package.
      `jasspa-mepkg-sun-sparc-59-YYYYMMDD.zip` - Sun 2.9(Sparc) package.
 
-  __Executable Source Code __
+  __Executable Source Code__
   
   >  The source code release for MicroEmacs 2009 contains makefiles (`*.mak`)
      for all supported platforms. Microsoft '95/'98/NT/2K/XP makefiles
@@ -28617,7 +28612,7 @@ $a
      `jasspa-mesrc-YYYYMMDD.zip` - Source code for all platforms
      `jasspa-mesrc-YYYYMMDD.tar.gz` - Source code
 
-  __Executable Images __
+  __Executable Images__
   
      `jasspa-me-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (X-Windows)
      `jasspa-me-hpux-pa-10.20-YYYYMMDD.gz` - Hewlett Packard HP-UX 10
@@ -29109,7 +29104,7 @@ $a
 ## Content Of The Company Information 
 
 
-  __Company macro file __
+  __Company macro file__
   
   >  The company file is typically called by the company name (i.e.
      `jasspa.emf`) create a new company file. The file includes your company
@@ -29310,7 +29305,7 @@ $a
         bindings, defining new hook functions etc. You should override the
         standard MicroEmacs settings from your start-up file rather than
         modifying the standard MicroEmacs files.
-  - Personal spelling dictionary __lsdp___lang_.edf (see [edf(8)](edf(8))). Multiple
+  - Personal spelling dictionary `lsdp_lang_.edf` (see [edf(8)](edf(8))). Multiple
         spelling dictionaries may be created, one for each language. Any
         words that are added to the spelling dictionary are stored in these
         files.
@@ -29593,7 +29588,7 @@ $a
 
   _Clients_ may write directly to the _command_ through the use of explicit
   embedded code, or may use a [me(1)](me(1)) invocation with the __-m__ option. Commands
-  to the client interface take the form "__C:___<client>___:___<command>_".
+  to the client interface take the form "__C:<client>:<command>__".
 
   _<client>_
   
@@ -29631,7 +29626,7 @@ $a
 
   Responses from _client_ commands are written to the response file, responses
   take a similar form to _client_ commands except they are prefixed by an __R__,
-  i.e. "__R:___<client>___:___<data>_".
+  i.e. "__R:<client>:<data>__".
 
   As multiple _clients_ may be utilizing the _client-server_ mechanism then the
   _<client>_ sting passed in the command is typically returned in the response
@@ -29700,9 +29695,9 @@ $a
 ## FILES
 
 
- `meserver.emf` - Default Client-Server ipipe handler.  
- _$TEMP___/me___$MENAME___.cmd__ - Command file.  
- _$TEMP___/me___$MENAME___.rsp__ - Response file.
+  `meserver.emf` - Default Client-Server ipipe handler.  
+  _$TEMP/me$MENAME.cmd_ - Command file.  
+  _$TEMP/me$MENAME.rsp_ - Response file.
 
 
 ## BUGS
@@ -30891,10 +30886,10 @@ $a
   determined using [describe-key(2)](describe-key(2)) and [describe-bindings(2)](describe-bindings(2)). Some command
   bindings include a numeric argument, the numeric argument is important
   (both the value and absence/presence of the argument) and can change the
-  behavior of the command. `C-up` is not '__backward-line__', it is '__5__
-  __backward-line__' to go back 5 lines, if you supply a numerical value to the
-  command as well, e.g. '`esc 3 C-up`' you must multiply the user argument
-  with the numerical argument of the binding:
+  behavior of the command. `C-up` is not __backward-line__, it is _5_ __backward-line__ 
+  to go back 5 lines, if you supply a numerical value to the command
+  as well, e.g. `esc 3 C-up` you must multiply the user argument with
+  the numerical argument of the binding:
 
       3 up   -> 3   'backward-line' -> 3 * 1 backward-line ->  3 backward-line
       3 C-up -> 3 '5 backward-line' -> 3 * 5 backward-line -> 15 backward-line
@@ -30919,7 +30914,7 @@ $a
      This converts the key binding into a command which is inserted into
      the buffer.
 
-  The obvious problem here is the last line, `'delete-buffer RETURN'`. When
+  The obvious problem here is the last line, `delete-buffer RETURN`. When
   running interactively you can simply press RETURN to delete the current
   buffer however you cannot do this in a macro so you must explicitly
   specify the buffer name to delete:
@@ -30958,7 +30953,7 @@ $a
 
   1. The temp buffer used ("`tmp-buffer`") is not a temporary buffer,
      temporary buffers must always commence with a '`*`' and should be
-     identifiable with the generating macro.__Note:__ knowledge that a buffer
+     identifiable with the generating macro. __Note:__ knowledge that a buffer
      is temporary allows MicroEmacs to discard content when shutting down
      without prompting the user to save.
   2.
@@ -31058,9 +31053,9 @@ $a
 ## 3. What happens if the 'write_region_file' buffer already exists ? 
 
 
-  If the __write_region_file__ buffer already exists the buffer being written is
-  renamed to "__write_region_file<1>__" rather than "write_region_file" and so
-  the __delete-buffer__ will delete the wrong buffer. Therefore rather than
+  If the `write_region_file` buffer already exists the buffer being written is
+  renamed to `write_region_file<1>` rather than `write_region_file` and so
+  the __delete-buffer__ command will delete the wrong buffer. Therefore rather than
   delete an explicitly named buffer the environment variables are used to
   query the name of the current buffer. The variable [$buffer-bname(5)]($buffer-bname(5))
   returns the current buffer's buffer name and may be used instead of an
@@ -35442,21 +35437,21 @@ $a
   specific variables are defined as follows, where _XXX_ is the file hook base
   name.
 
-  __.fhook-___XXX___-collapse-open__
+  __.fhook-XXX-collapse-open__
   
   >  A regular expression search string used to locate the start of the
      string. For speed the search string should include a regular
      expression start or end of line character whenever possible. i.e. in C
      the open is defined as "`^{`".
 
-  __.fhook-___XXX___-collapse-close__
+  __.fhook-XXX-collapse-close__
   
   >  A regular expression search string used to locate the end of the
      string. For speed the search string should include a regular
      expression start or end line character whenever possible. i.e. in C
      the close is defined as "`^}`".
 
-  __.fhook-___XXX___-collapse-mopen__
+  __.fhook-XXX-collapse-mopen__
   
   >  An integer value that denotes the number of lines to move in a forward
      or (negative n) backward direction from the _start_ line located by the
@@ -35464,13 +35459,13 @@ $a
      value when __mopen__ is omitted is 0, starting the fold from the search
      string line.
 
-  __.fhook-___XXX___-collapse-mclose__
+  __.fhook-XXX-collapse-mclose__
   
   >  The relative displacement from the close fold line to the fold
      position, this is a positive or negative displacement depending on
      where the fold is to be positioned.
 
-  __.fhook-___XXX___-collapse-mnext__
+  __.fhook-XXX-collapse-mnext__
   
   >  Specifies the number of lines to advance before the next search is
      continued on the fold operation. This is only used by __collapse-all__.
@@ -39607,21 +39602,21 @@ $a
   _XXX_ is the file hook base name. The `.fhook-XXX.collapse-*` variables define
   the regular expression search pattern and line positioning.
 
-  __.fhook-___XXX___-collapse-open__
+  __.fhook-XXX-collapse-open__
   
   >  A regular expression search string used to locate the start of the
      string. For speed the search string should include a regular
      expression start or end of line character whenever possible. i.e. in C
      the open is defined as "`^{`".
 
-  __.fhook-___XXX___-collapse-close__
+  __.fhook-XXX-collapse-close__
   
   >  A regular expression search string used to locate the end of the
      string. For speed the search string should include a regular
      expression start or end line character whenever possible. i.e. in C
      the close is defined as "`^}`".
 
-  __.fhook-___XXX___-collapse-mopen__
+  __.fhook-XXX-collapse-mopen__
   
   >  An integer value that denotes the number of lines to move in a forward
      or (negative n) backward direction from the _start_ line located by the
@@ -39629,13 +39624,13 @@ $a
      value when __mopen__ is omitted is 0, starting the fold from the search
      string line.
 
-  __.fhook-___XXX___-collapse-mclose__
+  __.fhook-XXX-collapse-mclose__
   
   >  The relative displacement from the close fold line to the fold
      position, this is a positive or negative displacement depending on
      where the fold is to be positioned.
 
-  __.fhook-___XXX___-collapse-mnext__
+  __.fhook-XXX-collapse-mnext__
   
   >  Specifies the number of lines to advance before the next search is
      continued on the fold operation. This is only used by [collapse-all](collapse-current(3)).
@@ -39814,8 +39809,8 @@ $a
   to the user.
 
   The regular expression search strings are predefined in the language
-  templates, using the variables __.fhook-___XXX___-item-list-s___Y_ and
-  __.fhook-___XXX___-item-list-r___Y_ and are described more fully in [item-list(3)](item-list(3)).
+  templates, using the variables __.fhook-XXX-item-list-sY__ and
+  __.fhook-XXX-item-list-rY__ and are described more fully in [item-list(3)](item-list(3)).
 
 
 ## Hilighting 
@@ -45025,23 +45020,23 @@ $a
 
   The frame composition presented by MicroEmacs is defined as follows:-
 
-                  +--------------------------------------------+
-                  | File  Edit .. .                   Help     | Menu Line
-                  +-----+-+----------------------------------+-+
-                  |     |=|                                  |=|Split Vertically
-                  |  T  |^|                                  |^|
-                  |  O  |||         CURRENT WINDOW           |#|Scroll Bar
-                  |  O  |#|                                  |#|
-                  |  L  |#|                                  |V|
-                  |  B  |#||=* file = 17:30 04/1/11 (Aeb) == |*| Mode Line
-                  |  A  |#|^  Split Horizontally             |^|
-                  |  R  | |  ^ Buffer edit(*) Read Only(%)   |#|
-                  |     | |                                  |#|
-                  |     | |          OTHER WINDOW            | |
-                  |     |v|                                  |v|
-                  +<--->+*+|-- file - 17:30 04/1/11 (AeB) ---+*| Mode Line
-                  |f-isearch..: forw                           | Message Line
-                  +--------------------------------------------+
+             +--------------------------------------------+
+             | File  Edit .. .                   Help     | Menu Line
+             +-----+-+----------------------------------+-+
+             |     |=|                                  |=|Split Vertically
+             |  T  |^|                                  |^|
+             |  O  |||         CURRENT WINDOW           |#|Scroll Bar
+             |  O  |#|                                  |#|
+             |  L  |#|                                  |V|
+             |  B  |#||=* file = 17:30 04/1/11 (Aeb) == |*| Mode Line
+             |  A  |#|^  Split Horizontally             |^|
+             |  R  | |  ^ Buffer edit(*) Read Only(%)   |#|
+             |     | |                                  |#|
+             |     | |          OTHER WINDOW            | |
+             |     |v|                                  |v|
+             +<--->+*+|-- file - 17:30 04/1/11 (AeB) ---+*| Mode Line
+             |f-isearch..: forw                           | Message Line
+             +--------------------------------------------+
 
 
   __Menu Line__
