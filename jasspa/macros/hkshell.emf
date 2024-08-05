@@ -25,6 +25,8 @@
 ;
 define-macro fhook-shell
     set-variable $buffer-mask "luh1"
+    ; Set the abbreviation file
+    buffer-abbrev-file "shell"
     @# buffer-init "shell"
     buffer-init-hooks
 !emacro
@@ -172,4 +174,6 @@ set-variable .fhook-shell.comment "|#||#|# | #|r|"
 !endif
 
 buffer-init-fhook "shell"
+; load in user extensions if found
+!force execute-file "myshell"
 
