@@ -5,14 +5,16 @@ function ttf2bdf {
     if [ -z $3 ]; then
         echo -e "ttf2bdf - create X11 fonts from TTF fonts and make then available for X11-apps"
         echo -e "Usage: ttf2bdf TYPENAME 'TTF-FILE' FILE-PREFIX"
-        echo -e "\n   Example: ttf2bdf 'courier prime' 'Courier-Prime.ttf' courier-prime-cp1252\n"
+        echo -e "\n   Example: ttf2bdf 'courier prime' 'Courier-Prime.ttf' courier-prime\n"
+        echo -e "Usage: ttf2bdf TYPENAME 'TTF-FILE' FILE-PREFIX -m MAPFILE"
+        echo -e "\n   Example: ttf2bdf 'courier prime' 'Courier-Prime.ttf' courier-prime-cp1252 -m cp1252.txt\n"
     else
-        for x in 7 10 12 14 15 16 18 20 22 24 26 28 30; do 
+        for x in 5 7 8 9 10 12 13 14 15 17 18 20 22 24 25 28 30; do 
             if [ -z $4 ]; then
-                if [ $x == "7" ]; then
-                   otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-0${x}.bdf ; 
+                if [ $x -lt 10 ]; then
+                   otf2bdf -t "$1" -p $x "$2" -o $3-0${x}.bdf ; 
                 else
-                   otf2bdf -t "$1" -p $x "$2" -m $MAPFILE -o $3-${x}.bdf ; 
+                   otf2bdf -t "$1" -p $x "$2" -o $3-${x}.bdf ; 
                 fi
             else
                 if [ $x == "7" ]; then
