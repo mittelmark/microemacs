@@ -30196,6 +30196,104 @@ $a
 ! 2 Build
 ## BUILD
 
+## Build since 2024
+
+  The  version  which is on Github  should be build using the  Makefile in the
+  root folder of the github project named  linux32gcc.gmk,  macos32gcc.gmk and
+  win32mingw.gmk  (this currently  supports  crosscompiling on Linux using the
+  Mingw version of the Gcc compiler.
+   
+  The following executables can be build.
+  
+  - __mec__  - for  Linux,  MacOS and  Windows - a  terminal  only  version  of
+           MicroEmacs  09 which needs the Macro files in a separate  folder for
+           full functionality
+    
+  - __mecw__ - for  Linux  and  MacOS - a MicroEmacs 09 version  which runs as a
+           X-Windows application but can be used as well as a terminal application 
+           if the command line flag `mecw -n` is used, this requires as well the
+           installed Macro files
+  
+  - __mew__  - for Windows - a Window based application without console access,
+           this requires as well the installed Macro files
+  
+  - __bfs__  - a console  application  which  allows  to  create  standalone
+           executables out of _mec_, _mecw_ and _mew_ where the macro files are
+           embedded within the executables, as well user macros, the help file
+           and dictionaries can be added to the standalone file if the user 
+           desires
+
+  - __mecb__ - a bfs  based  standalone executable build from the _mec_ exectuable,
+           the Macro files, the help file and the American dictionary
+
+  - __mewb__ - a bfs based standalone  executable  build from the _mew_ (Windows)
+           or _mecw_ (Linux, MacOS)  exectuable,  the Macro files, the help file
+           and the American dictionary
+
+## Building the Console Version (mec and mecb)
+
+  To build the latest  developer  version  from Github you might start with an
+  install of the following tools and libraries:
+    
+  Linux: git, gcc, make, libz and libncurses libraries  
+  Mac: brew (package manager), gcc and make  
+  Windows: msys2 (Linux like toolchain), gcc, make, libncurses and libz  
+
+  For a Debian based Linux system like Ubuntu, Linux Mint or MX Linux the
+  install steps are then like this:
+  
+        ### install packages
+        sudo apt install git build-essential libz-dev libncurses-dev
+        ### fetch repo
+        git clone https://github.com/mittelmark/microemacs.git
+        cd microemacs
+        ### build  mec terminal executable
+        make -f linux32gcc.gmk mec  
+        ### build  bfs terminal executable
+        make -f linux32gcc.gmk bfs/bin
+        ### build  mecb terminal executable
+        make -f linux32gcc.gmk mecb
+          
+  You should then have a file like  _mecb-0912XX-linux-KERNEL-DISTRO-VERSION.bin_
+  in the current folder. The uppercase letters are replaced with the ME version
+  number and the operating system properties.
+  
+  For Red Hat systems the required  developer  libraries  are  _zlib-devel_  and
+  _ncurses-devel_.
+  
+  Hint: the three build steps can be as well done with one command line:
+  
+        make -f linux32gcc.gmk mec bfs/bin mecb
+        
+  TODO: MacOS and Windows (with msys2) build explanations
+  
+## Building the GUI Version (mew/mecw and mewb)
+
+  To  build  the  GUI  version  for  X-Windows  or the  Windows  GUI you  need
+  additional libraries for your platforms:
+  
+  Linux: libxt-dev (Debian based systems) or libXt-devel (Red Hat systems)
+  
+  You can then compile the mecw and mewb executables like this
+  
+        make -f linux32gcc.gmk mew mewb
+
+  You should then have a file like  _mewb-0912XX-linux-KERNEL-DISTRO-VERSION.bin_ in the
+  current folder
+  
+  TODO: build MacOS, Windows (with msys2) instructions, the commands are:
+  
+  MacOS:
+  
+        make -f macos32gcc.gmk mec bfs/bin mecb
+        make -f macos32gcc.gmk mew mewb
+
+  Windows:
+  
+        make -f win32mingw.gmk mec bfs/bin mecb
+        make -f win32mingw.gmx mew mewb
+          
+## Build before 2024 or for older Platforms
 
   MicroEmacs 2009 may be compiled from the source files using the command
   shell build scripts _build_ (UNIX Bourne Shell) or _build.bat_ (DOS/Windows).
