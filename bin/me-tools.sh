@@ -82,9 +82,10 @@ function smd2ehf {
         $pre < 0 and s/"`([^` ]+)`_([^ _]+)_"/"\033cG$1\033cA\033cC$2\033cA"/g; 
         $pre < 0 and s/([^\x5c])`([^ `]+)`/$1\033cG$2\033cA/g;
         $pre < 0 and s/ \(`(.+?)`\)/ (\033cG$1\033cA)/g;
+        $pre < 0 and s/ `(.+?)` / \033cG$1\033cA /g;
         $pre < 0 and s/( [^\x5c]?)_([^_]+?)_/$1\033cC$2\033cA/g;         
-        $pre < 0 and s/\[(.+?)\]\((.+?)\)\)/\033ls$2)\033lm$1\033le/g;
-        $pre < 0 and s/\[(.+?)\]\((.+?)\)/\033ls$2\033lm$1\033le/g;
+        $pre < 0 and s/\[([^]]+)\]\(([^)]+)\)\)/\033ls$2)\033lm$1\033le/g;
+        $pre < 0 and s/\[([^]]+)\]\(([^)]+)\)/\033ls$2\033lm$1\033le/g;
         s/^  /    /; # indent everything which is not a header from two to four spaces
         print;
         ' $2
