@@ -4863,7 +4863,7 @@ Miscellaneous Information
 cEReporting Problems  cA
 
     Either use the issues link at Github https://github.com/mittelmark/microemacs/issues
-    or send your E-mail to `dgroth (at) uni (minus) potsdam (dot) de` like this:
+    or send your E-mail to cGdgroth (at) uni (minus) potsdam (dot) decA like this:
 
     Mail as:-
 
@@ -4879,7 +4879,7 @@ Miscellaneous Information
 
     cDVersioncA
  
-        The version of MicroEmacs. Use `esc-x about` to retrieve the  
+        The version of MicroEmacs. Use cGesc-x aboutcA to retrieve the  
        information, the format of the date is cGyyyy/mm/ddcA, followed by the  
        host system type. e.g.  
 
@@ -5188,11 +5188,11 @@ Miscellaneous Information
     
     Release date specified as 2009/09/09.
 
-    - lsfile-browser(3)lm090903] [file-browser(3)le improved on Microsoft Windows to perform a
+    - [090903] lsfile-browser(3)lmfile-browser(3)le improved on Microsoft Windows to perform a
       case change i.e. "test.txt" to "Test.txt".
-    - lsencase(3)lm090903] Added [encase(3)le to encase a region with a starting and
+    - [090903] Added lsencase(3)lmencase(3)le to encase a region with a starting and
       ending string.
-    - lsnumber-items(3)lm090903] Added [number-items(3)le to perform renumbering on a vertical
+    - [090903] Added lsnumber-items(3)lmnumber-items(3)le to perform renumbering on a vertical
       aligned list of numeric digits.
     - [090901] Added template for Inno Setup Script files with extension
       .issb
@@ -5250,7 +5250,7 @@ Miscellaneous Information
     - [081019] Improved behaviour when ftp reg file is missing.
     - [081019] Ensured large files are handled properly (fails 
       for lsreplace-string-in-files(3)lmreplace-string-in-files(3)le) and improved error reporting.
-    - lsfind-file(2)lm081018] Fixed [find-file(2)le so it can load files and directories
+    - [081018] Fixed lsfind-file(2)lmfind-file(2)le so it can load files and directories
      with square brackets (i.e. a[b])
     - [081010] Removed compile highlighting as this is now done
      differently.
@@ -5544,7 +5544,7 @@ Miscellaneous Information
       printed current character in decimal as well.
     - [060921] Improved the notes display to better preserve the current
       notes file.
-    - lsread-session(3)lm060921] Stopped [read-session(3)le from trying to restore lock and
+    - [060921] Stopped lsread-session(3)lmread-session(3)le from trying to restore lock and
       save buffer modes.
     - [060921] Improved the cDquery-replacecA prompt to list letter options
       when the width allows.
@@ -5552,7 +5552,7 @@ Miscellaneous Information
       directory listing. Fixed dir list hooks to handle mod times with
       seconds.
     - [060921] Changed char prompts to have cCcG/cAcA dividers.
-    - lsread-file(2)lm060921] Added new bit 0x20 to [read-file(2)le to discard changes to
+    - [060921] Added new bit 0x20 to lsread-file(2)lmread-file(2)le to discard changes to
       buffer.
     - [060919] Build. Added $MAKEWINDEFS and LIBS to the ME_WINDOW
       defines, removed references to xpm from the makefiles as this is not
@@ -5568,7 +5568,7 @@ Miscellaneous Information
       removed cCcG.cAcA option.
     - [060918] Changed debugger cCcG!cAcA to cCcGccAcA, in keeping with other
       debuggers for cCcontinuecA.
-    - ls@mc(4)lm060918] Added bit 0x04 to [@mc(4)le flag so macro can supply a help
+    - [060918] Added bit 0x04 to ls@mc(4)lm@mc(4)le flag so macro can supply a help
       string
     - [060917] Corrected the X-Windows ordering to allow us to receive
       (Un)Map events on Linux - X-Server behavior is different from Sun
@@ -5584,7 +5584,7 @@ Miscellaneous Information
     - [060917] UNIX. Corrected X-Windows hints for font size change.
       Requires that the X-Window is unmapped before the size hint may be
       modified and the re-mapped.
-    - lsnext-frame(2)lm060915] Notes. Fixed [next-frame(2)le prefered selection order.
+    - [060915] Notes. Fixed lsnext-frame(2)lmnext-frame(2)le prefered selection order.
     - [060915] OSD. Sanitised the quick file open and file type buffer
       open menus and changed them to use a scrolled list if more
       files/buffers than lines rather than filling the screen.
@@ -5613,9 +5613,9 @@ Miscellaneous Information
      enf; major-mode: \<hook\> -!- header. Added new note-setup which users
      buffer-setup to allow the user to setup the buffer and stores the
      values for that note.
-    - lsfile-attrib(3)lm060908] File browser, bound a [file-attrib(3)le based 'Change File
+    - [060908] File browser, bound a lsfile-attrib(3)lmfile-attrib(3)le based 'Change File
       Attributes' option to 'g'
-    - lsfile-attrib(3)lm060908] Changed [file-attrib(3)le to handle directory buffers
+    - [060908] Changed lsfile-attrib(3)lmfile-attrib(3)le to handle directory buffers
       correctly and, with a numeric arg of 0, change the attibutes of a
       given file (i.e. not the current buffer) Implementation changed to
       now have a Cancel button.
@@ -5646,7 +5646,7 @@ Miscellaneous Information
     - [060827] Extended indentation with the 'u' and 'v' indentation
       types.
     - [060822] 2006 Release Candidate 1 (RC1)
-    - lspassword-to-phonic(3)lm060822] Added password commands [password-to-phonic(3)le 
+    - [060822] Added password commands lspassword-to-phonic(3)lmpassword-to-phonic(3)le 
       and  lsinsert-password(3)lminsert-password(3)le. 
     - [060816] Added settings for fill-col and
       fill-mode to the lsmajor-mode-setup(3)lmmajor-mode-setup(3)le.
@@ -6475,7 +6475,7 @@ Miscellaneous Information
       Aligned C, C++ and YACC/LEX templates to be consistent.
     - [050315] C/C++ templates - buffer setup modified for GNU Indent
       Style setting.
-    - lsbrowse(3)lm050315] Added new [browse(3)le command and binding to f3, changed
+    - [050315] Added new lsbrowse(3)lmbrowse(3)le command and binding to f3, changed
       existing collapse-all cDf3cA binding to cDC-f2cA.
     - [050315] Modified ME exit commands to support a bitwise arg n where
       main lsexit-emacs(2)lmexit-emacs(2)le has cC`0x01 Prompt`cA, '0x02 Save each buffer/reg/dic
@@ -6508,14 +6508,14 @@ Miscellaneous Information
     - [050306] Corrected the docmacro` http://` regular expression.
     - [050306] Changed the date format of the cD-VcA command line option to
       include the century, same format as the lsabout(2)lmabout(2)le buffer.
-    - lsindent(2)lm050302] HTLP and PHP - fixed [indent(2)le problems.
+    - [050302] HTLP and PHP - fixed lsindent(2)lmindent(2)le problems.
     - [050302] Perl template - fixed indent problems caused by not
       skipping the cG=~cA type regular expressions.
     - [050302] TCL template - fixed continuation and comment indent bug.
     - [050302] Added support for R/S-plus (.r) files - thanks to Detlef.
     - [050225] HTML template - fixed an indent which was fixed at cGcG2cAcA
       rather than cGcGtcAcA and added comment skipping indent rules
-    - lsdos2unix(3f)lm050225] [dos2unix(3f)le, lsunix2dos(3f)lmunix2dos(3f)le and lsunix2win(3f)lmunix2win(3f)le - Removed use
+    - [050225] lsdos2unix(3f)lmdos2unix(3f)le, lsunix2dos(3f)lmunix2dos(3f)le and lsunix2win(3f)lmunix2win(3f)le - Removed use
       of cD&sprcA in favor of cD&catcA so cGdos2unixcA etc. work in lsne(1)lmne(1)le. [050225]
       Tracing a problem with hilighting a token of the form cGcGAB*$cAcA, works
       if there is a cCcGBcAcA but fails if there are no cCcGBcAcAs, i.e. only matches
@@ -6544,11 +6544,11 @@ Miscellaneous Information
       very useful). The only nasty side effect is hilight's miss-use of
       cGcG\S1cAcA - cGcG\S9cAcA to mean not cGcG\1cAcA - cGcG\9cAcA group char, changed to cGcG\!1cAcA -
       cGcG\!9cAcA
-    - lsne(1)lm050224] [ne(1)le set to not auto-save or create backups by default.
+    - [050224] lsne(1)lmne(1)le set to not auto-save or create backups by default.
     - [050224] Added cGcG-acAcA and cGcG-BcAcA command line options to enable and
       disable auto-save lsauto(2m)lmauto(2m)le and lsbackup(2m)lmbackup(2m)le modes.
     - [050224] Tcl template - some more fixes to the item list from Detlef
-    - lswatch(3)lm050224] [watch(3)le improved the refresh rate of a type 2 or 3 watch
+    - [050224] lswatch(3)lmwatch(3)le improved the refresh rate of a type 2 or 3 watch
       by ignoring the cG:watch-timecA and just look at the cG:watch-sizecA. Fixed
       the split line issue with type 2 of 3 watching caused by last line
       not being complete.
@@ -6572,31 +6572,31 @@ Miscellaneous Information
       cG_URLSUPPcA to cG_SOCKETcA in keeping with the socket dynamic library
       loading.
     - [050223] Added exec of wish to the tcl magic hook
-    - ls$window-chars(5)lm050223] Fixed [$window-chars(5)le - added OSD default button chars.
-    - ls$user-path(5)lm050222] Fixed [$user-path(5)le being more that 35 chars breaking 
+    - [050223] Fixed ls$window-chars(5)lm$window-chars(5)le - added OSD default button chars.
+    - [050222] Fixed ls$user-path(5)lm$user-path(5)le being more that 35 chars breaking 
       the lsuser-setup(3)lmuser-setup(3)le dialog.
     - [050222] Directory listing - call cGfhook-htmlcA when file is a` http://`
       file - this is never a directory listing.
     - [050222] Stopped loading of files in dir listing when clicking way
       to the right, must click on the name (MicroEmacs kept loading files
       when just trying to raise the window to the front - annoying).
-    - lswatch(3)lm050222] If 0 given to [watch(3)le call watch-time, this preserves the
+    - [050222] If 0 given to lswatch(3)lmwatch(3)le call watch-time, this preserves the
       old interface.
-    - lsdos2unix(3f)lm050222] Added backup file disabling for [dos2unix(3f)le macros via
+    - [050222] Added backup file disabling for lsdos2unix(3f)lmdos2unix(3f)le macros via
       command line defineable variable.
     - [050221] Changed the new Windows process tree killing to use
       cGLoadLibrary()cA to detect whether the OS supports this feature (and NT
       does not). Also moved the URL support over to cGLoadLibrary()cA so we
       can remove the cD-ucA builds.
-    - lsnotes(3)lm050220] Added UNIX Shell and Makefile hilighting to [notes(3)le).
+    - [050220] Added UNIX Shell and Makefile hilighting to lsnotes(3)lmnotes(3)le).
     - [050219] Fixed GNU GCC warnings in Makefiles for #pragma in X11
       files under Sun Solaris and uninitialized variables.
-    - lsosd(2)lm050219] [osd(2)le. Removed dialog cCcGFcAcA flag as it was not documented,
+    - [050219] lsosd(2)lmosd(2)le. Removed dialog cCcGFcAcA flag as it was not documented,
       did not work and only used in one obscure place. Fixed cDC-gcA and cDDelcA
       so they close up to the previous dialog but does close the main menu
       down in one call - was annoying.
     - [050219] Release Candidate 1 - MicroEmacs 2005 (RC1)
-    - lsClient-Server(2)lm050218] Corrected UNIX [client-serverle socket file check -- bad test
+    - [050218] Corrected UNIX lsClient-Server(2)lmclient-serverle socket file check -- bad test
       on existence of connection file, using wrong variable with wrong
       test sense.
     - [050218] Added site delete button to cDftp-connectcA dialog.
@@ -6604,7 +6604,7 @@ Miscellaneous Information
       and goto position problem when the cGC-xcA cGC-acA or cGC-xcA a keys are
       rebound. Fixed by replacing with 'cDesccD cAxcD cAset-alpha-markcD cAPcA' (where
      cDesc-xcA is a safe internal special key).
-    - lswatch(3)lm050218] Updated [watch(3)le interface and made public. Created 
+    - [050218] Updated lswatch(3)lmwatch(3)le interface and made public. Created 
       new lswatch-time(3)lmwatch-time(3)le command and prompt user for watch type when no
       argument is given.
     - [050218] Removed the use of bit cG0x1000cA in Ada string hilight as this
@@ -6612,7 +6612,7 @@ Miscellaneous Information
     - [050218] Changed the registry parser to abort on error rather than
       trying to carry on (a very painful process for a badly decrypted
       registry file).
-    - lshilight(2)lm050218] Fixed highlighting minor issues. [hilight(2)le scheme now
+    - [050218] Fixed highlighting minor issues. lshilight(2)lmhilight(2)le scheme now
       returns back to EOL scheme after a bracket. A branch tag on an EOL
       line removes the EOL flag so it hilights correctly. Branch tag now
       supports the cG0x1000cA single line hilight. Lookback now supports cG0x800cA
@@ -6623,7 +6623,7 @@ Miscellaneous Information
       current buffer is cG*ftp-files*cA.
     - [050217] Fixed ftp dir list column detection and highlighting issue
       with windows ftp servers (time given as cG9:15cA not cG09:15cA)
-    - lsset-variable(2)lm050217] Fixed bug in [set-variable(2)le and lsunset-variable(2)lmunset-variable(2)le 
+    - [050217] Fixed bug in lsset-variable(2)lmset-variable(2)le and lsunset-variable(2)lmunset-variable(2)le 
       when ls&sprintf(4)lm&sprintf(4)le is used to create a variable name.
     - [050217] Watch command (watch.emf). Improved the watch command, made
       'cG0cA cGwatchcA' call cDwatch-resetcA, changed cDwatch-resetcA so with an argument
@@ -6672,15 +6672,15 @@ Miscellaneous Information
     - [050210] Fixed cvs dialog default settings.
     - [050210] Corrected search path expansion, incorrectly handling a
       cGPATH_CHARcA at the start of the string.
-    - lsuser-setup(3)lm050209] Up-dated [user-setup(3)le platform page to new style and
+    - [050209] Up-dated lsuser-setup(3)lmuser-setup(3)le platform page to new style and
       added  lsyank-rectangle(2)lmyank-rectangle(2)le binding.
-    - ls$window-chars(5)lm050209] Fixed no-color termcap [$window-chars(5)le variable setting
+    - [050209] Fixed no-color termcap ls$window-chars(5)lm$window-chars(5)le variable setting
     - [050209] Fixed hot keys (were 3 'U's) in cGosdmisc.emfcA.
-    - lsindent(2)lm050209] Added new cCBraceStatementcA [indent(2)le value to support GNU C
+    - [050209] Added new cCBraceStatementcA lsindent(2)lmindent(2)le value to support GNU C
       indentation style.
     - [050209] Fixed the cGosdDisp()cA function required a cGTTflush()cA otherwise
       the cursor is left in the wrong position on termcap systems.
-    - ls$window-chars(5)lm050209] Fixed the default [$window-chars(5)le variable setting.
+    - [050209] Fixed the default ls$window-chars(5)lm$window-chars(5)le variable setting.
     - [050209] Fixed the DOS home directory setting and compiler warnings.
     - [050208] Changed the C indent definition to be the same format as
       the existing indent definitions i.e. uses flag & indent value, this
@@ -6736,7 +6736,7 @@ Miscellaneous Information
     - [050123] Fixed a crash caused by too many closed fences, the
       recursive nature of the cGfindfence()cA function triggers a stack crash
       at around 22000 on windows. Set limit to 256 nested fences.
-    - lsdir(2m)lm050122] Fixed [dir(2m)le mode loss on a directory re-read, this caused
+    - [050122] Fixed lsdir(2m)lmdir(2m)le mode loss on a directory re-read, this caused
       a number of side effects including loss of highlighting and user
       prompt to reload the directory when it had changed.
     - [050119] Removed the "cCsub-keycA" argument from all registry related
@@ -6750,17 +6750,17 @@ Miscellaneous Information
       cGcGmy-*hook-alwayscAcA is executed after the language file hooks of
       cGcG*hook-XXXcAcA and cGcGmy-*hook-XXXcAcA.
     - [050116] Added cGcGTODOcAcA highlighting rule for Makefile comments.
-    - lsnarrow-buffer(2)lm050114] Fixed [narrow-buffer(2)le type numeric argument not processed
+    - [050114] Fixed lsnarrow-buffer(2)lmnarrow-buffer(2)le type numeric argument not processed
       correctly.
     - [050113] Added tool bar tool mouse select region command.
     - [050113] Added bindings for the cvs and ftp console tools.
-    - lsorganizer(3)lm050113] Fixed [organizer(3)le duplicate index bug.
+    - [050113] Fixed lsorganizer(3)lmorganizer(3)le duplicate index bug.
     - [050111] Deleted the cDget-registry(2)cA command, this has been
       depreciated and ls&reg(4)lm&reg(4)le should be used instead.
-    - lsread-registry(2)lm050111] Extended the [read-registry(2)le and lssave-registry(2)lmsave-registry(2)le commands
+    - [050111] Extended the lsread-registry(2)lmread-registry(2)le and lssave-registry(2)lmsave-registry(2)le commands
       to permit reading and writing from a buffer based registry (rather
       than file).
-    - lslist-registry(2)lm050111] Extended [list-registry(2)le to permit listing of specific
+    - [050111] Extended lslist-registry(2)lmlist-registry(2)le to permit listing of specific
       nodes, the output buffer of the registry listing may be specified.
       Added a invisible flag to a registry node which hides the node
       completely (but can be toggled).
@@ -6769,7 +6769,7 @@ Miscellaneous Information
       MicroEmacs by sending a cGWM_USERcA message. This is not a problem for
       UNIX as it is possible to wait on file input and cGEOFcA is not
       reported.
-    - lsnarrow-buffer(2)lm050105] Fixed several narrow-to [narrow-buffer(2)le usability issues,
+    - [050105] Fixed several narrow-to lsnarrow-buffer(2)lmnarrow-buffer(2)le usability issues,
       with these fixes the top and bottom narrow cannot be removed without
       a markup line and the order cannot get muddled.
     - [050105] Fixed a problem with the anchor position up-date when
@@ -6777,38 +6777,38 @@ Miscellaneous Information
     - [050105] Changed the osd entry mouse handling to always refocus,
       this allows the user to change location in the current entry using
       the mouse.
-    - lsinsert-macro(2)lm050105] Fixed. [insert-macro(2)le undo location was incorrect causing
+    - [050105] Fixed. lsinsert-macro(2)lminsert-macro(2)le undo location was incorrect causing
       a crash.
     - [050103] Spelling dialog. Changed the Ignore button to Continue if
       word becomes correct without changing (word added or language
       changed).
     - [050103] Fixed. CVS osd dialog with bad hot-key.
-    - ls$recent-keys(5)lm050102] Added setting of [$recent-keys(5)le variable.
-    - ls$pause-time(5)lm041231] Variable cD$fmatchdelay(5)cA renamed to [$pause-time(5)le.
+    - [050102] Added setting of ls$recent-keys(5)lm$recent-keys(5)le variable.
+    - [041231] Variable cD$fmatchdelay(5)cA renamed to ls$pause-time(5)lm$pause-time(5)le.
       cC$pause-timecA is now used for other MicroEmacs delay times when the
       user is prompted for information.
     - [041224] Fixed several usability issues in the search replace
       dialog.
     - [041224] Up-graded printer-setup dialog to new style OSD.
     - [041224] CVS dialog - added read-only option to checkout and update.
-    - lsgoto-line(2)lm041224] Fixed [goto-line(2)le offset which as always going to the
+    - [041224] Fixed lsgoto-line(2)lmgoto-line(2)le offset which as always going to the
       previous line (one out). cDucA [041221] Added support for proper kill
       buffer use in message line, i.e. lsset-mark(2)lmset-mark(2)le, lskill-region(2)lmkill-region(2)le,
       and  lscopy-region(2)lmcopy-region(2)le, lsyank(2)lmyank(2)le and lsreyank(2)lmreyank(2)le all work in the same way as a
       normal buffer.
     - [041221] Fixed registry node deletion when the node is modified.
-    - lsosd(2)lm041221] Removed [osd(2)le `osd 0` 'cCdcA' flag and added 'cCIcA' initial item
+    - [041221] Removed lsosd(2)lmosd(2)le cGosd 0cA 'cCdcA' flag and added 'cCIcA' initial item
       and 'cCDcA' default button flags, existing osd dialogs which use 'cCdcA'
       will fail to load and need are migrated to use the cCDcA and cCIcA flags.
-    - lsauto-spell(3)lm041218] [auto-spell(3)le key bindings are promoted to global so its
+    - [041218] lsauto-spell(3)lmauto-spell(3)le key bindings are promoted to global so its
       easy to enable in any buffer.
-    - ls$home(5)lm041218] Corrected setting of the [$home(5)le environment variable to
+    - [041218] Corrected setting of the ls$home(5)lm$home(5)le environment variable to
       handle MS-Windows cCcG\\cAcAs, auto terminate with cCcG/cAcA.
     - [041210] Added Enable/Disable Auto-Spell to the context menu.
-    - lsorganizer(3)lm041210] Rearranged the [organizer(3)le dialog to be a little easier to
+    - [041210] Rearranged the lsorganizer(3)lmorganizer(3)le dialog to be a little easier to
       navigate through.
     - [041210] Fixed nedit emulation insert binding.
-    - lsml-write(2)lm041210] Removed cDml-clear(2)cA command, replaced with [ml-write(2)le
+    - [041210] Removed cDml-clear(2)cA command, replaced with lsml-write(2)lmml-write(2)le
       option cG`0 ml-write`cA.
     - [041210] Removed the cDchange-directory(2)cA command, a change in
       directory is achieved by changing the ls$buffer-fname(5)lm$buffer-fname(5)le value such
@@ -6822,7 +6822,7 @@ Miscellaneous Information
       cDletter(2m)cA mode may be achieved by binding as "1
       forward-delete-char". Similarly for backspace,
       is lsbackward-delete-char(2)lmbackward-delete-char(2)le.
-    - lskill-line(2)lm041210] Deleted cDline(2m)cA mode. Use a binding with [kill-line(2)le of
+    - [041210] Deleted cDline(2m)cA mode. Use a binding with lskill-line(2)lmkill-line(2)le of
       cG`1 kill-line`cA to mimic the line mode enabled and cGcGkill-linecAcA for
       line mode disabled.
     - [041210] Deleted cDcmode(2m)cA. Electric-c is now configured 
@@ -6840,11 +6840,11 @@ Miscellaneous Information
     - [041209] Fixed cDnewusercA cGcG$user-name.emfcAcA conflict issue with an
       existing macro (e.g. cGzaurus.emfcA) by testing for it and prefixing a
       digit to make the file unique.
-    - lsrestyle-buffer(3)lm041209] Added `esc C-\` binding to [restyle-buffer(3)le.
+    - [041209] Added cGesc C-\cA binding to lsrestyle-buffer(3)lmrestyle-buffer(3)le.
     - [041209] Fixed some issues with the Tools user-setup dialog.
     - [041128] Added MinGW makefile posted to JASSPA group by Patrick
       Anderson, forms part of the release makefiles.
-    - lsset-char-mask(2)lm041126] Added cCcGkcAcA keyboard setup to [set-char-mask(2)le which is used
+    - [041126] Added cCcGkcAcA keyboard setup to lsset-char-mask(2)lmset-char-mask(2)le which is used
       to translates foreign keys to a latin char.
     - [041126] Changed the internal LEADER byte to cG0x1ccA as cG0xffcA is a valid
       Russian char and it badly breaks cC$varscA and cCmacroscA.
@@ -6853,7 +6853,7 @@ Miscellaneous Information
     - [041126] Added support for Russian language.
     - [041126] Improved the aff ispell conversion routines (almost works
       automatically).
-    - lsauto-spell(3)lm041126] Stopped [auto-spell(3)le from triggering the no dictionaries
+    - [041126] Stopped lsauto-spell(3)lmauto-spell(3)le from triggering the no dictionaries
       error, leave it to lsspell-buffer(3)lmspell-buffer(3)le etc.
     - [041125] Fixed OSD multi-line cGC-kcA cDkill-linecA behavior and implemented
       "cG-1cA cGkill-linecA" support.
@@ -6871,7 +6871,7 @@ Miscellaneous Information
     - [041122] Updated schemes to set 'cCShow cursor in osdcA' suitably and to
       make sure the cursor is not red as this conflicts with the match
       fence display.
-    - lstranspose-lines(2)lm041120] Fixed [transpose-lines(2)le crash when lsundo(2m)lmundo(2m)le mode is
+    - [041120] Fixed lstranspose-lines(2)lmtranspose-lines(2)le crash when lsundo(2m)lmundo(2m)le mode is
       disabled.
     - [041120] Removed the OSD explicit tab order value as this was not
       constructively used and causes many item order problems.
@@ -6886,22 +6886,22 @@ Miscellaneous Information
       up MicroEmacs when the user has created an infinitely recursive
       macro.
     - [041112] Added Paul Boekholt's suggested GNU Emacs key bindings.
-    - lskill-paragraph(2)lm041107] [kill-paragraph(2)le, lsfill-paragraph(2)lmfill-paragraph(2)le, lsforward-paragraph(2)lmforward-paragraph(2)le
+    - [041107] lskill-paragraph(2)lmkill-paragraph(2)le, lsfill-paragraph(2)lmfill-paragraph(2)le, lsforward-paragraph(2)lmforward-paragraph(2)le
       and lsbackward-paragraph(2)lmbackward-paragraph(2)le commands redefined. cDkill-paragraphcA now
       kills forward and backward rather than control the kill buffer.
       Paragraph movement now defined blank-line to blank-line rather than
       the first/last paragraph line.
-    - lskill-line(2)lm041105] Fixed [kill-line(2)le, lsforward-kill-word(2)lmforward-kill-word(2)le 
+    - [041105] Fixed lskill-line(2)lmkill-line(2)le, lsforward-kill-word(2)lmforward-kill-word(2)le 
       and lsbackward-kill-word(2)lmbackward-kill-word(2)le numerical argument implementation.
     - [041104] Removed cDregex-forward(3)cA and cDregex-backward(3)cA macros and
       moved uses of them over to lssearch-buffer(2)lmsearch-buffer(2)le.
-    - lssearch-buffer(2)lm041104] Added [search-buffer(2)le command which replaces the macro
+    - [041104] Added lssearch-buffer(2)lmsearch-buffer(2)le command which replaces the macro
       commands cDregex-forward(3)cA and cDregex-backward(3)cA. Simplifies macro
       processing of searching by providing a search that explicitly sets
       the lsexact(2m)lmexact(2m)le and lsmagic(2m)lmmagic(2m)le modes. The default is to respect buffers
       exact and magic mode and flags must have cGEcA or cGMcA to ensure they are
       disabled.
-    - lskill-line(2)lm041104] Changed any use of [kill-line(2)le to "cG1cA cGkill-linecA" as this
+    - [041104] Changed any use of lskill-line(2)lmkill-line(2)le to "cG1cA cGkill-linecA" as this
       should maintain its required behavior. A cDkill-linecA with no numeric
       argument kills to the end of the line but excludes the end of line
       character (GNU Emacs compatibility). The default binding is the "cG1cA
@@ -6912,7 +6912,7 @@ Miscellaneous Information
       the lskill-line(2)lmkill-line(2)le binding which replaces cClinecA mode. 
       See lsforward-delete-char(2)lmforward-delete-char(2)le and lsbackward-delete-char(2)lmbackward-delete-char(2)le binding which
       replaces cClettercA mode.
-    - lsforward-kill-word(2)lm041104] Changed the [forward-kill-word(2)le and lsbackward-kill-word(2)lmbackward-kill-word(2)le
+    - [041104] Changed the lsforward-kill-word(2)lmforward-kill-word(2)le and lsbackward-kill-word(2)lmbackward-kill-word(2)le
       commands to be more consistent with GNU Emacs.
     - [041102] Moved winterm over to using cGaddKeyToBufferOnce()cA for mouse
       move and time, also done same for UNIX mouse time event. This
@@ -6935,9 +6935,9 @@ Miscellaneous Information
       function cGaddKeyToBufferOnce()cA),
     - [041030] Added mouse rectangle region selection methods,
       so lscopy-rectangle(3)lmcopy-rectangle(3)le and lskill-rectangle(2)lmkill-rectangle(2)le.
-    - lscpp(9)lm041029] Hardened [cpp(9)le C++ commenting on cG//cA alignment when the
+    - [041029] Hardened lscpp(9)lmcpp(9)le C++ commenting on cG//cA alignment when the
       previous line is a solid cG//////////cA when re-styling buffer.
-    - lsfind(3)lm041029] Fixed [find(3)le cGcG*find*cAcA buffer operation so that it operates
+    - [041029] Fixed lsfind(3)lmfind(3)le cGcG*find*cAcA buffer operation so that it operates
       like cGcG*grep*cAcA on file selection. Keyboard file section enabled
       within the cGcG*grep*cAcA and cGcG*find*cAcA buffer.
     - [041026] Spruced up old cGcGsmb.confcAcA highlighting rules, brought them
@@ -6945,11 +6945,11 @@ Miscellaneous Information
     - [041026] Fixed cDindent-setup(3)cA osd dialog.
     - [041024] Macro/source compatibility macro and source versions
       updated to cGcG20041001cAcA.
-    - lscvs-diff(3)lm041024] Fixed the [cvs-diff(3)le options, local with HEAD was not
+    - [041024] Fixed the lscvs-diff(3)lmcvs-diff(3)le options, local with HEAD was not
       correct.
-    - lslatex(9)lm041024] [latex(9)le template extended. Buffer bindings for underscore
+    - [041024] lslatex(9)lmlatex(9)le template extended. Buffer bindings for underscore
       and quote keys. Search tools to determine current context.
-    - lsindent(2)lm041023] Extended the buffer setup for the [indent(2)le mechanism. May
+    - [041023] Extended the buffer setup for the lsindent(2)lmindent(2)le mechanism. May
       now specify the default buffer cCindent-widthcAand cCtabsizecA in 
       the lsbuffer-setup(3)lmbuffer-setup(3)le dialog.
     - [041022] Revised indentation implementation. The templates now
@@ -6973,17 +6973,17 @@ Miscellaneous Information
     - [041021] Enhanced Wiki language template.
     - [041021] Added Windows CUA emulation mode.
     - [041019] Fixed insert binding for Nedit emulation mode
-    - lsperl(9)lm041019] Fixed [perl(9)le highlighting rules. Using incorrect syntax.
+    - [041019] Fixed lsperl(9)lmperl(9)le highlighting rules. Using incorrect syntax.
     - [041016] Fixed UNIX make files for building NE in debug mode.
     - [041016] Fixed termcap entry for cD^@cA key (cGC-spacecA). (Thanks to Bob
       Paddock for noting ommission)
-    - lsquery-replace-string(2)lm041016] Added cDM-%cA binding to [query-replace-string(2)le as built in
+    - [041016] Added cDM-%cA binding to lsquery-replace-string(2)lmquery-replace-string(2)le as built in
       binding. (Thanks to Bob Paddock)
     - [041016] Added Ruby programming language support.
     - [041015] Corrected problem with directory listing loosing
       highlighting (a ls@mna(4)lm@mna(4)le problem).
     - [041014] Within OSD, fixed spelling mistake. cCLoosecA -> cCLosecA.
-    - lsdelete-hilight-lines(3)lm041014] Fixed [delete-hilight-lines(3)le failure when buffer file has
+    - [041014] Fixed lsdelete-hilight-lines(3)lmdelete-hilight-lines(3)le failure when buffer file has
       changed.
     - [041009] Fixed osd entry scheme as the cursor was not visible in MS
       Dev-Studio Colors.
@@ -6998,14 +6998,14 @@ Miscellaneous Information
     - [040930] Added cGxxxx-pre-expand-abbrevcA hook so that macros may add
       their own expansion methods.
     - [040917] Added cG\<...\>cA as supported fences.
-    - lsadd-next-line(2)lm040917] Fixed the cG-1cA [add-next-line(2)le ignore line feature.
-    - lscvs-add(3)lm040915] [cvs-add(3)le looks for a Tags file in the CVS directory and
+    - [040917] Fixed the cG-1cA lsadd-next-line(2)lmadd-next-line(2)le ignore line feature.
+    - [040915] lscvs-add(3)lmcvs-add(3)le looks for a Tags file in the CVS directory and
       sets the GUI state appropriately. Added server to the lscvs-state(3)lmcvs-state(3)le
       line mangling.
-    - lscvs(3)lm040909] [cvs(3)le GUI updated with new features. Added repository set
+    - [040909] lscvs(3)lmcvs(3)le GUI updated with new features. Added repository set
       up to the UI. Reduced wait time on long commands by using ipipe.
       Allowed cG-zcA option to be used with ls%cvs-com(5)lm%cvs-com(5)le.
-    - lsabout(2)lm040828] [Aboutle page includes the century in the date (suggested by Th).
+    - [040828] lsabout(2)lmAboutle page includes the century in the date (suggested by Th).
     - [040824] Fix for man page hyper-link when includes cG-/./_cA characters.
     - [040814] Linux manual page formatting fixes.
 
@@ -7031,7 +7031,7 @@ Miscellaneous Information
       2.0 then the DJGPP functions must be invoked rather than the MS-DOS
       BIOS calls otherwise the modified short name is returned. DJGPP v1
       is still supported original definitions maintained.
-    - lsfiletype(3f)lm040326] Added [filetype(3f)le macro to determine the file type of
+    - [040326] Added lsfiletype(3f)lmfiletype(3f)le macro to determine the file type of
       MS-DOS, Windows or UNIX.
     - [040322] cC$mousecA variables configured under console modes to allow
       pseudo mouse operations to be performed.
@@ -7047,10 +7047,10 @@ Miscellaneous Information
     - [040322] Added CSS template. Thanks to Gabriel Tabares-Barreiro.
     - [040318] Fix to Microsoft Windows clipboard when operating with VNC.
     - [040317] Macro and source release set to cGcG20040301cAcA.
-    - lsfind(3)lm040317] Added [find(3)le command to macro set.
-    - lsrgrep(3)lm040317] Corrected [rgrep(3)le to use the ls%xfind-com(5)lm%xfind-com(5)le to specify 
+    - [040317] Added lsfind(3)lmfind(3)le command to macro set.
+    - [040317] Corrected lsrgrep(3)lmrgrep(3)le to use the ls%xfind-com(5)lm%xfind-com(5)le to specify 
       the cDfind(1)cA command.
-    - lsgdiff(3)lm040310] Fix to graphical diff - [gdiff(3)le. Occasions where all
+    - [040310] Fix to graphical diff - lsgdiff(3)lmgdiff(3)le. Occasions where all
       changes had been accepted and the changes could not be saved. gdiff
       incorrectly prompted user to accept all changes first.
     - [040310] Support for multiple comment styles in the same language
@@ -7063,18 +7063,18 @@ Miscellaneous Information
       Causes the key binding to cGcGesc-ocAcA and cGcGesc-qcAcA to restyle the
       comment. All templates updated to include the flag where
       appropriate.
-    - lscvs(3)lm040310] [cvs(3)le operates asynchronously using ipipes. Refresh
+    - [040310] lscvs(3)lmcvs(3)le operates asynchronously using ipipes. Refresh
       problems resolved.
-    - lsnarrow-search-forward(3)lm040310] [narrow-search-forward(3)le bound to cG`C-c s`cA,
+    - [040310] lsnarrow-search-forward(3)lmnarrow-search-forward(3)le bound to cG`C-c s`cA,
       and lsnarrow-search-backward(3)lmnarrow-search-backward(3)le bound to cG`C-c r`cA.
-    - lsipipe-shell-command(2)lm040308] [ipipe-shell-command(2)le includes additional flag to run in
+    - [040308] lsipipe-shell-command(2)lmipipe-shell-command(2)le includes additional flag to run in
       "cCraw modecA" where the buffer is not annotated and wrap is disabled.
       Additional argument added to command to allow the ls$buffer-ipipe(5)lm$buffer-ipipe(5)le
       macro to be defined when the pipe is defined. Corrected operation
       of lspipe-shell-command(2)lmpipe-shell-command(2)le where cCipipecA automatically degrades to a cCpipecA
       (Windows only), if degraded then the ls$buffer-ipipe(5)lm$buffer-ipipe(5)le macro is still
       invoked on completion.
-    - lscygwin(3)lm040226] Deleted cGcGcygnus.emfcAcA added cGcGcygwin.emfcAcA for [cygwin(3)le BASH
+    - [040226] Deleted cGcGcygnus.emfcAcA added cGcGcygwin.emfcAcA for lscygwin(3)lmcygwin(3)le BASH
       shell support under Windows. Corrected the shell operation with
       macro layer for echo and completion.
     - [040224] Add new cCnarrow out unhilighted linescA feature.
@@ -7087,12 +7087,12 @@ Miscellaneous Information
     - [040223] Fixed. Executing 'me' (cDuser-setupcD cA->cD cACurrentcA)
       breaks   lsauto-spell(3)lmauto-spell(3)le   until   a   main   spell   command   ,   lsspell-word(3)lmspell-word(3)le 
       or  lsspell-buffer(3)lmspell-buffer(3)le is executed.
-    - lscvs(3)lm040223] [cvs(3)le directory listing file loss solved. Differences
+    - [040223] lscvs(3)lmcvs(3)le directory listing file loss solved. Differences
       between CVS command line operations and directory list operations
       resolved, both now produce the same results.
     - [040229] Fixed UNIX signal lock synchronization, solves problems
        with read failing following FTP or HTTP command.
-    - lsnarrow-search-forward(3)lm040223] Add new [narrow-search-forward(3)le and
+    - [040223] Add new lsnarrow-search-forward(3)lmnarrow-search-forward(3)le and
       lsnarrow-search-backward(3)lmnarrow-search-backward(3)le commands.
     - [040220] Mouse wheel operation fixed. Added new cDmouse-wup-scrollcA
       commands that should be used instead.
@@ -7103,7 +7103,7 @@ Miscellaneous Information
       menus. Created new context-menu command, bound to cGS-f1cA and the
       windows 'menu' key (aka windows) and created binds to open main menu
      (cDesc =cA) and context menu (cDesc +cA) on termcap platforms.
-    - lspopup-window(2)lm040217] Fixed. cD2cA [popup-window(2)le does not work on an XTerm, no
+    - [040217] Fixed. cD2cA lspopup-window(2)lmpopup-window(2)le does not work on an XTerm, no
       implementation in function cGmeFrameXTermMakeCurcA.
     - [040217] Fixed. CVS status of directories is not shown. Also add cCcGbcAcA
       and cCcGocAcA file type flags.
@@ -7116,7 +7116,7 @@ Miscellaneous Information
       specification.
     - [040214] Added cD.psfcA template for HP-UX depot product file
       specification.
-    - [040214] Recognize `-*- makefile -*-` and `-*- sh -*-`.
+    - [040214] Recognize cG-*- makefile -*-cA and `-*- sh -*-`.
     - [040213] Fixed reframe cCcvs-consolecA better so the exit status can be
       easily seen from a small window.
     - [040213] PHP script can be started with cCcG\<?cAcA tag in a php file.
@@ -7126,10 +7126,10 @@ Miscellaneous Information
     - [040213] Documented the create/delete/next-frame keys.
     - [040210] Fixed toolbar Directory File List does not contain cGcG../cAcA -
       UNIX only.
-    - ls$progname(5)lm040210] Fixed. On UNIX only the [$progname(5)le may not be fully
+    - [040210] Fixed. On UNIX only the ls$progname(5)lm$progname(5)le may not be fully
       expanded (has just "me") which may lead to a ctags generation error
       and an alternate fix to ls$search-path(5)lm$search-path(5)le.
-    - lsfind-file(2)lm040210] Fixed. On UNIX, [find-file(2)le of a symbolic link which
+    - [040210] Fixed. On UNIX, lsfind-file(2)lmfind-file(2)le of a symbolic link which
       points to a directory results in a bad dir listing. The list of
       files is correct but the statistics are all wrong (found on SunOS 5.8).
     - [040210] Fix subtle ftp bug with alias ftp addressed. Create an ftp
@@ -7153,7 +7153,7 @@ Miscellaneous Information
     - [040206] Fixes for tool-bar Buffer Item List update problem. Thanks
       to Dr. Detlef Groth.
     - [040206] Added template support for XML. Thanks to Dr. Detlef Groth.
-    - lsme32.ini(8)lm040204] Re-worked Microsoft Windows [me32.ini(8)le file specification.
+    - [040204] Re-worked Microsoft Windows lsme32.ini(8)lmme32.ini(8)le file specification.
       Order revised and lookup simplified.
     - [040203] "cCuser-setupcA" changed name to "cCRebind Home KeyscA" for
       re-binding of cGhomecA and cGendcA keys to start/end of line. Removed cGcGC-vcAcA
@@ -7161,7 +7161,7 @@ Miscellaneous Information
     - [040203] Reworked all user defined defined directory save locations,
       ftp, spell, etc..
     - [040203] Corrected osf1, openBSD and zaraus emf files.
-    - ls%cvs-com(5)lm040203] Added [%cvs-com(5)le variable to define the CVS command.
+    - [040203] Added ls%cvs-com(5)lm%cvs-com(5)le variable to define the CVS command.
     - [040203] XML template extended to include javascript.
     - [040130] 2nd iteration of prototype and near final revision of new
       user setup.
@@ -7213,23 +7213,23 @@ Miscellaneous Information
     - Internal variables ls$user-name(5)lm$user-name(5)le and ls$user-path(5)lm$user-path(5)le are defined.
     - [040128] Fixed re-style for C/C++ comments in vertical alignment.
     - [040123] "cCuser-setupcA" mouse button selection fixed.
-    - lssplit-window-horizontally(2)lm040123] `C-x 3` mapped to [split-window-horizontally(2)le, `C-x 5` mapped
+    - [040123] cGC-x 3cA mapped to lssplit-window-horizontally(2)lmsplit-window-horizontally(2)le, cGC-x 5cA mapped
       to lscreate-frame(2)lmcreate-frame(2)le.
     - [040122] Added support for Zaurus, thanks to Pierre Gaston
     - [040122] Fixes for non-US keyboards under X-Windows, thanks to
       Pierre Gaston and Dr. Detlef Groth
     - [040122] Added support for OSF1, thanks to Dr. Detlef Groth
     - [040122] Added support for OpenBSD
-    - lsml-bind-key(2)lm040122] [ml-bind-key(2)le supports new binding for next/previous file,
+    - [040122] lsml-bind-key(2)lmml-bind-key(2)le supports new binding for next/previous file,
       history search uses cGupcA/cGdowncA cGC-pcA/cGC-ncA, prompted by Gabriel.
-    - lscreate-frame(2)lm040122] New key bindings for [create-frame(2)le.
+    - [040122] New key bindings for lscreate-frame(2)lmcreate-frame(2)le.
     - [040119] cDRC3 - Release Candidate 3 - MicroEmacs '04cA
     - [040119] Fast exit out of fold fixed.
-    - lscopy-rectangle(3)lm040119] Added [copy-rectangle(3)le and lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le
+    - [040119] Added lscopy-rectangle(3)lmcopy-rectangle(3)le and lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le
       commands.
     - [040119] Collapse line format now includes the end token so that
       indent operates correctly following a fold.
-    - lsnarrow-buffer(2)lm040119] [narrow-buffer(2)le numeric argument and command line options
+    - [040119] lsnarrow-buffer(2)lmnarrow-buffer(2)le numeric argument and command line options
       extended for mark-up lines.
     - [040119] cGspawn.ccA compilation warnings removed.
     - [040119] Updated templates for Python and AsmX86 - thanks to Pedro
@@ -7243,10 +7243,10 @@ Miscellaneous Information
       Detlef Groth for diagnosing problems
     - [040116] Perl and TCL abbreviation files - thanks to Dr. Detlef
       Groth
-    - lsopen-line(3)lm040115] [open-line(3)le added for correct binding of cGcGC-ocAcA.
-    - lsrestyle-buffer(3)lm040113] [restyle-buffer(3)le fix when mode defined - thanks to Pedro
+    - [040115] lsopen-line(3)lmopen-line(3)le added for correct binding of cGcGC-ocAcA.
+    - [040113] lsrestyle-buffer(3)lmrestyle-buffer(3)le fix when mode defined - thanks to Pedro
       Gomes.
-    - lscreate-frame(2)lm040113] [create-frame(2)le canvas size fix on creating internal frame
+    - [040113] lscreate-frame(2)lmcreate-frame(2)le canvas size fix on creating internal frame
     - [040112] Highlighting fix for tool-bar Dir Files list with symbolic links
 
     - [040109] cDRC2 - Release Candidate 2 - MicroEmacs '04cA
@@ -7261,7 +7261,7 @@ Miscellaneous Information
     - [040104] Code optimizations and extensions - Thanks Peter Smith.
     - [040104] Lua language template - Thanks Jeremy Cowgar.
     - [040104] SGML language template.
-    - lsstring-rectangle(3)lm040104] [string-rectangle(3)le command added - Suggested by Salman.
+    - [040104] lsstring-rectangle(3)lmstring-rectangle(3)le command added - Suggested by Salman.
     - [040104] C++ re-style fixes - Problems reported by Salman.
     - [031221] X-Window fixes - Thanks Jeremy Cowgar.
     - [031120] Added new highlight schemes "cCLemon JellycA" and "cCBrowniecA".
@@ -7275,14 +7275,14 @@ Miscellaneous Information
       select hidden or verbose etc. Added check after exec of "ehook" to
       catch nasties, not fool proof but catches attempts to close tool bar
       etc.
-    - lsgoto-line(2)lm031120] Fixed a [goto-line(2)le bug shown when using grep on a single
+    - [031120] Fixed a lsgoto-line(2)lmgoto-line(2)le bug shown when using grep on a single
       lined file (like CVS/Root).
     - [031120] cGhilight.ccA. Changed indent line count to use the close so
       values of greater that 256 can be used.
     - [031120] cGinput.ccA Added support for EOB & BOB keys & fixed fwd/bck
       word movement across lines.
     - [031026] Fixed -ve re-center bug found by Alexander Doktorovich.
-    - ls&xsequal(4)lm031026] Last commit to search fixed a [&xsequal(4)le failure on
+    - [031026] Last commit to search fixed a ls&xsequal(4)lm&xsequal(4)le failure on
       start-up, was not setting the internal flags correctly. Fix go a
       little messy as it should not affect the hunt commands.
     - [031026] Minor restyle.
@@ -7304,7 +7304,7 @@ Miscellaneous Information
       type variable and got toolbar and buffer tool menu to call the
       update command (toolbar only on a cGcGC-lcAcA).
     - [031026] CVS. Fixed UNIX checkout path and implemented cvs remove.
-    - lspage-file(3)lm031026] [page-file(3)le. Fixed backward isearch blow out.
+    - [031026] lspage-file(3)lmpage-file(3)le. Fixed backward isearch blow out.
     - [031026] Perl Template. Updated the perl.eaf to \<FOLD\>.
     - [031026] Abbreviations. Added support for the new "cD:chookcA" current
       file type variable and added support for an INCLUDE tag.
@@ -7327,7 +7327,7 @@ Miscellaneous Information
     - [030917] Fixed a cGbuild.batcA not setting MAKE to nmake problem.
     - [030917] Added support for new Check-box chars in extended chars.
     - [030827] Added use default printer setting.
-    - lspage-file(3)lm030827] [page-file(3)le. Fixed header and added isearch support.
+    - [030827] lspage-file(3)lmpage-file(3)le. Fixed header and added isearch support.
     - [030821] Rationalized the buffer sizes, increased the keyboard macro
       and search string buffer sizes. Removed the GNU regex code - not
       used or tested in years. Part one of Jon's Xterm key lookup fix to
@@ -7339,7 +7339,7 @@ Miscellaneous Information
       behavior.
     - [030710] Added new define for the number of history types and added
       new ls@h0(4)lm@h0(4)le history variable.
-    - ls@mn(4)lm030710] Added support to [@mn(4)le and ls@mna(4)lm@mna(4)le in the cGcGmeGetKeycAcA
+    - [030710] Added support to ls@mn(4)lm@mn(4)le and ls@mna(4)lm@mna(4)le in the cGcGmeGetKeycAcA
       routine
     - [030710] Added new undo type for line reordering undo's, used 
       by lssort-lines(2)lmsort-lines(2)le and lstranspose-lines(2)lmtranspose-lines(2)le.
@@ -7360,7 +7360,7 @@ Miscellaneous Information
       incorrectly so the wrong buffer is shown - obscure!
     - [030625] Added macro release makefile.
     - [030625] MicroEmacs 3.8 compatibility. Fixed isearch emulation.
-    - lspage-file(3)lm030625] First revision of [page-file(3)le.
+    - [030625] First revision of lspage-file(3)lmpage-file(3)le.
     - [030625] CVS. Removed debug line.
     - [030610] Changed cGTABcA and cDBELLcA to safer defines. Optimized the
       fill-para function so that it keeps one of the existing spaces
@@ -7371,9 +7371,9 @@ Miscellaneous Information
     - [030608] Toolbar. Only update the tool-bar if its the top level
       command, i.e. the screen-update is not required due to spell-buffer
       (say).
-    - lskill-rectangle(2)lm030608] MS-Shift region. Check for [kill-rectangle(2)le and treat like
+    - [030608] MS-Shift region. Check for lskill-rectangle(2)lmkill-rectangle(2)le and treat like
       we do the lskill-region(2)lmkill-region(2)le.
-    - lsinsert-file(2)lm030608] Added new -ve argument to [insert-file(2)le which inserts only
+    - [030608] Added new -ve argument to lsinsert-file(2)lminsert-file(2)le which inserts only
       a section of the file. Optimized the lsfile-op(2)lmfile-op(2)le move command to try
       just moving the file first.
     - [030608] Changed the addLine function so it always flags the line as
@@ -7385,7 +7385,7 @@ Miscellaneous Information
     - [030608] Fixed a minor debug build issue in undo.c.
     - [030608] Changed the history so it always removes any duplicate
       entries.
-    - ls$window-eline(5)lm030608] Added [$window-eline(5)le and moved the aline into extended
+    - [030608] Added ls$window-eline(5)lm$window-eline(5)le and moved the aline into extended
       version.
     - [030608] Changing the addLine function to always set the changed
       flag meant all macros became hidden, use different bits.
@@ -7417,7 +7417,7 @@ Miscellaneous Information
     - [030514] Folding. Changed the fold-setup so a setup string can be
       passed in rather than searching for one in the buffer, aimed at
       utilizing the new buffer-fhook ls$result(5)lm$result(5)le setting.
-    - ls$result(5)lm030514] Set [$result(5)le to the magic fhook string so the fhook macro
+    - [030514] Set ls$result(5)lm$result(5)le to the magic fhook string so the fhook macro
       does not have to search for it again in buffer.c.
     - [030514] Fixed "cD\xbcA" bad regex bug.
     - [030513] Search. Added region line hilighting support.
@@ -7494,7 +7494,7 @@ Miscellaneous Information
     - [021013] Fix for printing of *printer* buffer crash.
     - [021013] Added PL/SQL file support.
     - [021013] Updated mode change to use just a buffer type change flag.
-    - ls@mna(4)lm021013] Added [@mna(4)le to all find-files incase there are problems.
+    - [021013] Added ls@mna(4)lm@mna(4)le to all find-files incase there are problems.
     - [021013] Broke the tool-bar tools out of the abbrev eaf file into
       there own tool eaf file.
     - [021013] Added item-list and tag generation support to VB, fixed a
@@ -7521,7 +7521,7 @@ Miscellaneous Information
       re-implemented the mode change to be toolbar aware.
     - [020912] Changed the "msshift" key list to a macro list which checks
       the non-shifted key is bound first. Added cGcGC-homecAcA and cGcGC-endcAcA.
-    - ls$window-id(5)lm020912] Added [$window-id(5)le.
+    - [020912] Added ls$window-id(5)lm$window-id(5)le.
     - [020912] Added crypting support to registry files - crypt key is
       auto-generated.
     - [020912] Fixed an odd win98 shell-command start-up dir bug and
@@ -7578,9 +7578,9 @@ Miscellaneous Information
     - [020605] Fixed NT and win2000 mouse cursor not staying hidden,
       caused by dubious mouse move events.
     - [020523] CVS - added 'U'pdate file flag support.
-    - ls$window-flags(5)lm020523] Modified to support [$window-flags(5)le and window resize
+    - [020523] Modified to support ls$window-flags(5)lm$window-flags(5)le and window resize
       changes.
-    - ls$window-chars(5)lm020523] Added new cGcG\<-cAcA and cGcG->cAcA truncate chars to [$window-chars(5)le.
+    - [020523] Added new cGcG\<-cAcA and cGcG->cAcA truncate chars to ls$window-chars(5)lm$window-chars(5)le.
     - [020523] Fixed mutli-frame console crash, window depth resize jump
       bug. Fixed drag-n-drop so it won't use a locked window. Fixed a
       nasty no-update bug involving the ERASEBKGND message. Added the
@@ -7592,7 +7592,7 @@ Miscellaneous Information
       single lschange-window-width(2)lmchange-window-width(2)le and lschange-window-depth(2)lmchange-window-depth(2)le command.
     - [020523] Changed interface to frame resizing functions, numerical
       arg is now a delta change.
-    - ls$window-chars(5)lm020523] Added left and right truncate chars to [$window-chars(5)le,
+    - [020523] Added left and right truncate chars to ls$window-chars(5)lm$window-chars(5)le,
       fix ABORT string value.
     - [020523] Added extra parameter to HideBuffer flagging whether to
       hide the buffer if the window buffer lock is set.
@@ -7766,7 +7766,7 @@ Miscellaneous Information
       creating the new lsbuffer-setup(3)lmbuffer-setup(3)le command. Ported all existing file
       hooks to this new interface greatly reducing the buffer hook size
       while increasing its functionality and consistency.
-    - ls$buffer-backup(5)lm010402] Added support for new [$buffer-backup(5)le variable for
+    - [010402] Added support for new ls$buffer-backup(5)lm$buffer-backup(5)le variable for
       setting the back-up file location.
     - [010312] Support for new key bindings allowing CU emulations. Nedit
       bindings provided as example. Major work to enable the complete
@@ -7780,7 +7780,7 @@ Miscellaneous Information
     - [010228] Improved dialog box for search/replace.
     - [010210] Revised programming language templates; simplified the
       common elements used in configuring the templates.
-    - lscommand-wait(2)lm010202] Added new [command-wait(2)le command to enable macros to wait
+    - [010202] Added new lscommand-wait(2)lmcommand-wait(2)le command to enable macros to wait
       for user dependent completion, used in "gdiff".
     - [010202] Changed buffer variables to except the form
       cGcG:\<buffer-name\>:\<variable\>cAcA, like command variables. This allows
@@ -7792,11 +7792,11 @@ Miscellaneous Information
       new lsfile-op(2)lmfile-op(2)le command, created better menus in the lsfile-browser(3)lmfile-browser(3)le.
     - [001010] Revamped the main ftp GUI to make it work much more
       rationally.
-    - lsipipe-shell-command(2)lm001010] Improved [ipipe-shell-command(2)le efficiency on Windows by
+    - [001010] Improved lsipipe-shell-command(2)lmipipe-shell-command(2)le efficiency on Windows by
       introducing a new thread approach to listen for activity.
       Implemented a shell command-line in an ipiped environment
       so lsishell(3)lmishell(3)le command is now usable on Windows platforms.
-    - lsset-position(2)lm001010] Added new [set-position(2)le which can be used to store all
+    - [001010] Added new lsset-position(2)lmset-position(2)le which can be used to store all
       information about the current window and lsgoto-position(2)lmgoto-position(2)le which will
       then restore them. Allowed macros to use non-letter characters for
       alpha marks and positions so they no longer need to clobber user
@@ -7849,7 +7849,7 @@ Miscellaneous Information
       that the password information is exposed so be careful where this is
       used - if in doubt do not enter the password and you will be
       prompted.
-    - lsuniq(3)lm000126] New command [uniq(3)le operates as the UNIX of the same name.
+    - [000126] New command lsuniq(3)lmuniq(3)le operates as the UNIX of the same name.
       used with sort, and reduces to unique lines.
     - [000126] Character translation; addition of character translation
       macros when moving between character sets. Accessible from Menu ->
@@ -7931,7 +7931,7 @@ Miscellaneous Information
               \\|Mb\\|mm\\|cm\\|m\\|Km\\|ft\\|inch\\|mph\\|lb\\|am\\|pm\\)"
 
     - [000112] Box selection copy and paste. Bindings are defined as `Esc C-w`
-      for lskill-rectangle(2)lmkill-rectangle(2)le `Esc C-y` lsyank-rectangle(2)lmyank-rectangle(2)le.
+      for lskill-rectangle(2)lmkill-rectangle(2)le cGEsc C-ycA lsyank-rectangle(2)lmyank-rectangle(2)le.
     - [000112] Enhanced info file hilighting (Thanks to Dr. Detlef Groth
       for this).
     - [000112] New copy-file command, typically used by the macro language
@@ -8027,7 +8027,7 @@ Miscellaneous Information
 
     - [990101] Introduction of the address and date organizer (replacing
       the existing cal interface).
-    - lsnarrow-buffer(2)lm990101] Generic buffer folding using [narrow-buffer(2)le.
+    - [990101] Generic buffer folding using lsnarrow-buffer(2)lmnarrow-buffer(2)le.
     - [990101] Rendered cursor support on all platforms. Smooth scrolling
       mode.
     - [990101] Win32s port, for Microsoft 3.1/3.11 O/S.
@@ -8128,7 +8128,7 @@ Miscellaneous Information
     - [941231] Implemented Electric C.
     - [941231] RCS support.
     - [941231] Re-implemented backups and auto-saves.
-    - lsisearch-forward(2)lm941231] Re-implemented [isearchle.
+    - [941231] Re-implemented lsisearch-forward(2)lmisearchle.
     - [941231] Re-implemented of keyboard macros.
     - [941231] Binary file reading support.
 
@@ -8331,7 +8331,7 @@ Miscellaneous Information
     To have a look at the features developed since 2009 have a look at lsfaq44(0f)lmfaq44le and 
     lsfaq45(0f)lmfaq45le.
     
- lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq01
 cEcEQUESTION (01) cEcA
 
@@ -8358,7 +8358,7 @@ Miscellaneous Information
     However we would be very much reliant on external help for local testing  
     and translation. We would be open to suggestions.  
 
-- lsFrequently Asked Questionslm[FAQ Index]le.
+- [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq02
 cEcEQUESTION (02) cEcA
 
@@ -8383,7 +8383,7 @@ Miscellaneous Information
     This adds a newer binding for cGcG.hcAcA and cGcG.defcAcA to C++, over-riding the  
     existing 'C' binding.  
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq03
 cEcEQUESTION (03) cEcA
 
@@ -8409,7 +8409,7 @@ Miscellaneous Information
     cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Main Menu Hot-keyscA = N
     cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Esc PrefixcA = Y
 
-- lsFrequently Asked Questionslm[FAQ Index]le.
+- [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq04
 cEcEQUESTION (04) cEcA
 
@@ -8443,7 +8443,7 @@ Miscellaneous Information
     
         Restart the system.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq05
 cEcEQUESTION (05) cEcA
 
@@ -8472,7 +8472,7 @@ Miscellaneous Information
     within your cC<user>.emfcA knock off bit 0x800 from ls$system(5)lm$system(5)le. This will
     enable regular pipes, which will work, albeit not in the background.
 
-- lsFrequently Asked Questionslm[FAQ Index]le.
+- [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq06
 cEcEQUESTION (06) cEcA
 
@@ -8495,7 +8495,7 @@ Miscellaneous Information
     For Microsoft Windows, any associated "me" icons types would also be
     appreciated.
 
-- lsFrequently Asked Questionslm[FAQ Index]le.
+- [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq07
 cEcEQUESTION (07) cEcA
 
@@ -8522,9 +8522,7 @@ Miscellaneous Information
 cESEE ALSO cA
 
 
- lsfaq06(0f)lmFAQ06le
-
- lsFrequently Asked Questionslm[FAQ Index]le.
+    lsfaq06(0f)lmFAQ06le, [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq08
 cEcEQUESTION (08) cEcA
 
@@ -8539,7 +8537,7 @@ Miscellaneous Information
     "Ctrl-G"s (see lsabort-command(2)lmabort-command(2)le) will terminate the macro and return
     control back to the caller.
 
- lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq09
 cEcEQUESTION (09) cEcA
 
@@ -8554,7 +8552,7 @@ Miscellaneous Information
     (or Current) the macro file cGmeme3_8.emfcA is executed and the bindings
     loaded. This file should restore your familiar execution set.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq10
 cEcEQUESTION (10) cEcA
 
@@ -8574,7 +8572,7 @@ Miscellaneous Information
     problem at the moment. From the programming perspective Windows is just
     not as nice as UNIX - which just works !!
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq11
 cEcEQUESTION (11) cEcA
 
@@ -8599,7 +8597,7 @@ Miscellaneous Information
     mouse/screen interaction is driven through macros, so this functionality
     is actually a macro change.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq12
 cEcEQUESTION (12) cEcA
 
@@ -8624,7 +8622,7 @@ Miscellaneous Information
     X-Windows, you may want to change your start-up screen width to cG82cA
     characters rather than cG80cA - see lschange-frame-width(2)lmchange-frame-width(2)le.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq13
 cEcEQUESTION (13) cEcA
 
@@ -8640,7 +8638,7 @@ Miscellaneous Information
 
     Refer to documentation for ls$system(5)lm$system(5)le and lsuser-setup(3)lmuser-setup(3)le.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq14
 cEcEQUESTION (14) cEcA
 
@@ -8656,10 +8654,10 @@ Miscellaneous Information
 
     You may also try enabling "With Bold" - this may increase the range of
     colors. If still there are no colors you might try to run emacs with a
-    different terminal setting, for instance using `TERM=rxvt me -n` or
-    `TERM=rxvt mec` in dependence what type of me you are using.
+    different terminal setting, for instance using cGTERM=rxvt me -ncA or
+    cGTERM=rxvt meccA in dependence what type of me you are using.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq15
 cEcEQUESTION (15) cEcA
 
@@ -8689,7 +8687,7 @@ Miscellaneous Information
     See lstranslate-key(2)lmtranslate-key(2)le for details of translating termcap keys.  
     See lsdescribe-key(2)lmdescribe-key(2)le to help identify the key.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq16
 cEcEQUESTION (16) cEcA
 
@@ -8708,7 +8706,7 @@ Miscellaneous Information
 sA
     See ls$timestamp(5)lm$timestamp(5)le.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq17
 cEcEQUESTION (17) cEcA
 
@@ -8724,7 +8722,7 @@ Miscellaneous Information
     component characters may be defined. See ls$window-chars(5)lm$window-chars(5)le for details on
     how to define new character replacements.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq18
 cEcEQUESTION (18) cEcA
 
@@ -8752,7 +8750,7 @@ Miscellaneous Information
     instance if your system administrator has not enabled long file names on
     your Novel server.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq19
 cEcEQUESTION (19) cEcA
 
@@ -8766,7 +8764,7 @@ Miscellaneous Information
     Use the cDFilecA -> cDPrinter SetupcA dialog and change the destination to the
     "cDDirect to printercA".
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq20
 cEcEQUESTION (20) cEcA
 
@@ -8781,7 +8779,7 @@ Miscellaneous Information
     and supports the full character set. Problems have been reported with
     networked postscript printers when used in conjunction with fixed fonts.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq21
 cEcEQUESTION (21) cEcA
 
@@ -8805,7 +8803,7 @@ Miscellaneous Information
     information that you need to set up. It's all a bit fiddley, but you do
     not get much choice if you want more than plain ASCII out.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq22
 cEcEQUESTION (22) cEcA
 
@@ -8826,7 +8824,7 @@ Miscellaneous Information
     cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Esc PrefixcA = Y
 
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq23
 cEcEQUESTION (23) cEcA
 
@@ -8868,7 +8866,7 @@ Miscellaneous Information
     language equivalent), this forces the font to be loaded as a resource,
     prior to use.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq24
 cEcEQUESTION (24) cEcA
 
@@ -8903,7 +8901,7 @@ Miscellaneous Information
     We would be interested in any details of other fixed fonts, which support
     the full OEM character set that are better alternatives to the DOS ones.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq25
 cEcEQUESTION (25) cEcA
 
@@ -8924,10 +8922,8 @@ Miscellaneous Information
 sA
 cESEE ALSO cA
 
+    [[FAQ Index]](Frequently Asked Questions), ls$mode-line(5)lm$mode-line(5)le.
 
-    ls$mode-line(5)lm$mode-line(5)le.
-
-    lsFrequently Asked Questionslm[FAQ Index]le.
 
 ! 0ffaq26
 cEcEQUESTION (26) cEcA
@@ -8993,7 +8989,7 @@ Miscellaneous Information
     ls$buffer-indent-width(5)lm$buffer-indent-width(5)le and ls$buffer-indent(5)lm$buffer-indent(5)le these may be changed in the
     cDBuffer SetupcA dialog.
 
- lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq27
 cEcEQUESTION (27) cEcA
 
@@ -9038,7 +9034,7 @@ Miscellaneous Information
     and then fill. This works because the longer line will lead to a
     different assessment of what's required.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq28
 cEcEQUESTION (28) cEcA
 
@@ -9061,7 +9057,7 @@ Miscellaneous Information
     be disabled by clearing bit 0x2000 in the $system variable. This option
     can now be set using user-setup (Alt -> Main Menu).
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq29
 cEcEQUESTION (29) cEcA
 
@@ -9090,7 +9086,7 @@ Miscellaneous Information
     environment. Using cDfind-filecA with tilde (cG~cA) implies that the directory
     start path is cG$HOMEcA.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq30
 cEcEQUESTION (30) cEcA
 
@@ -9115,7 +9111,7 @@ Miscellaneous Information
 
       [Tools -> User Setup -> Platform -> Client Server = Y]
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq31
 cEcEQUESTION (31) cEcA
 
@@ -9135,7 +9131,7 @@ Miscellaneous Information
     cDNotecA if the user is currently on the command line, then the command line
     operation is aborted in order to facilitate the cCdroppedcA files.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq32
 cEcEQUESTION (32) cEcA
 
@@ -9164,7 +9160,7 @@ Miscellaneous Information
     - Move to MicroEmacs 2009, position the cursor and lsyank(2)lmyank(2)le (cGC-ycA or
       typically the middle mouse button) the clipboard text.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq33
 cEcEQUESTION (33) cEcA
 
@@ -9217,7 +9213,7 @@ Miscellaneous Information
     a  look  at  lsfaq47(0f)lmfaq47le  - How  can I use  True  Type  Fonts  within
     MicroEmacs.
     
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq34
 cEcEQUESTION (34) cEcA
 
@@ -9235,7 +9231,7 @@ Miscellaneous Information
     The default setting is cCWhite on BlackcA, the cCBlack on CreamcA is the most
     popular setting.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq35
 cEcEQUESTION (35) cEcA
 
@@ -9263,7 +9259,7 @@ Miscellaneous Information
     in cG<CR>cA's only. The line format is correctly interpreted on reading, but
     is not retained on the write.
 
- lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq36
 cEcEQUESTION (36) cEcA
 
@@ -9279,7 +9275,7 @@ Miscellaneous Information
     assuming of course that the characters required are in the ISO-Latin
     character set. UNIX typically supports ISO-Latin character sets.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq37
 cEcEQUESTION (37) cEcA
 
@@ -9299,7 +9295,7 @@ Miscellaneous Information
     creates a new setup using cDuser-setupcA and then migrates required macro code
     changes from the old release into the new.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq38
 cEcEQUESTION (38) cEcA
 
@@ -9337,7 +9333,7 @@ Miscellaneous Information
     have two keys rather than none. But this does add confusion to the
     problem! Again, see cDtranslate-keycA for more information.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq39
 cEcEQUESTION (39) cEcA
 
@@ -9383,7 +9379,7 @@ Miscellaneous Information
        esc x tabs-to-spaces
 
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq40
 cEcEQUESTION (40) cEcA
 
@@ -9415,7 +9411,7 @@ Miscellaneous Information
 
     Acknowledgment: cDDGcA - 99/07/02
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq41
 cEcEQUESTION (41) cEcA
 
@@ -9440,7 +9436,7 @@ Miscellaneous Information
 sA
     Acknowledgment: cDDGcA - 99/07/02
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq42
 cEcEQUESTION (42) cEcA
 
@@ -9470,7 +9466,7 @@ Miscellaneous Information
     The user variable ls%tag-option(5)lm%tag-option(5)le may be used to enable lsfind-tag(2)lmfind-tag(2)le to
     locate a recursivelly generated cDtagscA file from a parent directory.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq43
 cEcEQUESTION (43) cEcA
 
@@ -9494,7 +9490,7 @@ Miscellaneous Information
     the wrap to the next line and INDENT maintains the left indentation.
     fill-paragraph is present.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 
 ! 0fFAQs
 cEcEFREQUENTLY ASKED QUESTIONS - Cont cEcA
@@ -9512,7 +9508,7 @@ Miscellaneous Information
     of the documentation or suggestions for improvements where you think the
     documentation is deficient.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq44
 cEcEQUESTION (44) cEcA
 
@@ -9538,7 +9534,7 @@ Miscellaneous Information
     The last official 09 release from 2009 can be download from http://www.jasspa.com -
     the updated release from https://github.com/mittelmark/microemacs
     
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq45
 cEcEQUESTION (45) cEcA
 
@@ -9576,9 +9572,9 @@ Miscellaneous Information
     - improved CUA bindings - shortcut emulation more common in standard GUI
       applications like C-c, C-x, C-v for copy, cut and paste 
     - new lsjeany-bindings(3)lmjeany-bindings(3)le command which supports a few CUA bindings
-      after the C-j prefix so copy, cut and paste are `C-j C-c`, `C-j C-x` and `C-j C-v`.
+      after the C-j prefix so copy, cut and paste are cGC-j C-c`, `C-j C-xcA and `C-j C-v`.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq46
 cEcEQUESTION (46) cEcA
 
@@ -9785,7 +9781,7 @@ Miscellaneous Information
     correctly and not silently fail. If you wish to re-build the binary with the
     default font then edit unixterm.c::2976 and change the default font string.
 
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq47
 cEcEQUESTION (47) cEcA
 
@@ -9835,7 +9831,7 @@ Miscellaneous Information
     On the Github  project  page,  https://github.com/mittelmark/microemacs  you
     will find a download link for some indexed monospaced TTF fonts.
     
-    lsFrequently Asked Questionslm[FAQ Index]le.
+    [[FAQ Index]](Frequently Asked Questions).
 ! 1 me
 cEcENAME cEcA
 
@@ -9957,7 +9953,7 @@ Miscellaneous Information
     cD-icA MS-DOS versions of cDMicroEmacs 2009cA only. Insert the contents of the
      current screen into the cD*scratch*cA buffer
 
-    cD-kcAlscrypt(2m)lmcCkeycA] Load next file as an encrypted file (uses [crypt(2m)le buffer mode). 
+    cD-kcA[cCkeycA] Load next file as an encrypted file (uses lscrypt(2m)lmcrypt(2m)le buffer mode). 
     
       The optional adjoining argument can be used to specify the decrypting key,
       if this argument is not specify the user will be prompted for it on
@@ -10743,11 +10739,8 @@ John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 
 cESEE ALSO cA
 
-
-    ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEPATH(5)lm$MEPATH(5)le, 
-    ls$MEUSERPATH(5)lm$MEUSERPATH(5)le, lsemf(8)lmemf(8)le,
-    cDemacs(1)cA lsme(1)lmGNU], cDmore(1)cA, [me(1)le, cDvi(1)cA.
-    lsCommand Line FilterslmCommand Line Filtersle.
+    lsCommand Line FilterslmCommand Line Filtersle, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEPATH(5)lm$MEPATH(5)le, 
+    ls$MEUSERPATH(5)lm$MEUSERPATH(5)le, lsemf(8)lmemf(8)le, cDemacs(1)cA [GNU], cDmore(1)cA, lsme(1)lmme(1)le, cDvi(1)cA.
 ! 2 abort-command
 cEcENAME cEcA
 
@@ -11372,7 +11365,7 @@ $a
     standard file hooks may be extended with local definitions by defining a
     file cDmyXXX.emfcA, which is an extension to the hook file cDhkXXX.emfcA. This is
     automatically executed after cDhkXXX.emfcA. Refer to sections
-    lsLanguage Templates) and lsfileHooks(2lmFile HookslelmlanguageTemplates(2)le for details.
+    lsLanguage TemplateslmlanguageTemplates(2)le and lsfileHooks(2)lmFile Hooksle for details.
 
 
 cEFile Extensions  cA
@@ -11649,7 +11642,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsfind-bfile(3)lmfind-bfile(3)le, lsfind-cfile(3)lmfind-cfile(3)le, lsabout(2)lmabout(2)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsfind-bfile(3)lmfind-bfile(3)le, lsfind-cfile(3)lmfind-cfile(3)le, lsabout(2)lmabout(2)le.
 ! 2 buffer-mode
 ! 2 named-buffer-mode
 ! 3 add-mode
@@ -11755,7 +11748,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsglobal-mode(2lmglobal-mode(2)lelmOperating Modesle, lsabout(2)lmabout(2)le, ls&bmode(4)lm&bmode(4)le.
+    lsOperating ModeslmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lsabout(2)lmabout(2)le, ls&bmode(4)lm&bmode(4)le.
 ! 2 add-next-line
 cEcENAME cEcA
 
@@ -12171,7 +12164,7 @@ $a
     for the named command and the key to which it is to be bound. This help
     file gives a complete list of all built in commands, and some useful
     macros, a complete list of all commands and macros can be obtained by
-    using the command completion (type `esc x` cGtabcA cGtabcA, see lsml-bind-key(2)lmml-bind-key(2)le) or
+    using the command completion (type cGesc xcA cGtabcA cGtabcA, see lsml-bind-key(2)lmml-bind-key(2)le) or
     using the command lsdescribe-bindings(2)lmdescribe-bindings(2)le.
 
     The mouse buttons are considered to be cCkeyscA, there is a cCkeycA for each
@@ -12575,11 +12568,10 @@ $a
 
 cESEE ALSO cA
 
-
+    lsRegularExpressions(2)lmRegular Expressionsle,
     lsbuffer-mode(2)lmbuffer-mode(2)le, lsexact(2m)lmexact(2m)le, lshunt-backward(2)lmhunt-backward(2)le, lshunt-forward(2)lmhunt-forward(2)le,
     lsisearch-forward(2)lmisearch-forward(2)le, lsnarrow-search-forward(3)lmnarrow-search-forward(3)le, lsmagic(2m)lmmagic(2m)le,
     lsreplace-string(2)lmreplace-string(2)le, lssearch-backward(2)lmsearch-backward(2)le, lssearch-forward(2)lmsearch-forward(2)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
 ! 2 compare-windows
 ! 3 compare-windows-exact
 cEcENAME cEcA
@@ -13234,8 +13226,8 @@ $a
     contains all of the conventional symbols found in the DOS shell.
 
     Releases of MicroEmacs post '99 may utilise any of the windows fonts,
-    typically `Courier New` or `Lucida Console` are used, these provide the best
-    screen rendering of characters. `Lucida Console` is slightly better with a
+    typically cGCourier NewcA or cGLucida ConsolecA are used, these provide the best
+    screen rendering of characters. cGLucida ConsolecA is slightly better with a
     smaller font size as this allows a cCcG1cAcA (one) and cCcGlcAcA (lower case L) to be
     distinguished.
 
@@ -13349,6 +13341,7 @@ $a
 sA
 cESEE ALSO cA
 
+
     lschange-font(2)lmchange-font(2)le, lschange-font-size(3)lmchange-font-size(3)le
 
 ! 3 change-font-size
@@ -13392,7 +13385,7 @@ $a
 
     lschange-font(2)lmchange-font(2)le, 
     
-    cCX-Windows:cA  lschange-font-type(3lmchange-font-type(3)le], lschange-font-xfontsel(3lmchange-font-xfontsel(3)le
+    cCX-Windows:cA  lschange-font-type(3)lmchange-font-type(3)le, lschange-font-xfontsel(3)lmchange-font-xfontsel(3)le
 
 
 ! 2 prefix
@@ -14413,7 +14406,7 @@ $a
     
        Used to exclude text between start cCtokencA and cCclosecA token from the
        indentation calculation, typically used for quotes. The cCignorecA
-       argument is also specified (see lshilight(2)lmhilight(2)le `type 0x004` type bracket)
+       argument is also specified (see lshilight(2)lmhilight(2)le cGtype 0x004cA type bracket)
        e.g. MicroEmacs macro quotes:-
 
 sB
@@ -14695,7 +14688,7 @@ $a
 
 
     lsbackward-delete-char(2)lmbackward-delete-char(2)le, lsforward-delete-char(2)lmforward-delete-char(2)le, lsforward-word(2)lmforward-word(2)le,
- lskill-region(2)lmkill-region(2)le, lsyank(2)lmyank(2)le.
+    lskill-region(2)lmkill-region(2)le, lsyank(2)lmyank(2)le.
 ! 2 delete-window
 ! 2 delete-other-windows
 cEcENAME cEcA
@@ -15594,7 +15587,7 @@ $a
     configured to auto-save in lsuser-setup(3)lmuser-setup(3)le.
 
     An emergency exit command which forces the editor to quit may be
-    implemented as `0x28 exit-emacs` i.e. Force quit and exit with failed
+    implemented as cG0x28 exit-emacscA i.e. Force quit and exit with failed
     status. Internally this is what MicroEmacs uses to perform an emergency
     quit operation caused by signal fault etc.
 
@@ -16093,8 +16086,8 @@ $a
 cESEE ALSO cA
 
 
- ls$file-template(5)lm$file-template(5)le, ls$line-template(5)lm$line-template(5)le. lsadd-next-line(2)lmadd-next-line(2)le, lscompile(3)lmcompile(3)le,
- lsgrep(3)lmgrep(3)le.
+    ls$file-template(5)lm$file-template(5)le, ls$line-template(5)lm$line-template(5)le. lsadd-next-line(2)lmadd-next-line(2)le, lscompile(3)lmcompile(3)le,
+    lsgrep(3)lmgrep(3)le.
 ! 2 goto-alpha-mark
 cEcENAME cEcA
 
@@ -16204,17 +16197,17 @@ $a
 
     cDgoto-matching-fencecA moves the cursor to the opposing fence character of
     the character currently under the cursor. The set of fence characters
-    include `[ ... ]`, `{ ... }`, `( ... )` and `< ... >`. i.e. if the character under
+    include cG[ ... ]`, `{ ... }`, `( ... )cA and `< ... >`. i.e. if the character under
     the cursor is `cG{cA' then cDgoto-matching-fencecA moves the cursor to the
     matching closing `cG}cA' fence, and visa versa.
 
-    cDgoto-matching-fencecA can also be used to move to a matching `' ... '` and 
+    cDgoto-matching-fencecA can also be used to move to a matching cG' ... 'cA and 
     "... " fence, but, as the start and end fence is the same, bit cG0x04cA must be
     used to indicate whether the current fence is the open or close fence, see
     below.
 
     cDgoto-matching-fencecA can also be used to move the cursor between the start
-    and end of a C/C++ `/* ... */` style comment. It can also be used to move to
+    and end of a C/C++ cG/* ... */cA style comment. It can also be used to move to
     matching C/C++ cG#ifcA, cG#elifcA, cG#elsecA and cG#endifcA constructs, cycling through
     them in the given order.
 
@@ -18744,9 +18737,8 @@ $a
 cESEE ALSO cA
 
 
-    lsexact(2m)lmexact(2m)le, lshunt-forward(2)lmhunt-forward(2)le, lsmagic(2m)lmmagic(2m)le, lsml-bind-key(2)lmml-bind-key(2)le,
+    lsRegularExpressions(2)lmRegular Expressionsle, lsexact(2m)lmexact(2m)le, lshunt-forward(2)lmhunt-forward(2)le, lsmagic(2m)lmmagic(2m)le, lsml-bind-key(2)lmml-bind-key(2)le,
     lsnarrow-search-forward(3)lmnarrow-search-forward(3)le, lspage-file(3)lmpage-file(3)le, lssearch-forward(2)lmsearch-forward(2)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
 ! 2 kbd-macro-query
 cEcENAME cEcA
 
@@ -19017,10 +19009,10 @@ $a
     The numerical argument cCncA is a bitwise flag which determines the
     information that is displayed by the command, it is interpreted follows:-
 
-    `  1` - The default, when the bit is set displays visible buffers only. When
+    cG  1cA - The default, when the bit is set displays visible buffers only. When
     clear displays both visible and lshide(2m)lmhiddenle buffers.
     
-    `  2` - When set shows buffer size information, including file size, memory
+    cG  2cA - When set shows buffer size information, including file size, memory
     size and undo size in bytes.
 
     The buffer list has some special command keys associated with it which
@@ -20501,8 +20493,7 @@ $a
     Refer to lssearch-forward(2)lmsearch-forward(2)le for a description of the magic mode search
     characters.
 
-    lsreplace-string(2)lmreplace-string(2)le, ls$result(5)lm$result(5)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
+    lsRegularExpressions(2)lmRegular Expressionsle, lsreplace-string(2)lmreplace-string(2)le, ls$result(5)lm$result(5)le.
 ! 2 quick-exit
 ! 2 save-buffers-exit-emacs
 cEcENAME cEcA
@@ -20790,11 +20781,10 @@ $a
 cESEE ALSO cA
 
 
-    See lsOperating Modes) for a description of the lsmagic(2mlmmagic(2m)lelmOperating Modesle and lsexact(2m)lmexact(2m)le modes
+    See lsOperating ModeslmOperating Modesle for a description of the lsmagic(2m)lmmagic(2m)le and lsexact(2m)lmexact(2m)le modes
     which change the search space.
 
-    lsbuffer-mode(2)lmbuffer-mode(2)le, lsquery-replace-string(2)lmquery-replace-string(2)le, lssearch-forward(2)lmsearch-forward(2)le, ls$result(5)lm$result(5)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
+    lsRegularExpressions(2)lmRegular Expressionsle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsquery-replace-string(2)lmquery-replace-string(2)le, lssearch-forward(2)lmsearch-forward(2)le, ls$result(5)lm$result(5)le.
 ! 2 set-position
 ! 2 goto-position
 ! 2 set-window
@@ -21274,11 +21264,10 @@ $a
 
 cESEE ALSO cA
 
-
+    lsRegularExpressions(2)lmRegular Expressionsle, 
     lsbuffer-mode(2)lmbuffer-mode(2)le, lsexact(2m)lmexact(2m)le, lshunt-backward(2)lmhunt-backward(2)le, lshunt-forward(2)lmhunt-forward(2)le,
     lsisearch-forward(2)lmisearch-forward(2)le, lsnarrow-search-forward(3)lmnarrow-search-forward(3)le, lsmagic(2m)lmmagic(2m)le,
     lsreplace-string(2)lmreplace-string(2)le, lssearch-buffer(2)lmsearch-buffer(2)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
 ! 2 global-abbrev-file
 ! 2 buffer-abbrev-file
 cEcENAME cEcA
@@ -21642,11 +21631,8 @@ $a
 
 cESEE ALSO cA
 
-
+    lsVariables(4)lmVariablesle, lsIntroduction to Variable FunctionslmIntroduction to Variable Functionsle, lsVariables(4)lmRegister Variablesle,
     lsdescribe-variable(2)lmdescribe-variable(2)le, lslist-variables(2)lmlist-variables(2)le, ls&set(4)lm&set(4)le.
-    lsVariables(4)lmVariablesle
-    lsIntroduction to Variable FunctionslmIntroduction to Variable Functionsle
-    lsVariables(4)lmRegister Variablesle
 ! 2 append-buffer
 cEcENAME cEcA
 
@@ -23588,7 +23574,7 @@ $a
     processing easier.
 
     In previous releases the command cDml-clearcA was used to clear the message
-    line, this command was replaced by `0 ml-write` in December 2004.
+    line, this command was replaced by cG0 ml-writecA in December 2004.
 
 
 cEEXAMPLE cA
@@ -23897,7 +23883,7 @@ $a
     The ends of the lines of a scrolled screen are delimited with a dollar (cD$cA)
     character indicating that the text continues. When no scroll is in effect
     the left hand margin of the screen does not show the cD$cA symbol. i.e. The
-    line `This text is scrolled on this line` with a current scroll offset of 2
+    line cGThis text is scrolled on this linecA with a current scroll offset of 2
     in a 22 column window would appear as follows:
 
                    22
@@ -24967,7 +24953,7 @@ $a
     editing in another would rapidly lead it away from the 'Micro' status).
     Therefore if a command is left active (such as a search) in one frame and
     the focus is changed to another frame the input is cCsentcA to the frame with
-    the active command and the message `[NOT FOCUS]` appears in the message-line
+    the active command and the message cG[NOT FOCUS]cA appears in the message-line
     of the frame with the focus.
 
     cDcreate-framecA is useful in macros that rely on a window layout, as the
@@ -25121,143 +25107,143 @@ $a
 cEesc Prefix Sequences  cA
 
 
-    `esc !` lspipe-shell-command(2)lmpipe-shell-commandle Pipe a shell command to a buffer.  
-    `esc %` lsquery-replace-string(2)lmquery-replace-stringle Search and replace a string - with query.  
-    `esc $` lsspell-buffer(3)lmspell-wordle Spell a word.  
-    `esc .` lsset-mark(2)lmset-markle Set the start of a region.  
-    `esc /` lsexecute-file(2)lmexecute-filele Execute script lines from a file.  
-    `esc <` lsbeginning-of-buffer(2)lmbeginning-of-bufferle Move to the start of the buffer.  
-    `esc >` lsbeginning-of-buffer(2)lmend-of-bufferle Move to the end of the buffer.  
-    `esc ?` lshelp(2)lmhelple Help - high level introduction to MicroEmacs.  
-    `esc @` lspipe-shell-command(2)lmpipe-shell-commandle Pipe a shell command to a buffer.  
-    `esc lsforward-paragraph(2)lm` [backward-paragraphle Goto the beginning of the paragraph.  
-    `esc \` lsipipe-shell-command(2)lmipipe-shell-commandle Incrementally pipe a shell command to a buffer.  
-    `esc ]` lsforward-paragraph(2)lmforward-paragraphle Move forward one paragraph  
-    `esc ^` lsdelete-indentation(3)lmdelete-indentationle Join 2 lines deleting white spaces.  
-    `esc b` lsforward-word(2)lmbackward-wordle Move one word backwards  
-    `esc c` lscapitalize-word(2)lmcapitalize-wordle Capitalize first letter of a word  
-    `esc d` lsforward-kill-word(2)lmforward-kill-wordle Delete word the cursor is on.  
-    `esc e` lsset-encryption-key(2)lmset-encryption-keyle Reset the encryption key.  
-    `esc f` lsforward-word(2)lmforward-wordle Move one word forward.  
-    `esc g` lsgoto-line(2)lmgoto-linele Goto a line.  
-    `esc i` lstab(2)lmtable Insert a tab character.  
-    `esc k` lsglobal-bind-key(2)lmglobal-bind-keyle Bind a key to a command or macro.  
-    `esc l` lscapitalize-word(2)lmlower-case-wordle Lowercase word.  
-    `esc m` lsglobal-mode(2)lmglobal-modele Toggle a global mode.  
-    `esc n` lsforward-paragraph(2)lmforward-paragraphle Move forward one paragraph  
-    `esc o` lsfill-paragraph(2)lmfill-paragraphle Reformat (fill) current paragraph.  
-    `esc p` lsforward-paragraph(2)lmbackward-paragraphle Goto the beginning of the paragraph.  
-    `esc q` lsifill-paragraph(3)lmifill-paragraphle Reformat (fill) current paragraph.  
-    `esc r` lsreplace-string(2)lmreplace-stringle Search and replace text (no query).  
-    `esc t` lsfind-tag(2)lmfind-tagle Find a tag.  
-    `esc u` lscapitalize-word(2)lmupper-case-wordle Uppercase word.  
-    `esc v` lsscroll-down(2)lmscroll-downle Move to the previous screen.  
-    `esc w` lscopy-region(2)lmcopy-regionle Copy region to the kill buffer.  
-    `esc x` lsexecute-named-command(2)lmexecute-named-commandle Execute the named command.  
-    `esc y` lsreyank(2)lmreyankle Kill current yank data and restore previous kill buffer data.  
-    `esc z` lsquick-exit(2)lmquick-exitle Save all buffers and exit.  
+    cGesc !cA lspipe-shell-command(2)lmpipe-shell-commandle Pipe a shell command to a buffer.  
+    cGesc %cA lsquery-replace-string(2)lmquery-replace-stringle Search and replace a string - with query.  
+    cGesc $cA lsspell-buffer(3)lmspell-wordle Spell a word.  
+    cGesc .cA lsset-mark(2)lmset-markle Set the start of a region.  
+    cGesc /cA lsexecute-file(2)lmexecute-filele Execute script lines from a file.  
+    cGesc <cA lsbeginning-of-buffer(2)lmbeginning-of-bufferle Move to the start of the buffer.  
+    cGesc >cA lsbeginning-of-buffer(2)lmend-of-bufferle Move to the end of the buffer.  
+    cGesc ?cA lshelp(2)lmhelple Help - high level introduction to MicroEmacs.  
+    cGesc @cA lspipe-shell-command(2)lmpipe-shell-commandle Pipe a shell command to a buffer.  
+    cGesc lsforward-paragraph(2)lmcA [backward-paragraphle Goto the beginning of the paragraph.  
+    cGesc \cA lsipipe-shell-command(2)lmipipe-shell-commandle Incrementally pipe a shell command to a buffer.  
+    cGesc ]cA lsforward-paragraph(2)lmforward-paragraphle Move forward one paragraph  
+    cGesc ^cA lsdelete-indentation(3)lmdelete-indentationle Join 2 lines deleting white spaces.  
+    cGesc bcA lsforward-word(2)lmbackward-wordle Move one word backwards  
+    cGesc ccA lscapitalize-word(2)lmcapitalize-wordle Capitalize first letter of a word  
+    cGesc dcA lsforward-kill-word(2)lmforward-kill-wordle Delete word the cursor is on.  
+    cGesc ecA lsset-encryption-key(2)lmset-encryption-keyle Reset the encryption key.  
+    cGesc fcA lsforward-word(2)lmforward-wordle Move one word forward.  
+    cGesc gcA lsgoto-line(2)lmgoto-linele Goto a line.  
+    cGesc icA lstab(2)lmtable Insert a tab character.  
+    cGesc kcA lsglobal-bind-key(2)lmglobal-bind-keyle Bind a key to a command or macro.  
+    cGesc lcA lscapitalize-word(2)lmlower-case-wordle Lowercase word.  
+    cGesc mcA lsglobal-mode(2)lmglobal-modele Toggle a global mode.  
+    cGesc ncA lsforward-paragraph(2)lmforward-paragraphle Move forward one paragraph  
+    cGesc ocA lsfill-paragraph(2)lmfill-paragraphle Reformat (fill) current paragraph.  
+    cGesc pcA lsforward-paragraph(2)lmbackward-paragraphle Goto the beginning of the paragraph.  
+    cGesc qcA lsifill-paragraph(3)lmifill-paragraphle Reformat (fill) current paragraph.  
+    cGesc rcA lsreplace-string(2)lmreplace-stringle Search and replace text (no query).  
+    cGesc tcA lsfind-tag(2)lmfind-tagle Find a tag.  
+    cGesc ucA lscapitalize-word(2)lmupper-case-wordle Uppercase word.  
+    cGesc vcA lsscroll-down(2)lmscroll-downle Move to the previous screen.  
+    cGesc wcA lscopy-region(2)lmcopy-regionle Copy region to the kill buffer.  
+    cGesc xcA lsexecute-named-command(2)lmexecute-named-commandle Execute the named command.  
+    cGesc ycA lsreyank(2)lmreyankle Kill current yank data and restore previous kill buffer data.  
+    cGesc zcA lsquick-exit(2)lmquick-exitle Save all buffers and exit.  
 
-    `esc ~` lsbuffer-mode(2)lmbuffer-modele Remove edited status from current buffer.  
-    `esc backspace` lsforward-kill-word(2)lmbackward-kill-wordle Delete the word under the cursor.  
-    `esc esc` lsexpand-abbrev(2)lmexpand-abbrevle Expand an abbreviation.  
-    `esc space` lsset-mark(2)lmset-markle Set the start of a region.  
+    cGesc ~cA lsbuffer-mode(2)lmbuffer-modele Remove edited status from current buffer.  
+    cGesc backspacecA lsforward-kill-word(2)lmbackward-kill-wordle Delete the word under the cursor.  
+    cGesc esccA lsexpand-abbrev(2)lmexpand-abbrevle Expand an abbreviation.  
+    cGesc spacecA lsset-mark(2)lmset-markle Set the start of a region.  
 
-    `esc C-c` lscount-words(2)lmcount-wordsle Count words in a region.  
-    `esc C-f` lsgoto-matching-fence(2)lmgoto-matching-fencele Reposition the cursor at an opposing bracket.  
-    `esc C-g` lsabort-command(2)lmabort-commandle Abort current command.  
-    `esc C-i` lstab(2)lmtable Insert tab character.  
-    `esc C-k` lsglobal-bind-key(2)lmglobal-unbind-keyle Unbind a key from a command or macro  
-    `esc C-n` lschange-buffer-name(2)lmchange-buffer-namele Rename current buffer.  
-    `esc C-r` lsquery-replace-string(2)lmquery-replace-stringle Search and replace with query.  
-    `esc C-v` lsscroll-next-window-down(2)lmscroll-next-window-downle Scroll next window down a page.  
-    `esc C-w` lskill-paragraph(2)lmkill-paragraphle Delete current paragraph.  
-    `esc C-z` lsscroll-next-window-down(2)lmscroll-next-window-uple Scroll the next window up a page.  
+    cGesc C-ccA lscount-words(2)lmcount-wordsle Count words in a region.  
+    cGesc C-fcA lsgoto-matching-fence(2)lmgoto-matching-fencele Reposition the cursor at an opposing bracket.  
+    cGesc C-gcA lsabort-command(2)lmabort-commandle Abort current command.  
+    cGesc C-icA lstab(2)lmtable Insert tab character.  
+    cGesc C-kcA lsglobal-bind-key(2)lmglobal-unbind-keyle Unbind a key from a command or macro  
+    cGesc C-ncA lschange-buffer-name(2)lmchange-buffer-namele Rename current buffer.  
+    cGesc C-rcA lsquery-replace-string(2)lmquery-replace-stringle Search and replace with query.  
+    cGesc C-vcA lsscroll-next-window-down(2)lmscroll-next-window-downle Scroll next window down a page.  
+    cGesc C-wcA lskill-paragraph(2)lmkill-paragraphle Delete current paragraph.  
+    cGesc C-zcA lsscroll-next-window-down(2)lmscroll-next-window-uple Scroll the next window up a page.  
 
-    `esc A-r` lsquery-replace-all-string(3)lmquery-replace-all-stringle Query replace string in a list of files.  
+    cGesc A-rcA lsquery-replace-all-string(3)lmquery-replace-all-stringle Query replace string in a list of files.  
 
 
 cEC-x Prefix Sequences  cA
 
      
-    `C-x #` lsfilter-buffer(2)lmfilter-bufferle Filter the buffer through a shell filter.  
-    `C-x (` lsstart-kbd-macro(2)lmstart-kbd-macrole Start recording a keyboard macro.  
-    `C-x )` lsstart-kbd-macro(2)lmend-kbd-macrole Stop recording a keyboard macro.  
-    `C-x /` lsisearch-forward(2)lmisearch-forwardle Start incremental search forwards.  
-    `C-x 0` lsdelete-window(2)lmdelete-windowle Delete the current window.  
-    `C-x 1` lsdelete-window(2)lmdelete-other-windowsle Delete other windows.  
-    `C-x 2` lssplit-window-vertically(2)lmsplit-window-verticallyle Split the current window into two.  
-    `C-x 3` lssplit-window-horizontally(2)lmsplit-window-horizontallyle Split current window horizontally into two.  
-    `C-x 5-1` lscreate-frame(2)lmcreate-framele Create a new internal frame.  
-    `C-x 5-2` lscreate-frame(2)lmcreate-framele Create a new external frame.  
-    `C-x 8` lsfind-bfile(3)lmfind-cfilele Find and load an encrypted file for editing.  
-    `C-x 9` lsfind-bfile(3)lmfind-bfilele Find and load a file for binary editing.  
-    `C-x <` lsscroll-left(2)lmscroll-leftle Scroll the window left by one screen width.  
-    `C-x =` lsbuffer-info(2)lmbuffer-infole Show cursor position information  
-    `C-x >` lsscroll-left(2)lmscroll-rightle Scroll the window right by one screen width.  
-    `C-x ?` lsdescribe-key(2)lmdescribe-keyle Describe binding of command to key.  
-    `C-x @` lspipe-shell-command(2)lmpipe-shell-commandle Pipe a shell command to buffer.  
-    `C-x lsscroll-down(2)lm` [scroll-uple Move backward by one screen.  
-    `C-x ]` lsscroll-down(2)lmscroll-downle Move forward by one screen.  
-    `C-x ^` lschange-window-depth(2)lmgrow-window-verticallyle Enlarge the current window by a line.  
-    `C-x `` lsget-next-line(2)lmget-next-linele Find the next command line.  
-    `C-x a` lsgoto-alpha-mark(2)lmgoto-alpha-markle Move the cursor to an alphabetic mark.  
-    `C-x b` lsnext-buffer(2)lmfind-bufferle Switch window to a buffer.  
-    `C-x c` lsshell(2)lmshellle Start a new command processor.  
-    `C-x e` lsexecute-kbd-macro(2)lmexecute-kbd-macrole Execute a macro.  
-    `C-x h` lshunt-forward(2)lmhunt-forwardle Continue search in forward direction.  
-    `C-x k` lsdelete-buffer(2)lmdelete-bufferle Delete buffer.  
-    `C-x m` lsbuffer-mode(2)lmbuffer-modele Toggle a local buffer mode.  
-    `C-x n` lschange-file-name(2)lmchange-file-namele Rename current buffer file name.  
-    `C-x o` lsnext-window(2)lmnext-windowle Move to the next window.  
-    `C-x p` lsnext-window(2)lmprevious-windowle Move to the previous window.  
-    `C-x q` lskbd-macro-query(2)lmkbd-macro-queryle Query keyboard macro.  
-    `C-x r` lssearch-forward(2)lmsearch-backwardle Search in a reverse direction.  
-    `C-x s` lssearch-forward(2)lmsearch-forwardle Search in a forward direction.  
-    `C-x u` lsundo(2)lmundole Undo the previous edit.  
-    `C-x v` lsset-variable(2)lmset-variablele Assign a new value to a variable.  
-    `C-x w` lschange-window-depth(2)lmresize-window-verticallyle Resize the window.  
-    `C-x x` lsnext-buffer(2)lmnext-bufferle Switch to the next buffer.  
-    `C-x z` lschange-window-depth(2)lmgrow-window-verticallyle Enlarge the current window.  
-    `C-x {` lschange-window-width(2)lmshrink-window-horizontallyle Shrink current window horizontally.  
-    `C-x }` lschange-window-width(2)lmgrow-window-horizontallyle Enlarge current window horizontally.  
+    cGC-x #cA lsfilter-buffer(2)lmfilter-bufferle Filter the buffer through a shell filter.  
+    cGC-x (cA lsstart-kbd-macro(2)lmstart-kbd-macrole Start recording a keyboard macro.  
+    cGC-x )cA lsstart-kbd-macro(2)lmend-kbd-macrole Stop recording a keyboard macro.  
+    cGC-x /cA lsisearch-forward(2)lmisearch-forwardle Start incremental search forwards.  
+    cGC-x 0cA lsdelete-window(2)lmdelete-windowle Delete the current window.  
+    cGC-x 1cA lsdelete-window(2)lmdelete-other-windowsle Delete other windows.  
+    cGC-x 2cA lssplit-window-vertically(2)lmsplit-window-verticallyle Split the current window into two.  
+    cGC-x 3cA lssplit-window-horizontally(2)lmsplit-window-horizontallyle Split current window horizontally into two.  
+    cGC-x 5-1cA lscreate-frame(2)lmcreate-framele Create a new internal frame.  
+    cGC-x 5-2cA lscreate-frame(2)lmcreate-framele Create a new external frame.  
+    cGC-x 8cA lsfind-bfile(3)lmfind-cfilele Find and load an encrypted file for editing.  
+    cGC-x 9cA lsfind-bfile(3)lmfind-bfilele Find and load a file for binary editing.  
+    cGC-x <cA lsscroll-left(2)lmscroll-leftle Scroll the window left by one screen width.  
+    cGC-x =cA lsbuffer-info(2)lmbuffer-infole Show cursor position information  
+    cGC-x >cA lsscroll-left(2)lmscroll-rightle Scroll the window right by one screen width.  
+    cGC-x ?cA lsdescribe-key(2)lmdescribe-keyle Describe binding of command to key.  
+    cGC-x @cA lspipe-shell-command(2)lmpipe-shell-commandle Pipe a shell command to buffer.  
+    cGC-x lsscroll-down(2)lmcA [scroll-uple Move backward by one screen.  
+    cGC-x ]cA lsscroll-down(2)lmscroll-downle Move forward by one screen.  
+    cGC-x ^cA lschange-window-depth(2)lmgrow-window-verticallyle Enlarge the current window by a line.  
+    cGC-x `cA lsget-next-line(2)lmget-next-linele Find the next command line.  
+    cGC-x acA lsgoto-alpha-mark(2)lmgoto-alpha-markle Move the cursor to an alphabetic mark.  
+    cGC-x bcA lsnext-buffer(2)lmfind-bufferle Switch window to a buffer.  
+    cGC-x ccA lsshell(2)lmshellle Start a new command processor.  
+    cGC-x ecA lsexecute-kbd-macro(2)lmexecute-kbd-macrole Execute a macro.  
+    cGC-x hcA lshunt-forward(2)lmhunt-forwardle Continue search in forward direction.  
+    cGC-x kcA lsdelete-buffer(2)lmdelete-bufferle Delete buffer.  
+    cGC-x mcA lsbuffer-mode(2)lmbuffer-modele Toggle a local buffer mode.  
+    cGC-x ncA lschange-file-name(2)lmchange-file-namele Rename current buffer file name.  
+    cGC-x ocA lsnext-window(2)lmnext-windowle Move to the next window.  
+    cGC-x pcA lsnext-window(2)lmprevious-windowle Move to the previous window.  
+    cGC-x qcA lskbd-macro-query(2)lmkbd-macro-queryle Query keyboard macro.  
+    cGC-x rcA lssearch-forward(2)lmsearch-backwardle Search in a reverse direction.  
+    cGC-x scA lssearch-forward(2)lmsearch-forwardle Search in a forward direction.  
+    cGC-x ucA lsundo(2)lmundole Undo the previous edit.  
+    cGC-x vcA lsset-variable(2)lmset-variablele Assign a new value to a variable.  
+    cGC-x wcA lschange-window-depth(2)lmresize-window-verticallyle Resize the window.  
+    cGC-x xcA lsnext-buffer(2)lmnext-bufferle Switch to the next buffer.  
+    cGC-x zcA lschange-window-depth(2)lmgrow-window-verticallyle Enlarge the current window.  
+    cGC-x {cA lschange-window-width(2)lmshrink-window-horizontallyle Shrink current window horizontally.  
+    cGC-x }cA lschange-window-width(2)lmgrow-window-horizontallyle Enlarge current window horizontally.  
 
-    `C-x C-a` lsset-alpha-mark(2)lmset-alpha-markle Mark the current position with an alphabetic mark.  
-    `C-x C-b` lslist-buffers(2)lmlist-buffersle Display buffer list.  
-    `C-x C-c` lsquick-exit(2)lmsave-buffer-exit-emacsle Exit MicroEmacs 2009.  
-    `C-x C-e` lsexecute-kbd-macro(2)lmexecute-kbd-macrole Execute a macro.  
-    `C-x C-f` lsfind-file(2)lmfind-filele Find a file and load into buffer.  
-    `C-x C-g` lsabort-command(2)lmabort-commandle Abort current command.  
-    `C-x C-h` lshunt-forward(2)lmhunt-backwardle Resume search in backwards direction.  
-    `C-x C-i` lsinsert-file(2)lminsert-filele Insert file into the current buffer.  
-    `C-x C-l` lscapitalize-word(2)lmlower-case-regionle Lowercase region.  
-    `C-x C-n` lsscroll-down(2)lmscroll-downle Scroll the current window down one line.  
-    `C-x C-o` lsdelete-blank-lines(2)lmdelete-blank-linesle Delete blank lines about the cursor.  
-    `C-x C-p` lsscroll-down(2)lmscroll-uple Scroll the current window up one line.  
-    `C-x C-q` lsrcs-file(2)lmrcs-filele Interact with RCS to check in/out a file.  
-    `C-x C-r` lsread-file(2)lmread-filele Read a file from disk.  
-    `C-x C-s` lssave-buffer(2)lmsave-bufferle Save current file to disk.  
-    `C-x C-t` lstranspose-chars(2)lmtranspose-linesle Swap adjacent lines.  
-    `C-x C-u` lscapitalize-word(2)lmupper-case-regionle Uppercase region.  
-    `C-x C-v` lsview-file(2)lmview-filele Read a file for viewing (read only).  
-    `C-x C-w` lswrite-buffer(2)lmwrite-bufferle Write a file to disk witn new name.  
-    `C-x C-x` lsexchange-point-and-mark(2)lmexchange-point-and-markle Exchange cursor with mark position.  
-    `C-x C-y` lsinsert-file-name(2)lminsert-file-namele Insert filename into current buffer.  
-    `C-x C-z` lschange-window-depth(2)lmshrink-window-verticallyle Reduce size of current window.  
+    cGC-x C-acA lsset-alpha-mark(2)lmset-alpha-markle Mark the current position with an alphabetic mark.  
+    cGC-x C-bcA lslist-buffers(2)lmlist-buffersle Display buffer list.  
+    cGC-x C-ccA lsquick-exit(2)lmsave-buffer-exit-emacsle Exit MicroEmacs 2009.  
+    cGC-x C-ecA lsexecute-kbd-macro(2)lmexecute-kbd-macrole Execute a macro.  
+    cGC-x C-fcA lsfind-file(2)lmfind-filele Find a file and load into buffer.  
+    cGC-x C-gcA lsabort-command(2)lmabort-commandle Abort current command.  
+    cGC-x C-hcA lshunt-forward(2)lmhunt-backwardle Resume search in backwards direction.  
+    cGC-x C-icA lsinsert-file(2)lminsert-filele Insert file into the current buffer.  
+    cGC-x C-lcA lscapitalize-word(2)lmlower-case-regionle Lowercase region.  
+    cGC-x C-ncA lsscroll-down(2)lmscroll-downle Scroll the current window down one line.  
+    cGC-x C-ocA lsdelete-blank-lines(2)lmdelete-blank-linesle Delete blank lines about the cursor.  
+    cGC-x C-pcA lsscroll-down(2)lmscroll-uple Scroll the current window up one line.  
+    cGC-x C-qcA lsrcs-file(2)lmrcs-filele Interact with RCS to check in/out a file.  
+    cGC-x C-rcA lsread-file(2)lmread-filele Read a file from disk.  
+    cGC-x C-scA lssave-buffer(2)lmsave-bufferle Save current file to disk.  
+    cGC-x C-tcA lstranspose-chars(2)lmtranspose-linesle Swap adjacent lines.  
+    cGC-x C-ucA lscapitalize-word(2)lmupper-case-regionle Uppercase region.  
+    cGC-x C-vcA lsview-file(2)lmview-filele Read a file for viewing (read only).  
+    cGC-x C-wcA lswrite-buffer(2)lmwrite-bufferle Write a file to disk witn new name.  
+    cGC-x C-xcA lsexchange-point-and-mark(2)lmexchange-point-and-markle Exchange cursor with mark position.  
+    cGC-x C-ycA lsinsert-file-name(2)lminsert-file-namele Insert filename into current buffer.  
+    cGC-x C-zcA lschange-window-depth(2)lmshrink-window-verticallyle Reduce size of current window.  
 
 
 cEC-h Prefix Sequences  cA
 
      
-    `C-h a` lscommand-apropos(2)lmcommand-aproposle List commands involving a concept.  
-    `C-h b` lsdescribe-bindings(2)lmdescribe-bindingsle Show current command/key binding.  
-    `C-h c` lslist-commands(2)lmlist-commandsle List available commands.  
-    `C-h d` lsdescribe-variable(2)lmdescribe-variablele Describe current setting of a variable.  
-    `C-h k` lsdescribe-key(2)lmdescribe-keyle Describe keyboard binding.  
-    `C-h v` lslist-variables(2)lmlist-variablesle List defined variables.  
+    cGC-h acA lscommand-apropos(2)lmcommand-aproposle List commands involving a concept.  
+    cGC-h bcA lsdescribe-bindings(2)lmdescribe-bindingsle Show current command/key binding.  
+    cGC-h ccA lslist-commands(2)lmlist-commandsle List available commands.  
+    cGC-h dcA lsdescribe-variable(2)lmdescribe-variablele Describe current setting of a variable.  
+    cGC-h kcA lsdescribe-key(2)lmdescribe-keyle Describe keyboard binding.  
+    cGC-h vcA lslist-variables(2)lmlist-variablesle List defined variables.  
 
-    `C-h C-c` lshelp(2)lmhelp-commandle Display command help information.  
-    `C-h C-i` lshelp(2)lmhelp-itemle Display item help information.  
-    `C-h C-v` lshelp(2)lmhelp-variablele Display variable help information.  
+    cGC-h C-ccA lshelp(2)lmhelp-commandle Display command help information.  
+    cGC-h C-icA lshelp(2)lmhelp-itemle Display item help information.  
+    cGC-h C-vcA lshelp(2)lmhelp-variablele Display variable help information.  
 ! 2 Compatibility
 cEcECOMPATIBILITY cEcA
 
@@ -25871,7 +25857,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lslanguageTemplates(2lmLanguage TemplateslelmOperating Modesle, lsadd-file-hook(2)lmadd-file-hook(2)le, lsindent(2)lmindent(2)le.
+    lsOperating ModeslmOperating Modesle, lslanguageTemplates(2)lmLanguage Templatesle, lsadd-file-hook(2)lmadd-file-hook(2)le, lsindent(2)lmindent(2)le.
 ! 2 keyNames
 cEcEKEY BINDING NAMES cEcA
 
@@ -26167,7 +26153,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsglobal-mode(2lmglobal-mode(2)lelmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lscr(2m)lmcr(2m)le, lslf(2m)lmlf(2m)le,
+    lsOperating ModeslmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lsbuffer-mode(2)lmbuffer-mode(2)le, lscr(2m)lmcr(2m)le, lslf(2m)lmlf(2m)le,
     lsctrlz(2m)lmctrlz(2m)le, ls$buffer-fmod(5)lm$buffer-fmod(5)le.
 ! 2mbackup
 cEcENAME cEcA
@@ -26246,7 +26232,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), ls$buffer-backup(5lm$buffer-backup(5)lelmOperating Modesle. ls$system(5)lm$system(5)le, ls$kept-versions(5)lm$kept-versions(5)le,
+    lsOperating ModeslmOperating Modesle, ls$buffer-backup(5)lm$buffer-backup(5)le. ls$system(5)lm$system(5)le, ls$kept-versions(5)lm$kept-versions(5)le,
     ls$MEBACKUPPATH(5)lm$MEBACKUPPATH(5)le, ls$MEBACKUPSUB(5)lm$MEBACKUPSUB(5)le, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le,
     lsundo(2m)lmundo(2m)le, lsautosv(2m)lmautosv(2m)le, ls$auto-time(5)lm$auto-time(5)le.
 ! 2mcrypt
@@ -26288,7 +26274,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsfind-cfile(3)lmfind-cfile(3)le, lsglobal-mode(2)lmglobal-mode(2)le,
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsfind-cfile(3)lmfind-cfile(3)le, lsglobal-mode(2)lmglobal-mode(2)le,
     lsset-encryption-key(2)lmset-encryption-key(2)le.
 ! 2mexact
 cEcENAME cEcA
@@ -26316,7 +26302,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lssearch-forward(2)lmsearch-forward(2)le,
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le, lssearch-forward(2)lmsearch-forward(2)le,
     lssort-lines(2)lmsort-lines(2)le.
 ! 2mindent
 cEcENAME cEcA
@@ -26347,7 +26333,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lswrap(2m)lmwrap(2m)le lsjustify(2m)lmjustify(2m)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le, lswrap(2m)lmwrap(2m)le lsjustify(2m)lmjustify(2m)le.
 ! 2mjustify
 cEcENAME cEcA
 
@@ -26381,7 +26367,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lswrap(2m)lmwrap(2m)le lsindent(2m)lmindent(2m)le,
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le, lswrap(2m)lmwrap(2m)le lsindent(2m)lmindent(2m)le,
     ls$buffer-fill-col(5)lm$buffer-fill-col(5)le, ls$buffer-fill-mode(5)lm$buffer-fill-mode(5)le, ls$fill-col(5)lm$fill-col(5)le, ls$fill-mode(5)lm$fill-mode(5)le.
 ! 2mmagic
 cEcENAME cEcA
@@ -26556,7 +26542,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lsquery-replace-string(2)lmquery-replace-string(2)le,
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le, lsquery-replace-string(2)lmquery-replace-string(2)le,
     lssearch-forward(2)lmsearch-forward(2)le.
     lsRegularExpressions(2)lmRegular Expressionsle
 ! 2mover
@@ -26585,7 +26571,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le.
 ! 2mcr
 cEcENAME cEcA
 
@@ -26621,7 +26607,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsauto(2mlmauto(2m)lelmOperating Modesle, lslf(2m)lmlf(2m)le, lsctrlz(2m)lmctrlz(2m)le, lssave-buffer(2)lmsave-buffer(2)le,
+    lsOperating ModeslmOperating Modesle, lsauto(2m)lmauto(2m)le, lslf(2m)lmlf(2m)le, lsctrlz(2m)lmctrlz(2m)le, lssave-buffer(2)lmsave-buffer(2)le,
     lsfind-file(2)lmfind-file(2)le, ls$buffer-fmod(5)lm$buffer-fmod(5)le.
 ! 2mtab
 cEcENAME cEcA
@@ -26650,7 +26636,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le. ls$buffer-tab-width(5)lm$buffer-tab-width(5)le,
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le. ls$buffer-tab-width(5)lm$buffer-tab-width(5)le,
     ls$tab-width(5)lm$tab-width(5)le, lstabs-to-spaces(3)lmtabs-to-spaces(3)le.
 ! 2mtime
 cEcENAME cEcA
@@ -26679,7 +26665,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le. ls$timestamp(5)lm$timestamp(5)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le. ls$timestamp(5)lm$timestamp(5)le.
 ! 2mundo
 cEcENAME cEcA
 
@@ -26718,7 +26704,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le. lsundo(2)lmundo(2)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le. lsundo(2)lmundo(2)le.
 ! 2musr
 cEcENAME cEcA
 
@@ -26754,7 +26740,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le.
 ! 2mview
 cEcENAME cEcA
 
@@ -26788,7 +26774,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsbuffer-mode(2lmbuffer-mode(2)lelmOperating Modesle, lsglobal-mode(2)lmglobal-mode(2)le, lsview-file(2)lmview-file(2)le.
+    lsOperating ModeslmOperating Modesle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsglobal-mode(2)lmglobal-mode(2)le, lsview-file(2)lmview-file(2)le.
 ! 2mwrap
 cEcENAME cEcA
 
@@ -26821,7 +26807,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), ls$buffer-fill-col(5lm$buffer-fill-col(5)lelmOperating Modesle, ls$fill-col(5)lm$fill-col(5)le, lsbuffer-mode(2)lmbuffer-mode(2)le,
+    lsOperating ModeslmOperating Modesle, ls$buffer-fill-col(5)lm$buffer-fill-col(5)le, ls$fill-col(5)lm$fill-col(5)le, lsbuffer-mode(2)lmbuffer-mode(2)le,
     lsglobal-mode(2)lmglobal-mode(2)le, lsipipe-shell-command(2)lmipipe-shell-command(2)le lsjustify(2m)lmjustify(2m)le, lsindent(2m)lmindent(2m)le, lspipe(2m)lmpipe(2m)le.
 ! 2mbinary
 cEcENAME cEcA
@@ -26924,7 +26910,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsfind-bfile(3lmfind-bfile(3)lelmOperating Modesle, lsfind-file(2)lmfind-file(2)le, lsrbin(2m)lmrbin(2m)le.
+    lsOperating ModeslmOperating Modesle, lsfind-bfile(3)lmfind-bfile(3)le, lsfind-file(2)lmfind-file(2)le, lsrbin(2m)lmrbin(2m)le.
 ! 2mautosv
 cEcENAME cEcA
 
@@ -26995,7 +26981,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), ls$auto-time(5lm$auto-time(5)lelmOperating Modesle, lsbackup(2m)lmbackup(2m)le, lsfind-file(2)lmfind-file(2)le, lsftp(3)lmftp(3)le.
+    lsOperating ModeslmOperating Modesle, ls$auto-time(5)lm$auto-time(5)le, lsbackup(2m)lmbackup(2m)le, lsfind-file(2)lmfind-file(2)le, lsftp(3)lmftp(3)le.
 ! 2mpipe
 cEcENAME cEcA
 
@@ -27025,7 +27011,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsipipe-shell-command(2lmipipe-shell-command(2)lelmOperating Modesle, lslock(2m)lmlock(2m)le, lswrap(2m)lmwrap(2m)le.
+    lsOperating ModeslmOperating Modesle, lsipipe-shell-command(2)lmipipe-shell-command(2)le, lslock(2m)lmlock(2m)le, lswrap(2m)lmwrap(2m)le.
 ! 2mlock
 cEcENAME cEcA
 
@@ -27056,7 +27042,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsipipe-shell-command(2lmipipe-shell-command(2)lelmOperating Modesle, lspipe(2m)lmpipe(2m)le.
+    lsOperating ModeslmOperating Modesle, lsipipe-shell-command(2)lmipipe-shell-command(2)le, lspipe(2m)lmpipe(2m)le.
 ! 2mhide
 cEcENAME cEcA
 
@@ -27085,7 +27071,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsfind-buffer(2lmfind-buffer(2)lelmOperating Modesle, lslist-buffers(2)lmlist-buffers(2)le.
+    lsOperating ModeslmOperating Modesle, lsfind-buffer(2)lmfind-buffer(2)le, lslist-buffers(2)lmlist-buffers(2)le.
 ! 2mnact
 cEcENAME cEcA
 
@@ -27120,7 +27106,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lslist-buffers(2lmlist-buffers(2)lelmOperating Modesle, ls&nbmode(4)lm&nbmode(4)le, ls&bmode(4)lm&bmode(4)le.
+    lsOperating ModeslmOperating Modesle, lslist-buffers(2)lmlist-buffers(2)le, ls&nbmode(4)lm&nbmode(4)le, ls&bmode(4)lm&bmode(4)le.
 ! 2mlf
 cEcENAME cEcA
 
@@ -27155,7 +27141,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsauto(2mlmauto(2m)lelmOperating Modesle, lscr(2m)lmcr(2m)le, lsctrlz(2m)lmctrlz(2m)le, lssave-buffer(2)lmsave-buffer(2)le,
+    lsOperating ModeslmOperating Modesle, lsauto(2m)lmauto(2m)le, lscr(2m)lmcr(2m)le, lsctrlz(2m)lmctrlz(2m)le, lssave-buffer(2)lmsave-buffer(2)le,
     lsfind-file(2)lmfind-file(2)le, ls$buffer-fmod(5)lm$buffer-fmod(5)le.
 ! 2mnarrow
 cEcENAME cEcA
@@ -27184,7 +27170,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), ls$line-flags(5lm$line-flags(5)lelmOperating Modesle, lsnarrow-buffer(2)lmnarrow-buffer(2)le,
+    lsOperating ModeslmOperating Modesle, ls$line-flags(5)lm$line-flags(5)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le,
     lsnarrow-search-backward(3)lmnarrow-search-backward(3)le, lsnarrow-search-forward(3)lmnarrow-search-forward(3)le.
 ! 2mdel
 cEcENAME cEcA
@@ -27214,7 +27200,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lslist-buffers(2lmlist-buffers(2)lelmOperating Modesle, lssave(2m)lmsave(2m)le.
+    lsOperating ModeslmOperating Modesle, lslist-buffers(2)lmlist-buffers(2)le, lssave(2m)lmsave(2m)le.
 ! 2msave
 cEcENAME cEcA
 
@@ -27245,7 +27231,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lslist-buffers(2lmlist-buffers(2)lelmOperating Modesle, lsdel(2m)lmdel(2m)le.
+    lsOperating ModeslmOperating Modesle, lslist-buffers(2)lmlist-buffers(2)le, lsdel(2m)lmdel(2m)le.
 ! 2mdir
 cEcENAME cEcA
 
@@ -27272,7 +27258,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsfind-file(2lmfind-file(2)lelmOperating Modesle.
+    lsOperating ModeslmOperating Modesle, lsfind-file(2)lmfind-file(2)le.
 ! 2medit
 cEcENAME cEcA
 
@@ -27308,7 +27294,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lssave-buffer(2lmsave-buffer(2)lelmOperating Modesle, lsundo(2)lmundo(2)le, lslist-buffers(2)lmlist-buffers(2)le, ls$mode-line(5)lm$mode-line(5)le,
+    lsOperating ModeslmOperating Modesle, lssave-buffer(2)lmsave-buffer(2)le, lsundo(2)lmundo(2)le, lslist-buffers(2)lmlist-buffers(2)le, ls$mode-line(5)lm$mode-line(5)le,
     lsundo(2m)lmundo(2m)le.
 ! 2mctrlz
 cEcENAME cEcA
@@ -27343,7 +27329,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsauto(2mlmauto(2m)lelmOperating Modesle, lscr(2m)lmcr(2m)le, lslf(2m)lmlf(2m)le, lssave-buffer(2)lmsave-buffer(2)le, lsfind-file(2)lmfind-file(2)le,
+    lsOperating ModeslmOperating Modesle, lsauto(2m)lmauto(2m)le, lscr(2m)lmcr(2m)le, lslf(2m)lmlf(2m)le, lssave-buffer(2)lmsave-buffer(2)le, lsfind-file(2)lmfind-file(2)le,
     ls$buffer-fmod(5)lm$buffer-fmod(5)le.
 ! 2mrbin
 cEcENAME cEcA
@@ -27409,7 +27395,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), lsfind-file(2lmfind-file(2)lelmOperating Modesle, lsbinary(2m)lmbinary(2m)le.
+    lsOperating ModeslmOperating Modesle, lsfind-file(2)lmfind-file(2)le, lsbinary(2m)lmbinary(2m)le.
 ! 2mfence
 cEcENAME cEcA
 
@@ -27465,7 +27451,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating Modes), ls$pause-time(5lm$pause-time(5)lelmOperating Modesle, lsuser-setup(3)lmuser-setup(3)le, lsgoto-matching-fence(2)lmgoto-matching-fence(2)le,
+    lsOperating ModeslmOperating Modesle, ls$pause-time(5)lm$pause-time(5)le, lsuser-setup(3)lmuser-setup(3)le, lsgoto-matching-fence(2)lmgoto-matching-fence(2)le,
     lsindent(2)lmindent(2)le.
 ! 2 languageTemplates
 cEcEFILE LANGUAGE TEMPLATES cEcA
@@ -28163,7 +28149,7 @@ $a
 
     You will be asked  initially  for your user name and the default  user path,
     usually it is  ~/.jasspa.  As it a first step it is usually  required to run
-    the command `"Esc x" user-setup` to select the default  keyboad and language
+    the command cG"Esc x" user-setupcA to select the default  keyboad and language
     in the  dialog. You can as well use the menu entry  "Tools->User  Setup". If
     you run the terminal version you can as well execute the menu with `"Esc ="`
     and using the cursor keys. To get Termcap  colors you might in the  terminal
@@ -29860,7 +29846,7 @@ $a
       
     - cDmecwcA - for  Linux  and  MacOS - a MicroEmacs 09 version  which runs as a
              X-Windows application but can be used as well as a terminal application 
-             if the command line flag `mecw -n` is used, this requires as well the
+             if the command line flag cGmecw -ncA is used, this requires as well the
              installed Macro files
     
     - cDmewcA  - for Windows - a Window based application without console access,
@@ -30382,7 +30368,7 @@ $a
     suitable test buffer run the lsspell-buffer(3)lmspelling checkerle, one of three things will
     happen:
 
-    The `Spelling Checker` dialog opens and spelling is checked
+    The cGSpelling CheckercA dialog opens and spelling is checked
 
        The spelling checker is supported by the current language and can be
        used (the rules and dictionaries have been downloaded and installed).
@@ -30630,7 +30616,7 @@ $a
     (both the value and absence/presence of the argument) and can change the
     behavior of the command. cGC-upcA is not cDbackward-linecA, it is cC5cA cDbackward-linecA 
     to go back 5 lines, if you supply a numerical value to the command
-    as well, e.g. `esc 3 C-up` you must multiply the user argument with
+    as well, e.g. cGesc 3 C-upcA you must multiply the user argument with
     the numerical argument of the binding:
 
         3 up   -> 3   'backward-line' -> 3 * 1 backward-line ->  3 backward-line
@@ -31497,11 +31483,8 @@ $a
 
 cESEE ALSO cA
 
-
-    ls$debug(5)lm$debug(5)le,
-    lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
-    lsmacroOverview(4)lmMicroEmacs Macro Language at a Glance.le
-    lsmacroWriting(4)lmWriting MicroEmacs Macrosle
+    lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle, lsmacroOverview(4)lmMicroEmacs Macro Language at a Glance.le
+    lsmacroWriting(4)lmWriting MicroEmacs Macrosle, ls$debug(5)lm$debug(5)le.
 ! 4 macroOverview
 cEcEMACRO LANGUAGE OVERVIEW cEcA
 
@@ -31827,10 +31810,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmIntroduction to Variable Functionsle
-    lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
-    lsmacroDebugging(4)lmMacro Debugging Crash Coursele
-    lsmacroWriting(4)lmWriting MicroEmacs Macrosle
+    lsIntroduction to Variable FunctionslmIntroduction to Variable Functionsle, lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
+    lsmacroDebugging(4)lmMacro Debugging Crash Coursele, lsmacroWriting(4)lmWriting MicroEmacs Macrosle
 ! 3fgdiff
 cEcENAME cEcA
 
@@ -32206,7 +32187,7 @@ $a
 cENOTES cA
 
 
-    The cCnroffcA to HTML generator leaves the special markers `<!-- XI: %s -->` in
+    The cCnroffcA to HTML generator leaves the special markers cG<!-- XI: %s -->cA in
     the generated HTML code which contain the hypertext link information.
 
 
@@ -33208,9 +33189,8 @@ $a
 cESEE ALSO cA
 
 
-    lsquery-replace-string(2)lmquery-replace-string(2)le, lssave-some-buffers(2)lmsave-some-buffers(2)le, lsgrep(3)lmgrep(3)le, lsget-next-line(2)lmget-next-line(2)le,
-    lsundo(2)lmundo(2)le, lsreplace-all-string(3)lmreplace-all-string(3)le, lssearch-forward(2)lmsearch-forward(2)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
+    lsRegularExpressions(2)lmRegular Expressionsle,lsquery-replace-string(2)lmquery-replace-string(2)le, lssave-some-buffers(2)lmsave-some-buffers(2)le, lsgrep(3)lmgrep(3)le, 
+    lsget-next-line(2)lmget-next-line(2)le, lsundo(2)lmundo(2)le, lsreplace-all-string(3)lmreplace-all-string(3)le, lssearch-forward(2)lmsearch-forward(2)le.
 ! 3 tabs-to-spaces
 cEcENAME cEcA
 
@@ -33512,7 +33492,7 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Games), lsMatch-It(3lmMatch-It(3)lelmGamesle, lsPatience(3)lmPatience(3)le.
+    lsMicroEmacs - GameslmGamesle, lsMatch-It(3)lmMatch-It(3)le, lsPatience(3)lmPatience(3)le.
 ! 3 Match-It
 cEcENAME cEcA
 
@@ -33647,7 +33627,7 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Games), lsMahjongg(3lmMahjongg(3)lelmGamesle, lsMetris(3)lmMetris(3)le.
+    lsMicroEmacs - GameslmGamesle, lsMahjongg(3)lmMahjongg(3)le, lsMetris(3)lmMetris(3)le.
 ! 3 Metris
 cEcENAME cEcA
 
@@ -33722,7 +33702,7 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Games), lsMatch-It(3lmMatch-It(3)lelmGamesle, lsPatience(3)lmPatience(3)le.
+    lsMicroEmacs - GameslmGamesle, lsMatch-It(3)lmMatch-It(3)le, lsPatience(3)lmPatience(3)le.
 ! 3 Patience
 cEcENAME cEcA
 
@@ -33829,7 +33809,7 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Games), lsTriangle(3lmTriangle(3)lelmGamesle, lsMahjongg(3)lmMahjongg(3)le.
+    lsMicroEmacs - GameslmGamesle, lsTriangle(3)lmTriangle(3)le, lsMahjongg(3)lmMahjongg(3)le.
 ! 3 Triangle
 cEcENAME cEcA
 
@@ -33929,7 +33909,7 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Games), lsPatience(3lmPatience(3)lelmGamesle, lsMahjongg(3)lmMahjongg(3)le.
+    lsMicroEmacs - GameslmGamesle, lsPatience(3)lmPatience(3)le, lsMahjongg(3)lmMahjongg(3)le.
 ! 3 c-hash-eval
 ! 3 c-hash-del
 ! 3 c-hash-set-define
@@ -34111,7 +34091,7 @@ $a
 cESEE ALSO cA
 
 
-    ls.ascii-time.format(5)lm.ascii-time.format(5)le,  lm$buffer-fhook(5)le, ls&find(4)lm&find(4)le, lsascii-time(3)lmascii-time(3)le.
+    ls.ascii-time.format(5)lm.ascii-time.format(5)le, ls$buffer-fhook(5)lm$buffer-fhook(5)le, ls&find(4)lm&find(4)le, lsascii-time(3)lmascii-time(3)le.
 ! 3 ascii-time
 ! 5 .ascii-time.format
 cEcENAME cEcA
@@ -34273,10 +34253,10 @@ $a
 
 cESEE ALSO cA
 
-
+    lsRegularExpressions(2)lmRegular Expressionsle,
     lsreplace-all-string(3)lmreplace-all-string(3)le, lsreplace-string(2)lmreplace-string(2)le, lssave-some-buffers(2)lmsave-some-buffers(2)le, lsgrep(3)lmgrep(3)le,
     lsget-next-line(2)lmget-next-line(2)le, lsundo(2)lmundo(2)le, lsquery-replace-all-string(3)lmquery-replace-all-string(3)le, lssearch-forward(2)lmsearch-forward(2)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
+
 ! 3 delete-indentation
 cEcENAME cEcA
 
@@ -35663,7 +35643,7 @@ $a
 
     cDBreak KeycA
     
-       A break in a bash shell is cGC-ccA, the macros define the key `C-c C-c` to
+       A break in a bash shell is cGC-ccA, the macros define the key cGC-c C-ccA to
        perform the break. There does not appear to be a way to prevent this
        from happening as trapping the interrupt does not appear to be
        supported in Cygwin Bash i.e. "cGtrapcA cG''cA cGINTcA".
@@ -36725,7 +36705,7 @@ $a
     are disabled, as are the menu interactions. The short cut keys are defined
     as follows:-
 
-    `esc h/A-h` - View the help page.
+    cGesc h/A-hcA - View the help page.
     
        Invokes the display of a OSD help box, summarizing the interaction
        commands
@@ -36739,7 +36719,7 @@ $a
     
        Moves to the next changed region below the current cursor position.
 
-    `left mouse button`  
+    cGleft mouse buttoncA  
     cGspacecA  
     cGentercA  
     cGrcA - Select difference version
@@ -36772,18 +36752,18 @@ $a
     
        Marks all regions as not being acceptable.
 
-    `C-x C-s` - Save current side
+    cGC-x C-scA - Save current side
     
        Saves the current window to the specified file, merging the selected
        changes between the two revisions. Note that the save only operates
        iff all hilighted changes have been selected.
 
-    `C-x C-w` - Save current side as
+    cGC-x C-wcA - Save current side as
     
        Same as cDSave current sidecA except the user is prompted to enter a new
        filename to which the modifications are written.
 
-    `C-x k` - Exit graphical diff
+    cGC-x kcA - Exit graphical diff
     
        Exits the cDgdiffcA utility.
 
@@ -38091,7 +38071,7 @@ $a
 
 
     The action of the cDcommentcA commands are file type specific (comments in cDCcA
-    are `/* ... to ... */` where as MicroEmacs macro file comments are ; ... to
+    are cG/* ... to ... */cA where as MicroEmacs macro file comments are ; ... to
     the end of line) so the commands must be configured for each file type
     (see the NOTES section below). The configuration is automatically
     performed by almost all the standard file hooks released with MicroEmacs
@@ -38822,11 +38802,11 @@ $a
     defined then the following key bindings are automatically added to the
     template:-
 
-       `C-c C-s` cDcomment-startcA - start a new comment.  
-       `C-c C-c` cDcomment-linecA - comment out the current line.  
-       `C-c C-d` cDuncomment-linecA - remove commenting from current line.  
-       `C-c C-e` cDcomment-to-end-of-linecA - comment to end of line.  
-       `C-c C-r` cDcomment-restylecA - format/re-style comment.  
+       cGC-c C-scA cDcomment-startcA - start a new comment.  
+       cGC-c C-ccA cDcomment-linecA - comment out the current line.  
+       cGC-c C-dcA cDuncomment-linecA - remove commenting from current line.  
+       cGC-c C-ecA cDcomment-to-end-of-linecA - comment to end of line.  
+       cGC-c C-rcA cDcomment-restylecA - format/re-style comment.  
 
     Help information is automatically added to the buffer to describe the key
     bindings if help information is enabled.
@@ -39143,7 +39123,7 @@ $a
     are used (i.e. cDneditcA, cDme3.8cA). The buffer initialisation uses the command
     cDbuffer-bind-createcA and the variables cD.buffer-bind-create.map-fromcA and
     cD.buffer-bind-create.map-tocA which define replacement keys for bindings. As
-    an example the cDneditcA emulation mode uses key binding `C-c C-c` and provides
+    an example the cDneditcA emulation mode uses key binding cGC-c C-ccA and provides
     a buffer binding mapping to translate any key buffer binding to a
     different key. i.e.
 
@@ -39454,8 +39434,7 @@ $a
     lsexecute-buffer(2)lmexecute-buffer(2)le, lsexpand-abbrev(2)lmexpand-abbrev(2)le, lsglobal-abbrev-file(2)lmglobal-abbrev-file(2)le, lshilight(2)lmhilight(2)le,
     lsindent(2)lmindent(2)le, lsindent(2m)lmindent(2m)le, lsitem-list(3)lmitem-list(3)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsntags(3f)lmntags(3f)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lsscheme-editor(3)lmscheme-editor(3)le, lstime(2m)lmtime(2m)le,
-    lsfileHooks(2)lmFile Hooksle,
-    lslanguageTemplates(2)lmFile Language Templatesle.
+    lsfileHooks(2)lmFile Hooksle,lslanguageTemplates(2)lmFile Language Templatesle.
 ! 3 page-file
 ! 3 page-bfile
 ! 3 page-file-save-buffer
@@ -39929,7 +39908,7 @@ $a
 
     The command is normally used when a new C++ file is being created, if the
     default file type is C rather than C++ then the new file is converted to
-    C++ by changing the magic string from `-*- c -*-` to `-*- c++ -*-`, whenever
+    C++ by changing the magic string from cG-*- c -*-cA to `-*- c++ -*-`, whenever
     the file is subsequently loaded then it will be presented in the correct
     mode.
 
@@ -40264,9 +40243,8 @@ $a
 cESEE ALSO cA
 
 
-    lsbuffer-mode(2)lmbuffer-mode(2)le, lsexact(2m)lmexact(2m)le, lshunt-backward(2)lmhunt-backward(2)le, lshunt-forward(2)lmhunt-forward(2)le,
+    lsRegularExpressions(2)lmRegular Expressionsle, lsbuffer-mode(2)lmbuffer-mode(2)le, lsexact(2m)lmexact(2m)le, lshunt-backward(2)lmhunt-backward(2)le, lshunt-forward(2)lmhunt-forward(2)le,
     lsisearch-forward(2)lmisearch-forward(2)le, lsmagic(2m)lmmagic(2m)le, lsreplace-string(2)lmreplace-string(2)le. lssearch-forward(2)lmsearch-forward(2)le,
-    lsRegularExpressions(2)lmRegular Expressionsle
 ! 3 xfind
 ! 5 %xfind-com
 cEcENAME cEcA
@@ -40301,7 +40279,7 @@ $a
     The find command is specified by the macro variable cD%xfind-comcA if not
     defined the default cGfindcA is used. The command line run by cDxfindcA is
 
-        _%xfind-com_ -name "_base-path_" -name "_file-search_" -print
+    cC%xfind-comcA -name "cCbase-pathcA" -name "cCfile-searchcA" -print
 
     The resultant files found are displayed in the cD*find*cA buffer and may be
     selected by double-clicking with the mouse left button or selecting the
@@ -40390,8 +40368,7 @@ $a
 cESEE ALSO cA
 
 
-    lsappend-buffer(2)lmappend-buffer(2)le, lssave-buffer(2)lmsave-buffer(2)le, lswrite-buffer(2)lmwrite-buffer(2)le.
-    lsmacroWriting(4)lmWriting MicroEmacs Macrosle.
+    lsmacroWriting(4)lmWriting MicroEmacs Macrosle, lsappend-buffer(2)lmappend-buffer(2)le, lssave-buffer(2)lmsave-buffer(2)le, lswrite-buffer(2)lmwrite-buffer(2)le.
 ! 3 watch
 ! 3 watch-time
 ! 3 watch-reset
@@ -40652,7 +40629,7 @@ $a
     available on line as it is likely to be used very infrequently. To load
     the command then load the file cGnotesutl.emfcA and execute the buffer
     lsexecute-buffer(2)lmexecute-buffer(2)le (esc x execute-buffer). The command may be explicitly
-    run using `esc x` cGnotes-import-skwyrulcA.
+    run using cGesc xcA cGnotes-import-skwyrulcA.
 
     cDnotes-instantcA creates a new note under the cCInstant NotescA folder, it is
     designed to enable the user to jot something down quickly and in a safe
@@ -42683,7 +42660,7 @@ $a
        line, or the more conventional ANSI fonts. The fonts are selected
        using the cDChangecD cAFontcA button which invokes a dialog to allow the
        available fonts to be selected. True-Type mono fonts such as Courier
-       New or `Lucida Console` are typically used.
+       New or cGLucida ConsolecA are typically used.
 
     `Weight & Size`
     
@@ -42700,7 +42677,7 @@ $a
 
     cGFontscA
     
-       See `Use Fonts` in cDPlatform UNIX SetupcA above.
+       See cGUse FontscA in cDPlatform UNIX SetupcA above.
 
     `Display Char Set`
     
@@ -42842,7 +42819,7 @@ $a
 
     Only present on DOS machines.
 
-    `Graphic Mode #` and `Double Lines`
+    cGGraphic Mode #cA and `Double Lines`
     
        Sets the DOS graphics mode number and whether the number of text lines
        can be doubled. This indirectly executes lschange-font(2)lmchange-font(2)le with the given
@@ -42948,7 +42925,7 @@ $a
     cGButtoncA
     
        The mouse button, cGLeftcA, cGRightcA or cGMiddlecA for the normal buttons and
-       `Whell Up` or `Whell Down` for the pilot wheel events.
+       cGWhell UpcA or cGWhell DowncA for the pilot wheel events.
 
     `Modifier - Shift`
     
@@ -43080,7 +43057,7 @@ $a
     
          The Button is not bound.
 
-       `Scroll Up 1 Line` ....
+       cGScroll Up 1 LinecA ....
 
          Scrolls the current buffer by the specified amount.
 
@@ -43101,7 +43078,7 @@ $a
 
 
     The file type list is used in two places, the main menu's File => Quick
-    Open sub-menu list and the `File => Open => File Type` list. In each case
+    Open sub-menu list and the cGFile => Open => File TypecA list. In each case
     the file type cG`All Files`cA is automatically added. The user can add, remove
     and change the list of file types by using this dialog. An entry can be
     selected for editing or deletion by simply selecting it with the left
@@ -43216,7 +43193,7 @@ $a
     cGBuffercA
     
        Specifies the buffer name the captured output should be dumped to,
-       this option is only visible when `Capture Output` is enabled. The
+       this option is only visible when cGCapture OutputcA is enabled. The
        following special tokens may be used in the buffer name which are
        substituted at execution:-
 
@@ -43244,7 +43221,7 @@ $a
     cGHidecA
     
        When enabled the tool output capture buffer is hidden, this option is
-       only visible when `Capture Output` is enabled.
+       only visible when cGCapture OutputcA is enabled.
 
     Current Buffer - cGSavecA and `Prompt Before Saving`
     
@@ -43256,7 +43233,7 @@ $a
 
     All Buffers - cGSavecA and `Prompt Before Saving`
     
-       If `Save All Buffers` is enabled, all edited buffers will be
+       If cGSave All BufferscA is enabled, all edited buffers will be
        automatically saved before executing the tool. This is particularly
        useful when the tool may operate on multiple files (e.g. compilation
        of a project). If cGPromptcA is also enabled the user will be prompted
@@ -45515,7 +45492,7 @@ $a
 
     cDfile-attribcA opens a dialog enabling the user to change the system
     properties of the current buffer's file. Top of the dialog give the
-    current buffer name and its file name. The `Save Changes` button writes the
+    current buffer name and its file name. The cGSave ChangescA button writes the
     current buffer out with any current edits and changes to its file
     attributes. The cGOkcA button closes the file-attrib dialog, any changes made
     to the file attributes will be applied next time the buffer is written.
@@ -46089,7 +46066,7 @@ $a
        Opens a Windows printer dialog box allowing the user to specify the
        windows printer, paper size and character size, etc.
 
-    `No. of Columns` and cGRowscA
+    cGNo. of ColumnscA and cGRowscA
     
        Defines the page subdivision in terms of sub-columns and rows, thereby
        creating sub-pages within a page.
@@ -46340,12 +46317,10 @@ $a
 cESEE ALSO cA
 
 
-    lsbuffer-setup(3)lmbuffer-setup(3)le, lsexecute-named-command(2)lmexecute-named-command(2)le, lshilight(2)lmhilight(2)le, lsindent(2)lmindent(2)le,
+    lsOperating ModeslmOperating Modesle, lsbuffer-setup(3)lmbuffer-setup(3)le, lsexecute-named-command(2)lmexecute-named-command(2)le, lshilight(2)lmhilight(2)le, lsindent(2)lmindent(2)le,
     lsmajor-mode-setup(3)lmmajor-mode-setup(3)le, lsosd(2)lmosd(2)le, lstabs-to-spaces(3)lmtabs-to-spaces(3)le ls$buffer-fill-col(5)lm$buffer-fill-col(5)le,
     ls$buffer-fill-mode(5)lm$buffer-fill-mode(5)le, ls$buffer-indent-width(5)lm$buffer-indent-width(5)le, ls$buffer-tab-width(5)lm$buffer-tab-width(5)le,
     ls$fill-col(5)lm$fill-col(5)le, ls$fill-mode(5)lm$fill-mode(5)le, ls$indent-width(5)lm$indent-width(5)le, ls$tab-width(5)lm$tab-width(5)le.
-
-    lsOperating ModeslmOperating Modesle.
 ! 3 file-type-setup
 cEcENAME cEcA
 
@@ -46745,9 +46720,7 @@ $a
 
 cESEE ALSO cA
 
-
-    lsfile-browser(3)lmfile-browser(3)le, lsfind-zfile(3)lmfind-zfile(3)le, lsuser-setup(3)lmuser-setup(3)le.
-    lsRegularExpressions(2)lmRegular Expressionsle
+    lsRegularExpressions(2)lmRegular Expressionsle, lsfile-browser(3)lmfile-browser(3)le, lsfind-zfile(3)lmfind-zfile(3)le, lsuser-setup(3)lmuser-setup(3)le.
 ! 4 &rep
 ! 4 &irep
 ! 4 &xrep
@@ -46825,9 +46798,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating ModeslmOperating Modesle, 
-    lsIntroduction to Variable FunctionslmVariable Functionsle,  
-    ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le.
+    lsOperating ModeslmOperating Modesle, lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le.
 ! 4 &abs
 ! 4 &add
 ! 4 &sub
@@ -46908,13 +46879,13 @@ $a
 
     Expression evaluation is prefix. Operators may be nested using a pre-fix
     ordering, there is no concept of brackets (in-fix notation). The
-    expression `(2 * 3) + 4` is expressed as:-
+    expression cG(2 * 3) + 4cA is expressed as:-
 
 sB
           &add &mul 2 3 4
 
 sA
-    conversely `2 * (3 + 4)` is expressed as:-
+    conversely cG2 * (3 + 4)cA is expressed as:-
 
 sB
           &mul 2 &add 3 4
@@ -46979,8 +46950,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&great(4)lm&great(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&great(4)lm&great(4)le.
 ! 4 &cat
 ! 4 &mid
 ! 4 &len
@@ -47154,9 +47124,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&sin(4)lm&sin(4)le, ls&sequal(4)lm&sequal(4)le, ls&lget(4)lm&lget(4)le, 
-    ls&sprintf(4)lm&sprintf(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sin(4)lm&sin(4)le, ls&sequal(4)lm&sequal(4)le, ls&lget(4)lm&lget(4)le, ls&sprintf(4)lm&sprintf(4)le.
 ! 4 &and
 ! 4 &or
 ! 4 &not
@@ -47272,8 +47240,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&add(4)lm&add(4)le, ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le, ls&cond(4)lm&cond(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&add(4)lm&add(4)le, ls&sequal(4)lm&sequal(4)le, ls&sin(4)lm&sin(4)le, ls&cond(4)lm&cond(4)le.
 ! 4 &sprintf
 ! 4 &spr
 cEcENAME cEcA
@@ -47382,8 +47349,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&cat(4)lm&cat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&cat(4)lm&cat(4)le.
 ! 4 &atoi
 ! 4 &bmode
 ! 4 &exist
@@ -47560,9 +47526,7 @@ $a
 cESEE ALSO cA
 
 
-    lsOperating ModeslmOperating Modesle, 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&sprintf(4)lm&sprintf(4)le, ls&equal(4)lm&equal(4)le.
+    lsOperating ModeslmOperating Modesle, lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sprintf(4)lm&sprintf(4)le, ls&equal(4)lm&equal(4)le.
 ! 4 !emacro
 ! 4 !ehelp
 cEcENAME cEcA
@@ -47636,12 +47600,9 @@ $a
 
 cESEE ALSO cA
 
-    lsdefine-macro(2)lmdefine-macro(2)le, lsdefine-help(2)lmdefine-help(2)le.
-    lsOperating ModeslmOperating Modesle, 
-    lsmacroWriting(4)lmWriting MicroEmacs Macrosle
-    lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
-    lsmacroDebugging(4)lmMacro Debugging - A Crash Coursele
-    lsmacroOverview(4)lmMicroEmacs Macro Language at a Glancele
+
+    lsOperating ModeslmOperating Modesle, lsmacroWriting(4)lmWriting MicroEmacs Macrosle,  lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
+    lsmacroDebugging(4)lmMacro Debugging - A Crash Coursele, lsmacroOverview(4)lmMicroEmacs Macro Language at a Glancele, lsdefine-macro(2)lmdefine-macro(2)le, lsdefine-help(2)lmdefine-help(2)le.
 ! 4 !force
 cEcENAME cEcA
 
@@ -47718,7 +47679,7 @@ $a
 cESEE ALSO cA
 
 
- ls$status(5)lm$status(5)le.
+    ls$status(5)lm$status(5)le.
 ! 4 !if
 ! 4 !elif
 ! 4 !else
@@ -47761,7 +47722,7 @@ $a
           statements following it are executed.
 
     The cCconditioncA may be any logical condition as evaluated by the
-    lsvariable functions) (e.g. ls&equal(4lm&equal(4)lelmIntroduction to Variable Functionsle) 
+    lsvariable functionslmIntroduction to Variable Functionsle (e.g. ls&equal(4)lm&equal(4)le) 
     returning cGTRUEcA or cGFALSEcA. An integer value, non-zero evaluates cGTRUEcA, 
     zero evaluates to cGFALSEcA. A non-numerical  argument, such as a string is always cGFALSEcA.
 
@@ -47806,8 +47767,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Fuctionsle, 
-    ls!goto(4)lm!goto(4)le, ls&equal(4)lm&equal(4)le, ls!return(4)lm!return(4)le, ls$status(5)lm$status(5)le.
+    lsIntroduction to Variable FunctionslmVariable Fuctionsle,  ls!goto(4)lm!goto(4)le, ls&equal(4)lm&equal(4)le, ls!return(4)lm!return(4)le, ls$status(5)lm$status(5)le.
 ! 4 !goto
 ! 4 !tgoto
 cEcENAME cEcA
@@ -47895,8 +47855,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls!if(4)lm!if(4)le, ls!jump(4)lm!jump(4)le, ls!repeat(4)lm!repeat(4)le,  
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls!if(4)lm!if(4)le, ls!jump(4)lm!jump(4)le, ls!repeat(4)lm!repeat(4)le,  
     ls!return(4)lm!return(4)le, ls!tjump(4)lm!tjump(4)le, ls!while(4)lm!while(4)le.
 ! 4 !return
 ! 4 !abort
@@ -49377,8 +49336,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&add(4)lm&add(4)le, ls&and(4)lm&and(4)le, ls&negate(4)lm&negate(4)le, ls&or(4)lm&or(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&add(4)lm&add(4)le, ls&and(4)lm&and(4)le, ls&negate(4)lm&negate(4)le, ls&or(4)lm&or(4)le.
 ! 4 &cond
 cEcENAME cEcA
 
@@ -49436,8 +49394,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&add(4)lm&add(4)le, ls&great(4)lm&great(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&add(4)lm&add(4)le, ls&great(4)lm&great(4)le.
 ! 4 &set
 cEcENAME cEcA
 
@@ -49483,8 +49440,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&inc(4)lm&inc(4)le, lsset-variable(2)lmset-variable(2)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&inc(4)lm&inc(4)le, lsset-variable(2)lmset-variable(2)le.
 ! 4 &find
 ! 4 &which
 cEcENAME cEcA
@@ -49555,8 +49511,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    lsfind-file(2)lmfind-file(2)le, lsinsert-file(2)lminsert-file(2)le, ls$search-path(5)lm$search-path(5)le,
+    lsIntroduction to Variable FunctionslmVariable Functionsle, lsfind-file(2)lmfind-file(2)le, lsinsert-file(2)lminsert-file(2)le, ls$search-path(5)lm$search-path(5)le,
     ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le, ls$MEUSERPATH(5)lm$MEUSERPATH(5)le.
 ! 4 !nmacro
 cEcENAME cEcA
@@ -49679,8 +49634,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    lsglobal-bind-key(2)lmglobal-bind-key(2)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, lsglobal-bind-key(2)lmglobal-bind-key(2)le.
 ! 4 &stat
 cEcENAME cEcA
 
@@ -49840,8 +49794,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    lsfind-file(2)lmfind-file(2)le, ls&bstat(4)lm&bstat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, lsfind-file(2)lmfind-file(2)le, ls&bstat(4)lm&bstat(4)le.
 ! 4 &reg
 cEcENAME cEcA
 
@@ -50004,8 +49957,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&mid(4)lm&mid(4)le, ls&cat(4)lm&cat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&mid(4)lm&mid(4)le, ls&cat(4)lm&cat(4)le.
 ! 4 &sequal
 ! 4 &isequal
 ! 4 &sgreat
@@ -50132,8 +50084,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    ls&sin(4)lm&sin(4)le, ls&slower(4)lm&slower(4)le, ls&rep(4)lm&rep(4)le, ls&add(4)lm&add(4)le, ls&equal(4)lm&equal(4)le,
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls&sin(4)lm&sin(4)le, ls&slower(4)lm&slower(4)le, ls&rep(4)lm&rep(4)le, ls&add(4)lm&add(4)le, ls&equal(4)lm&equal(4)le,
     ls&cond(4)lm&cond(4)le, lsRegularExpressions(2)lmRegular Expressionsle.
 ! 4 &sin
 ! 4 &isin
@@ -50194,10 +50145,10 @@ $a
 
     The cD&sincA and similar functions are useful for two different purposes.
     Consider the following example, this utilizes cD&sincA in two different
-    contexts. `!while &not &sin @wc " \t\n"` is a test for the end of the
+    contexts. cG!while &not &sin @wc " \t\n"cA is a test for the end of the
     number, i.e. a white space character (cG<tab>cA, cG<SPACE>cA or cG<NL>cA).
 
-    The invocation `set-variable #l1 &isin @wc "0123456789abcdef"` is subtly
+    The invocation cGset-variable #l1 &isin @wc "0123456789abcdef"cA is subtly
     different. In this case the return value is used to convert the character
     to it's integer hex value by using the value returned by cD&isincA.
 
@@ -50229,15 +50180,14 @@ $a
     of the first. This is particularly useful when extracting the path or file
     name from a complete file name. For example, given a UNIX style file name
     such as cG"/usr/local/bin/me"cA the path can be obtained using set-variable
-    %path &lef %pathfile &rsin `"/" %pathfile` and the file name by using
-    `set-variable %file &rig %pathfile &rsin` `"/" %pathfile`
+    %path &lef %pathfile &rsin cG"/" %pathfilecA and the file name by using
+    cGset-variable %file &rig %pathfile &rsincA `"/" %pathfile`
 
 
 cESEE ALSO cA
 
 
-    lsOperating ModeslmOperating Modesle, 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
+    lsOperating ModeslmOperating Modesle, lsIntroduction to Variable FunctionslmVariable Functionsle, 
     ls&sequal(4)lm&sequal(4)le, ls&rep(4)lm&rep(4)le.
 ! 4 !jump
 ! 4 !tjump
@@ -50349,9 +50299,8 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Fuctionsle, 
-    ls!goto(4)lm!goto(4)le, ls!if(4)lm!if(4)le, ls!repeat(4)lm!repeat(4)le, ls!return(4)lm!return(4)le, ls!tgoto(4)lm!tgoto(4)le,
-    ls!while(4)lm!while(4)le.
+    lsIntroduction to Variable FunctionslmVariable Fuctionsle, ls!goto(4)lm!goto(4)le, ls!if(4)lm!if(4)le, ls!repeat(4)lm!repeat(4)le, ls!return(4)lm!return(4)le,
+    ls!tgoto(4)lm!tgoto(4)le, ls!while(4)lm!while(4)le.
 ! 4 SearchGroups
 ! 4 @s0
 ! 4 @s1
@@ -50849,8 +50798,7 @@ $a
 cESEE ALSO cA
 
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle, 
-    lsfind-file(2)lmfind-file(2)le, ls&stat(4)lm&stat(4)le.
+    lsIntroduction to Variable FunctionslmVariable Functionsle, lsfind-file(2)lmfind-file(2)le, ls&stat(4)lm&stat(4)le.
 ! 5 $auto-time
 cEcENAME cEcA
 
@@ -51453,12 +51401,9 @@ $a
 cESEE ALSO cA
 
 
+    lsmacroWriting(4)lmWriting MicroEmacs Macrosle, lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle,
+    lsmacroDebugging(4)lmMacro Debugging - A Crash Coursele, lsmacroOverview(4)lmMicroEmacs Macro Language at a Glancele,
     lsexecute-file(2)lmexecute-file(2)le.
-
-    lsmacroWriting(4)lmWriting MicroEmacs Macrosle
-    lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
-    lsmacroDebugging(4)lmMacro Debugging - A Crash Coursele
-    lsmacroOverview(4)lmMicroEmacs Macro Language at a Glancele
 ! 5 $fill-eos
 ! 5 $fill-eos-len
 cEcENAME cEcA
@@ -51897,8 +51842,8 @@ $a
 
 cESEE ALSO cA
 
-    lsIntroduction to Variable FunctionslmVariable Functionsle.
-    ls$user-path(5)lm$user-path(5)le, ls$user-name(5)lm$user-name(5)le, ls$progname(5)lm$progname(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le,
+    lsIntroduction to Variable FunctionslmVariable Functionsle, ls$user-path(5)lm$user-path(5)le, ls$user-name(5)lm$user-name(5)le, 
+    ls$progname(5)lm$progname(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le.
 ! 5 $scroll
 cEcENAME cEcA
 
@@ -52913,8 +52858,8 @@ $a
     cD$resultcA is used to return the results of several commands:
 
     lsbuffer-info(2)lmbuffer-info(2)le - 
-     cD$resultcA is set to the same output string as printed to the
-     message-line by this command.
+       cD$resultcA is set to the same output string as printed to the
+       message-line by this command.
 
     lschange-font(2)lmchange-font(2)le -
        cD$resultcA is used to return the user select font when hte windows font
@@ -53115,11 +53060,11 @@ $a
 
 
 |%tag-file
- %tag-file - Tags file name
+    %tag-file - Tags file name
 |%tag-template
- %tag-template - Tag file search string
+    %tag-template - Tag file search string
 |%tag-option
- %tag-option - Tag file search option
+    %tag-option - Tag file search option
 $a
 
 
@@ -53159,7 +53104,7 @@ $a
     The cDtag-templatecA definition is modified to match the output of the
     cDctags(1)cA utility. The format of the tags file may differ from platform to
     platform, typically the differences are encountered in the line contents
-    field which is usually defined as `/ .... /` for a forward search tag and ?
+    field which is usually defined as cG/ .... /cA for a forward search tag and ?
     .... ? for a reverse search tag. Note that a tag's search string typically
     starts with the character cCcG^cAcA and ends with cCcG$cAcA which indicate the start
     and end of the line. The variable fields are expected to be in
@@ -53801,8 +53746,10 @@ $a
     cD$window-mark-linecA and cD$window-mark-colcA first appeared in the 2006 release
     of MicroEmacs.
 
+    The following code retrieves the current line on the screen:
+    
 sB
-          &sub &sub $window-line $window-y-scroll 1
+          set-variable #l0 &sub &sub $window-line $window-y-scroll 1
 
 sA
 cESEE ALSO cA
@@ -53816,9 +53763,9 @@ $a
 
 
 |%ftp-flags
- %ftp-flags - "Configure the FTP console"
+    %ftp-flags - "Configure the FTP console"
 |%http-flags
- %http-flags - "Configure the HTTP console"
+    %http-flags - "Configure the HTTP console"
 $a
 
 
@@ -53906,7 +53853,7 @@ $a
 
     Sets the horizontal window scroll bar color scheme, assigning the
     foreground, background and selection colors which are used to render the
-    vertical separator / scroll bars (see lsadd-color-scheme(2)lmadd-color-scheme(2)le. The separator
+    vertical separator / scroll bars (see lsadd-color-scheme(2)lmadd-color-scheme(2)le). The separator
     is rendered in reverse video, i.e. the foreground color of the color
     scheme is used as the background color, and vice versa.
 
@@ -55028,7 +54975,7 @@ $a
 
 
     lsbuffer-mode(2)lmbuffer-mode(2)le, ls&bmode(4)lm&bmode(4)le, ls$buffer-names(5)lm$buffer-names(5)le,
-     ls$command-names(5)lm$command-names(5)le, lsRegularExpressions(2)lmRegular Expressionsle.
+    ls$command-names(5)lm$command-names(5)le, lsRegularExpressions(2)lmRegular Expressionsle.
 ! 5 $progname
 cEcENAME cEcA
 
@@ -55064,8 +55011,7 @@ $a
 cESEE ALSO cA
 
 
- lsme(1)lmme(1)le, lsshell-command(2)lmshell-command(2)le, ls$search-path(5)lm$search-path(5)le,
- ls$user-name(5)lm$user-name(5)le, ls$user-path(5)lm$user-path(5)le.
+    lsme(1)lmme(1)le, lsshell-command(2)lmshell-command(2)le, ls$search-path(5)lm$search-path(5)le, ls$user-name(5)lm$user-name(5)le, ls$user-path(5)lm$user-path(5)le.
 ! 5 $find-words
 cEcENAME cEcA
 
@@ -55913,9 +55859,9 @@ $a
 
 
 |%http-proxy-addr
- %http-proxy-addr - Set HTTP proxy server address
+    %http-proxy-addr - Set HTTP proxy server address
 |%http-proxy-port
- %http-proxy-port - Set HTTP proxy server port
+    %http-proxy-port - Set HTTP proxy server port
 $a
 
 
@@ -56183,7 +56129,9 @@ $a
 cESYNOPSIS cA
 
 
-    cD$versioncA "cCYYYYMMDDcA"
+    cD$versioncA "cCYYYYMMDDcA"    - Full Release  
+    cD$versioncA "cCYYYYMMDDbNcA"  - Beta Release  
+    
 
 
 cEDESCRIPTION cA
@@ -56216,6 +56164,14 @@ $a
     environment variable $version has been defined. cGcGERRORcAcA evaluates to cG0cA
     hence the test still operates correctly.
 
+    In 2024 with version "20091224" the variable was extended to introduce 
+    beta-releases with the string  "b1" or "b2" at the end, for instance
+    "20091224b1". 
+    
+    Please note that since 2021 the four numbers at the beginning does not give
+    the release year, but the version year. There is this MicroEmacs 2009 version
+    and an other, at this time not yet released, MicroEmacs 2024 version.
+    
     This variable is used in the macro file cGme.emfcA to check for any macro -
     executable incompatibility issues.
 ! 5 $window-flags
@@ -56467,6 +56423,7 @@ $a
 
 
     $user-name - MicroEmacs user name
+$a
 
 
 cESYNOPSIS cA
@@ -56479,9 +56436,9 @@ $a
 
 
     cD$user-namecA is the name of the MicroEmacs user. The name is used for
-    identifying user configuration files such as cC$user-namecAcD.emfcA and
-    cC$user-namecAcD.erfcA, the start-up lsUserProfiles(2)lmuserle macro file and lserf(8)lmerf(8)le registry file that
-    contains saved user preferences.
+    identifying  user configuration  files  such  as  cC$user-namecAcD.emfcA and
+    cC$user-namecAcD.erfcA, the start-up lsUserProfiles(2)lmuserle macro file and lserf(8)lmerf(8)le registry file
+    that contains saved user preferences.
 
     The cD$user-namecA is determined as follows, in order of precedence:
 
@@ -56517,6 +56474,7 @@ $a
 
 
     $user-path - MicroEmacs user directory
+$a
 
 
 cESYNOPSIS cA
@@ -56837,8 +56795,7 @@ $a
 cESEE ALSO cA
 
 
-    lsindent(2)lmindent(2)le.
-    lslanguageTemplates(2)lmLanguage Templatesle.
+    lslanguageTemplates(2)lmLanguage Templatesle, lsindent(2)lmindent(2)le.
 ! 5 $mode-chars
 cEcENAME cEcA
 
@@ -57200,9 +57157,7 @@ $a
 cESEE ALSO cA
 
 
-    lsfileHooks(2)lmFile Hooksle.
-    lsetfinsrt(3)lmetfinsrt(3)le, ls&find(4)lm&find(4)le, ls$user-path(5)lm$user-path(5)le.
-
+    lsfileHooks(2)lmFile Hooksle, lsetfinsrt(3)lmetfinsrt(3)le, ls&find(4)lm&find(4)le, ls$user-path(5)lm$user-path(5)le.
 ! 8 edf
 cEcENAME cEcA
 
@@ -57312,12 +57267,9 @@ $a
 cESEE ALSO cA
 
 
-    lsfileHooks(2)lmFile Hooksle, lsemftags(3f)lmemftags(3f)le, ls$user-path(5)lm$user-path(5)le, lsexecute-file(2)lmexecute-file(2)le.
-
-    lsmacroWriting(4)lmWriting MicroEmacs Macrosle
-    lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
-    lsmacroDebugging(4)lmMacro Debugging - A Crash Coursele
-    lsmacroOverview(4)lmMicroEmacs Macro Language at a Glancele
+    lsfileHooks(2)lmFile Hooksle, lsmacroWriting(4)lmWriting MicroEmacs Macrosle, lsMicroEmacs - Macro Language GlossarylmMacro Glossaryle
+    lsmacroDebugging(4)lmMacro Debugging - A Crash Coursele, lsmacroOverview(4)lmMicroEmacs Macro Language at a Glancele,
+    lsemftags(3f)lmemftags(3f)le, ls$user-path(5)lm$user-path(5)le, lsexecute-file(2)lmexecute-file(2)le.
 ! 8 erf
 cEcENAME cEcA
 
@@ -58198,7 +58150,7 @@ $a
     lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsctags(3f)lmctags(3f)le, lsfind-tag(2)lmfind-tag(2)le, lsrcs-file(2)lmrcs-file(2)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 ehf
 cEcESYNOPSIS cEcA
 
@@ -58231,9 +58183,9 @@ $a
 cESEE ALSO cA
 
 
-    lshelp(2)lmhelp(2)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lshelp(2)lmhelp(2)le.
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+
 ! 9 emf
 cEcESYNOPSIS cEcA
 
@@ -58312,11 +58264,10 @@ $a
 
 cESEE ALSO cA
 
-
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsemftags(3f)lmemftags(3f)le, lsfind-tag(2)lmfind-tag(2)le, lsindent(2)lmindent(2)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 txt
 ! 9 doc
 cEcESYNOPSIS cEcA
@@ -58499,10 +58450,9 @@ $a
 cESEE ALSO cA
 
 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     ls$buffer-fill-col(5)lm$buffer-fill-col(5)le, ls$buffer-fill-mode(5)lm$buffer-fill-mode(5)le, ls$fill-col(5)lm$fill-col(5)le, ls$fill-mode(5)lm$fill-mode(5)le,
     lsbuffer-setup(3)lmbuffer-setup(3)le, lsfill-paragraph(2)lmfill-paragraph(2)le, lsspell-buffer(3)lmspell-buffer(3)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 latex
 ! 9 bib
 ! 9 tex
@@ -58598,9 +58548,7 @@ $a
 cESEE ALSO cA
 
 
-    lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lstime(2m)lmtime(2m)le.
 ! 9 makefile
 cEcESYNOPSIS cEcA
 
@@ -58659,9 +58607,7 @@ $a
 cESEE ALSO cA
 
 
-    lsimakefile(9)lmimakefile(9)le, lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsimakefile(9)lmimakefile(9)le, lstime(2m)lmtime(2m)le.
 ! 9 imakefile
 cEcESYNOPSIS cEcA
 
@@ -58712,9 +58658,8 @@ $a
 cESEE ALSO cA
 
 
-    lsmakefile(9)lmmakefile(9)le, lstime(2m)lmtime(2m)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsmakefile(9)lmmakefile(9)le, lstime(2m)lmtime(2m)le.
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 bat
 ! 9 btm
 cEcESYNOPSIS cEcA
@@ -58764,9 +58709,7 @@ $a
 cESEE ALSO cA
 
 
-    lsini(9)lmini(9)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsini(9)lmini(9)le.
 ! 9 ini
 ! 9 hpj
 ! 9 reg
@@ -58822,9 +58765,9 @@ $a
 cESEE ALSO cA
 
 
-    lsbat(9)lmbat(9)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsbat(9)lmbat(9)le.
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+
 ! 9 f
 ! 9 f77
 ! 9 f90
@@ -58977,10 +58920,9 @@ $a
 cESEE ALSO cA
 
 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsindent(2)lmindent(2)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
     lsrestyle-region(3)lmrestyle-region(3)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 bnf
 cEcESYNOPSIS cEcA
 
@@ -59263,9 +59205,7 @@ $a
 cESEE ALSO cA
 
 
-    lsfvwm(9)lmfvwm(9)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsfvwm(9)lmfvwm(9)le.
 ! 9 java
 ! 9 jav
 cEcESYNOPSIS cEcA
@@ -59386,11 +59326,10 @@ $a
 cESEE ALSO cA
 
 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
     lsfind-tag(2)lmfind-tag(2)le, lsjavatags(3f)lmjavatags(3f)le, lsrcs-file(2)lmrcs-file(2)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
     lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 tcl
 ! 9 tk
 ! 9 wish
@@ -59476,10 +59415,9 @@ $a
 cESEE ALSO cA
 
 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsfind-tag(2)lmfind-tag(2)le, lsindent(2)lmindent(2)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstcltags(3f)lmtcltags(3f)le, lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 asn.1
 cEcESYNOPSIS cEcA
 
@@ -59536,9 +59474,7 @@ $a
 cESEE ALSO cA
 
 
-    lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lstime(2m)lmtime(2m)le.
 ! 9 erf
 cEcESYNOPSIS cEcA
 
@@ -59579,9 +59515,7 @@ $a
 cESEE ALSO cA
 
 
-    lslist-registry(2)lmlist-registry(2)le, lserf(8)lmerf(8)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lslist-registry(2)lmlist-registry(2)le, lserf(8)lmerf(8)le.
 ! 9 man
 cEcESYNOPSIS cEcA
 
@@ -59637,9 +59571,7 @@ $a
 cESEE ALSO cA
 
 
-    lsman(3)lmman(3)le, lsman-clean(3)lmman-clean(3)le,
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsman(3)lmman(3)le, lsman-clean(3)lmman-clean(3)le,
 ! 9 vrml
 cEcESYNOPSIS cEcA
 
@@ -59703,9 +59635,7 @@ $a
 cESEE ALSO cA
 
 
-    lsindent(2)lmindent(2)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsindent(2)lmindent(2)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le.
 ! 9 perl
 ! 9 pl
 ! 9 pm
@@ -59808,10 +59738,8 @@ $a
 cESEE ALSO cA
 
 
-    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsindent(2)lmindent(2)le, lsperldb(3)lmperldb(3)le,
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsindent(2)lmindent(2)le, lsperldb(3)lmperldb(3)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 html
 ! 9 htm
 cEcESYNOPSIS cEcA
@@ -59915,9 +59843,7 @@ $a
 cESEE ALSO cA
 
 
-    lsprint-buffer(2)lmprint-buffer(2)le, lsbuffer-setup(3)lmbuffer-setup(3)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsprint-buffer(2)lmprint-buffer(2)le, lsbuffer-setup(3)lmbuffer-setup(3)le.
 ! 9 nroff
 ! 9 troff
 ! 9 0-9
@@ -60049,10 +59975,9 @@ $a
 cESEE ALSO cA
 
 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsfill-paragraph(2)lmfill-paragraph(2)le, lsfind-tag(2)lmfind-tag(2)le,
     lsntags(3f)lmntags(3f)le, lstime(2m)lmtime(2m)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 info
 cEcESYNOPSIS cEcA
 
@@ -60099,9 +60024,7 @@ $a
 cESEE ALSO cA
 
 
-    lsinfo(3)lminfo(3)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsinfo(3)lminfo(3)le.
 ! 9 cbl
 cEcESYNOPSIS cEcA
 
@@ -60221,9 +60144,7 @@ $a
 cESEE ALSO cA
 
 
-    lsindent(2)lmindent(2)le, lsrestyle-region(3)lmrestyle-region(3)le lsrestyle-buffer(3)lmrestyle-buffer(3)le lsasm(9)lmasm(9)le
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsindent(2)lmindent(2)le, lsrestyle-region(3)lmrestyle-region(3)le lsrestyle-buffer(3)lmrestyle-buffer(3)le lsasm(9)lmasm(9)le
 ! 9 asm
 ! 9 s
 cEcESYNOPSIS cEcA
@@ -60258,8 +60179,7 @@ $a
 cESEE ALSO cA
 
 
-    lsx86(9)lmx86(9)le.
-    lsfileHooks(2)lmFile Hooksle, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+    lsfileHooks(2)lmFile Hooksle, lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsx86(9)lmx86(9)le.
 ! 9 vb
 ! 9 bas
 ! 9 cls
@@ -60445,7 +60365,6 @@ $a
 
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
-
 ! 9 md
 ! 9 Markdown
 cEcESYNOPSIS cEcA
@@ -60513,10 +60432,7 @@ $a
 cESEE ALSO cA
 
 
-    lsbuffer-setup(3)lmbuffer-setup(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
-
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsbuffer-setup(3)lmbuffer-setup(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
 ! 9 MetaFont
 ! 9 mp
 ! 9 mf
@@ -61186,7 +61102,7 @@ $a
 cESEE ALSO cA
 
 
-    lshtml(9)lmhtml(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lshtml(9)lmhtml(9)le. 
 ! 9 jst
 cEcESYNOPSIS cEcA
 
@@ -61296,7 +61212,7 @@ $a
     
        A pair of commas denotes a subscript text region.
 
-    Styles may be nested i.e. `//Italic **Bold Italic** Italic Again//` To get
+    Styles may be nested i.e. cG//Italic **Bold Italic** Italic Again//cA To get
     raw text with a double quote use: `""raw with a &["]" in it""`
 
 

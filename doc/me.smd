@@ -8457,9 +8457,7 @@
 ## SEE ALSO
 
 
-  [FAQ06](faq06(0f))
-
-  [[FAQ Index]](Frequently Asked Questions).
+  [FAQ06](faq06(0f)), [[FAQ Index]](Frequently Asked Questions).
 !! me-id: amicr049
 ! 0ffaq08
 ## QUESTION (08)
@@ -8881,10 +8879,8 @@
 
 ## SEE ALSO
 
+  [[FAQ Index]](Frequently Asked Questions), [$mode-line(5)]($mode-line(5)).
 
-  [$mode-line(5)]($mode-line(5)).
-
-  [[FAQ Index]](Frequently Asked Questions).
 
 !! me-id: amicr067
 ! 0ffaq26
@@ -10729,11 +10725,8 @@ John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 
 ## SEE ALSO
 
-
-  [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MENAME(5)]($MENAME(5)), [$MEPATH(5)]($MEPATH(5)), 
-  [$MEUSERPATH(5)]($MEUSERPATH(5)), [emf(8)](emf(8)),
-  __emacs(1)__ [GNU], __more(1)__, [me(1)](me(1)), __vi(1)__.
-  [Command Line Filters](Command Line Filters).
+  [Command Line Filters](Command Line Filters), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MENAME(5)]($MENAME(5)), [$MEPATH(5)]($MEPATH(5)), 
+  [$MEUSERPATH(5)]($MEUSERPATH(5)), [emf(8)](emf(8)), __emacs(1)__ [GNU], __more(1)__, [me(1)](me(1)), __vi(1)__.
 !! me-id: m2cmd000
 ! 2 abort-command
 ## NAME
@@ -12605,11 +12598,10 @@ $a
 
 ## SEE ALSO
 
-
+  [Regular Expressions](RegularExpressions(2)),
   [buffer-mode(2)](buffer-mode(2)), [exact(2m)](exact(2m)), [hunt-backward(2)](hunt-backward(2)), [hunt-forward(2)](hunt-forward(2)),
   [isearch-forward(2)](isearch-forward(2)), [narrow-search-forward(3)](narrow-search-forward(3)), [magic(2m)](magic(2m)),
   [replace-string(2)](replace-string(2)), [search-backward(2)](search-backward(2)), [search-forward(2)](search-forward(2)).
-  [Regular Expressions](RegularExpressions(2))
 !! me-id: m2cmd020
 ! 2 compare-windows
 ! 3 compare-windows-exact
@@ -13397,6 +13389,7 @@ $a
 
 ## SEE ALSO
 
+
   [change-font(2)](change-font(2)), [change-font-size(3)](change-font-size(3))
 
 !! me-id: m3mac094
@@ -13441,7 +13434,7 @@ $a
 
   [change-font(2)](change-font(2)), 
   
-  _X-Windows:_  [change-font-type(3)](change-font-type(3)], [change-font-xfontsel(3)](change-font-xfontsel(3)
+  _X-Windows:_  [change-font-type(3)](change-font-type(3)), [change-font-xfontsel(3)](change-font-xfontsel(3))
 
 
 !! me-id: m2cmd028
@@ -18910,9 +18903,8 @@ $a
 ## SEE ALSO
 
 
-  [exact(2m)](exact(2m)), [hunt-forward(2)](hunt-forward(2)), [magic(2m)](magic(2m)), [ml-bind-key(2)](ml-bind-key(2)),
+  [Regular Expressions](RegularExpressions(2)), [exact(2m)](exact(2m)), [hunt-forward(2)](hunt-forward(2)), [magic(2m)](magic(2m)), [ml-bind-key(2)](ml-bind-key(2)),
   [narrow-search-forward(3)](narrow-search-forward(3)), [page-file(3)](page-file(3)), [search-forward(2)](search-forward(2)).
-  [Regular Expressions](RegularExpressions(2))
 !! me-id: m2cmd079
 ! 2 kbd-macro-query
 ## NAME
@@ -20695,8 +20687,7 @@ $a
   Refer to [search-forward(2)](search-forward(2)) for a description of the magic mode search
   characters.
 
-  [replace-string(2)](replace-string(2)), [$result(5)]($result(5)).
-  [Regular Expressions](RegularExpressions(2))
+  [Regular Expressions](RegularExpressions(2)), [replace-string(2)](replace-string(2)), [$result(5)]($result(5)).
 !! me-id: m2cmd103
 ! 2 quick-exit
 ! 2 save-buffers-exit-emacs
@@ -20993,8 +20984,7 @@ $a
   See [Operating Modes](Operating Modes) for a description of the [magic(2m)](magic(2m)) and [exact(2m)](exact(2m)) modes
   which change the search space.
 
-  [buffer-mode(2)](buffer-mode(2)), [query-replace-string(2)](query-replace-string(2)), [search-forward(2)](search-forward(2)), [$result(5)]($result(5)).
-  [Regular Expressions](RegularExpressions(2))
+  [Regular Expressions](RegularExpressions(2)), [buffer-mode(2)](buffer-mode(2)), [query-replace-string(2)](query-replace-string(2)), [search-forward(2)](search-forward(2)), [$result(5)]($result(5)).
 !! me-id: m2cmd110
 ! 2 set-position
 ! 2 goto-position
@@ -21485,11 +21475,10 @@ $a
 
 ## SEE ALSO
 
-
+  [Regular Expressions](RegularExpressions(2)), 
   [buffer-mode(2)](buffer-mode(2)), [exact(2m)](exact(2m)), [hunt-backward(2)](hunt-backward(2)), [hunt-forward(2)](hunt-forward(2)),
   [isearch-forward(2)](isearch-forward(2)), [narrow-search-forward(3)](narrow-search-forward(3)), [magic(2m)](magic(2m)),
   [replace-string(2)](replace-string(2)), [search-buffer(2)](search-buffer(2)).
-  [Regular Expressions](RegularExpressions(2))
 !! me-id: m2cmd117
 ! 2 global-abbrev-file
 ! 2 buffer-abbrev-file
@@ -21859,11 +21848,8 @@ $a
 
 ## SEE ALSO
 
-
+  [Variables](Variables(4)), [Introduction to Variable Functions](Introduction to Variable Functions), [Register Variables](Variables(4)),
   [describe-variable(2)](describe-variable(2)), [list-variables(2)](list-variables(2)), [&set(4)](&set(4)).
-  [Variables](Variables(4))
-  [Introduction to Variable Functions](Introduction to Variable Functions)
-  [Register Variables](Variables(4))
 !! me-id: m2cmd123
 ! 2 append-buffer
 ## NAME
@@ -31895,11 +31881,8 @@ $a
 
 ## SEE ALSO
 
-
-  [$debug(5)]($debug(5)),
-  [Macro Glossary](MicroEmacs - Macro Language Glossary)
-  [MicroEmacs Macro Language at a Glance.](macroOverview(4))
-  [Writing MicroEmacs Macros](macroWriting(4))
+  [Macro Glossary](MicroEmacs - Macro Language Glossary), [MicroEmacs Macro Language at a Glance.](macroOverview(4))
+  [Writing MicroEmacs Macros](macroWriting(4)), [$debug(5)]($debug(5)).
 !! me-id: m2nar012
 ! 4 macroOverview
 ## MACRO LANGUAGE OVERVIEW
@@ -32231,10 +32214,8 @@ $a
 ## SEE ALSO
 
 
-  [Introduction to Variable Functions](Introduction to Variable Functions)
-  [Macro Glossary](MicroEmacs - Macro Language Glossary)
-  [Macro Debugging Crash Course](macroDebugging(4))
-  [Writing MicroEmacs Macros](macroWriting(4))
+  [Introduction to Variable Functions](Introduction to Variable Functions), [Macro Glossary](MicroEmacs - Macro Language Glossary)
+  [Macro Debugging Crash Course](macroDebugging(4)), [Writing MicroEmacs Macros](macroWriting(4))
 !! me-id: m3fcl001
 ! 3fgdiff
 ## NAME
@@ -33637,9 +33618,8 @@ $a
 ## SEE ALSO
 
 
-  [query-replace-string(2)](query-replace-string(2)), [save-some-buffers(2)](save-some-buffers(2)), [grep(3)](grep(3)), [get-next-line(2)](get-next-line(2)),
-  [undo(2)](undo(2)), [replace-all-string(3)](replace-all-string(3)), [search-forward(2)](search-forward(2)).
-  [Regular Expressions](RegularExpressions(2))
+  [Regular Expressions](RegularExpressions(2)),[query-replace-string(2)](query-replace-string(2)), [save-some-buffers(2)](save-some-buffers(2)), [grep(3)](grep(3)), 
+  [get-next-line(2)](get-next-line(2)), [undo(2)](undo(2)), [replace-all-string(3)](replace-all-string(3)), [search-forward(2)](search-forward(2)).
 !! me-id: m3mac008
 ! 3 tabs-to-spaces
 ## NAME
@@ -34552,7 +34532,7 @@ $a
 ## SEE ALSO
 
 
-  [.ascii-time.format(5)](.ascii-time.format(5)),  lm$buffer-fhook(5)le, [&find(4)](&find(4)), [ascii-time(3)](ascii-time(3)).
+  [.ascii-time.format(5)](.ascii-time.format(5)), [$buffer-fhook(5)]($buffer-fhook(5)), [&find(4)](&find(4)), [ascii-time(3)](ascii-time(3)).
 !! me-id: m3mac019
 ! 3 ascii-time
 ! 5 .ascii-time.format
@@ -34719,10 +34699,10 @@ $a
 
 ## SEE ALSO
 
-
+  [Regular Expressions](RegularExpressions(2)),
   [replace-all-string(3)](replace-all-string(3)), [replace-string(2)](replace-string(2)), [save-some-buffers(2)](save-some-buffers(2)), [grep(3)](grep(3)),
   [get-next-line(2)](get-next-line(2)), [undo(2)](undo(2)), [query-replace-all-string(3)](query-replace-all-string(3)), [search-forward(2)](search-forward(2)).
-  [Regular Expressions](RegularExpressions(2))
+
 !! me-id: m3mac021
 ! 3 delete-indentation
 ## NAME
@@ -39990,8 +39970,7 @@ $a
   [execute-buffer(2)](execute-buffer(2)), [expand-abbrev(2)](expand-abbrev(2)), [global-abbrev-file(2)](global-abbrev-file(2)), [hilight(2)](hilight(2)),
   [indent(2)](indent(2)), [indent(2m)](indent(2m)), [item-list(3)](item-list(3)), [narrow-buffer(2)](narrow-buffer(2)), [ntags(3f)](ntags(3f)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [scheme-editor(3)](scheme-editor(3)), [time(2m)](time(2m)),
-  [File Hooks](fileHooks(2)),
-  [File Language Templates](languageTemplates(2)).
+  [File Hooks](fileHooks(2)),[File Language Templates](languageTemplates(2)).
 !! me-id: m3mac065
 ! 3 page-file
 ! 3 page-bfile
@@ -40812,9 +40791,8 @@ $a
 ## SEE ALSO
 
 
-  [buffer-mode(2)](buffer-mode(2)), [exact(2m)](exact(2m)), [hunt-backward(2)](hunt-backward(2)), [hunt-forward(2)](hunt-forward(2)),
+  [Regular Expressions](RegularExpressions(2)), [buffer-mode(2)](buffer-mode(2)), [exact(2m)](exact(2m)), [hunt-backward(2)](hunt-backward(2)), [hunt-forward(2)](hunt-forward(2)),
   [isearch-forward(2)](isearch-forward(2)), [magic(2m)](magic(2m)), [replace-string(2)](replace-string(2)). [search-forward(2)](search-forward(2)),
-  [Regular Expressions](RegularExpressions(2))
 !! me-id: m3mac075
 ! 3 xfind
 ! 5 %xfind-com
@@ -40850,7 +40828,7 @@ $a
   The find command is specified by the macro variable __%xfind-com__ if not
   defined the default `find` is used. The command line run by __xfind__ is
 
-      _%xfind-com_ -name "_base-path_" -name "_file-search_" -print
+  _%xfind-com_ -name "_base-path_" -name "_file-search_" -print
 
   The resultant files found are displayed in the __*find*__ buffer and may be
   selected by double-clicking with the mouse left button or selecting the
@@ -40941,8 +40919,7 @@ $a
 ## SEE ALSO
 
 
-  [append-buffer(2)](append-buffer(2)), [save-buffer(2)](save-buffer(2)), [write-buffer(2)](write-buffer(2)).
-  [Writing MicroEmacs Macros](macroWriting(4)).
+  [Writing MicroEmacs Macros](macroWriting(4)), [append-buffer(2)](append-buffer(2)), [save-buffer(2)](save-buffer(2)), [write-buffer(2)](write-buffer(2)).
 !! me-id: m3mac077
 ! 3 watch
 ! 3 watch-time
@@ -46929,12 +46906,10 @@ $a
 ## SEE ALSO
 
 
-  [buffer-setup(3)](buffer-setup(3)), [execute-named-command(2)](execute-named-command(2)), [hilight(2)](hilight(2)), [indent(2)](indent(2)),
+  [Operating Modes](Operating Modes), [buffer-setup(3)](buffer-setup(3)), [execute-named-command(2)](execute-named-command(2)), [hilight(2)](hilight(2)), [indent(2)](indent(2)),
   [major-mode-setup(3)](major-mode-setup(3)), [osd(2)](osd(2)), [tabs-to-spaces(3)](tabs-to-spaces(3)) [$buffer-fill-col(5)]($buffer-fill-col(5)),
   [$buffer-fill-mode(5)]($buffer-fill-mode(5)), [$buffer-indent-width(5)]($buffer-indent-width(5)), [$buffer-tab-width(5)]($buffer-tab-width(5)),
   [$fill-col(5)]($fill-col(5)), [$fill-mode(5)]($fill-mode(5)), [$indent-width(5)]($indent-width(5)), [$tab-width(5)]($tab-width(5)).
-
-  [Operating Modes](Operating Modes).
 !! me-id: m3osd015
 ! 3 file-type-setup
 ## NAME
@@ -47337,9 +47312,7 @@ $a
 
 ## SEE ALSO
 
-
-  [file-browser(3)](file-browser(3)), [find-zfile(3)](find-zfile(3)), [user-setup(3)](user-setup(3)).
-  [Regular Expressions](RegularExpressions(2))
+  [Regular Expressions](RegularExpressions(2)), [file-browser(3)](file-browser(3)), [find-zfile(3)](find-zfile(3)), [user-setup(3)](user-setup(3)).
 !! me-id: m4fil000
 ! 4 &rep
 ! 4 &irep
@@ -47420,9 +47393,7 @@ $a
 ## SEE ALSO
 
 
-  [Operating Modes](Operating Modes), 
-  [Variable Functions](Introduction to Variable Functions),  
-  [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)).
+  [Operating Modes](Operating Modes), [Variable Functions](Introduction to Variable Functions), [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)).
 !! me-id: m4fil001
 ! 4 &abs
 ! 4 &add
@@ -47580,8 +47551,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&great(4)](&great(4)).
+  [Variable Functions](Introduction to Variable Functions), [&great(4)](&great(4)).
 !! me-id: m4fil002
 ! 4 &cat
 ! 4 &mid
@@ -47763,9 +47733,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&sin(4)](&sin(4)), [&sequal(4)](&sequal(4)), [&lget(4)](&lget(4)), 
-  [&sprintf(4)](&sprintf(4)).
+  [Variable Functions](Introduction to Variable Functions), [&sin(4)](&sin(4)), [&sequal(4)](&sequal(4)), [&lget(4)](&lget(4)), [&sprintf(4)](&sprintf(4)).
 !! me-id: m4fil003
 ! 4 &and
 ! 4 &or
@@ -47886,8 +47854,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&add(4)](&add(4)), [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)), [&cond(4)](&cond(4)).
+  [Variable Functions](Introduction to Variable Functions), [&add(4)](&add(4)), [&sequal(4)](&sequal(4)), [&sin(4)](&sin(4)), [&cond(4)](&cond(4)).
 !! me-id: m4fil004
 ! 4 &sprintf
 ! 4 &spr
@@ -48000,8 +47967,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&cat(4)](&cat(4)).
+  [Variable Functions](Introduction to Variable Functions), [&cat(4)](&cat(4)).
 !! me-id: m4fil005
 ! 4 &atoi
 ! 4 &bmode
@@ -48184,9 +48150,7 @@ $a
 ## SEE ALSO
 
 
-  [Operating Modes](Operating Modes), 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&sprintf(4)](&sprintf(4)), [&equal(4)](&equal(4)).
+  [Operating Modes](Operating Modes), [Variable Functions](Introduction to Variable Functions), [&sprintf(4)](&sprintf(4)), [&equal(4)](&equal(4)).
 !! me-id: m4fil006
 ! 4 !emacro
 ! 4 !ehelp
@@ -48262,12 +48226,9 @@ $a
 
 ## SEE ALSO
 
-  [define-macro(2)](define-macro(2)), [define-help(2)](define-help(2)).
-  [Operating Modes](Operating Modes), 
-  [Writing MicroEmacs Macros](macroWriting(4))
-  [Macro Glossary](MicroEmacs - Macro Language Glossary)
-  [Macro Debugging - A Crash Course](macroDebugging(4))
-  [MicroEmacs Macro Language at a Glance](macroOverview(4))
+
+  [Operating Modes](Operating Modes), [Writing MicroEmacs Macros](macroWriting(4)),  [Macro Glossary](MicroEmacs - Macro Language Glossary)
+  [Macro Debugging - A Crash Course](macroDebugging(4)), [MicroEmacs Macro Language at a Glance](macroOverview(4)), [define-macro(2)](define-macro(2)), [define-help(2)](define-help(2)).
 !! me-id: m4fil007
 ! 4 !force
 ## NAME
@@ -48438,8 +48399,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Fuctions](Introduction to Variable Functions), 
-  [!goto(4)](!goto(4)), [&equal(4)](&equal(4)), [!return(4)](!return(4)), [$status(5)]($status(5)).
+  [Variable Fuctions](Introduction to Variable Functions),  [!goto(4)](!goto(4)), [&equal(4)](&equal(4)), [!return(4)](!return(4)), [$status(5)]($status(5)).
 !! me-id: m4fil009
 ! 4 !goto
 ! 4 !tgoto
@@ -48529,8 +48489,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [!if(4)](!if(4)), [!jump(4)](!jump(4)), [!repeat(4)](!repeat(4)),  
+  [Variable Functions](Introduction to Variable Functions), [!if(4)](!if(4)), [!jump(4)](!jump(4)), [!repeat(4)](!repeat(4)),  
   [!return(4)](!return(4)), [!tjump(4)](!tjump(4)), [!while(4)](!while(4)).
 !! me-id: m4fil010
 ! 4 !return
@@ -50056,8 +50015,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&add(4)](&add(4)), [&and(4)](&and(4)), [&negate(4)](&negate(4)), [&or(4)](&or(4)).
+  [Variable Functions](Introduction to Variable Functions), [&add(4)](&add(4)), [&and(4)](&and(4)), [&negate(4)](&negate(4)), [&or(4)](&or(4)).
 !! me-id: m4fil022
 ! 4 &cond
 ## NAME
@@ -50118,8 +50076,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&add(4)](&add(4)), [&great(4)](&great(4)).
+  [Variable Functions](Introduction to Variable Functions), [&add(4)](&add(4)), [&great(4)](&great(4)).
 !! me-id: m4fil023
 ! 4 &set
 ## NAME
@@ -50167,8 +50124,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&inc(4)](&inc(4)), [set-variable(2)](set-variable(2)).
+  [Variable Functions](Introduction to Variable Functions), [&inc(4)](&inc(4)), [set-variable(2)](set-variable(2)).
 !! me-id: m4fil024
 ! 4 &find
 ! 4 &which
@@ -50241,8 +50197,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [find-file(2)](find-file(2)), [insert-file(2)](insert-file(2)), [$search-path(5)]($search-path(5)),
+  [Variable Functions](Introduction to Variable Functions), [find-file(2)](find-file(2)), [insert-file(2)](insert-file(2)), [$search-path(5)]($search-path(5)),
   [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MEUSERPATH(5)]($MEUSERPATH(5)).
 !! me-id: m4fil025
 ! 4 !nmacro
@@ -50370,8 +50325,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [global-bind-key(2)](global-bind-key(2)).
+  [Variable Functions](Introduction to Variable Functions), [global-bind-key(2)](global-bind-key(2)).
 !! me-id: m4fil027
 ! 4 &stat
 ## NAME
@@ -50534,8 +50488,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [find-file(2)](find-file(2)), [&bstat(4)](&bstat(4)).
+  [Variable Functions](Introduction to Variable Functions), [find-file(2)](find-file(2)), [&bstat(4)](&bstat(4)).
 !! me-id: m4fil028
 ! 4 &reg
 ## NAME
@@ -50703,8 +50656,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&mid(4)](&mid(4)), [&cat(4)](&cat(4)).
+  [Variable Functions](Introduction to Variable Functions), [&mid(4)](&mid(4)), [&cat(4)](&cat(4)).
 !! me-id: m4fil030
 ! 4 &sequal
 ! 4 &isequal
@@ -50836,8 +50788,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [&sin(4)](&sin(4)), [&slower(4)](&slower(4)), [&rep(4)](&rep(4)), [&add(4)](&add(4)), [&equal(4)](&equal(4)),
+  [Variable Functions](Introduction to Variable Functions), [&sin(4)](&sin(4)), [&slower(4)](&slower(4)), [&rep(4)](&rep(4)), [&add(4)](&add(4)), [&equal(4)](&equal(4)),
   [&cond(4)](&cond(4)), [Regular Expressions](RegularExpressions(2)).
 !! me-id: m4fil031
 ! 4 &sin
@@ -50942,8 +50893,7 @@ $a
 ## SEE ALSO
 
 
-  [Operating Modes](Operating Modes), 
-  [Variable Functions](Introduction to Variable Functions), 
+  [Operating Modes](Operating Modes), [Variable Functions](Introduction to Variable Functions), 
   [&sequal(4)](&sequal(4)), [&rep(4)](&rep(4)).
 !! me-id: m4fil032
 ! 4 !jump
@@ -51057,9 +51007,8 @@ $a
 ## SEE ALSO
 
 
-  [Variable Fuctions](Introduction to Variable Functions), 
-  [!goto(4)](!goto(4)), [!if(4)](!if(4)), [!repeat(4)](!repeat(4)), [!return(4)](!return(4)), [!tgoto(4)](!tgoto(4)),
-  [!while(4)](!while(4)).
+  [Variable Fuctions](Introduction to Variable Functions), [!goto(4)](!goto(4)), [!if(4)](!if(4)), [!repeat(4)](!repeat(4)), [!return(4)](!return(4)),
+  [!tgoto(4)](!tgoto(4)), [!while(4)](!while(4)).
 !! me-id: m4fil033
 ! 4 SearchGroups
 ! 4 @s0
@@ -51568,8 +51517,7 @@ $a
 ## SEE ALSO
 
 
-  [Variable Functions](Introduction to Variable Functions), 
-  [find-file(2)](find-file(2)), [&stat(4)](&stat(4)).
+  [Variable Functions](Introduction to Variable Functions), [find-file(2)](find-file(2)), [&stat(4)](&stat(4)).
 !! me-id: m5var000
 ! 5 $auto-time
 ## NAME
@@ -52188,12 +52136,9 @@ $a
 ## SEE ALSO
 
 
+  [Writing MicroEmacs Macros](macroWriting(4)), [Macro Glossary](MicroEmacs - Macro Language Glossary),
+  [Macro Debugging - A Crash Course](macroDebugging(4)), [MicroEmacs Macro Language at a Glance](macroOverview(4)),
   [execute-file(2)](execute-file(2)).
-
-  [Writing MicroEmacs Macros](macroWriting(4))
-  [Macro Glossary](MicroEmacs - Macro Language Glossary)
-  [Macro Debugging - A Crash Course](macroDebugging(4))
-  [MicroEmacs Macro Language at a Glance](macroOverview(4))
 !! me-id: m5var012
 ! 5 $fill-eos
 ! 5 $fill-eos-len
@@ -52644,8 +52589,8 @@ $a
 
 ## SEE ALSO
 
-  [Variable Functions](Introduction to Variable Functions).
-  [$user-path(5)]($user-path(5)), [$user-name(5)]($user-name(5)), [$progname(5)]($progname(5)), [$MENAME(5)]($MENAME(5)), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)),
+  [Variable Functions](Introduction to Variable Functions), [$user-path(5)]($user-path(5)), [$user-name(5)]($user-name(5)), 
+  [$progname(5)]($progname(5)), [$MENAME(5)]($MENAME(5)), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)).
 !! me-id: m5var027
 ! 5 $scroll
 ## NAME
@@ -53892,11 +53837,11 @@ $a
 
 
 |%tag-file
- %tag-file - Tags file name
+  %tag-file - Tags file name
 |%tag-template
- %tag-template - Tag file search string
+  %tag-template - Tag file search string
 |%tag-option
- %tag-option - Tag file search option
+  %tag-option - Tag file search option
 $a
 
 
@@ -54589,8 +54534,10 @@ $a
   __$window-mark-line__ and __$window-mark-col__ first appeared in the 2006 release
   of MicroEmacs.
 
+  The following code retrieves the current line on the screen:
+  
 ```{.emf}
-        &sub &sub $window-line $window-y-scroll 1
+        set-variable #l0 &sub &sub $window-line $window-y-scroll 1
 
 ```
 
@@ -54606,9 +54553,9 @@ $a
 
 
 |%ftp-flags
- %ftp-flags - "Configure the FTP console"
+  %ftp-flags - "Configure the FTP console"
 |%http-flags
- %http-flags - "Configure the HTTP console"
+  %http-flags - "Configure the HTTP console"
 $a
 
 
@@ -55851,7 +55798,7 @@ $a
 
 
   [buffer-mode(2)](buffer-mode(2)), [&bmode(4)](&bmode(4)), [$buffer-names(5)]($buffer-names(5)),
-   [$command-names(5)]($command-names(5)), [Regular Expressions](RegularExpressions(2)).
+  [$command-names(5)]($command-names(5)), [Regular Expressions](RegularExpressions(2)).
 !! me-id: m5var066
 ! 5 $progname
 ## NAME
@@ -56759,9 +56706,9 @@ $a
 
 
 |%http-proxy-addr
- %http-proxy-addr - Set HTTP proxy server address
+  %http-proxy-addr - Set HTTP proxy server address
 |%http-proxy-port
- %http-proxy-port - Set HTTP proxy server port
+  %http-proxy-port - Set HTTP proxy server port
 $a
 
 
@@ -57036,7 +56983,9 @@ $a
 ## SYNOPSIS
 
 
-  __$version__ "_YYYYMMDD_"
+  __$version__ "_YYYYMMDD_"    - Full Release  
+  __$version__ "_YYYYMMDDbN_"  - Beta Release  
+  
 
 
 ## DESCRIPTION
@@ -57070,6 +57019,14 @@ $a
   environment variable $version has been defined. "`ERROR`" evaluates to `0`
   hence the test still operates correctly.
 
+  In 2024 with version "20091224" the variable was extended to introduce 
+  beta-releases with the string  "b1" or "b2" at the end, for instance
+  "20091224b1". 
+  
+  Please note that since 2021 the four numbers at the beginning does not give
+  the release year, but the version year. There is this MicroEmacs 2009 version
+  and an other, at this time not yet released, MicroEmacs 2024 version.
+  
   This variable is used in the macro file `me.emf` to check for any macro -
   executable incompatibility issues.
 !! me-id: m5var084
@@ -57326,6 +57283,7 @@ $a
 
 
   $user-name - MicroEmacs user name
+$a
 
 
 ## SYNOPSIS
@@ -57338,9 +57296,9 @@ $a
 
 
   __$user-name__ is the name of the MicroEmacs user. The name is used for
-  identifying user configuration files such as _$user-name___.emf__ and
-  _$user-name___.erf__, the start-up [user](UserProfiles(2)) macro file and [erf(8)](erf(8)) registry file that
-  contains saved user preferences.
+  identifying  user configuration  files  such  as  _$user-name___.emf__ and
+  _$user-name___.erf__, the start-up [user](UserProfiles(2)) macro file and [erf(8)](erf(8)) registry file
+  that contains saved user preferences.
 
   The __$user-name__ is determined as follows, in order of precedence:
 
@@ -57377,6 +57335,7 @@ $a
 
 
   $user-path - MicroEmacs user directory
+$a
 
 
 ## SYNOPSIS
@@ -57699,8 +57658,7 @@ $a
 ## SEE ALSO
 
 
-  [indent(2)](indent(2)).
-  [Language Templates](languageTemplates(2)).
+  [Language Templates](languageTemplates(2)), [indent(2)](indent(2)).
 !! me-id: m5var092
 ! 5 $mode-chars
 ## NAME
@@ -58067,9 +58025,7 @@ $a
 ## SEE ALSO
 
 
-  [File Hooks](fileHooks(2)).
-  [etfinsrt(3)](etfinsrt(3)), [&find(4)](&find(4)), [$user-path(5)]($user-path(5)).
-
+  [File Hooks](fileHooks(2)), [etfinsrt(3)](etfinsrt(3)), [&find(4)](&find(4)), [$user-path(5)]($user-path(5)).
 !! me-id: m8fil002
 ! 8 edf
 ## NAME
@@ -58181,12 +58137,9 @@ $a
 ## SEE ALSO
 
 
-  [File Hooks](fileHooks(2)), [emftags(3f)](emftags(3f)), [$user-path(5)]($user-path(5)), [execute-file(2)](execute-file(2)).
-
-  [Writing MicroEmacs Macros](macroWriting(4))
-  [Macro Glossary](MicroEmacs - Macro Language Glossary)
-  [Macro Debugging - A Crash Course](macroDebugging(4))
-  [MicroEmacs Macro Language at a Glance](macroOverview(4))
+  [File Hooks](fileHooks(2)), [Writing MicroEmacs Macros](macroWriting(4)), [Macro Glossary](MicroEmacs - Macro Language Glossary)
+  [Macro Debugging - A Crash Course](macroDebugging(4)), [MicroEmacs Macro Language at a Glance](macroOverview(4)),
+  [emftags(3f)](emftags(3f)), [$user-path(5)]($user-path(5)), [execute-file(2)](execute-file(2)).
 !! me-id: m8fil004
 ! 8 erf
 ## NAME
@@ -59075,7 +59028,7 @@ $a
   [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [ctags(3f)](ctags(3f)), [find-tag(2)](find-tag(2)), [rcs-file(2)](rcs-file(2)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ001
 ! 9 ehf
 ## SYNOPSIS
@@ -59109,9 +59062,9 @@ $a
 ## SEE ALSO
 
 
-  [help(2)](help(2)).
+  [Supported File Types](MicroEmacs - Supported File Types), [help(2)](help(2)).
 
-  [Supported File Types](MicroEmacs - Supported File Types)
+
 !! me-id: m9typ002
 ! 9 emf
 ## SYNOPSIS
@@ -59191,11 +59144,10 @@ $a
 
 ## SEE ALSO
 
-
+  [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [emftags(3f)](emftags(3f)), [find-tag(2)](find-tag(2)), [indent(2)](indent(2)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ003
 ! 9 txt
 ! 9 doc
@@ -59379,10 +59331,9 @@ $a
 ## SEE ALSO
 
 
+  [Supported File Types](MicroEmacs - Supported File Types),
   [$buffer-fill-col(5)]($buffer-fill-col(5)), [$buffer-fill-mode(5)]($buffer-fill-mode(5)), [$fill-col(5)]($fill-col(5)), [$fill-mode(5)]($fill-mode(5)),
   [buffer-setup(3)](buffer-setup(3)), [fill-paragraph(2)](fill-paragraph(2)), [spell-buffer(3)](spell-buffer(3)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ004
 ! 9 latex
 ! 9 bib
@@ -59479,9 +59430,7 @@ $a
 ## SEE ALSO
 
 
-  [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [time(2m)](time(2m)).
 !! me-id: m9typ005
 ! 9 makefile
 ## SYNOPSIS
@@ -59541,9 +59490,7 @@ $a
 ## SEE ALSO
 
 
-  [imakefile(9)](imakefile(9)), [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [imakefile(9)](imakefile(9)), [time(2m)](time(2m)).
 !! me-id: m9typ006
 ! 9 imakefile
 ## SYNOPSIS
@@ -59595,9 +59542,8 @@ $a
 ## SEE ALSO
 
 
-  [makefile(9)](makefile(9)), [time(2m)](time(2m)).
+  [Supported File Types](MicroEmacs - Supported File Types), [makefile(9)](makefile(9)), [time(2m)](time(2m)).
 
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ007
 ! 9 bat
 ! 9 btm
@@ -59648,9 +59594,7 @@ $a
 ## SEE ALSO
 
 
-  [ini(9)](ini(9)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [ini(9)](ini(9)).
 !! me-id: m9typ008
 ! 9 ini
 ! 9 hpj
@@ -59707,9 +59651,9 @@ $a
 ## SEE ALSO
 
 
-  [bat(9)](bat(9)).
+  [Supported File Types](MicroEmacs - Supported File Types), [bat(9)](bat(9)).
 
-  [Supported File Types](MicroEmacs - Supported File Types)
+
 !! me-id: m9typ009
 ! 9 f
 ! 9 f77
@@ -59865,10 +59809,9 @@ $a
 ## SEE ALSO
 
 
+  [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [indent(2)](indent(2)), [restyle-buffer(3)](restyle-buffer(3)),
   [restyle-region(3)](restyle-region(3)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ012
 ! 9 bnf
 ## SYNOPSIS
@@ -60157,9 +60100,7 @@ $a
 ## SEE ALSO
 
 
-  [fvwm(9)](fvwm(9)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [fvwm(9)](fvwm(9)).
 !! me-id: m9typ018
 ! 9 java
 ! 9 jav
@@ -60281,11 +60222,10 @@ $a
 ## SEE ALSO
 
 
+  [Supported File Types](MicroEmacs - Supported File Types),
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
   [find-tag(2)](find-tag(2)), [javatags(3f)](javatags(3f)), [rcs-file(2)](rcs-file(2)), [restyle-buffer(3)](restyle-buffer(3)),
   [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ019
 ! 9 tcl
 ! 9 tk
@@ -60372,10 +60312,9 @@ $a
 ## SEE ALSO
 
 
+  [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [find-tag(2)](find-tag(2)), [indent(2)](indent(2)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [tcltags(3f)](tcltags(3f)), [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ020
 ! 9 asn.1
 ## SYNOPSIS
@@ -60433,9 +60372,7 @@ $a
 ## SEE ALSO
 
 
-  [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [time(2m)](time(2m)).
 !! me-id: m9typ021
 ! 9 erf
 ## SYNOPSIS
@@ -60477,9 +60414,7 @@ $a
 ## SEE ALSO
 
 
-  [list-registry(2)](list-registry(2)), [erf(8)](erf(8)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [list-registry(2)](list-registry(2)), [erf(8)](erf(8)).
 !! me-id: m9typ022
 ! 9 man
 ## SYNOPSIS
@@ -60536,9 +60471,7 @@ $a
 ## SEE ALSO
 
 
-  [man(3)](man(3)), [man-clean(3)](man-clean(3)),
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [man(3)](man(3)), [man-clean(3)](man-clean(3)),
 !! me-id: m9typ023
 ! 9 vrml
 ## SYNOPSIS
@@ -60603,9 +60536,7 @@ $a
 ## SEE ALSO
 
 
-  [indent(2)](indent(2)), [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [indent(2)](indent(2)), [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)).
 !! me-id: m9typ024
 ! 9 perl
 ! 9 pl
@@ -60709,10 +60640,8 @@ $a
 ## SEE ALSO
 
 
-  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [indent(2)](indent(2)), [perldb(3)](perldb(3)),
+  [Supported File Types](MicroEmacs - Supported File Types), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [indent(2)](indent(2)), [perldb(3)](perldb(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ025
 ! 9 html
 ! 9 htm
@@ -60817,9 +60746,7 @@ $a
 ## SEE ALSO
 
 
-  [print-buffer(2)](print-buffer(2)), [buffer-setup(3)](buffer-setup(3)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [print-buffer(2)](print-buffer(2)), [buffer-setup(3)](buffer-setup(3)).
 !! me-id: m9typ026
 ! 9 nroff
 ! 9 troff
@@ -60952,10 +60879,9 @@ $a
 ## SEE ALSO
 
 
+  [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [fill-paragraph(2)](fill-paragraph(2)), [find-tag(2)](find-tag(2)),
   [ntags(3f)](ntags(3f)), [time(2m)](time(2m)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ027
 ! 9 info
 ## SYNOPSIS
@@ -61003,9 +60929,7 @@ $a
 ## SEE ALSO
 
 
-  [info(3)](info(3)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [info(3)](info(3)).
 !! me-id: m9typ028
 ! 9 cbl
 ## SYNOPSIS
@@ -61127,9 +61051,7 @@ $a
 ## SEE ALSO
 
 
-  [indent(2)](indent(2)), [restyle-region(3)](restyle-region(3)) [restyle-buffer(3)](restyle-buffer(3)) [asm(9)](asm(9))
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [indent(2)](indent(2)), [restyle-region(3)](restyle-region(3)) [restyle-buffer(3)](restyle-buffer(3)) [asm(9)](asm(9))
 !! me-id: m9typ030
 ! 9 asm
 ! 9 s
@@ -61166,8 +61088,7 @@ $a
 ## SEE ALSO
 
 
-  [x86(9)](x86(9)).
-  [File Hooks](fileHooks(2)), [Supported File Types](MicroEmacs - Supported File Types).
+  [File Hooks](fileHooks(2)), [Supported File Types](MicroEmacs - Supported File Types), [x86(9)](x86(9)).
 !! me-id: m9typ031
 ! 9 vb
 ! 9 bas
@@ -61357,7 +61278,6 @@ $a
 
 
   [Supported File Types](MicroEmacs - Supported File Types)
-
 !! me-id: m9typ048
 ! 9 md
 ! 9 Markdown
@@ -61426,10 +61346,7 @@ $a
 ## SEE ALSO
 
 
-  [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)).
-
-  [Supported File Types](MicroEmacs - Supported File Types)
-
+  [Supported File Types](MicroEmacs - Supported File Types), [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)).
 !! me-id: m9typ035
 ! 9 MetaFont
 ! 9 mp
@@ -62111,7 +62028,7 @@ $a
 ## SEE ALSO
 
 
-  [html(9)](html(9)), [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types), [html(9)](html(9)). 
 !! me-id: m9typ047
 ! 9 jst
 ## SYNOPSIS
