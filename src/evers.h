@@ -50,7 +50,9 @@
 #define meYEAR          "09"          /* Current year */
 #define meMONTH         "12"          /* Current month */
 #define meDAY           "23"          /* Day of the month */
-
+#define meGITHUB        "github.com/mittelmark/microemacs"
+#define meAUTHOR        "D.Groth"
+#define meRELEASE       "24"
 /* Version information - Date of build */
 #define	meDATE          meYEAR "/" meMONTH "/" meDAY 
 /* Version information - Major version number is the year of build */

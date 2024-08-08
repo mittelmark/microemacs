@@ -470,7 +470,7 @@ addModesLists(meBuffer *bp, register meUByte *buf, meMode mode)
     addLineToEob(bp,(meUByte *)"") ;
 }
 
-meUByte meCopyright[]="Copyright (C) 1988-" meCENTURY meYEAR " " ME_COMPANY_NAME " (" ME_COMPANY_SITE ")" ;
+meUByte meCopyright[]="Copyright (C) 1988-" meCENTURY meRELEASE " " ME_COMPANY_NAME "  (" ME_COMPANY_SITE ")\n              2021-20" meRELEASE " " meAUTHOR " (" meGITHUB ")" ;
 int
 meAbout(int f, int n)
 {
