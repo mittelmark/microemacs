@@ -67,14 +67,22 @@ function smd2ehf {
         s/^  > > /     / ; # two indents
         s/^  > /    / ;    # one indent
         $pre < 0 and s/ME\\_PIPE\\_STDERR/ME_PIPE_STDERR/g;
+        $pre < 0 and s/ME\\_ISHELL/ME_ISHELL/g;        
         $pre < 0 and s/``(.+) ` ``/`$1 ``/g; 
-        $pre < 0 and s/([^_])__([A-Za-z0-9])__/$1\033cD$2\033cA/g;
-        $pre < 0 and s/"`([^"`]+)`"/`$1`/g;
+        $pre < 0 and s/([^_])__([^_])__/$1\033cD$2\033cA/g;
+        $pre < 0 and s/"`([^"`]+)`"/\033cG`$1`\033cA/g;
+        $pre < 0 and s/"_([^"_]+)_"/"\033cC$1\033cA"/g;        
+        $pre < 0 and s/\x27`([^\x27`]+)`\x27/\033cC`$1`\033cA/g;
         $pre < 0 and s/([^A-Za-z0-9])___([^ ].*?[^ ])___/$1\033cB$2\033cA/g ; # if not in chunks do formatting
         $pre < 0 and s/([^A-Za-z0-9])__([^ ].*?[^ ])__/$1\033cD$2\033cA/g;
         $pre < 0 and s/([^A-Za-z0-9])_([0-9a-zA-Z]+)_/$1\033cC$2\033cA/g; 
-        $pre < 0 and s/[ ]_(.)_/ \033cC$1\033cA/g;         
-        $pre < 0 and s/([^A-Za-z0-9])_([^ ].*?[^ ])_/$1\033cC$2\033cA/g; 
+        $pre < 0 and s/([^\x5c])_(.)_/$1\033cC$2\033cA/g;         
+        $pre < 0 and s/([^\x5c_A-Z])_([^_]+)_ /$1\033cC$2\033cA /g; 
+        $pre < 0 and s/([^\x5c_])_([^_]+)_ /$1\033cC$2\033cA /g; 
+        $pre < 0 and s/"`([^` ]+)`_([^ _]+)_"/"\033cG$1\033cA\033cC$2\033cA"/g; 
+        $pre < 0 and s/([^\x5c])`([^ `]+)`/$1\033cG$2\033cA/g;
+        $pre < 0 and s/ \(`(.+?)`\)/ (\033cG$1\033cA)/g;
+        $pre < 0 and s/( [^\x5c]?)_([^_]+?)_/$1\033cC$2\033cA/g;         
         $pre < 0 and s/\[(.+?)\]\((.+?)\)\)/\033ls$2)\033lm$1\033le/g;
         $pre < 0 and s/\[(.+?)\]\((.+?)\)/\033ls$2\033lm$1\033le/g;
         s/^  /    /; # indent everything which is not a header from two to four spaces
