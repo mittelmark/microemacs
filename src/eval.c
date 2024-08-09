@@ -2638,7 +2638,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             {
                 s1 = s2+1 ;
                 if((s2 = meStrchr(s1,cc)) == NULL)
-                    return meItoa(index) ;
+                    return meItoa(index-1) ;
                 *s2 = '\0' ;
             }
         }
