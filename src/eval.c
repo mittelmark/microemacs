@@ -2628,6 +2628,20 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                     return meItoa(index) ;
             }
         }
+    case UFLLEN:
+        {
+            int  index ;
+            meUByte cc, *s1, *s2 ;
+            s2 = arg1 ;
+            cc = *s2 ;
+            for(index=1 ; ; index++)
+            {
+                s1 = s2+1 ;
+                if((s2 = meStrchr(s1,cc)) == NULL)
+                    return meItoa(index) ;
+                *s2 = '\0' ;
+            }
+        }
     case UFLGET:
         {
             int  index ;

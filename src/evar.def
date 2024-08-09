@@ -270,6 +270,7 @@ DEFFUN (UFLESS,     "les", FUN_DYNAMIC)     /* logical less than */
 #if MEOPT_EXTENDED
 DEFFUN (UFLFIND,    "lfi", FUN_DYNAMIC)     /* list find value return index */
 DEFFUN (UFLGET,     "lge", FUN_DYNAMIC)     /* list get index value */
+DEFFUN (UFLLEN,     "lle", FUN_MONAMIC)     /* list length  */
 DEFFUN (UFLINS,     "lin", FUN_TRINAMIC)    /* list insert index value */
 DEFFUN (UFLSET,     "lse", FUN_TRINAMIC)    /* list set index value */
 #endif
