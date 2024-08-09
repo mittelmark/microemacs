@@ -49872,10 +49872,10 @@ $a
     defined by the first character of the string. Following are all valid
     lists.
 
-        "`|1|2|3|4|5|`"
-        "`X1X2X3X4X5X`"
-        "`\CAHello\CAWorld\CA`"
-        "`??`"
+    cGcG|1|2|3|4|5|cAcA  
+    cGcGX1X2X3X4X5XcAcA  
+    cGcG\CAHello\CAWorld\CAcAcA  
+    cGcG??cAcA  
 
     The functions may all be abbreviated to their three letter abbreviation
     (i.e. cD&linsertcA may be expressed as cD&lincA). In all cases the first argument
