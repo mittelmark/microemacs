@@ -1512,12 +1512,13 @@ Miscellaneous Information
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
 
-    cDList manipulation functionscA (returns cC<str>cA)
+    cDList manipulation functionscA (returns cC<str>cA or _<int>)
 
     ls&ldel(4)lm&ldel(4)le Delete list item  
     ls&lfind(4)lm&lfind(4)le Find list item  
     ls&lget(4)lm&lget(4)le Get list item  
     ls&linsert(4)lm&linsert(4)le Insert list item  
+    ls&llen(4)lm&llen(4)le Get the length of a list
     ls&lset(4)lm&lset(4)le Set list item  
 
     cDLogical testing functionscA (returns cC<log>cA)
@@ -2893,6 +2894,7 @@ Miscellaneous Information
     ls&lfind(4)lm&lfind(4)le Find list item  
     ls&lget(4)lm&lget(4)le Get list item  
     ls&linsert(4)lm&linsert(4)le Insert list item  
+    ls&llen(4)lm&llen(4)le Get the length of a list
     ls&lset(4)lm&lset(4)le Set list item  
     ls&mid(4)lm&mid(4)le Return a portion (middle) of a string  
     ls&mod(4)lm&mod(4)le Modulus of two numbers  
@@ -3213,6 +3215,7 @@ Miscellaneous Information
     ls&lfind(4)lm&lfind(4)le Find list item  
     ls&lget(4)lm&lget(4)le Get list item  
     ls&linsert(4)lm&linsert(4)le Insert list item  
+    ls&llen(4)lm&llen(4)le Get the length of a list    
     ls&lset(4)lm&lset(4)le Set list item  
     ls&mid(4)lm&mid(4)le Return a portion (middle) of a string  
     ls&mod(4)lm&mod(4)le Modulus of two numbers  
@@ -49842,11 +49845,12 @@ $a
 ! 4 &lfind
 ! 4 &lget
 ! 4 &linsert
+! 4 &llen
 ! 4 &lset
 cEcENAME cEcA
 
 
-    &ldel, &lfind, &lget, &linsert, &lset - List manipulation functions
+    &ldel, &lfind, &lget, &linsert, &llen, &lset - List manipulation functions
 
 
 cESYNOPSIS cA
@@ -49856,6 +49860,7 @@ $a
     cD&lfindcA cClistcA cCvaluecA  
     cD&lgetcA cClistcA cCindexcA  
     cD&linsertcA cClistcA cCindexcA cCvaluecA  
+    cD&llencA cClistcA
     cD&lsetcA cClistcA cCindexcA cCvaluecA
 
 
@@ -49872,10 +49877,10 @@ $a
     defined by the first character of the string. Following are all valid
     lists.
 
-    cGcG|1|2|3|4|5|cAcA  
-    cGcGX1X2X3X4X5XcAcA  
-    cGcG\CAHello\CAWorld\CAcAcA  
-    cGcG??cAcA  
+        "|1|2|3|4|5|"  
+        "X1X2X3X4X5X"  
+        "\CAHello\CAWorld\CA"  
+        "??"  
 
     The functions may all be abbreviated to their three letter abbreviation
     (i.e. cD&linsertcA may be expressed as cD&lincA). In all cases the first argument
@@ -49913,6 +49918,10 @@ $a
        Otherwise, if cCindexcA is cG-1cA or greater that the number of items in cClistcA
        then cCvaluecA is inserted at the end of the list.
 
+    cD&llencA cClistcA 
+    
+       Retrieve the length of the list.
+      
     cD&lsetcA cClistcA cCindexcA cCvaluecA
     
        Creates a new list from setting cCindexcA of cClistcA to cCvaluecA. If cCindexcA is
@@ -49953,7 +49962,10 @@ $a
               execute-line #l1
           !emacro
 
-sA
+sAcENOTES cA
+
+    The function cD&llencA was introduced with MicroEmacs 09 version cC091224cA.
+    
 cESEE ALSO cA
 
 

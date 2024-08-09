@@ -1424,12 +1424,13 @@
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
 
-  __List manipulation functions__ (returns _<str>_)
+  __List manipulation functions__ (returns _<str>_ or _<int>)
 
   [&ldel(4)](&ldel(4)) Delete list item  
   [&lfind(4)](&lfind(4)) Find list item  
   [&lget(4)](&lget(4)) Get list item  
   [&linsert(4)](&linsert(4)) Insert list item  
+  [&llen(4)](&llen(4)) Get the length of a list
   [&lset(4)](&lset(4)) Set list item  
 
   __Logical testing functions__ (returns _<log>_)
@@ -2813,6 +2814,7 @@
   [&lfind(4)](&lfind(4)) Find list item  
   [&lget(4)](&lget(4)) Get list item  
   [&linsert(4)](&linsert(4)) Insert list item  
+  [&llen(4)](&llen(4)) Get the length of a list
   [&lset(4)](&lset(4)) Set list item  
   [&mid(4)](&mid(4)) Return a portion (middle) of a string  
   [&mod(4)](&mod(4)) Modulus of two numbers  
@@ -3134,6 +3136,7 @@
   [&lfind(4)](&lfind(4)) Find list item  
   [&lget(4)](&lget(4)) Get list item  
   [&linsert(4)](&linsert(4)) Insert list item  
+  [&llen(4)](&llen(4)) Get the length of a list    
   [&lset(4)](&lset(4)) Set list item  
   [&mid(4)](&mid(4)) Return a portion (middle) of a string  
   [&mod(4)](&mod(4)) Modulus of two numbers  
@@ -50539,11 +50542,12 @@ $a
 ! 4 &lfind
 ! 4 &lget
 ! 4 &linsert
+! 4 &llen
 ! 4 &lset
 ## NAME
 
 
-  &ldel, &lfind, &lget, &linsert, &lset - List manipulation functions
+  &ldel, &lfind, &lget, &linsert, &llen, &lset - List manipulation functions
 
 
 ## SYNOPSIS
@@ -50553,6 +50557,7 @@ $a
   __&lfind__ _list_ _value_  
   __&lget__ _list_ _index_  
   __&linsert__ _list_ _index_ _value_  
+  __&llen__ _list_
   __&lset__ _list_ _index_ _value_
 
 
@@ -50610,6 +50615,10 @@ $a
   >  Otherwise, if _index_ is `-1` or greater that the number of items in _list_
      then _value_ is inserted at the end of the list.
 
+  __&llen__ _list_ 
+  
+  >  Retrieve the length of the list.
+    
   __&lset__ _list_ _index_ _value_
   
   >  Creates a new list from setting _index_ of _list_ to _value_. If _index_ is
@@ -50652,7 +50661,10 @@ $a
         !emacro
 
 ```
+## NOTES
 
+  The function __&llen__ was introduced with MicroEmacs 09 version _091224_.
+  
 ## SEE ALSO
 
 
