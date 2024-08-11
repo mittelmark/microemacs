@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240812.0052>
+#  Last Modified : <240812.0113>
 #
 #  Description	
 #
@@ -39,6 +39,7 @@ KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' |
 OS=macos-$(KERNEL)
 
 bfs/bin:
+	echo "VERSION: $(VERSION)"
 	cd bfs && $(MAKE) CC=$(CC)
 
 mec:
