@@ -3234,7 +3234,7 @@ XTERMstart(void)
     int          xx, yy ;
     meUInt       ww, hh  ;
     char        *ss ;
-
+#ifdef _ME_CONSOLE
     /* Copy the Terminal I/O. We may spawn a terminal in the window later and
      * the termio structure must be initialised. The structure may be
      * uninitialised if we have been launched off the desktop via an open
@@ -3242,7 +3242,8 @@ XTERMstart(void)
 #ifdef _USG
     TCAPgetattr (&otermio, 1);
 #endif
-
+#endif
+    
     /* Configure X-Windows */
     XSetLocaleModifiers ("");
     {
