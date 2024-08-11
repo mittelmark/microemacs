@@ -39,7 +39,6 @@ jobs:
         
       - name: make mewb binary 
         run: make -f macos32gcc.gmk mewb
-        
 
       - name: make mecwb binary 
         run: make -f macos32gcc.gmk mecwb

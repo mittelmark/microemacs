@@ -30207,16 +30207,17 @@ $a
            MicroEmacs  09 which needs the Macro files in a separate  folder for
            full functionality
     
+  - __mew__  - for MacOS, Linux and Windows - a Window (X11) based application
+           without  console access,  this requires as well the installed Macro
+           files, for MacOS and installation of  XQuartz is required
+           
   - __mecw__ - for  Linux  and  MacOS - a MicroEmacs 09 version  which runs as a
            X-Windows application but can be used as well as a terminal application 
            if the command line flag `mecw -n` is used, this requires as well the
-           installed Macro files
-  
-  - __mew__  - for Windows - a Window based application without console access,
-           this requires as well the installed Macro files
+           installed Macro files and for MacOS the XQuartz package
   
   - __bfs__  - a console  application  which  allows  to  create  standalone
-           executables out of _mec_, _mecw_ and _mew_ where the macro files are
+           executables out of _mec_, _mew_ and _mecw_ where the macro files are
            embedded within the executables, as well user macros, the help file
            and dictionaries can be added to the standalone file if the user 
            desires
@@ -30224,9 +30225,15 @@ $a
   - __mecb__ - a bfs  based  standalone executable build from the _mec_ exectuable,
            the Macro files, the help file and the American dictionary
 
-  - __mewb__ - a bfs based standalone  executable  build from the _mew_ (Windows)
+  - __mewb__ - a bfs based standalone  executable  build from the _mew_
            or _mecw_ (Linux, MacOS)  exectuable,  the Macro files, the help file
            and the American dictionary
+
+  - __mecwb__ - a bfs based standalone  executable  build from the _mecw_
+           (Linux, MacOS)  exectuable,  the Macro files, the help file
+           and the  American  dictionary,  For Windows no such  version can be
+           build as applications can be either Console or Window based but not
+           both
 
 ## Building the Console Version (mec and mecb)
 
@@ -30265,7 +30272,7 @@ $a
         
   TODO: MacOS and Windows (with msys2) build explanations
   
-## Building the GUI Version (mew/mecw and mewb)
+## Building the GUI Version (mew/mecw and mewb/mecwb)
 
   To  build  the  GUI  version  for  X-Windows  or the  Windows  GUI you  need
   additional libraries for your platforms:
@@ -30286,13 +30293,18 @@ $a
         make -f macos32gcc.gmk mec bfs/bin mecb
         make -f macos32gcc.gmk mew mewb
 
-  Windows:
+  Windows (Cross compiling on Linux):
   
         make -f win32mingw.gmk mec bfs/bin mecb
         make -f win32mingw.gmx mew mewb
           
+  For _mecwb_ builds just replace _mew_ with _mecw_ and _mewb_ with _mecwb_.
+  
 ## Build before 2024 or for older Platforms
 
+  This are the old build  instructions which you might try in case you like to
+  build for other platforms like other Unix systems or even DOS.
+  
   MicroEmacs 2009 may be compiled from the source files using the command
   shell build scripts _build_ (UNIX Bourne Shell) or _build.bat_ (DOS/Windows).
   A default compile sequence may be achieved with a simple:

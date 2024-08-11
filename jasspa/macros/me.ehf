@@ -29847,16 +29847,17 @@ $a
              MicroEmacs  09 which needs the Macro files in a separate  folder for
              full functionality
       
+    - cDmewcA  - for MacOS, Linux and Windows - a Window (X11) based application
+             without  console access,  this requires as well the installed Macro
+             files, for MacOS and installation of  XQuartz is required
+             
     - cDmecwcA - for  Linux  and  MacOS - a MicroEmacs 09 version  which runs as a
              X-Windows application but can be used as well as a terminal application 
              if the command line flag cGmecw -ncA is used, this requires as well the
-             installed Macro files
-    
-    - cDmewcA  - for Windows - a Window based application without console access,
-             this requires as well the installed Macro files
+             installed Macro files and for MacOS the XQuartz package
     
     - cDbfscA  - a console  application  which  allows  to  create  standalone
-             executables out of cCmeccA, cCmecwcA and cCmewcA where the macro files are
+             executables out of cCmeccA, cCmewcA and cCmecwcA where the macro files are
              embedded within the executables, as well user macros, the help file
              and dictionaries can be added to the standalone file if the user 
              desires
@@ -29864,9 +29865,15 @@ $a
     - cDmecbcA - a bfs  based  standalone executable build from the cCmeccA exectuable,
              the Macro files, the help file and the American dictionary
 
-    - cDmewbcA - a bfs based standalone  executable  build from the cCmewcA (Windows)
+    - cDmewbcA - a bfs based standalone  executable  build from the cCmewcA
              or cCmecwcA (Linux, MacOS)  exectuable,  the Macro files, the help file
              and the American dictionary
+
+    - cDmecwbcA - a bfs based standalone  executable  build from the cCmecwcA
+             (Linux, MacOS)  exectuable,  the Macro files, the help file
+             and the  American  dictionary,  For Windows no such  version can be
+             build as applications can be either Console or Window based but not
+             both
 
 cEBuilding the Console Version (mec and mecb) cA
 
@@ -29905,7 +29912,7 @@ $a
           
     TODO: MacOS and Windows (with msys2) build explanations
     
-cEBuilding the GUI Version (mew/mecw and mewb) cA
+cEBuilding the GUI Version (mew/mecw and mewb/mecwb) cA
 
     To  build  the  GUI  version  for  X-Windows  or the  Windows  GUI you  need
     additional libraries for your platforms:
@@ -29926,13 +29933,18 @@ $a
           make -f macos32gcc.gmk mec bfs/bin mecb
           make -f macos32gcc.gmk mew mewb
 
-    Windows:
+    Windows (Cross compiling on Linux):
     
           make -f win32mingw.gmk mec bfs/bin mecb
           make -f win32mingw.gmx mew mewb
             
+    For cCmecwbcA builds just replace cCmewcA with cCmecwcA and cCmewbcA with cCmecwbcA.
+    
 cEBuild before 2024 or for older Platforms cA
 
+    This are the old build  instructions which you might try in case you like to
+    build for other platforms like other Unix systems or even DOS.
+    
     MicroEmacs 2009 may be compiled from the source files using the command
     shell build scripts cCbuildcA (UNIX Bourne Shell) or cCbuild.batcA (DOS/Windows).
     A default compile sequence may be achieved with a simple:
