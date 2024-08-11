@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240812.0133>
+#  Last Modified : <240812.0138>
 #
 #  Description	
 #
@@ -31,7 +31,7 @@
 ##############################################################################
 #version=091224b1
 #VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
-VERSION=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -s -d '-' | sed 's/[-"]//g'` #"
+VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -s -d'-' | sed 's/[-"]//g')
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
@@ -59,3 +59,7 @@ mewb: mew bfs/bin
 
 mecwb: mecw bfs/bin
 	./bfs/bfs -a ./src/.macos32gcc-release-mecw/mecw -o mecwb-$(VERSION)-$(OS).bin ./jasspa
+
+version:
+	echo "VERSION: $(VERSION)"
+
