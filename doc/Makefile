@@ -34,6 +34,7 @@ page=m1cmd000
 html-single:
 	bash ../bin/me-tools.sh smd2html me.smd $(page) html
 html-all:
+	bash ../bin/me-tools.sh smd2html me.smd home html
 	bash ../bin/me-tools.sh me2html me.smd html amicr 0 89
 	bash ../bin/me-tools.sh me2html me.smd html m1cmd 0 2	
 	bash ../bin/me-tools.sh me2html me.smd html m2cmd 0 163	

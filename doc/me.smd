@@ -1430,7 +1430,7 @@
   [&lfind(4)](&lfind(4)) Find list item  
   [&lget(4)](&lget(4)) Get list item  
   [&linsert(4)](&linsert(4)) Insert list item  
-  [&llen(4)](&llen(4)) Get the length of a list
+  [&llen(4)](&llen(4)) Get the length of a list  
   [&lset(4)](&lset(4)) Set list item  
 
   __Logical testing functions__ (returns _<log>_)
@@ -2814,7 +2814,7 @@
   [&lfind(4)](&lfind(4)) Find list item  
   [&lget(4)](&lget(4)) Get list item  
   [&linsert(4)](&linsert(4)) Insert list item  
-  [&llen(4)](&llen(4)) Get the length of a list
+  [&llen(4)](&llen(4)) Get the length of a list  
   [&lset(4)](&lset(4)) Set list item  
   [&mid(4)](&mid(4)) Return a portion (middle) of a string  
   [&mod(4)](&mod(4)) Modulus of two numbers  
@@ -2925,7 +2925,7 @@
   [HistoryGroupVariables(4)](HistoryGroupVariables(4)) Last history values  
   [MacroArguments(4)](MacroArguments(4)) Arguments to macros  
   [MacroNumericArguments(4)](MacroNumericArguments(4)) Numeric arguments to macros  
-  [MessageLineVaraibles(4)](MessageLineVaraibles(4)) Prompt the user for input on message line  
+  [MessageLineVariables(4)](MessageLineVariables(4)) Prompt the user for input on message line  
   [RegisterVariables(4)](RegisterVariables(4)) Register variables  
   [SearchGroups(4)](SearchGroups(4)) Last search group values  
   [Variables(4)](Variables(4)) User defined macro variables  
@@ -3136,7 +3136,7 @@
   [&lfind(4)](&lfind(4)) Find list item  
   [&lget(4)](&lget(4)) Get list item  
   [&linsert(4)](&linsert(4)) Insert list item  
-  [&llen(4)](&llen(4)) Get the length of a list    
+  [&llen(4)](&llen(4)) Get the length of a list  
   [&lset(4)](&lset(4)) Set list item  
   [&mid(4)](&mid(4)) Return a portion (middle) of a string  
   [&mod(4)](&mod(4)) Modulus of two numbers  
@@ -3577,7 +3577,7 @@
   [MainMenu(3)](MainMenu(3)) The top main menu  
   [Markdown(9)](Markdown(9)) Markdown Markup File  
   [Match-It(3)](Match-It(3)) MicroEmacs 2009 version of the Match-It game  
-  [MessageLineVaraibles(4)](MessageLineVaraibles(4)) Prompt the user for input on message line  
+  [MessageLineVariables(4)](MessageLineVariables(4)) Prompt the user for input on message line  
   [MetaFont(9)](MetaFont(9)) MetaFont/MetaPost File  
   [Metris(3)](Metris(3)) MicroEmacs 2009 version of the falling blocks game  
   [m4(9)](m4(9)) M4 Macro Processor  
@@ -5280,7 +5280,7 @@
   - [071103] cc-delete; removed bogus 'checking out parent' error
     message.
   - [071021] find; added -& support to replace-sting-in-files and added
-    new *replace* output buffer for the command so hte user can see what
+    new *replace* output buffer for the command so the user can see what
     has been done.
   - [071018] Template buffer binding; avoid abort if binding can't be
     made
@@ -16336,7 +16336,7 @@ $a
  
   >  When this bit is set the command moves the cursor to the matching
      fence, updates the screen and pauses for [$pause-time(5)]($pause-time(5)) before moving
-     hte cursor back again. When omitted the cursor is simply moved to the
+     the cursor back again. When omitted the cursor is simply moved to the
      matching fence.
 
   __0x04__
@@ -20150,11 +20150,11 @@ $a
 
 
 |pipe-shell-command
-  _n_ __pipe-shell-command__ "_command_" ["_buffer-name_"] (__esc @__)
+  _n_ __pipe-shell-command__ "_command_" ["_buffer-name_"] (__esc @__)  
 |$ME\_PIPE\_STDERR
-  _[MS-DOS and Win32s Only]_
+  _[MS-DOS and Win32s Only]_  
 |$ME\_PIPE\_STDERR
-  __$ME\_PIPE\_STDERR__ "_string_"; Default is undefined.
+  __$ME\_PIPE\_STDERR__ "_string_"; Default is undefined.  
 
 
 ## DESCRIPTION
@@ -28489,7 +28489,7 @@ $a
   macro files and optionally as well some dictionary files and the help file.
   So the user only needs to  download a binary for its own  platform,  make it
   executable and place it into a directory  belonging to its PATH variable. In
-  2024 the following platforms and binaries are supportet:
+  2024 the following platforms and binaries are supported:
   
   - _Linux_ - Terminal (mecb) and Terminal and X11 version (mewb) were mainly 
     Debian and Red Hat based distros are provided  which might be used on many
@@ -31237,7 +31237,7 @@ $a
      interrupt (i.e. a `C-g` abort), to continue after this requires a double
      __!force__.
 
-  The second problem is with the input type, the [@ml](MessageLineVaraibles(4)) does not indicate that
+  The second problem is with the input type, the [@ml](MessageLineVariables(4)) does not indicate that
   a file name is required. The type of input should be qualified to first
   check the input type and to provide other features such as file completion
   on file name entry. Specifying the input type correctly:
@@ -31254,7 +31254,7 @@ $a
 
   __TIP:__
  
-  >  How did we find out about [@ml04](MessageLineVaraibles(4)) ? The best way to find out how to do
+  >  How did we find out about [@ml04](MessageLineVariables(4)) ? The best way to find out how to do
      something is find another macro (or command) that does something very
      similar and copy it, in this case the [diff](diff(3)) macro has to perform a
      similar operation. If you cannot find anything then look in the
@@ -31314,7 +31314,7 @@ $a
 ```
 
   When __write-buffer__ asks the MicroEmacs macro processor for a file name the
-  [@mn](MessageLineVaraibles(4)) argument tells it to go directly to the user even though ME is
+  [@mn](MessageLineVariables(4)) argument tells it to go directly to the user even though ME is
   currently running a macro. This will only get a single argument from the
   user, if the file already exits __write-buffer__ asks for confirmation that
   over-writing the existing file is okay, but this argument has not been
@@ -31335,7 +31335,7 @@ $a
 ```
 
   Which is rapidly becoming very messy for each individual argument, instead
-  we use [@mna](MessageLineVaraibles(4)) to ask the command to handle all input associated with the
+  we use [@mna](MessageLineVariables(4)) to ask the command to handle all input associated with the
   command:
 
 ```{.emf}
@@ -48930,7 +48930,7 @@ $a
 
   [MacroNumericArguments](MacroNumericArguments(4)), [define-macro(2)](define-macro(2)), [replace-all-string(3)](replace-all-string(3)), [!force(4)](!force(4)).
 !! me-id: m4fil015
-! 4 MessageLineVaraibles
+! 4 MessageLineVariables
 ! 4 @mn
 ! 4 @mna
 ! 4 @ml
@@ -53647,7 +53647,7 @@ $a
      message-line by this command.
 
   [change-font(2)](change-font(2)) -
-     __$result__ is used to return the user select font when hte windows font
+     __$result__ is used to return the user select font when the windows font
      selection dialog is used (Windows systems only).
 
   [count-words(2)](count-words(2)) -

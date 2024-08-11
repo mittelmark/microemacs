@@ -2,9 +2,9 @@ body {
     color: #444;
     font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
     line-height: 1.2;
-    padding: 1em;
+    padding: 2em;
     margin: auto;
-    max-width:  1200px;
+    max-width:  900px;
 }
 
 pre, code { font-family: "Ubuntu Mono", Monaco, Courier, monospace; }

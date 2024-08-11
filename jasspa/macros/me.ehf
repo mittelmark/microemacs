@@ -1518,7 +1518,7 @@ Miscellaneous Information
     ls&lfind(4)lm&lfind(4)le Find list item  
     ls&lget(4)lm&lget(4)le Get list item  
     ls&linsert(4)lm&linsert(4)le Insert list item  
-    ls&llen(4)lm&llen(4)le Get the length of a list
+    ls&llen(4)lm&llen(4)le Get the length of a list  
     ls&lset(4)lm&lset(4)le Set list item  
 
     cDLogical testing functionscA (returns cC<log>cA)
@@ -2894,7 +2894,7 @@ Miscellaneous Information
     ls&lfind(4)lm&lfind(4)le Find list item  
     ls&lget(4)lm&lget(4)le Get list item  
     ls&linsert(4)lm&linsert(4)le Insert list item  
-    ls&llen(4)lm&llen(4)le Get the length of a list
+    ls&llen(4)lm&llen(4)le Get the length of a list  
     ls&lset(4)lm&lset(4)le Set list item  
     ls&mid(4)lm&mid(4)le Return a portion (middle) of a string  
     ls&mod(4)lm&mod(4)le Modulus of two numbers  
@@ -3005,7 +3005,7 @@ Miscellaneous Information
     lsHistoryGroupVariables(4)lmHistoryGroupVariables(4)le Last history values  
     lsMacroArguments(4)lmMacroArguments(4)le Arguments to macros  
     lsMacroNumericArguments(4)lmMacroNumericArguments(4)le Numeric arguments to macros  
-    lsMessageLineVaraibles(4)lmMessageLineVaraibles(4)le Prompt the user for input on message line  
+    lsMessageLineVariables(4)lmMessageLineVariables(4)le Prompt the user for input on message line  
     lsRegisterVariables(4)lmRegisterVariables(4)le Register variables  
     lsSearchGroups(4)lmSearchGroups(4)le Last search group values  
     lsVariables(4)lmVariables(4)le User defined macro variables  
@@ -3215,7 +3215,7 @@ Miscellaneous Information
     ls&lfind(4)lm&lfind(4)le Find list item  
     ls&lget(4)lm&lget(4)le Get list item  
     ls&linsert(4)lm&linsert(4)le Insert list item  
-    ls&llen(4)lm&llen(4)le Get the length of a list    
+    ls&llen(4)lm&llen(4)le Get the length of a list  
     ls&lset(4)lm&lset(4)le Set list item  
     ls&mid(4)lm&mid(4)le Return a portion (middle) of a string  
     ls&mod(4)lm&mod(4)le Modulus of two numbers  
@@ -3656,7 +3656,7 @@ Miscellaneous Information
     lsMainMenu(3)lmMainMenu(3)le The top main menu  
     lsMarkdown(9)lmMarkdown(9)le Markdown Markup File  
     lsMatch-It(3)lmMatch-It(3)le MicroEmacs 2009 version of the Match-It game  
-    lsMessageLineVaraibles(4)lmMessageLineVaraibles(4)le Prompt the user for input on message line  
+    lsMessageLineVariables(4)lmMessageLineVariables(4)le Prompt the user for input on message line  
     lsMetaFont(9)lmMetaFont(9)le MetaFont/MetaPost File  
     lsMetris(3)lmMetris(3)le MicroEmacs 2009 version of the falling blocks game  
     lsm4(9)lmm4(9)le M4 Macro Processor  
@@ -5355,7 +5355,7 @@ Miscellaneous Information
     - [071103] cc-delete; removed bogus 'checking out parent' error
       message.
     - [071021] find; added -& support to replace-sting-in-files and added
-      new *replace* output buffer for the command so hte user can see what
+      new *replace* output buffer for the command so the user can see what
       has been done.
     - [071018] Template buffer binding; avoid abort if binding can't be
       made
@@ -16226,7 +16226,7 @@ $a
  
        When this bit is set the command moves the cursor to the matching
        fence, updates the screen and pauses for ls$pause-time(5)lm$pause-time(5)le before moving
-       hte cursor back again. When omitted the cursor is simply moved to the
+       the cursor back again. When omitted the cursor is simply moved to the
        matching fence.
 
     cD0x04cA
@@ -19960,11 +19960,11 @@ $a
 
 
 |pipe-shell-command
-    cCncA cDpipe-shell-commandcA "cCcommandcA" ["cCbuffer-namecA"] (cDesc @cA)
+    cCncA cDpipe-shell-commandcA "cCcommandcA" ["cCbuffer-namecA"] (cDesc @cA)  
 |$ME_PIPE_STDERR
-    cC[MS-DOS and Win32s Only]cA
+    cC[MS-DOS and Win32s Only]cA  
 |$ME_PIPE_STDERR
-    cD$ME_PIPE_STDERRcA "cCstringcA"; Default is undefined.
+    cD$ME_PIPE_STDERRcA "cCstringcA"; Default is undefined.  
 
 
 cEDESCRIPTION cA
@@ -28138,7 +28138,7 @@ $a
     macro files and optionally as well some dictionary files and the help file.
     So the user only needs to  download a binary for its own  platform,  make it
     executable and place it into a directory  belonging to its PATH variable. In
-    2024 the following platforms and binaries are supportet:
+    2024 the following platforms and binaries are supported:
     
     - cCLinuxcA - Terminal (mecb) and Terminal and X11 version (mewb) were mainly 
       Debian and Red Hat based distros are provided  which might be used on many
@@ -30863,7 +30863,7 @@ $a
        interrupt (i.e. a cGC-gcA abort), to continue after this requires a double
        cD!forcecA.
 
-    The second problem is with the input type, the lsMessageLineVaraibles(4)lm@mlle does not indicate that
+    The second problem is with the input type, the lsMessageLineVariables(4)lm@mlle does not indicate that
     a file name is required. The type of input should be qualified to first
     check the input type and to provide other features such as file completion
     on file name entry. Specifying the input type correctly:
@@ -30879,7 +30879,7 @@ $a
 sA
     cDTIP:cA
  
-       How did we find out about lsMessageLineVaraibles(4)lm@ml04le ? The best way to find out how to do
+       How did we find out about lsMessageLineVariables(4)lm@ml04le ? The best way to find out how to do
        something is find another macro (or command) that does something very
        similar and copy it, in this case the lsdiff(3)lmdiffle macro has to perform a
        similar operation. If you cannot find anything then look in the
@@ -30937,7 +30937,7 @@ $a
 
 sA
     When cDwrite-buffercA asks the MicroEmacs macro processor for a file name the
-    lsMessageLineVaraibles(4)lm@mnle argument tells it to go directly to the user even though ME is
+    lsMessageLineVariables(4)lm@mnle argument tells it to go directly to the user even though ME is
     currently running a macro. This will only get a single argument from the
     user, if the file already exits cDwrite-buffercA asks for confirmation that
     over-writing the existing file is okay, but this argument has not been
@@ -30956,7 +30956,7 @@ $a
 
 sA
     Which is rapidly becoming very messy for each individual argument, instead
-    we use lsMessageLineVaraibles(4)lm@mnale to ask the command to handle all input associated with the
+    we use lsMessageLineVariables(4)lm@mnale to ask the command to handle all input associated with the
     command:
 
 sB
@@ -48279,7 +48279,7 @@ $a
 
 
     lsMacroNumericArguments(4)lmMacroNumericArgumentsle, lsdefine-macro(2)lmdefine-macro(2)le, lsreplace-all-string(3)lmreplace-all-string(3)le, ls!force(4)lm!force(4)le.
-! 4 MessageLineVaraibles
+! 4 MessageLineVariables
 ! 4 @mn
 ! 4 @mna
 ! 4 @ml
@@ -52874,7 +52874,7 @@ $a
        message-line by this command.
 
     lschange-font(2)lmchange-font(2)le -
-       cD$resultcA is used to return the user select font when hte windows font
+       cD$resultcA is used to return the user select font when the windows font
        selection dialog is used (Windows systems only).
 
     lscount-words(2)lmcount-words(2)le -
