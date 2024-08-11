@@ -27,6 +27,9 @@ jobs:
     - name: make mew binary       
       run:  make -f linux32gcc.gmk mew
 
+    - name: make mecw binary       
+      run:  make -f linux32gcc.gmk mecw
+
     - name: make mecb binary
       run:  |
         make -f linux32gcc.gmk mecb
@@ -34,12 +37,16 @@ jobs:
     - name: make mewb binary
       run:  make -f linux32gcc.gmk mewb
     
+    - name: make mecwb binary
+      run:  make -f linux32gcc.gmk mecwb
+    
     - name: Make release
       run: |
         mkdir MicroEmacs09-${VERSION}-Linux
         mkdir MicroEmacs09-${VERSION}-Linux/bin
         cp bfs/bfs MicroEmacs09-${VERSION}-Linux/bin/
         cp src/.linux32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-Linux/bin/
+        cp src/.linux32gcc-release-mew/mew MicroEmacs09-${VERSION}-Linux/bin/
         cp src/.linux32gcc-release-mec/mec  MicroEmacs09-${VERSION}-Linux/bin/
         cp me*.bin MicroEmacs09-${VERSION}-Linux/bin/
         cp license.txt MicroEmacs09-${VERSION}-Linux/
@@ -70,6 +77,16 @@ jobs:
         cp COPYING MicroEmacs09-${VERSION}-Linux-mewb/
         cp README-standalone.md MicroEmacs09-${VERSION}-Linux-mewb/
 
+    - name: Make mecwb release
+      run: |
+        mkdir MicroEmacs09-${VERSION}-Linux-mecwb
+        mkdir MicroEmacs09-${VERSION}-Linux-mecwb/bin
+        cp bfs/bfs MicroEmacs09-${VERSION}-Linux-mecwb/bin/
+        cp mecw*.bin MicroEmacs09-${VERSION}-Linux-mecwb/bin/
+        cp license.txt MicroEmacs09-${VERSION}-Linux-mecwb/
+        cp COPYING MicroEmacs09-${VERSION}-Linux-mecwb/
+        cp README-standalone.md MicroEmacs09-${VERSION}-Linux-mecwb/
+
     - name: Upload Ubuntu Release files
       uses: actions/upload-artifact@v4
       with: 
@@ -87,3 +104,9 @@ jobs:
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Linux-mewb
         path: MicroEmacs09-${{ env.VERSION }}-Linux-mewb
+
+    - name: Upload Ubuntu mecwb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
+        path: MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
