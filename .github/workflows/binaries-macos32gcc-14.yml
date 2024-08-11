@@ -20,7 +20,11 @@ jobs:
            uname -r
            brew install xquartz
            brew install make
-           export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
+           brew install coreutils
+           export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
+           export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+           export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+           echo "VRS=$VRS" >> $GITHUB_ENV
 
       - name: make bfs binary
         run:  make -f macos32gcc.gmk bfs/bin CC=gcc-14
@@ -39,54 +43,54 @@ jobs:
         
       - name: Make release
         run: |
-          mkdir MicroEmacs09-${VERSION}-${OS}
-          mkdir MicroEmacs09-${VERSION}-${OS}/bin
-          cp bfs/bfs MicroEmacs09-${VERSION}-${OS}/bin/
-          cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-${OS}/bin/
-          cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VERSION}-${OS}/bin/
-          cp me*.bin MicroEmacs09-${VERSION}-${OS}/bin/
-          cp license.txt MicroEmacs09-${VERSION}-${OS}/
-          cp COPYING MicroEmacs09-${VERSION}-${OS}/
-          cp README-standalone.md MicroEmacs09-${VERSION}-${OS}/
+          mkdir MicroEmacs09-${VRS}-${OS}
+          mkdir MicroEmacs09-${VRS}-${OS}/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${OS}/bin/
+          cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VRS}-${OS}/bin/
+          cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VRS}-${OS}/bin/
+          cp me*.bin MicroEmacs09-${VRS}-${OS}/bin/
+          cp license.txt MicroEmacs09-${VRS}-${OS}/
+          cp COPYING MicroEmacs09-${VRS}-${OS}/
+          cp README-standalone.md MicroEmacs09-${VRS}-${OS}/
           cd jasspa 
           zip macros.zip macros/*
           cd ..
-          cp jasspa/macros.zip MicroEmacs09-${VERSION}-${OS}/
+          cp jasspa/macros.zip MicroEmacs09-${VRS}-${OS}/
 
       - name: Make mecb release
         run: |
-          mkdir MicroEmacs09-${VERSION}-${OS}-mecb
-          mkdir MicroEmacs09-${VERSION}-${OS}-mecb/bin
-          cp bfs/bfs MicroEmacs09-${VERSION}-${OS}-mecb/bin/
-          cp mec*.bin MicroEmacs09-${VERSION}-${OS}-mecb/bin/
-          cp license.txt MicroEmacs09-${VERSION}-${OS}-mecb/
-          cp COPYING MicroEmacs09-${VERSION}-${OS}-mecb/
-          cp README-standalone.md MicroEmacs09-${VERSION}-${OS}-mecb/
+          mkdir MicroEmacs09-${VRS}-${OS}-mecb
+          mkdir MicroEmacs09-${VRS}-${OS}-mecb/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${OS}-mecb/bin/
+          cp mec*.bin MicroEmacs09-${VRS}-${OS}-mecb/bin/
+          cp license.txt MicroEmacs09-${VRS}-${OS}-mecb/
+          cp COPYING MicroEmacs09-${VRS}-${OS}-mecb/
+          cp README-standalone.md MicroEmacs09-${VRS}-${OS}-mecb/
 
       - name: Make mewb release
         run: |
-          mkdir MicroEmacs09-${VERSION}-${OS}-mewb
-          mkdir MicroEmacs09-${VERSION}-${OS}-mewb/bin
-          cp bfs/bfs MicroEmacs09-${VERSION}-${OS}-mewb/bin/
-          cp mew*.bin MicroEmacs09-${VERSION}-${OS}-mewb/bin/
-          cp license.txt MicroEmacs09-${VERSION}-${OS}-mewb/
-          cp COPYING MicroEmacs09-${VERSION}-${OS}-mewb/
-          cp README-standalone.md MicroEmacs09-${VERSION}-${OS}-mewb/
+          mkdir MicroEmacs09-${VRS}-${OS}-mewb
+          mkdir MicroEmacs09-${VRS}-${OS}-mewb/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${OS}-mewb/bin/
+          cp mew*.bin MicroEmacs09-${VRS}-${OS}-mewb/bin/
+          cp license.txt MicroEmacs09-${VRS}-${OS}-mewb/
+          cp COPYING MicroEmacs09-${VRS}-${OS}-mewb/
+          cp README-standalone.md MicroEmacs09-${VRS}-${OS}-mewb/
 
       - name: Upload Ubuntu Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}
-          path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}
+          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}
+          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}
     
       - name: Upload Ubuntu mecb Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mecb
-          path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mecb
+          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecb
+          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecb
 
       - name: Upload Ubuntu mewb Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mewb
-          path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mewb
+          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mewb
+          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mewb
