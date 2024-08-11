@@ -21,6 +21,7 @@ jobs:
            brew install xquartz
            brew install make
            export PATH=/usr/local/opt/make/libexec/gnubin/:PATH
+           export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | sed 's/"//'g | paste -sd ''`
 
       - name: make bfs binary
         run: make -f macos32gcc.gmk bfs/bin CC=gcc-13   
@@ -108,8 +109,8 @@ jobs:
           name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mewb
           path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mewb
 
-      - name: Upload Ubuntu mecwb Release files
+      - name: Upload Ubuntu mecwb-2 Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mecwb
-          path: MicroEmacs09-${{ env.VERSION }}-${{ env.OS }}-mecwb
+          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecwb
+          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecwb
