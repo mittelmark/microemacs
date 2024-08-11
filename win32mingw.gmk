@@ -1,37 +1,4 @@
-##-*- makefile -*-############################################################
-#
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
-#  Date          : $Date$
-#  Author        : $Author$
-#  Created By    : Detlef Groth
-#  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240802.1245>
-#
-#  Description	
-#
-#  Notes
-#
-#  History
-#	
-#  $Log$
-#
-##############################################################################
-#
-#  Copyright (c) 2024 Detlef Groth.
-# 
-#  All Rights Reserved.
-# 
-#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
-#  readable form without prior written consent from Detlef Groth.
-#
-##############################################################################
-version=091224b
-VERSION=$(shell grep -e '^version=' linux32gcc.gmk | sed 's/version=//')
-
+VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | sed 's/"//'g | sed ':a;N;$$!ba;s/\n//g')
 bfs/exe:
 	cd bfs && make -f win32mingw.gmk clean	
 	cd bfs && make -f win32mingw.gmk
