@@ -39,13 +39,13 @@ jobs:
         run: make -f macos32gcc.gmk mecw CC=gcc-13
         
       - name: make mecb binary 
-        run: make -f macos32gcc.gmk mecb 
+        run: make -f macos32gcc.gmk mecb VERSION=${VRS}
         
       - name: make mewb binary 
-        run: make -f macos32gcc.gmk mewb
+        run: make -f macos32gcc.gmk mewb VERSION=${VRS}
         
       - name: make mecwb binary 
-        run: make -f macos32gcc.gmk mecwb
+        run: make -f macos32gcc.gmk mecwb VERSION=${VRS}
         
       - name: Make release
         run: |
