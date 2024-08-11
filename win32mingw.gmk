@@ -1,4 +1,4 @@
-VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | sed 's/"//'g | paste -sd '')
+VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
 bfs/exe:
 	cd bfs && make -f win32mingw.gmk clean	
 	cd bfs && make -f win32mingw.gmk
