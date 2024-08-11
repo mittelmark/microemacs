@@ -27,25 +27,25 @@ jobs:
            echo "VRS=$VRS" >> $GITHUB_ENV
 
       - name: make bfs binary
-        run: make -f macos32gcc.gmk bfs/bin CC=gcc-11   
+        run: make -f macos32gcc.gmk bfs/bin CC=gcc-11 VERSION=${VRS}
 
       - name: make mec binary
-        run:  make -f macos32gcc.gmk mec
+        run:  make -f macos32gcc.gmk mec VERSION=${VRS}
 
       - name: make mew binary
-        run: make -f macos32gcc.gmk mew
+        run: make -f macos32gcc.gmk mew VERSION=${VRS}
         
       - name: make mecw binary
-        run: make -f macos32gcc.gmk mecw
+        run: make -f macos32gcc.gmk mecw VERSION=${VRS}
         
       - name: make mecb binary 
-        run: make -f macos32gcc.gmk mecb
+        run: make -f macos32gcc.gmk mecb VERSION=${VRS}
         
       - name: make mewb binary 
-        run: make -f macos32gcc.gmk mewb
+        run: make -f macos32gcc.gmk mewb VERSION=${VRS}
 
       - name: make mecwb binary 
-        run: make -f macos32gcc.gmk mecwb
+        run: make -f macos32gcc.gmk mecwb VERSION=${VRS}
         
       - name: Make release
         run: |
