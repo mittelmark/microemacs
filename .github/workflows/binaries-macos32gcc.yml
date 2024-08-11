@@ -80,16 +80,6 @@ jobs:
           cp COPYING MicroEmacs09-${VERSION}-${OS}-mewb/
           cp README-standalone.md MicroEmacs09-${VERSION}-${OS}-mewb/
 
-      - name: Make mewb release
-        run: |
-          mkdir MicroEmacs09-${VERSION}-${OS}-mewb
-          mkdir MicroEmacs09-${VERSION}-${OS}-mewb/bin
-          cp bfs/bfs MicroEmacs09-${VERSION}-${OS}-mewb/bin/
-          cp mewb*.bin MicroEmacs09-${VERSION}-${OS}-mewb/bin/
-          cp license.txt MicroEmacs09-${VERSION}-${OS}-mewb/
-          cp COPYING MicroEmacs09-${VERSION}-${OS}-mewb/
-          cp README-standalone.md MicroEmacs09-${VERSION}-${OS}-mewb/
-
       - name: Make mecwb release
         run: |
           mkdir MicroEmacs09-${VERSION}-${OS}-mecwb

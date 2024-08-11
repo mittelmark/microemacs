@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240811.2052>
+#  Last Modified : <240811.2100>
 #
 #  Description	
 #
@@ -29,8 +29,9 @@
 #  readable form without prior written consent from Detlef Groth.
 #
 ##############################################################################
-version=091224b1
-VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
+#version=091224b1
+#VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
+VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | sed 's/"//'g | sed ':a;N;$!ba;s/\n//g')
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
