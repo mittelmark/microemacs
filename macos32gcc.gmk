@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240811.1916>
+#  Last Modified : <240811.2011>
 #
 #  Description	
 #
@@ -29,7 +29,7 @@
 #  readable form without prior written consent from Detlef Groth.
 #
 ##############################################################################
-version=091224b
+version=091224b1
 VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
 CC=gcc-11
 MAKE=make
@@ -57,4 +57,4 @@ mewb: mew bfs/bin
 	./bfs/bfs -a ./src/.macos32gcc-release-mew/mew -o mewb-$(VERSION)-$(OS).bin ./jasspa
 
 mecwb: mecw bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mecw/mecw -o mewb-$(VERSION)-$(OS).bin ./jasspa
+	./bfs/bfs -a ./src/.macos32gcc-release-mecw/mecw -o mecwb-$(VERSION)-$(OS).bin ./jasspa
