@@ -14,12 +14,18 @@ mec:
 	cd src && make -f linux32gcc.gmk BTYP=c
 
 mew:
-	cd src && make -f linux32gcc.gmk BTYPE=cw			
+	cd src && make -f linux32gcc.gmk BTYP=w			
+
+mecw:
+	cd src && make -f linux32gcc.gmk BTYP=cw			
 
 mecb: bfs/bin mec
 	./bfs/bfs -a ./src/.linux32gcc-release-mec/mec -o mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin ./jasspa
 
 mewb: bfs/bin mew
-	./bfs/bfs -a ./src/.linux32gcc-release-mecw/mecw -o mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin ./jasspa
+	./bfs/bfs -a ./src/.linux32gcc-release-mew/mew -o mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin ./jasspa
+
+mecwb: bfs/bin mecw
+	./bfs/bfs -a ./src/.linux32gcc-release-mecw/mecw -o mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin ./jasspa
 	
 
