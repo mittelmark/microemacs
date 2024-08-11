@@ -21,7 +21,7 @@ jobs:
            brew install xquartz
            brew install make
            export PATH=/usr/local/opt/make/libexec/gnubin/:PATH
-           export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | sed 's/"//'g | paste -sd ''`
+           export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
            echo $VRS
            echo "VRS=$VRS" >> $GITHUB_ENV
 
