@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240811.2017>
+#  Last Modified : <240811.2052>
 #
 #  Description	
 #
@@ -40,13 +40,13 @@ OS=macos-$(KERNEL)
 bfs/bin:
 	cd bfs && $(MAKE) CC=$(CC)
 
-mec: 
+mec:
 	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=c
 
-mew: 
+mew:
 	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=w
 
-mecw: 
+mecw:
 	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=cw
 
 mecb: mec bfs/bin
