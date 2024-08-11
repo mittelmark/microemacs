@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240811.2316>
+#  Last Modified : <240812.0050>
 #
 #  Description	
 #
@@ -31,7 +31,7 @@
 ##############################################################################
 #version=091224b1
 #VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
-VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | sed 's/"//'g | paste -sd '')
+VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//'g)
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
