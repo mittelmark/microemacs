@@ -55,8 +55,9 @@ jobs:
         PATH=%CD%\mingw32\bin;%PATH%
         mingw32-make -f win32winlibs.gmk mewb
     - name: Make release
+      shell: pwsh
       run: |
-        VERSION=091224b1
+        $Env:VERSION ='091224b1'
         mkdir MicroEmacs09-${VERSION}-Windows
         mkdir MicroEmacs09-${VERSION}-Windows/bin
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows/bin/
@@ -66,7 +67,7 @@ jobs:
         cp COPYING MicroEmacs09-${VERSION}-Windows/
         cp README-standalone.md MicroEmacs09-${VERSION}-Windows/
         cd jasspa 
-        tar -cf macros.zip macros/*
+        7z -a macros.zip macros
         cd ..
         cp jasspa/macros.zip MicroEmacs09-${VERSION}-Windows/
         
