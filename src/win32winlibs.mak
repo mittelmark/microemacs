@@ -46,7 +46,7 @@ INSTPROGFLAGS =
 A        = .a
 EXE      = .exe
 
-CC       = CC
+CC       = gcc
 RC       = windres
 MK       = mingw32-make
 LD       = $(CC)
