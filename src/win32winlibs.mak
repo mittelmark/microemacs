@@ -70,7 +70,7 @@ CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
 LDFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 ../bfs/win32/lib/zlib.a
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 ../bfs/win32/lib/libz.a
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs
