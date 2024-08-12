@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Jon Green
 #  Created       : Wed Oct 21 15:58:59 2009
-#  Last Modified : <240801.0653>
+#  Last Modified : <240812.1515>
 #
 #  Description   : Unix/Linux only
 #
@@ -35,7 +35,7 @@ TOOLKIT=        win32mingw
 OUTDIR   =      .$(TOOLKIT)-release
 
 CC=		i686-w64-mingw32-gcc
-CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include -I../3rdparty/zlib
+CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include
 LIBS=		-fstack-protector -lssp -lz #win32/lib/libz.a
 #
 # Some useful commands
@@ -80,7 +80,7 @@ spotless:	clean
 		$(RM) core
 		$(RM) tags
 $(BFS):		$(OUTDIR) $(PRGOBJS)
-		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) $(LIBS) -fstack-protector -lssp 
+		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) -fstack-protector -lssp -Lwin32/lib -lz
 		cp $(BFS) .
 #
 $(PRGOBJS): $(PRGHDRS) 
