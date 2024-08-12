@@ -40,10 +40,18 @@ jobs:
     - name: make mecw binary
       run:  make -f win32mingw.gmk bfs/exe
     
+    -name: Download zlib1.dll
+      run: |
+        wget  https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-16.0.0-10.0.0-ucrt-r5/winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
+        unzip -q winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
+        cp mingw32/bin/zlib1.dll .
+        wget https://github.com/madler/zlib/raw/develop/LICENSE -O zlib-LICENSE.txt
     - name: Make release
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows
         mkdir MicroEmacs09-${VERSION}-Windows/bin
+        cp zlib1.dll MicroEmacs09-${VERSION}-Windows/bin/
+        cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows/bin/
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows/bin/
         cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
         cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-${VERSION}-Windows/bin/
@@ -60,8 +68,10 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows-mecb
         mkdir MicroEmacs09-${VERSION}-Windows-mecb/bin
+        cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mecb/bin/
+        cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mecb/bin/
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
-        cp mec*.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
+        cp mecb*.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
         cp license.txt MicroEmacs09-${VERSION}-Windows-mecb/
         cp COPYING MicroEmacs09-${VERSION}-Windows-mecb/
         cp README-standalone.md MicroEmacs09-${VERSION}-Windows-mecb/
@@ -70,8 +80,10 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows-mewb
         mkdir MicroEmacs09-${VERSION}-Windows-mewb/bin
+        cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mewb/bin/
+        cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
-        cp mew*.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
+        cp mewb*.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp license.txt MicroEmacs09-${VERSION}-Windows-mewb/
         cp COPYING MicroEmacs09-${VERSION}-Windows-mewb/
         cp README-standalone.md MicroEmacs09-${VERSION}-Windows-mewb/
