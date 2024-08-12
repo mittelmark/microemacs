@@ -24,15 +24,17 @@ jobs:
       run: |
         mingw32-make -f win32winlibs.gmk bfs/exe
 
+    - name: compile mec
+      shell: cmd
+      run: |
+        gcc --version
+        ld --version
+        mingw32-make -f win32winlibs.gmk mec
+        
     - name: compile mew
       shell: cmd
       run: |
         mingw32-make -f win32winlibs.gmk mew
-        
-    - name: compile mec
-      shell: cmd
-      run: |
-        mingw32-make -f win32winlibs.gmk mec
         
 
         
