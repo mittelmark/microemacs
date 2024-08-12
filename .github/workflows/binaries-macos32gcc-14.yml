@@ -21,8 +21,8 @@ jobs:
            brew install xquartz
            brew install make
            brew install coreutils
-           export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
-           export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+           export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
+           export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
            export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
            echo "VRS=$VRS" >> $GITHUB_ENV
 
