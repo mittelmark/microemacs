@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Jon Green
 #  Created       : Wed Oct 21 15:58:59 2009
-#  Last Modified : <240812.1132>
+#  Last Modified : <240812.1156>
 #
 #  Description   : Unix/Linux only
 #
@@ -80,7 +80,7 @@ spotless:	clean
 		$(RM) core
 		$(RM) tags
 $(BFS):		$(OUTDIR) $(PRGOBJS)
-		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) $(LIBS) -fstack-protector -lssp -lz
+		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) -fstack-protector -lssp -Lwin32/lib -lz
 		cp $(BFS) .
 #
 $(PRGOBJS): $(PRGHDRS) 
