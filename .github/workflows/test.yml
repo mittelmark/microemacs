@@ -57,19 +57,19 @@ jobs:
     - name: Make release
       shell: pwsh
       run: |
-        $Env:VERSION ='091224b1'
-        mkdir MicroEmacs09-${VERSION}-Windows
-        mkdir MicroEmacs09-${VERSION}-Windows/bin
-        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows/bin/
-        cp src/.win32winlibs-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
-        cp src/.win32winlibs-release-mec/mec32.exe MicroEmacs09-${VERSION}-Windows/bin/        
-        cp license.txt MicroEmacs09-${VERSION}-Windows/
-        cp COPYING MicroEmacs09-${VERSION}-Windows/
-        cp README-standalone.md MicroEmacs09-${VERSION}-Windows/
+        $env:VERSION ='091224b1'
+        mkdir MicroEmacs09-${env:VERSION}-Windows
+        mkdir MicroEmacs09-${env:VERSION}-Windows/bin
+        cp bfs/bfs.exe MicroEmacs09-${env:VERSION}-Windows/bin/
+        cp src/.win32winlibs-release-mew/mew32.exe MicroEmacs09-${env:VERSION}-Windows/bin/
+        cp src/.win32winlibs-release-mec/mec32.exe MicroEmacs09-${env:VERSION}-Windows/bin/        
+        cp license.txt MicroEmacs09-${env:VERSION}-Windows/
+        cp COPYING MicroEmacs09-${env:VERSION}-Windows/
+        cp README-standalone.md MicroEmacs09-${env:VERSION}-Windows/
         cd jasspa 
-        7z -a macros.zip macros
+        7z a macros.zip macros
         cd ..
-        cp jasspa/macros.zip MicroEmacs09-${VERSION}-Windows/
+        cp jasspa/macros.zip MicroEmacs09-${env:VERSION}-Windows/
         
     - name: Upload Windows WinlibRelease files
       uses: actions/upload-artifact@v4
