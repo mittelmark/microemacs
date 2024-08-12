@@ -3,6 +3,8 @@ name: Binaries Windows 19 Server
 on:
   workflow_dispatch:
     branches: [ master ]
+env:
+   VERSION: "091224b1"
 
 jobs:
   build:
@@ -52,7 +54,27 @@ jobs:
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
         mingw32-make -f win32winlibs.gmk mewb
+    - name: Make release
+      run: |
+        mkdir MicroEmacs09-${VERSION}-Windows
+        mkdir MicroEmacs09-${VERSION}-Windows/bin
+        cp bfs/bfs MicroEmacs09-${VERSION}-Windows/bin/
+        cp src/.win32wwinlibs-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
+        cp src/.win32wwinlibs-release-mec/mec32.exe MicroEmacs09-${VERSION}-Windows/bin/        
+        cp license.txt MicroEmacs09-${VERSION}-Windows/
+        cp COPYING MicroEmacs09-${VERSION}-Windows/
+        cp README-standalone.md MicroEmacs09-${VERSION}-Windows/
+        cd jasspa 
+        zip macros.zip macros/*
+        cd ..
+        cp jasspa/macros.zip MicroEmacs09-${VERSION}-Windows/
         
+    - name: Upload Windows WinlibRelease files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-Windows
+        path: MicroEmacs09-${{ env.VERSION }}-Windows
+    
         
 
         
