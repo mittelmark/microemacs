@@ -22,11 +22,11 @@ jobs:
     - name: compile bfs
       shell: cmd
       run: |
-        mingw32-make -f win32winlibs.gmk bfs/exe CC=gcc
+        mingw32-make -f win32winlibs.gmk bfs/exe
     - name: compile mew
       shell: cmd
       run: |
-        mingw32-make -f win32winlibs.gmk mew CC=gcc
+        mingw32-make -f win32winlibs.gmk mew
         
 
         

@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Jon Green
 #  Created       : Wed Oct 21 15:58:59 2009
-#  Last Modified : <240812.1038>
+#  Last Modified : <240812.1122>
 #
 #  Description   : Unix/Linux only
 #
@@ -34,9 +34,9 @@
 TOOLKIT=        win32winlibs
 OUTDIR   =      .$(TOOLKIT)-release
 
-CC=		i686-w64-mingw32-gcc
-CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include -I../3rdparty/zlib
-LIBS=		-fstack-protector -lssp win32/lib/libz.a
+CC=		gcc
+CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include
+LIBS=		win32/lib/libz.a
 #
 # Some useful commands
 #
