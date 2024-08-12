@@ -23,7 +23,7 @@ jobs:
       shell: cmd
       run: |
         mingw32-make -f win32winlibs.gmk bfs/exe
-        bfs/.win32winlibs/bfs.exe -h
+        bfs\bfs.exe -h
     - name: compile mew
       shell: cmd
       run: |
