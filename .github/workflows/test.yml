@@ -58,9 +58,9 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows
         mkdir MicroEmacs09-${VERSION}-Windows/bin
-        cp bfs/bfs MicroEmacs09-${VERSION}-Windows/bin/
-        cp src/.win32wwinlibs-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
-        cp src/.win32wwinlibs-release-mec/mec32.exe MicroEmacs09-${VERSION}-Windows/bin/        
+        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows/bin/
+        cp src/.win32winlibs-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
+        cp src/.win32winlibs-release-mec/mec32.exe MicroEmacs09-${VERSION}-Windows/bin/        
         cp license.txt MicroEmacs09-${VERSION}-Windows/
         cp COPYING MicroEmacs09-${VERSION}-Windows/
         cp README-standalone.md MicroEmacs09-${VERSION}-Windows/
