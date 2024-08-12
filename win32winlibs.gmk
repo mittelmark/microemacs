@@ -1,0 +1,16 @@
+VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
+TOOLKIT=win32winlibs
+bfs/exe:
+	cd bfs && make -f $(TOOLKIT).gmk clean	
+	cd bfs && make -f $(TOOLKIT).gmk
+mec: 
+	cd src && make -f $(TOOLKIT).mak BTYP=c
+
+mew: 
+	cd src && make -f $(TOOKIT).mak BTYP=w
+
+mecb: bfs/exe mec
+	./bfs/.$(TOOLKIT)-release/bfs.exe -a ./src/.$(TOOLKIT)-release-mec/mec32.exe -o mecb-$(VERSION)-winlib.exe ./jasspa
+
+mewb: bfs/exe mew
+	./bfs/bfs -a ./src/.$(TOOLKIT)-release-mew/mew32.exe -o mewb-$(VERSION)-winlib.exe ./jasspa		
