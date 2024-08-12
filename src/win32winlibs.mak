@@ -46,7 +46,7 @@ INSTPROGFLAGS =
 A        = .a
 EXE      = .exe
 
-CC       = i686-w64-mingw32-gcc
+CC       = CC
 RC       = windres
 MK       = mingw32-make
 LD       = $(CC)
@@ -70,7 +70,7 @@ CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
 LDFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 ../bfs/win32/lib/libz.a
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../bfs/win32/lib -lz
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs
