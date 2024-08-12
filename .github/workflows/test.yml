@@ -10,7 +10,7 @@ jobs:
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
      
     - name: download winlibs
       shell: cmd
@@ -40,6 +40,19 @@ jobs:
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
         mingw32-make -f win32winlibs.gmk mew
+
+    - name: create mecb
+      shell: cmd
+      run: |
+        PATH=%CD%\mingw32\bin;%PATH%
+        mingw32-make -f win32winlibs.gmk mecb
+        
+    - name: create mewb
+      shell: cmd
+      run: |
+        PATH=%CD%\mingw32\bin;%PATH%
+        mingw32-make -f win32winlibs.gmk mewb
+        
         
 
         
