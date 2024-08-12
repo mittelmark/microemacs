@@ -51,7 +51,7 @@ RC       = windres
 MK       = mingw32-make
 LD       = $(CC)
 STRIP    = strip
-AR       = i686-w64-mingw32-ar
+AR       = ar
 RM       = rm -f
 RMDIR    = rm -r -f
 
@@ -64,7 +64,8 @@ endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 
-CCDEFS   = -D_MINGW -Wall -I/usr/i686-w64-mingw32/sys-root/mingw/include -I../bfs/win32/include
+CCDEFS   = -D_MINGW -Wall -I../bfs/win32/include
+##CCDEFS   = -D_MINGW -Wall -I/usr/i686-w64-mingw32/sys-root/mingw/include -I../bfs/win32/include
 CCFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
