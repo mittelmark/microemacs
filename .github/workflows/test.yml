@@ -84,8 +84,8 @@ jobs:
       run: |
         mkdir MicroEmacs09-${env:VERSION}-Windows-mecb
         mkdir MicroEmacs09-${env:VERSION}-Windows-mecb/bin
-        cp bfs/bfs MicroEmacs09-${env:VERSION}-Windows-mecb/bin/
-        cp mec*.bin MicroEmacs09-${env:VERSION}-Windows-mecb/bin/
+        cp bfs/bfs.exe MicroEmacs09-${env:VERSION}-Windows-mecb/bin/
+        cp mec*.exe MicroEmacs09-${env:VERSION}-Windows-mecb/bin/
         cp license.txt MicroEmacs09-${env:VERSION}-Windows-mecb/
         cp COPYING MicroEmacs09-${env:VERSION}-Windows-mecb/
         cp README-standalone.md MicroEmacs09-${env:VERSION}-Windows-mecb/
@@ -95,6 +95,23 @@ jobs:
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Windows-mecb
         path: MicroEmacs09-${{ env.VERSION }}-Windows-mecb
+
+    - name: Make mewb release
+      shell: pwsh
+      run: |
+        mkdir MicroEmacs09-${env:VERSION}-Windows-mewb
+        mkdir MicroEmacs09-${env:VERSION}-Windows-mewb/bin
+        cp bfs/bfs.exe MicroEmacs09-${env:VERSION}-Windows-mewb/bin/
+        cp mew*.exe MicroEmacs09-${env:VERSION}-Windows-mewb/bin/
+        cp license.txt MicroEmacs09-${env:VERSION}-Windows-mewb/
+        cp COPYING MicroEmacs09-${env:VERSION}-Windows-mewb/
+        cp README-standalone.md MicroEmacs09-${env:VERSION}-Windows-mewb/
+
+    - name: Upload mewb release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
+        path: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
 
 
         
