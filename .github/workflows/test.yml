@@ -1,4 +1,4 @@
-name: Test Binaries on Windows Server
+name: Binaries Windows 19 Server
 
 on:
   workflow_dispatch:
@@ -19,28 +19,14 @@ jobs:
         unzip -q winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
         PATH=%CD%\mingw32\bin;%PATH%
         gcc --version
-    - name: compile zlib
+    - name: compile bfs
       shell: cmd
       run: |
-        cd 3rdparty/zlib 
-        mingw32-make -f win32mingw.mak
-        ls .win32mingw-release\*
-        cd ../../
-    - name: compile bfs
-      shell:  cmd
-      run: |
-        cd bfs
-        mingw32-make -f Makefile.mingw RC=windres STRIP=strip
-        ls
-        cd ..
+        mingw32-make -f win32winlibs.gmk bfs/exe
     - name: compile mew
       shell: cmd
       run: |
-        PATH=%CD%\mingw32\bin;%PATH%
-        gcc -v
-        cd src
-        mingw32-make -f mingw32.gmk RC=windres STRIP=strip
-        ls 
+        mingw32-make -f win32winlibs.gmk mew
         
 
         
