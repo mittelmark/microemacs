@@ -27,6 +27,7 @@ jobs:
     - name: compile mec
       shell: cmd
       run: |
+        PATH=%CD%\mingw32\bin;%PATH%
         gcc --version
         ld --version
         mingw32-make -f win32winlibs.gmk mec
@@ -34,6 +35,7 @@ jobs:
     - name: compile mew
       shell: cmd
       run: |
+        PATH=%CD%\mingw32\bin;%PATH%
         mingw32-make -f win32winlibs.gmk mew
         
 
