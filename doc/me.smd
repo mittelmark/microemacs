@@ -1183,6 +1183,15 @@
   [gdiff(3)](gdiff(3)) Graphical file difference  
   [generate-tags-file(3)](generate-tags-file(3)) Generate a tags file  
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
+  [git(3)](git(3)) MicroEmacs Git interface  
+  [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
+  [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
+  [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
   [ipipe-kill(2)](ipipe-kill(2)) Kill a incremental pipe  
   [ipipe-shell-command(2)](ipipe-shell-command(2)) (esc \) Incremental pipe (non-suspending
     system call)  
@@ -1917,6 +1926,15 @@
   [gdiff(3)](gdiff(3)) Graphical file difference  
   [generate-tags-file(3)](generate-tags-file(3)) Generate a tags file  
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
+  [git(3)](git(3)) MicroEmacs Git interface  
+  [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
+  [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
+  [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
   [global-abbrev-file(2)](global-abbrev-file(2)) Set global abbreviation file  
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
@@ -2502,6 +2520,15 @@
   [ftp(3)](ftp(3)) Initiate an FTP connection  
   [gdiff(3)](gdiff(3)) Graphical file difference  
   [generate-tags-file(3)](generate-tags-file(3)) Generate a tags file  
+  [git(3)](git(3)) MicroEmacs Git interface  
+  [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
+  [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
+  [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
   [grep(3)](grep(3)) Search a file for a pattern  
   [ifill-paragraph(3)](ifill-paragraph(3)) (esc q) Format a paragraph  
   [indent-decrease(3)](indent-decrease(3)) Decrease the line indentation  
@@ -3482,6 +3509,15 @@
   [gdiff(3f)](gdiff(3f)) Command line graphical file difference  
   [generate-tags-file(3)](generate-tags-file(3)) Generate a tags file  
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
+  [git(3)](git(3)) MicroEmacs Git interface  
+  [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
+  [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
+  [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
   [global-abbrev-file(2)](global-abbrev-file(2)) Set global abbreviation file  
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
@@ -42752,6 +42788,128 @@ $a
   [user-setup(3)](user-setup(3))  where  the  selection  of  completely  other
   key-bindings is explained.
 
+!! me-id: m3mac096
+! 3 git
+! 3 git-add
+! 3 git-checkout
+! 3 git-commit
+! 3 git-diff
+! 3 git-log
+! 3 git-pull
+! 3 git-rm
+! 3 git-state
+! 3 git-status
+! 3 git-tag
+## NAME
+
+
+|git
+  git - MicroEmacs Git interface
+|git-add
+  git-add - MicroEmacs Git interface - add file
+|git-checkout
+  git-checkout - MicroEmacs Git interface - checkout files and directories
+|git-commit
+  git-commit - MicroEmacs Git interface - commit changes
+|git-diff
+  git-diff - MicroEmacs Git interface - diff changes
+|git-log
+  git-log - MicroEmacs Git interface - log changes
+|git-pull
+  git-pull - MicroEmacs Git interface - update directory files
+|git-rm
+  git-rm - MicroEmacs Git interface - remove file
+|git-state
+  git-state - MicroEmacs Git interface - list state of directory files
+|git-status
+  git-status - MicroEmacs Git interface - status of files
+|git-tag
+  git-tag - MicroEmacs Git interface - tag files
+$a
+
+
+## SYNOPSIS
+
+
+  _n_ __git__  
+
+  __git-add__  
+  __git-checkout__  
+  __git-commit__  
+  __git-diff__  
+  __git-log__  
+  __git-rm__  
+  __git-state__  
+  __git-status__  
+
+
+## DESCRIPTION
+
+
+  The git and sub-commands provide MicroEmacs with an interface to __git(1)__.
+  __Git__ is a distributed version control system; using it, you can record the history of
+  your source file modifications. Git is licensed under the GNU General
+  Public License 2.0 and is freely available on the Internet, see the
+  documentation provided with Git for more information on its features and
+  use.
+
+  The MicroEmacs __git__ command opens a little file viewer in *files' buffer with an
+  including additional columns showing the Git state.
+
+  The __git-add__ command adds the current buffers file to the repository. Note
+  that this command only performs the local addition, a __git-commit__ is
+  required to make the addition permanent.
+
+  The __git-checkout__ command checks out a file or directory from the
+  repository into the current directory. The user specifies the file on the
+  message line.
+
+  The __git-commit__ command commits any changes made to the currently buffer's
+  file (including additions) to the repository. The user is prompted for a
+  commit log message.
+
+  The __git-diff__ command opens a _*git-diff*_ window displaying the differences
+  between the current buffer's local file and repository version. If the
+  current buffer is a directory list it will list all the differences found
+  in all files within the directory.
+
+  The __git-log__ command opens a _*git-log*_ window displaying the Git log of the
+  current buffer's file.
+
+  The __git-rm__ command removes the current buffer's file from the
+  repository - PLEASE NOTE THIS CAN LEAD TO LOST DATA!!! This command only
+  performs the local removal; as it deletes the buffer and file the
+  __git-commit__ command cannot be used to commit the removal to the git
+  repository. Instead the  __git(1)__ application itself must  be used.
+
+  The __git-pull__ command updates all files in the current directory, the
+  output being reported to a new _*git-pull*_ window. Note that unlike most
+  git sub commands this command executes over all files in the current
+  buffer's file directory.
+
+  The __git-state__ command opens a _*git-state*_ window listing the state of any
+  file in the current directory which is not up-to-date. Note that unlike
+  most git sub commands this command executes over all files in the current
+  buffer's file directory.
+
+  The __git-status__ command opens a _*git-state*_ window and shows the state of
+  the current buffer in the window including the modification state,
+  repository etc.
+
+  The __git-tag__ command opens a dialog box and allows the user to add, remove
+  or delete a CVS tag.
+
+
+
+## NOTES
+
+
+  __git__ and sub-commands are macros defined in file `git.emf`.
+
+## SEE ALSO
+
+
+  [ClearCase(3)](ClearCase(3)), [csv(3)](csv(3)).
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME
