@@ -4903,6 +4903,17 @@
 
 ## Development History 
 
+  - [240813]
+    - Windows: Static embedding of libz
+    - Windows: Build on Windows-2019 server using winlibs
+    - X-Windows: Font selection using xfontsel if available
+    - X-Windows: registry saving of font-resize etc now working
+    - X-Windows:  removing  old DOS  encodings,  focusing  on ISO and  Cp1252
+      encodings
+    - X-Windows: mec, mecw and mew builds now available
+    - new function &llen for list length
+    - ttf fonts now enabled with stepwise resizing
+
   - [240803]
     - documentation fixes for macro links
     - adding change-font-xfontsel command
