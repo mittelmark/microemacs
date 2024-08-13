@@ -51,8 +51,8 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows
         mkdir MicroEmacs09-${VERSION}-Windows/bin
-        cp zlib1.dll MicroEmacs09-${VERSION}-Windows/bin/
-        cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows/bin/
+        #cp zlib1.dll MicroEmacs09-${VERSION}-Windows/bin/
+        #cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows/bin/
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows/bin/
         cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
         cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-${VERSION}-Windows/bin/
@@ -69,8 +69,8 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows-mecb
         mkdir MicroEmacs09-${VERSION}-Windows-mecb/bin
-        cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mecb/bin/
-        cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mecb/bin/
+        #cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mecb/bin/
+        #cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mecb/bin/
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
         cp mecb*.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
         cp license.txt MicroEmacs09-${VERSION}-Windows-mecb/
@@ -81,8 +81,8 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Windows-mewb
         mkdir MicroEmacs09-${VERSION}-Windows-mewb/bin
-        cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mewb/bin/
-        cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mewb/bin/
+        #cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mewb/bin/
+        #cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp mewb*.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
         cp license.txt MicroEmacs09-${VERSION}-Windows-mewb/
