@@ -1,4 +1,4 @@
-name: Binaries Ubuntu 22 (linux32gcc)
+name: Binaries Ubuntu 22 (linux-gcc)
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Binaries Windows (win32mingw)
+name: Binaries Windows (linux-mingw-gcc)
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Binaries Windows (win32winlibs)
+name: Binaries Windows (windows-winlibs)
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Binaries MacOS-12 (macos32gcc)
+name: Binaries MacOS-12 (macos-gcc)
 
 on:
   workflow_dispatch:
