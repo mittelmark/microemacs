@@ -1,0 +1,22 @@
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2001-2024 JASSPA (www.jasspa.com)
+;               2021-2024 D.Groth (github.com/mittelmark/microemacs)
+;
+; See the file me.emf for copying and conditions.
+;
+; Created:     Tue Aug 13 2024
+; Synopsis:    Basic Git Command support macros for MicroEmacs
+; Authors:     Detlef Groth
+;
+
+; add a file to git
+define-macro git-add
+    2 pipe-shell-command &cat "git add " $buffer-fname
+!emacro
+
+; commit changes of the file to git repo
+define-macro git-commit
+    set-variable #l0 @ml08 "Enter your commit message"
+    ml-write &cat "your message was: " #l0
+    pipe-shell-command &cat &cat &cat "git commit -m '" #l0 "' " $buffer-fname
+!emacro
