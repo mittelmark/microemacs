@@ -633,12 +633,21 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         osd .osd.user-plat 340 "fh" "           "
         osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
     !else
+        !if .change-font.xfontsel
+            osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
+            osd .osd.user-plat 46 "BtfxHR" .scheme.osd-ebtt " Choose Font ... " f change-font-xfontsel
+        !endif
+        ;osd .osd.user-plat 47 "fh" "       "
         osd .osd.user-plat 50  "Sfh" "  \HFont Name:         " 60
         osd .osd.user-plat 60  "EtxHf" .scheme.osd-entry "################################" 1 user-set-cpfentry
         osd .osd.user-plat 320 "fh" "    "
         osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\} \HExtend Char Set" 2 user-set-cpfcheckbox
         osd .osd.user-plat 340 "fh" "         "
         osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
+        ;osd .osd.user-plat 360 "fh"  "             "
+        ;osd .osd.user-plat 370 "BtfxHR" .scheme.osd-ebtt " Choose Font.. " f change-font-xfontsel
+        ;osd .osd.user-plat 380 "fh" "       "
+
     !endif
 !endif
 
