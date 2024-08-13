@@ -1275,6 +1275,15 @@ Miscellaneous Information
     lsgdiff(3)lmgdiff(3)le Graphical file difference  
     lsgenerate-tags-file(3)lmgenerate-tags-file(3)le Generate a tags file  
     lsget-next-line(2)lmget-next-line(2)le (C-x `) Find the next command line  
+    lsgit(3)lmgit(3)le MicroEmacs Git interface  
+    lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
+    lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
+    lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
     lsipipe-kill(2)lmipipe-kill(2)le Kill a incremental pipe  
     lsipipe-shell-command(2)lmipipe-shell-command(2)le (esc \) Incremental pipe (non-suspending
       system call)  
@@ -2000,6 +2009,15 @@ Miscellaneous Information
     lsgdiff(3)lmgdiff(3)le Graphical file difference  
     lsgenerate-tags-file(3)lmgenerate-tags-file(3)le Generate a tags file  
     lsget-next-line(2)lmget-next-line(2)le (C-x `) Find the next command line  
+    lsgit(3)lmgit(3)le MicroEmacs Git interface  
+    lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
+    lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
+    lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
     lsglobal-abbrev-file(2)lmglobal-abbrev-file(2)le Set global abbreviation file  
     lsglobal-bind-key(2)lmglobal-bind-key(2)le (esc k) Bind a key to a named command or macro  
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
@@ -2584,6 +2602,15 @@ Miscellaneous Information
     lsftp(3)lmftp(3)le Initiate an FTP connection  
     lsgdiff(3)lmgdiff(3)le Graphical file difference  
     lsgenerate-tags-file(3)lmgenerate-tags-file(3)le Generate a tags file  
+    lsgit(3)lmgit(3)le MicroEmacs Git interface  
+    lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
+    lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
+    lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
     lsgrep(3)lmgrep(3)le Search a file for a pattern  
     lsifill-paragraph(3)lmifill-paragraph(3)le (esc q) Format a paragraph  
     lsindent-decrease(3)lmindent-decrease(3)le Decrease the line indentation  
@@ -3561,6 +3588,15 @@ Miscellaneous Information
     lsgdiff(3f)lmgdiff(3f)le Command line graphical file difference  
     lsgenerate-tags-file(3)lmgenerate-tags-file(3)le Generate a tags file  
     lsget-next-line(2)lmget-next-line(2)le (C-x `) Find the next command line  
+    lsgit(3)lmgit(3)le MicroEmacs Git interface  
+    lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
+    lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
+    lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
     lsglobal-abbrev-file(2)lmglobal-abbrev-file(2)le Set global abbreviation file  
     lsglobal-bind-key(2)lmglobal-bind-key(2)le (esc k) Bind a key to a named command or macro  
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
@@ -42181,6 +42217,127 @@ $a
     lsuser-setup(3)lmuser-setup(3)le  where  the  selection  of  completely  other
     key-bindings is explained.
 
+! 3 git
+! 3 git-add
+! 3 git-checkout
+! 3 git-commit
+! 3 git-diff
+! 3 git-log
+! 3 git-pull
+! 3 git-rm
+! 3 git-state
+! 3 git-status
+! 3 git-tag
+cEcENAME cEcA
+
+
+|git
+    git - MicroEmacs Git interface
+|git-add
+    git-add - MicroEmacs Git interface - add file
+|git-checkout
+    git-checkout - MicroEmacs Git interface - checkout files and directories
+|git-commit
+    git-commit - MicroEmacs Git interface - commit changes
+|git-diff
+    git-diff - MicroEmacs Git interface - diff changes
+|git-log
+    git-log - MicroEmacs Git interface - log changes
+|git-pull
+    git-pull - MicroEmacs Git interface - update directory files
+|git-rm
+    git-rm - MicroEmacs Git interface - remove file
+|git-state
+    git-state - MicroEmacs Git interface - list state of directory files
+|git-status
+    git-status - MicroEmacs Git interface - status of files
+|git-tag
+    git-tag - MicroEmacs Git interface - tag files
+$a
+
+
+cESYNOPSIS cA
+
+
+    cCncA cDgitcA  
+
+    cDgit-addcA  
+    cDgit-checkoutcA  
+    cDgit-commitcA  
+    cDgit-diffcA  
+    cDgit-logcA  
+    cDgit-rmcA  
+    cDgit-statecA  
+    cDgit-statuscA  
+
+
+cEDESCRIPTION cA
+
+
+    The git and sub-commands provide MicroEmacs with an interface to cDgit(1)cA.
+    cDGitcA is a distributed version control system; using it, you can record the history of
+    your source file modifications. Git is licensed under the GNU General
+    Public License 2.0 and is freely available on the Internet, see the
+    documentation provided with Git for more information on its features and
+    use.
+
+    The MicroEmacs cDgitcA command opens a little file viewer in *files' buffer with an
+    including additional columns showing the Git state.
+
+    The cDgit-addcA command adds the current buffers file to the repository. Note
+    that this command only performs the local addition, a cDgit-commitcA is
+    required to make the addition permanent.
+
+    The cDgit-checkoutcA command checks out a file or directory from the
+    repository into the current directory. The user specifies the file on the
+    message line.
+
+    The cDgit-commitcA command commits any changes made to the currently buffer's
+    file (including additions) to the repository. The user is prompted for a
+    commit log message.
+
+    The cDgit-diffcA command opens a cC*git-diff*cA window displaying the differences
+    between the current buffer's local file and repository version. If the
+    current buffer is a directory list it will list all the differences found
+    in all files within the directory.
+
+    The cDgit-logcA command opens a cC*git-log*cA window displaying the Git log of the
+    current buffer's file.
+
+    The cDgit-rmcA command removes the current buffer's file from the
+    repository - PLEASE NOTE THIS CAN LEAD TO LOST DATA!!! This command only
+    performs the local removal; as it deletes the buffer and file the
+    cDgit-commitcA command cannot be used to commit the removal to the git
+    repository. Instead the  cDgit(1)cA application itself must  be used.
+
+    The cDgit-pullcA command updates all files in the current directory, the
+    output being reported to a new cC*git-pull*cA window. Note that unlike most
+    git sub commands this command executes over all files in the current
+    buffer's file directory.
+
+    The cDgit-statecA command opens a cC*git-state*cA window listing the state of any
+    file in the current directory which is not up-to-date. Note that unlike
+    most git sub commands this command executes over all files in the current
+    buffer's file directory.
+
+    The cDgit-statuscA command opens a cC*git-state*cA window and shows the state of
+    the current buffer in the window including the modification state,
+    repository etc.
+
+    The cDgit-tagcA command opens a dialog box and allows the user to add, remove
+    or delete a CVS tag.
+
+
+
+cENOTES cA
+
+
+    cDgitcA and sub-commands are macros defined in file cGgit.emfcA.
+
+cESEE ALSO cA
+
+
+    lsClearCase(3)lmClearCase(3)le, lscsv(3)lmcsv(3)le.
 ! 3 user-setup
 cEcENAME cEcA
 
