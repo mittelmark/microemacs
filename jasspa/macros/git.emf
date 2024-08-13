@@ -10,13 +10,43 @@
 ;
 
 ; add a file to git
+
+; just a place to store some variables
+0 define-macro git
+    set-variable .lang "LANG=en_US"
+!emacro    
+set-variable .git.lang "LANG=en_US"
+; the actual functions alphabetically ordered
+; more complicated things like git clone, git branch,  git mv, git pull, git push etc
+; should be done from the terminal
+define-macro git-lang
+    set-variable .git.lang &cat "LANG=" @1
+!emacro
 define-macro git-add
-    2 pipe-shell-command &cat "git add " $buffer-fname
+    2 pipe-shell-command &cat .git.lang &cat " git add " $buffer-fname "*git*"
 !emacro
 
 ; commit changes of the file to git repo
 define-macro git-commit
     set-variable #l0 @ml08 "Enter your commit message"
     ml-write &cat "your message was: " #l0
-    pipe-shell-command &cat &cat &cat "git commit -m '" #l0 "' " $buffer-fname
+    2 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "git*"
 !emacro
+
+define-macro git-diff
+    2 pipe-shell-command &cat .git.lang &cat  " git diff "  $buffer-fname "*git*"
+!emacro    
+
+define-macro git-log
+    2 pipe-shell-command &cat .git.lang &cat  " git log "  $buffer-fname "*git*"
+!emacro    
+
+define-macro git-shortlog
+    2 pipe-shell-command &cat .git.lang &cat  " git shortlog "  $buffer-fname "*git*"
+!emacro    
+
+
+define-macro git-status
+    2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
+!emacro    
+
