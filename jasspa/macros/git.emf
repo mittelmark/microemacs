@@ -92,7 +92,7 @@ set-variable $debug 0
     2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
     find-buffer "*git*"
     beginning-of-buffer
-    search-buffer "me" "^\\(\tmodified:\\|nothing to commit|Untracked files\\)"
+    search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\|Untracked files\\)"
     ;set-variable $debug 2
     !if $status
         set-variable  #l0 &trb @wl
