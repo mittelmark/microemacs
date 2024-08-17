@@ -13,7 +13,7 @@
 
 ; just a place to store some variables
 0 define-macro git
-    set-variable .lang "LANG=en_US"
+    ;set-variable .lang "LANG=en_US"
 !emacro    
 set-variable .git.lang "LANG=en_US"
 ; the actual functions alphabetically ordered
@@ -36,7 +36,7 @@ define-macro git-add
 define-macro git-commit
     set-position "\x90"
     git-get-status
-    !if &seq .git.status "modified"
+    !if &or &seq .git.status "modified" &seq .git.status "new file"
         set-variable #l0 @ml08 "Enter your commit message"
         ml-write &cat "your message was: " #l0
         2 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "*git*"
@@ -86,13 +86,13 @@ define-macro git-shortlog
     !endif
 !emacro    
 
-set-variable $debug 0
+;set-variable $debug 0
 0 define-macro git-get-status
     set-position "\x90"
     2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
     find-buffer "*git*"
     beginning-of-buffer
-    search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\|Untracked files\\)"
+    search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\|Untracked files\\|\tnew file:\\)"
     ;set-variable $debug 2
     !if $status
         set-variable  #l0 &trb @wl
@@ -101,6 +101,8 @@ set-variable $debug 0
             set-variable .git.status "nothing to commit"
         !elif &sin "modified" #l0
             set-variable .git.status "modified"
+        !elif &sin "new file" #l0
+            set-variable .git.status "new file"
         !else
             set-variable .git.status "untracked"
         !endif
