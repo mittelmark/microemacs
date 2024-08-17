@@ -7,9 +7,12 @@ env:
    VERSION: "091224b1"
 jobs:
   build:
-    runs-on: ubuntu-20.04
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
-
+    #runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04]  # Specify the Ubuntu 
+    #name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
     steps:
     - uses: actions/checkout@v4
      
