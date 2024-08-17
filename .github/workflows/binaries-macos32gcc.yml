@@ -1,4 +1,4 @@
-name: Binaries MacOS-12 (macos-gcc)
+name: Binaries MacOS-12 and 13 (macos-gcc)
 
 on:
   workflow_dispatch:
@@ -11,7 +11,11 @@ env:
    OS: "macos-12"
 jobs:
   build:
-    runs-on: macos-12
+    strategy:
+      matrix:
+        os: [macos-12, macos-13]  # Specify the MacOS version
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
@@ -25,95 +29,99 @@ jobs:
            export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
            export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
            echo "VRS=$VRS" >> $GITHUB_ENV
-
+           if [[ "${{ matrix.os }}" == "macos-12" ]]; then
+              echo "GCC=gcc-11" >> $GITHUB_ENV
+           elif [[ "${{ matrix.os }}" == "macos-13" ]]; then
+              echo "GCC=gcc-12" >> $GITHUB_ENV
+           fi
       - name: make bfs binary
-        run: make -f macos32gcc.gmk bfs/bin CC=gcc-11 VERSION=${VRS}
+        run: make -f macos32gcc.gmk bfs/bin CC=${GCC} VERSION=${VRS}
 
       - name: make mec binary
-        run:  make -f macos32gcc.gmk mec VERSION=${VRS}
+        run:  make -f macos32gcc.gmk mec CC=${GCC} VERSION=${VRS}
 
       - name: make mew binary
-        run: make -f macos32gcc.gmk mew VERSION=${VRS}
+        run: make -f macos32gcc.gmk mew CC=${GCC} VERSION=${VRS}
         
       - name: make mecw binary
-        run: make -f macos32gcc.gmk mecw VERSION=${VRS}
+        run: make -f macos32gcc.gmk mecw CC=${GCC} VERSION=${VRS}
         
       - name: make mecb binary 
-        run: make -f macos32gcc.gmk mecb VERSION=${VRS}
+        run: make -f macos32gcc.gmk mecb CC=${GCC} VERSION=${VRS}
         
       - name: make mewb binary 
-        run: make -f macos32gcc.gmk mewb VERSION=${VRS}
+        run: make -f macos32gcc.gmk mewb CC=${GCC} VERSION=${VRS}
 
       - name: make mecwb binary 
-        run: make -f macos32gcc.gmk mecwb VERSION=${VRS}
+        run: make -f macos32gcc.gmk mecwb CC=${GCC} VERSION=${VRS}
         
       - name: Make release
         run: |
-          mkdir MicroEmacs09-${VRS}-${OS}
-          mkdir MicroEmacs09-${VRS}-${OS}/bin
-          cp bfs/bfs MicroEmacs09-${VRS}-${OS}/bin/
-          cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VRS}-${OS}/bin/
-          cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VRS}-${OS}/bin/
-          cp src/.macos32gcc-release-mew/mew  MicroEmacs09-${VRS}-${OS}/bin/
-          cp me*.bin MicroEmacs09-${VRS}-${OS}/bin/
-          cp license.txt MicroEmacs09-${VRS}-${OS}/
-          cp COPYING MicroEmacs09-${VRS}-${OS}/
-          cp README-standalone.md MicroEmacs09-${VRS}-${OS}/
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp src/.macos32gcc-release-mew/mew  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}/
+          cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}/
+          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}/
           cd jasspa 
           zip macros.zip macros/*
           cd ..
-          cp jasspa/macros.zip MicroEmacs09-${VRS}-${OS}/
+          cp jasspa/macros.zip MicroEmacs09-${VRS}-${{ matrix.os }}/
 
       - name: Make mecb release
         run: |
-          mkdir MicroEmacs09-${VRS}-${OS}-mecb
-          mkdir MicroEmacs09-${VRS}-${OS}-mecb/bin
-          cp bfs/bfs MicroEmacs09-${VRS}-${OS}-mecb/bin/
-          cp mecb*.bin MicroEmacs09-${VRS}-${OS}-mecb/bin/
-          cp license.txt MicroEmacs09-${VRS}-${OS}-mecb/
-          cp COPYING MicroEmacs09-${VRS}-${OS}-mecb/
-          cp README-standalone.md MicroEmacs09-${VRS}-${OS}-mecb/
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecb
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin/
+          cp mecb*.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin/
+          cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
+          cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
+          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
 
       - name: Make mewb release
         run: |
-          mkdir MicroEmacs09-${VRS}-${OS}-mewb
-          mkdir MicroEmacs09-${VRS}-${OS}-mewb/bin
-          cp bfs/bfs MicroEmacs09-${VRS}-${OS}-mewb/bin/
-          cp mewb*.bin MicroEmacs09-${VRS}-${OS}-mewb/bin/
-          cp license.txt MicroEmacs09-${VRS}-${OS}-mewb/
-          cp COPYING MicroEmacs09-${VRS}-${OS}-mewb/
-          cp README-standalone.md MicroEmacs09-${VRS}-${OS}-mewb/
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mewb
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin/
+          cp mewb*.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin/
+          cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
+          cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
+          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
 
       - name: Make mecwb release
         run: |
-          mkdir MicroEmacs09-${VRS}-${OS}-mecwb
-          mkdir MicroEmacs09-${VRS}-${OS}-mecwb/bin
-          cp bfs/bfs MicroEmacs09-${VRS}-${OS}-mecwb/bin/
-          cp mecwb*.bin MicroEmacs09-${VRS}-${OS}-mecwb/bin/
-          cp license.txt MicroEmacs09-${VRS}-${OS}-mecwb/
-          cp COPYING MicroEmacs09-${VRS}-${OS}-mecwb/
-          cp README-standalone.md MicroEmacs09-${VRS}-${OS}-mecwb/
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb
+          mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin
+          cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin/
+          cp mecwb*.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin/
+          cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
+          cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
+          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
 
-      - name: Upload Ubuntu Release files
+      - name: Upload MacOS Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}
-          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}
+          name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}
+          path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}
     
-      - name: Upload Ubuntu mecb Release files
+      - name: Upload MacOS mecb Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecb
-          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecb
+          name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecb
+          path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecb
 
-      - name: Upload Ubuntu mewb Release files
+      - name: Upload MacOS mewb Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mewb
-          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mewb
+          name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mewb
+          path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mewb
 
-      - name: Upload Ubuntu mecwb Release files
+      - name: Upload MacOS mecwb Release files
         uses: actions/upload-artifact@v4
         with: 
-          name: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecwb
-          path: MicroEmacs09-${{ env.VRS }}-${{ env.OS }}-mecwb
+          name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
+          path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
