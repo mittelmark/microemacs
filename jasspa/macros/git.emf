@@ -36,7 +36,7 @@ define-macro git-add
 define-macro git-commit
     set-position "\x90"
     git-get-status
-    !if &seq $result "modified"
+    !if &seq .git.status "modified"
         set-variable #l0 @ml08 "Enter your commit message"
         ml-write &cat "your message was: " #l0
         2 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "*git*"
@@ -56,9 +56,9 @@ define-macro git-commit
         !if &band $system 0x01
             screen-update
         !endif
-    !elif &seq $result "untracked"
+    !elif &seq .git.status "untracked"
         1000 ml-write "File is not added to Git repositoriy, add first!"
-    !elif &seq $result "nothing to commit"
+    !elif &seq .git.status "nothing to commit"
         1000 ml-write "File is commited already, nothing to commit!"
     !else
         1000 ml-write "Error: Unknown problem!"
@@ -98,21 +98,21 @@ set-variable $debug 0
         set-variable  #l0 &trb @wl
         delete-buffer "*git*"
         !if &sin "nothing to commit" #l0
-            set-variable $result "nothing to commit"
+            set-variable .git.status "nothing to commit"
         !elif &sin "modified" #l0
-            set-variable $result "modified"
+            set-variable .git.status "modified"
         !else
-            set-variable $result "untracked"
+            set-variable .git.status "untracked"
         !endif
     !else
-        set-variable $result "unknown - should be not reached"
+        set-variable .git.status "unknown"
     !endif
     goto-position "\x90"
 
 !emacro    
 define-macro git-status
     git-get-status
-    1000 ml-write $result
+    1000 ml-write .git.status
     !if &band $system 0x01
         screen-update
     !endif
