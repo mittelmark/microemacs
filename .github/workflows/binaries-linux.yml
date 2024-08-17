@@ -1,4 +1,4 @@
-name: Binaries Ubuntu 20 (linux-gcc)
+name: Binaries Ubuntu 20,22,24 (linux-gcc)
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04]  # Specify the Ubuntu version
+        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]  # Specify the Ubuntu version
 
     steps:
     - uses: actions/checkout@v4
