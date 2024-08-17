@@ -44,18 +44,22 @@ jobs:
       run: |
         mkdir MicroEmacs09-${VERSION}-Linux
         mkdir MicroEmacs09-${VERSION}-Linux/bin
+        mkdir -p MicroEmacs09-${VERSION}-Linux/man/1   
+        mkdir -p MicroEmacs09-${VERSION}-Linux/share/jasspa
+        mkdir MicroEmacs09-${VERSION}-Linux/share/spelling
+        mkdir MicroEmacs09-${VERSION}-Linux/share/company        
+        cp doc/me.1 MicroEmacs09-${VERSION}-Linux/man/1/
         cp bfs/bfs MicroEmacs09-${VERSION}-Linux/bin/
         cp src/.linux32gcc-release-mecw/mecw MicroEmacs09-${VERSION}-Linux/bin/
         cp src/.linux32gcc-release-mew/mew MicroEmacs09-${VERSION}-Linux/bin/
         cp src/.linux32gcc-release-mec/mec  MicroEmacs09-${VERSION}-Linux/bin/
         cp me*.bin MicroEmacs09-${VERSION}-Linux/bin/
-        cp license.txt MicroEmacs09-${VERSION}-Linux/
-        cp COPYING MicroEmacs09-${VERSION}-Linux/
-        cp README-standalone.md MicroEmacs09-${VERSION}-Linux/
-        cd jasspa 
-        zip macros.zip macros/*
-        cd ..
+        cp license.txt MicroEmacs09-${VERSION}-Linux/share/jasspa/
+        cp COPYING MicroEmacs09-${VERSION}-Linux/share/jasspa/
+        cp README-standalone.md MicroEmacs09-${VERSION}-Linux/share/jasspa/
+        cp jasspa/macros MicroEmacs09-${VERSION}-Linux/share/jasspa/
         cp jasspa/macros.zip MicroEmacs09-${VERSION}-Linux/
+        echo "Documentation is in share/jasspa" > MicroEmacs09-${VERSION}-Linux/readme.txt
 
     - name: Make mecb release
       run: |
