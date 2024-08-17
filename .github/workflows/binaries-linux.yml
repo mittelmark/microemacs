@@ -60,6 +60,7 @@ jobs:
         cp jasspa/macros MicroEmacs09-${VERSION}-Linux/share/jasspa/
         cp jasspa/macros.zip MicroEmacs09-${VERSION}-Linux/
         echo "Documentation is in share/jasspa" > MicroEmacs09-${VERSION}-Linux/readme.txt
+        zip macros-${VERSION}.zip jasspa/macros/*
 
     - name: Make mecb release
       run: |
@@ -114,3 +115,9 @@ jobs:
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
         path: MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
+
+    - name: Jasspa Macros
+      uses: actions/upload-artifact@v4
+      with:
+        name: macros-${{ env.VERSION }}
+        path: macros-${{ env.VERSION }}.zip     
