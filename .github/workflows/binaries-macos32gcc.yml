@@ -25,26 +25,33 @@ jobs:
            brew install xquartz
            brew install make
            brew install coreutils
-           export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
-           export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-           export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
            echo "VRS=$VRS" >> $GITHUB_ENV
            if [[ "${{ matrix.os }}" == "macos-12" ]]; then
+              export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
+              export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
               echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-13" ]]; then
+              export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
+              export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
               echo "GCC=gcc-12" >> $GITHUB_ENV
+           elif [[ "${{ matrix.os }}" == "macos-14" ]]; then
+              export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
+              export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
+              echo "GCC=gcc-14" >> $GITHUB_ENV
            fi
       - name: make bfs binary
-        run: make -f macos32gcc.gmk bfs/bin CC=${GCC} VERSION=${VRS}
+        run: make -f macos32gcc.gmk bfs/bin CC=${GCC}
 
       - name: make mec binary
-        run:  make -f macos32gcc.gmk mec CC=${GCC} VERSION=${VRS}
+        run:  make -f macos32gcc.gmk mec CC=${GCC}
 
       - name: make mew binary
-        run: make -f macos32gcc.gmk mew CC=${GCC} VERSION=${VRS}
+        run: make -f macos32gcc.gmk mew CC=${GCC}
         
       - name: make mecw binary
-        run: make -f macos32gcc.gmk mecw CC=${GCC} VERSION=${VRS}
+        run: make -f macos32gcc.gmk mecw CC=${GCC}
         
       - name: make mecb binary 
         run: make -f macos32gcc.gmk mecb CC=${GCC} VERSION=${VRS}
