@@ -13,6 +13,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04]  # Specify the Ubuntu 
     #name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@v4
      
