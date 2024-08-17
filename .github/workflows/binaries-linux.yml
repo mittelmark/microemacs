@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: [ubuntu-20.04, ubuntu-22.04]  # Specify the Ubuntu 
-    runs-on: ${{ matrix.distro }}
+        os: [ubuntu-20.04, ubuntu-22.04]  # Specify the Ubuntu version
+
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
      
