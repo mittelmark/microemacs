@@ -43,12 +43,14 @@ define-macro git-commit
         find-buffer "*git*"
         beginning-of-buffer
         search-buffer "me" "^ 1 file changed"
-        delete-buffer "*git*"
-        goto-position "\x90"
         !if $status
             set-variable  #l0 &trb @wl
+            delete-buffer "*git*"
+            goto-position "\x90"
             1000 ml-write #l0
         !else
+            delete-buffer "*git*"
+            goto-position "\x90"
             1000 ml-write "Error!"
         !endif
         !if &band $system 0x01
