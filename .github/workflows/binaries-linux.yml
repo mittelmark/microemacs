@@ -63,7 +63,6 @@ jobs:
         cp README-standalone.md $MEPATH/share/jasspa/
         cp -r jasspa/macros $MEPATH/share/jasspa/
         echo "Documentation is in share/jasspa" > ${MEPATH}/readme.txt
-        zip macros-${VERSION}.zip jasspa/macros/*
 
     - name: Make mecb release
       run: |
@@ -119,8 +118,3 @@ jobs:
         name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
 
-    - name: Jasspa Macros
-      uses: actions/upload-artifact@v4
-      with:
-        name: macros-${{ env.VERSION }}
-        path: macros-${{ env.VERSION }}.zip     
