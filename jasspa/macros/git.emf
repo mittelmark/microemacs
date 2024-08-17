@@ -34,13 +34,22 @@ define-macro git-add
 
 ; commit changes of the file to git repo
 define-macro git-commit
-    set-variable #l0 @ml08 "Enter your commit message"
-    ml-write &cat "your message was: " #l0
-    0 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "git*"
-    !if &band $system 0x01
-        screen-update
+    git-get-status
+    !if &seq $result "modified"
+        set-variable #l0 @ml08 "Enter your commit message"
+        ml-write &cat "your message was: " #l0
+        0 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "git*"
+        !if &band $system 0x01
+            screen-update
+        !endif
+    !elif &seq $result "untracked"
+        1000 ml-write "File is not added to Git repositoriy, add first!"
+    !elif &seq $result "nothing to commit"
+        1000 ml-write "File is commited already, nothing to commit!"
+    !else
+        1000 ml-write "Error: Unknown problem!"
     !endif
-!emacro
+    !emacro
 
 define-macro git-diff
     0 pipe-shell-command &cat .git.lang &cat  " git diff "  $buffer-fname "*git*"
@@ -64,22 +73,34 @@ define-macro git-shortlog
 !emacro    
 
 set-variable $debug 0
-define-macro git-status
-    2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
+0 define-macro git-get-status
     set-position "\x90"
+    2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
     find-buffer "*git*"
     beginning-of-buffer
-    search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\)"
+    search-buffer "me" "^\\(\tmodified:\\|nothing to commit|Untracked files\\)"
     ;set-variable $debug 2
     !if $status
         set-variable  #l0 &trb @wl
-        1000 ml-write #l0
         delete-buffer "*git*"
-        goto-position "\x90"
-        
-        !return
+        !if &sin "nothing to commit" #l0
+            set-variable $result "nothing to commit"
+        !elif &sin "modified" #l0
+            set-variable $result "modified"
+        !else
+            set-variable $result "untracked"
+        !endif
+    !else
+        set-variable $result "unknown - should be not reached"
     !endif
+    goto-position "\x90"
+
+!emacro    
+define-macro git-status
+    git-get-status
+    1000 ml-write $result
     !if &band $system 0x01
         screen-update
     !endif
+
 !emacro    
