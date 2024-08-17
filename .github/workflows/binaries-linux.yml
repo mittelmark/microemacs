@@ -19,6 +19,7 @@ jobs:
       run: |
         sudo apt install build-essential
         sudo apt install desktop-file-utils
+        sudo apt install libxt-dev
 
     - name: make bfs binary
       run:  make -f linux32gcc.gmk bfs/bin
