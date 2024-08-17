@@ -57,8 +57,7 @@ jobs:
         cp license.txt MicroEmacs09-${VERSION}-Linux/share/jasspa/
         cp COPYING MicroEmacs09-${VERSION}-Linux/share/jasspa/
         cp README-standalone.md MicroEmacs09-${VERSION}-Linux/share/jasspa/
-        cp jasspa/macros MicroEmacs09-${VERSION}-Linux/share/jasspa/
-        cp jasspa/macros.zip MicroEmacs09-${VERSION}-Linux/
+        cp -r jasspa/macros MicroEmacs09-${VERSION}-Linux/share/jasspa/
         echo "Documentation is in share/jasspa" > MicroEmacs09-${VERSION}-Linux/readme.txt
         zip macros-${VERSION}.zip jasspa/macros/*
 
