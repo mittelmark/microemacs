@@ -38,7 +38,6 @@ define-macro git-commit
     git-get-status
     !if &or &seq .git.status "modified" &seq .git.status "new file"
         set-variable #l0 @ml08 "Enter your commit message"
-        ml-write &cat "your message was: " #l0
         2 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "*git*"
         find-buffer "*git*"
         beginning-of-buffer
@@ -115,6 +114,14 @@ define-macro git-shortlog
 define-macro git-status
     git-get-status
     1000 ml-write .git.status
+    !if &band $system 0x01
+        screen-update
+    !endif
+
+!emacro    
+
+define-macro git-state
+    0 pipe-shell-command &cat .git.lang " git status ." "*git*"
     !if &band $system 0x01
         screen-update
     !endif
