@@ -30,7 +30,7 @@ jobs:
            export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
            echo "VRS=$VRS" >> $GITHUB_ENV
            if [[ "${{ matrix.os }}" == "macos-12" ]]; then
-              echo "GCC=gcc-11" >> $GITHUB_ENV
+              echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-13" ]]; then
               echo "GCC=gcc-12" >> $GITHUB_ENV
            fi
