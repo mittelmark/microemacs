@@ -1,4 +1,4 @@
-name: Binaries MacOS-12, 13 and 14 (macos-gcc)
+name: Binaries MacOS-12,13,14 (macos-gcc)
 
 on:
   workflow_dispatch:
@@ -25,20 +25,23 @@ jobs:
            brew install xquartz
            brew install make
            brew install coreutils
-           echo "VRS=$VRS" >> $GITHUB_ENV
            if [[ "${{ matrix.os }}" == "macos-12" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
               export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-13" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
               export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-14" ]]; then
               export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
               export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
+              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-14" >> $GITHUB_ENV
            fi
       - name: make bfs binary
