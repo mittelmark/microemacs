@@ -13,7 +13,6 @@ jobs:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04]  # Specify the Ubuntu version
 
-    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
      
@@ -46,7 +45,7 @@ jobs:
     
     - name: Make release
       run: |
-        export MEPATH=${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux
+        export MEPATH=${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux
         mkdir $MEPATH
         mkdir $MEPATH/bin
         mkdir -p $MEPATH/man/1   
@@ -68,57 +67,57 @@ jobs:
 
     - name: Make mecb release
       run: |
-        mkdir ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb
-        mkdir ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb/bin
-        cp bfs/bfs ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
-        cp mecb*.bin ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
-        cp license.txt ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb/
-        cp COPYING ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb/
-        cp README-standalone.md ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecb/
+        mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb
+        mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin
+        cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
+        cp mecb*.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
+        cp license.txt ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/
+        cp COPYING ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/
+        cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/
 
     - name: Make mewb release
       run: |
-        mkdir ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb
-        mkdir ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb/bin
-        cp bfs/bfs ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
-        cp mewb*.bin ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
-        cp license.txt ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb/
-        cp COPYING ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb/
-        cp README-standalone.md ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mewb/
+        mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb
+        mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin
+        cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
+        cp mewb*.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
+        cp license.txt ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/
+        cp COPYING ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/
+        cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/
 
     - name: Make mecwb release
       run: |
-        mkdir ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb
-        mkdir ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin
-        cp bfs/bfs ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
-        cp mecwb*.bin ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
-        cp license.txt ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb/
-        cp COPYING ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb/
-        cp README-standalone.md ${{ matrix.distro }}-MicroEmacs09-${VERSION}-Linux-mecwb/
+        mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb
+        mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin
+        cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
+        cp mecwb*.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
+        cp license.txt ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/
+        cp COPYING ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/
+        cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/
 
     - name: Upload Ubuntu Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux
-        path: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux
+        path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux
     
     - name: Upload Ubuntu mecb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb
-        path: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb
+        path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb
 
     - name: Upload Ubuntu mewb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb
-        path: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb
+        path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb
 
     - name: Upload Ubuntu mecwb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
-        path: ${{ matrix.distro }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
+        path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
 
     - name: Jasspa Macros
       uses: actions/upload-artifact@v4
