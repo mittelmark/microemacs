@@ -69,7 +69,7 @@ function smd2ehf {
         $pre < 0 and s/ME\\_PIPE\\_STDERR/ME_PIPE_STDERR/g;
         $pre < 0 and s/ME\\_ISHELL/ME_ISHELL/g;        
         $pre < 0 and s/``(.+) ` ``/`$1 ``/g; 
-        $pre < 0 and s/([^_])__([^_])__/$1\033cD$2\033cA/g;
+        $pre < 0 and s/([^_\x27])__([^_]+)__/$1\033cD$2\033cA/g;
         $pre < 0 and s/"`([^"`]+)`"/\033cG`$1`\033cA/g;
         $pre < 0 and s/"_([^"_]+)_"/"\033cC$1\033cA"/g;        
         $pre < 0 and s/\x27`([^\x27`]+)`\x27/\033cC`$1`\033cA/g;

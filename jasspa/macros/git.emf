@@ -20,12 +20,20 @@ set-variable .git.lang "LANG=en_US"
 ; more complicated things like git clone, git branch,  git mv, git pull, git push etc
 ; should be done from the terminal
 define-macro git-lang
+    ; changing the language does break the functions below
+    ; so it might be better to hide this function?
     set-variable .git.lang &cat "LANG=" @1
     !if &band $system 0x01
         screen-update
     !endif
 !emacro
 define-macro git-add
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            save-buffer 
+        !endif
+    !endif 
     0 pipe-shell-command &cat .git.lang &cat " git add " $buffer-fname "*git*"
     !if &band $system 0x01
         screen-update
@@ -34,6 +42,12 @@ define-macro git-add
 
 ; commit changes of the file to git repo
 define-macro git-commit
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            save-buffer 
+        !endif
+    !endif 
     set-position "\x90"
     git-get-status
     !if &or &seq .git.status "modified" &seq .git.status "new file"
@@ -62,14 +76,30 @@ define-macro git-commit
     !else
         1000 ml-write "Error: Unknown problem!"
     !endif
-    !emacro
-
+!emacro
+add-file-hook "*git-grep*" fhook-grep
 define-macro git-diff
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y"
+            save-buffer
+        !endif
+    !endif
     0 pipe-shell-command &cat .git.lang &cat  " git diff "  $buffer-fname "*git*"
     !if &band $system 0x01
         screen-update
     !endif
 !emacro    
+define-macro git-grep
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y"
+            save-buffer
+        !endif
+    !endif
+    set-variable #l0 @ml08 "git-grep with: "
+    0 pipe-shell-command &cat .git.lang &cat &cat " git grep -nE '"  #l0 "'" "*git-grep*"
+!emacro
 
 define-macro git-log
     0 pipe-shell-command &cat .git.lang &cat  " git log "  $buffer-fname "*git*"
@@ -78,15 +108,14 @@ define-macro git-log
     !endif
 !emacro    
 
-define-macro git-shortlog
-    0 pipe-shell-command &cat .git.lang &cat  " git shortlog "  $buffer-fname "*git*"
-    !if &band $system 0x01
-        screen-update
-    !endif
-!emacro    
-
 ;set-variable $debug 0
 0 define-macro git-get-status
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            save-buffer 
+        !endif
+    !endif 
     set-position "\x90"
     2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
     find-buffer "*git*"
@@ -109,9 +138,22 @@ define-macro git-shortlog
         set-variable .git.status "unknown"
     !endif
     goto-position "\x90"
-
 !emacro    
+
+define-macro git-pull
+    0 pipe-shell-command &cat .git.lang " git pull" "*git*"
+    !if &band $system 0x01
+        screen-update
+    !endif
+!emacro    
+
 define-macro git-status
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            save-buffer 
+        !endif
+    !endif 
     git-get-status
     1000 ml-write .git.status
     !if &band $system 0x01
@@ -125,5 +167,4 @@ define-macro git-state
     !if &band $system 0x01
         screen-update
     !endif
-
 !emacro    

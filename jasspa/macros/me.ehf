@@ -2976,6 +2976,7 @@ Miscellaneous Information
     ls!force(4)lm!force(4)le Ignore command or macro status  
     ls!goto(4)lm!goto(4)le Unconditional labeled jump  
     ls!if(4)lm!if(4)le Conditional test statement  
+    ls!iif(4)lm!iif(4)le In-line conditional test and body  
     ls!jump(4)lm!jump(4)le Unconditional jump  
     ls!nmacro(4)lm!nmacro(4)le Ignore command or macro status  
     ls!repeat(4)lm!repeat(4)le Conditional loop (post testing)  
@@ -3055,6 +3056,7 @@ Miscellaneous Information
     ls!force(4)lm!force(4)le Ignore command or macro status  
     ls!goto(4)lm!goto(4)le Unconditional labeled jump  
     ls!if(4)lm!if(4)le Conditional test statement  
+    ls!iif(4)lm!iif(4)le In-line conditional test and body  
     ls!jump(4)lm!jump(4)le Unconditional jump  
     ls!nmacro(4)lm!nmacro(4)le Ignore command or macro status  
     ls!repeat(4)lm!repeat(4)le Conditional loop (post testing)  
@@ -4805,7 +4807,7 @@ Miscellaneous Information
 
     The following notices apply after 1988 to 31st December 2001
 
-     _cCCopyright (C) 1988 - 2001, JASSPA cA_
+     cDCopyright (C) 1988 - 2001, JASSPA cA
     
        JASSPA MicroEmacs can be copied and distributed freely for any
        non-commercial purposes. Commercial users may use JASSPA MicroEmacs
@@ -5537,7 +5539,7 @@ Miscellaneous Information
       The lsmajor-mode-setup(3)lmmajor-mode-setup(3)le configures the behavior of the major mode.
     - Introduction of sessions which store the context of editor including
       window layout and loaded files. Multiple sessions may be 
-      used,   "cDmecD cA-ccA_&lt;sessionName&gt;_"   restores  a  specific
+      used,   "cDmecA cD-ccA_&lt;sessionName&gt;_"   restores  a  specific
       session.  lssave-session(3)lmsave-session(3)le and  lsread-session(3)lmread-session(3)le  handle
       the restore/saving of sessions. The existing
       history commands have been removed.
@@ -6532,7 +6534,7 @@ Miscellaneous Information
       (with prompt if 0x01 set)' and '0x04 Prompt for exit code and exit
       ME with that code.'
     - [050313] Latex template - Corrected the latex-fill-paragraph. Set
-      the fill-mode to 'cDlcA' rather than 'cDLcA' because its a pain when it
+      the fill-mode to 'cDlcD' rather than 'cALcA' because its a pain when it
       selects centre rather than left and messes things up.
     - [050311] Directory list - changed column sorting so Modified is
       sorted most recent first.
@@ -6602,7 +6604,7 @@ Miscellaneous Information
       by ignoring the cG:watch-timecA and just look at the cG:watch-sizecA. Fixed
       the split line issue with type 2 of 3 watching caused by last line
       not being complete.
-    - [050224] cDM-xcD cAftpcA - stripped cCcGftp://cAcA and any trailing cCcG/cAcA of the
+    - [050224] cDM-xcA cDftpcA - stripped cCcGftp://cAcA and any trailing cCcG/cAcA of the
       users entered host name as these break ftp. Improved the dialog's
       handling of passwords, the user can now tell if a password has been
       set.
@@ -6782,7 +6784,7 @@ Miscellaneous Information
       entry.
     - [050126] Changed cDinsert-file-namecA to insert buffer name if a -ve arg
       is given, bound to cDC-x ycA on the mode line, this replaces ml-lines
-      cDesccD cAycA feature.
+      cDesccA cDycA feature.
     - [050123] Fixed a crash caused by too many closed fences, the
       recursive nature of the cGfindfence()cA function triggers a stack crash
       at around 22000 on windows. Set limit to 256 nested fences.
@@ -7134,7 +7136,7 @@ Miscellaneous Information
       right.
     - [040223] Fixed. Calender day is off by one when going backwards to
       before 2004.
-    - [040223] Fixed. Executing 'me' (cDuser-setupcD cA->cD cACurrentcA)
+    - [040223] Fixed. Executing 'me' (cDuser-setupcA cD->cA cDCurrentcA)
       breaks   lsauto-spell(3)lmauto-spell(3)le   until   a   main   spell   command   ,   lsspell-word(3)lmspell-word(3)le 
       or  lsspell-buffer(3)lmspell-buffer(3)le is executed.
     - [040223] lscvs(3)lmcvs(3)le directory listing file loss solved. Differences
@@ -7362,7 +7364,7 @@ Miscellaneous Information
       one before if exec'd again.
     - [030917] HTML Template. Fixed a hilighting and indent problem caused
       by embedded script.
-    - [030917] OSD. Changed OSD hot-key 'cD&cA' to new style 'cD\HcA'. Changed
+    - [030917] OSD. Changed OSD hot-key 'cD&cD' to new style 'cA\HcA'. Changed
       user-setup dialog to use new Combo-box.
     - [030917] CVS. Major revamp of CVS support including an OSD dialog
       for each tool.
@@ -7382,10 +7384,10 @@ Miscellaneous Information
       and search string buffer sizes. Removed the GNU regex code - not
       used or tested in years. Part one of Jon's Xterm key lookup fix to
       get the key pad working.
-    - [030710] User setup. Updated osd calls due to the change in 'cDdcA' flag
+    - [030710] User setup. Updated osd calls due to the change in 'cCcCdcAcA' flag
       behaviour and changed the items with drop down menus to use the new
       combo-box.
-    - [030710] ODS. Updated osd calls due to the change in 'cDdcA' flag
+    - [030710] ODS. Updated osd calls due to the change in 'cCcCdcAcA' flag
       behavior.
     - [030710] Added new define for the number of history types and added
       new ls@h0(4)lm@h0(4)le history variable.
@@ -7397,9 +7399,9 @@ Miscellaneous Information
       the calls to "meGetUserKey" to "meGetKey" so a macro can give a list
       of keys Added new 0 argument which quits at the EOB rather than
       going to the top of the buffer etc (used in lspage-file(3)lmpage-file(3)le "isearch").
-    - [030710] Changed the logic of the 'cDdcA' flag so that it disables the
+    - [030710] Changed the logic of the 'cCcCdcAcA' flag so that it disables the
       displaying of the item type, changed button rendering so that it
-      adheres to this so a single char button can be created Added new 'cDOcA'
+      adheres to this so a single char button can be created Added new 'cCcCOcAcA'
       combo box item type which is a mixture between an entry box and a
       sub-menu item.
     - [030710] Improved the special char drawing routines so that they
@@ -7459,7 +7461,7 @@ Miscellaneous Information
     - [030514] JST Template. Fixed jst magic hook and added Imakefile one.
       Changed jst magic hook variable setting setup to use the new $result
       variable.
-    - [030514] HTML Template. Changed cDhtml-foldcD cA->cD cAcollapsecA, reported
+    - [030514] HTML Template. Changed cDhtml-foldcA cD->cA cDcollapsecA, reported
       goto-matching-tag failure.
     - [030514] Buffer initialization. Changed the fold-setup call so that
       it gets called if likely to be required - use the new buffer-fhook
@@ -10373,7 +10375,7 @@ John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
     ls$MEUSERPATH(5)lm$MEUSERPATH(5)le, lsemf(8)lmemf(8)le, lserf(8)lmerf(8)le, lsesf(8)lmesf(8)le, ls$home(5)lm$home(5)le, emacs(1) [GNU], more(1),
     lsClient-Server(2)lmClient-Server Interfacele, lsCommand-Line-FilterslmCommand Line Filtersle.
 
-    And cDvi(1)cA, cDvim(1)cD,cAnano(1)cA. 
+    And cDvi(1)cA, cDvim(1)cA,cDnano(1)cA. 
 
 ! 1 memsdev
 cEcENAME cEcA
@@ -11249,8 +11251,8 @@ $a
     mode (see lsbuffer-mode(2)lmbuffer-mode(2)le) or the extension does not match any of those
     defined.
 
-    Considering the cGfhook-XXXcA prefix, the initial 'cDfcA' character must be
-    present as this is changed to a 'cDbcA' and an 'cDecA' when looking for the enter
+    Considering the cGfhook-XXXcA prefix, the initial 'cCcCfcAcA' character must be
+    present as this is changed to a 'cDbcD' and an 'cAecA' when looking for the enter
     (begin) buffer and exit buffer hooks. These hooks are executed whenever
     the user swaps to or from a buffer (including creating and deleting). So
     for the given example, if the fill ignore characters are to be changed
@@ -13722,7 +13724,7 @@ $a
     cDdelete-buffercA disposes of buffer cCbuffer-namecA in the editor and reclaim the
     memory. This does not delete the file that the buffer was read from.
 
-    If the buffer has been edited and its name does not start with a 'cD*cA' then
+    If the buffer has been edited and its name does not start with a 'cCcC*cAcA' then
     the user is prompted as to whether the changes should be discarded. Also
     if the buffer has an active process running in it then confirmation is
     sort from the user before the process is killed.
@@ -16060,7 +16062,7 @@ $a
  
        Find the next definition of the last tag (multiple tag support). This
        feature can only be used if multiple tag support is enabled (see flag
-       'cDmcA' of variable ls%tag-option(5)lm%tag-option(5)le) and cDfind-tagcA has already been
+       'cDmcD' of variable ls%tag-option(5)lm%tag-option(5)le) and cAfind-tagcA has already been
        successfully executed. In this situation the last invocation of
        find-tag defines the current tag and executing again with an argument
        of cG4cA will jump to the next definition of the current tag or return the
@@ -16554,7 +16556,7 @@ $a
     cC-3cA cDosdcA  
     cC-2cA cDosdcA  
     cC-1cA cDosdcA cCncA  
-    cDosdcD cA-1cA cCflagcA  
+    cDosdcA cD-1cA cCflagcA  
     cDosdcA cCncA cD0cA cCflagscA ["cCschemecA"] ["cCx-poscA" "cCy-poscA"] ["cCmin-widthcA" "cCmin-depthcA"
     "cCmax-widcA" "cCmax-depcA"] ["cCdefault-buttoncA"] ["cCinitial-itemcA"]
     [["title-bar-scheme"] ["Text"]] ["resize-command"] ["control-command"]
@@ -16574,7 +16576,7 @@ $a
 cEMain Menu-Bar Status  cA
 
 
-    cDosdcD cA-1cA cCflagcA
+    cDosdcA cD-1cA cCflagcA
 
     This invocation determines the state of the top main menu bar. The state
     is set by the argument cCflagcA defined as:-
@@ -16818,7 +16820,7 @@ $a
 cEDialog Destruction  cA
 
 
-    cD-1cD cAosdcA cCncA
+    cD-1cA cDosdcA cCncA
 
     This invocation destructs a dialog cCncA. The dialog is only destroyed if it
     is not currently being displayed.
@@ -17564,7 +17566,7 @@ $a
           string. A bracket may also be searched for within the line.
     - cDBracket hilightcA, hi-lights from the current position until the
           closing bracket token is found.
-    - _cCReplace string cA_, allows the hilight string to be replaced with a
+    - cDReplace string cA, allows the hilight string to be replaced with a
           different user specified string. (i.e. the displayed representation
           is different from the buffer contents)
 
@@ -17773,7 +17775,7 @@ $a
 
        Obviously the hilight delimiters should not appear so the character
        sequence may be correctly drawn using a bracket token, starting with
-       cGcG\C__cAcA and ending with cGcG\C__cAcA, replacing both with an empty string:
+       cGcG\CcDcAcA and ending with cGcG\CcAcAcA, replacing both with an empty string:
 
 sB
               hilight 1 0x44 "\C[cD" "" "\C[cA" "" "" .scheme.bold
@@ -17973,7 +17975,7 @@ $a
  
        The same character which matched the #th group token. This
        functionality is best explained using UNIX cDman(1)cA output as an
-       example, to create a bold character 'cDXcA' it produces cGcGX\CHXcAcA where cG\CHcA
+       example, to create a bold character 'cCcCXcAcA' it produces cGcGX\CHXcAcA where cG\CHcA
        is a backspace character thereby overstriking the first cCcGXcAcA with
        another creating a bold character. This can be checked for and
        simulated in MicroEmacs using the following:
@@ -18006,7 +18008,7 @@ $a
     Following is a list of hilighting regular expression restrictions:
 
        The number of characters to the left of a cD{cA and to the right of a cD}cA
-       token must be fixed, i.e. the 'cD?cA', 'cD+cA' and 'cD*cA' tokens cannot be used
+       token must be fixed, i.e. the 'cD?cD', 'cA+cD' and 'cA*cA' tokens cannot be used
        before this token. Consider the hilighting of a C function name
        defined to be a token at the start of a line followed by 0 or more
        spaces followed by a '('. The following hilight token looks valid but
@@ -18622,8 +18624,8 @@ $a
     On platforms which do not support cDipipe-shell-commandcA, such as MS-DOS,
     executing cDipipe-shell-commandcA automatically invokes lspipe-shell-command(2)lmpipe-shell-commandle.
     Therefore macros may safely use ipipes without explicitly checking the
-    platform type. cDipipe-shell-commandcA does not run reliably on cDWindowscD cA3.11cA
-    and cDWindowscD cA95cA; cDWindowscD cANTcA does support ipipes.
+    platform type. cDipipe-shell-commandcA does not run reliably on cDWindowscA cD3.11cA
+    and cDWindowscA cD95cA; cDWindowscA cDNTcA does support ipipes.
 
     While the pipe command is running, mode lspipe(2m)lmpipe(2m)le is enabled. Modes
     lslock(2m)lmlock(2m)le and lswrap(2m)lmwrap(2m)le effect the output behavior of an
@@ -18714,7 +18716,7 @@ $a
 
     Several control characters are active while isearching:
 
-    cDC-scA or _cCC-x cA_
+    cDC-scA or cDC-x cA
 
        Skip to the next occurrence of the current string
 
@@ -18735,7 +18737,7 @@ $a
 
        Abort the search, return to start.
 
-    cDesc _cCor cA_C-mcA
+    cDesc cAor cDC-mcA
 
        End the search, stay here
 
@@ -19081,26 +19083,26 @@ $a
     cDDcA - delete buffer
 
        Flag buffer for deletion. A buffer scheduled for deletion is marked
-       with a 'cDDcA' in first column. The delete status is enacted by the 'cDXcA'
-       command, or may be removed with the 'cDUcA' command.
+       with a 'cDDcD' in first column. The delete status is enacted by the 'cAXcA'
+       command, or may be removed with the 'cCcCUcAcA' command.
 
     cDScA - save buffer
 
        Flag buffer for saving. A buffer scheduled from saving is marked with
-       a 'cDScA' in the second column. Note that a buffer may be marked for
+       a 'cCcCScAcA' in the second column. Note that a buffer may be marked for
        saving and deletion, the save operation is performed before the
        delete.
 
     cDUcA - unmark buffer
 
-       Unmark the 'cDDcA' and 'cDScA' flags on current line.
+       Unmark the 'cDDcD' and 'cAScA' flags on current line.
 
     cDXcA - execute
 
-       Execute all the 'cDDcA' and 'cDScA' flags currently set. The cDScAave is enacted
+       Execute all the 'cDDcD' and 'cAScD' flags currently set. The cAScAave is enacted
        first.
 
-    For all but 'cDXcA', the buffer selected is the buffer noted on the current
+    For all but 'cCcCXcAcA', the buffer selected is the buffer noted on the current
     cursor line. These keys are not remappable.
 
 
@@ -19339,21 +19341,21 @@ $a
 
     cDRegister variablescA
 
-       The current settings of the global register variables ('cD#cA' prefix).
+       The current settings of the global register variables ('_cC#cA_' prefix).
 
     cDBuffer VariablescA
 
-       The current setting of the buffer variables ('cD:cA' prefix). This
+       The current setting of the buffer variables ('_cC:cA_' prefix). This
        variables relate to the current buffer from which the command was
        invoked.
 
     cDSystem VariablescA
 
-       The current settings of the system variables ('cD$cA' prefix).
+       The current settings of the system variables ('_cC$cA_' prefix).
 
     cDGlobal VariablescA
 
-       The current setting of the global variables ('cD%cA' prefix).
+       The current setting of the global variables ('_cC%cA_' prefix).
 
 
 cEEXAMPLE cA
@@ -20611,7 +20613,7 @@ $a
 cENOTES cA
 
 
-    All buffers with a name starting with a 'cD*cA' are assumed to be system
+    All buffers with a name starting with a 'cCcC*cAcA' are assumed to be system
     buffer (i.e. cD*scratch*cA) and are not saved.
 
 
@@ -24384,7 +24386,7 @@ $a
     the buffer.
 
     If a cDycA response is given, the buffer has been edited, and its name does
-    not start with a 'cD*cA' then the user is prompted as to whether the changes
+    not start with a 'cCcC*cAcA' then the user is prompted as to whether the changes
     should be discarded. Also if the buffer has an active process running in
     it then confirmation is sort from the user before the process is killed.
 
@@ -26569,7 +26571,7 @@ $a
 
              Take next literally
 
-       cD\{cBNcA_,cAM_cD\}cA
+       cD\{cAcCNcAcD,_cAM_cD\}cA
 
              Match a minimum of N occurrences and maximum of M occurrences of
               the preceeding item.
@@ -26953,7 +26955,7 @@ $a
 cENOTES cA
 
 
-    cCrbincA_ and cDbinarycA modes are mutually exclusive, i.e. they cannot both be
+    cCrbincD and cAbinarycA_ modes are mutually exclusive, i.e. they cannot both be
     enabled at the same time.
 
 
@@ -28831,7 +28833,7 @@ $a
 sA       The file contains company specific file hooks and the name of the
        company.
 
-    _cCOther Company Files cA_
+    cDOther Company Files cA
      
        Files defined on behalf of the company are included in the company
        directory. These would include:-
@@ -30189,7 +30191,7 @@ $a
     following ONLY serves as an example, you need to tailor for your
     installation.
 
-    - To set up the variables then cDStartcA -> cDSettingscA -> cDControlcD cAPanelcA
+    - To set up the variables then cDStartcA -> cDSettingscA -> cDControlcA cDPanelcA
           which displays the Control Panel items.
     - Select cDSystemcA -> cDAdvancedcA -> cDEnvironment variablescA
     - In cDUser Variables forcA cC<User>cA then cDNew...cA or cDEdit...cA the cGPATHcA
@@ -31769,7 +31771,7 @@ $a
 
       ls!return(4)lm!returnle terminates a macro and exits with a true status.
 
-    cD!whilecD/cA!continuecD/cA!donecA
+    cD!whilecA/cD!continuecA/cD!donecA
  
       ls!while(4)lm!whilele defines a conditional loop that is tested before entry to the
        loop, the ls!while(4)lm!continuele statement within the loop allows the loop to be
@@ -31916,11 +31918,11 @@ $a
  
        Help information.
 
-    cDC-upcD/cApcA
+    cDC-upcA/cDpcA
  
        Advance to the previous difference.
 
-    cDC-downcD/cAncA
+    cDC-downcA/cDncA
  
        Advance to the next difference.
 
@@ -31941,7 +31943,7 @@ $a
  
        Globally un-select all of the assigned differences.
 
-    cDrcA/cDspacecD/cAreturncD/cAleft-mousecA
+    cDrcA/cDspacecA/cDreturncA/cDleft-mousecA
  
        Selects the current difference, only operates within a highlighted
        difference region.
@@ -31969,11 +31971,11 @@ $a
        Saves the current buffer after merging all of the and assignment
        changes and prompts the user for the name of a new buffer.
 
-    cDleftcD/cArightcA
+    cDleftcA/cDrightcA
  
        Scrolls the buffer left or right.
 
-    cDkill-buffercD/cAC-x C-ccA
+    cDkill-buffercA/cDC-x C-ccA
  
        Quits cDgdiffcA, the user is prompted to save changes.
 
@@ -34478,7 +34480,7 @@ $a
     its initialization.
 
     This command may initially seem redundant as the user may execute any
-    command at start-up by editing the cGcGme.emfcAcA file or using the 'cD@cA'
+    command at start-up by editing the cGcGme.emfcAcA file or using the 'cCcC@cAcA'
     command-line argument. At the point of cGcGme.emfcAcA file execution none of the
     files specified on the command-line will be loaded, thus any actions
     required on the given command-line files will not work (the only buffer
@@ -35437,7 +35439,7 @@ $a
 
 sA
     On Microsoft Windows environments, if the cDcygwincA directory is located then
-    cDmancA is enabled and uses the cDcygwincD cAman(1)cA utility and manual pages.
+    cDmancA is enabled and uses the cDcygwincA cDman(1)cA utility and manual pages.
 
 
 cESEE ALSO cA
@@ -35671,7 +35673,7 @@ $a
     The cDbashcA shell is executed with options cD-icA, for interactive shell and cD-mcA
     to enable job control.
 
-    As of the 2004 release then the cDCygwincD/cACygnuscA support has been revised in
+    As of the 2004 release then the cDCygwincA/cDCygnuscA support has been revised in
     light of the changes in cDcygwincA
 
     - Renamed the command from cDcygnuscA to cDcygwincA.
@@ -36549,7 +36551,7 @@ $a
 
 
     The registry entries for a tool must be located in registry directory
-    "cG/history/cAcD$platform_cB/tool/cA_tool-namecA" where cD$platformcA is the current setting
+    "cG/history/cAcD$platformcA__/tool/cD__tool-namecD" where cA$platformcA is the current setting
     of variable ls$platform(5)lm$platform(5)le and cDtool-namecA is the name of the tool as given to
     the command. The following registry entries are used:-
 
@@ -37258,20 +37260,20 @@ $a
     
        The name of the host to which the connection is to be made.
 
-    cD/url/ftp/cB<hostName>cA/hostcA
+    cD/url/ftp/cA_<hostName>cD_/hostcA
     
        The name or IP address of the remote host
 
-    cD/url/ftp/cB<hostName>cA/usercA
+    cD/url/ftp/cA_<hostName>cD_/usercA
     
        The user name used to log into the remote host.
 
-    cD/url/ftp/cB<hostName>cA/passcA
+    cD/url/ftp/cA_<hostName>cD_/passcA
     
        The user password to the remote host. If this entry is empty then the
        user is always prompted for the password when the connection is made.
 
-    cD/url/ftp/cB<hostName>cA/pathcA
+    cD/url/ftp/cA_<hostName>cD_/pathcA
     
        The initial path at the remote site.
 
@@ -37511,7 +37513,7 @@ $a
 cEBUGS cA
 
 
-    The 'cDRcA' rerun command does not work correctly on Windows platforms, perldb
+    The 'cCcCRcAcA' rerun command does not work correctly on Windows platforms, perldb
     is rerun in a newly created external dos command window instead of inside
     the MicroEmacs ipipe buffer.
 
@@ -38174,7 +38176,7 @@ $a
 
 
     The comment commands are configured by the single file hook command
-    variable cD.fhook-cB<type>cA.commentcA where cC<type>cA is the file type label. The
+    variable cD.fhook-cA_<type>cD_.commentcA where cC<type>cA is the file type label. The
     structure of the variable is a ls&ldel(4)lmlistle with the following format:
 
               |<comment-start>|<comment-end>|<comment-pad>|<comment-box-left>|...
@@ -38921,38 +38923,38 @@ $a
        re-styled. The flags are defined as single characters that describe
        the attributes. Re-styling may include the following attributes:-
 
-       _cCb cA_  
+       cDb cA  
               Box format required, create a left and right edge for the comment.
 
-       _cCf cA_  
+       cDf cA  
               A footer line is required, a new line is created following the
               comment text to contain the with a closing comment <comment-end>
               string. The end of comment is not padded.
 
-       _cCF cA_  
+       cDF cA  
               As f except the footer line is left padded with <comment-pad>
               strings.
 
-       _cCh cA_  
+       cDh cA  
               A header line is required, a new line is created before the
               comment text to contain the opening comment <comment-start>
               string. The end of comment is not padded.
 
-       _cCH cA_  
+       cDH cA  
               As h except the header line is right padded with <comment-pad>
               strings.
 
-       _cCj cA_  
+       cDj cA  
               Enable justification mode in the *comment* buffer and re-style.
 
-       _cCr cA_  
+       cDr cA  
               A restyle key binding is added to the buffer "esc o" and "esc q"
               buffer key bindings are added and bound to lscomment-restyle(3)lmcomment-restyle(3)le. The
               r flag is only processed from the
 
     Examples of the comments format are shown below.
 
-    _cC'C' Programming language cA_
+    cD'C' Programming language cA
     
     Format: `/* ... */`
 
@@ -38969,7 +38971,7 @@ $a
               /* Comment to end of line **************************************/
 
 
-    _cCC++ Programming language cA_
+    cDC++ Programming language cA
  
     Format: `// ... <EOL>`
 
@@ -38995,7 +38997,7 @@ $a
               set-variable .fhook-cpp.comment-1 "|/*| */|*| * | * |f|"
 
 sA
-    _cCMicroEmacs macro language cA_
+    cDMicroEmacs macro language cA
  
     Format: `; ... <EOL>`
 
@@ -39012,7 +39014,7 @@ $a
               ; Comment to end of line ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-    _cCShell script cA_
+    cDShell script cA
 
     Format: `# ... <EOL>`
 
@@ -39028,7 +39030,7 @@ $a
               # Comment to end of line ########################################
 
 
-    _cCMS-DOS Batch file cA_
+    cDMS-DOS Batch file cA
 
     Format: `rem ... <EOL>`
 
@@ -40620,7 +40622,7 @@ $a
     
        Delete a note, including any child notes from the tree, allowing the
        cut information to be pasted back to a different location in the tree.
-       (See cDPastecD cANotecA).
+       (See cDPastecA cDNotecA).
 
     cDPaste NotecA - cGvcA
     
@@ -41422,85 +41424,85 @@ $a
     
          List file and directory modified time in the output.
 
-       _cC-a cA_
+       cD-acA
     
          Re-read all out of date buffers, prevents a manual prompt,
           equivalent of Yes to all. This is the inverse of -o
 
-       _cC-b cA_
+       cD-bcA
     
          Ignore binary files.
 
-       _cC-B cA_
+       cD-BcA
     
          Do not ignore binary files.
 
-       _cC-d cA_
+       cD-dcA
     
          List directories or grep in directory listings.
 
-       _cC-D cA_
+       cD-DcA
     
          Do not list directories or grep in directory listings.
 
-       _cC-f cA_
+       cD-fcA
     
          List/search files.
 
-       _cC-F cA_
+       cD-FcA
     
          Do not list/search files.
 
-       _cC-g cA_
+       cD-gcA
     
          File masks are regex (i.e. .*.emf)
 
-       _cC-G cA_
+       cD-GcA
     
          File masks are not regex (i.e. *.emf)
 
-       _cC-i cA_
+       cD-icA
     
          Ignore search pattern case (case insensitive).
 
-       _cC-I cA_
+       cD-IcA
     
          Do not ignore search pattern case (case sensitive).
 
-       _cC-l cA_
+       cD-lcA
     
          Use existing buffer of loaded files.
 
-       _cC-L cA_
+       cD-LcA
     
          Do not use existing buffer of loaded files.
 
-       _cC-m cA_
+       cD-mcA
     
          Search pattern is a regular expression.
 
-       _cC-M cA_
+       cD-McA
     
          Search pattern is not a regular expression.
 
-       _cC-o cA_
+       cD-ocA
     
          Do not re-read all out of date buffers, prevents a manual prompt,
               equivalent of No to all. This is the inverse of -a.
 
-       _cC-p cA_
+       cD-pcA
     
          Starting path specified
 
-       _cC-P cA_
+       cD-PcA
     
          Starting path not specified
 
-       _cC-r cA_
+       cD-rcA
     
          Recurse into sub-directories
 
-       _cC-R cA_
+       cD-RcA
     
          Do not recurse into sub-directories
 
@@ -41540,12 +41542,12 @@ $a
          Modification time - newer than or equal, supported time formats
           are the same as -T.
 
-       _cC-u cA_
+       cD-ucA
     
          When used with -w, allows the file size limit of 100Mb to be
           disabled and strings are searched in files of any size.
 
-       _cC-U cA_
+       cD-UcA
     
          When used with -U, files are limited in size 100Mb otherwise they
           will not be searched.
@@ -41554,11 +41556,11 @@ $a
     
          File must contain a string matching the given search-pattern.
 
-       _cC-x cA_
+       cD-xcA
     
          Use MicroEmacs 2009 ls$file-ignore(5)lm$file-ignore(5)le to exclude unimportant files
 
-       _cC-X cA_
+       cD-XcA
     
          Do not use MicroEmacs 2009 ls$file-ignore(5)lm$file-ignore(5)le.
 
@@ -41634,85 +41636,85 @@ $a
        invoked from the command line or from the the cDToolscA menu. The
        cCgrep-optionscA are defined as follows:
 
-       _cC-a cA_
+       cD-acA
     
          Re-read all out of date buffers, prevents a manual prompt,
               equivalent of Yes to all. This is the inverse of -o
 
-       _cC-b cA_
+       cD-bcA
     
          Ignore binary files.
 
-       _cC-B cA_
+       cD-BcA
     
          Do not ignore binary files.
 
-       _cC-d cA_
+       cD-dcA
     
          List directories or grep in directory listings.
 
-       _cC-D cA_
+       cD-DcA
     
          Do not list directories or grep in directory listings.
 
-       _cC-f cA_
+       cD-fcA
     
          List/search files.
 
-       _cC-F cA_
+       cD-FcA
     
          Do not list/search files.
 
-       _cC-g cA_
+       cD-gcA
     
          File masks are regex (i.e. .*.emf)
 
-       _cC-G cA_
+       cD-GcA
     
          File masks are not regex (i.e. *.emf)
 
-       _cC-i cA_
+       cD-icA
     
          Ignore search pattern case (case insensitive).
 
-       _cC-I cA_
+       cD-IcA
     
          Do not ignore search pattern case (case sensitive).
 
-       _cC-l cA_
+       cD-lcA
     
          Use existing buffer of loaded files.
 
-       _cC-L cA_
+       cD-LcA
     
          Do not use existing buffer of loaded files.
 
-       _cC-m cA_
+       cD-mcA
     
          Search pattern is a regular expression.
 
-       _cC-M cA_
+       cD-McA
     
          Search pattern is not a regular expression.
 
-       _cC-o cA_
+       cD-ocA
     
          Do not re-read all out of date buffers, prevents a manual prompt,
               equivalent of No to all. This is the inverse of -a.
 
-       _cC-p cA_
+       cD-pcA
     
          Starting path specified
 
-       _cC-P cA_
+       cD-PcA
     
          Starting path not specified
 
-       _cC-r cA_
+       cD-rcA
     
          Recurse into sub-directories
 
-       _cC-R cA_
+       cD-RcA
     
          Do not recurse into sub-directories
 
@@ -41751,18 +41753,18 @@ $a
               Modification time - newer than or equal, supported time formats
               are the same as -T.
 
-       __-u __
+       __-u__
               When used with -w, allows the file size limit of 100Mb to be
               disabled and strings are searched in files of any size.
 
-       __-U __
+       __-U__
               When used with -U, files are limited in size 100Mb otherwise they
               will not be searched.
 
-       __-x __
+       __-x__
               Use MicroEmacs 2009 [$file-ignore(5)]($file-ignore(5)) to exclude unimportant files
 
-       __-X __
+       __-X__
               Do not use MicroEmacs 2009 [$file-ignore(5)]($file-ignore(5)).
 
     cCfile-maskcA
@@ -41850,77 +41852,77 @@ $a
     
          List file and directory modified time in the output.
 
-       _cC-a cA_
+       cD-a cA
     
          Re-read all out of date buffers, prevents a manual prompt,
           equivalent of Yes to all. This is the inverse of -o
 
-       _cC-b cA_
+       cD-b cA
     
          Ignore binary files.
 
-       _cC-B cA_
+       cD-B cA
     
          Do not ignore binary files.
 
-       _cC-f cA_
+       cD-f cA
     
          List/search files.
 
-       _cC-F cA_
+       cD-F cA
     
          Do not list/search files.
 
-       _cC-g cA_
+       cD-g cA
     
          File masks are regex (i.e. .*.emf)
 
-       _cC-G cA_
+       cD-G cA
     
          File masks are not regex (i.e. *.emf)
 
-       _cC-i cA_
+       cD-i cA
     
          Ignore search pattern case (case insensitive).
 
-       _cC-I cA_
+       cD-I cA
     
          Do not ignore search pattern case (case sensitive).
 
-       _cC-l cA_
+       cD-l cA
     
          Use existing buffer of loaded files.
 
-       _cC-L cA_
+       cD-L cA
     
          Do not use existing buffer of loaded files.
 
-       _cC-m cA_
+       cD-m cA
     
          Search pattern is a regular expression.
 
-       _cC-M cA_
+       cD-M cA
     
          Search pattern is not a regular expression.
 
-       _cC-o cA_
+       cD-o cA
     
          Do not re-read all out of date buffers, prevents a manual prompt,
               equivalent of No to all. This is the inverse of -a.
 
-       _cC-p cA_
+       cD-p cA
     
          Starting path specified
 
-       _cC-P cA_
+       cD-P cA
     
          Starting path not specified
 
-       _cC-r cA_
+       cD-r cA
     
          Recurse into sub-directories
 
-       _cC-R cA_
+       cD-R cA
     
          Do not recurse into sub-directories
 
@@ -41960,12 +41962,12 @@ $a
          Modification time - newer than or equal, supported time formats
           are the same as -T.
 
-       _cC-u cA_
+       cD-u cA
     
          When used with -w, allows the file size limit of 100Mb to be
               disabled and strings are searched in files of any size.
 
-       _cC-U cA_
+       cD-U cA
     
          When used with -U, files are limited in size 100Mb otherwise they
               will not be searched.
@@ -41974,11 +41976,11 @@ $a
     
          File must contain a string matching the given search-pattern.
 
-       _cC-x cA_
+       cD-x cA
     
          Use MicroEmacs 2009 ls$file-ignore(5)lm$file-ignore(5)le to exclude unimportant files
 
-       _cC-X cA_
+       cD-X cA
     
          Do not use MicroEmacs 2009 ls$file-ignore(5)lm$file-ignore(5)le.
 
@@ -42111,7 +42113,7 @@ $a
 
     To to use the command to renumber the list from 100 to 103 then the cursor
     is placed at the left hand side where the number should start. In the
-    example this is cG#cA, then issue the command cDesc xcD cAnumber-itemscD cA100cD cA3cD cA4cA. This
+    example this is cG#cA, then issue the command cDesc xcA cDnumber-itemscA cD100cA cD3cA cD4cA. This
     renumbers the list resulting in the following:
 
         MY_COMMAND (myCMD_UP,   100, "Move Up")
@@ -42606,7 +42608,7 @@ $a
     
        If enabled the main menu Alt hot-key bindings are enabled. These are
        dynamic bindings automatically generated from the main menu. Typically
-       the first item in the main menu is cGcGFilecAcA with a hot key of 'cDFcA', with
+       the first item in the main menu is cGcGFilecAcA with a hot key of 'cCcCFcAcA', with
        this enabled cCcGA-fcAcA will open this menu item. Note that global and
        local key bindings override these. This indirectly sets bit 0x2000 of
        the ls$system(5)lm$system(5)le variable.
@@ -42841,7 +42843,7 @@ $a
       lschange-font(2)lmchange-font(2)le with the given font name. MicroEmacs may only use a
        Fixed Mono Font, either an OEM font as used by the MS-DOS command
        line, or the more conventional ANSI fonts. The fonts are selected
-       using the cDChangecD cAFontcA button which invokes a dialog to allow the
+       using the cDChangecA cDFontcA button which invokes a dialog to allow the
        available fonts to be selected. True-Type mono fonts such as Courier
        New or cGLucida ConsolecA are typically used.
 
@@ -43581,7 +43583,7 @@ $a
     cDNotescA entry box at the bottom of the page.
 
     The default mode of operation is note entries for the current month,
-    however specifying the cC<year>cA as the wild card 'cD*cA' (star) enables annual
+    however specifying the cC<year>cA as the wild card 'cCcC*cAcA' (star) enables annual
     events to be entered into the organizer. Annual events are automatically
     inserted into the calendar each year, typically used for birthdays etc.
 
@@ -43842,11 +43844,11 @@ $a
     
        The address of the individual/company.
 
-    cDTelcD/cAFaxcD/cAMobilecA
+    cDTelcA/cDFaxcA/cDMobilecA
     
        Telecommunication information.
 
-    cDEmailcD/cAWWWcD/cAFTPcA
+    cDEmailcA/cDWWWcA/cDFTPcA
     
        Electronic communication information.
 
@@ -43893,7 +43895,7 @@ $a
               used as this is the least in-exact search. The default mode is
               configured in the Setup tab.
 
-       cDCasecD/cAmagiccA
+       cDCasecA/cDmagiccA
               Selects the search criteria. The default mode is configured in the
               Setup tab.
 
@@ -43994,7 +43996,7 @@ $a
        The cDImportcA from file allows the address book to be imported from a
        file. The import data format is a single line per entry, comma cG,cA
        separated. The field order is defined as follows, the cD*cA entries
-       indicate the cDExtendedcD cAAddresscD cABookcA fields:-
+       indicate the cDExtendedcA cDAddresscA cDBookcA fields:-
 
               Record No, First Name, Surname, Nick Name, Selected, Notes,
               Partner First Name, Partner Surname, Home Address, Home Telephone,
@@ -44014,7 +44016,7 @@ $a
     The cDDefault Address Find SettingscA section defines the default search
     criteria used in the address book search function.
 
-    cDWholecD/cAStartcD/cAAny PartcA
+    cDWholecA/cDStartcA/cDAny PartcA
     
        Radio buttons determine how the search is performed on the string.
 
@@ -44260,7 +44262,7 @@ $a
 
     cDfind-wordcA opens the word finder dialog. This allows the user to search for
     a word using a simple search criteria. (This is ideal for cheating at
-    crosswords !!). The word to be searched for is entered into the cDWordcD cAMaskcA
+    crosswords !!). The word to be searched for is entered into the cDWordcA cDMaskcA
     and may use wild cards cD*cA to represent any number of characters, cD?cA to
     represent an unknown character and cD[cA..cD]cA for a range of characters.
 
@@ -44365,7 +44367,7 @@ $a
     line. The hilighting draws attention to the line, by providing a visual
     cue, allowing the contents of the file to be breifly scanned.
 
-    On invocation of cDosd-searchcA from the menu cDSearchcA -> cDHilightcD cASearchcA a
+    On invocation of cDosd-searchcA from the menu cDSearchcA -> cDHilightcA cDSearchcA a
     lsosd(2)lmosd(2)le dialog is presented to the user, search patterns and their
     associated hilighting assignment are selected through this interface. The
     dialog entries are defined as follows:-
@@ -44474,7 +44476,7 @@ $a
     cDFile NamecA
     
        The name of the color scheme to be modified. This is the name of the
-       cDschemecAcCXcAcD.emfcA file, omitting the file extension. See the cDFILEScA section
+       cDschemecAcCXcAcD.emfcD file, omitting the file extension. See the cAFILEScA section
        below for a list of standard screen and printer scheme supplied with
        MicroEmacs 2009.
 
@@ -44524,7 +44526,7 @@ $a
        dialogs, this improves usability of the dialogs when limited colors
        are available. Indirectly sets bit cG0x20cA of ls$system(5)lm$system(5)le.
 
-    cDRedcD/cAGreencD/cABluecA
+    cDRedcA/cDGreencA/cDBluecA
     
        The color entries allow the currently selected palette color entry to
        be modified. The color values may be changed by direct numeric entry
@@ -46269,7 +46271,7 @@ $a
 
     `Page Layout`
     
-       As with the cDPrintercD cAPage LayoutcA, displays the current page
+       As with the cDPrintercA cDPage LayoutcA, displays the current page
        configuration, the field cannot be edited.
 
 
@@ -46609,13 +46611,13 @@ $a
     number of tools which can be defined or to the number of tools that may
     map to a specific file type. The dialog has the following fields:
 
-    _cCName cA_
+    cDName cA
     
        Declares the name of the tool as it appears in the cDToolscA section of
        the lsfile-browser(3)lmfile-browser(3)le pop-up menu. A single menu short-cut key may be
        defined by prefixing the hot key with a cG\HcA.
 
-    _cCFile Mask cA_
+    cDFile Mask cA
     
        A regular expression that is used to search for files of a given type,
        this follows the standard MicroEmacs lsRegularExpressions(2)lmRegular Expressionle syntax. As an
@@ -46623,7 +46625,7 @@ $a
        cG.*\.pdfcA, image files might be defined as a set of different extensions
        cG.*\.\(png\|jpg\|jpeg\|bmp\|gif\)cA, etc.
 
-    _cCCommand cA_
+    cDCommand cA
     
        Defines the command line or MicroEmacs command that is executed to
        process the action. The command line comprises escape characters using
@@ -46655,7 +46657,7 @@ $a
          but with '\' backslashes directory separators on Microsoft Windows
          and DOS.
 
-       cD%i[cBhcA_|cAprompt_cD|cBdefaultcA]cA .. cD%ncA - User Input
+       cD%i[cAcChcAcD|cBpromptcA|cBdefaultcA]cD .. cA%ncA - User Input
 
         Specifies that the user is to be prompted for input from the
          command line. Square brackets follow the %i which defines the
@@ -46715,7 +46717,7 @@ $a
           command line, once to delete the old archive if it already exists
           and once to form the new archive.
 
-       cD%*[cBargumentcA]cA - Multiple file command line
+       cD%*[cA_argumentcC_cA]__ - Multiple file command line
      
          Utilities that accept multiple arguments on the command line use a
           special construct %*. By default a single command line invocation
@@ -46734,7 +46736,7 @@ $a
 
               rm -f "%i[4|Zip file name|%b].zip"; zip -r %1.zip%*[ "%f"]
 
-        cD%"cB...cA%"cA - Quote text
+        cD%"cA_...cD_%"cA - Quote text
     
          Using quote tags ensures the quoted part of the command-line is
           treated as a single argument. For example, if the tool:
@@ -46762,7 +46764,7 @@ $a
 
          For each file then find-zfile is invoked to read the zip archive.
 
-    _cCDefault Open cA_
+    cDDefault Open cA
     
        A flag that defines whether this is the default open action. When set
        then the command is automatically launched if the file is opened in
@@ -46770,30 +46772,30 @@ $a
        pressing cGcGreturncAcA) . When clear then the tool has to be explicitly
        invoked.
 
-    _cCHide Window cA_
+    cDHide Window cA
     
        Defines the visibility of the window associated with the command, for
        example, if the command-line uses a cGcmdcA shell to launch another
        process the cmd window should be hidden. This has no effect on
        internal MicroEmacs commands.
 
-    _cCUp/Down cA_
+    cDUp/Down cA
     
        Changes the item order in the list/menu by moving it up or down.
 
-    _cCAdd cA_
+    cDAdd cA
     
        Adds a new tool line to the list.
 
-    _cCModify cA_
+    cDModify cA
     
        Modifies the existing tool setting.
 
-    _cCDelete cA_
+    cDDelete cA
     
        Deletes the tool from the list.
 
-    _cCClose cA_
+    cDClose cA
     
        Closes the tool menu.
 
@@ -47343,7 +47345,7 @@ $a
     completely evaluated before the second argument. Logical operators
     include:-
 
-    cD&and cCcAlog1cA cClog2cA
+    cD&and cAcClog1cA cClog2cA
     
        cGTRUEcA if the logical arguments cClog1cA and cClog2cA are both cGTRUEcA.
 
@@ -47455,8 +47457,8 @@ $a
 
     The cD&sprintfcA function produces a string construct for the cCformatcA and a
     caller determined number of arguments cCargscA (variable arguments). The
-    cCformatcA string may contain special 'cD%cA' formatting commands to insert
-    strings and numbers into the base cCformatcA string. The format for the 'cD%cA'
+    cCformatcA string may contain special 'cCcC%cAcA' formatting commands to insert
+    strings and numbers into the base cCformatcA string. The format for the 'cCcC%cAcA'
     commands is "cD%nccA" where:-
 
     cDncA
@@ -47864,13 +47866,14 @@ $a
 
     ls$status(5)lm$status(5)le.
 ! 4 !if
+! 4 !iif
 ! 4 !elif
 ! 4 !else
 ! 4 !endif
 cEcENAME cEcA
 
 
-    !if, !elif, !else, !endif - Conditional statements
+    !if, !elif, !else, !endif, !iif - Conditional statements
 
 
 cESYNOPSIS cA
@@ -47885,6 +47888,8 @@ $a
         cC... condition body ...cA  
     ]  
     cD!endifcA  
+
+    cD!iifcA cCcondition bodycA
 
 
 cEDESCRIPTION cA
@@ -47913,6 +47918,9 @@ $a
     directive with the exception of cDdefine-macrocA and cD!emacrocA. All directives
     that alter the execution of the macro are handled correctly within the cD!ifcA
     statement (e.g. ls!goto(4)lm!gotole, ls!return(4)lm!returnle etc.
+
+    cD!iifcA  provides an optimal way to write an cD!ifcA statement with exactly
+    one body line and no cD!elifcA or cD!elsecA statements.
 
 
 cEEXAMPLE cA
@@ -47945,8 +47953,16 @@ $a
                   newline
               !endif
           !endif
-
+          
+          ;  The first !if-!endif statement in the above example can be optimised to:- 
+          !iif &sequal %curplace "timespace vortex"  insert-string "First, rematerialize\n"
 sA
+cENOTES cA
+
+    There is a convention in macro code of using 2 spaces to separate the
+    cCconditioncA from the cCbodycA of an cD!iifcA statement making it easier to locate
+    the start of the body.
+
 cESEE ALSO cA
 
 
@@ -49056,7 +49072,7 @@ $a
     All variables hold string information, the interpretation of the string
     (numeric, string or boolean) is determined when the variable is used
     within the context of the command. There are five types of variable,
-    cDRegistercD cAVariablescA (prefixed with a hash cD#cA), cDSystem VariablescA (prefixed
+    cDRegistercA cDVariablescA (prefixed with a hash cD#cA), cDSystem VariablescA (prefixed
     with a dollar cD$cA), cDGlobal VariablescA (prefixed with a percentage cD%cA), Buffer
     Variables (prefixed with a colon cD:cA) and cDCommand VariablescA (prefixed with a
     period cD.cA).
@@ -49494,7 +49510,7 @@ $a
     (i.e. cD&bandcA may be expressed as cD&bancA). In all cases the first argument is
     completely evaluated before the second argument.
 
-    cD&band cCcAnum1cA cCnum2cA
+    cD&band cAcCnum1cA cCnum2cA
     
        Bitwise AND of cCnum1cA and cCnum2cA i.e. cCnum1cA & cCnum2cA.
 
@@ -51328,7 +51344,7 @@ $a
 cESYNOPSIS cA
 
 
-    cD$buffer-maskcD cAstringcA; Default is cGluhcA
+    cD$buffer-maskcA cDstringcA; Default is cGluhcA
 
 
 cEDESCRIPTION cA
@@ -53629,7 +53645,7 @@ $a
        If this bit is set the main menu Alt hot-key bindings are enabled.
        These are dynamic bindings automatically generated from the main menu.
        Typically the first item in the main menu is cGcGFilecAcA with a hot key of
-       'cDFcA', with this bit set cCcGA-fcAcA will open this menu item. Note that
+       'cCcCFcAcA', with this bit set cCcGA-fcAcA will open this menu item. Note that
        global and local key bindings override these. Also see bit cD0x4000cA.
 
     cD0x4000cA
@@ -54087,60 +54103,60 @@ $a
     Index 0
  
        The active window mode line separator character, This replaces all
-       cCIndex 1cA characters when the window is current. Default is 'cD=cA'.
+       cCIndex 1cA characters when the window is current. Default is 'cCcC=cAcA'.
 
     Index 1
  
        The inactive window mode line separator character. This character is
        replaced by cCIndex 0cA characters when the window becomes current.
-       Default is 'cD-cA'.
+       Default is 'cCcC-cAcA'.
 
     Index 2
  
        UNIX based platforms only. The cDrootcA or cDsuperusercA indicator character
-       that appears on the mode line. Default is 'cD#cA'.
+       that appears on the mode line. Default is 'cCcC#cAcA'.
 
     Index 3
  
        The buffer changed indicator character that appears on the mode line.
-       Default is 'cD*cA'.
+       Default is 'cCcC*cAcA'.
 
     Index 4
  
        The buffer in lsview(2m)lmview(2m)le mode indicator character that appears in the
-       mode line. Default is 'cD%cA'.
+       mode line. Default is 'cCcC%cAcA'.
 
     Index 5
  
        Single column vertical scroll bar split window horizontally character.
-       Default is 'cD=cA'.
+       Default is 'cCcC=cAcA'.
 
     Index 6
  
-       Single column vertical scroll bar up-arrow character. Default is 'cD^cA'.
+       Single column vertical scroll bar up-arrow character. Default is 'cCcC^cAcA'.
 
     Index 7
  
        Single column vertical scroll bar upper-shaft character. Default is
-       'cD|cA'.
+       'cCcC|cAcA'.
 
     Index 8
  
-       Single column vertical scroll box character. Default is 'cD#cA'.
+       Single column vertical scroll box character. Default is 'cCcC#cAcA'.
 
     Index 9
  
        Single column vertical scroll bar lower-shaft character. Default is
-       'cD|cA'.
+       'cCcC|cAcA'.
 
     Index 10
  
        Single column vertical scroll bar down-arrow character. Default is
-       'cDvcA'.
+       'cCcCvcAcA'.
 
     Index 11
  
-       Single column vertical scroll bar corner character. Default is 'cD*cA'.
+       Single column vertical scroll bar corner character. Default is 'cCcC*cAcA'.
 
     Index 12-13
  
@@ -54184,51 +54200,51 @@ $a
 
     Index 47
  
-       Osd title bar blank character. Default is 'cD cA'.
+       Osd title bar blank character. Default is 'cCcC cAcA'.
 
     Index 48
  
-       Osd title bar right corner kill character. Default is 'cDxcA'.
+       Osd title bar right corner kill character. Default is 'cCcCxcAcA'.
 
     Index 49
  
-       Osd dialog bottom right corner resize character. Default is 'cD*cA'.
+       Osd dialog bottom right corner resize character. Default is 'cCcC*cAcA'.
 
     Index 50-53
  
        Osd button characters. 50 & 52 are used for a normal button, default
-       is 'cD cA_ButtoncC_cA __'. 51 & 53 are used for the current default button,
-       default is 'cD>cA_ButtoncC_cA<__'.
+       is '__ cBButtoncA __'. 51 & 53 are used for the current default button,
+       default is 'cD>cBButtoncA<cA'.
 
     Index 54
  
        Displayed tab character (used when ls$system(5)lm$system(5)le bit 0x80000 is set).
-       Default is 'cD>cA'.
+       Default is 'cCcC>cAcA'.
 
     Index 55
  
        Displayed new-line character (used when ls$system(5)lm$system(5)le bit 0x80000 is
-       set). Default is 'cD\cA'.
+       set). Default is 'cCcC\cAcA'.
 
     Index 56
  
        Displayed space character (used when ls$system(5)lm$system(5)le bit 0x80000 is set).
-       Default is 'cD.cA'.
+       Default is 'cCcC.cAcA'.
 
     Index 57
  
        Displayed truncated text to left character (used when the current line
-       is scrolled to the right). Default is 'cD$cA'.
+       is scrolled to the right). Default is 'cCcC$cAcA'.
 
     Index 58
  
        Displayed truncated text to right character (used when the current
-       line is longer than the window width). Default is 'cD$cA'.
+       line is longer than the window width). Default is 'cCcC$cAcA'.
 
     Index 59
  
        Inserted end of wrapped line character in an lsipipe-shell-command(2)lmipipe-shell-command(2)le
-       buffer. Default is 'cD\cA'.
+       buffer. Default is 'cCcC\cAcA'.
 
 
 cEEXAMPLE cA
@@ -54589,10 +54605,10 @@ $a
     cD$search-pathcA cCstringcA  
 
     cC[Microsoft Windows/MS-DOS]cA  
-    cD$search-pathcA cC<path1>cB;cDcA<path2>cA;cA....cD;cAcC<pathn>cA  
+    cD$search-pathcA cC<path1>cB;cDcA<path2>cA;cD....cA;cAcC<pathn>cA  
 
     cC[UNIX]cA  
-    cD$search-pathcA cC<path1>cB:cDcA<path2>cA:cA....cD:cAcC<pathn>cA  
+    cD$search-pathcA cC<path1>cB:cDcA<path2>cA:cD....cA:cAcC<pathn>cA  
 
 
 cEDESCRIPTION cA
@@ -54602,8 +54618,8 @@ $a
     initializes. The variable identifies the directory paths which are
     searched to locate editor specific files. The variable may contain
     multiple search paths each separated by the platform path separator
-    (semi-colon ('cD;cA') on Microsoft Windows or MS-DOS environments and a colon
-    ('cD:cA') on UNIX environments). Where multiple search paths are defined then
+    (semi-colon ('_cC;cA_') on Microsoft Windows or MS-DOS environments and a colon
+    ('_cC:cA_') on UNIX environments). Where multiple search paths are defined then
     they are searched in a left to right order.
 
     cD$search-pathcA is determined at run-time and is fixed once the editor
@@ -56701,7 +56717,7 @@ $a
        from the system and appended with cGjasspacA i.e. cG$APPDATA/jasspacA. If the
        sub-directory ls$user-name(5)lm$user-namele is detected in this directory then it is used
        instead (cG$APPDATA/jasspa/$user-namecA).  
-       cDMS-DOScA and older versions of cDMicrosoftcD cAWindowscA without cCInternetcA
+       cDMS-DOScA and older versions of cDMicrosoftcA cDWindowscA without cCInternetcA
        cCExplorercA cC4.0cA then a sub-directory ls$user-name(5)lm$user-namele of the program directory
        ls$progname(5)lm$progname(5)le is used.
 
@@ -56743,13 +56759,13 @@ $a
 
 
     cC[Microsoft Windows/MS-DOS]cA  
-    cD$MEINSTALLPATHcA cC<path1>cB;cDcA<path2>cA;cA....cD;cAcC<pathn>cA  
-    cD$MEPATH=cA cC<path1>cB;cDcA<path2>cA;cA....cD;cAcC<pathn>cA  
+    cD$MEINSTALLPATHcA cC<path1>cB;cDcA<path2>cA;cD....cA;cAcC<pathn>cA  
+    cD$MEPATH=cA cC<path1>cB;cDcA<path2>cA;cD....cA;cAcC<pathn>cA  
     cD$MEUSERPATHcA cC<path>cA  
 
     cC[UNIX]cA  
-    cD$MEINSTALLPATHcA cC<path1>cB:cDcA<path2>cA:cA....cD:cAcC<pathn>cA  
-    cD$MEPATH=cA cC<path1>cB:cDcA<path2>cA:cA....cD:cAcC<pathn>cA  
+    cD$MEINSTALLPATHcA cC<path1>cB:cDcA<path2>cA:cD....cA:cAcC<pathn>cA  
+    cD$MEPATH=cA cC<path1>cB:cDcA<path2>cA:cD....cA:cAcC<pathn>cA  
     cD$MEUSERPATHcA cC<path>cA  
 
 
@@ -57112,7 +57128,7 @@ $a
     
          Back tab. Deletes a tab character backwards.
 
-        cD\m"cB<string>cA"cA Macro execution
+        cD\m"cA_<string>cD_"cA Macro execution
     
          Takes the remainder of the line as a keyboard macro definition.
           The macro string is generated using lsinsert-macro(2)lminsert-macro(2)le and must be
@@ -57473,7 +57489,7 @@ $a
 
 
     cC; Comment to the end of the linecA  
-    cC<command>cA ::= cD"cA_<identifier>cB"__ [ cD=cA cD"cA_<string>cA"__ ][ cD{cA cC<command>cA cD}cA ] *  
+    cC<command>cA ::= cD"cA_<identifier>cB"cD [ cA=cD cA"cA<string>cD_"cD ][ cA{cA cC<command>cA cD}cA ] *  
 
 
 cEDESCRIPTION cA
@@ -57824,7 +57840,7 @@ $a
     cDmepath=cA_<directoryPath>cC;cA<directoryPath>_; ... ;cC<directoryPath>cA  
     cDmeuserpath=cAcC<directoryPath>cA  
     cDmename=cAcC<username>cA  
-    cDgeometry=cB<width>cAxcAcC<depth>cC+cA<xoffset>cC+cA<yoffset>cA  
+    cDgeometry=cA_<width>cD_xcAcC<depth>cC+cA<xoffset>cC+cA<yoffset>cA  
     cDenvironmentVariable=cAcC<value>cA  
     cDenvironmentVariable=cAcC<value>cA  
     ...  
@@ -57834,7 +57850,7 @@ $a
     cDmeinstallpath=cA_<directoryPath>cC;cA<directoryPath>_; ... ;cC<directoryPath>cA  
     cDmepath=cA_<directoryPath>cC;cA<directoryPath>_; ... ;cC<directoryPath>cA  
     cDmeuserpath=cAcC<directoryPath>cA  
-    cDgeometry=cB<width>cAxcAcC<depth>cC+cA<xoffset>cC+cA<yoffset>cA  
+    cDgeometry=cA_<width>cD_xcAcC<depth>cC+cA<xoffset>cC+cA<yoffset>cA  
     cDmename=cAcC<username>cA  
     cDenvironmentVariable=cAcC<value>cA  
     cDenvironmentVariable=cAcC<value>cA  
@@ -58179,7 +58195,7 @@ $a
 
 
     cD.ccA, cD.hcA, cD.defcA - ANSI C  
-    cD.cppcA, cD.cccA, cD.hppcA, cD.rccD cA.CcA cC(UNIX only)cA - C++ programming language  
+    cD.cppcA, cD.cccA, cD.hppcA, cD.rccA cD.CcA cC(UNIX only)cA - C++ programming language  
     cD.lcA - LEX  
     cD.ycA - YACC  
     cD.icA - C (or C++) pre-processed file (i.e. output from pre-processor).  
@@ -58283,7 +58299,7 @@ $a
        cDf2cA - (un)fold the current region  
        cDf3cA - (un)fold all regions  
 
-    _cCAdditional Commands cA_
+    cDAdditional Commands cA
     
        A number of additional commands are available as follows:-
 
@@ -58442,7 +58458,7 @@ $a
 
        cDC-c C-ccA - Comment out the current line.  
        cDC-c C-dcA - Uncomment the current line.  
-       _cCC-c esc esc cA_- Command complete.  
+       cDC-c esc esc cA- Command complete.  
        cDA-C-icA - Restyle the current region.  
        cDf2cA - (un)fold the current region  
        cDf3cA - (un)fold all regions  
@@ -59907,7 +59923,7 @@ $a
 
        cDC-c C-ccA - Comment out the current line.  
        cDC-c C-dcA - Uncomment the current line.  
-       _cCC-c esc esc cA_- Command complete.  
+       cDC-c esc esc cA- Command complete.  
        cDA-C-icA - Restyle the current region.  
        cDf2cA - (un)fold the current region  
        cDf3cA - (un)fold all regions  
@@ -60071,7 +60087,7 @@ $a
     cD-*- nroff -*-cA
     
        Recognized by GNU and MicroEmacs. Denotes a t/nroff type file, may be
-       used in cD.1cD/cA.9cA, cD.tnicA and cD.socA files.
+       used in cD.1cA/cD.9cA, cD.tnicA and cD.socA files.
 
 
 cEDESCRIPTION cA
@@ -60101,7 +60117,7 @@ $a
     cDFolding and Information HidingcA
     
        Generic folding is enabled within the C and C++ files. The folds occur
-       about sections cD.ScD[cAHScA]...cD.ScD[cAHScA] located on the left-hand margin.
+       about sections cD.ScA[cDHScA]...cD.ScA[cDHScA] located on the left-hand margin.
        lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le
        (un)folds the current region. Note that folding does not operate on
        K&R style code.
@@ -61014,7 +61030,7 @@ $a
 
     cDCompletioncA
     
-       Completion is enabled, cG</cA__esc esc __will expand to the closing tag for
+       Completion is enabled, cG</cAcDesc esc cAwill expand to the closing tag for
        the last tag that remains open.
 
     cDShort CutscA
@@ -61349,7 +61365,7 @@ $a
     of work from the author.
 
     JST supports more advanced extensions which allow tables and hypertext
-    tags to be defined, these are discussed in the cDAdvancedcD cASyntaxcA section
+    tags to be defined, these are discussed in the cDAdvancedcA cDSyntaxcA section
     later.
 
 
@@ -61357,7 +61373,7 @@ $a
 
 
     To ensure that all characters may be input as typed then there is no
-    single escape character. The character sequence cD&[cB<char>cA]cA may be used to
+    single escape character. The character sequence cD&[cA_<char>cD_]cA may be used to
     escape a character cC<char>cA. Our experience is that escaping is not usually
     necessary.
 
@@ -61555,7 +61571,7 @@ $a
 
     Items lists are bullet or number lists of items which are introduced by a
     cCformatCharcAcCcC.cAcA to start the list, subsequent list items are introduced with a
-    period 'cD.cA' character only or optionally with the bullet character. Where
+    period 'cCcC.cAcA' character only or optionally with the bullet character. Where
     cCformatCharcA identifies the type of list as follows:
 
         `*`  - bullet list.
@@ -61603,16 +61619,16 @@ $a
 
 
     Quite complex tables may be supported through JST. A table is introduced
-    with the closing square brace 'cD]cA character at the start of the line which
+    with the closing square brace 'cCcC]cAcA character at the start of the line which
     define the ghlobal properties and dimensions of the table. Each entry in
-    the table is introduced by 'cD]cA and is followed by the assigned content.
+    the table is introduced by 'cCcC]cAcA and is followed by the assigned content.
 
     The initial table definition has the syntax
 
         ]crh <# columns> <# rows>
 
 
-    Where 'cDccA' and 'cDrcA' are optional and center or right justify the table, 'cDhcA'
+    Where 'cDccD' and 'cArcD' are optional and center or right justify the table, 'cAhcA'
     hides the table lines i.e. no border. The dimensions of the table then
     follow.
 
@@ -61643,7 +61659,7 @@ $a
 
     Columns and rows may be joined both horizontally and vertically by
     specifying the join in the cell definition. 'cD]>'cA performs a horizontal
-    cell join of two cells, a single 'cD>cA' should be added for each
+    cell join of two cells, a single 'cCcC>cAcA' should be added for each
     additional cell so 'cD]>>cA' joins 3 cells horizontally. A vertical join
     is similarly specified with 'cD]vcA'.
 
@@ -61678,20 +61694,20 @@ $a
     
        New file, the effect is dependent on the output format:
 
-       _cChtml cA_
+       cDhtml cA
      
          Starts a new html file, typical use of this is when the first file
           contains the TOC with links to the subsequent files.
 
-       _cClatex cA_
+       cDlatex cA
       
          Just starts a new page, i.e. same as [[np]].
 
-       _cCrtf cA_
+       cDrtf cA
      
          Just starts a new page, i.e. same as [[np]].
 
-       _cCtext cA_
+       cDtext cA
      
           Ignored.
 
@@ -61710,9 +61726,9 @@ $a
     Most of the more complex formatting is performed with tags. The general
     format of a tag is defined as:
 
-       cD&[cB<tag-id><options> <args>cA]cA
+       cD&[cA_<tag-id><options> <args>cD_]cA
 
-    If a argument contains a space or a 'cD]cA' then it must be quoted, e.g.:
+    If a argument contains a space or a 'cCcC]cAcA' then it must be quoted, e.g.:
 
         &[c this-is-okay]
         &[c "this is okay"]
@@ -61728,7 +61744,7 @@ $a
     HTML form of encasing the text label with start and end tags rather than
     being in the tag itself. One exception would be the setting of a variable.
 
-    _cCComment Tag cA_
+    cDComment Tag cA
     
        Inserts a comment.
 
@@ -61741,7 +61757,7 @@ $a
               &[c this is a comment with a "]" "char[23]" in it]
 
 
-    _cCAnchor Tag cA_
+    cDAnchor Tag cA
     
        Internal document reference.
 
@@ -61749,17 +61765,17 @@ $a
 
         An anchor tag can be placed anywhere and referenced by a link .
 
-    _cCForeground and Background Color Tag cA_
+    cDForeground and Background Color Tag cA
     
        Modifies the color of the text foreground and background.
 
-       cD&[fcA cC<color>cDcA]cA .... cD&[/f]cA
+       cD&[fcA cC<color>cDcA]cD .... cA&[/f]cA
 
        Sets the current foreground color where cC<color>cA is either a direct
        HTML format color definition (e.g. cGcG#ff0000cAcA for cDredcA) or a previously
        defined color name.
 
-       cD&[bcA cC<color>cDcA]cA .... cD&[/b]cA
+       cD&[bcA cC<color>cDcA]cD .... cA&[/b]cA
 
        Sets similarly sets the current background color.
 
@@ -61778,11 +61794,11 @@ $a
      
           Sets the default background color to <color>.
 
-    _cCLink Tag cA_
+    cDLink Tag cA
     
        Link to another part of the document or URL.
 
-       cD&[lcA cC<url>cDcA]cA .... cD&[/l]cA
+       cD&[lcA cC<url>cDcA]cD .... cA&[/l]cA
 
        Creates a hyperlink with the text with cCcG....cAcA going to the cC<url>cA, The
        format of the url uses the standard HTML syntax, a link starting with
@@ -61794,7 +61810,7 @@ $a
        automatically turned into links. To avoid this quote the string, i.e.
        ""http://www.jasspa.com""
 
-    _cCImage Tag cA_
+    cDImage Tag cA
     
        Insert an image in the document.
 
@@ -61812,7 +61828,7 @@ $a
        the conversion variable 'cCimage-ppicA' is used to convert is a physical
        paper size. The width may also be specified as a percentage, e.g. cD50%cA.
 
-    _cCUse Tag cA_
+    cDUse Tag cA
     
        Insert a file at the current point.
      
@@ -61822,7 +61838,7 @@ $a
        part of the original docuement. e.g. cG&[ucA cGinsert.jst]cA inserts the file
        cCinsert.jstcA at the current position in the file.
 
-    _cCVariable Tag cA_
+    cDVariable Tag cA
     
        Insert a variable.
 
@@ -61850,7 +61866,7 @@ $a
        cDrcA
               Insert the <reference-name> value.
 
-       _cCs cA_
+       cDs cA
               Set the value to <value> first.
 
        As an example, consider the following sequence to implement figure
@@ -61874,24 +61890,24 @@ $a
 
 
        An undefined variable has a value of cGcGERRORcAcA, it can be defined by
-       using either option 'cDscA' or 'cDicA' in which case the value is cG0cA, i.e. the
+       using either option 'cDscD' or 'cAicA' in which case the value is cG0cA, i.e. the
        following can be used
 
        `= Chapter 1: Will be 1 at the top of the doc`
 
        A set of special variables are automatically defined:
 
-       _cCtitle cA_
+       cDtitle cA
               The document title.
 
-       _cCauthor cA_
+       cDauthor cA
               The author
 
-       _cCimage-ppi cA_
+       cDimage-ppi cA
               Image pixels per inch resolution setting, this is the resolution
               of the generated document in inches.
 
-    _cCOutput Dump Tag cA_
+    cDOutput Dump Tag cA
     
        Dump output text.
 
@@ -61900,7 +61916,7 @@ $a
        Dumps cC<raw-text>cA into the output if the target output type is
        cC<out-type>cA, where cC<out-type>cA can be cDallcA, cDhtmlcA, cDlatexcA, cDrtfcA and cDtextcA.
 
-    _cCDump Tag cA_
+    cDDump Tag cA
     
        Dumps the tag for processing.
 
@@ -61934,21 +61950,21 @@ $a
     The template supports highlighting and indention including commands for
     exporting JST to another format:
 
-    _cCjst-to-htm cA_
+    cDjst-to-htm cA
     
        Export the JST definition to an HTML file with cD.htmcA extension.
 
-    _cCjst-to-html cA_
+    cDjst-to-html cA
     
        Export the JST definition to an HTML file with cD.htmcA extension.
 
-    _cCjst-to-rtf cA_
+    cDjst-to-rtf cA
     
        Export the JST definition to an RTF file, for this export then the
        file name is cD.rtfcA but the content is HTML. cDWord(1)cA and cDStarOffice(1)cA
        know how to convert this when imported.
 
-    _cCjst-to-latex cA_
+    cDjst-to-latex cA
     
        Convert to a LaTeX file format.
 
@@ -61974,7 +61990,7 @@ $a
     
        Font style change where cD?cA is cDBcA,cDIcA,cDUcA,cDMcA,cDpcA,cDbcA).
 
-    cD\bDD\bDFcA_<color>cB\bDBcA<color>cD_\bdDcA....cD\bDdcA
+    cD\bDD\bDFcA_<color>cB\bDBcA<color>cD_\bdDcD....cA\bDdcA
     
        Foreground or background color change where cC<color>cA = hexadecimal
        value cGRRGGBBcA. Note that cD\bDFcAcC<c>cA or cD\bDBcAcC<c>cA may be be omitted.
@@ -62055,7 +62071,7 @@ $a
     
        Heading, e.g. cD\bH1cA....cD\bh1cA
 
-    cD\bBI_cB\bB?cA...cD\bb?cA_\bB?cA...cD\bb?cA__\bbI__
+    cD\bBIcA__\bB?cD...cA\bb?cB_\bB?cD...cA\bb?cA_\bbI__
     
        Item list start and end tags.
 
@@ -62063,27 +62079,27 @@ $a
     
        Bullet item.
 
-    cD\bBN#cA__\bBn__....cD\bbNcA
+    cD\bBN#cA__\bBncD....cA\bbN__
     
        Item # in numbered item list.
 
-    cD\bBU#cA__\bBu__....cD\bbUcA
+    cD\bBU#cA__\bBucD....cA\bbU__
     
        Item # in uppercase letter item list
 
-    cD\bBL#cA__\bBl__....cD\bbLcA
+    cD\bBL#cA__\bBlcD....cA\bbL__
     
        Item # in lowercase letter item list.
 
-    cD\bBR#cA__\bBr__....cD\bbRcA
+    cD\bBR#cA__\bBrcD....cA\bbR__
     
        Item # in uppercase roman numeral item list.
 
-    cD\bBS#cA__\bBs__....cD\bbScA
+    cD\bBS#cA__\bBscD....cA\bbS__
     
        Item # in lowercase roman numeral item list.
 
-    cD\bCTcA_<flags>cB\bCtcA<widths>cD_\bctcA....cD\bcTcA
+    cD\bCTcA_<flags>cB\bCtcA<widths>cD_\bctcD....cA\bcTcA
     
        Table - Entire table (contains rows).
        cC<flags>cA can be any of cDhcA, cDccA or cDrcA.

@@ -2896,6 +2896,7 @@
   [!force(4)](!force(4)) Ignore command or macro status  
   [!goto(4)](!goto(4)) Unconditional labeled jump  
   [!if(4)](!if(4)) Conditional test statement  
+  [!iif(4)](!iif(4)) In-line conditional test and body  
   [!jump(4)](!jump(4)) Unconditional jump  
   [!nmacro(4)](!nmacro(4)) Ignore command or macro status  
   [!repeat(4)](!repeat(4)) Conditional loop (post testing)  
@@ -2976,6 +2977,7 @@
   [!force(4)](!force(4)) Ignore command or macro status  
   [!goto(4)](!goto(4)) Unconditional labeled jump  
   [!if(4)](!if(4)) Conditional test statement  
+  [!iif(4)](!iif(4)) In-line conditional test and body  
   [!jump(4)](!jump(4)) Unconditional jump  
   [!nmacro(4)](!nmacro(4)) Ignore command or macro status  
   [!repeat(4)](!repeat(4)) Conditional loop (post testing)  
@@ -41987,85 +41989,85 @@ $a
   
   > >   List file and directory modified time in the output.
 
-  >  __-a __
+  >  __-a__
   
   > >   Re-read all out of date buffers, prevents a manual prompt,
         equivalent of Yes to all. This is the inverse of -o
 
-  >  __-b __
+  >  __-b__
   
   > >   Ignore binary files.
 
-  >  __-B __
+  >  __-B__
   
   > >   Do not ignore binary files.
 
-  >  __-d __
+  >  __-d__
   
   > >   List directories or grep in directory listings.
 
-  >  __-D __
+  >  __-D__
   
   > >   Do not list directories or grep in directory listings.
 
-  >  __-f __
+  >  __-f__
   
   > >   List/search files.
 
-  >  __-F __
+  >  __-F__
   
   > >   Do not list/search files.
 
-  >  __-g __
+  >  __-g__
   
   > >   File masks are regex (i.e. .*.emf)
 
-  >  __-G __
+  >  __-G__
   
   > >   File masks are not regex (i.e. *.emf)
 
-  >  __-i __
+  >  __-i__
   
   > >   Ignore search pattern case (case insensitive).
 
-  >  __-I __
+  >  __-I__
   
   > >   Do not ignore search pattern case (case sensitive).
 
-  >  __-l __
+  >  __-l__
   
   > >   Use existing buffer of loaded files.
 
-  >  __-L __
+  >  __-L__
   
   > >   Do not use existing buffer of loaded files.
 
-  >  __-m __
+  >  __-m__
   
   > >   Search pattern is a regular expression.
 
-  >  __-M __
+  >  __-M__
   
   > >   Search pattern is not a regular expression.
 
-  >  __-o __
+  >  __-o__
   
   > >   Do not re-read all out of date buffers, prevents a manual prompt,
             equivalent of No to all. This is the inverse of -a.
 
-  >  __-p __
+  >  __-p__
   
   > >   Starting path specified
 
-  >  __-P __
+  >  __-P__
   
   > >   Starting path not specified
 
-  >  __-r __
+  >  __-r__
   
   > >   Recurse into sub-directories
 
-  >  __-R __
+  >  __-R__
   
   > >   Do not recurse into sub-directories
 
@@ -42105,12 +42107,12 @@ $a
   > >   Modification time - newer than or equal, supported time formats
         are the same as -T.
 
-  >  __-u __
+  >  __-u__
   
   > >   When used with -w, allows the file size limit of 100Mb to be
         disabled and strings are searched in files of any size.
 
-  >  __-U __
+  >  __-U__
   
   > >   When used with -U, files are limited in size 100Mb otherwise they
         will not be searched.
@@ -42119,11 +42121,11 @@ $a
   
   > >   File must contain a string matching the given search-pattern.
 
-  >  __-x __
+  >  __-x__
   
   > >   Use MicroEmacs 2009 [$file-ignore(5)]($file-ignore(5)) to exclude unimportant files
 
-  >  __-X __
+  >  __-X__
   
   > >   Do not use MicroEmacs 2009 [$file-ignore(5)]($file-ignore(5)).
 
@@ -42200,85 +42202,85 @@ $a
      invoked from the command line or from the the __Tools__ menu. The
      _grep-options_ are defined as follows:
 
-  >  __-a __
+  >  __-a__
   
   > >   Re-read all out of date buffers, prevents a manual prompt,
             equivalent of Yes to all. This is the inverse of -o
 
-  >  __-b __
+  >  __-b__
   
   > >   Ignore binary files.
 
-  >  __-B __
+  >  __-B__
   
   > >   Do not ignore binary files.
 
-  >  __-d __
+  >  __-d__
   
   > >   List directories or grep in directory listings.
 
-  >  __-D __
+  >  __-D__
   
   > >   Do not list directories or grep in directory listings.
 
-  >  __-f __
+  >  __-f__
   
   > >   List/search files.
 
-  >  __-F __
+  >  __-F__
   
   > >   Do not list/search files.
 
-  >  __-g __
+  >  __-g__
   
   > >   File masks are regex (i.e. .*.emf)
 
-  >  __-G __
+  >  __-G__
   
   > >   File masks are not regex (i.e. *.emf)
 
-  >  __-i __
+  >  __-i__
   
   > >   Ignore search pattern case (case insensitive).
 
-  >  __-I __
+  >  __-I__
   
   > >   Do not ignore search pattern case (case sensitive).
 
-  >  __-l __
+  >  __-l__
   
   > >   Use existing buffer of loaded files.
 
-  >  __-L __
+  >  __-L__
   
   > >   Do not use existing buffer of loaded files.
 
-  >  __-m __
+  >  __-m__
   
   > >   Search pattern is a regular expression.
 
-  >  __-M __
+  >  __-M__
   
   > >   Search pattern is not a regular expression.
 
-  >  __-o __
+  >  __-o__
   
   > >   Do not re-read all out of date buffers, prevents a manual prompt,
             equivalent of No to all. This is the inverse of -a.
 
-  >  __-p __
+  >  __-p__
   
   > >   Starting path specified
 
-  >  __-P __
+  >  __-P__
   
   > >   Starting path not specified
 
-  >  __-r __
+  >  __-r__
   
   > >   Recurse into sub-directories
 
-  >  __-R __
+  >  __-R__
   
   > >   Do not recurse into sub-directories
 
@@ -42317,18 +42319,18 @@ $a
             Modification time - newer than or equal, supported time formats
             are the same as -T.
 
-     __-u __
+     __-u__
             When used with -w, allows the file size limit of 100Mb to be
             disabled and strings are searched in files of any size.
 
-     __-U __
+     __-U__
             When used with -U, files are limited in size 100Mb otherwise they
             will not be searched.
 
-     __-x __
+     __-x__
             Use MicroEmacs 2009 [$file-ignore(5)]($file-ignore(5)) to exclude unimportant files
 
-     __-X __
+     __-X__
             Do not use MicroEmacs 2009 [$file-ignore(5)]($file-ignore(5)).
 
   _file-mask_
@@ -48496,13 +48498,14 @@ $a
   [$status(5)]($status(5)).
 !! me-id: m4fil008
 ! 4 !if
+! 4 !iif
 ! 4 !elif
 ! 4 !else
 ! 4 !endif
 ## NAME
 
 
-  !if, !elif, !else, !endif - Conditional statements
+  !if, !elif, !else, !endif, !iif - Conditional statements
 
 
 ## SYNOPSIS
@@ -48517,6 +48520,8 @@ $a
       _... condition body ..._  
   ]  
   __!endif__  
+
+  __!iif__ _condition body_
 
 
 ## DESCRIPTION
@@ -48545,6 +48550,9 @@ $a
   directive with the exception of __define-macro__ and __!emacro__. All directives
   that alter the execution of the macro are handled correctly within the __!if__
   statement (e.g. [!goto](!goto(4)), [!return](!return(4)) etc.
+
+  __!iif__  provides an optimal way to write an __!if__ statement with exactly
+  one body line and no __!elif__ or __!else__ statements.
 
 
 ## EXAMPLE
@@ -48577,8 +48585,16 @@ $a
                 newline
             !endif
         !endif
-
+        
+        ;  The first !if-!endif statement in the above example can be optimised to:- 
+        !iif &sequal %curplace "timespace vortex"  insert-string "First, rematerialize\n"
 ```
+
+## NOTES
+
+  There is a convention in macro code of using 2 spaces to separate the
+  _condition_ from the _body_ of an __!iif__ statement making it easier to locate
+  the start of the body.
 
 ## SEE ALSO
 
