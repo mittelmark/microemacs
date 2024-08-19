@@ -77,7 +77,7 @@ define-macro git-commit
         1000 ml-write "Error: Unknown problem!"
     !endif
 !emacro
-add-file-hook "*git-grep*" fhook-grep
+
 define-macro git-diff
     !if &bmod "edit"
         set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
@@ -91,16 +91,48 @@ define-macro git-diff
     !endif
 !emacro    
 define-macro git-grep
+    !if &not &exi dirlst-sort-list
+        0 exec-file "find"
+        add-file-hook "*git-grep*" fhook-grep
+    !endif
     !if &bmod "edit"
         set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
         !if &iseq #l0 "y"
             save-buffer
         !endif
     !endif
-    set-variable #l0 @ml08 "git-grep with: "
+    set-variable #l0 @ml00 "git-grep with"
     0 pipe-shell-command &cat .git.lang &cat &cat " git grep -nE '"  #l0 "'" "*git-grep*"
+    find-buffer "*git-grep*"
+    1 buffer-mode "indent"    
+    1 buffer-mode "time"        
+    1 buffer-init "grep"
+    ;set-variable :mouse-word-select "mouse-get-next-line"
+    ;set-variable :mouse-pick-1 dirlst-mouse-pick-1
+    set-variable :mouse-pick-1 git-grep-pick 
+    set-variable :mouse-drop-1 git-grep-drop
+    -1 buffer-mode "view"
+    1 buffer-mode "edit"
+    replace-string "^cd " "Directory:  "
+    replace-string "^LANG=" "Grep: LANG="
+    set-variable $window-line 3
 !emacro
-
+0 define-macro git-grep-drop
+    beginning-of-line
+    set-variable #l0 &sub &sin ":" @wl 1
+    !if &gre #l0 0
+        set-variable #l1 &sin ":" @wl 
+        set-variable #l2 &left @wl #l0 ; fname
+        set-variable #l3 &right @wl #l1
+        set-variable #l4 &sub &sin ":" #l3 1
+        set-variable #l3 &left #l3 #l4 ; line-number
+        next-window-find-file #l2
+        set-variable $window-line #l3
+    !endif
+!emacro
+0 define-macro git-grep-pick
+    ;1000 ml-write "picking git diff 2"
+!emacro
 define-macro git-log
     0 pipe-shell-command &cat .git.lang &cat  " git log "  $buffer-fname "*git*"
     !if &band $system 0x01
