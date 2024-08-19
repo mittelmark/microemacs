@@ -615,6 +615,8 @@ try_again:
                 {
                     if((tkn[2] == 'f') && (tkn[3] == '\0'))
                         status = DRIF ;
+                    if((tkn[2] == 'i') && (tkn[3] == 'f'))
+                        status = DRIIF ;
                 }
                 else if(cc == 'j')
                 {
@@ -708,9 +710,9 @@ elif_jump:
                 if(!meAtol(tkn))
                 {
                     /* if DRTGOTO or DRTJUMP and the test failed, we dont
-                     * need the argument */
-                    dirType &= ~DRFLAG_ARG ;
-                    execlevel += (dirType & DRFLAG_AMSKEXECLVL) ;
+                     * need the argument and if DRIIF we don't want the switch */
+                    dirType &= ~(DRFLAG_ARG|DRFLAG_SWITCH);
+                    execlevel += (dirType & DRFLAG_AMSKEXECLVL);
                     status |= DRTESTFAIL ;
                 }
             }
@@ -738,7 +740,7 @@ elif_jump:
                 return status ;
             
             
-            /* DRTEST, DRFORCE, DRNMACRO, DRABORT, DRBELL, DRRETURN */
+            /* DRTEST, DRFORCE, DRNMACRO, DRABORT, DRBELL, DRIIF, DRRETURN */
             switch(status)
             {
 #if KEY_TEST
@@ -750,6 +752,10 @@ elif_jump:
                 return mlwrite(MWABORT|MWWAIT,(meUByte *)"[Unexpected !emacro]");
             case DRFORCE:
                 (meRegCurr->force)++ ;
+                goto try_again;
+            case DRIIF:
+                while(((cc=*execstr) == ' ') || (cc == '\t'))
+                    execstr++;
                 goto try_again;
             case DRNMACRO:
                 nmacro = meTRUE;
