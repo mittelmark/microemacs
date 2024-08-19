@@ -1283,8 +1283,10 @@ Miscellaneous Information
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
     lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
+    lsgit-tag(3)lmgit-tag(3)le MicroEmacs Git interface - view and add Git tags  
     lsipipe-kill(2)lmipipe-kill(2)le Kill a incremental pipe  
     lsipipe-shell-command(2)lmipipe-shell-command(2)le (esc \) Incremental pipe (non-suspending
       system call)  
@@ -2018,8 +2020,10 @@ Miscellaneous Information
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
     lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
+    lsgit-tag(3)lmgit-tag(3)le MicroEmacs Git interface - view and add Git tags  
     lsglobal-abbrev-file(2)lmglobal-abbrev-file(2)le Set global abbreviation file  
     lsglobal-bind-key(2)lmglobal-bind-key(2)le (esc k) Bind a key to a named command or macro  
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
@@ -2612,8 +2616,10 @@ Miscellaneous Information
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content    
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
     lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
+    lsgit-tag(3)lmgit-tag(3)le MicroEmacs Git interface - view and add Git tags  
     lsgrep(3)lmgrep(3)le Search a file for a pattern  
     lsifill-paragraph(3)lmifill-paragraph(3)le (esc q) Format a paragraph  
     lsindent-decrease(3)lmindent-decrease(3)le Decrease the line indentation  
@@ -3601,8 +3607,10 @@ Miscellaneous Information
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
+    lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
     lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
+    lsgit-tag(3)lmgit-tag(3)le MicroEmacs Git interface - view and add Git tags  
     lsglobal-abbrev-file(2)lmglobal-abbrev-file(2)le Set global abbreviation file  
     lsglobal-bind-key(2)lmglobal-bind-key(2)le (esc k) Bind a key to a named command or macro  
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
@@ -5026,7 +5034,7 @@ Miscellaneous Information
       - adding git.emf for basic git support, git-commit, git-grep, git-status etc
       - improved build architecture on Github comnining platform
         build using matrix approach
-      - repository cleanup from old binaries, 3rdparty folder
+      - repository cleanup from old binaries, 3rdparty folder, old Makefiles
          
     - [240813]
       - Windows: Static embedding of libz
@@ -42287,6 +42295,7 @@ $a
     cDgit-rmcA  
     cDgit-statecA  
     cDgit-statuscA  
+    cCncA cDgit-tagcA  
 
 
 cEDESCRIPTION cA
@@ -42347,9 +42356,9 @@ $a
     the current buffer in the window including the modification state,
     repository etc.
 
-    The cDgit-tagcA command opens a dialog box and allows the user to add, remove
-    or delete a CVS tag.
-
+    The cDgit-tagcA  command  displays either all existing tags or allows you to
+    enter a new tag name if a numerical argument of 1 is given by asking for the
+    tag name and a message.
 
 
 cENOTES cA

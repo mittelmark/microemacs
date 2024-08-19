@@ -1191,8 +1191,10 @@
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
   [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
+  [git-tag(3)](git-tag(3)) MicroEmacs Git interface - view and add Git tags  
   [ipipe-kill(2)](ipipe-kill(2)) Kill a incremental pipe  
   [ipipe-shell-command(2)](ipipe-shell-command(2)) (esc \) Incremental pipe (non-suspending
     system call)  
@@ -1935,8 +1937,10 @@
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
   [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
+  [git-tag(3)](git-tag(3)) MicroEmacs Git interface - view and add Git tags  
   [global-abbrev-file(2)](global-abbrev-file(2)) Set global abbreviation file  
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
@@ -2530,8 +2534,10 @@
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content    
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
   [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
+  [git-tag(3)](git-tag(3)) MicroEmacs Git interface - view and add Git tags  
   [grep(3)](grep(3)) Search a file for a pattern  
   [ifill-paragraph(3)](ifill-paragraph(3)) (esc q) Format a paragraph  
   [indent-decrease(3)](indent-decrease(3)) Decrease the line indentation  
@@ -3522,8 +3528,10 @@
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
+  [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
   [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
+  [git-tag(3)](git-tag(3)) MicroEmacs Git interface - view and add Git tags  
   [global-abbrev-file(2)](global-abbrev-file(2)) Set global abbreviation file  
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
@@ -4951,7 +4959,7 @@
     - adding git.emf for basic git support, git-commit, git-grep, git-status etc
     - improved build architecture on Github comnining platform
       build using matrix approach
-    - repository cleanup from old binaries, 3rdparty folder
+    - repository cleanup from old binaries, 3rdparty folder, old Makefiles
        
   - [240813]
     - Windows: Static embedding of libz
@@ -42859,6 +42867,7 @@ $a
   __git-rm__  
   __git-state__  
   __git-status__  
+  _n_ __git-tag__  
 
 
 ## DESCRIPTION
@@ -42919,9 +42928,9 @@ $a
   the current buffer in the window including the modification state,
   repository etc.
 
-  The __git-tag__ command opens a dialog box and allows the user to add, remove
-  or delete a CVS tag.
-
+  The __git-tag__  command  displays either all existing tags or allows you to
+  enter a new tag name if a numerical argument of 1 is given by asking for the
+  tag name and a message.
 
 
 ## NOTES

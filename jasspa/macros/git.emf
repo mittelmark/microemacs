@@ -202,3 +202,23 @@ define-macro git-state
         screen-update
     !endif
 !emacro    
+
+define-macro git-tag
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y"
+            save-buffer
+        !endif
+    !endif
+    !if &and @? &equ @# 1
+        ml-write "is one"
+        set-variable #l0 @ml08 "enter tagname (like v1.0-beta0)"
+        set-variable #l1 @ml08 "enter message (like v1.0-beta0)"
+        0 pipe-shell-command &cat .git.lang &spr " git tag -a '%s' -m '%s'" #l0 #l1 "*git*"
+    !else
+        0 pipe-shell-command &cat .git.lang " git tag" "*git*"
+        !if &band $system 0x01
+            screen-update
+        !endif
+    !endif
+!emacro
