@@ -1280,6 +1280,7 @@ Miscellaneous Information
     lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -2014,6 +2015,7 @@ Miscellaneous Information
     lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -2607,6 +2609,7 @@ Miscellaneous Information
     lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content    
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -3595,6 +3598,7 @@ Miscellaneous Information
     lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
+    lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -5016,6 +5020,14 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [240820]
+      - Fixing documentation issues with bold face
+      - adding !iif directive based on me24 code
+      - adding git.emf for basic git support, git-commit, git-grep, git-status etc
+      - improved build architecture on Github comnining platform
+        build using matrix approach
+      - repository cleanup from old binaries, 3rdparty folder
+         
     - [240813]
       - Windows: Static embedding of libz
       - Windows: Build on Windows-2019 server using winlibs
@@ -42224,6 +42236,7 @@ $a
 ! 3 git-checkout
 ! 3 git-commit
 ! 3 git-diff
+! 3 git-grep
 ! 3 git-log
 ! 3 git-pull
 ! 3 git-rm
@@ -42243,6 +42256,8 @@ $a
     git-commit - MicroEmacs Git interface - commit changes
 |git-diff
     git-diff - MicroEmacs Git interface - diff changes
+|git-grep
+    git-grep - MicroEmacs Git interface - grep repo file content
 |git-log
     git-log - MicroEmacs Git interface - log changes
 |git-pull
@@ -42267,6 +42282,7 @@ $a
     cDgit-checkoutcA  
     cDgit-commitcA  
     cDgit-diffcA  
+    cDgit-grepcA    
     cDgit-logcA  
     cDgit-rmcA  
     cDgit-statecA  
@@ -42303,6 +42319,11 @@ $a
     current buffer is a directory list it will list all the differences found
     in all files within the directory.
 
+    The cDgit-grepcA command opens a cC*git-grep*cA window after prompting the user for
+    a text string which can be as well a regular expressions and searches the files
+    in the repository for the given text string. The results can be picked with the 
+    mouse to jump to the given position in the file with the matching string.
+    
     The cDgit-logcA command opens a cC*git-log*cA window displaying the Git log of the
     current buffer's file.
 

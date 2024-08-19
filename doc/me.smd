@@ -1188,6 +1188,7 @@
   [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -1931,6 +1932,7 @@
   [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -2525,6 +2527,7 @@
   [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content    
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -3516,6 +3519,7 @@
   [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
+  [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -4941,6 +4945,14 @@
 
 ## Development History 
 
+  - [240820]
+    - Fixing documentation issues with bold face
+    - adding !iif directive based on me24 code
+    - adding git.emf for basic git support, git-commit, git-grep, git-status etc
+    - improved build architecture on Github comnining platform
+      build using matrix approach
+    - repository cleanup from old binaries, 3rdparty folder
+       
   - [240813]
     - Windows: Static embedding of libz
     - Windows: Build on Windows-2019 server using winlibs
@@ -42796,6 +42808,7 @@ $a
 ! 3 git-checkout
 ! 3 git-commit
 ! 3 git-diff
+! 3 git-grep
 ! 3 git-log
 ! 3 git-pull
 ! 3 git-rm
@@ -42815,6 +42828,8 @@ $a
   git-commit - MicroEmacs Git interface - commit changes
 |git-diff
   git-diff - MicroEmacs Git interface - diff changes
+|git-grep
+  git-grep - MicroEmacs Git interface - grep repo file content
 |git-log
   git-log - MicroEmacs Git interface - log changes
 |git-pull
@@ -42839,6 +42854,7 @@ $a
   __git-checkout__  
   __git-commit__  
   __git-diff__  
+  __git-grep__    
   __git-log__  
   __git-rm__  
   __git-state__  
@@ -42875,6 +42891,11 @@ $a
   current buffer is a directory list it will list all the differences found
   in all files within the directory.
 
+  The __git-grep__ command opens a _*git-grep*_ window after prompting the user for
+  a text string which can be as well a regular expressions and searches the files
+  in the repository for the given text string. The results can be picked with the 
+  mouse to jump to the given position in the file with the matching string.
+  
   The __git-log__ command opens a _*git-log*_ window displaying the Git log of the
   current buffer's file.
 
