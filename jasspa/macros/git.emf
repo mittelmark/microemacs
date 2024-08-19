@@ -78,6 +78,8 @@ define-macro git-commit
     !endif
 !emacro
 
+add-file-hook "*git-diff*" fhook-diff
+
 define-macro git-diff
     !if &bmod "edit"
         set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
@@ -85,16 +87,16 @@ define-macro git-diff
             save-buffer
         !endif
     !endif
-    0 pipe-shell-command &cat .git.lang &cat  " git diff "  $buffer-fname "*git*"
+    0 pipe-shell-command &cat .git.lang &cat  " git diff "  $buffer-fname "*git-diff*"
     !if &band $system 0x01
         screen-update
     !endif
 !emacro    
+!if &not &exi dirlst-sort-list
+    0 exec-file "find"
+    add-file-hook "*git-grep*" fhook-grep
+!endif
 define-macro git-grep
-    !if &not &exi dirlst-sort-list
-        0 exec-file "find"
-        add-file-hook "*git-grep*" fhook-grep
-    !endif
     !if &bmod "edit"
         set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
         !if &iseq #l0 "y"
