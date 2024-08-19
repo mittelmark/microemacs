@@ -154,7 +154,7 @@ define-macro git-log
     2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
     find-buffer "*git*"
     beginning-of-buffer
-    search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\|Untracked files\\|\tnew file:\\)"
+    search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\|Untracked files\\|\tnew file:\\|fatal: not a git repository\\)"
     ;set-variable $debug 2
     !if $status
         set-variable  #l0 &trb @wl
@@ -165,6 +165,8 @@ define-macro git-log
             set-variable .git.status "modified"
         !elif &sin "new file" #l0
             set-variable .git.status "new file"
+        !elif &sin "fatal:" #l0
+            set-variable .git.status "not in a git repository"
         !else
             set-variable .git.status "untracked"
         !endif
