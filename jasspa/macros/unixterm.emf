@@ -195,12 +195,12 @@ set-variable .change-font.xfontsel 0
         beginning-of-buffer
         search-buffer "me" "^-"
         !if $status
-            set-variable  .xfontsel.font @wl
-            !if &equ &sin "-*-*" .xfontsel.font 1
+            set-variable .change-font.xfontsel-font @wl
+            !if &equ &sin "-*-*" .change-font.xfontsel-font 1
                 1000 ml-write "No font selected!"
                 !return
             !endif
-            !if &xse .xfontsel.font "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
+            !if &xse .change-font.xfontsel-font "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
                 set-variable .change-font.sz-font &spr "%s*-*-%%d-*-*%s*%s" @s1 @s3 @s4
                 !if &seq @s2 "*"
                     !if &not &exi .change-font.sz-size
@@ -231,7 +231,7 @@ set-variable .change-font.xfontsel 0
                 !endif
             !else
                 ; should be not reached
-                change-font .xfontself.font
+                change-font .change.font.xfontsel-font
                 set-variable .change-font.sz-font ""
             !endif
         !else
