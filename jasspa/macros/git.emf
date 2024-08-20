@@ -34,7 +34,8 @@ define-macro git-add
             save-buffer 
         !endif
     !endif 
-    0 pipe-shell-command &cat .git.lang &cat " git add " $buffer-fname "*git*"
+    2 pipe-shell-command &cat .git.lang &cat " git add " $buffer-fname "*git*"
+    ml-write &spr "File %s was added. Use git-commit to complete addition to repository!" $buffer-fname
     !if &band $system 0x01
         screen-update
     !endif
@@ -216,7 +217,19 @@ define-macro git-log
     !endif
     goto-position "\x90"
 !emacro    
-
+; rename a file 
+define-macro git-mv
+    set-variable #l0 @ml01 "Enter new filename"
+    set-variable #l1 $buffer-bname
+    !if &not &seq #l0 $buffer-fname
+        2 pipe-shell-command &spr "%s git mv %s %s " .git.lang   #l1 #l0 "*git*"
+        delete-buffer #l1 
+        read-file #l0
+    !else
+        ml-write "Error: Not given a new file name!"
+    !endif
+!emacro
+; fetch and update current branch
 define-macro git-pull
     0 pipe-shell-command &cat .git.lang " git pull" "*git*"
     !if &band $system 0x01
@@ -284,7 +297,6 @@ define-macro git-tag
         !endif
     !endif
     !if &and @? &equ @# 1
-        ml-write "is one"
         set-variable #l0 @ml08 "enter tagname (like v1.0-beta0)"
         set-variable #l1 @ml08 "enter message (like v1.0-beta0)"
         0 pipe-shell-command &cat .git.lang &spr " git tag -a '%s' -m '%s'" #l0 #l1 "*git*"
