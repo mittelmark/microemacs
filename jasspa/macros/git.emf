@@ -39,7 +39,48 @@ define-macro git-add
         screen-update
     !endif
 !emacro
+; git-branch+*~
+0 define-macro git-branches-get
+    2 pipe-shell-command &cat .git.lang " git branch" "*git*"
+    find-buffer "*git*"
+    set-variable $window-line 3
+    set-variable .git.branches "|"
+    
+    !force forward-line
+    !while $status
+        set-variable #l1 @wl
+        ;1000 ml-write #l1
+        !if &equ &sin "*" #l1 1
+            ;1000 ml-write &cat "found: " #l1
+            set-variable .git.branches &linsert .git.branches 0 #l1
+        !elif &equ &sin "  " #l1 1
+            set-variable .git.branches &linsert .git.branches -1 &right #l1 2
+        !endif
+        !force forward-line
+    !done
+    delete-buffer "*git*"
+!emacro
+define-macro git-branch
+    git-branches-get
+    set-variable #l3 &right .git.branches 3
+    set-variable #l4 &sub &len #l3 1
+    set-variable #l3 &left #l3 #l4
+    1000 ml-write &spr "on branch: %s (%s)" &lget .git.branches 1 #l3
+!emacro
 
+define-macro git-checkout
+    git-branches-get
+    !if &gre &llen .git.branches 1
+        set-variable #l2 @ml19 "select branch (C-g - quit)" &lget .git.branches 1 .git.branches
+        !if &not &seq #l2 &lget .git-branches 1
+            2 pipe-shell-command &cat &cat .git.lang " git checkout " #l2 "*git*"
+            delete-buffer "*git*"
+            1000 ml-write &spr "Switched to branch: %s" #l2
+        !endif
+    !else
+        1000 ml-write &cat "there is only one branch: " &lget .git.branches 1
+    !endif
+!emacro
 ; commit changes of the file to git repo
 define-macro git-commit
     !if &bmod "edit"
@@ -183,6 +224,36 @@ define-macro git-pull
     !endif
 !emacro    
 
+define-macro git-rm
+    !if &bmod "edit"
+        set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            save-buffer 
+        !endif
+    !endif 
+    git-get-status
+    !if &seq .git.status "modified"
+        1000 ml-write "Uncommitted changes, commit them first, then use git-rm!"
+    !elif &seq .git.status "not in a git repository"
+        1000 ml-write "This file is not in folder of a Git repository!"
+    !elif &seq .git.status  "untracked"
+        1000 ml-write "This file is not in the Git repository in the current branch!"
+    !elif &seq .git.status  "new file"
+        set-variable #l0 @mc5 "Remove file from Git (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            2 pipe-shell-command &spr  "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            1000 ml-write "file was removed from the current branch"
+            delete-buffer
+        !endif
+    !elif &seq .git.status "nothing to commit"
+        set-variable #l0 @mc5 "Remove file from Git (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+        !if &iseq #l0 "y" 
+            2 pipe-shell-command &spr  "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            1000 ml-write "file was removed from the current branch"
+            delete-buffer
+        !endif
+    !else
+!emacro
 define-macro git-status
     !if &bmod "edit"
         set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "

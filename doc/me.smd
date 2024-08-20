@@ -1185,7 +1185,8 @@
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
   [git(3)](git(3)) MicroEmacs Git interface  
   [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
-  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-branch(3)](git-branch(3)) MicroEmacs Git interface - show current branch  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout branch
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
@@ -1931,7 +1932,8 @@
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
   [git(3)](git(3)) MicroEmacs Git interface  
   [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
-  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-branch(3)](git-branch(3)) MicroEmacs Git interface - show current branch  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout branch  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
@@ -2528,7 +2530,8 @@
   [generate-tags-file(3)](generate-tags-file(3)) Generate a tags file  
   [git(3)](git(3)) MicroEmacs Git interface  
   [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
-  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-branch(3)](git-branch(3)) MicroEmacs Git interface - show current branch  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout branch  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content    
@@ -3522,7 +3525,8 @@
   [get-next-line(2)](get-next-line(2)) (C-x `) Find the next command line  
   [git(3)](git(3)) MicroEmacs Git interface  
   [git-add(3)](git-add(3)) MicroEmacs Git interface - add file  
-  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout files  
+  [git-branch(3)](git-branch(3)) MicroEmacs Git interface - show current branch  
+  [git-checkout(3)](git-checkout(3)) MicroEmacs Git interface - checkout branch  
   [git-commit(3)](git-commit(3)) MicroEmacs Git interface - commit changes  
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
@@ -42813,6 +42817,7 @@ $a
 !! me-id: m3mac096
 ! 3 git
 ! 3 git-add
+! 3 git-branch
 ! 3 git-checkout
 ! 3 git-commit
 ! 3 git-diff
@@ -42830,8 +42835,10 @@ $a
   git - MicroEmacs Git interface
 |git-add
   git-add - MicroEmacs Git interface - add file
+|git-branch
+  git-branch - MicroEmacs Git interface - show current branch
 |git-checkout
-  git-checkout - MicroEmacs Git interface - checkout files and directories
+  git-checkout - MicroEmacs Git interface - checkout branches
 |git-commit
   git-commit - MicroEmacs Git interface - commit changes
 |git-diff
@@ -42859,6 +42866,7 @@ $a
   _n_ __git__  
 
   __git-add__  
+  __git-branch__  
   __git-checkout__  
   __git-commit__  
   __git-diff__  
@@ -42884,12 +42892,21 @@ $a
   including additional columns showing the Git state.
 
   The __git-add__ command adds the current buffers file to the repository. Note
-  that this command only performs the local addition, a __git-commit__ is
+  that this command only performs the local addition, a _git-commit_ is
   required to make the addition permanent.
 
-  The __git-checkout__ command checks out a file or directory from the
-  repository into the current directory. The user specifies the file on the
-  message line.
+  The  __git-branch__  command shows the current branch you are working on and
+  lists all available branches on the message line. To checkout/switch to an other
+  branch use _git-checkout_.
+
+  The __git-checkout__ command checks out a git branch from the repository into the
+  current directory if there is more than one branch available. 
+  The user specifies the branch on the message line with TAB completion.
+  Please note that this might lead to open files which does not exists in the current
+  branch or files with a different content. 
+  If you continue to edit these files you get the message that the file is changed. 
+  Usually you will close non-existing files without saving them and use _reread-file_
+  or _reread-all_ to update your editor.
 
   The __git-commit__ command commits any changes made to the currently buffer's
   file (including additions) to the repository. The user is prompted for a
