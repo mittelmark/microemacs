@@ -223,6 +223,7 @@ define-macro git-mv
     set-variable #l1 $buffer-bname
     !if &not &seq #l0 $buffer-fname
         2 pipe-shell-command &spr "%s git mv %s %s " .git.lang   #l1 #l0 "*git*"
+        2 pipe-shell-command &spr "%s git commit -m 'renamed %s' %s " .git.lang  #l1 #l1 "*git*"
         delete-buffer #l1 
         read-file #l0
     !else
@@ -254,16 +255,20 @@ define-macro git-rm
     !elif &seq .git.status  "new file"
         set-variable #l0 @mc5 "Remove file from Git (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
         !if &iseq #l0 "y" 
-            2 pipe-shell-command &spr  "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            2 pipe-shell-command &spr "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            git-commit
+            delete-buffer $buffer-bname
+            git-status
             1000 ml-write "file was removed from the current branch"
-            delete-buffer
         !endif
     !elif &seq .git.status "nothing to commit"
         set-variable #l0 @mc5 "Remove file from Git (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
         !if &iseq #l0 "y" 
             2 pipe-shell-command &spr  "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            git-commit
+            delete-buffer $buffer-bname
+            git-status
             1000 ml-write "file was removed from the current branch"
-            delete-buffer
         !endif
     !else
 !emacro

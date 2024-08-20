@@ -1191,6 +1191,7 @@
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-mv(3)](git-mv(3)) MicroEmacs Git interface - rename repository files  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -1938,6 +1939,7 @@
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-mv(3)](git-mv(3)) MicroEmacs Git interface - rename repository files  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -2536,6 +2538,7 @@
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content    
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-mv(3)](git-mv(3)) MicroEmacs Git interface - rename repository files  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -3531,6 +3534,7 @@
   [git-diff(3)](git-diff(3)) MicroEmacs Git interface - diff changes  
   [git-grep(3)](git-grep(3)) MicroEmacs Git interface - grep repo file content  
   [git-log(3)](git-log(3)) MicroEmacs Git interface - log changes  
+  [git-mv(3)](git-mv(3)) MicroEmacs Git interface - rename repository files  
   [git-pull(3)](git-pull(3)) MicroEmacs Git interface - update files and folders  
   [git-rm(3)](git-rm(3)) MicroEmacs Git interface - remove file  
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
@@ -42823,6 +42827,7 @@ $a
 ! 3 git-diff
 ! 3 git-grep
 ! 3 git-log
+! 3 git-mv
 ! 3 git-pull
 ! 3 git-rm
 ! 3 git-state
@@ -42847,6 +42852,8 @@ $a
   git-grep - MicroEmacs Git interface - grep repo file content
 |git-log
   git-log - MicroEmacs Git interface - log changes
+|git-mv
+  git-mv - MicroEmacs Git interface - rename repository files
 |git-pull
   git-pull - MicroEmacs Git interface - update directory files
 |git-rm
@@ -42872,6 +42879,8 @@ $a
   __git-diff__  
   __git-grep__    
   __git-log__  
+  __git-mv__  
+  __git-pull__  
   __git-rm__  
   __git-state__  
   __git-status__  
@@ -42924,6 +42933,10 @@ $a
   
   The __git-log__ command opens a _*git-log*_ window displaying the Git log of the
   current buffer's file.
+
+  The __git-mv__ command allows to rename the current buffer file to a new
+  repository file. The removal of the old filename is done automatically via
+  a commit message.
 
   The __git-rm__ command removes the current buffer's file from the
   repository - PLEASE NOTE THIS CAN LEAD TO LOST DATA!!! This command only

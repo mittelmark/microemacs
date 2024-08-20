@@ -1277,11 +1277,13 @@ Miscellaneous Information
     lsget-next-line(2)lmget-next-line(2)le (C-x `) Find the next command line  
     lsgit(3)lmgit(3)le MicroEmacs Git interface  
     lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
-    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-branch(3)lmgit-branch(3)le MicroEmacs Git interface - show current branch  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout branch
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-mv(3)lmgit-mv(3)le MicroEmacs Git interface - rename repository files  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -2014,11 +2016,13 @@ Miscellaneous Information
     lsget-next-line(2)lmget-next-line(2)le (C-x `) Find the next command line  
     lsgit(3)lmgit(3)le MicroEmacs Git interface  
     lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
-    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-branch(3)lmgit-branch(3)le MicroEmacs Git interface - show current branch  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout branch  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-mv(3)lmgit-mv(3)le MicroEmacs Git interface - rename repository files  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -2610,11 +2614,13 @@ Miscellaneous Information
     lsgenerate-tags-file(3)lmgenerate-tags-file(3)le Generate a tags file  
     lsgit(3)lmgit(3)le MicroEmacs Git interface  
     lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
-    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-branch(3)lmgit-branch(3)le MicroEmacs Git interface - show current branch  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout branch  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content    
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-mv(3)lmgit-mv(3)le MicroEmacs Git interface - rename repository files  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -3601,11 +3607,13 @@ Miscellaneous Information
     lsget-next-line(2)lmget-next-line(2)le (C-x `) Find the next command line  
     lsgit(3)lmgit(3)le MicroEmacs Git interface  
     lsgit-add(3)lmgit-add(3)le MicroEmacs Git interface - add file  
-    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout files  
+    lsgit-branch(3)lmgit-branch(3)le MicroEmacs Git interface - show current branch  
+    lsgit-checkout(3)lmgit-checkout(3)le MicroEmacs Git interface - checkout branch  
     lsgit-commit(3)lmgit-commit(3)le MicroEmacs Git interface - commit changes  
     lsgit-diff(3)lmgit-diff(3)le MicroEmacs Git interface - diff changes  
     lsgit-grep(3)lmgit-grep(3)le MicroEmacs Git interface - grep repo file content  
     lsgit-log(3)lmgit-log(3)le MicroEmacs Git interface - log changes  
+    lsgit-mv(3)lmgit-mv(3)le MicroEmacs Git interface - rename repository files  
     lsgit-pull(3)lmgit-pull(3)le MicroEmacs Git interface - update files and folders  
     lsgit-rm(3)lmgit-rm(3)le MicroEmacs Git interface - remove file  
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
@@ -42241,11 +42249,13 @@ $a
 
 ! 3 git
 ! 3 git-add
+! 3 git-branch
 ! 3 git-checkout
 ! 3 git-commit
 ! 3 git-diff
 ! 3 git-grep
 ! 3 git-log
+! 3 git-mv
 ! 3 git-pull
 ! 3 git-rm
 ! 3 git-state
@@ -42258,8 +42268,10 @@ $a
     git - MicroEmacs Git interface
 |git-add
     git-add - MicroEmacs Git interface - add file
+|git-branch
+    git-branch - MicroEmacs Git interface - show current branch
 |git-checkout
-    git-checkout - MicroEmacs Git interface - checkout files and directories
+    git-checkout - MicroEmacs Git interface - checkout branches
 |git-commit
     git-commit - MicroEmacs Git interface - commit changes
 |git-diff
@@ -42268,6 +42280,8 @@ $a
     git-grep - MicroEmacs Git interface - grep repo file content
 |git-log
     git-log - MicroEmacs Git interface - log changes
+|git-mv
+    git-mv - MicroEmacs Git interface - rename repository files
 |git-pull
     git-pull - MicroEmacs Git interface - update directory files
 |git-rm
@@ -42287,11 +42301,14 @@ $a
     cCncA cDgitcA  
 
     cDgit-addcA  
+    cDgit-branchcA  
     cDgit-checkoutcA  
     cDgit-commitcA  
     cDgit-diffcA  
     cDgit-grepcA    
     cDgit-logcA  
+    cDgit-mvcA  
+    cDgit-pullcA  
     cDgit-rmcA  
     cDgit-statecA  
     cDgit-statuscA  
@@ -42312,12 +42329,21 @@ $a
     including additional columns showing the Git state.
 
     The cDgit-addcA command adds the current buffers file to the repository. Note
-    that this command only performs the local addition, a cDgit-commitcA is
+    that this command only performs the local addition, a cCgit-commitcA is
     required to make the addition permanent.
 
-    The cDgit-checkoutcA command checks out a file or directory from the
-    repository into the current directory. The user specifies the file on the
-    message line.
+    The  cDgit-branchcA  command shows the current branch you are working on and
+    lists all available branches on the message line. To checkout/switch to an other
+    branch use cCgit-checkoutcA.
+
+    The cDgit-checkoutcA command checks out a git branch from the repository into the
+    current directory if there is more than one branch available. 
+    The user specifies the branch on the message line with TAB completion.
+    Please note that this might lead to open files which does not exists in the current
+    branch or files with a different content. 
+    If you continue to edit these files you get the message that the file is changed. 
+    Usually you will close non-existing files without saving them and use cCreread-filecA
+    or cCreread-allcA to update your editor.
 
     The cDgit-commitcA command commits any changes made to the currently buffer's
     file (including additions) to the repository. The user is prompted for a
@@ -42335,6 +42361,10 @@ $a
     
     The cDgit-logcA command opens a cC*git-log*cA window displaying the Git log of the
     current buffer's file.
+
+    The cDgit-mvcA command allows to rename the current buffer file to a new
+    repository file. The removal of the old filename is done automatically via
+    a commit message.
 
     The cDgit-rmcA command removes the current buffer's file from the
     repository - PLEASE NOTE THIS CAN LEAD TO LOST DATA!!! This command only
