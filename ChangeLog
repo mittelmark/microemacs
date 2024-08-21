@@ -7,8 +7,89 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <231209.0952>
+>  Last Modified : <240821.1504>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+  [240820]
+  
+    - Fixing documentation issues with bold face
+    - adding !iif directive based on me24 code
+    - adding git.emf for basic git support, git-commit, git-grep, git-status etc
+    - improved build architecture on Github combining platform
+      build using matrix approach
+    - repository  cleanup from old binaries,  3rdparty  folder, old Makefiles,
+      old documentation
+    - xfontsel on X11 only shows now monospaced fonts for font selection
+       
+  [240813]
+   
+     - Windows: Static embedding of libz
+    - Windows: Build on Windows-2019 server using winlibs
+    - X-Windows: Font selection using xfontsel if available
+    - X-Windows: registry saving of font-resize etc now working
+    - X-Windows:  removing  old DOS  encodings,  focusing  on ISO and  Cp1252
+      encodings
+    - X-Windows: mec, mecw and mew builds now available
+    - new function &llen for list length
+    - ttf fonts now enabled with stepwise resizing
+
+  [240803]
+  
+    - documentation fixes for macro links
+    - adding change-font-xfontsel command
+    - fix for bitmap fonts if font resize is not available
+    
+  [240802] fixing all GCC  compiler  warnings  mainly based on code from Steve
+           for Me2024
+
+  [240801]
+  
+    - docu and faq extended about  installation  of bfs  executuables  and TTF
+      font support
+    - new  server  builds  Linux,  MacOS and  Windows  (via Mingw on Linux) on
+      Github are ready      
+
+  [240730]
+  
+    - refined  build  structure  for Linux, Macos and Windows with three small
+      make files
+    - support for True Type Fonts using a preprocced  fonts zip file create as
+      Github action
+      
+  [240729]
+  
+    - implementing cp1252, cp1251 and cp1250 encodings
+    - updating  fonts  Chivo,  Courier  Prime and  Ubuntu to support  these if
+      possible using bdf files
+    
+  [240717]
+  
+    - split and cleanup Linux mec, mecb and mew and mewb builds
+    - extensive C++ abbreviation file and keyword updates for some of the 
+      new C++14 and C+17 keywords
+      
+  [240601] 
+  
+    - adding R application template
+    - adding LaTeX template
+
+  __Release - 29th March 2024 Easter Egg__ 
+
+  [240329] 
+  
+    - using Markdown instead of nroff for documention writing
+    - update contact and news group information
+        
+  [240328]
+  
+    - documentation update, faq for changing font
+    - fix for change-font-type
+    
+  [240324]
+  
+    - adding jeany-bindings documentation
+    - documentation fixes, update help file
+    - version changed to 2009-12-23
 
   [231206] fix for nested highlighting in Markdown files
     
