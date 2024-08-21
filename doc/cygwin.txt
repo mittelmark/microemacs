@@ -1,0 +1,171 @@
+> -!- document -!-
+>
+>  JASSPA MicroEmacs README
+>
+>  Created By    : Jon Green
+>  Created       : Sun Dec 8 14:46:52 2002
+>  Last Modified : <20050513.0026>
+>  File Name     : cygwin.txt
+>
+
+This document describes the Cygwin release of JASSPA's MicroEmacs.
+
+INFORMATION:
+
+    See http://www.jasspa.com for contact details and further information.
+
+INSTALL:
+
+    Following the general  guidelines of Cygwin  packages then the binary, but
+    not being run from  setup.exe  then install is as follows, from within the
+    Cygwin shell:-
+
+    > cd /
+    > tar xjvf jasspa-yyyymmdd.tar.bz2
+
+    This creates the directories:-
+
+        ./usr/doc/jasspa
+        ./usr/share/jasspa
+        ./bin/me.exe
+        ./bin/mex.exe
+
+    The executable is called "me" for JASSPA  MicroEmacs, an X-Windows version
+    is called  "mex", this may be renamed to "me" if  X-Windows is  supported.
+    "/usr/share/jasspa" contains the macros which drive the editor. The source
+    that  was  used to  build  the  install  executable  may be  installed  as
+    follows:-
+
+    > cd /
+    > tar xjvf jasspa-yyyymmdd-src.tar.bz2
+
+    A simple "build" should build the  executable "me" with both X-Windows and
+    terminal  support,  the image  that is in the  binary  bundle is the non-X
+    version, build using "make mec". To build a debug version then "make med",
+    the debug executable is called "med".
+
+RUNNING:
+
+    To run the editor from the command line:-
+
+        me <files>
+
+    This  executes  and  displays a terminal  window.  This  version  does not
+    include  X-server  support,  this  may be  build  from the  source  if the
+    X-Windows  libraries  and include  files are on the system. A "me -c" will
+    run  with the last set of files  previously  loaded  by the  editor  (i.e.
+    restores the last session).
+
+    On  entering  the editor for the first time then the first page shown is a
+    help page. This will not teach you Emacs, it will  simply give you help on
+    all of the commands etc.
+
+        TAB - jumps to the next link
+        RETURN - selects the page for display.
+
+    "M-x z" will quit the editor (M is "ESC" or "ALT")
+
+    The menu is accessed with "F1" and the cursor keys as there is no mouse.
+
+SETTING UP:
+
+    On  running  the  editor for the first time then a  configuration  file is
+    created in your home directory  "$HOME/.jasspa"  which contains the editor
+    configuration setting.
+
+    You can  configure  the editor to remember  session  history and preferred
+    configuration:-
+
+        M-x user-setup
+
+        Within the Start-up  menu, enter the  following  fields. Note that the
+        RETURN key will take you out of a text  field. TAB or the cursor  keys
+        will move between  fields. Cursor  left/right  will generally take you
+        back to the top row when there is a single entry box on a line.
+
+        "N" - (Log Name) Enter your $USER name, the default one is guest.
+
+        "P" - (Setup Path) Set up your local path, should be
+              /home/<name>/.jasspa
+
+        "F" - (Setup File) Enter your <name>.
+
+        "K" - Keyboard layout for your location.
+
+        "L" - Language.
+
+        These are the basic settings. Now commit them:-
+
+        "S" - Save them
+
+        "C" - Make them current (will drop out of user-setup).
+
+        If all went well then you should now have a buffer called  <name>.emf,
+        this is your default startup file which you can tailor the editor.
+
+        Re-enter user setup
+
+        <TAB> to General.
+
+        "N" - (Full Name) Enter your full name. This information is
+              automatically inserted into file headers should you ever create
+              a known file type within the editor.
+
+        The remaining fields can be ignored, the only field of interest may be
+        'E'xact. This is the default case  sensitive mode for all searches, by
+        default  the  setting  is case  insensitive.  If you always  want case
+        sensitive searches then check the box. (i.e. hit 'E' to toggle).
+
+        "S" - Save the changes
+
+        "C" - Make them current.
+
+    There is  additional  help  on-line on setting up as a user and setting up
+    any company information (i.e. default headers etc.).
+
+BUILDING:
+
+    To build from source.
+
+        ./build
+
+    From the source directory  performs a build operation.  Alternatively  the
+    command:-
+
+        make -f cygwin.gmk
+
+    May be issued to build the  source.  Refer to  "build.txt"  in the  source
+    directory for more details.
+
+BUGS/TO DO/ISSUES:
+
+    1) Window  resize does not seem to work when the window is resized.  maybe
+       not receiving a signal we are normally expecting.
+
+    2) The "ishell"  command does not appear to work. This  requires some more
+       investigation.   If  this  is  started  then  issue  the  command  "M-x
+       ipipe-kill"  to kill  the  session.  This  does  run  from the  Windows
+       "me32.exe" so there must be some other problem here.
+
+       man, info, grep and compile all seem to work correctly.
+
+    3) Uses  terminal_height  -1 lines. I have a feeling  that this is correct
+       because the window auto scrolls, hence there is actually less jitter in
+       the display. Need to confirm that this really is the case.
+
+    5) Sometimes see the emergency-signal on exiting. Need to investigate, has
+       not yet caused any problems.
+
+LICENSE:
+
+COPYRIGHT 1998-2005 JASSPA
+
+    JASSPA Distribution - http://www.jasspa.com
+
+    JASSPA MicroEmacs is licensed under the GNU Public License (GPL).
+
+Spelling Dictionary Copyrights
+
+    The spelling  dictionaries  are converted from ispell  dictionaries,  each
+    spelling  dictionary has it's own copyright which is reproduced within the
+    appropriate language spelling macro file.
