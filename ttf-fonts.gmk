@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Thu Aug 1 07:16:30 2024
-#  Last Modified : <240802.0515>
+#  Last Modified : <240821.0859>
 #
 #  Description	
 #
@@ -71,6 +71,7 @@ fira-code-medium.ttf:
 	cp fira/ttf/FiraCode-Regular.ttf fira-code-medium.ttf
 	cp fira/ttf/FiraCode-Bold.ttf fira-code-bold.ttf
 	rm -rf fira
+	rm Fira_Code_v6.2.zip
 	wget https://github.com/tonsky/FiraCode/raw/master/LICENSE -O fira-code-license.txt
 
 #inconsolata: inconsolata-medium.ttf
@@ -135,16 +136,22 @@ index:
 package:
 	-rm -rf ttf-fonts
 	mkdir ttf-fonts
-	cp *.ttf ttf-fonts
-	cp fonts.* ttf-fonts/
-	cp *-license.txt ttf-fonts/	
+	mv *.ttf ttf-fonts
+	mv fonts.* ttf-fonts/
+	mv *-license.txt ttf-fonts/	
 	echo "Installation of these fonts as X11-fonts" > Readme.txt
 	echo -e 'Run inside the folder ttf-fonts:\n\n  xset +fp `pwd`\n  xset fp rehash\n\n' >> Readme.txt
 	echo -e "Afterwards you might use these fonts. Check the file fonts.dir to see the available fonts!\n" >> Readme.txt
 	echo "Or use xfontsel to see the fonts and have a preview." >> Readme.txt
-	cp Readme.txt ttf-fonts/Readme.txt
+	mv Readme.txt ttf-fonts/Readme.txt
 	zip ttf-fonts.zip ttf-fonts/*
 
+install:
+	if ! test -d ~/.local/share/fonts; then mkdir ~/.local/share/fonts; fi
+	cp ttf-fonts/* ~/.local/share/fonts
+	xset +fp ~/.local/share/fonts/
+	xset fp rehash
 all: anonymous dejavu courier-prime chivo-mono fira-code inconsolata liberation-mono proggy-vector \
 	source-code-pro terminus ubuntu-mono \
 	index package
+	

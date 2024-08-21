@@ -178,7 +178,7 @@ set-variable .change-font.xfontsel 0
     define-macro change-font-xfontsel
         set-variable #l0 &reg &spr "/history/%s/font" %platform "-*-fixed-*-*-*-*-*-*-*-*-*-*-iso8859-1"
         set-variable #l1 &reg &spr "/history/%s/char-set" %platform  "iso8859-1"
-        set-variable #l1 &cat "-*-*-*-r-*-*-*-*-*-*-*-" #l1
+        set-variable #l1 &cat "-*-*-*-r-*-*-*-*-*-m-*-" #l1
         ;!if &xse #l0 ".+\\(-[^-]+-[^-]+\\)"
         ;    ; encoding
         ;    set-variable #l1 &cat "-*-*-*-*-*-*-*-*-*-*-*" @s1
