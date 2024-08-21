@@ -1,0 +1,925 @@
+
+
+
+FAQs(0f)                          microemacs                           FAQs(0f)
+
+
+
+
+FREQUENTLY ASKED QUESTIONS - Contact Information 
+     This document contains frequently asked questions submitted to JASSPA. Use
+     the  E-Mail  reflector  and  associated  logs,  described  in  the Contact
+     Information section, alternatively questions may be submitted to:- 
+
+          Email:support@jasspa.com 
+
+     We cannot promise  to resolve all  questions, but will  endeavor to answer
+     most. We would also appreciate comments  on how to improve the readability
+     of the documentation or  suggestions for improvements  where you think the
+     documentation is deficient. 
+
+     [FAQ Index]. 
+
+QUESTION (00) 
+     New functionality; what is useful to me as an old MicroEmacs user ?? 
+
+ANSWER 
+     There are a  lot of new  features in this  distribution. Assuming that you
+     just want to use  the editor (and  have cottoned onto  the fact that there
+     are now  scroll bars  etc.) then  the most  frequent commands  that we use
+     are:- 
+
+       *  grep(3) - May need to set up in <user>.emf. 
+       *  diff(3) - May need to set up in <user>.emf. 
+       *  compile(3) - May need to set up in <user>.emf. 
+       *  clean(3) - cleans a buffer, removing spaces etc. 
+       *  restyle-buffer(3) - Reformats 'C' + known languages. 
+       *  spell-buffer(3) - For documentation work, spells the buffer. 
+       *  C-s - isearch-forward(2) incremental search. 
+       *  C-x u or C-_ - undo(2) undoes edits. 
+       *  F10 - file-browser(3) allows the file system to be browsed 
+
+     Other useful macros include:- 
+
+       *  tabs-to-spaces(3) - Good for  sorting out the  mess made by Microsoft
+          Developer Studio. 
+       *  sort-lines(2) -  Two  versions of  this,  allows marked  lines  to be
+          sorted alphabetically. 
+
+     Be wary of:- 
+
+       *  esc-o -  fill-paragraph(2).  The default  mode  is an  automatic mode
+          which attempts to guess at the  format required. It works most of the
+          time. Also works in 'C'. 
+
+     Most of the other  new features are  in the background,  such as the macro
+     processor, indentation  control,  color  hilighting,  indentation control,
+     auto-saving etc. 
+
+     [FAQ Index]. 
+
+QUESTION (01) 
+     Languages; Are any foreign languages supported other than English ?? 
+
+ANSWER 
+     Unfortunately as we started with V3.8 as  a base many years ago, we missed
+     the  distribution   with  foreign   language   extensions.  We   have  not
+     incorporated them into the release. 
+
+     The May  1999  release improves  the  language support  by  supporting the
+     ISO-Latin character sets. 
+
+     We do  have  spelling  dictionaries for  French,  Spanish,  Portuguese and
+     German. Other languages may be  supported by transforming native ispell(1)
+     dictionaries. 
+
+     If there  is enough  interest  in this  release  from people  with foreign
+     languages then we may consider  including support for foreign language(s).
+     However we would be  very much reliant on  external help for local testing
+     and translation. We would be open to suggestions. 
+
+     [FAQ Index]. 
+
+QUESTION (02) 
+     C++ is not default, C is - how do I change this ?? 
+
+ANSWER 
+     If your main programming  language is C++, then  you will require the .def
+     and .h files  to be  loaded in  C++ mode by  default, rather  than 'C'. To
+     modify this hen the order of the file hooks has to be re-defined. 
+
+     Within your <user>.emf,  over-ride the  default ordering  by including the
+     line:- 
+
+       add-file-hook ".h .def"                                     fhook-cpp 
+
+     This adds  a newer  binding for  ".h" and  ".def" to  C++, over-riding the
+     existing 'C' binding. 
+
+     [FAQ Index]. 
+
+QUESTION (03) 
+     GNU Emacs; are there any GNU Emacs bindings. ? 
+
+ANSWER 
+     No not  at  the  moment.  The  GNU Emacs  bindings  would  be  added  as a
+     compatibility file  (meemacs.emf)  in much  the  same way  that  the me3.8
+     bindings are added, see meme3_8.emf. 
+
+     From the user-setup(3), the user would then ask for "gnu" compatibility. 
+
+     We would welcome submissions for a gnu compatibility file, gnu.emf, to add
+     to the release. 
+
+     The Meta key (typically  Alt) may be  bound to key  strokes, as opposed to
+     the menu short-cut from the user-setup(3) as follows:- 
+
+          Tools -> User Setup -> General -> Alt Action: Main Menu Hot-keys = N 
+          Tools -> User Setup -> General -> Alt Action: Esc Prefix = Y 
+
+     [FAQ Index]. 
+
+QUESTION (04) 
+     Icons are not displayed correctly in Microsoft Windows environments !! 
+
+ANSWER 
+     After installing on Microsoft platforms,  the Icons in the Explorer window
+     may not be showing  correctly. To remedy the  situation then the following
+     steps may be taken. 
+
+     Windows '95 
+          Try re-starting the  system first.  If the icons  are still incorrect
+          then re-start in Safe mode and delete the file: 
+
+          c:\windows\ShellIconCache 
+
+          Restart and the Icons should be correct. 
+
+     Window '98 
+          Try re-starting the  system first.  If the Icons  are still incorrect
+          then re-start in Safe  mode, this should  re-generate the Icon cache.
+          Restart windows. 
+
+     NT   Restart the system. 
+
+     [FAQ Index]. 
+
+QUESTION (05) 
+     ipipes not working on Microsoft Windows network drives ? 
+
+ANSWER 
+     We are aware of  a problem with  the ipipe commands with  '95 and '98 (not
+     sure about NT) when the current drive is a Novel network drive. 
+
+     Although we have not been ably  to fully characterize the problem, we know
+     that:- 
+
+       *  Old Novel Clients prior to 2.2 - Does not work 
+       *  Novel Intranetware Client 2.2 - Does not work. 
+       *  Novel Network Client 2.5 - Does work. 
+       *  Novel Client 3.01 - Does work. 
+
+     Any  other  information  in  this  area  would  be  appreciated  to  fully
+     characterize the problem. 
+
+     To get  around  the problem  then  disable ipipes  using  $system(5). From
+     within your  <user>.emf knock  off  bit 0x800  from $system(5).  This will
+     enable regular pipes, which will work, albeit not in the background. 
+
+     [FAQ Index]. 
+
+QUESTION (06) 
+     Language not supported - will it be ?? 
+
+ANSWER 
+     We only support the (programming) languages that we have come into contact
+     with. If you are using a language that we are not supporting then you will
+     need to write a  new hk<language>.emf file. See  Language Templates on how
+     to map a  new programming language.  The list of  currently supported file
+     types is defined in Supported File Types. 
+
+     Jasspa would appreciate any new  templates that people define for standard
+     file types so that we can add them to the distribution. 
+
+     For Microsoft  Windows,  any associated  "me"  icons types  would  also be
+     appreciated. 
+
+     [FAQ Index]. 
+
+QUESTION (07) 
+     Language file is incomplete 
+
+ANSWER 
+     For a number of the (programming) language templates we have only provided
+     a sub-set of the commands, this is typically because we only use a sub-set
+     ourselves. 
+
+     For a number of  templates, there is no  indent support (see indent(2) and
+     Supported File Types). 
+
+     Note that when extending  the template then only  standard words should be
+     added. Words which are local extensions should be added to a myXXX.emf. 
+
+     Jasspa would appreciate completed template definitions. 
+
+SEE ALSO 
+     FAQ06 
+
+     [FAQ Index]. 
+
+QUESTION (08) 
+     Input locked up and not accepting keys; how do I unlock ? 
+
+ANSWER 
+     This sometimes happens if a macro  has been aborted badly. Typically a few
+     "Ctrl-G"s (see  abort-command(2))  will  terminate  the  macro  and return
+     control back to the caller. 
+
+     [FAQ Index]. 
+
+QUESTION (09) 
+     MicroEmacs Bindings; How do I get the original MicroEmacs bindings ? 
+
+ANSWER 
+     From user-setup(3) set the Emulation  to "MicroEmacs v3.8". On re-starting
+     (or Current)  the  macro file  meme3_8.emf  is executed  and  the bindings
+     loaded. This file should restore your familiar execution set. 
+
+     [FAQ Index]. 
+
+QUESTION (10) 
+     Microsoft Windows Locks up after killing an ipipe. 
+
+ANSWER 
+     This is  a  known  problem for  '95/'98  (not  NT), on  killing  an ipipe.
+     Sometimes the "Winoldapp" locks up, if this is the case use "Alt-Ctrl-Del"
+     to bring up the  "Close Program" dialogue, kill  off the "WinOldApp" if it
+     is not responding. 
+
+     MicroEmacs will  then  come back.  We  are  looking for  ways  around this
+     problem at the  moment. From  the programming perspective  Windows is just
+     not as nice as UNIX - which just works !! 
+
+     [FAQ Index]. 
+
+QUESTION (11) 
+     Mouse support under Microsoft windows is strange !! 
+
+ANSWER 
+     The mouse operation under Microsoft windows  (and DOS) is biased towards a
+     3-button mouse operation  (Logitech is  ideal !!), operating  in a similar
+     way to UNIX. i.e. <select> operation  gets text <Middle button> yanks text
+     back. 
+
+     This stems from the fact  that we all came  from UNIX backgrounds. We have
+     had a number of  comments about this  already and do  plan to address this
+     issue. 
+
+     Note:- Those of you that have already  had a little dip into the operation
+     of the mouse will have  probably worked out that  the whole of the visible
+     mouse/screen interaction is  driven through macros,  so this functionality
+     is actually a macro change. 
+
+     [FAQ Index]. 
+
+QUESTION (12) 
+     Scroll bars too narrow !! 
+
+ANSWER 
+     You can  change  the  width  of  the  scroll  bars  to  double  width from
+     user-setup(3) "Wide Scroll Bars". Alternatively,  you may do this yourself
+     from <user>.emf by:- 
+
+       set-variable $scroll-bar &bor $scroll-bar 1 
+
+     See $scroll-bar(5). 
+
+     Remember  if  you  have  enabled  wide  scroll  bars,  under  windows,  or
+     X-Windows, you  may  want  to  change your  start-up  screen  width  to 82
+     characters rather than 80 - see change-frame-width(2). 
+
+     [FAQ Index]. 
+
+QUESTION (13) 
+     Tab key; Why does the tab key not operate in some windows ?? 
+
+ANSWER 
+     In buffers  with  indentation  information  the  tab  key  re-computes the
+     indentation of the line. This behavior may be changed from the user-setup.
+
+     Refer to documentation for $system(5) and user-setup(3). 
+
+     [FAQ Index]. 
+
+QUESTION (14) 
+     Termcap; On a color terminal why is there no color ?? 
+
+ANSWER 
+     MicroEmacs has to be enabled to  show color by default. From user-setup(3)
+     enable "Termcap Color". This will give you basic colors. 
+
+     You may also  try enabling "With  Bold" -  this may increase  the range of
+     colors. 
+
+     [FAQ Index]. 
+
+QUESTION (15) 
+     Termcap; Some of the keys do not work - how can I bind them ? 
+
+ANSWER 
+     In your user setup <user>.emf add the  new keys. You have to be careful as
+     to the environment and probably need to do something like the following:- 
+
+       ; First check we are not an Xterm 
+       !if &not $use-x 
+           ; Quick check on the terminal type. We probably need to 
+           ; distinguish between terminal types for different bindings 
+           !if &seq $TERM "myterm" 
+               translate-key "<from>" "<to>" 
+               ... 
+               translate-key "<from>" "<to>" 
+           !endif 
+       !endif 
+
+     See  translate-key(2)  for  details   of  translating  termcap  keys.  See
+     describe-key(2) to help identify the key. 
+
+     [FAQ Index]. 
+
+QUESTION (16) 
+     Timestamp; Format incorrect, how can I change to MMDDYY.hhmm ? 
+
+ANSWER 
+     From within your <user.emf> set the time stamp default format i.e. 
+
+       set-variable $timestamp "<%M%D%Y.%h%m>" 
+
+     See $timestamp(5). 
+
+     [FAQ Index]. 
+
+QUESTION (17) 
+     Windows; Component characters rendered incorrectly, how do I fix ? 
+
+ANSWER 
+     If some  of  the  components  of  the  windows  are  rendered incorrectly,
+     typically caused by  local variations  of character sets,  then new window
+     component characters may  be defined. See  $window-chars(5) for details on
+     how to define new character replacements. 
+
+     [FAQ Index]. 
+
+QUESTION (18) 
+     Windows Autosave and Backup files; are these potentially a problem ? 
+
+ANSWER 
+     For windows  '95  up  until  OEM  service  release  2,  the  OS  could not
+     distinguish the difference between the files:- 
+
+       .xxx 
+       .xxx~ 
+
+     on a read,  we have  managed to  find a work  around for  this, however we
+     would advise that the 3 letter extension is adhered to for these releases.
+     For releases of '95 OEM service release  2 and greater, '98 and NT we have
+     not found a problem with any of the auto save and backup naming. 
+
+     Obviously, the backup  naming will depend  on the native  file system. For
+     instance if your system  administrator has not enabled  long file names on
+     your Novel server. 
+
+     [FAQ Index]. 
+
+QUESTION (19) 
+     Printing; Why in Windows does the output come out in a buffer ?? 
+
+ANSWER 
+     Use the File  -> Printer  Setup dialog and  change the  destination to the
+     "Direct to printer". 
+
+     [FAQ Index]. 
+
+QUESTION (20) 
+     Printing; On Windows which font should I use ?? 
+
+ANSWER 
+     We suggest that "Courier New" is used  as the print font. This scales well
+     and supports  the full  character  set. Problems  have been  reported with
+     networked postscript printers when used in conjunction with fixed fonts. 
+
+     [FAQ Index]. 
+
+QUESTION (21) 
+     Printing; My printer is not supported ? 
+
+ANSWER 
+     We are in  the process  of providing  native postscript  generation - UNIX
+     users can stream their output through  "a2ps" and then into their standard
+     printer queues. 
+
+     Windows, the support is already built in. 
+
+     For DOS then you need  to get your printer manual  out and sort out how to
+     map  the  printer  codes  onto  fonts.  The  printer  codes  are  added to
+     "printer.erf". We have already provided support for the HP DeskJet printer
+     (PCL), look at  this printer definition  for some  help as to  the type of
+     information that you need  to set up.  It's all a bit  fiddley, but you do
+     not get much choice if you want more than plain ASCII out. 
+
+     [FAQ Index]. 
+
+QUESTION (22) 
+     Alt key maps to the Menu, how do I change ? 
+
+     A-f opens the  main File menu  instead of executing  forward-word (esc f).
+     How do I make the Alt key act like the Meta key all the time? 
+
+ANSWER 
+     The Meta key (typically  Alt) may be  bound to key  strokes, as opposed to
+     the menu short-cut from the user-setup(3) as follows:- 
+
+          Tools -> User Setup -> General -> Alt Action: Main Menu Hot-keys = N 
+          Tools -> User Setup -> General -> Alt Action: Esc Prefix = Y 
+
+     [FAQ Index]. 
+
+QUESTION (23) 
+     me32.ini - Where does it go, how do I know it's being processed ?? 
+
+ANSWER 
+     Question posed as:- 
+
+       > 1)  Am I right in assuming that for NT the file me32.ini goes 
+       >     into  %windir%, i.e. into c: 
+
+     Yes, this is where the other .ini files are. 
+
+       > 2)  How do I know me32.ini is being processed?  Creating one, 
+       >     as described in the readme.txt file doesn't seem to have 
+       >     any visible effect. 
+
+     From within  the editor,  if  you show  the  variable $MEPATH(5),  then it
+     should echo the paths that you have defined in the me32.ini file. 
+
+       esc-x describe-variable 
+       $MEPATH 
+
+     See: me32.ini(8), Installation Information, Setting Up A User Profile. 
+
+       > 3) What does the "fontfile" statement do ? 
+
+     For releases after May 1999 then  the fontfile statement may be omitted as
+     typically Lucida Console or  Courier New is  used. If you  want to use the
+     fixed OEM fonts  then fontfile should  be defined as  app860.fon (or local
+     language equivalent), this  forces the  font to  be loaded  as a resource,
+     prior to use. 
+
+     [FAQ Index]. 
+
+QUESTION (24) 
+     Windows - Where is app850.fon ? 
+
+ANSWER 
+     "app850.fon" is the  font file used  for the DOS  window under '95/'95/NT.
+     You  should  find  it   in  your  c:  hidden.   If  you  search  from  the
+     Explorer->Tools->Find  "app850.fon"  it  should  be  found  in  the  fonts
+     directory. There is  nothing to be  done - the  file exists and  is in the
+     correct location. 
+
+     If you do not  have this file  then, you might  have "appXXX.fon", or some
+     other fixed font. You can locate the file that you want as follows:- 
+
+          Start->Settings->Control Panel->Fonts 
+
+     Display the font  list as  'details'. Within that  list you  should find a
+     "MS-DOS CPXXX" entry. It will be a red font (if you are in monochrome then
+     it will have a  'A' in the box  rather than a 'Tt').  This is a fixed font
+     and will  be a  good alternative  to  "app850.fon", you  can also  try the
+     "Fixedsys" font file which has some weird name. 
+
+     To be honest I do not know  what Microsoft are currently shipping. Most of
+     the Windows platforms that  I have used have  been upgrades or been abused
+     by so many people you never know what is original !! 
+
+     We would be interested in any  details of other fixed fonts, which support
+     the full OEM character set that are better alternatives to the DOS ones. 
+
+     [FAQ Index]. 
+
+QUESTION (25) 
+     Time; mode line is showing the date in DD/MM/YY format how do I change ? 
+
+ANSWER 
+     From within your user setup, over-ride  the default mode line setting with
+     the modifications you require. i.e. to  change the date format to MM/DD/YY
+     use:- 
+
+       set-variable $mode-line "%s%r%u%k %b %l - %h:%m %M/%D/%Y (%e) - (%f) " 
+
+SEE ALSO 
+     $mode-line(5). 
+
+     [FAQ Index]. 
+
+QUESTION (26) 
+     C or C++ indentation and effects; how can I turn off ? 
+
+ANSWER 
+     The C mode indentation is supposed  to make editing 'C' easier, by forcing
+     the user  to follow  a  preset editing  convection.  The layout  is pretty
+     standard, following  a  4 space  indent,  writing either  K&R  or standard
+     'Pascal' type layout, with braces aligning vertically. 
+
+     The problem  most  new users  have  is the  inability  of the  tab  key to
+     function, or  more  simply  do not  want  to  be 'forced'  to  write  in a
+     particular style  (GNU  writers  will  probably  not  like  this  either -
+     conversely they  will  be using  GNU  emacs !!).  However  the constrained
+     layout can be configured to create most  styles and does help in a project
+     situation, whereby most of  the authored code roughly  adheres to the same
+     sort of  layout conventions.  For C++  users then  edit "hkcpp.emf" rather
+     than "hkc.emf". 
+
+  To turn off all automatic 'C' layout 
+     To disable ALL automatic layout in C and C++ files then from the menu 
+
+       help -> Buffer Setup -> Setup Auto Indent 
+
+     Or from  the  command line  esc  x  buffer-setup and  disable  through the
+     dialogue. 
+
+     Restart the editor. 
+
+  To re-enable the <tab> key 
+     To retain the  'C' layout  aid, but re-enable  the tab  key operation then
+     disable the Tab To Indent option in user-setup(3) i.e. 
+
+          Tools -> User Setup -> General -> Tab To Indent 
+
+     This enables  the use  of the  TAB key  in all  column positions  with the
+     exception of column 0. A <tab> in Column 0 will still enable the automatic
+     line re-formatting. 
+
+     If you want real <Tabs> then disable the tab mode using user-setup(3) i.e.
+
+          Tools -> User Setup -> General -> Tab 
+
+  To change the 'C' Indentation Layout 
+     The 'C' layout indentation  is controlled from  the indent(2) command (see
+     hkc.emf),  the   indentation  level   is   controlled  by   the  variables
+     $buffer-indent-width(5) and $buffer-indent(5) these  may be changed in the
+     Buffer Setup dialog. 
+
+     [FAQ Index]. 
+
+QUESTION (27) 
+     fill-paragraph function does not fill ?? 
+
+     I can't  seem to  get the  fill-paragraph function  to fill  the following
+     paragraph: 
+
+       This is a very 
+       poorly formed paragraph 
+       which refuses to fill 
+       properly! 
+
+ANSWER 
+     The default justification  mode is Auto  which tries to  work out the mode
+     required for each paragraph.  Its fairly smart  at maintaining a documents
+     indentation, e.g. consider the example right hand justified: 
+
+                                                           This is a very 
+                                                  poorly formed paragraph 
+                                                    which refuses to fill 
+                                                                properly! 
+
+     It will  maintain this  indentation. The  problem comes  when the detected
+     form is not  the required form  as in the  example. The detected paragraph
+     justification to be used is "none"  because the lines are short. There are
+     2 ways to solve this problem: 
+
+       *  You can change the  $fill-mode(5) to left or  both (in fhook-doc mode
+          use C-c l or C-c b) and then use fill-paragraph as normal. 
+       *  Manually concatenate the first few lines  into one to create a longer
+          first line and then use the  fill-paragraph a normal, i.e. change the
+          paragraph to: 
+
+          This is a very poorly formed paragraph which refuses to fill properly
+          ! 
+
+          and then  fill. This  works because  the longer  line will  lead to a
+          different assessment of what's required. 
+
+     [FAQ Index]. 
+
+QUESTION (28) 
+     Key modifier which acts as the ESC key; what is it ? 
+
+     What is the modifier key which acts as the ESC key ? Having to type ESCAPE
+     and then f to move one word forward is very boring. 
+
+     With Gnu Emacs (on Unix systems), there  is a "meta" modifier key which is
+     a shortcut for pressing ESCAPE followed by the command key. The "meta" key
+     should be the "Alt" key. 
+
+ANSWER 
+     The "meta" key is the "Alt" key. But  'F' is the Main menu hot-key for the
+     'File' sub-menu so by default 'A-f'  will open the File sub-menu. This can
+     be disabled by  clearing bit 0x2000  in the $system  variable. This option
+     can now be set using user-setup (Alt -> Main Menu). 
+
+     [FAQ Index]. 
+
+QUESTION (29) 
+     find-file start location; where is it ? 
+
+ANSWER 
+     The find-file(2) start location is defined as follows:- 
+
+       *  *scratch* is current buffer; the current working directory. 
+       *  file is current buffer; the directory location containing file. 
+
+     Running under Microsoft Windows or UNIX, using an icon launch, then it may
+     become  frustrating   that  the   start  location   is  always  C:\Program
+     Files\JASSPA\MicroEmacs (Microsoft windows)  or /usr/local/bin (UNIX) this
+     is simply  resolved by  starting  the executable  with  the -c  option, as
+     defined by me(1).  The -c option  starts the editor  with the last editing
+     session, this is typically  where a user will  want to commence an editing
+     session. 
+
+     If the  -c  approach is  not  acceptable, then  it  is worth  defining the
+     environment variable $HOME  within the  start up  script, or  in the users
+     environment. Using  find-file with  tilde (~)  implies that  the directory
+     start path is $HOME. 
+
+     [FAQ Index]. 
+
+QUESTION (30) 
+     Re-using a MicroEmacs session; how to ?? 
+
+ANSWER 
+     A MicroEmacs editing session may be  re-used, such that the current editor
+     is prompted to load a new  file externally. This is typically invoked from
+     a short-cut launch from a file manager i.e. Explorer(1), Tkdesk(1) etc. 
+
+     In order to  facilitate the re-use  of the session,  then me(1) is invoked
+     with the -o option, this locates  the active editor session and passes the
+     file load  request.  If an  existing  session does  not  exist then  a new
+     session is started. 
+
+     In order for this  mechanism to operate,  then the Client-Server Interface
+     must be enabled from the user-setup(3) i.e. 
+
+          [Tools -> User Setup -> Platform -> Client Server = Y] 
+
+     [FAQ Index]. 
+
+QUESTION (31) 
+     Drag and Drop; is it supported ?? 
+
+ANSWER 
+     MicroEmacs 2009 supports Microsoft and UNIX XDND (Gnome/KDE) drag-and-drop
+     interaction. Multiple files and directories  may be dragged from Microsoft
+     Explorer, Nautilus  (or  other  application)  and  dropped  into  a buffer
+     window. The destination buffer  window is the window  in which the dropped
+     file(s) are displayed. 
+
+     Note if the user is  currently on the command  line, then the command line
+     operation is aborted in order to facilitate the dropped files. 
+
+     [FAQ Index]. 
+
+QUESTION (32) 
+     Cut and Paste to/from other applications; is it supported ?? 
+
+ANSWER 
+     MicroEmacs 2009 supports cut and paste operations on all platforms. 
+
+     To copy a region from MicroEmacs 2009 to another application 
+          Select a region (with the mouse or keys) - there is no need to invoke
+          a copy operation. All selected text is immediately available to other
+          applications. 
+
+          Move to the new application and paste, as dictated by the platform. 
+
+     To copy a region from another application to MicroEmacs 2009 
+          Select the region in the  application into the clipboard, as dictated
+          by the platform. 
+
+          Move to  MicroEmacs 2009,  position  the cursor  and yank(2)  (C-y or
+          typically the middle mouse button) the clipboard text. 
+
+     [FAQ Index]. 
+
+QUESTION (33) 
+     Fonts; how can I change the font ?? 
+
+ANSWER 
+     The currently selected font may be modified from the user-setup(3). 
+
+          Tools -> User Setup -> Platform 
+
+     The font selection  depends upon the  platform, in all  cases a fixed font
+     should be selected, otherwise rendering anomalies will result. 
+
+     If you are  running on Microsoft  platforms ensure that  the OEM/ANSI flag
+     matches the settings of the Display Font Set entry. 
+
+     [FAQ Index]. 
+
+QUESTION (34) 
+     Colors; how can I change screen colors ?? 
+
+ANSWER 
+     The screen colors are selected from the user-setup(3). 
+
+          Tools -> User Setup -> Platform -> Color Scheme 
+
+     The default setting  is White  on Black,  the Black  on Cream  is the most
+     popular setting. 
+
+     [FAQ Index]. 
+
+QUESTION (35) 
+     File Types; how do I interchange between UNIX, Windows and DOS files ?? 
+
+ANSWER 
+     MicroEmacs 2009 facilitates the editing of  the standard file types on all
+     platforms. All files retain their line  ending type through edits. i.e. if
+     a DOS file is edited on a UNIX  system, the file is still written as a DOS
+     file. When  new files  are  created, they  are  created with  the standard
+     attributes of the host O/S. 
+
+     The line ending of the file may be modified from the menu 
+
+          file -> attributes 
+
+     This brings up  a dialog that  allows the  file type and  attributes to be
+     modified. 
+
+     Note that the only ending that is  NOT preserved are files whose lines end
+     in <CR>'s only. The  line format is correctly  interpreted on reading, but
+     is not retained on the write. 
+
+     [FAQ Index]. 
+
+QUESTION (36) 
+     Non-English Languages; What font should I select ?? 
+
+ANSWER 
+     MicroEmacs 2009 has only been  tested with Western Lanuguages only. Within
+     the Microsoft Windows  environment an  ANSI type font  should be selected,
+     assuming of  course  that the  characters  required are  in  the ISO-Latin
+     character set. UNIX typically supports ISO-Latin character sets. 
+
+     [FAQ Index]. 
+
+QUESTION (37) 
+     MicroEmacs '99; How do I up-grade from MicroEmacs'98 ?? 
+
+ANSWER 
+     Backup your current version! 
+
+     Follow  the  MicroEmacs'99  installation  procedure  to  install  and  get
+     MicroEmacs'99 running. 
+
+     Due to the great improvement to  user-setup(3) it is advised that the user
+     creates a new setup using user-setup and then migrates required macro code
+     changes from the old release into the new. 
+
+     [FAQ Index]. 
+
+QUESTION (38) 
+     Some keys on my foreign  keyboard do not work properly,  how do I get them
+     working ?? 
+
+ANSWER 
+     The most common problem  are with foreign keyboards  where the <AltGr> key
+     is used to  generate some characters  in a similar  fashion to the <Shift>
+     key. For  example,  on  a Belgian  keyboard  the  '9' key  produces  a '{'
+     character when the <AltGr> key is also pressed. 
+
+     The quickest  and  best  solution is  to  use  the Keyboard  setup  on the
+     Start-Up page of user-setup(3). This  however may not provide the solution
+     as not  all  keyboards  are  currently  supported.  If  you  are  using an
+     unsupported keyboard please send  configuration information back to JASSPA
+     for inclusion in the next  release. The keyboard configuration information
+     is stored in the macro file keyboard.emf. 
+
+     If user-setup does  not currently  support your  keyboard, or  you wish to
+     remap  some  keys,  then  the  command  translate-key(2)  should  be used.
+     translate-key remaps  generated key  stroke(s) into  another key  at a low
+     level so the mapping is supported in all areas. If a macro and key binding
+     were used instead,  while they would  work in the  main text windows, they
+     would not work  in the  message line. See  help on  translate-key for more
+     information. 
+
+     Note that some <AltGr> keys  can produce 2 keys,  for example on a Belgian
+     keyboard '<AltGr>-9' produces the  key 'A-C-9' first, immediately followed
+     by 'A-C-{'. This is an unfortunate side effect of windows, it is better to
+     have two  keys  rather  than none.  But  this  does add  confusion  to the
+     problem! Again, see translate-key for more information. 
+
+     [FAQ Index]. 
+
+QUESTION (39) 
+     Tabs; How to change the tab width ?? 
+
+ANSWER 
+     $tab-width(5) controls the size of  the displayed tab character (number of
+     spaces) and the simulated  tab character size, where  the user entered tab
+     character is replaced by a number  of space characters. The latter is only
+     used when tab(2m) mode is enabled (it is typically enabled by default). 
+
+     To change  the tab  character  width then  the set-variable(2)  command is
+     used: 
+
+       esc x set-variable 
+
+     You will  then  be prompted  for  the  remaining arguments.  <TAB>  is the
+     completion so:- 
+
+       esc x set-v<TAB> 
+       $tab-width<TAB> 
+       2 
+
+     If this is the  setting that you always  want to use then  it is easier if
+     you put this in your <user.emf> as:- 
+
+       set-variable $tab-width 2 
+
+     then whenever you start a new  session you will always have the $tab-width
+     defined as you want it. 
+
+     If you are reading in a file  with TAB's embedded then you can convert all
+     of the <TAB>'s to spaces using tabs-to-spaces(3): 
+
+       esc x tabs-to-spaces 
+
+     [FAQ Index]. 
+
+QUESTION (40) 
+     Windows/DOS; Where do I get grep/diff etc. ?? 
+
+ANSWER 
+     For windows and DOS users the UNIX tools may be obtained from:- 
+
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23a.zip (238 Kb) 
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23b.zip (227 Kb) 
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23c.zip (221 Kb) 
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23d.zip (160 Kb) 
+
+     comments for this at: 
+
+       http://www.geocities.com/SiliconValley/Lakes/1401/softlib1.htm 
+
+     One awk-port; the Gnuish project has 16 bit and 32 bit versions of gawk(1)
+     in: 
+
+       ftp://mirrors.aol.com/pub/simtelnet/gnu/gnuish/gawk303x.zip (1997, 495K)
+
+     Acknowledgment: DG - 99/07/02 
+
+     [FAQ Index]. 
+
+QUESTION (41) 
+     Home/End Keys; How do I change the default bindings ?? 
+
+ANSWER 
+     Some users prefer the HOME and END keys to map to the beginning and end of
+     the line, rather  than beginning/end  of the  buffer, respectively. Within
+     the <user>.emf the following  global bindings may  be applied to re-assign
+     the key mappings:- 
+
+       global-bind-key "beginning-of-buffer" "C-home" 
+       global-bind-key "end-of-buffer"       "C-end" 
+       global-bind-key "end-of-line"         "end" 
+       global-bind-key "beginning-of-line"   "home" 
+
+     Acknowledgment: DG - 99/07/02 
+
+     [FAQ Index]. 
+
+QUESTION (42) 
+     tags; How do I generate a MicroEmacs compatible tags file ?? 
+
+ANSWER 
+     A tags file is used by the  find-tag(2) command. This is used to hypertext
+     to the tagged definition or variable. The standard ctags(1) format is used
+     by MicroEmacs. The  tags file itself  may be generated  by MicroEmacs 2009
+     from the menu  (Tools->XX Tools->Create  Tags File).  Alternatively a tags
+     file may be generated by the  ctags(1) utility. This is typically standard
+     on UNIX platforms. For Windows and  DOS platforms then the Exuberant Ctags
+     is recommended, this is available from:- 
+
+          http://darren.hiebert.com 
+
+     A MicroEmacs 2009 compatible tags file  may be generated using the command
+     line "ctags -N --format=1 ." cataloging the current directory. To generate
+     tags for a directory tree then use  "ctags -NR --format=1 .". Refer to the
+     Exuberant Ctags  documentation  for  a more  detailed  description  of the
+     utility. 
+
+     The user  variable %tag-option(5)  may  be used  to enable  find-tag(2) to
+     locate a recursivelly generated tags file from a parent directory. 
+
+     [FAQ Index]. 
+
+QUESTION (43) 
+     ne; how can I enable line wrapping in NE ?? 
+
+ANSWER 
+     The line wrapping feature is controlled  by the wrap buffer-mode in ME but
+     this feature is omitted  in NE. To  get the size of  NE down many features
+     have to be disabled including the wrap mode and fill-paragraph. 
+
+     To enable then you have to build  your own version of NE with this enabled
+     by  changing   the  2nd   MEOPT_WORDPRO  settings   in  "emain.h"   to  1.
+     Alternatively rename your ne.emf to me.emf and use 'me' instead of ne. 
+
+     Once it is built and you want to  edit a text file then you need to enable
+     WRAP and INDENT mode in  the buffer for it  to behave correctly. WRAP does
+     the wrap  to the  next  line and  INDENT  maintains the  left indentation.
+     fill-paragraph is present. 
+
+     [FAQ Index]. 
+
