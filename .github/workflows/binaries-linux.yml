@@ -123,7 +123,7 @@ jobs:
         make -f linux32gcc.gmk release app=mecb
         make -f linux32gcc.gmk release app=mewb
         make -f linux32gcc.gmk release app=mecwb
-        export DIR=`ls linux-6-fedora-39-microemacs-091224b1-mecb*bin | sed 's/-mecb.bin//'`
+        export DIR=`ls linux-*-mecb.bin | sed 's/-mecb.bin//'`
     - name: Upload Ubuntu mecwb Release files
       uses: actions/upload-artifact@v4
       with: 
