@@ -1,33 +1,8 @@
 ##-*- makefile -*-############################################################
 #
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
-#  Date          : $Date$
-#  Author        : $Author$
-#  Created By    : Detlef Groth
-#  Created       : Thu Aug 1 07:16:30 2024
-#  Last Modified : <240823.0542>
-#
-#  Description	
-#
-#  Notes
-#
-#  History
-#	
-#  $Log$
-#
-##############################################################################
-#
 #  Copyright (c) 2024 Detlef Groth.
+#  License: GPL as MicroEmacs
 # 
-#  All Rights Reserved.
-# 
-#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
-#  readable form without prior written consent from Detlef Groth.
-#
 ##############################################################################
 
 anonymous: anonymous-pro-medium.ttf
