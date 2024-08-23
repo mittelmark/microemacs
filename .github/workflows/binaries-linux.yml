@@ -124,7 +124,8 @@ jobs:
         make -f linux32gcc.gmk release app=mewb
         make -f linux32gcc.gmk release app=mecwb
         export DIR=`ls linux-*-mecb.bin | sed 's/-mecb.bin//'`
-    - name: Upload Ubuntu mecwb Release files
+        echo $DIR
+    - name: Upload Ubuntu Combined Release
       uses: actions/upload-artifact@v4
       with: 
         name: ${{ env.DIR }}
