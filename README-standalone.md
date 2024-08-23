@@ -1,7 +1,7 @@
 ---
 title: "Readme for the Jasspa Microemacs Text Editor"
 author: Detlef Groth
-date: 2024-08-23 11:47
+date: 2024-08-23 11:51
 ---
 
 ## Table of Contents
@@ -16,6 +16,8 @@ date: 2024-08-23 11:47
 - [User Profile](#Profile)
 - [User Identification](#Identity)
 - [Personal Directory](#Personal)
+- [Creating Your Profile](#Create)
+- [Company Profiles](#Company)
 
 <a name="Intro"> </a>
 ## Introduction
@@ -393,6 +395,7 @@ point to this new directory location.  The location be specified by a
 meuserpath entry  in  the `me32.ini(8)`  file  rather than  setting the
 environment variable `$MEUSERPATH(5)`. 
 
+<a name="Create"> </a>
 ##  Creating Your Profile 
 
 On starting MicroEmacs for the first  time then the user is guided through
@@ -424,7 +427,7 @@ In addition to the above, if  new private macro files are constructed then
 they should be  added to  this directory  (if they  are not  global to the
 company). 
 
-__EXAMPLE::
+__EXAMPLE:__
 
 The following are examples of some individuals start-up files:- 
 
@@ -533,6 +536,7 @@ The following are examples of some individuals start-up files:-
   ml-write "Configured to Jon's requirements" 
 ```
 
+<a name="Company"> </a>
 ## COMPANY PROFILES 
 
 This section describes how  a company profile  should be incorporated into
