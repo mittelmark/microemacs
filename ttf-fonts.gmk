@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Thu Aug 1 07:16:30 2024
-#  Last Modified : <240821.0859>
+#  Last Modified : <240823.0542>
 #
 #  Description	
 #
@@ -36,32 +36,33 @@ anonymous-pro-medium.ttf:
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro-bold.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/license.txt -O anonymous-pro-license.txt
 
-dejavu: dejavu-sans-mono-medium.ttf
-dejavu-sans-mono-medium.ttf:
-	wget https://github.com/go-fonts/dejavu/raw/main/LICENSE-DejaVu -O dejavu-sans-mono-license.txt
-	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmono/DejaVuSansMono.ttf -O dejavu-sans-mono-medium.ttf
-	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmonobold/DejaVuSansMono-Bold.ttf -O dejavu-sans-mono-bold.ttf
+cascadia-code: cascadia-code-medium.ttf
+cascadia-code-medium.ttf:
+	wget https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+	unzip -p CascadiaCode-2111.01.zip ttf/static/CascadiaCode-Bold.ttf > cascadia-code-bold.ttf
+	unzip -p CascadiaCode-2111.01.zip ttf/static/CascadiaCode-Regular.ttf > cascadia-code-medium.ttf
+	unzip -p CascadiaCode-2111.01.zip ttf/static/CascadiaCode-SemiBold.ttf > cascadia-code-semibold.ttf
+	wget https://raw.githubusercontent.com/microsoft/cascadia-code/main/LICENSE -O cascadia-code-license.txt
+	rm CascadiaCode-2111.01.zip
 
-## ths version works
+## this version works
 courier-prime: courier-prime-medium.ttf
 courier-prime-medium.ttf:
 	wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Regular.ttf -O courier-prime-medium.ttf
 	wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Bold.ttf -O courier-prime-bold.ttf
 	wget https://github.com/quoteunquoteapps/CourierPrime/blob/master/OFL.txt -O courier-prime-license.txt
 
-## there are two versions of the fonts, a smaller file sized (60kb in fonts/courie-prime) which work, the others do not work
-#courier-prime-medium.ttf: 
-#	wget https://quoteunquoteapps.com/courierprime/downloads/courier-prime.zip
-#	unzip -p courier-prime.zip "Courier Prime/Courier Prime Bold.ttf" > courier-prime-bold.tff
-#	unzip -p courier-prime.zip "Courier Prime/Courier Prime.ttf" > courier-prime-medium.tff
-#	unzip -p courier-prime.zip "Courier Prime/LICENSE/OFL.txt" > courier-prime-license.txt
-#	rm courier-prime.zip
-
 chivo-mono: chivo-mono-medium.ttf
 chivo-mono-medium.ttf:
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo.ttf -O chivo-mono-medium.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf -O chivo-mono-bold.ttf
 	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-mono-license.txt
+
+dejavu: dejavu-sans-mono-medium.ttf
+dejavu-sans-mono-medium.ttf:
+	wget https://github.com/go-fonts/dejavu/raw/main/LICENSE-DejaVu -O dejavu-sans-mono-license.txt
+	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmono/DejaVuSansMono.ttf -O dejavu-sans-mono-medium.ttf
+	wget https://github.com/go-fonts/dejavu/raw/main/dejavusansmonobold/DejaVuSansMono-Bold.ttf -O dejavu-sans-mono-bold.ttf
 
 fira-code: fira-code-medium.ttf
 fira-code-medium.ttf:
@@ -144,14 +145,18 @@ package:
 	echo -e "Afterwards you might use these fonts. Check the file fonts.dir to see the available fonts!\n" >> Readme.txt
 	echo "Or use xfontsel to see the fonts and have a preview." >> Readme.txt
 	mv Readme.txt ttf-fonts/Readme.txt
+	echo -e '#!/bin/sh\nsleep 5 # wait for server startup\nxset +fp ~/.local/share/fonts\nxset fp rehash\n'  > ttf-fonts/fontpath.sh
+	chmod 755 ttf-fonts/fontpath.sh
+	echo -e '# place this file into ~/.config/autostart\n[Desktop Entry]\nName=Fontpath\nComment=Extend fontpath for .local/share/fonts\nExec=sh ~/.local/share/fonts/fontpath.sh\nType=Application\nCategories=System\n' > ttf-fonts/fontpath.desktop
 	zip ttf-fonts.zip ttf-fonts/*
+	
 
 install:
 	if ! test -d ~/.local/share/fonts; then mkdir ~/.local/share/fonts; fi
 	cp ttf-fonts/* ~/.local/share/fonts
 	xset +fp ~/.local/share/fonts/
 	xset fp rehash
-all: anonymous dejavu courier-prime chivo-mono fira-code inconsolata liberation-mono proggy-vector \
-	source-code-pro terminus ubuntu-mono \
+all: anonymous cascadia-code courier-prime chivo-mono dejavu fira-code inconsolata \
+	liberation-mono proggy-vector source-code-pro terminus ubuntu-mono \
 	index package
 	
