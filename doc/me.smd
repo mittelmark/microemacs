@@ -4965,7 +4965,7 @@
     - Fixing documentation issues with bold face
     - adding !iif directive based on me24 code
     - adding git.emf for basic git support, git-commit, git-grep, git-status etc
-    - improved build architecture on Github comnining platform
+    - improved build architecture on Github combining platform
       build using matrix approach
     - repository cleanup from old binaries, 3rdparty folder, old Makefiles,
       old documentation
