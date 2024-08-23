@@ -107,3 +107,15 @@ jobs:
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
         path: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
+
+    - name: Combined Release
+      run: |
+        make -f win32mingw.gmk release app=mecb
+        make -f win32mingw.gmk release app=mewb
+        export DIR=`ls windows-*-mecb.exe | sed 's/-mecb.exe//'`
+        echo $DIR
+    - name: Upload Ubuntu Combined Release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Release-Windows
+        path: windows-*/

@@ -1,4 +1,6 @@
 VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
+RELEASE=windows-microemacs-$(VERSION)
+app=mecb
 bfs/exe:
 	cd bfs && make -f win32mingw.gmk clean	
 	cd bfs && make -f win32mingw.gmk
@@ -12,7 +14,17 @@ mew:
 	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
 
 mecb: bfs/bin mec
-	./bfs/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o mecb-$(VERSION)-windows.exe ./jasspa
+	./bfs/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa
 
 mewb: bfs/bin mew
-	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o mewb-$(VERSION)-windows.exe ./jasspa		
+	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o $(RELEASE)-mewb.exe ./jasspa		
+
+release: bfs/exe $(app)
+	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
+	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
+	cp $(RELEASE)-$(app).exe $(RELEASE)/$(RELEASE)-$(app)/bin/$(app).exe
+	cp bfs/bfs.exe $(RELEASE)/$(RELEASE)-$(app)/bin/
+	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/
+	cp license.txt COPYING README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/
+	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
+	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
