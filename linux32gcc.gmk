@@ -31,5 +31,28 @@ mewb: bfs/bin mew
 
 mecwb: bfs/bin mecw
 	./bfs/bfs -a ./src/.linux32gcc-release-mecw/mecw -o mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin ./jasspa
-	
+
+mecb-release: mecb
+	mkdir -p mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/bin
+	cp mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/bin/mecb
+	cp README-standalone.md mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	cp license.txt mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	cp COPYING mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	zip -r mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).zip mecb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/*
+
+mewb-release: mewb
+	mkdir -p mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/bin
+	cp mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/bin/mewb
+	cp README-standalone.md mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	cp license.txt mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	cp COPYING mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	zip -r mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).zip mewb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/*
+
+mecwb-release: mecwb
+	mkdir -p mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/bin
+	cp mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).bin mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/bin/mecwb
+	cp README-standalone.md mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	cp license.txt mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	cp COPYING mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/
+	zip -r mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV).zip mecwb-$(VERSION)-$(OS)-$(KERNEL)-$(DIST)-$(OSV)/*
 
