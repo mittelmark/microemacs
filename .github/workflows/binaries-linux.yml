@@ -128,6 +128,6 @@ jobs:
     - name: Upload Ubuntu Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ env.DIR }}
-        path: ${{ env.DIR }}
+        name: Release-All
+        path: linux-*/
         
