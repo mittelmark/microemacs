@@ -136,14 +136,14 @@ jobs:
           name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
           path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
 
-    - name: Combined Release
-      run: |
-        make -f macos32gcc.gmk release app=mecb
-        make -f macos32gcc.gmk release app=mewb
-        make -f macos32gcc.gmk release app=mecwb
-    - name: Upload Ubuntu Combined Release
-      uses: actions/upload-artifact@v4
-      with: 
-        name: Release-${{ matrix.os }}
-        path: macos-*/
+      - name: Combined Release
+        run: |
+          make -f macos32gcc.gmk release app=mecb
+          make -f macos32gcc.gmk release app=mewb
+          make -f macos32gcc.gmk release app=mecwb
+      - name: Upload Ubuntu Combined Release
+        uses: actions/upload-artifact@v4
+        with: 
+          name: Release-${{ matrix.os }}
+          path: macos-*/
         
