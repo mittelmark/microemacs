@@ -7,7 +7,7 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <240821.1504>
+>  Last Modified : <240821.1506>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
   [240820]
@@ -23,7 +23,7 @@
        
   [240813]
    
-     - Windows: Static embedding of libz
+    - Windows: Static embedding of libz
     - Windows: Build on Windows-2019 server using winlibs
     - X-Windows: Font selection using xfontsel if available
     - X-Windows: registry saving of font-resize etc now working
