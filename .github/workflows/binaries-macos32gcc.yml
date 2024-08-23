@@ -73,7 +73,7 @@ jobs:
           cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp src/.macos32gcc-release-mew/mew  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
-          cp me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp macos-me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}/
           cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}/
@@ -87,7 +87,7 @@ jobs:
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecb
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin
           cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin/
-          cp mecb*.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin/
+          cp macos-*-mecb.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
           cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
@@ -97,7 +97,7 @@ jobs:
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mewb
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin
           cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin/
-          cp mewb*.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin/
+          cp macos-*-mewb.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
           cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
@@ -107,7 +107,7 @@ jobs:
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin
           cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin/
-          cp mecwb*.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin/
+          cp macos-*-mecwb.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
           cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
@@ -135,3 +135,15 @@ jobs:
         with: 
           name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
           path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
+
+    - name: Combined Release
+      run: |
+        make -f macos32gcc.gmk release app=mecb
+        make -f macos32gcc.gmk release app=mewb
+        make -f macos32gcc.gmk release app=mecwb
+    - name: Upload Ubuntu Combined Release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Release-${{ matrix.os }}
+        path: macos-*/
+        
