@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240823.2241>
+#  Last Modified : <240823.2300>
 #
 #  Description	
 #
@@ -37,7 +37,7 @@ MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
 KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/')
 OS=macos-$(KERNEL)
-RELEASE=macos-$(KERNEL)-$(DIST)-$(OSV)-microemacs-$(VERSION)
+RELEASE=macos-$(KERNEL)-microemacs-$(VERSION)
 app=mecb
 bfs/bin:
 	echo "VERSION: $(VERSION)"
