@@ -57,7 +57,7 @@ jobs:
         cp src/.linux32gcc-release-mecw/mecw $MEPATH/bin/
         cp src/.linux32gcc-release-mew/mew $MEPATH/bin/
         cp src/.linux32gcc-release-mec/mec  $MEPATH/bin/
-        cp me*.bin $MEPATH/bin/
+        cp linux-*me*.bin $MEPATH/bin/
         cp license.txt $MEPATH/share/jasspa/
         cp COPYING $MEPATH/share/jasspa/
         cp README-standalone.md $MEPATH/share/jasspa/
@@ -69,7 +69,7 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb
         mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
-        cp mecb*.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
+        cp linux-*mecb.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/bin/
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/
         cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecb/
@@ -79,7 +79,7 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb
         mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
-        cp mewb*.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
+        cp linux-*mewb.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/bin/
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/
         cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mewb/
@@ -89,7 +89,7 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb
         mkdir ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
-        cp mecwb*.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
+        cp linux-*mecwb.bin ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/bin/
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/
         cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VERSION}-Linux-mecwb/
