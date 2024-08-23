@@ -1,7 +1,7 @@
 ---
 title: "Readme for the Jasspa Microemacs Text Editor"
 author: Detlef Groth
-date: 2024-08-23 10:05
+date: 2024-08-23 10:08
 ---
 
 ## Table of Contents
@@ -12,6 +12,7 @@ date: 2024-08-23 10:05
 - [TTF-Fonts for X11](#Fonts)
     - [X11 Font Tools](#Fonttools)
 - [Spelling](#Spell)
+- [Modification of the Executable](#Modi)
 
 <a name="Intro"> </a>
 ## Introduction
@@ -244,8 +245,10 @@ Just  download  the and  unzip the  required  spelling  directories  into your
 ```
 wget https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_dede.zip
 unzip ls_dede.zip -d ~/.jasspa/
+```
 
-## Modification of the executable
+<a name="Modi"> </a>
+## Modification of the MicroEmacs Executable
 
 You can modify the macro tree of the executable using the `bfs` command line
 application. The steps to do so are described in much detail here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html).
