@@ -73,7 +73,7 @@ jobs:
           cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp src/.macos32gcc-release-mew/mew  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
-          cp macos-me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp macos-*-me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}/
           cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}/
