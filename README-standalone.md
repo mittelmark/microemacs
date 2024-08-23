@@ -1,7 +1,7 @@
 ---
 title: "Readme for the Jasspa Microemacs Text Editor"
 author: Detlef Groth
-date: 2024-08-23 11:51
+date: 2024-08-23 13:13
 ---
 
 ## Table of Contents
@@ -18,6 +18,7 @@ date: 2024-08-23 11:51
 - [Personal Directory](#Personal)
 - [Creating Your Profile](#Create)
 - [Company Profiles](#Company)
+- [Support](#Support)
 
 <a name="Intro"> </a>
 ## Introduction
@@ -25,52 +26,57 @@ date: 2024-08-23 11:51
 The  MicroEmacs  09 Text  Editor is a small  footprint  text  editor  with the
 following features:
 
-- single file small binary approx 2.5Mb
+- small  single  file  binary  approx  2.5Mb  (with  help  file  and  American
+  dictionary embedded)
 - fast startup and low memory footprint (less than 2Mb usually)
-- session management
-- extensible macro language
 - Emacs like editing
 - support for many programming and markup languages
+- extensible macro language
+- session management
 - sophisticated embedded hypertext help system
 - same interface for terminal and GUI application
 - many themes
 - menu AND shortcut enabled
-- cross  platform  same  functionality  MacOS, Linux and Windows (an others on
+- cross  platform  same  functionality  MacOS, Linux and Windows (many others on
   request)
 - easy embedding of other tools   
 
 The main cons:
 
-- no Unicode support only ISO 8859-1 .. 15 amd Windows-Cp1252 support
-- converting Unicode to these code pages would be possible
+- no  Unicode  support - only ISO  8859-1 .. 15 amd  Windows-Cp1252  support -
+  because it is an __Micro__Emacs
+- but:  converting  Unicode to these code pages and back would be  possible if
+  really required
 - no softwrap facilities, wrap mode means automatically wrapping with newlines
 
 <a name="Main"> </a>
 ## Main files
 
-As these builds are stand-aline files, installation is simply a copy operation
-on your file  system  after  downloading.  The  following  files  provide  the
+As these builds are stand-alone files, installation is simply a copy operation
+on your file  system  after  downloading the release file.  The  following  files  provide  the
 following functionality.
 
 Mandatory:
 
-- mecb.bin - the terminal  version of the MicroEmacs 09, rename it to mec (mec.exe
+- _mecb.bin_ - the terminal  version of the MicroEmacs 09, rename it to mec (mec.exe
   on Windows) and place it into a folder  belonging to your PATH,  contains as
   well the help file and the American dictionary files.
-- mewb.bin - the GUI version  (mewb.exe),  using X11 on Linux and MacOS, rename it
+- _mewb.bin_ - the GUI version  (mewb.exe),  using X11 on Linux and MacOS, rename it
   to mew  (mew.exe on Windows)  and place it into a folder  belonging  to your
   PATH, contains as well the help file and the American dictionary files.
 
 Optional:  
 
-- X11 (Linux, MacOS): the _xfontsel_ tool for better font selection, installable
+- _mecw.bin_ - the combined  terminal and GUI version which is only  available
+  for Unix systems like Linux and MacOS
+- _xfontsel_ - X11 tool (Linux, MacOS) for better font selection, installable
   via package manager (see below for details)
-- X11 (Linux, MacOS):  ttf-files.zip  selection of good looking TrueType fonts
+- _ttf-files.zip_ - for X11 (Linux, MacOS) selection of good looking TrueType fonts
   in a form usable for MicroEmacs and other X11  applications  (can be as well
   installed for Windows)
-- X11 (Linux, MacOS) - the _mkfontscale_ tool to add your own TrueType font to
+- _mkfontscale_ - X11 (Linux, MacOS) tool to add your own TrueType font to
   be used with MicroEmacs
-- bfs.bin  (bfs.exe)  - an  archiving  tool  which  allows  you to  modify  a
+- _bfs.bin_  (bfs.exe)  - an  archiving  tool  which  allows  you to  modify  a
   MicroEmacs executable for instance adding your own macro or dictionary files
 
 Details about these components are following below.
@@ -104,16 +110,34 @@ The installation just follows these basic steps:
 
 __Linux and MacOS:__
 
-- create a folder  ~/.jasspa  in your home  directory - this  folder will keep
+- create a folder  `~/.jasspa`  in your home  directory - this  folder will keep
   your personal settings, macros, sessions etc
-- copy the mec (or mew) file as mec (mew) to the folder  ~/.local/bin  - this folder  should
+- copy the _mec-VERSION-PLATFORM.bin_ (or _mew-VERSION-PLATFORM.bin_) file as 
+  mec (mew) to the folder  `~/.local/bin`  - this folder  should
   usually  belong to your PATH  variable,  if not add to the PATH  variable in
-  your ~/.bashrc or ~/.zshrc file like this: `export PATH=~/.local/bin:$PATH`
-- make the file executable using chmod 755 ~/.local/bin/me*
-- run the mec/mew  executable and do do general setup  and then the user setup
-  "Esc x user-setup" by selecting the users keyboard
+  your `~/.bashrc` or `~/.zshrc` file like this: `export PATH=~/.local/bin:$PATH`
+- make the file executable using `chmod 755 ~/.local/bin/me*`
+- run the mec/mew  executable and do do general setup  and then run the user setup
+  "Esc x user-setup"  or use the menu entry "Tools -> User Setup" by selecting
+  the users keyboard
 - optionally  install a few better  looking TTF fonts in the users font folder
   (see below)
+
+If you like to have  support  for colors in the  terminal  version  you should
+check in the  User-Setup  in the Platform Tab the Termcap  Color  checkbox and
+start me with a redefined terminal varianle like this:
+
+```
+TERM=rxvt mec
+```
+
+It is advisible if this works on your  terminal to make an alias in your shell
+configuration file like this:
+
+```bash
+alias mec="TERM=rxvt mec"
+```
+
 
 __Windows:__
 
@@ -127,6 +151,10 @@ __Windows:__
     - Add the path to your new directory (e.g., C:\Users\<Username>\bin) to the list of paths.
 - run the mec/mew  executables (Win-r and typing mew<ENTER>)  and do general setup giving your username and
   then the user setup "Esc x user-setup" mainly here selecting  the right keyboard for your computer
+- If you after  selecting the keyboard get an error about not having writing the
+  _username.erf_   file  you  might  to  create  the   appropriate   directory
+  `~./jasspa` by yourself and then repeat the procedure. To use the  spell-checking  facilities you have
+  to download and unpack the spell-checking files from here https://github.com/mittelmark/microemacs/releases/tag/v0.9.0
 
 <a name="Fonts"> </a>
 
@@ -609,3 +637,36 @@ directory. These would include:-
   *  Extensions to  the  standard  hook  definitions  (myXXX.emf) for
      company specific language extensions to the standard hook files.
      See File Hooks and File Language Templates. 
+
+<a name="Support"> </a>
+
+## Support
+
+__Issues:__
+
+In case you find bugs or have  suggestions  for  improvements or would like to
+port the code to other platforms use the Issues tab on the Github page:
+
+[https://github.com/mittelmark/microemacs/issues](https://github.com/mittelmark/microemacs/issues)
+
+__Help:___
+
+MicroEmacs  contains an embedded  help  system. Use the 'Help' menu entry on the
+right. There is as well a set of older HTML files online available from here:
+
+
+[http://www.jasspa.com/me.html](http://www.jasspa.com/me.html)
+
+__Contact:__
+
+In case of  questions,  suggestions,  trouble  etc,  write to dgroth  (at) uni
+(minus) potsdam (dot) de or use the issue tracker at the Github project page.
+
+## Future
+
+BTW: Currently  a new  release,  named ME 2024,  with more  features  (https, git)
+support, is prepared.
+
+
+
+
