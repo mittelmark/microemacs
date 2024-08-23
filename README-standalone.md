@@ -1,7 +1,7 @@
 ---
 title: "Readme for the Jasspa Microemacs Text Editor"
 author: Detlef Groth
-date: 2024-08-23 10:08
+date: 2024-08-23 11:47
 ---
 
 ## Table of Contents
@@ -13,6 +13,9 @@ date: 2024-08-23 10:08
     - [X11 Font Tools](#Fonttools)
 - [Spelling](#Spell)
 - [Modification of the Executable](#Modi)
+- [User Profile](#Profile)
+- [User Identification](#Identity)
+- [Personal Directory](#Personal)
 
 <a name="Intro"> </a>
 ## Introduction
@@ -50,18 +53,21 @@ following functionality.
 Mandatory:
 
 - mecb.bin - the terminal  version of the MicroEmacs 09, rename it to mec (mec.exe
-  on Windows) and place it into a folder belonging to your PATH.
+  on Windows) and place it into a folder  belonging to your PATH,  contains as
+  well the help file and the American dictionary files.
 - mewb.bin - the GUI version  (mewb.exe),  using X11 on Linux and MacOS, rename it
   to mew  (mew.exe on Windows)  and place it into a folder  belonging  to your
-  PATH
+  PATH, contains as well the help file and the American dictionary files.
 
 Optional:  
 
-- X11 (Linux, MacOS): the xfontsel tool for better font selection, installable
+- X11 (Linux, MacOS): the _xfontsel_ tool for better font selection, installable
   via package manager (see below for details)
 - X11 (Linux, MacOS):  ttf-files.zip  selection of good looking TrueType fonts
   in a form usable for MicroEmacs and other X11  applications  (can be as well
   installed for Windows)
+- X11 (Linux, MacOS) - the _mkfontscale_ tool to add your own TrueType font to
+  be used with MicroEmacs
 - bfs.bin  (bfs.exe)  - an  archiving  tool  which  allows  you to  modify  a
   MicroEmacs executable for instance adding your own macro or dictionary files
 
@@ -279,14 +285,323 @@ bfs -a mec.bin ./mearchive
 This will replace the old archive with the new one. You can now copy simply
 this file and use it on other machines having the same platform.
 
-## Current version
+<a name="Profile"> </a>
 
-The default stand-alone binaries in the current build contain a few extensions, fixes
-and improvements in comparison to the old binaries which you can download from
-[http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html).
-This build  contains as well the  American  spelling  dictionary  and the help
-file.
+## Local User Profile
+
+MicroEmacs uses local  user configuration profiles  to store user specific
+information.  The  user  information  may  be  stored  in  the  MicroEmacs
+directory, or  more  typically  in  a users  private  directory.  On login
+systems  then  the  user  name  and  user  private  directory  location is
+automatically determined from the system. 
+
+The user name identified by MicroEmacs  is `$user-name(5)` this value may be
+set or re-defined using the environment variable `$MENAME(5)`.
+
+The location  of  the  user  information depends  upon  your  platform and
+installation configuration. The private directory identified by MicroEmacs
+is `$user-path(5)` this location may  be changed by defining the environment
+variable `$MEUSERPATH(5)`. 
+
+Microsoft Windows users may use  the me32.ini(8) file to define MicroEmacs
+configuration path and name information. 
+
+__User Profile Files__
+
+Files contained in the user profiles typically include:- 
+
+     <name>.emf - The users start up profile - <user>.emf. 
+     <name>.edf - The users spelling dictionary. 
+     <name>.erf - The users registry configuration file. 
+
+These files  are  automatically  set  up by  MicroEmacs.  These  files are
+established from the  menu "Tools  -> User  Setup". The  "Setup Path" item
+defines the location  of the files,  but must be  MANUALLY included in the
+`$MEPATH` environment. 
+
+__Company Profiles__
+
+Company profiles  include standard  files and  extensions to  the standard
+files which may be  related to a company,  this is typically <company>.emf
+where <company> is the name of the company. 
+
+The directory may also  include template files  etf(8) files which defines
+the standard header  template used  in the  files. Files  in the "company"
+directory would over-ride the standard template files. 
+
+
+<a name"Identity"> </a>
+## User Identification 
+
+In order to identify a user MicroEmacs 2009 uses information in the system
+to determine the name of  the user, and in  turn the configuration to use.
+On all  systems the  value  of the  environment variable  $MENAME(5) takes
+priority over any other means of  user identification. If this variable is
+not defined  then  the  host  system  typically  provides  a  mechanism to
+determine the current  user. 
+
+UNIX 
+
+The  login  name  is  determined  from  the  `/etc/passwd`  file  and  defines
+`$user-name(5)`. The environment  variable `$MENAME(5)` may be defined alter the
+default user configuration file name. 
+
+Microsoft Windows 
+
+Microsoft windows environments  may, or may  not, have login enabled.
+If login is enabled then `$user-name(5)` is set to the login user name.
+The login name may be  overridden by setting the environment variable
+`$MENAME(5)` this may  be performed  in the environment  or through the
+`me32.ini(8)` file. 
 
 
 
 
+
+
+<a name="Personal"> </a>
+## Personal MicroEmacs Directory 
+
+The private user profile is stored  in a separate directory. The directory
+that MicroEmacs uses is  typically automatically created  at start up, but
+may be created manually by the user. If the directory is to be placed in a
+special location  then the  `$MEUSERPATH(5)` environment  variable should be
+defined and set to point at this directory location. 
+
+__UNIX__
+
+In the UNIX environment then the local directory is typically created
+in the users home directory obtained from the `/etc/passwd` file and is
+called  `~/.jasspa`.  MicroEmacs  will   automatically  look  for  this
+directory and  set  the  `$user-path(5)` variable  to  this  value. The
+location  may  be  overridden  by  setting  the  environment variable
+`$MEUSERPATH(5)` to reference a different directory location. 
+
+
+__Windows__
+
+In Microsoft Windows environment  using Explorer 4.0  or later then a
+user application data directory exists (`$APPDATA`) and MicroEmacs will
+create a directory jasspa in  this directory location to hold private
+data. If there  is no such  data area then  all user configuration is
+stored in  the  executable  directory  location  (or  a sub-directory
+called `$user-name(5)`). 
+
+The user data  area `$user-path(5)` may  be modified by  creating a new
+directory and  setting  the  environment  variable  `$MEUSERPATH(5)` to
+point to this new directory location.  The location be specified by a
+meuserpath entry  in  the `me32.ini(8)`  file  rather than  setting the
+environment variable `$MEUSERPATH(5)`. 
+
+##  Creating Your Profile 
+
+On starting MicroEmacs for the first  time then the user is guided through
+the configuration file setup to create any local configuration files. Once
+set up then MicroEmacs may be configured using the user-setup(3) dialog:- 
+
+       Tools -> User Setup 
+
+The User Profile 
+
+> Files created in the user directory include:- 
+
+*  Setup  registry  and  previous  session  history  `$user-name.erf` (see
+   erf(8)). This  stores the  user-setup settings  and the  context from
+   previous edit sessions. 
+*  Users start-up  file `$user-name.emf`  (see `emf(8)`).  This is typically
+   referred to as  "user.emf" in  the documentation and  means the users
+   private MicroEmacs  macro file.  The user  may make  local changes to
+   MicroEmacs in  this  file, this  may  include definition  of  new key
+   bindings, defining new  hook functions  etc. You  should override the
+   standard MicroEmacs  settings  from  your start-up  file  rather than
+   modifying the standard MicroEmacs files. 
+*  Personal  spelling  dictionary  lsdplang.edf  (see  `edf(8)`). Multiple
+   spelling dictionaries  may  be created,  one  for each  language. Any
+   words that are added  to the spelling dictionary  are stored in these
+   files. 
+
+In addition to the above, if  new private macro files are constructed then
+they should be  added to  this directory  (if they  are not  global to the
+company). 
+
+__EXAMPLE::
+
+The following are examples of some individuals start-up files:- 
+
+```
+  ; Jon's special settings 
+  ; 
+  ; Last Modified <190698.2226> 
+  ; 
+  ; Macro to delete the whitespace, or if an a word all of the 
+  ; word until the next word is reached. 
+  define-macro super-delete 
+      set-variable #l0 0 
+      !while &not &sin @wc " \t\n" 
+          forward-char 
+          set-variable #l0 &add #l0 1 
+      !done 
+      !repeat 
+          !force forward-char 
+          !if $status 
+              set-variable #l0 &add #l0 1 
+          !endif 
+      !until &or &seq @wc "" &not &sin @wc " \t\n" 
+      #l0 backward-delete-char 
+      !return 
+  !emacro 
+  ; Make a previous-buffer command. 
+  define-macro previous-buffer 
+      &neg @# next-buffer 
+  !emacro 
+  ; spotless; Perform a clean and remove any multi-blank lines. 
+  define-macro spotless 
+      -1 clean 
+  !emacro 
+  ; comment-adjust; Used for comments in electric-c mode (and the other 
+  ; electic modes. Moves to the comment fill position, saves having to mess
+  ; around with comments at the end of the line. 
+  0 define-macro comment-adjust 
+      ; delete all spaces up until the next character 
+      !while &sin @wc " \t" 
+          forward-delete-char 
+      !done 
+      ; Fill the line to the current $c-margin. We use this as 
+      ; this is the only variable that tells us where the margin 
+      ; should be. 
+      !if &gre $window-acol 0 
+          backward-char 
+          !if &sin @wc " \t" 
+       forward-delete-char 
+              !jump -4 
+          !else 
+              forward-char 
+          !endif 
+      !endif 
+      ; Now fill to the $c-margin 
+      &sub $c-margin $window-acol insert-string " " 
+  !emacro 
+  ; Macro to force buffer to compile buffer for C-x ' 
+  define-macro compile-error-buffer 
+      !force delete-buffer *compile* 
+      change-buffer-name "*compile*" 
+  !emacro 
+  ; 
+  ; Set up the bindings. 
+  ; 
+  global-bind-key super-delete            "C-delete" 
+  global-bind-key beginning-of-line       "home" 
+  global-bind-key end-of-line             "end" 
+  global-bind-key undo                    "f4" 
+  !if &seq %emulate "ERROR" 
+      global-bind-key comment-adjust      "esc tab" 
+      global-bind-key comment-adjust      "C-insert" 
+      ; Like a korn shell please. 
+      ml-bind-key tab "esc esc" 
+  !endif 
+  ; 
+  ; Setup for windows and UNIX. 
+  ; 
+  ; Define my hilighting colour for Windows and UNIX. 
+  !if &equ &band $system 0x001 0 
+      !if &not &seq $platform "win32" 
+          ; Small bold font is better for me. 
+          change-font "-*-clean-medium-r-*-*-*-130-*-*-*-*-*-*" 
+      !endif 
+  !endif 
+  ; Change the default diff command-line for GNU diff utility all platforms
+  set-variable %diff-com "diff --context --minimal --ignore-space-change --report-identical-files --recursive"
+  set-variable %gdiff-com "diff --context --ignore-space-change -w" 
+  ; Setup for cygwin 
+  !if &seq $platform "win32" 
+      set-variable %cygwin-path "c:/cygwin" 
+      set-variable %cygwin-hilight 1 
+  !endif 
+  ; Set up the ftp flags. The letters have the following meaning: 
+  ; c   - Create a console (*ftp-console* for ftp, *http-console* for http)
+  ; s   - Show the console 
+  ; p   - Show download progress ('#' every 2Kb downloaded) 
+  set-variable %ftp-flags "csp" 
+  ; Info files 
+  ;To hilight the .info and also the dir file 
+  add-file-hook ".info dir"                                   fhook-info   ; Info-files
+  ;To hilight all info files without the extension .info 
+  ;but starting with the text "This is info file.. 
+  -2 add-file-hook "This is Info file"                        fhook-info 
+
+  ; Finished 
+  ml-write "Configured to Jon's requirements" 
+```
+
+## COMPANY PROFILES 
+
+This section describes how  a company profile  should be incorporated into
+MicroEmacs  2009.  A  company  profile  defines  a  set  of  extensions to
+MicroEmacs which  encapsulate settings  which are  used on  a company wide
+basis. This  type  of configuration  is  typically used  with  a networked
+(shared) installation. The company profile would typically include:- 
+
+  *  Name of the company. 
+  *  Standard header files including company copyright statements. 
+  *  Standard file layouts 
+  *  Company defined language extensions. 
+
+Location Of The Company Information 
+
+It is suggested that  all of the company  extensions applied to MicroEmacs
+2009 are  performed in  a  separate directory  location which  shadows the
+MicroEmacs standard macro file directory.  This enables the original files
+to be sourced if a  user does not want to  include the company files. This
+method  also  allows  MicroEmacs  to  be  updated  in  the  future, whilst
+retaining the company files. 
+
+The company  files  are  generally  placed  in  the  company sub-directory
+described in the installation notes. 
+
+Content Of The Company Information 
+
+Company macro file 
+
+The company  file  is  typically  called by  the  company  name (i.e.
+jasspa.emf) create a new company file. The file includes your company
+name and hook functions for any new file types that have been defined
+for the company, an example company  file for Jasspa might be defined
+as:- 
+
+```
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ; 
+   ;  Author        : Jasspa 
+   ;  Created       : Thu Jul 24 09:44:49 1997 
+   ;  Last Modified : <090829.1633> 
+   ; 
+   ;  Description     Extensions for Jasspa 
+   ; 
+   ;  Notes 
+   ; 
+   ;  History 
+   ; 
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ; Define the name of the company. 
+   set-variable %company-name "Jasspa" 
+   ; Add Jasspa specific file hooks 
+   ; Make-up foo file hook 
+   add-file-hook ".foo"    fhook-foo 
+   1 add-file-hook "-!-[ \t]*foobar.*-!-" fhook-foo ; -!- foobar -!- 
+   ; Override the make with localised build command 
+   set-variable %compile-com "build" 
+```
+
+The file contains company specific file hooks and the name of the company. 
+
+Other Company Files 
+
+Files defined on  behalf of the  company are included  in the company
+directory. These would include:- 
+
+  *  Template header files etf(8). 
+  *  Hook file  definitions (hkXXX.emf)  for company  specific files,
+     see add-file-hook(2). 
+  *  Extensions to  the  standard  hook  definitions  (myXXX.emf) for
+     company specific language extensions to the standard hook files.
+     See File Hooks and File Language Templates. 
