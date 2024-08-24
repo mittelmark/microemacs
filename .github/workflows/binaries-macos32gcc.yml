@@ -138,9 +138,9 @@ jobs:
 
       - name: Combined Release
         run: |
-          make -f macos32gcc.gmk release app=mecb
-          make -f macos32gcc.gmk release app=mewb
-          make -f macos32gcc.gmk release app=mecwb
+          make -f macos32gcc.gmk release app=mecb VERSION=${VRS}
+          make -f macos32gcc.gmk release app=mewb VERSION=${VRS}
+          make -f macos32gcc.gmk release app=mecwb VERSION=${VRS}
       - name: Upload Ubuntu Combined Release
         uses: actions/upload-artifact@v4
         with: 
