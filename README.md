@@ -1,6 +1,12 @@
 
 ## MicroEmacs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="images/logo.png" width="30px" style="margin-top:15px;margin-left:50px;" />
 
+- [Exectuable Types](#Types)
+- [New Features](#Features)
+- [New Schemes](#Schemes)
+- [Compilation](#Compilation)
+- [Prebuild Binaries Downloads](#Downloads)
+
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
@@ -18,7 +24,7 @@ Main features:
 - themes, customizations, templates, snippets menu or GUI accessible
 - for its size the text editor with most features without being bloated
 
-Executables  can be of three types:
+<a name="Types"> Executables  can be of three types:</a>
 
 - _mec_ - console  only (around 600kb without macro files)
 - _mew_ - X11/Windows  only (around  630kb without macro files)
@@ -28,6 +34,8 @@ Executables  can be of three types:
 The bfs  executables (mecb and mewb) have as well all macro files, the internal help file and
 the American  dictionary  embedded  (file size around  2.5Mb). For  simplicity
 reasons all downloads on the release page are bfs-builds.
+
+<a name="Features">New Features</a>
 
 In  comparison to the version at the Jasspa  website it contains the following
 changes / extensions:
@@ -64,6 +72,8 @@ New important macro commands (see the internal help pages - version v09.12.22):
 - `git-add`, `git-commit` etc    
 - `execute-region` - for macro development
 - `insert-template` - easier definition of user templates
+
+<a name="Schemes"> </a>
 
 Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf)
 
@@ -170,6 +180,7 @@ sudo apt install desktop-file-utils
 Thereafter  you might  execute `make -f  win32mingw.gmk  mecb mewb` to get all
 binaries for Windows on your Linux machine.
 
+<a name="Downloads"> </a>
 ## Download Prebuild MicroEmacs Executables (v09.12.24-beta1)
 
 Release v09.12.24b1 (beta-1) (2024-08-23):
@@ -191,7 +202,7 @@ New in comparison to v09.12.23
 | AlmaLinux 8   | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-almalinux-8-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-almalinux-8-microemacs-091224b1-mewb.zip) | [x](linux-4-almalinux-8-microemacs-091224b1-mecwb.zip) |
 | AlmaLinux 9   | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-almalinux-9-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-almalinux-9-microemacs-091224b1-mewb.zip) | [x](linux-6-almalinux-9-microemacs-091224b1-mecwb.zip) |
 | Fedora 39     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-fedora-39-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-fedora-39-microemacs-091224b1-mewb.zip) | [x](linux-6-fedora-39-microemacs-091224b1-mecwb.zip) |
-| Majaro Linux  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-manjarolinux-0-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-manjarolinux-0-microemacs-091224b1-mewb.zip) | [x](linux-6-manjarolinux-0-microemacs-091224b1-mecwb.zip) |
+| Manjaro Linux | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-manjarolinux-0-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-manjarolinux-0-microemacs-091224b1-mewb.zip) | [x](linux-6-manjarolinux-0-microemacs-091224b1-mecwb.zip) |
 | Ubuntu 20     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-5-ubuntu-20-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-5-ubuntu-20-microemacs-091224b1-mewb.zip) | [x](linux-5-ubuntu-20-microemacs-091224b1-mecwb.zip) |
 | Ubuntu 22     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-22-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-22-microemacs-091224b1-mewb.zip) | [x](linux-6-ubuntu-22-microemacs-091224b1-mecwb.zip) |
 | Ubuntu 24     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-24-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-24-microemacs-091224b1-mewb.zip) | [x](linux-6-ubuntu-24-microemacs-091224b1-mecwb.zip) |
@@ -322,6 +333,7 @@ bfs -a me-linux.bin ./jasspa -o me-linux2.bin
 MEPATH="" TERM=rxvt ./me-linux2.bin -n
 ```
 
+<a name="ProsCons"> </a>
 ## Pros and Cons of Jasspa MicroEmacs
 
 * Pro:
