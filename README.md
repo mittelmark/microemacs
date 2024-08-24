@@ -213,7 +213,7 @@ New in comparison to v09.12.23
 
 Download more programmers fonts: [TTF-Files] [see here on how to install them](README-standalone.md#Fonts):
 
-## Download Prebuild MicroEmacs Executables
+## Download Prebuild MicroEmacs Executables (v09.12.23)
 
 There  are  stand-alone   single  file  executable  build  for  the  following
 platforms (if not mentioned otherwise the build platforms are 64 bit machines): 
