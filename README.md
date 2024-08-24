@@ -34,31 +34,34 @@ changes / extensions:
 
 * improved  terminal mode for  suspend-emacs  with using alternative  terminal
   buffer (thanks to Steven Phillips)
-* fix for frame resize on X11 if the font changes (thanks to Steven Phillips)
+* basic git support with commands to add, commit and get status of files etc  
 * easier addition of own user  templates with interactive template selection using the command "insert-template"
-* easier font-selection on X11 and easier resize on X11 (Mac and Linux) and Windows
+* easier font-selection on X11 using _xfontsel_ and easier resize on X11 (Mac and Linux) and Windows
 * so font size increase and decrease using Ctrl-Plus and Ctrl-Minus keys
 * more schemes (themes) [Ayu Light](https://github.com/ayu-theme/ayu-colors)
   and [Dracula](https://github.com/dracula/dracula-theme)
-* Markdown mode (folding, template file, syntax hilghlighting, outline
+* much improved Markdown mode (folding, template file, syntax hilghlighting, outline
   in item list, embedding Tcl, Python, R and Dot code in fences with syntax highlight)
 * AppImage for easy install o Linux systems
 * example fonts Chivo  Mono, Ubuntu Mono and Courier Prime for better display on X11
-* Linux, Windows, Darwin 20, 21, 22 builds using Github actions
+* Linux (Ubuntu 20, 22, 24), Windows, Darwin 20, 21, 22 builds using Github actions
 * Windows builds using cross compilation on Ubuntu with Github actions
+* updates on documentation  
 * fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64
   Fedora with gcc 10.3
 * fix for hang on error bug if using the -n command line switch
-* updates on documentation  
+* fix for frame resize on X11 if the font changes (thanks to Steven Phillips)
 
 New important macro commands (see the internal help pages - version v09.12.22):
 
 - `change-font-size` can be done as well with key bindings `C-Plus` and `C-Minus`
-- X11 only
+- X11 only (Linux, MacOS)
+    - `change-font-xfontsel` - direct font selection using _xfontsel_
     - `change-font-bold`
     - `change-font-courier`
     - `change-font-lucida`
     - `change-font-type`
+- `git-add`, `git-commit` etc    
 - `execute-region` - for macro development
 - `insert-template` - easier definition of user templates
 
@@ -72,13 +75,13 @@ See the folding feature for Markdown, in the image below (Dracula theme) the sec
 build is folded by the indicated three dots:
 
 ![](images/dracula.png)
-
 ## Compilation
 
 ### Debian Systems
 
-If you prefer to compile the code yourself here are the required  commands for
-a Debian or Debian derived system like MX Linux, Linux Mint or Ubuntu system:
+Below you find links to prebuild  binaries.  If you prefer to compile the code
+yourself here are the required  commands for a Debian or Debian derived system
+like MX Linux, Linux Mint or Ubuntu system:
 
 Let's first build a console version:
 
@@ -88,39 +91,34 @@ sudo apt install git build-essential libz-dev libncurses-dev
 ### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
-###  builds  mec  terminal executable
-make  mec-bin 
-### builds the bfs executable for making stand-alone mec-os.bin
-make bfs-bin     
-### makes stand-alone exes with embedded macrofiles (mec-linux.bin/mew-linux.bin)
-make mec-bfs-linux 
+### builds the bfs executable for making stand-alone mecb and mewb etc
+make -f linux32gcc.gmk bfs/bin
+### builds standalone mecb  executable (Terminal)
+make -f linux32gcc.gmk mecb
 ```
 
-You  should  now  have a file  like  mec-debian12.bin  which  is a  standalone
-executable  which has included as macro files and the help file and can be run
-into the terminal by simply executing it.
+You  should  now  have  files  like  `mec-VERSION-PLATFORM.bin`  (VERSION  and
+PLATFORM are just  placeholders)  which are standalone  executable  which have
+included all macro files, the help file and the American  dictionary and which
+can be run in the terminal by simply executing it.
 
 Try the version flag:
 
 ```bash
-./mec-debian.bin -V
+./mecb-VERSION-PLATFORM -V
 ```
 
-Now lets build a combined windows/terminal version which can be as well run as
-a X11 application.
+Now lets  build  afterwards  a GUI only  (mewb)  and a  combined  GUI/terminal
+version (mecwb) which can be run both as a terminal and as a X11 application.
 
 ```bash
 ### install packages for X11 build
 sudo apt install libxt-dev
-### fetch repo
-git clone https://github.com/mittelmark/microemacs.git
-cd microemacs
-###  builds  mecw  (mew  -  X-Windows)  and  mec  (terminal) executables
-make  me-bin 
-### builds the bfs executable for making stand-alone me
-make bfs-bin     
-### makes stand-alone exes with embedded macrofiles (mec-linux.bin/mew-linux.bin)
-make me-bfs-linux 
+### builds standalone mew executable (GUI)
+make -f linux32gcc.gmk mewb
+### builds combined standalone mecw executable (Terminal and GUI)
+make -f linux32gcc.gmk mecwb
+sudo apt install x11-utils    # xfontsel, xlsfonts - better font selection
 ```
 
 ### Red Hat Systems
@@ -130,22 +128,23 @@ or AlmaLinux, For Fedora builds replace `yum` with `dnf`:
 
 ```bash
 ### install make, unzip, gcc
-sudo yum install make zip unzip gcc zlib-devel
-### download last github code
-wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
-unzip master.zip
-cd microemacs-master
-make mec-bin       ## build mec executable
-make bfs-bin       ## build the bfs executable to create standalone ME
-make mec-bfs-linux ## build standalone mec-osname.bin with macros embedded
-sudo yum install libXt-devel ncurses-devel
-make me-bin        ## build mecw (mew) and mec executables
-make me-bfs-linux  ## build standalone bfs-executables
-./mew-linux.bin -V ## check executable
-cp mew-linux.bin ~/bin/me ## installing `me -n` (runs console version)
-### for more fonts
-sudo yum install xorg-x11-apps ## xfontsel
-sudo yum install xorg-x11-fonts* ## Lucidatypewriter and Adobe courier fonts
+sudo dnf install make zip unzip gcc zlib-devel ncurses-devel git
+### fetch repo
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+### builds the bfs executable for making stand-alone mecb and mewb etc
+make -f linux32gcc.gmk bfs/bin
+### builds standalone mecb  executable (Terminal)
+make -f linux32gcc.gmk mecb
+### install X11 developer files
+sudo dnf install libXt-devel
+### builds standalone mew executable (GUI)
+make -f linux32gcc.gmk mewb
+### builds combined standalone mecw executable (Terminal and GUI)
+make -f linux32gcc.gmk mecwb
+### for more fonts and better font selection
+sudo dnf install xorg-x11-apps ## xfontsel
+sudo dnf install xorg-x11-fonts* ## Lucidatypewriter, Adobe courier
 ```
 
 If you do not want to build these  executables  yourself you can just download
@@ -168,7 +167,40 @@ sudo apt install libz-mingw-w64 libz-mingw-w64-dev
 sudo apt install desktop-file-utils
 ```
 
-Thereafter you might execute `make mingw32-compile` and `make me-bfs-bin`.
+Thereafter  you might  execute `make -f  win32mingw.gmk  mecb mewb` to get all
+binaries for Windows on your Linux machine.
+
+## Download Prebuild MicroEmacs Executables (v09.12.24-beta1)
+
+Release v09.12.24b1 (beta-1) (2024-08-23):
+
+New in comparison to v09.12.23
+
+- adding git commands, git-add, git-commit, git-grep and others
+- adding xfontsel font selection for MacOS and Linux change-font-xfontsel
+- embedding libz on Windows for easier installation
+- improved and bug fixed internal documentation
+- new function `&llen` - for list length
+- new directive `!iif` for single line if's (ported from ME 24 from Steven Phillips)
+- support for TTF-files 
+- support for ISO 8859-1..15 and Windows-CP1252 encodings with Euro symbol etc
+
+
+| Platform      | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
+|:-------------:|:---------------:|:-------------:|:------------------------:|
+| AlmaLinux 8   | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-almalinux-8-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-almalinux-8-microemacs-091224b1-mewb.zip) | [x](linux-4-almalinux-8-microemacs-091224b1-mecwb.zip) |
+| AlmaLinux 9   | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-almalinux-9-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-almalinux-9-microemacs-091224b1-mewb.zip) | [x](linux-6-almalinux-9-microemacs-091224b1-mecwb.zip) |
+| Fedora 39     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-fedora-39-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-fedora-39-microemacs-091224b1-mewb.zip) | [x](linux-6-fedora-39-microemacs-091224b1-mecwb.zip) |
+| Majaro Linux  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-manjarolinux-0-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-manjarolinux-0-microemacs-091224b1-mewb.zip) | [x](linux-6-manjarolinux-0-microemacs-091224b1-mecwb.zip) |
+| Ubuntu 20     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-5-ubuntu-20-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-5-ubuntu-20-microemacs-091224b1-mewb.zip) | [x](linux-5-ubuntu-20-microemacs-091224b1-mecwb.zip) |
+| Ubuntu 22     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-22-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-22-microemacs-091224b1-mewb.zip) | [x](linux-6-ubuntu-22-microemacs-091224b1-mecwb.zip) |
+| Ubuntu 24     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-24-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-6-ubuntu-24-microemacs-091224b1-mewb.zip) | [x](linux-6-ubuntu-24-microemacs-091224b1-mecwb.zip) |
+| MacOS 12      | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/macos-12-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/macos-12-microemacs-091224b1-mewb.zip) | [x](macos-12-microemacs-091224b1-mecwb.zip) |
+| MacOS 13      | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/macos-13-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/macos-13-microemacs-091224b1-mewb.zip) | [x](macos-13-microemacs-091224b1-mecwb.zip) |
+| MacOS 14      | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/macos-14-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/macos-14-microemacs-091224b1-mewb.zip) | [x](macos-14-microemacs-091224b1-mecwb.zip) |
+| Windows 10/11 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/windows-microemacs-091224b1-mecb.zip) | [0] |
+
+Download more programmers fonts: [TTF-Files] [see here on how to install them](README-standalone.md#Fonts):
 
 ## Download Prebuild MicroEmacs Executables
 
