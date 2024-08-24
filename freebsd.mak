@@ -1,11 +1,10 @@
 ##version=091224b1
-OS=$(shell uname -o | sed 's/FreeBSD/freebsd/')
-VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
-OSV=$(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
-KERNEL=$(shell uname -r | grep -oE '^[0-9]')
-DIST=$(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
+OS=`uname -o | sed 's/FreeBSD/freebsd/'`
+VERSION=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | perl -ane 'print $$F[0]'`
+OSV=`grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/'`
+KERNEL=`uname -r | grep -oE '^[0-9]'`
 OSVERSION="$(DIST)$(OSV)"
-RELEASE=freebsd-$(KERNEL)-$(DIST)-$(OSV)-microemacs-$(VERSION)
+RELEASE=freebsd-$(OSV)-microemacs-$(VERSION)
 app=mecb
 default:
 	echo "Makefile for FreeBSD systems"
@@ -31,4 +30,4 @@ mecwb: bfs/bin mecw
 	./bfs/bfs -a ./src/mecw -o $(RELEASE)-mecwb.bin ./jasspa
 
 release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
+	gmake -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
