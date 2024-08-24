@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240823.2300>
+#  Last Modified : <240824.0557>
 #
 #  Description	
 #
@@ -65,12 +65,4 @@ version:
 	echo "VERSION: $(VERSION)"
 
 release: $(app)
-	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
-	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
-	cp $(RELEASE)-$(app).bin $(RELEASE)/$(RELEASE)-$(app)/bin/$(app)
-	cp bfs/bfs $(RELEASE)/$(RELEASE)-$(app)/bin/
-	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/
-	cp license.txt COPYING README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/
-	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
-	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
-
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
