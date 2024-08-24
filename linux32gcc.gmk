@@ -35,11 +35,4 @@ mecwb: bfs/bin mecw
 	./bfs/bfs -a ./src/.linux32gcc-release-mecw/mecw -o $(RELEASE)-mecwb.bin ./jasspa
 
 release: $(app)
-	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
-	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
-	cp $(RELEASE)-$(app).bin $(RELEASE)/$(RELEASE)-$(app)/bin/$(app)
-	cp bfs/bfs $(RELEASE)/$(RELEASE)-$(app)/bin/
-	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/
-	cp license.txt COPYING README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/
-	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
-	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin

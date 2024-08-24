@@ -19,12 +19,6 @@ mecb: bfs/bin mec
 mewb: bfs/bin mew
 	./bfs/bfs -a ./src/.win32mingw-release-mew/mew32.exe -o $(RELEASE)-mewb.exe ./jasspa		
 
-release: bfs/exe $(app)
-	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
-	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
-	cp $(RELEASE)-$(app).exe $(RELEASE)/$(RELEASE)-$(app)/bin/$(app).exe
-	cp bfs/bfs.exe $(RELEASE)/$(RELEASE)-$(app)/bin/
-	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/
-	cp license.txt COPYING README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/
-	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
-	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
+release: bfs/exe $(app) 
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
+
