@@ -1,7 +1,7 @@
 
 ## MicroEmacs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="images/logo.png" width="30px" style="margin-top:15px;margin-left:50px;" />
 
-- [Exectuable Types](#Types)
+- [Executable Types](#Types)
 - [New Features](#Features)
 - [New Schemes](#Schemes)
 - [Compilation](#Compilation)
