@@ -1,0 +1,53 @@
+##-*- makefile -*-############################################################
+#
+#  Created By    : Detlef Groth
+#  Created       : Sat Aug 24 05:46:12 2024
+#  Last Modified : <240824.0646>
+#
+#  Description	 : This Makefile should be called from other Makefiles
+#                  with the app and RELEASE variables given  
+#  Notes
+#
+#  History
+#	
+#  $Log$
+#
+##############################################################################
+#
+#  Copyright (c) 2024 Detlef Groth.
+# 
+#  GPL-License as MicroEmacs
+# 
+##############################################################################
+
+RELEASE=""
+app=""
+ext="bin"
+bfs="bfs"
+me=$(app).bin
+meout=$(app)
+mesh="me-linux.sh"
+meshout="me"
+ifeq ($(ext),exe)
+  bfs="bfs.exe"
+  me=$(app).exe
+  meout=$(app).exe
+  mesh="me-msys2.sh"
+  meshout="me.sh"
+endif
+
+default:
+	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
+	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
+	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/man
+	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
+	cp $(RELEASE)-$(me) $(RELEASE)/$(RELEASE)-$(app)/bin/$(meout)
+	cp bfs/$(bfs) $(RELEASE)/$(RELEASE)-$(app)/bin/
+	cp bin/$(mesh) $(RELEASE)/$(RELEASE)-$(app)/bin/$(meshout)
+	chmod 755 $(RELEASE)/$(RELEASE)-$(app)/bin/$(meshout)
+	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
+	cp license.txt COPYING README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
+	cp doc/me.1 $(RELEASE)/$(RELEASE)-$(app)/man/
+	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
+	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
+
