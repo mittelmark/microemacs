@@ -1,7 +1,7 @@
 ---
 title: "Readme for the Jasspa Microemacs Text Editor"
 author: Detlef Groth
-date: 2024-08-23 13:13
+date: 2024-08-25 12:34
 ---
 
 ## Table of Contents
@@ -158,7 +158,7 @@ __Windows:__
 
 <a name="Fonts"> </a>
 
-## TTF-Fonts for the X11-Application (mew) on Linux and MacOS
+## TTF-Fonts for the X11-Application (mew) on Linux, MacOS and FreeBSD
 
 The default X11  installation  on Linux and MacOS using [XQuartz](https://www.xquartz.org/) has only a few
 not so good looking  fonts  available  for the base install. To get more fonts
@@ -230,7 +230,13 @@ sudo pacman -S xorg-xlsfonts
 sudo port install mkfontscale
 sudo port install xfontsel
 sudo port install xlsfonts
+### FreeBSD
+sudo pkg install mkfontscale
+sudo pkg install xfontsel
+
 ```
+
+As with MacOS the folders where these fonts are in should be then added to the FontPath.
 
 Hint: On some Arch-Linux distros like Manjaro a few TTF fonts  usuable  by  MicroEmacs  can be
 installed by the package  manager as the folders where they are installed will
@@ -244,8 +250,22 @@ sudo pacman -S ttf-ubuntu-font-family
 sudo pacman -S adobe-source-code-pro-fonts
 xset fp rehash
 ```
-
 To get these and other monospaced programming fonts.
+
+
+Other package manager allow you as well to install a few TTF files but they do
+not update the fontpaths for older X11  applications. For instance the FreeBSD
+package manager requires afterwards to update the fontpath yourself:
+
+```
+### FreeBSD
+### get two additional fonts if you do not use ttf-files
+sudo pkg install liberation-fonts-ttf
+sudo pkg install source-code-pro-ttf
+xset +fp /usr/local/share/fonts/Liberation
+xset +fp /usr/local/share/fonts/SourceCodePro
+xset fp rehash
+```
 
 Hint: To view only monospaced  programming  fonts with _xfontsel_ run the tool
 with the pattern argument like this:
