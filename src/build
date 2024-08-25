@@ -107,8 +107,8 @@ if [ -z "$MAKEFILE" ] ; then
         X11_MAKELIB=/usr/X11R6/lib
     elif [ $PLATFORM = "FreeBSD" ] ; then
         MAKEBAS=freebsd
-        X11_MAKEINC=/usr/X11R6/include
-        X11_MAKELIB=/usr/X11R6/lib
+        X11_MAKEINC=/usr/local/include
+        X11_MAKELIB=/usr/local/lib
     elif [ $PLATFORM = "HP-UX" ] ; then
         X11_MAKEINC=/usr/include/X11R6
         X11_MAKELIB=/usr/lib/X11R6
