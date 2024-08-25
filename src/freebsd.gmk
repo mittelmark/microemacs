@@ -44,17 +44,18 @@ LD            = $(CC)
 STRIP         =	strip
 INSTALL       =	install
 CDEBUG        =	-Wall -g
-COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized
-CDEFS         = -D_FREEBSD -I.
+COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized -Wno-unused-result
+CDEFS         = -D_FREEBSD -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
 CONSOLE_DEFS  = -D_ME_CONSOLE
-WINDOW_DEFS   = $(MAKEWINDEFS) -D_ME_WINDOW -I/usr/X11R6/include
+WINDOW_DEFS   = $(MAKEWINDEFS) -D_ME_WINDOW -I/usr/local/include
 NANOEMACS_DEFS= -D_NANOEMACS
 LDDEBUG       =
 LDOPTIMISE    =
 LDFLAGS       =
 LIBS          = -lz
-CONSOLE_LIBS  = -ltermcap
-WINDOW_LIBS   = $(MAKEWINLIBS) -L/usr/X11R6/lib -lX11
+#CONSOLE_LIBS  = -ltermcap
+CONSOLE_LIBS  = -lncurses
+WINDOW_LIBS   = $(MAKEWINLIBS) -L/usr/local/lib -lX11
 #
 # Rules
 .SUFFIXES: .c .oc .ow .ob .on .ov .oe .odc .odw .odb .odn .odv .ode
