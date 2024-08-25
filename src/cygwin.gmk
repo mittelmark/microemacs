@@ -57,8 +57,9 @@ LDDEBUG       =
 LDOPTIMISE    =
 LDFLAGS       =
 LIBS          =
-CONSOLE_LIBS  = -ltermcap
-WINDOW_LIBS   = -L/usr/X11R6/lib -lX11 $(MAKEWINLIBS) 
+#CONSOLE_LIBS  = -ltermcap
+CONSOLE_LIBS  =  -lncurses -lz
+WINDOW_LIBS   = -L/usr/X11R6/lib -lX11 -lz $(MAKEWINLIBS) 
 #
 # Rules
 .SUFFIXES: .c .oc .ow .ob .on .ov .oe .odc .odw .odb .odn .odv .ode
@@ -104,7 +105,7 @@ WINDOW_LIBS   = -L/usr/X11R6/lib -lX11 $(MAKEWINLIBS)
 STDHDR	= ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h \
 	  esearch.h eskeys.h estruct.h eterm.h evar.h evers.h eopt.h \
 	  ebind.def efunc.def eprint.def evar.def etermcap.def emode.def eskeys.def
-STDSRC	= abbrev.c basic.c bind.c buffer.c crypt.c dirlist.c display.c \
+STDSRC	= abbrev.c basic.c bfs.c bind.c buffer.c crypt.c dirlist.c display.c \
 	  eval.c exec.c file.c fileio.c frame.c hilight.c history.c input.c \
 	  isearch.c key.c line.c macro.c main.c narrow.c next.c osd.c \
 	  print.c random.c regex.c region.c registry.c search.c spawn.c \
