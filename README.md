@@ -10,13 +10,13 @@
 This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
-file  executable  for Windows,  Linux and MacOS.  
+file  executable  for Windows,  Linux, MacOS and FreeBSD.  
 
 Main features:
 
 - small!! and fast!!
 - same user interface in terminal and in GUI mode
-- Windows, Linux, macOS versions
+- Windows, Linux, macOS, FreeBSD versions
 - single file installs possible (2.5MB file size)
 - Emacs (default) or CUA key bindings available
 - menu entries for all main functions (Esc = in Terminal mode for menu)
@@ -31,7 +31,7 @@ Main features:
 - _mecw_  Terminal and X11 enabled - for Mac with XQuartz and for Linux with X11
  (650kb w/o macro files)
 
-The bfs  executables (mecb and mewb) have as well all macro files, the internal help file and
+The bfs  executables (mecb, mewb and mecwb) have as well all macro files, the internal help file and
 the American  dictionary  embedded  (file size around  2.5Mb). For  simplicity
 reasons all downloads on the release page are bfs-builds.
 
@@ -69,7 +69,7 @@ New important macro commands (see the internal help pages - version v09.12.22):
     - `change-font-courier`
     - `change-font-lucida`
     - `change-font-type`
-- `git-add`, `git-commit` etc    
+- `git-add`, `git-commit`, `git-status`, `git-diff`  etc    
 - `execute-region` - for macro development
 - `insert-template` - easier definition of user templates
 
@@ -194,6 +194,7 @@ Therafter you should be able to compile the application using the Makefile in th
 ```bash
 ### compile the barebone executables
 make -f freebsd.mak bfs/bin mec mew mecw
+### compile the standalone executables
 make -f freebsd.mak mecb mewb mecwb
 ```
 
