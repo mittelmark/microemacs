@@ -43,6 +43,7 @@ CC            = gcc
 LD            = $(CC)
 STRIP         =	strip
 INSTALL       =	install
+
 CDEBUG        =	-Wall -g
 COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized -Wno-unused-result
 CDEFS         = -D_FREEBSD -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
