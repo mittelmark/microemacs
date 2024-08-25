@@ -1,0 +1,31 @@
+##version=091224b1
+OS=`uname -o | sed 's/Cygwin/cygwin/'`
+VERSION=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | perl -ane 'print $$F[0]'`
+OSV=`uname -r | grep -oE '^[0-9]\.[0-5]'`
+RELEASE=cygwin-$(OSV)-microemacs-$(VERSION)
+app=mecb
+default:
+	echo "Makefile for Cygwin systems"
+	echo "VERSION: '$(VERSION)' OS $(OS) OSVERSION $(OSV)"
+bfs/bin:
+	cd bfs && make
+mec:
+	cd src && make -f cygwin.gmk mec
+
+mew:
+	cd src && make -f cygwin.gmk mew
+
+mecw:
+	cd src && make -f cygwin.gmk mecw
+
+mecb: bfs/bin mec
+	./bfs/bfs -a ./src/mec -o $(RELEASE)-mecb.exe ./jasspa
+
+mewb: bfs/bin mew
+	./bfs/bfs -a ./src/mew -o $(RELEASE)-mewb.exe ./jasspa
+
+mecwb: bfs/bin mecw
+	./bfs/bfs -a ./src/mecw -o $(RELEASE)-mecwb.exe ./jasspa
+
+release: $(app)
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
