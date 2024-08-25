@@ -2,10 +2,6 @@
 OS=$(shell uname -o | sed 's/FreeBSD/freebsd/')
 VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
 OSV=$(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
-## check for rolling releases with no version-id
-ifeq ($(OSV),)
-  OSV=0
-endif
 KERNEL=$(shell uname -r | grep -oE '^[0-9]')
 DIST=$(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
 OSVERSION="$(DIST)$(OSV)"
