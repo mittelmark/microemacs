@@ -112,9 +112,7 @@ typedef int (*meIFuncSSI)(const meUByte *, const meUByte *, size_t);
 #define mePtrFromStr(n)   ((void *) atoll((char *) n))
 #else
 #define meIntFromPtr(n)   ((meInt)(n))
-#define meIntFromPtr(n)   ((meInt)(intptr_t)(n))
 #define mePtrFromInt(n)   ((meUByte *)(n))
-#define mePtrFromInt(n)   ((meUByte *)(intptr_t)(n))
 #define mePtrFromStr(n)   ((void *) atoi((char *) n))
 #endif
 //#define mePtrFromInt(n)   ((meUByte *)(n))
