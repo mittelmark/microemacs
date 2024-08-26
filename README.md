@@ -241,26 +241,27 @@ New in comparison to v09.12.23
 
 Download more programmers fonts: [TTF-Files](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip) -  [see here on how to install them](README-standalone.md#Fonts):
 
-## Download Prebuild MicroEmacs Executables (v09.12.23)
+Installation  of these  executables  is easy.  Make  them  executable  on Unix
+platforms and move them to a folder  belonging to your PATH variable.  Windows
+users should just copy them as well to such a folder.
 
-Release Date: 2024-03-29 (v09.12.23):
+Just  download an  executable  for your  platform  which matches as closely as
+possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
+On Unix systems you make the file  executable  (chmod 755 filename) and rename
+it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
+Therafter you can run the me executable.  The first thing you have to do is to
+select the right  keyboard  configuration  after  starting your first session.
+Choose teh menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
+tab.
 
-There  are  stand-alone   single  file  executable  build  for  the  following
-platforms (if not mentioned otherwise the build platforms are 64 bit machines): 
+The executables linked  above  come with an embedded American  dictionary.  To use other
+dictionaries  download the dictionary  files for your language from the relase
+page: 
+[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
+and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
+instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
+dictionary.
 
-- Linux
-    - Antix 23 (32bit)
-    - Ubuntu 16 (32bit)
-    - Ubuntu 18
-    - Ubuntu 20
-    - Ununtu 22
-    - Ununtu 24    
-    - Fedora 30
-    - Fedora 38
-    - Fedora 40    
-    - AlmaLinux 8.9
-    - AlmaLinux 9.4
-    
 [Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
 [Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
 Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
@@ -270,18 +271,15 @@ compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
 compatible.  [Fedora](https://www.fedora.org) builds can be probably only used
 on Fedora without problems.
 
-- macOS
-    - macOS 11
-    - macOS 12
-    - macOS 14    
-- Windows
-
 Build  for  other   platforms   might  be  provided  if  requested  using  the
 [issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
 repository. The AppImage  should work on most Linux platforms.
 
-Release 2024-03-29 (v09.12.23):
+## Download Prebuild MicroEmacs Executables (v09.12.23)
 
+Release Date: 2024-03-29 (v09.12.23):
+
+   
 | OS      | Platform    | (X)-Windows Binary | Terminal Binary |
 |:-------:|:------------|:-------------------|:----------------|
 | Linux   | AppImage    | [AppImage](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/Jasspa_MicroEmacs-x86_64.AppImage)| Run AppImage with -n option |
@@ -300,10 +298,6 @@ Release 2024-03-29 (v09.12.23):
 |         | macOS 12    | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-12-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-12-mecb.zip) |
 |         | macOS 14    | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-14-arm-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_macos-14-arm-mecb.zip) |
 | Windows | Win32/Win64 | [mewb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_windows-32-mewb.zip)| [mecb.zip](https://github.com/mittelmark/microemacs/releases/download/v09.12.23/MicroEmacs09_091223_windows-32-mecb.zip) |
-
-Installation  of these  executables  is easy.  Make  them  executable  on Unix
-platforms and move them to a folder  belonging to your PATH variable.  Windows
-users should just copy them as well to such a folder.
 
 ## Download Prebuild MicroEmacs Executables (v09.12.21)
 
@@ -324,23 +318,6 @@ Release-Date: 2023-10-31 (v09.12.21):
         * [Windows window version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mew-windows-2023-11-02.exe)
         * [Windows console version](https://github.com/mittelmark/microemacs/releases/download/v09.12.21/mec-windows-2023-11-02.exe)
 * Older builds for other OS are provided here [http://www.jasspa.com/](http://www.jasspa.com/)
-
-Just  download an  executable  for your  platform  which matches as closely as
-possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
-On Unix systems you make the file  executable  (chmod 755 filename) and rename
-it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
-Therafter you can run the me executable.  The first thing you have to do is to
-select the right  keyboard  configuration  after  starting your first session.
-Choose teh menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
-tab.
-
-The executables linked  above  come with an embedded American  dictionary.  To use other
-dictionaries  download the dictionary  files for your language from the relase
-page: 
-[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
-and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
-instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
-dictionary.
 
 ## BFS executables 
 
