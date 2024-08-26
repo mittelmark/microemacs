@@ -45211,24 +45211,24 @@ $a
   
   >  Resets the current scheme back to the default _Standard Text_ scheme.
 
-  There are 4 variants, or styles, for a single scheme; each style is
-  comprised of a foreground and background color, and a row of toggle button
-  to enable/disable fonts, defined as follows.
+  >  There are 4 variants, or styles, for a single scheme; each style is
+     comprised of a foreground and background color, and a row of toggle button
+     to enable/disable fonts, defined as follows.
 
-      `B` - Bold.
-      `I` - Italic.
-      `L` - Light (typically not supported).
-      `R` - Reverse video (fore/back-ground swapped).
-      `U` - Underline.
-      `V` - Toggle reverse video when inverted.
+  >  `B` - Bold.  
+     `I` - Italic.  
+     `L` - Light (typically not supported).  
+     `R` - Reverse video (fore/back-ground swapped).  
+     `U` - Underline.  
+     `V` - Toggle reverse video when inverted.  
 
-  The last mode __V__ needs a little more explanation; commands such as
-  [screen-poke(2)](screen-poke(2)) are able to invert the color scheme, i.e. use the fore
-  color for the background etc. Enabling this mode will toggle the reverse
-  video mode (__R__) when this feature is used.
+  >  The last mode __V__ needs a little more explanation; commands such as
+     [screen-poke(2)](screen-poke(2)) are able to invert the color scheme, i.e. use the fore
+     color for the background etc. Enabling this mode will toggle the reverse
+     video mode (__R__) when this feature is used.
 
-  The style displayed by a particular scheme depends upon the
-  selection/current status of the text:
+  >  The style displayed by a particular scheme depends upon the
+     selection/current status of the text:
 
   __Normal__
   
@@ -45248,13 +45248,13 @@ $a
   
   >  The style used when the text object is selected and is current.
 
-  Note that a printer scheme only uses the Normal style.
+  >  Note that a printer scheme only uses the Normal style.
 
-  Setting of the __selection__ and __scheme__ shows the current scheme in the
-  __Normal__, __Current__, __Select__ and __Sel-Cur__ dialogs. New colors are assigned by
-  selecting a color in the palette area and making it current. The current
-  color is applied by selecting the __Fore__ / __Back__ boxes of the scheme dialog.
-  The assigned color is displayed in the text box _The big brown fox..._.
+  >  Setting of the __selection__ and __scheme__ shows the current scheme in the
+     __Normal__, __Current__, __Select__ and __Sel-Cur__ dialogs. New colors are assigned by
+     selecting a color in the palette area and making it current. The current
+     color is applied by selecting the __Fore__ / __Back__ boxes of the scheme dialog.
+     The assigned color is displayed in the text box _The big brown fox..._.
 
 
 ## Controls 
@@ -45283,6 +45283,13 @@ $a
   
   >  Installs the current color scheme into the configuration files, making
      the color scheme accessible to the [user-setup(3)](user-setup(3)) dialog.
+     In case you use a BFS execuable where the macro files are read-only files
+     as they are  embedded  within the  executable,  you have to write out the
+     `schemes.emf`    file    manually    by    loading    it    first    from
+     `bfs://macros/schemes.emf`  and  then  writing  it to your  configuration
+     folder, usually `~/.jasspa/schemes.emf`.
+     
+     
 
   __Exit__
   
@@ -45293,7 +45300,7 @@ $a
 
 
   `scheme.emf` - Defines the standard scheme variables, including the
-  available scheme list, and associated text.  
+                 available scheme list, and associated text.  
   `schemed.emf` - Default white on black color scheme.  
   `schemej.emf` - Black on cream color scheme.  
   `schemeal` - Ayu Light.    

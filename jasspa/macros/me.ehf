@@ -4005,9 +4005,9 @@ Miscellaneous Information
        Dave Conroy (Original Author)  
        Daniel M. Lawrence (Original Maintainer)  
        Martin House  
-       cDJon GreencA - cCMaintainer (until 2010)cA  
+       cDJon GreencA - cCMaintainer (from around 1988 to 2010)cA  
        Callen McNally  
-       cDSteven PhillipscA - cCCurrent MaintainercA  
+       cDSteven PhillipscA - cCCurrent Maintainer (since 1988)cA  
        cDDetlef GrothcA - cCMaintainer (since 2020)cA       
 
     Additional contributions have been made as follows, in chrononlogical
@@ -5036,6 +5036,10 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [240824]
+      - release v09.12.24.b1 (beta-1)
+      - support as well for Cygwin and FreeBSD
+      
     - [240820]
       - Fixing documentation issues with bold face
       - adding !iif directive based on me24 code
@@ -44629,24 +44633,24 @@ $a
     
        Resets the current scheme back to the default cCStandard TextcA scheme.
 
-    There are 4 variants, or styles, for a single scheme; each style is
-    comprised of a foreground and background color, and a row of toggle button
-    to enable/disable fonts, defined as follows.
+       There are 4 variants, or styles, for a single scheme; each style is
+       comprised of a foreground and background color, and a row of toggle button
+       to enable/disable fonts, defined as follows.
 
-        `B` - Bold.
-        `I` - Italic.
-        `L` - Light (typically not supported).
-        `R` - Reverse video (fore/back-ground swapped).
-        `U` - Underline.
-        `V` - Toggle reverse video when inverted.
+       cGBcA - Bold.  
+       cGIcA - Italic.  
+       cGLcA - Light (typically not supported).  
+       cGRcA - Reverse video (fore/back-ground swapped).  
+       cGUcA - Underline.  
+       cGVcA - Toggle reverse video when inverted.  
 
-    The last mode cDVcA needs a little more explanation; commands such as
-    lsscreen-poke(2)lmscreen-poke(2)le are able to invert the color scheme, i.e. use the fore
-    color for the background etc. Enabling this mode will toggle the reverse
-    video mode (cDRcA) when this feature is used.
+       The last mode cDVcA needs a little more explanation; commands such as
+       lsscreen-poke(2)lmscreen-poke(2)le are able to invert the color scheme, i.e. use the fore
+       color for the background etc. Enabling this mode will toggle the reverse
+       video mode (cDRcA) when this feature is used.
 
-    The style displayed by a particular scheme depends upon the
-    selection/current status of the text:
+       The style displayed by a particular scheme depends upon the
+       selection/current status of the text:
 
     cDNormalcA
     
@@ -44666,13 +44670,13 @@ $a
     
        The style used when the text object is selected and is current.
 
-    Note that a printer scheme only uses the Normal style.
+       Note that a printer scheme only uses the Normal style.
 
-    Setting of the cDselectioncA and cDschemecA shows the current scheme in the
-    cDNormalcA, cDCurrentcA, cDSelectcA and cDSel-CurcA dialogs. New colors are assigned by
-    selecting a color in the palette area and making it current. The current
-    color is applied by selecting the cDForecA / cDBackcA boxes of the scheme dialog.
-    The assigned color is displayed in the text box cCThe big brown fox...cA.
+       Setting of the cDselectioncA and cDschemecA shows the current scheme in the
+       cDNormalcA, cDCurrentcA, cDSelectcA and cDSel-CurcA dialogs. New colors are assigned by
+       selecting a color in the palette area and making it current. The current
+       color is applied by selecting the cDForecA / cDBackcA boxes of the scheme dialog.
+       The assigned color is displayed in the text box cCThe big brown fox...cA.
 
 
 cEControls  cA
@@ -44701,6 +44705,13 @@ $a
     
        Installs the current color scheme into the configuration files, making
        the color scheme accessible to the lsuser-setup(3)lmuser-setup(3)le dialog.
+       In case you use a BFS execuable where the macro files are read-only files
+       as they are  embedded  within the  executable,  you have to write out the
+       cGschemes.emfcA    file    manually    by    loading    it    first    from
+       cGbfs://macros/schemes.emfcA  and  then  writing  it to your  configuration
+       folder, usually cG~/.jasspa/schemes.emfcA.
+       
+       
 
     cDExitcA
     
@@ -44711,7 +44722,7 @@ $a
 
 
     cGscheme.emfcA - Defines the standard scheme variables, including the
-    available scheme list, and associated text.  
+                   available scheme list, and associated text.  
     cGschemed.emfcA - Default white on black color scheme.  
     cGschemej.emfcA - Black on cream color scheme.  
     cGschemealcA - Ayu Light.    
