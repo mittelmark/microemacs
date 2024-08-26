@@ -3927,9 +3927,9 @@
   >  Dave Conroy (Original Author)  
      Daniel M. Lawrence (Original Maintainer)  
      Martin House  
-     __Jon Green__ - _Maintainer (until 2010)_  
+     __Jon Green__ - _Maintainer (from around 1988 to 2010)_  
      Callen McNally  
-     __Steven Phillips__ - _Current Maintainer_  
+     __Steven Phillips__ - _Current Maintainer (since 1988)_  
      __Detlef Groth__ - _Maintainer (since 2020)_       
 
   Additional contributions have been made as follows, in chrononlogical
@@ -4961,6 +4961,10 @@
 
 ## Development History 
 
+  - [240824]
+    - release v09.12.24.b1 (beta-1)
+    - support as well for Cygwin and FreeBSD
+    
   - [240820]
     - Fixing documentation issues with bold face
     - adding !iif directive based on me24 code
