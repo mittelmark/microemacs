@@ -5,13 +5,24 @@ for working with MicroEmacs are stored.
 
 There are the following files:
 
--  __fontpath.sh__ - utility  script  which  can be used for  desktop  files in
-  `~/.config/autostart` to adpapt the Font path
+__X11-Font related:__
+
+- __x11-fonts-dnf.sh__ - install a few TTF fonts useful for coding on Fedora like
+  systems (AlmaLinux, Fedora etc)
+
+- __fontpath.sh__ - utility  script  which  can be used for  desktop  files in
+  `~/.config/autostart` to adapt the Font path
+
+__Documentaton related:__
+
 - __ehf2md.tcl__ - Tcl script which  converts an ehf file to a big Markdown  file,
   the file needs  thereafter  a lot of tweaking,  that script needs to be used
   only once if there is a switch from nroff format to Markdown
 - __me-tools.sh__ - utility functions to convert the documentation file me.smd
   to me.ehf and to a set of HTML files
+
+
+__ME startup related:__
 
 Wrapper functions to start MicroEmacs for Linux and Windows 
 
