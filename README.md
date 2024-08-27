@@ -218,7 +218,6 @@ New in comparison to v09.12.23
 - support for TTF-files 
 - support for ISO 8859-1..15 and Windows-CP1252 encodings with Euro symbol etc
 
-
 | OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
 |:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
 | Linux 32bit | Ubuntu 16         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-ubuntu-16-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-ubuntu-16-microemacs-091224b1-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-ubuntu-16-microemacs-091224b1-mecwb.zip) |
@@ -252,7 +251,7 @@ On Unix systems you make the file  executable  (chmod 755 filename) and rename
 it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
 Therafter you can run the me executable.  The first thing you have to do is to
 select the right  keyboard  configuration  after  starting your first session.
-Choose teh menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
+Choose the menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
 tab.
 
 The executables linked  above  come with an embedded American  dictionary.  To use other
