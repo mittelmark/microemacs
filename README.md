@@ -218,6 +218,7 @@ New in comparison to v09.12.23
 - support for TTF-files 
 - support for ISO 8859-1..15 and Windows-CP1252 encodings with Euro symbol etc
 
+
 | OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
 |:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
 | Linux 32bit | Ubuntu 16         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-ubuntu-16-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-ubuntu-16-microemacs-091224b1-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/linux-4-ubuntu-16-microemacs-091224b1-mecwb.zip) |
