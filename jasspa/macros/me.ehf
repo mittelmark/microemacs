@@ -28209,48 +28209,62 @@ $a
 cEcEINSTALLATION cEcA
 
 
-    This page describes introductory notes for the installation and setup of
-    MicroEmacs 2009.
+    This page provides introductory notes for the installation and setup of
+    MicroEmacs 2009 build in 2024.
 
 cESingle File Binary Install cA
 
     Since 2009 the prefered way for  installation  is the use of the single file
-    binaries.       The        background        is       described        here:
-    lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
+    binaries. The background is described here: lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
     The  MicroEmacs  executable  in this case contains the binary as well as all
     macro files and optionally as well some dictionary files and the help file.
     So the user only needs to  download a binary for its own  platform,  make it
-    executable and place it into a directory  belonging to its PATH variable. In
+    executable and place it into a directory  belonging to its cGPATHcA variable.
+    Commonly these places are cG~/.bincA or cG~/.local/bincA for Unix systems. In
     2024 the following platforms and binaries are supported:
     
     - cCLinuxcA - Terminal (mecb) and Terminal and X11 version (mewb) were mainly 
       Debian and Red Hat based distros are provided  which might be used on many
-      other distros - we provide kernel 5 builds for x86_64 platforms
+      other distros - we provide kernel 4, 5 and 6 builds for x86_64 platforms. 
+      There is as well a combined version (mecwb) which can run both in X11 mode
+      or in terminal mode if the cG-ncA argument is provided.
+    - cCFreeBSDcA - there are as well mecb, mewb and mecwb versions provided for 
+      FreeBSD version 14 (and later) - see Linux for more info.
     - cCMacOScA - Terminal  (mecb) and  Terminal and X11 version  (mewb), the latter
-      requires the XQuartz extension, MacOS 12 to 14 builds are currently available
-    - cCWindowscA - Terminal (mecb) and Windows version (mewb) they should work on
-      all recent Windows systems, we regular check only on Wine emulator
-    
-    Just download the file for your platform  and make it executable and run it.
+      requires  the  XQuartz  extension,  MacOS 12 to 14  builds  are  currently
+      available,  as with the Linux  build  there is as well a combined  version
+      (mecw).
+    - cCWindowscA - Terminal (mecb) and Windows version (mewb) - they should work on
+      all recent Windows systems, we regular check only on Wine emulator.
+    - cCCygwin-WindowscA  - For the Cygwin system (3.5 and higher) on Windows
+      there are as well  prebuild executables  for the cygwin  terminal (mecb)
+      and then as well GUI versions (mew and mecwb) which require the Cygwin X11
+      libraries to be installed on Cygwin.
+     
+    cCInstallation:cA Just  download the file (mecb, mewb, mecwB) for your platform
+    place it as mec, mew and me into a folder  belonging  to your  PATH, make it
+    executable and run it.
 
-    You will be asked  initially  for your user name and the default  user path,
-    usually it is  ~/.jasspa.  As it a first step it is usually  required to run
-    the command cG"Esc x" user-setupcA to select the default  keyboad and language
-    in the  dialog. You can as well use the menu entry  "Tools->User  Setup". If
-    you run the terminal version you can as well execute the menu with `"Esc ="`
-    and using the cursor keys. To get Termcap  colors you might in the  terminal
-    version  as well  select  in the "User  Setup -  Platform  Tab" the  Termcap
-    colors. Thereafter your should restart the editor and in case you do not get
-    the Termcap colors you can try to start the terminal version like this:
+    At the  first  run you will be asked  initially  for your  user name and the
+    default  user path,  usually  it is  cG~/.jasspacA.  As it a first  step it is
+    usually  required  to run the  command  cG"Esc x"  user-setupcA  to select the
+    default  keyboad  and  language  in the dialog. You can as well use the menu
+    entry  "Tools->User  Setup". If you run the terminal version you can as well
+    execute  the menu with cG"Esc ="cA and using the cursor  keys. To get  Termcap
+    colors you might in the terminal version as well select in the "User Setup -
+    Platform Tab" the Termcap colors.  Thereafter your should restart the editor
+    and in case  you do not get the  Termcap  colors  you can try to  start  the
+    terminal version like this:
     
-            TERM=rxvt mec FILENAME
+       `TERM=rxvt mec FILENAME`
     
-    Your user settings are stored in the folder ~/.jasspa usually, although this
-    can be changed by changing the MEPATH environment variable.
+    Your user settings are stored in the folder cG~/.jasspacA usually, although this
+    can be changed by  changing  the  cGMEPATHcA  environment  variable.  A common
+    setting could be cGMEPATH=~/.config/jasspacA.
     
     If you run an  Ubuntu  executable  build  on the  Github  server  you  might
     sometimes  see for  instance on a Fedora  system a  libterminfo  warning you
-    might through this away by writing a Bash function in your .bashrc like this:
+    might throw this away by writing a Bash function in your .bashrc like this:
     
            function mecn {
               TERM=rxvt mec "$@" 2> /dev/null
@@ -28258,10 +28272,10 @@ $a
     
     cDGetting HelpcA
     
-    In case of trouble use the issue link on the Githu project page:
+    In case of trouble use the issue link on the Github project page:
     https::/github.com/mittelmark/microemacs/issues
 
-    Below is the old  descfription of an installation  for a simple me (mec, mew)
+    Below is the old  description of an installation  for a simple me (mec, mew)
     executable  (terminal or  X11/Windows  version)  together  with the required
     macro files described. If you prefere the single file install just described
     above, you do not need to read further. 
@@ -28269,9 +28283,11 @@ $a
     Hint: All macro files for the  standalone  builds are  accessible  using the
     bfs://macros path within your MicroEmacs text editor.
     
-cEQuick Install of Me and Macro Files cA
+cEQuick Install of ME barebones and Macro Files cA
 
-    2024: These information below is mostly outdated.
+    2024: The information below is mostly outdated, it describes an installation
+    of the barebone mec, mew and mecw executables  without attached macro folder
+    which require a separate installation of the jasspa macros.
 
     The quickest way to install MicroEmacs for testing without reading the
     rest of this document is to:-
