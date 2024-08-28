@@ -21,6 +21,9 @@ jobs:
         sudo apt install desktop-file-utils
         sudo apt install libxt-dev
 
+    - name: Extract branch name
+      run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        
     - name: make bfs binary
       run:  make -f linux32gcc.gmk bfs/bin
 
