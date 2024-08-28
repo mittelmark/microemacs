@@ -44,7 +44,7 @@ fi
 ### indexing
 mkfontscale ~/.local/share/fonts
 mkfontdir ~/.local/share/fonts
-### updating fontpath
 
+### updating fontpath
 xset +fp ~/.local/share/fonts
 xset fp rehash     

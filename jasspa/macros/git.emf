@@ -13,9 +13,24 @@
 
 ; just a place to store some variables
 0 define-macro git
-    ;set-variable .lang "LANG=en_US"
+    set-variable .lang "LANG=en_US"
+    set-variable .com "git"
+    !if &seq %git-com "ERROR"
+        set-variable .com "git"
+    !else
+        set-variable .com %git-com
+    !endif
+    2 pipe-shell-command %spr "%s -v" .com "*git*"
+    !if $result
+        1000 ml-write "Error: Git is not installed or not in your PATH!"
+        !abort
+    !else
+        1000 ml-write "OK: git is installed"
+    !endif
 !emacro    
-set-variable .git.lang "LANG=en_US"
+!if &seq .git.lang "ERROR"
+    git
+!endif
 ; the actual functions alphabetically ordered
 ; more complicated things like git clone, git branch,  git mv, git pull, git push etc
 ; should be done from the terminal
@@ -34,7 +49,7 @@ define-macro git-add
             save-buffer 
         !endif
     !endif 
-    2 pipe-shell-command &cat .git.lang &cat " git add " $buffer-fname "*git*"
+    2 pipe-shell-command &spr "%s %s add %s" .git.lang .git.com $buffer-fname "*git*"
     ml-write &spr "File %s was added. Use git-commit to complete addition to repository!" $buffer-fname
     !if &band $system 0x01
         screen-update
@@ -42,7 +57,7 @@ define-macro git-add
 !emacro
 ; git-branch+*~
 0 define-macro git-branches-get
-    2 pipe-shell-command &cat .git.lang " git branch" "*git*"
+    2 pipe-shell-command &spr "%s %s branch" .git.lang .git.com "*git*"
     find-buffer "*git*"
     set-variable $window-line 3
     set-variable .git.branches "|"
@@ -74,7 +89,7 @@ define-macro git-checkout
     !if &gre &llen .git.branches 1
         set-variable #l2 @ml19 "select branch (C-g - quit)" &lget .git.branches 1 .git.branches
         !if &not &seq #l2 &lget .git-branches 1
-            2 pipe-shell-command &cat &cat .git.lang " git checkout " #l2 "*git*"
+            2 pipe-shell-command &spr "%s %s checkout %s" .git.lang .git.com #l2 "*git*"
             delete-buffer "*git*"
             1000 ml-write &spr "Switched to branch: %s" #l2
         !endif
@@ -94,7 +109,7 @@ define-macro git-commit
     git-get-status
     !if &or &seq .git.status "modified" &seq .git.status "new file"
         set-variable #l0 @ml08 "Enter your commit message"
-        2 pipe-shell-command &cat .git.lang &cat &cat &cat " git commit -m '" #l0 "' " $buffer-fname "*git*"
+        2 pipe-shell-command &spr "%s %s commit -m '%s' %s" .git.lang .git.com #l0 $buffer-fname "*git*"
         find-buffer "*git*"
         beginning-of-buffer
         search-buffer "me" "^ 1 file changed"
@@ -129,7 +144,7 @@ define-macro git-diff
             save-buffer
         !endif
     !endif
-    0 pipe-shell-command &cat .git.lang &cat  " git diff "  $buffer-fname "*git-diff*"
+    0 pipe-shell-command &spr "%s %s diff %s" .git.lang .git.com $buffer-fname "*git-diff*"
     !if &band $system 0x01
         screen-update
     !endif
@@ -146,7 +161,7 @@ define-macro git-grep
         !endif
     !endif
     set-variable #l0 @ml00 "git-grep with"
-    0 pipe-shell-command &cat .git.lang &cat &cat " git grep -nE '"  #l0 "'" "*git-grep*"
+    0 pipe-shell-command &spr "%s %s grep -nE '%s'" .git.lang .git.com #l0  "*git-grep*"
     find-buffer "*git-grep*"
     1 buffer-mode "indent"    
     1 buffer-mode "time"        
@@ -178,7 +193,7 @@ define-macro git-grep
     ;1000 ml-write "picking git diff 2"
 !emacro
 define-macro git-log
-    0 pipe-shell-command &cat .git.lang &cat  " git log "  $buffer-fname "*git*"
+    0 pipe-shell-command &spr "%s %s log %s" .git.lang .git.com $buffer-fname "*git*"
     !if &band $system 0x01
         screen-update
     !endif
@@ -193,7 +208,7 @@ define-macro git-log
         !endif
     !endif 
     set-position "\x90"
-    2 pipe-shell-command &cat .git.lang  &cat  " git status "  $buffer-fname "*git*"
+    2 pipe-shell-command &spr "%s %s status %s" .git.lang  .git.com $buffer-fname "*git*"
     find-buffer "*git*"
     beginning-of-buffer
     search-buffer "me" "^\\(\tmodified:\\|nothing to commit\\|Untracked files\\|\tnew file:\\|fatal: not a git repository\\)"
@@ -222,8 +237,8 @@ define-macro git-mv
     set-variable #l0 @ml01 "Enter new filename"
     set-variable #l1 $buffer-bname
     !if &not &seq #l0 $buffer-fname
-        2 pipe-shell-command &spr "%s git mv %s %s " .git.lang   #l1 #l0 "*git*"
-        2 pipe-shell-command &spr "%s git commit -m 'renamed %s' %s " .git.lang  #l1 #l1 "*git*"
+        2 pipe-shell-command &spr "%s %s mv %s %s " .git.lang .git.com #l1 #l0 "*git*"
+        2 pipe-shell-command &spr "%s %s commit -m 'renamed %s' %s " .git.lang .git.com #l1 #l1 "*git*"
         delete-buffer #l1 
         read-file #l0
     !else
@@ -232,7 +247,7 @@ define-macro git-mv
 !emacro
 ; fetch and update current branch
 define-macro git-pull
-    0 pipe-shell-command &cat .git.lang " git pull" "*git*"
+    0 pipe-shell-command &spr "%s %s pull" .git.lang .git.com "*git*"
     !if &band $system 0x01
         screen-update
     !endif
@@ -255,7 +270,7 @@ define-macro git-rm
     !elif &seq .git.status  "new file"
         set-variable #l0 @mc5 "Remove file from Git (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
         !if &iseq #l0 "y" 
-            2 pipe-shell-command &spr "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            2 pipe-shell-command &spr "%s %s rm -f %s" .git.lang .git.com $buffer-fname "*git*"
             git-commit
             delete-buffer $buffer-bname
             git-status
@@ -264,7 +279,7 @@ define-macro git-rm
     !elif &seq .git.status "nothing to commit"
         set-variable #l0 @mc5 "Remove file from Git (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
         !if &iseq #l0 "y" 
-            2 pipe-shell-command &spr  "%s git rm -f %s" .git.lang $buffer-fname "*git*"
+            2 pipe-shell-command &spr  "%s %s rm -f %s" .git.lang .git.com $buffer-fname "*git*"
             git-commit
             delete-buffer $buffer-bname
             git-status
@@ -288,7 +303,7 @@ define-macro git-status
 !emacro    
 
 define-macro git-state
-    0 pipe-shell-command &cat .git.lang " git status ." "*git*"
+    0 pipe-shell-command &spr "%s %s status ." .git.lang .git.com "*git*"
     !if &band $system 0x01
         screen-update
     !endif
@@ -304,9 +319,9 @@ define-macro git-tag
     !if &and @? &equ @# 1
         set-variable #l0 @ml08 "enter tagname (like v1.0-beta0)"
         set-variable #l1 @ml08 "enter message (like v1.0-beta0)"
-        0 pipe-shell-command &cat .git.lang &spr " git tag -a '%s' -m '%s'" #l0 #l1 "*git*"
+        0 pipe-shell-command &spr "%s %s tag -a '%s' -m '%s'" .git.lang .git.com #l0 #l1 "*git*"
     !else
-        0 pipe-shell-command &cat .git.lang " git tag" "*git*"
+        0 pipe-shell-command &spr "%s %s tag" .git.lang .git.com "*git*"
         !if &band $system 0x01
             screen-update
         !endif

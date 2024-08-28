@@ -1,12 +1,14 @@
 ; -!- emf -!-
 ; This is part of the JASSPA MicroEmacs macro files
 ; Copyright (C) 2004-2009 JASSPA (www.jasspa.com)
+;               2021-2024 D.Groth (github.com/mittelmark/microemacs)
+;
+; Changed:      <2024-08-28 06:59>
 ; See the file me.emf for copying and conditions.
 ;
 ; Synopsis:    Example User template
-; Authors:     Steven Phillips & Jon Green
+; Authors:     Steven Phillips,Jon Green & Detlef Groth
 ;
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; The default key binding for Home/End is the beginning and end
 ; of the file. Remove comments to change the default binding to the 
@@ -34,28 +36,31 @@
 ; to be C++ then uncomment the following lines. If you also want .c files 
 ; to be C++ then add a .c extension to the string.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;add-file-hook ".h .def"  fhook-cpp 
-
-!if &lfind "|linux|darwin|" %platform 
-    ; font selection uncomment if Ctrl-+, Ctrl-- and Ctrl-= do not work
-    ; to find out what fonts are on your system use in the terminal
-    ; find /usr -name "fonts.dir" | xargs cat |  grep pcf 
-    ; alternatively you might use a tool like xfontsel to select some fonts some font suggestions
-    ; misc-fixed-medium (too small for high resolutions but usually on most systems)
-    ; set-variable %fonts "-misc-fixed-medium-r-normal--%d-*-*-*-*-*-*"
-    ; must be eight sizes so we repeat 20 two times
-    ; set-variable %font-sizes  "|8|10|13|14|15|18|20|20|"
-    ; replace bold with medium to get non-bold fonts
-    ; lucidatypewriter should be available on all X11 systems
-    set-variable %fonts "-*-lucidatypewriter-bold-r-*-*-%d-*-*-*-*-*-*"
-    ; set-variable %fonts "-*-lucidatypewriter-medium-r-*-*-%d-*-*-*-*-*-*"
-    ; must be eight sizes
-    set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
-    ; or courier-bold or medium
-    ; set-variable %fonts "-*-courier-medium-r-*-*-%d-*-*-*-*-*-*"
-    ; set-variable %fonts "-*-courier-bold-r-*-*-%d-*-*-*-*-*-*"
-    ; set-variable %font-sizes  "|10|12|14|17|20|24|25|34|"
-    ; now the list element from the font list above which should be the default font access with C-=
-    set-variable %font-index 4
+; add-file-hook ".h .def"  fhook-cpp 
+; add-file-hook ".smd" fhook-md
+; set-variable .ascii-time.format "%Y-%m-%d %H:%M:%S"
+; set-variable $timestamp "%Y-%M-%D %h:%m"
+; allows to write <2000-01-01 00:00> on top of the file to get the actual time stamp
+!if &lfind "|cygwin|freebsd|linux|darwin|" %platform
+    ; X-Windows
+    ; you can install more fonts by downloading the file ttf-files.zip from the release page
+    ; wget https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip
+    ; and moving these files into your ~/.local/share/fonts folder
+    ; set-variable %git-com "git"
+!elif &lfind "|cygwinc|freebsd|linuxc|darwinc|" %platform
+    ; initialize some things if you are on a Unix like terminal
+    ; uncomment next line(s) in case of backspace trouble
+    ; translate-key "\x7f" "backspace" 
+    ; translate-key "C-[ [ 2 ; 5 ~" "C-backspace"
+!elif &lfind "|win32|" %platform
+    ; initialize some variables or keys if you are on a Windows machine
+    global-bind-key beginning-of-line       "home"
+    global-bind-key end-of-line             "end"
+    ; set-variable %git-com "c:/msys2/bin/git.exe"
+!elif &lfind "|win32c|" %platform
+    ; initialize some variables or eys if you are on a Windows Terminal
+    global-bind-key beginning-of-line       "home"
+    global-bind-key end-of-line             "end"
+    ; set-variable %git-com "c:/msys2/bin/git.exe"
 !endif
 
