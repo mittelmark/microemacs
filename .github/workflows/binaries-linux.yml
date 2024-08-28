@@ -2,7 +2,7 @@ name: Binaries Ubuntu 20,22,24 (linux-gcc)
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ master, dev ]
 env:
    VERSION: "091224b1"
 jobs:
@@ -97,25 +97,25 @@ jobs:
     - name: Upload Ubuntu Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-${{ github.ref }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux
     
     - name: Upload Ubuntu mecb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb-${{ github.ref }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecb
 
     - name: Upload Ubuntu mewb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb-${{ github.ref }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mewb
 
     - name: Upload Ubuntu mecwb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
+        name: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb-${{ github.ref }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VERSION }}-Linux-mecwb
 
     - name: Combined Release
@@ -128,6 +128,6 @@ jobs:
     - name: Upload Ubuntu Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-${{ matrix.os }}
+        name: Release-${{ matrix.os }}-${{ github.ref }}
         path: linux-*/
         
