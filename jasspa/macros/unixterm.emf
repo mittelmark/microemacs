@@ -187,7 +187,7 @@ set-variable .change-font.xfontsel 0
         ;!endif
         2 pipe-shell-command &spr "xfontsel -print -pattern '%s' -scaled" #l1 "*fontsel*"
         !if $result
-            1000 ml-write "Error: xfontsel could not be exectuted!"
+            1000 ml-write "Error: xfontsel could not be executed! Please install xfontsel for better font selection!"
             !abort
         !endif
         set-position "\x90"
