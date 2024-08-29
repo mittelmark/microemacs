@@ -33,13 +33,14 @@ jobs:
         shell: cmd
         run:  |
           echo %PATH%
+      - uses: egor-tensin/setup-cygwin@v4
       - name: Set up Cygwin
-        uses: egor-tensin/setup-cygwin@v4
         with:
           packages: cmake gcc-g++
+        shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'          
         run: |
-           ls.exe -Al
-           pwd.exe
+           ls -Al
+           pwd
         # Cygwin executables are added to PATH, so you can call them directly:        
         # Alternatively, you can set Cygwin's bash as the shell to use:
         #run: |
