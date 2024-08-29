@@ -6,24 +6,32 @@ on:
 
 jobs:
   linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-      - uses: actions/checkout@v3
-      - name: check uname Ubuntu
+      - uses: actions/checkout@v4
+      - name: check cygwin install
         run:  |
           uname -a
           uname -n
           uname -s
   macos:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: check uname mac-os-11
+      - uses: actions/checkout@v4
+      - name: check uname mac-os-14
         run:  |
           uname -a
           uname -n
           uname -s
-      
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: check chck the path
+        shell: cmd
+        run:  |
+          echo %PATH%
+        
     
