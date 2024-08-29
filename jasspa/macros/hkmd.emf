@@ -45,7 +45,9 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
   !endif
   0 hilight .hilight.md 1               $global-scheme
   hilight .hilight.md 4 "<!--" "-->" "" .scheme.comment
-  hilight .hilight.md 2 "^#"            .scheme.header
+  hilight .hilight.md 2 "^# "            .scheme.header
+  hilight .hilight.md 2 "^## "           .scheme.header  
+  hilight .hilight.md 2 "^### "           .scheme.bold
   hilight .hilight.md 2 "^```"          .scheme.string
   hilight .hilight.md 4 "\"" "\"" "\\"  .scheme.string
   ;hilight .hilight.md 4 "```" "```" "\\"   .scheme.string
@@ -53,6 +55,10 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
   hilight .hilight.md 1 "__[^_]+__"     .scheme.bold
   hilight .hilight.md 1 "_[^_]+_"       .scheme.italic
   hilight .hilight.md 1 "`[^`]+`"       .scheme.quote
+  hilight .hilight.md 0x804 "\\[" "\\]" "\\" .scheme.link
+  hilight .hilight.md 0x804 "(" ")" "\\" .scheme.link  
+  ;hilight .hilight.md 4 "\\](" ")" "\\"   .scheme.link  
+  ;hilight .hilight.md 0x44 "\\[" "\\](" "" ""   .scheme.link  
   hilight .hilight.md 0x300 "```{"
   hilight .hilight.md 0x300 "```{\\."
   
