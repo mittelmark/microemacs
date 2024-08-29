@@ -37,20 +37,18 @@ jobs:
         uses: egor-tensin/setup-cygwin@v4
         with:
           packages: cmake gcc-g++
-        
-        # Cygwin executables are added to PATH, so you can call them directly:
         run: |
            ls.exe -Al
            pwd.exe
-        
+        # Cygwin executables are added to PATH, so you can call them directly:        
         # Alternatively, you can set Cygwin's bash as the shell to use:
-        run: |
-           # This is a real bash script!
-           basic() {
-               ls -Al
-               pwd
-           }
-           basic
-           shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        #run: |
+        #   # This is a real bash script!
+        #   basic() {
+        #       ls -Al
+        #       pwd
+        #   }
+        #   basic
+        #   shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
                                           
     
