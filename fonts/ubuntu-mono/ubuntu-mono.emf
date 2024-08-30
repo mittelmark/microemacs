@@ -1,7 +1,0 @@
-; BDF version of the X11 Ubuntu Mono fonts for MicroEmacs
-; place one of the following lines  at the end of your USERNAME.emf file
-; remove the semikolon at the beginning which is a comment character
-; fonts are from https://fonts.google.com/specimen/Courier+Prime
-;change-font-type "ubuntu mono-medium" "|11|14|17|19|22|25|30|33|" 22
-change-font-type "ubuntu mono-bold" "|11|14|17|19|22|25|30|33|" 22
-
