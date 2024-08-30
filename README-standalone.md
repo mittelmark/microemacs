@@ -1,7 +1,7 @@
 ---
 title: "Readme for the Jasspa Microemacs Text Editor"
 author: Detlef Groth
-date: 2024-08-25 12:34
+date: 2024-08-30 08:28
 ---
 
 ## Table of Contents
@@ -128,6 +128,8 @@ check in the  User-Setup  in the Platform Tab the Termcap  Color  checkbox and
 start me with a redefined terminal varianle like this:
 
 ```
+TERM=xterm mec 
+### or ...
 TERM=rxvt mec
 ```
 
@@ -135,8 +137,15 @@ It is advisible if this works on your  terminal to make an alias in your shell
 configuration file like this:
 
 ```bash
-alias mec="TERM=rxvt mec"
+alias mec="TERM=xterm mec"
 ```
+
+Check  which  settings  cause no  trouble  for  instance  with  colors and the
+backspace  key.  This  might  depend  on  your  used  terminal  emulator  like
+lxterminal  or  terminal  multiplexer  like tmux. It is usually  adivisble  to
+stick with the default MicroEmacs color scheme using the terminal  version and switch the
+theme if required  using the terminal  emulator. On lxterminal you can use for
+instance the Solarized themes for a more pastel like basic scheme.
 
 
 __Windows:__
