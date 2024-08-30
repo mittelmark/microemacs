@@ -8738,10 +8738,14 @@ Miscellaneous Information
     MicroEmacs has to be enabled to show color by default. From lsuser-setup(3)lmuser-setup(3)le
     enable "Termcap Color". This will give you basic colors.
 
-    You may also try enabling "With Bold" - this may increase the range of
-    colors. If still there are no colors you might try to run emacs with a
-    different terminal setting, for instance using cGTERM=rxvt me -ncA or
-    cGTERM=rxvt meccA in dependence what type of me you are using.
+    You may also try  enabling  "With  Bold" - this may  increase  the  range of
+    colors.  If still  there  are no  colors  you might try to run emacs  with a
+    different  terminal  setting,  for  instance  using  cGTERM=xterm  me  -ncA or
+    cGTERM=rxvt me -ncA or cGTERM=rxvt  meccA in dependence  what type of me you are
+    using.  Check if you get the color,  usually  setting  the  variable to term
+    works best with regards to keys  (backspace  problems) and colors.  Settings
+    might differ however in dependence to the used terminal emulator or terminal
+    multiplexer.
 
     [[FAQ Index]](Frequently Asked Questions).
 ! 0ffaq15
@@ -28256,7 +28260,7 @@ $a
     and in case  you do not get the  Termcap  colors  you can try to  start  the
     terminal version like this:
     
-       `TERM=rxvt mec FILENAME`
+       `TERM=xterm mec FILENAME`
     
     Your user settings are stored in the folder cG~/.jasspacA usually, although this
     can be changed by  changing  the  cGMEPATHcA  environment  variable.  A common
@@ -28267,9 +28271,11 @@ $a
     might throw this away by writing a Bash function in your .bashrc like this:
     
            function mecn {
-              TERM=rxvt mec "$@" 2> /dev/null
+              TERM=xterm mec "$@" 2> /dev/null
            }
-    
+
+    In case of problems you might as well try to use TERM=rxvt.
+      
     cDGetting HelpcA
     
     In case of trouble use the issue link on the Github project page:
