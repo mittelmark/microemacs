@@ -57,7 +57,7 @@ CCDEFS   = -D_DARWIN -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -
 CCFLAGSR = -O3 -flto -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-unused-result
 CCFLAGSD = -g -Wall
 LDDEFS   = 
-LDFLAGSR = -O3 -flto
+LDFLAGSR = -O3 -flto=auto
 LDFLAGSD = -g
 LDLIBS   = -lm
 
