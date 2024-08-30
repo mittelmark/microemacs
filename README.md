@@ -7,7 +7,8 @@
 - [Compilation](#Compilation)
 - [Prebuild Binaries Downloads](#Downloads)
 
-This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
+This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from 
+[https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
 file  executable  for Windows,  Linux, MacOS and FreeBSD.  
