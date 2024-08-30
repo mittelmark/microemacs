@@ -1,7 +1,7 @@
 ---
 title: Using X11 Fonts on Unix
 author: Detlef Groth
-date: 2024-08-30 11:39
+date: 2024-08-30 22:38
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -154,7 +154,24 @@ xset fp rehash
 __Debian based systems__ (Ubuntu, Linux Mint, MX Linux etc):
 
 ```bash
-sudo apt install 
+sudo apt install x11-utils    ## xfontsel - essential
+sudo apt install xfonts-utils ## mkfontscale - for more fonts
+### some packaged TrueType fonts for programmers
+sudo apt install fonts-dejavu
+sudo apt install fonts-firacode
+sudo apt install fonts-freefont-ttf
+sudo apt install fonts-liberation
+sudo apt install fonts-ubuntu
+### prepare the font folder
+if [ ! -d ~/.local/share/fonts/ ]; then
+    mkdir ~/.local/share/fonts/
+    xset +fp ~/.local/share/fonts/
+fi    
+find /usr -iregex ".+\\(Mono\\|Mono-?Regular\\|Mono-?Bold\\|Mono-Medium\\|MoBd\\|Mono-B\\|Mono-R\\|Code\\|Code-\\(Bold\\|Medium\\|SemiBold\\)\\).ttf" \
+  | xargs ln -sf -t ~/.local/share/fonts/    
+mkfontscale ~/.local/share/fonts/
+mkfontdir ~/.local/share/fonts/
+xset fp rehash
 ```
 
 __Arch based systems__ (EndeavourOS, Manjaro Linux, Arctix, RebornOS):
@@ -171,7 +188,7 @@ sudo pacman -S xorg-x11-fonts ; lucidatypewriter couier
 xset +fp /usr/share/fonts/liberation
 sudo pacman -S adobe-source-code-pro-fonts
 xset +fp /usr/share/fonts/adobe-source-code-pro
-sudo pacman -S ttf-cascadia-code75636+mittelmark
+sudo pacman -S ttf-cascadia-code
 sudo pacman -S ttf-fira-mono
 sudo pacman -S ttf-fira-code
 sudo pacman -S ttf-jetbrains-mono
@@ -184,6 +201,39 @@ sudo pacman -S xorg-mkfontscale
 ### uninstall unusable inconsolata fonts
 sudo pacman -Rs ttf-inconsolata
 ```
+
+## FreeBSD
+
+Since  version  09.12.24b1  there is as well a FreeBSD  make file and binaries
+generated on a FreeBSD-VM. The package manager is named pkg. Let's install the
+tools xfontsel and mkfontscale and then as well a few fonts.
+
+
+```
+sudo pkg install xfontsel
+sudo pkg install mkfontscale
+sudo pkg install dejavu
+sudo pkg install liberation-fonts-ttf
+sudo pkg install source-code-pro-ttf
+sudo pkg install terminus-ttf
+```
+
+FreeBSD packages are as well having fonts.dir and fonts.scale index file which
+could be added to the font path using the xset command.
+
+Here my settings on a XFCE desktop manager.
+
+```
+xset +fp /usr/local/share/fonts/SourceCodePro
+xset +fp /usr/local/share/fonts/TerminusTTF
+xset +fp /usr/local/share/fonts/dejavu
+xset +fp /usr/local/share/fonts/Liberation
+xset fp rehash
+```
+
+If you would like to have again more control over the available  fonts you can
+again link all fonts with the term Mono or Code into your home fonts folder.
+
 
 ## Other Non Font-Encodings like Cp1250, Cp1251 ...
 
