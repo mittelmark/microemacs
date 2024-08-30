@@ -11,7 +11,7 @@ if [ ! -f  "${HOME}/.jasspa/lsdxenus.edf" ]; then
     cp ${HERE}/usr/share/spelling/README.txt ~/.jasspa/README-spelling.txt
 fi
 if [ "$1" == "-n" ]; then
-    TERM=rxvt $EXEC "${@}"
+    TERM=xterm $EXEC "${@}"
 else
     if [ -n $DISPLAY ]; then
         #if [ ! -d ~/.jasspa/ubuntu-fonts ]; then
@@ -26,7 +26,7 @@ else
         #fi
         $EXEC "${@}"
     else
-        TERM=rxvt $EXEC -n "${0}"
+        TERM=xterm $EXEC -n "${0}"
     fi
 fi    
 
