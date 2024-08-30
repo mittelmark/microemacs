@@ -339,6 +339,8 @@ unzip ../../ls_dede.zip
 bfs -a me-linux.bin ./jasspa -o me-linux2.bin
 ### test the terminal
 MEPATH="" TERM=rxvt ./me-linux2.bin -n
+### in case of problems with the backslash key try
+MEPATH="" TERM=xterm ./me-linux2.bin -n
 ```
 
 <a name="ProsCons"> </a>
@@ -432,14 +434,20 @@ caracter, you might use instead `C-h` to delete the last character.
 As the  capabilities of Terminals differ widely  MicroEmacs  starts usually in
 black/white  mode in the terminal. You can set this to color mode by selecting the
 "Tools -> User Setup -> Platform" Termcap option. If this does  not work you might
-in addition  declare the terminal type before starting me like so:  `TERM=rxvt  me -n` given me
+in  addition   declare  the  terminal   type  before   starting  me  like  so:
+`TERM=xterm me -n` or `TERM=rxvt  me -n` given the `me`
 is you executable  that could be as well defined as an alias in your `.bashrc`
 file for instance like this:
 
 ```
 ### .bashrc
-alias mec="TERM=rxvt me -n"
+alias mec="TERM=xterm me -n"
+### or alias mec="TERM=rxvt me -n"
 ```
+
+You  should  check  which of the two  aliases  works  best with your  terminal
+emulator  (lxterminal,  gnome-terminal,  etc) and  screen  mulitplexer  (tmux,
+gnu-screen, etc). 
 
 ### Windows Terminal
 
