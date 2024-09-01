@@ -115,12 +115,12 @@ amicr081.html	ffaq40
 amicr082.html	ffaq41
 amicr083.html	ffaq42
 amicr084.html	ffaq43
-amicr085.html	ffaq43
 amicr085.html	0fFAQs
 amicr086.html	ffaq44
 amicr087.html	ffaq45
 amicr088.html	ffaq46
 amicr089.html	ffaq47
+amicr090.html	ffaq48
 m1cmd000.html	me(1)
 m1cmd001.html	memsdev(1)
 m1cmd001.html	memsdev

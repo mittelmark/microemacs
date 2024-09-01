@@ -8299,7 +8299,9 @@
   [faq44](faq44(0f)) - Why is MicroEmacs called still MicroEmacs 09 in 2024 ??  
   [faq45](faq45(0f)) - What are the main new features of MicroEmacs 09 in 2024  ??  
   [faq46](faq46(0f)) - What is a bfs executuable?  
-  [faq47](faq47(0f)) - How can I use True Type Fonts within MicroEmacs on a X11 system ??  
+  [faq47](faq47(0f)) - How can I use True Type Fonts within  MicroEmacs on a X11 system ??  
+  [faq48](faq48(0f)) - How to work with the terminal version of MicroEmacs on
+                       terminal with UTF-8 encoding?
 !! me-id: amicr041
 ! 0ffaq00
 ## QUESTION (00)
@@ -8684,7 +8686,7 @@
   You may also try  enabling  "With  Bold" - this may  increase  the  range of
   colors.  If still  there  are no  colors  you might try to run emacs  with a
   different  terminal  setting,  for  instance  using  `TERM=xterm  me  -n` or
-  `TERM=rxvt me -n` or `TERM=rxvt  mec` in dependence  what type of me you are
+  `TERM=xterm me -n` or `TERM=rxvt  mec` in dependence  what type of me you are
   using.  Check if you get the color,  usually  setting  the  variable to term
   works best with regards to keys  (backspace  problems) and colors.  Settings
   might differ however in dependence to the used terminal emulator or terminal
@@ -9246,27 +9248,9 @@
   are available as these seem to exist on all platforms which I could test, such
   as macOS with XQuartz, Fedora and Ubuntu Linux.
   
-  In case you are not satisified with this minimal font selection you might install your own
-  X11-fonts using for instance the provided fonts "Ubuntu Mono", "Courier Prime" or
-  "Chivo Mono" which are provided at the Github project page.
-  
-  The fonts can be download from here: 
-  
-  - https://github.com/mittelmark/microemacs/releases/download/v09.12.21/chivo-mono-fonts.zip
-  - https://github.com/mittelmark/microemacs/releases/download/v09.12.21/courier-prime-fonts.zip
-  - https://github.com/mittelmark/microemacs/releases/download/v09.12.21/ubuntu-mono-fonts.zip
-  
-  The Readme explains on how to install them:
-  https://github.com/mittelmark/microemacs/blob/master/fonts/chivo-mono/Readme.txt
-
-  After installing these fonts you can use
-  [change-font-type](change-font-type(3)) command and write as well "ubuntu",
-  "chivo" or "prime" (for courier prime) to use these fonts. To switch to bold
-  fonts use the command [change-font-bold](change-font-bold(3)).
-  
-  If you are interested to directly use True Type Fonts within MicroEmacs have
-  a  look  at  [faq47](faq47(0f))  - How  can I use  True  Type  Fonts  within
-  MicroEmacs.
+  In case you are not  satisified  with this minimal font  selection you might
+  install you own TrueType fonts, see  the information at  [faq47](faq47(0f))  - 
+  How  can I use  True  Type  Fonts  within MicroEmacs?
   
   [[FAQ Index]](Frequently Asked Questions).
 !! me-id: amicr075
@@ -9904,6 +9888,52 @@
   will find a download link for some indexed monospaced TTF fonts.
   
   [[FAQ Index]](Frequently Asked Questions).
+!! me-id: amicr090
+! 0ffaq48
+## QUESTION (48)
+  
+  How to work with the terminal version of MicroEmacs on terminal with UTF-8 encoding?
+  
+  If you run the terminal  version of  MicroEmacs  the character  encodngs are
+  defined  by the  terminal  emulators.  For some of them  (like Mate or Gnome
+  terminal)  you can  change  the font  encodings  using a menu,  others  like
+  LX-terminal  only have Unicode  encodings. If you work with me on a terminal
+  with Unicode, non-ASCII characters might behave weird. There are two ways to
+  fix this issue:
+  
+  - switch  the  current  font  encoding  for  your  terminal if possibke, let's
+    say to ISO-8859-1 or ISO-8859-15 or what ever you need ... or
+  - run a  tool  like  `luit` - https://invisible-island.net/luit/luit-figures.html
+    as a  wrapping  application  which  sits  between  MicroEmacs  and the terminal
+    emulator  and  translates all codes  from and  to  Unicode between these two 
+    applications.
+    
+  Here an example on how to do this:
+  
+  > `TERM=xterm luit -encoding ISO-8859-15 mec`
+  
+  Or write at the end `me -n` if you use a mecw executuable. The TERM=xterm
+  prefix should enable the colored version in the terminal as well as described
+  in [faq14](faq14(0f)).
+  
+  
+  The `luit` application should be available by your package manager, so should
+  be installable as:
+  
+       sudo dnf install luit ## fedora  
+       sudo apt install ???  ## debian/ubuntu
+       sudo pkg install ???  ## freebsd
+       sudo pacman -S 
+
+  You can as well create an alias for the luit-me command ensemble:       
+  
+  >  aliasc me-iso-15="TERM=xterm luit -encoding ISO-8859-15 mec"
+  
+  One  disadvantage  of using `luit` is, that you can't suspend MicroEmacs if running
+  it within `luit`.
+  
+  [[FAQ Index]](Frequently Asked Questions).
+
 !! me-id: m1cmd000
 ! 1 me
 ## NAME

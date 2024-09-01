@@ -1,7 +1,7 @@
 ---
 title: Using X11 Fonts on Unix
 author: Detlef Groth
-date: 2024-08-30 22:38
+date: 2024-08-30 22:56
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -45,6 +45,9 @@ sudo dnf install liberation-mono-fonts \
     gnu-free-mono-fonts \
     dejavu-sans-mono
 ```
+
+Details  about  fonts on the X11 system can be found in the FreeBSD  manual in
+section [5.5](https://docs.freebsd.org/en/books/handbook/x11/#x-fonts).
 
 For other Linux systems you might get different  fonts via this approach. Some
 systems  like  Manjaro  Linux  automatically  index  these fonts for older X11
