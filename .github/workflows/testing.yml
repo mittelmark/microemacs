@@ -45,17 +45,17 @@ jobs:
         run:  |
           python --version
           pip --version
+          #pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
+          python -m venv menv
+          dir menv
+          menv\Scripts\activate.bat
           pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
-          #python -m venv menv
-          #dir menv
-          #menv\Scripts\activate.bat
-          #pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
           #dir menv
           #dir menv\lib
           #dir menv\lib\site-packages
           #dir menv\Scripts
-          dir C:\hostedtoolcache\windows\Python\3.9.13\x64          
-          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\site-packages\meapp\jasspa
+          #dir C:\hostedtoolcache\windows\Python\3.9.13\x64          
+          #dir C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\site-packages\meapp\jasspa
           meapp -V
           #meapp -V  
           ## venv seems not to work
