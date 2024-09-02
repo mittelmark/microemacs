@@ -55,8 +55,9 @@ jobs:
           #dir menv\lib\site-packages
           #dir menv\Scripts
           #dir "\*exe" /s
-          dir C:\hostedtoolcache\windows\Python\3.9.13\libs\          
           dir C:\hostedtoolcache\windows\Python\3.9.13\x64          
-          #meapp -V
+          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\                    
+          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\libs\          
+          meapp -V
           #meapp -V  
           ## venv seems not to work
