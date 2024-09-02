@@ -57,13 +57,13 @@ jobs:
         cd workspace
         git clone https://github.com/mittelmark/microemacs.git
         cd microemacs
-        make -f cygwin.gmk mec
+        make -f cygwin.gmk mec mecb
         
     - name: Install MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
         echo $PATH
         which pip3
-        find /usr -name "pip*"
         pip3 install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
+        export PATH=~/.local/bin:$PATH
         meapp -V
