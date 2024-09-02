@@ -1,6 +1,8 @@
 name: Cygwin Workflow
 
-on: [push]
+on:
+  workflow_dispatch:
+    branches: [ master ]
 
 jobs:
   build:
@@ -30,5 +32,13 @@ jobs:
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
         # Your Cygwin commands here
+        cygcheck -c
         make --version
         gcc --version
+        
+
+    - name: Verify Python Installation
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        python3 --version
+        which python3
