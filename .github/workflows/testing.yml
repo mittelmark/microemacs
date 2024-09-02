@@ -46,5 +46,7 @@ jobs:
           python --version
           pip --version
           pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
-          meapp -V  
+          python -m venv menv
+          dir menv
+          #meapp -V  
           ## venv seems not to work
