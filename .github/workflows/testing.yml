@@ -42,10 +42,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: check Python package install
         run:  |
-          python3 --version
           python --version
-          python -m venv menv
-          dir
-          dir menv
           pip --version
+          pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
+          dir
+          python -m venv menv
+          dir menv
+          Import-Module menv
           menv\bin\pip --version
