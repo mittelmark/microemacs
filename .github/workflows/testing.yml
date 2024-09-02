@@ -52,6 +52,7 @@ jobs:
           menv\Scripts\activate.bat
           python -c "import sys; print(sys.executable)"
           pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
+          set PATH=C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts;%PATH%
           #dir menv
           #dir menv\lib
           #dir menv\lib\site-packages
