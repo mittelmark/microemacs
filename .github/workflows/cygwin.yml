@@ -65,6 +65,7 @@ jobs:
         make -f cygwin.gmk release app=mecb
         make -f cygwin.gmk release app=mewb        
         make -f cygwin.gmk release app=mecwb                
+        ls
         
     - name: Install MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
