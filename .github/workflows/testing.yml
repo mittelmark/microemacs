@@ -58,7 +58,7 @@ jobs:
           $Env:PATH += ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts"
           $Env:PATH + ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\bin"
           $Env:MEPATH = ;C:\Users\runneradmin\AppData\Roaming\jasspa;C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\jasspa"
-          mec-windows.exe -V
+          mec-windows.exe -V 
           Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\Python\Python39 -Recurse -Filter *.exe
 
           dir C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts
