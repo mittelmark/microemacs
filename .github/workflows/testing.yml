@@ -53,6 +53,7 @@ jobs:
           python -c "import sys; print(sys.executable)"
           pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
           $Env:PATH += ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts"
+          dir C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\jasspa
           #dir menv
           #dir menv\lib
           #dir menv\lib\site-packages
