@@ -55,8 +55,7 @@ jobs:
           #dir menv\lib\site-packages
           #dir menv\Scripts
           dir C:\hostedtoolcache\windows\Python\3.9.13\x64          
-          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\site-packages\meapp\
-          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\libs\          
+          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\site-packages\meapp\jasspa
           meapp -V
           #meapp -V  
           ## venv seems not to work
