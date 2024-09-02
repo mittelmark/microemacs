@@ -26,3 +26,6 @@ jobs:
           uname -n
           uname -s
           python --version
+          python -m venv menv
+          ./menv/bin/pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
+          ./menv/bin/meapp -V
