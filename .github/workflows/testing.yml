@@ -53,7 +53,11 @@ jobs:
           $Env:PATH = [System.Environment]::CurrentDirectory + "menv\Scripts" + ";"+$Env:PATH
           python -c "import sys; print(sys.executable)"
           pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
+          dir /b /s /AD menv
+          
           $Env:PATH += ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts"
+          dir /b /s /AD C:\Users\runneradmin\AppData\Roaming\Python\Python39
+
           dir C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts
           dir C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\jasspa
           #dir menv
