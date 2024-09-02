@@ -54,22 +54,5 @@ jobs:
           python -c "import sys; print(sys.executable)"
           python -c "import os; print(os.path.expanduser('~'))"
           pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
-          Get-ChildItem -Path menv -Recurse -Filter *.exe
-          
           $Env:PATH += ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts"
-          $Env:PATH + ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\bin"
-          #$Env:MEPATH = "C:\Users\runneradmin\AppData\Roaming\jasspa;C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\jasspa"
           meapp -V 
-          Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\Python\Python39 -Recurse -Filter *.exe
-
-          dir C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts
-          dir C:\Users\runneradmin\AppData\Roaming\Python\Python39\site-packages\meapp\jasspa
-          #dir menv
-          #dir menv\lib
-          #dir menv\lib\site-packages
-          #dir menv\Scripts
-          #dir C:\hostedtoolcache\windows\Python\3.9.13\x64          
-          #dir C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\site-packages\meapp\jasspa
-          meapp -V
-          #meapp -V  
-          ## venv seems not to work
