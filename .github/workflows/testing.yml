@@ -22,6 +22,7 @@ jobs:
           ./menv/bin/meapp -V
   macos:
     runs-on: macos-latest
+    name: Build on MacOS latest
     steps:
       - uses: actions/checkout@v4
       - name: check Python package install
@@ -45,6 +46,7 @@ jobs:
           python --version
           pip --version
           pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
+          meapp -V
           dir
           python -m venv menv
           dir menv
