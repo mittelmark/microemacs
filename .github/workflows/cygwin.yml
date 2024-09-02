@@ -59,6 +59,8 @@ jobs:
         cd microemacs
         make -f cygwin.gmk mec mecb
         make -f cygwin.gmk mew mewb        
+        ls
+        ./cygwin-3.5-microemacs-091224b2-mewc.exe -V
         
     - name: Install MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
