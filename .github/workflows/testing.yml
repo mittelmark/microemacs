@@ -45,4 +45,6 @@ jobs:
           python3 --version
           python --version
           python -m venv menv
-          menv/bin/pip --version
+          dir
+          dir menv\bin
+          menv\bin\pip --version
