@@ -18,7 +18,7 @@ jobs:
           uname -s
           python --version
           python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
+          ./menv/bin/pip install https://github.com/user-attachments/files/16836407/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
   macos:
     runs-on: macos-latest
@@ -32,7 +32,7 @@ jobs:
           uname -s
           python --version
           python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
+          ./menv/bin/pip install https://github.com/user-attachments/files/16836407/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
 
   windows:
@@ -45,10 +45,6 @@ jobs:
         run:  |
           python --version
           pip --version
-          pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
-          meapp -V
-          dir
-          python -m venv menv
-          dir menv
-          Import-Module menv
-          menv\bin\pip --version
+          pip install https://github.com/user-attachments/files/16836407/meapp-9.12.24b1.tar.gz
+          meapp -V  
+          ## venv seems not to work
