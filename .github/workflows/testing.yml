@@ -18,7 +18,7 @@ jobs:
           uname -s
           python --version
           python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
+          ./menv/bin/pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
   macos:
     runs-on: macos-latest
@@ -32,7 +32,7 @@ jobs:
           uname -s
           python --version
           python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
+          ./menv/bin/pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
 
   windows:
@@ -44,19 +44,19 @@ jobs:
       - name: check Python package install
         run:  |
           python --version
-          #pip --version
+          pip --version
+          pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
+          #python -m venv menv
+          #dir menv
+          #menv\Scripts\activate.bat
           #pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
-          python -m venv menv
-          dir menv
-          menv\Scripts\activate.bat
-          pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
-          dir menv
-          dir menv\lib
-          dir menv\lib\site-packages
-          dir menv\Scripts
-          meapp -V
+          #dir menv
+          #dir menv\lib
+          #dir menv\lib\site-packages
+          #dir menv\Scripts
           #dir "\*exe" /s
           dir C:\hostedtoolcache\windows\Python\3.9.13\
           dir C:\hostedtoolcache\windows\Python\3.9.13\x64          
+          meapp -V
           #meapp -V  
           ## venv seems not to work
