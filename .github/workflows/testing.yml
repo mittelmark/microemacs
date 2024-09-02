@@ -7,20 +7,24 @@ on:
 jobs:
   linux:
     runs-on: ubuntu-latest
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    name: Build on Ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      - name: check cygwin install
+      - name: check Python package install
         run:  |
           uname -a
           uname -n
           uname -s
+          python --version
+          python -m venv menv
+          ./menv/bin/pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
+          ./menv/bin/meapp -V
   macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: check uname mac-os-14
+      - name: check Python package install
         run:  |
           uname -a
           uname -n
