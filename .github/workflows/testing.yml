@@ -44,11 +44,13 @@ jobs:
       - name: check Python package install
         run:  |
           python --version
+          python -c "import sys; print(sys.executable)"
           pip --version
           #pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
           python -m venv menv
-          dir menv
+          dir menv\Scripts
           menv\Scripts\activate.bat
+          python -c "import sys; print(sys.executable)"
           pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
           #dir menv
           #dir menv\lib
