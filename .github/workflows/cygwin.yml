@@ -62,10 +62,18 @@ jobs:
         make -f cygwin.gmk mecw mecwb                
         ls
         ./cygwin-3.5-microemacs-091224b2-mecb.exe -V
+
+    - name: Cygwin Combined Release 
+      run: |
         make -f cygwin.gmk release app=mecb
         make -f cygwin.gmk release app=mewb        
         make -f cygwin.gmk release app=mecwb                
-        ls
+
+    - name: Upload Cygwin Combined Release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Release-cygwin-3.5-windows-${{ env.BRANCH_NAME }}
+        path: cygwin-*/
         
     - name: Install MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
