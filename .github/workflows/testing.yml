@@ -33,3 +33,16 @@ jobs:
           python -m venv menv
           ./menv/bin/pip install https://github.com/user-attachments/files/16836036/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
+
+  windows:
+    runs-on: windows-2019
+    name: Build on Windows 2019
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: check Python package install
+        run:  |
+          python3 --version
+          python --version
+          python -m venv menv
+          menv/bin/pip --version
