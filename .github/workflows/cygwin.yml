@@ -45,7 +45,7 @@ jobs:
     - name: Install MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
-        python3 -m venv menv
-        ls menv
-        ./menv/bin/pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz
-        ./menv/bin/meapp -V
+        echo $PATH
+        which pip
+        pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
+        meapp -V
