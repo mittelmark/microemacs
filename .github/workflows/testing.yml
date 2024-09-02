@@ -18,7 +18,7 @@ jobs:
           uname -s
           python --version
           python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16840910/meapp-9.12.24b1.tar.gz
+          ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
   macos:
     runs-on: macos-latest
@@ -32,7 +32,7 @@ jobs:
           uname -s
           python --version
           python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16840910/meapp-9.12.24b1.tar.gz
+          ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
 
   windows:
@@ -46,14 +46,14 @@ jobs:
           python --version
           python -c "import sys; print(sys.executable)"
           pip --version
-          #pip install https://github.com/user-attachments/files/16840910/meapp-9.12.24b1.tar.gz
+          #pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
           python -m venv menv
           dir menv\Scripts
           menv\Scripts\activate.bat
           $Env:PATH = [System.Environment]::CurrentDirectory + "menv\Scripts" + ";"+$Env:PATH
           python -c "import sys; print(sys.executable)"
           python -c "import os; print(os.path.expanduser('~'))"
-          pip install https://github.com/user-attachments/files/16840910/meapp-9.12.24b1.tar.gz
+          pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
           Get-ChildItem -Path menv -Recurse -Filter *.exe
           
           $Env:PATH += ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts"
