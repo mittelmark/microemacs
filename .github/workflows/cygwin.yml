@@ -63,6 +63,7 @@ jobs:
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
         echo $PATH
-        which pip
-        pip install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
+        which pip3
+        find /usr -name "pip*"
+        pip3 install https://github.com/user-attachments/files/16837822/meapp-9.12.24b1.tar.gz --user
         meapp -V
