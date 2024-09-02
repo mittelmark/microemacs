@@ -3,7 +3,8 @@ name: Binaries Windows-Cygwin
 on:
   workflow_dispatch:
     branches: [ master ]
-
+env:
+   VERSION: "091224b2"
 jobs:
   build:
     runs-on: windows-latest
@@ -61,8 +62,9 @@ jobs:
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls
-        ./cygwin-3.5-microemacs-091224b2-mecb.exe -V
-
+        ls -l ./cygwin-3.5-microemacs-${VERSION}-mecb.exe
+        echo `./cygwin-3.5-microemacs-${VERSION}-mecb.exe -V`
+        
     - name: Cygwin Combined Release 
       run: |
         make -f cygwin.gmk release app=mecb
@@ -72,7 +74,7 @@ jobs:
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-cygwin-3.5-windows-${{ env.BRANCH_NAME }}
+        name: Release-cygwin-3.5-windows
         path: cygwin-*/
         
     - name: Install MicroEmacs
@@ -80,6 +82,6 @@ jobs:
       run: |
         echo $PATH
         which pip3
-        pip3 install https://github.com/user-attachments/files/16839612/meapp-9.12.24b1.tar.gz
+        pip3 install https://github.com/user-attachments/files/16840516/meapp-9.12.24b1.tar.gz
         export PATH=~/.local/bin:$PATH
         meapp -V
