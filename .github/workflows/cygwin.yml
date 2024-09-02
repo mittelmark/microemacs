@@ -14,7 +14,7 @@ jobs:
     - name: Install Cygwin
       uses: egor-tensin/setup-cygwin@v4
       with:
-        packages: bash git make gcc-core gcc-g++ python3-pip wget zlib-devel libncurses-devel libXt-devel
+        packages: bash git make gcc-core gcc-g++ python3-pip wget zlib-devel libncurses-devel libXt-devel zip unzip
         install-dir: C:\cygwin
         
     - name: Modify PATH
