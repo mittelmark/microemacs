@@ -8300,8 +8300,8 @@
   [faq45](faq45(0f)) - What are the main new features of MicroEmacs 09 in 2024  ??  
   [faq46](faq46(0f)) - What is a bfs executuable?  
   [faq47](faq47(0f)) - How can I use True Type Fonts within  MicroEmacs on a X11 system ??  
-  [faq48](faq48(0f)) - How to work with the terminal version of MicroEmacs on
-                       terminal with UTF-8 encoding?
+  [faq48](faq48(0f)) - How to deal with UTF-8 enabled terminals with console MicroEmacs ??  
+
 !! me-id: amicr041
 ! 0ffaq00
 ## QUESTION (00)
@@ -9892,16 +9892,17 @@
 ! 0ffaq48
 ## QUESTION (48)
   
-  How to work with the terminal version of MicroEmacs on terminal with UTF-8 encoding?
+  How to work with the terminal version of MicroEmacs on terminals with UTF-8
+  encoding?
   
-  If you run the terminal  version of  MicroEmacs  the character  encodngs are
-  defined  by the  terminal  emulators.  For some of them  (like Mate or Gnome
+  If you run the terminal  version of  MicroEmacs  the character  encodings are
+  defined  by the  terminal  emulator.  For some of them  (like Mate or Gnome
   terminal)  you can  change  the font  encodings  using a menu,  others  like
-  LX-terminal  only have Unicode  encodings. If you work with me on a terminal
-  with Unicode, non-ASCII characters might behave weird. There are two ways to
-  fix this issue:
+  LX-terminal  or if you run a terminal multiplexer like tmux - only support
+  Unicode  encodings. If you work with MicroEmacs on such a terminal, the display
+  of non-ASCII characters might behave weird. There are two ways to fix this issue:
   
-  - switch  the  current  font  encoding  for  your  terminal if possibke, let's
+  - switch  the  current  font  encoding  for  your  terminal if possible, let's
     say to ISO-8859-1 or ISO-8859-15 or what ever you need ... or
   - run a  tool  like  `luit` - https://invisible-island.net/luit/luit-figures.html
     as a  wrapping  application  which  sits  between  MicroEmacs  and the terminal
@@ -9917,13 +9918,14 @@
   in [faq14](faq14(0f)).
   
   
-  The `luit` application should be available by your package manager, so should
-  be installable as:
+  The `luit` application should be available by your package manager, so it
+  should be installable as:
   
-       sudo dnf install luit ## fedora  
-       sudo apt install ???  ## debian/ubuntu
-       sudo pkg install ???  ## freebsd
-       sudo pacman -S 
+       sudo dnf install luit        ## fedora  
+       sudo apt install x11-utils   ## debian based
+       sudo pacman -S   luit        ## arch based   
+       sudo pkg install luit        ## freebsd
+                                    ## windows-cygwin  
 
   You can as well create an alias for the luit-me command ensemble:       
   

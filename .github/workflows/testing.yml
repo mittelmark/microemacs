@@ -25,31 +25,4 @@ jobs:
           uname -a
           uname -n
           uname -s
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: check chck the path
-        shell: cmd
-        run:  |
-          echo %PATH%
-      - uses: egor-tensin/setup-cygwin@v4
-      - name: Set up Cygwin
-        with:
-          packages: cmake gcc-g++
-        shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'          
-        run: |
-           ls -Al
-           pwd
-        # Cygwin executables are added to PATH, so you can call them directly:        
-        # Alternatively, you can set Cygwin's bash as the shell to use:
-        #run: |
-        #   # This is a real bash script!
-        #   basic() {
-        #       ls -Al
-        #       pwd
-        #   }
-        #   basic
-        #   shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-                                          
-    
+          python --version
