@@ -71,6 +71,6 @@ jobs:
       run: |
         echo $PATH
         which pip3
-        pip3 install https://github.com/user-attachments/files/16839413/meapp-9.12.24b1.tar.gz
+        pip3 install https://github.com/user-attachments/files/16839612/meapp-9.12.24b1.tar.gz
         export PATH=~/.local/bin:$PATH
         meapp -V
