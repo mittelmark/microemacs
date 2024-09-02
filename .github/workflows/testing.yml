@@ -48,5 +48,6 @@ jobs:
           pip install https://github.com/user-attachments/files/16836620/meapp-9.12.24b1.tar.gz
           python -m venv menv
           dir menv
+          dir C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts\
           #meapp -V  
           ## venv seems not to work
