@@ -62,4 +62,4 @@ brew: mecb mewb
 	cp COPYING               brew-linux-$(VERSION)/license.txt
 	cp README-standalone.md  brew-linux-$(VERSION)/README.md
 	tar cfz brew-linux-$(VERSION).tar.gz brew-linux-$(VERSION)/*
-	sha256sum cfzz brew-linux-$(VERSION).tar.gz > brew-linux-$(VERSION).sha256
+	sha256sum brew-linux-$(VERSION).tar.gz > brew-linux-$(VERSION).sha256

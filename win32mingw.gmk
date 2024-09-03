@@ -22,3 +22,11 @@ mewb: bfs/bin mew
 release: bfs/exe $(app) 
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
 
+brew: mecb mewb
+	mkdir -p brew-windows-$(VERSION)/bin
+	cp $(RELEASE)-mecb.exe   brew-windows-$(VERSION)/bin/jmc.exe
+	cp $(RELEASE)-mewb.exe   brew-windows-$(VERSION)/bin/jmw.exe
+	cp COPYING               brew-windows-$(VERSION)/license.txt
+	cp README-standalone.md  brew-windows-$(VERSION)/README.md
+	zip -r brew-windows-$(VERSION).zip brew-windows-$(VERSION)/*
+	sha256sum brew-windows-$(VERSION).zip > brew-windows-$(VERSION).sha256
