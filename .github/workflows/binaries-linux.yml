@@ -45,6 +45,10 @@ jobs:
     
     - name: make mecwb binary
       run:  make -f linux32gcc.gmk mecwb
+
+    - name: make brew package
+      run:  make -f linux32gcc.gmk brew
+          
     
     - name: Make release
       run: |
@@ -134,3 +138,8 @@ jobs:
         name: Release-${{ matrix.os }}-${{ env.BRANCH_NAME }}
         path: linux-*/
         
+      - name: Upload Brew Package
+        uses: actions/upload-artifact@v4
+        with: 
+          name: brew-${{ matrix.os }}
+          path: brew-*
