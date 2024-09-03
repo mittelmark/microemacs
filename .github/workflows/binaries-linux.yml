@@ -47,8 +47,9 @@ jobs:
       run:  make -f linux32gcc.gmk mecwb
 
     - name: make brew package
-      run:  make -f linux32gcc.gmk brew
-          
+      run:  |
+        make -f linux32gcc.gmk brew
+        rm -rf brew-*/          
     
     - name: Make release
       run: |
@@ -143,3 +144,4 @@ jobs:
       with: 
         name: brew-${{ matrix.os }}
         path: brew-*
+

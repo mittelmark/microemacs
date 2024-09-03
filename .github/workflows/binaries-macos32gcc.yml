@@ -66,8 +66,10 @@ jobs:
         run: make -f macos32gcc.gmk mecwb CC=${GCC} VERSION=${VRS}
         
       - name: make brew package
-        run: make -f macos32gcc.gmk brew CC=${GCC} VERSION=${VRS}
-          
+        run: |
+            make -f macos32gcc.gmk brew CC=${GCC} VERSION=${VRS}
+            rm -rf brew-*/          
+
       - name: Make release
         run: |
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}
