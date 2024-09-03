@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240824.0557>
+#  Last Modified : <240903.1626>
 #
 #  Description	
 #
@@ -66,3 +66,12 @@ version:
 
 release: $(app)
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
+
+brew: mecb mewb
+	mkdir -p brew-macos-$(VERSION)/bin
+	cp $(RELEASE)-mecb.bin   brew-macos-$(VERSION)/bin/jmc
+	cp $(RELEASE)-mewb.bin   brew-macos-$(VERSION)/bin/jmw	
+	cp COPYING               brew-macos-$(VERSION)/license.txt
+	cp README-standalone.md  brew-macos-$(VERSION)/README.md
+	tar cfz brew-macos-$(VERSION).tar.gz brew-macos-$(VERSION)/*
+	sha256sum brew-macos-$(VERSION).tar.gz > brew-macos-$(VERSION).sha256

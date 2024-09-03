@@ -65,6 +65,9 @@ jobs:
       - name: make mecwb binary 
         run: make -f macos32gcc.gmk mecwb CC=${GCC} VERSION=${VRS}
         
+      - name: make brew package
+        run: make -f macos32gcc.gmk brew CC=${GCC} VERSION=${VRS}
+          
       - name: Make release
         run: |
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}
@@ -141,9 +144,16 @@ jobs:
           make -f macos32gcc.gmk release app=mecb VERSION=${VRS}
           make -f macos32gcc.gmk release app=mewb VERSION=${VRS}
           make -f macos32gcc.gmk release app=mecwb VERSION=${VRS}
-      - name: Upload Ubuntu Combined Release
+
+      - name: Upload Macos Combined Release
         uses: actions/upload-artifact@v4
         with: 
           name: Release-${{ matrix.os }}
           path: macos-*/
         
+
+      - name: Upload Brew Package
+        uses: actions/upload-artifact@v4
+        with: 
+          name: brew-${{ matrix.os }}
+          path: brew-*
