@@ -241,13 +241,12 @@ set-variable .change-font.xfontsel 0
         goto-position "\x90"
     !emacro
     0 define-macro change-font-check-xfontsel
-        2 pipe-shell-command "which xfontsel" "*fontsel*"
-        !if $result
-            set-variable .change-font.xfontsel 0
-        !else
+        !force set-variable #l0 &which "xfontsel"
+        !if &not &seq #l0 "ERROR"
             set-variable .change-font.xfontsel 1
+        !else
+            set-variable .change-font.xfontsel 0
         !endif
-        delete-buffer "*fontsel*"
     !emacro
     define-macro change-font-courier
         ; check if current font is medium
