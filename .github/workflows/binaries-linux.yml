@@ -138,8 +138,8 @@ jobs:
         name: Release-${{ matrix.os }}-${{ env.BRANCH_NAME }}
         path: linux-*/
         
-      - name: Upload Brew Package
-        uses: actions/upload-artifact@v4
-        with: 
-          name: brew-${{ matrix.os }}
-          path: brew-*
+    - name: Upload Brew Package
+      uses: actions/upload-artifact@v4
+      with: 
+        name: brew-${{ matrix.os }}
+        path: brew-*
