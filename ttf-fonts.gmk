@@ -81,11 +81,10 @@ proggy-vector-medium.ttf:
 	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector-Regular.ttf -O proggy-vector-medium.ttf
 	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyVector/ProggyVector_Licence.txt -O proggy-vector-license.txt
 
-#roboto-mono: roboto-mono-medium.ttf
-#roboto-mono-medium.ttf:
-#	wget https://github.com/googlefonts/RobotoMono/raw/main/LICENSE.txt -O roboto-mono-license.txt
-#	wget https://github.com/googlefonts/RobotoMono/blob/main/fonts/ttf/RobotoMono-Bold.ttf -O roboto-mono-bold.ttf
-#	wget https://github.com/googlefonts/RobotoMono/blob/main/fonts/ttf/RobotoMono-Medium.ttf -O roboto-mono-medium.ttf
+proggy-squaresz: proggy-squaresz-medium.ttf
+proggy-squaresz-medium.ttf:
+	wget https://github.com/bluescan/proggyfonts/raw/master/ProggyOriginal/ProggySquareSZ.ttf -O proggy-squaresz-medium.ttf
+	wget https://github.com/bluescan/proggyfonts/raw/master/LICENSE -O proggy-squaresz-license.txt
 
 source-code-pro: source-code-pro-medium.ttf
 source-code-pro-medium.ttf:
@@ -108,6 +107,8 @@ ubuntu-mono-medium.ttf:
 index:
 	mkfontscale .
 	mkfontdir .
+	sed -i 's/-c-/-m-/' fonts.*
+	sed -i 's/ semibold//' fonts.*
 
 package:
 	-rm -rf ttf-fonts
@@ -132,6 +133,6 @@ install:
 	xset +fp ~/.local/share/fonts/
 	xset fp rehash
 all: anonymous cascadia-code courier-prime chivo-mono dejavu fira-code inconsolata \
-	liberation-mono proggy-vector source-code-pro terminus ubuntu-mono \
+	liberation-mono proggy-vector proggy-squaresz source-code-pro terminus ubuntu-mono \
 	index package
 	
