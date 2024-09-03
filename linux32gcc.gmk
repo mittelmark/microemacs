@@ -54,3 +54,12 @@ app-image: bfs/bin
 	./bfs/bfs -a mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
 	appimagetool-x86_64.AppImage jme.AppDir
 	./Jasspa_MicroEmacs_09-x86_64.AppImage -V -n
+
+brew: mecb mewb
+	mkdir -p brew-linux-$(VERSION)/bin
+	cp $(RELEASE)-mecb.bin   brew-linux-$(VERSION)/bin/jmc
+	cp $(RELEASE)-mewb.bin   brew-linux-$(VERSION)/bin/jmw	
+	cp COPYING               brew-linux-$(VERSION)/license.txt
+	cp README-standalone.md  brew-linux-$(VERSION)/README.md
+	tar cfz brew-linux-$(VERSION).tar.gz brew-linux-$(VERSION)/*
+	sha256sum cfzz brew-linux-$(VERSION).tar.gz > brew-linux-$(VERSION).sha256
