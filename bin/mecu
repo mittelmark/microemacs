@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+## file: mecu 
+## Description: wrapper to run MicroEmacs with extended character settings
+##              on UTF-8 enabled terminals
+##  
+## Tools required:
+##   abduco: session management and detacher
+##           https://www.brain-dump.org/projects/abduco/   
+##   luit:   filter between non-utf-8 applications and utf-8 terminals
+##           https://invisible-island.net/luit/
+## Installation:
+##           fedora: sudo dnf install abduco luit  
+##           debian: sudo apt install abduco luit
+
+## check for none interactive arguments like:
+## help, version, message, pipe
+if [ "$1" == "-h" -o "$1" == "-V" -o "$1" == "-m" -o "$1" == "-o" -o "$1" == "-p" -o "$1" == "-P" ] ;  then 
+    mecb "$@"
+else
+    ## interactive ME session
+    ## session creation for the current tty 
+    tty=$(tty | grep -Eo '[0-9]+')
+    res=$(abduco -l | grep mec$tty)
+    ## (press in ME Ctrl-l to update screen)
+    ## running session, if no create an new one
+    ## otherwise attach to the old one
+
+    if [ "$res" == "" ] ; then 
+        ## a new one
+       TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO-8859-15 mecb "$@"
+    else
+        ## attach to an old one
+        abduco -a -e ^z mec$tty 
+    fi
+fi
