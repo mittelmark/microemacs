@@ -26,10 +26,13 @@ __ME startup related:__
 
 Wrapper functions to start MicroEmacs for Linux and Windows 
 
+- __mecu__ - unicode aware terminal MicroEmacs startup script using the tools 
+    [luit](https://invisible-island.net/luit/)  and 
+    [abduco](https://www.brain-dump.org/projects/abduco/)
 -  __me-linux.sh__  - wrapper bash  function to check which ME version to run,
   should work as well for FreeBSD
 - __me-cygwin.sh__  - wrapper  function to run the normal  Windows ME version
-  within a Cygwin system like MobaXterm
+   within a Cygwin system like MobaXterm
 - __me-msys.sh__ - wrapper function to ME within the msys2 system
 - __me-msys2.sh__ - combines cygwin and msys approach
 
