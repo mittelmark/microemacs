@@ -50,8 +50,8 @@
 !elif &lfind "|cygwinc|freebsd|linuxc|darwinc|" %platform
     ; initialize some things if you are on a Unix like terminal
     ; uncomment next line(s) in case of backspace trouble
-    ; translate-key "\x7f" "backspace" 
-    ; translate-key "C-[ [ 2 ; 5 ~" "C-backspace"
+    translate-key "\x7f" "backspace" 
+    translate-key "C-[ [ 2 ; 5 ~" "C-backspace"
 !elif &lfind "|win32|" %platform
     ; initialize some variables or keys if you are on a Windows machine
     global-bind-key beginning-of-line       "home"
