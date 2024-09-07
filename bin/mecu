@@ -14,6 +14,16 @@
 
 ## check for none interactive arguments like:
 ## help, version, message, pipe
+
+if [ "$1" == "--encoding" ]; then
+  # Store the second argument in a variable
+  encoding="$2"
+  # Remove both arguments from the parameter list
+  shift 2
+else
+  encoding="ISO-8859-15"
+fi
+echo $encoding
 if [ "$1" == "-h" -o "$1" == "-V" -o "$1" == "-m" -o "$1" == "-o" -o "$1" == "-p" -o "$1" == "-P" ] ;  then 
     mecb "$@"
 else
@@ -27,7 +37,7 @@ else
 
     if [ "$res" == "" ] ; then 
         ## a new one
-       TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO-8859-15 mecb "$@"
+       TERM=xterm abduco -A -e ^z mec$tty luit -encoding $encoding mecb "$@"
     else
         ## attach to an old one
         abduco -a -e ^z mec$tty 
