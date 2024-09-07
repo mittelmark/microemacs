@@ -3,7 +3,7 @@
 ; See the file me.emf for copying and conditions.
 ; Description: Solarized Light
 set-variable $system &band $system &bnot 0x020
-set-variable .hilight.flags 12
+set-variable .hilight.flags 15
 ; Create the colors first
 add-color &set .col0 0 200 200 200
 add-color &set .col1 1 238 232 213
