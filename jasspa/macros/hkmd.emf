@@ -9,7 +9,7 @@
 ;
 define-macro fhook-md
   set-variable #l0 &isin ".rmd" $buffer-bname "rmd" "md"
-  ml-write #l0
+  ;ml-write #l0
   !if #l0
       @# buffer-init "md" "rmd"
   !else
