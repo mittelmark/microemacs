@@ -105,10 +105,11 @@ set-variable .fhook-shell.comment "|#||#|# | #|r|"
     hilight .hilight.shell 1     "umask"           .scheme.keyword
     hilight .hilight.shell 1     "unset"           .scheme.keyword
     hilight .hilight.shell 1     "wait"            .scheme.keyword
-    ; Shell commands
+    ; Bash Shell function
     !if &band .hilight.flags 0x04
-        hilight .hilight.shell 0 "^\\s*\\{function\\s+\\w+" .scheme.function
+        hilight .hilight.shell 0 "^\\s*\\{function\\s+\\S+" .scheme.function
     !endif
+    ; Shell commands
     hilight .hilight.shell 1     "alias"           .scheme.keyword
     hilight .hilight.shell 1     "break"           .scheme.keyword
     hilight .hilight.shell 1     "breaksw"         .scheme.keyword
