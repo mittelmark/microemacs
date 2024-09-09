@@ -62,6 +62,8 @@ function inlist() {
     return 1  # String not found
 }
 # Loop through all the provided arguments
+SCRIPT_PATH="${BASH_SOURCE}"
+SCRIPT_DIR="$(dirname "${SCRIPT_PATH}")"
 for arg in "$@"; do
     # Check if the argument starts with --theme=
     if [[ "$arg" == --theme=* ]]; then
@@ -71,6 +73,9 @@ for arg in "$@"; do
        if inlist "$theme" "${themes[@]}"; then
            echo "Theme: $theme is there"        
            theme-$theme
+       elif [[ -f "${SCRIPT_DIR}/theme-${theme}.sh" ]]; then
+           source "${SCRIPT_DIR}/theme-${theme}.sh"
+           echo "sourced theme $theme"
        else
            echo "Wrong theme $theme!"
            exit
