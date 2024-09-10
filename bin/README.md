@@ -36,4 +36,11 @@ Wrapper functions to start MicroEmacs for Linux and Windows
 - __me-msys.sh__ - wrapper function to ME within the msys2 system
 - __me-msys2.sh__ - combines cygwin and msys approach
 
+__ME-Theme related:__
 
+* __mecu__ - as well with selection of themes based on shell-codes from
+  https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/dynamic-colors 
+*  __xrdb2scheme.sh__  - convert xrdb schemes into  scheme-emf  code for color
+  schemes at https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/xrdb/
+*  __theme-THEMENAME.sh__  -  example  themes  which  can  be  used  to  start
+  MicroEmacs via mecu
