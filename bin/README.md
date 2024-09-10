@@ -43,4 +43,13 @@ __ME-Theme related:__
 *  __xrdb2scheme.sh__  - convert xrdb schemes into  scheme-emf  code for color
   schemes at https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/xrdb/
 *  __theme-THEMENAME.sh__  -  example  themes  which  can  be  used  to  start
-  MicroEmacs via mecu
+  MicroEmacs via mecu taken from the Github project
+  https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/dynamic-colors
+
+Here how to use these  themes  via mecu , place  these  scripts  into the same
+folder as the mecu wrapper script and then run:
+
+```
+mecu --theme=github-dark ...
+```
+

@@ -4961,6 +4961,34 @@
 
 ## Development History 
 
+  - [240613]
+    - tango, artur, ayu dark, solarized dark and light themes added
+    - ayu light theme fixes
+    - adding theme and encoding selection to mecu wrapper
+    - fix function highlighting for Bash
+    - adding xrdb2scheme.sh converter for easier creation of new themes
+      based on schemes on Github in 
+      https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/xrdb/
+
+  - [240906]
+    - luit tool hints for working with on Unicode terminals added
+    - packaging mec as Python package
+    - suppport for building cygwin binaries on Github Windows server
+    - homebrew package formula of mec for Linux and MacOS
+    - mecu Bash wrapper script using luit and abduco to run mec easily on 
+      Unicode only terminal
+        
+  - [240831]
+    - warning fix for 32bit compiler
+    - more builds from 24b1 release cygwin, freebsd, appimage
+    - x11 font script added
+    - cleaning up new user template
+    - git-com variable for specifying git executable (mainly windows) 
+    - compiler option -flto changed for linking to -flto=auto for 50% speed gain
+    - link highlighting for Markdown
+    - mec alias hints for backspace issues, activating fix in newuser.etf
+    - cleanup bdf file directories, moved ttf2bdf script
+            
   - [240824]
     - release v09.12.24.b1 (beta-1)
     - support as well for Cygwin and FreeBSD
@@ -8301,6 +8329,8 @@
   [faq46](faq46(0f)) - What is a bfs executuable?  
   [faq47](faq47(0f)) - How can I use True Type Fonts within  MicroEmacs on a X11 system ??  
   [faq48](faq48(0f)) - How to deal with UTF-8 enabled terminals with console MicroEmacs ??  
+  [faq49](faq49(0f)) - What are the recommended ISO encodings I should use for my terminal session??  
+  [faq50](faq50(0f)) - How to use other existing editor color schemes in MicroEmacs?  
 
 !! me-id: amicr041
 ! 0ffaq00
@@ -9269,7 +9299,8 @@
   __Tools__ -> __User Setup__ -> __Platform__ -> __Color Scheme__
 
   The default setting is _White on Black_, the _Black on Cream_ is the most
-  popular setting.
+  popular  setting.  To see for hints on how to use other  well  known  editor
+  themes see [faq50](faq50(0f)).
 
   [[FAQ Index]](Frequently Asked Questions).
 !! me-id: amicr076
@@ -9898,7 +9929,7 @@
   If you run the terminal  version of  MicroEmacs  the character  encodings are
   defined  by the  terminal  emulator.  For some of them  (like Mate or Gnome
   terminal)  you can  change  the font  encodings  using a menu,  others  like
-  LX-terminal  or if you run a terminal multiplexer like tmux - only support
+  LX-terminal the terminal multiplexer like tmux - only support
   Unicode  encodings. If you work with MicroEmacs on such a terminal, the display
   of non-ASCII characters might behave weird. There are two ways to fix this issue:
   
@@ -9932,10 +9963,125 @@
   >  aliasc me-iso-15="TERM=xterm luit -encoding ISO-8859-15 mec"
   
   One  disadvantage  of using `luit` is, that you can't suspend MicroEmacs if running
-  it within `luit`.
+  it within  `luit`. To get  suspension  you might use  another  tools  called
+  abduco which allows you to suspend a terminal session in in principle. Aduco
+  is as well a standard  tool on Linux  systems  which  should be  installable
+  using your package manager like thist:
   
+       sudo dnf install abduco      ## fedora, redhat system
+       sudo apt install abduco      ## debian based systems
+       sudo pacman -S   abduco      ## arch based systems
+       sudo pkg install abduco      ## freebsd system
+
+  After you have  installed  abduco and luit you might  create a little  shell
+  function or a shell script like this:
+  
+       #!/usr/bin/env bash
+       ## file mecu 
+       tty=$(tty | grep -Eo '[0-9]+')
+       TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO559-15 mecb "$@"
+
+  This little wrapper function will either attach an existing session on your
+  current  terminal  or  create  a new one. You  might  replace  the  encoding
+  ISO8859-15  with an encoding more  appropriate to your system. Make the file
+  executable and move it to your bin folder.
+
   [[FAQ Index]](Frequently Asked Questions).
 
+!! me-id: amicr091
+! 0ffaq49
+## QUESTION (49)
+  
+  What are the recommended ISO encodings I should use for my terminal session:
+
+  - ISO 8859-1 Western Europe
+  - ISO 8859-2 Western and Central Europe (German, Poland)
+  - ISO 8859-3 Western Europe and South European (Turkish, Maltese plus Esperanto)
+  - ISO 8859-4 Western Europe and Baltic countries (Lithuania, Estonia, Latvia and Lapp)
+  - ISO 8859-5 Cyrillic alphabet
+  - ISO 8859-7 Greek
+  - ISO 8859-8 Hebrew
+  - ISO 8859-9 Western Europe with amended Turkish character set
+  - ISO 8859-10 Western Europe with rationalised character set for Nordic languages, including complete Icelandic set
+  - ISO 8859-13 Baltic languages plus Polish
+  - ISO 8859-15 Added the Euro sign and other rationalisations to ISO 8859-1
+  - ISO 8859-16 Central, Eastern and Southern European languages (Albanian, Bosnian, Croatian, Hungarian, Polish, 
+
+!! me-id: amicr092
+! 0ffaq50
+## QUESTION (50)
+
+  How can I use other popular editor color themes in MicroEmacs?
+  
+  Importinng  other editor themes is not that  difficult. You can quite easily
+  create  existing  color schemes for dark mode using the default color scheme
+  "Default White on Black". If you go to the Github project page:
+  https://github.com/mbadolato/iTerm2-Color-Schemes you find there downloads
+  for the terminal 
+  https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/dynamic-colors
+  as shell scripts and for an X11-session as xrdb-files.  
+  
+  For the terminal just choose the shell script of your choice and execute it before
+  your start you MicroEmacs terminal version. You should use the standard MicroEmacs
+  theme "Default White on Black" as it mostly compatible with the shell script themes.
+  
+  So a terminal session could look like this:
+  
+       source /path/to/neobones_light.sh    
+       mecb  
+  
+  Usually  dark themes work better than light  themes.  Light themes only work
+  with  the  default  theme if color 0 and 8 are set to light  colors.  If you
+  background  is dark for a white  theme you can try out the  Scheme  "Termcap
+  (White)" which fits quite nicely for light themes
+   
+  For the X11 GUI  MicroEmacs  a scheme file should be  generated.  There is a
+  little shell script  xrdb2scheme.sh  in the Github bin folder which can be used
+  to convert xrdb files into MicroEmacs color scheme code:
+  
+       bash bin/xrdb2scheme.sh  /path/to/xrdb-file
+       
+  will  print  out the  color  creation  code for a scheme  file. Use the file
+  `schemeat.emf`  (the Artur theme) as template,  replace the color lines from
+  color 1 to 21 with code printed to the  terminal,  give the theme a new name
+  which is shown in the  description  part on top.  Color  1-16 are the  usual
+  terminal  themes,  (black, red, green,  yellow,  blue,  purple, cyan, white)
+  first full then bright versions, color 17 is the background  color, color 18
+  is the foreground  color, color 19 is the cursor color, color 20 is the text
+  selection  background  color  and color 21 is the text  selection  foregound
+  color.
+  
+  Here an example session:
+  
+       $ bash bin/xrdb2scheme.sh ~/Downloads/Github-Dark.sh 
+       add-color &set .col1 1 0 0 0
+       add-color &set .col2 2 247 129 102
+       add-color &set .col3 3 86 211 100
+       add-color &set .col4 4 227 179 65
+       add-color &set .col5 5 108 164 248
+       add-color &set .col6 6 219 97 162
+       add-color &set .col7 7 43 116 137
+       add-color &set .col8 8 255 255 255
+       add-color &set .col9 9 77 77 77
+       add-color &set .col10 10 247 129 102
+       add-color &set .col11 11 86 211 100
+       add-color &set .col12 12 227 179 65
+       add-color &set .col13 13 108 164 248
+       add-color &set .col14 14 219 97 162
+       add-color &set .col15 15 43 116 137
+       add-color &set .col16 16 255 255 255
+       add-color &set .col17 17 16 18 22
+       add-color &set .col18 18 139 148 158
+       add-color &set .col19 19 201 209 217
+       add-color &set .col20 20 59 80 112
+       add-color &set .col21 21 255 255 255
+    
+  These color defintions must be placed in the color scheme file.
+  Usally there is then some teweaking required in the
+  [scheme-editor(3)](scheme-editor(3)).
+
+  [[FAQ Index]](Frequently Asked Questions).
+  
 !! me-id: m1cmd000
 ! 1 me
 ## NAME
