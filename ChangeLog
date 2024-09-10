@@ -7,8 +7,44 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <240821.1506>
+>  Last Modified : <240910.0743>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+  
+ [240913]
+ 
+    - tango, artur, ayu dark, solarized dark and light themes added
+    - ayu light theme fixes
+    - adding theme and encoding selection to mecu wrapper
+    - fix function line highlighting for Bash
+    - adding xrdb2scheme.sh converter for easier creation of new themes
+      based on schemes on Github in 
+      https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/xrdb/
+
+  [240906]
+  
+    - luit tool hints for working with on Unicode terminals added
+    - packaging mec as Python package
+    - suppport for building cygwin binaries on Github Windows server
+    - homebrew package formula of mec for Linux and MacOS
+    - mecu Bash wrapper script using luit and abduco to run mec easily on 
+      Unicode only terminal
+        
+  [240831]
+  
+    - warning fix for 32bit compiler
+    - more builds from 24b1 release cygwin, freebsd, appimage
+    - x11 font script added
+    - cleaning up new user template
+    - git-com variable for specifying git executable (mainly windows) 
+    - compiler option -flto changed for linking to -flto=auto for 50% speed gain
+    - link highlighting for Markdown
+    - mec alias hints for backspace issues, activating fix in newuser.etf
+    - cleanup bdf file directories, moved ttf2bdf script
+            
+  [240824]
+
+    - release v09.12.24.b1 (beta-1)
+    - support as well for Cygwin and FreeBSD
 
   [240820]
   
