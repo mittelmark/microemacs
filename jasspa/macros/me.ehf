@@ -21608,7 +21608,7 @@ $a
     For example the following expansion string inserts the string cGcG!continuecAcA
     and a newline:-
 
-        "`!abort\r`"
+       cG"!continue\r"cA
 
     Note that cCcG\rcAcA is used instead of cCcG\ncAcA as cDC-mcA is bound to lsnewline(2)lmnewline(2)le and
     not cDC-jcA. The expansion string can also make use of a few useful
@@ -57431,7 +57431,7 @@ $a
     
          Back tab. Deletes a tab character backwards.
 
-        cD\m"cA_<string>cD_"cA Macro execution
+        cD\m"cA<string>" Macro execution
     
          Takes the remainder of the line as a keyboard macro definition.
           The macro string is generated using lsinsert-macro(2)lminsert-macro(2)le and must be
