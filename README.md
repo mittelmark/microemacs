@@ -1,11 +1,13 @@
 
-## <img src="jasspa/pixmaps/me_m.png" />  MicroEmacs
+## <img src="jasspa/pixmaps/me_s.png" />  MicroEmacs
 
 [![Release](https://img.shields.io/github/v/release/mittelmark/microemacs.svg?label=current+release)](https://github.com/mittelmark/microemacs/releases)
 [![license](https://img.shields.io/badge/license-GPL2-lightgray.svg)](https://www.gnu.org/licenses/gpl.htm)
 
 ![Ubuntu](https://github.com/mittelmark/microemacs/workflows/Binaries%20Ubuntu%2020,22,24%20(linux-gcc)/badge.svg)
 ![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS-12,13,14%20(macos-gcc)/badge.svg)
+![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
+![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20Cygwin/badge.svg)
 
 - [Executable Types](#Types)
 - [New Features](#Features)
