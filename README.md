@@ -7,7 +7,7 @@
 ![Ubuntu](https://github.com/mittelmark/microemacs/workflows/Binaries%20Ubuntu%2020,22,24%20(linux-gcc)/badge.svg)
 ![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS-12,13,14%20(macos-gcc)/badge.svg)
 ![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
-![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20Cygwin/badge.svg)
+![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin/badge.svg)
 
 - [Executable Types](#Types)
 - [New Features](#Features)
