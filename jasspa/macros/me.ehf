@@ -856,6 +856,7 @@ Miscellaneous Information
     lssave-some-buffers(2)lmsave-some-buffers(2)le Save contents of all changed buffers to file (with  
       query)
     lsset-encryption-key(2)lmset-encryption-key(2)le (esc e) Define the encryption key  
+    lssave-kbd-macro(3)lmsave-kbd-macro(3)le Save a named  keyboard  macro into an emf file  
     lssuspend-emacs(2)lmsuspend-emacs(2)le Suspend editor and place in background  
     lsview-file(2)lmview-file(2)le (C-x C-v) Load a file read only  
     lswatch(3)lmwatch(3)le Monitor a changing file  
@@ -1005,6 +1006,7 @@ Miscellaneous Information
     lsinsert-macro(2)lminsert-macro(2)le Insert keyboard macro into buffer  
     lskbd-macro-query(2)lmkbd-macro-query(2)le (C-x q) Query termination of keyboard macro  
     lsname-kbd-macro(2)lmname-kbd-macro(2)le Assign a name to the last keyboard macro  
+    lssave-kbd-macro(3)lmsave-kbd-macro(3)le Save a named  keyboard  macro into an emf file  
     lsstart-kbd-macro(2)lmstart-kbd-macro(2)le (C-x () Start recording keyboard macro  
 
 
@@ -2196,6 +2198,7 @@ Miscellaneous Information
        changes  
     lssave-dictionary(2)lmsave-dictionary(2)le Save changed spelling dictionaries  
     lssave-registry(2)lmsave-registry(2)le Write a registry definition file  
+    lssave-kbd-macro(3)lmsave-kbd-macro(3)le Save a named  keyboard  macro into an emf file  
     lssave-session(3)lmsave-session(3)le Write session information to session file  
     lssave-some-buffers(2)lmsave-some-buffers(2)le Save contents of all changed buffers to file (with
        query)  
@@ -2702,6 +2705,7 @@ Miscellaneous Information
     lsrgrep(3)lmrgrep(3)le Execute recursive grep command  
     lssave-all(3)lmsave-all(3)le Save all modified files (with query)  
     lssave-session(3)lmsave-session(3)le Write session information to session file  
+    lssave-kbd-macro(3)lmsave-kbd-macro(3)le Save a named  keyboard  macro into an emf file  
     lsscheme-editor(3)lmscheme-editor(3)le Color Scheme Editor  
     lsshut-down(3)lmshut-down(3)le Editor exit callback command  
     lssort-lines-ignore-case(3)lmsort-lines-ignore-case(3)le Alphabetically sort lines ignoring case  
@@ -3863,6 +3867,7 @@ Miscellaneous Information
     lssave-buffer(2)lmsave-buffer(2)le (C-x C-s) Save contents of changed buffer to file  
     lssave-buffers-exit-emacs(2)lmsave-buffers-exit-emacs(2)le (esc z) Exit the editor prompt user to write changes  
     lssave-dictionary(2)lmsave-dictionary(2)le Save changed spelling dictionaries  
+    lssave-kbd-macro(3)lmsave-kbd-macro(3)le Save a named  keyboard  macro into an emf file  
     lssave-registry(2)lmsave-registry(2)le Write a registry definition file  
     lssave-session(3)lmsave-session(3)le Write session information to session file  
     lssave-some-buffers(2)lmsave-some-buffers(2)le Save contents of all changed buffers to file (with query)  
@@ -5036,6 +5041,34 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [240613]
+      - tango, artur, ayu dark, solarized dark and light themes added
+      - ayu light theme fixes
+      - adding theme and encoding selection to mecu wrapper
+      - fix function highlighting for Bash
+      - adding xrdb2scheme.sh converter for easier creation of new themes
+        based on schemes on Github in 
+        https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/xrdb/
+
+    - [240906]
+      - luit tool hints for working with on Unicode terminals added
+      - packaging mec as Python package
+      - suppport for building cygwin binaries on Github Windows server
+      - homebrew package formula of mec for Linux and MacOS
+      - mecu Bash wrapper script using luit and abduco to run mec easily on 
+        Unicode only terminal
+          
+    - [240831]
+      - warning fix for 32bit compiler
+      - more builds from 24b1 release cygwin, freebsd, appimage
+      - x11 font script added
+      - cleaning up new user template
+      - git-com variable for specifying git executable (mainly windows) 
+      - compiler option -flto changed for linking to -flto=auto for 50% speed gain
+      - link highlighting for Markdown
+      - mec alias hints for backspace issues, activating fix in newuser.etf
+      - cleanup bdf file directories, moved ttf2bdf script
+              
     - [240824]
       - release v09.12.24.b1 (beta-1)
       - support as well for Cygwin and FreeBSD
@@ -10018,7 +10051,9 @@ Miscellaneous Information
          mecb  
     
     Usually  dark themes work better than light  themes.  Light themes only work
-    with the default theme if color 0 and 8 are set to light colors.
+    with  the  default  theme if color 0 and 8 are set to light  colors.  If you
+    background  is dark for a white  theme you can try out the  Scheme  "Termcap
+    (White)" which fits quite nicely for light themes
      
     For the X11 GUI  MicroEmacs  a scheme file should be  generated.  There is a
     little shell script  xrdb2scheme.sh  in the Github bin folder which can be used
@@ -12297,7 +12332,9 @@ $a
     you would like to cCrecordcA for later use, lsinsert-macro(2)lminsert-macro(2)le can be used to
     insert the macro into a text file and can be reloaded using the
     lsexecute-file(2)lmexecute-file(2)le or lsexecute-buffer(2)lmexecute-buffer(2)le commands.
-
+    Using the command lssave-kbd-macro(3)lmsave-kbd-macro(3)le the named recorded macro can
+    saved to the users emf file.
+    
     Recording commences with cDstart-kbd-macrocA (cGC-x (cA) and terminates when an
     cDend-kbd-macrocA (`C-x )` is encountered.
 
@@ -12316,7 +12353,7 @@ $a
 
 
     lsexecute-kbd-macro(2)lmexecute-kbd-macro(2)le, lsinsert-macro(2)lminsert-macro(2)le, lskbd-macro-query(2)lmkbd-macro-query(2)le,
-    lsname-kbd-macro(2)lmname-kbd-macro(2)le.
+    lsname-kbd-macro(2)lmname-kbd-macro(2)le, lssave-kbd-macro(3)lmsave-kbd-macro(3)le.
 ! 2 beginning-of-buffer
 ! 2 end-of-buffer
 cEcENAME cEcA
@@ -42573,6 +42610,32 @@ $a
 
 
     lsClearCase(3)lmClearCase(3)le, lscsv(3)lmcsv(3)le.
+! 3 save-kbd-macro
+cEcENAME cEcA
+
+
+|save-kbd-macro
+    save-kbd-macro - saves a recorded and named keyboard macro
+$a
+    
+cESYNOPSIS cA
+
+     cDsave-kbd-macrocA ["macro-name"]
+     
+cEDESCRIPTION cA
+     
+    Saves the last recorded keyboard macro with the given name. If the argument 
+    "macro-name" is missing requests a macro name from the user. The macro is 
+    saved usually in the cGuser-name.emfcA file. Th file usually has to be saved 
+    manually before closing MicroEmacs to be available in the next session.
+
+cENOTES cA
+
+    cDsave-kbd-macrocA is defined in file cGtools.emfcA.
+
+cESEE ALSO cA
+
+    lsMacro CommandslmMacro Commandsle
 ! 3 user-setup
 cEcENAME cEcA
 

@@ -756,6 +756,7 @@
   [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with  
     query)
   [set-encryption-key(2)](set-encryption-key(2)) (esc e) Define the encryption key  
+  [save-kbd-macro(3)](save-kbd-macro(3)) Save a named  keyboard  macro into an emf file  
   [suspend-emacs(2)](suspend-emacs(2)) Suspend editor and place in background  
   [view-file(2)](view-file(2)) (C-x C-v) Load a file read only  
   [watch(3)](watch(3)) Monitor a changing file  
@@ -909,6 +910,7 @@
   [insert-macro(2)](insert-macro(2)) Insert keyboard macro into buffer  
   [kbd-macro-query(2)](kbd-macro-query(2)) (C-x q) Query termination of keyboard macro  
   [name-kbd-macro(2)](name-kbd-macro(2)) Assign a name to the last keyboard macro  
+  [save-kbd-macro(3)](save-kbd-macro(3)) Save a named  keyboard  macro into an emf file  
   [start-kbd-macro(2)](start-kbd-macro(2)) (C-x () Start recording keyboard macro  
 
 
@@ -2113,6 +2115,7 @@
      changes  
   [save-dictionary(2)](save-dictionary(2)) Save changed spelling dictionaries  
   [save-registry(2)](save-registry(2)) Write a registry definition file  
+  [save-kbd-macro(3)](save-kbd-macro(3)) Save a named  keyboard  macro into an emf file  
   [save-session(3)](save-session(3)) Write session information to session file  
   [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with
      query)  
@@ -2620,6 +2623,7 @@
   [rgrep(3)](rgrep(3)) Execute recursive grep command  
   [save-all(3)](save-all(3)) Save all modified files (with query)  
   [save-session(3)](save-session(3)) Write session information to session file  
+  [save-kbd-macro(3)](save-kbd-macro(3)) Save a named  keyboard  macro into an emf file  
   [scheme-editor(3)](scheme-editor(3)) Color Scheme Editor  
   [shut-down(3)](shut-down(3)) Editor exit callback command  
   [sort-lines-ignore-case(3)](sort-lines-ignore-case(3)) Alphabetically sort lines ignoring case  
@@ -3784,6 +3788,7 @@
   [save-buffer(2)](save-buffer(2)) (C-x C-s) Save contents of changed buffer to file  
   [save-buffers-exit-emacs(2)](save-buffers-exit-emacs(2)) (esc z) Exit the editor prompt user to write changes  
   [save-dictionary(2)](save-dictionary(2)) Save changed spelling dictionaries  
+  [save-kbd-macro(3)](save-kbd-macro(3)) Save a named  keyboard  macro into an emf file  
   [save-registry(2)](save-registry(2)) Write a registry definition file  
   [save-session(3)](save-session(3)) Write session information to session file  
   [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with query)  
@@ -12345,7 +12350,9 @@ $a
   you would like to _record_ for later use, [insert-macro(2)](insert-macro(2)) can be used to
   insert the macro into a text file and can be reloaded using the
   [execute-file(2)](execute-file(2)) or [execute-buffer(2)](execute-buffer(2)) commands.
-
+  Using the command [save-kbd-macro(3)](save-kbd-macro(3)) the named recorded macro can
+  saved to the users emf file.
+  
   Recording commences with __start-kbd-macro__ (`C-x (`) and terminates when an
   __end-kbd-macro__ (`C-x )` is encountered.
 
@@ -12364,7 +12371,7 @@ $a
 
 
   [execute-kbd-macro(2)](execute-kbd-macro(2)), [insert-macro(2)](insert-macro(2)), [kbd-macro-query(2)](kbd-macro-query(2)),
-  [name-kbd-macro(2)](name-kbd-macro(2)).
+  [name-kbd-macro(2)](name-kbd-macro(2)), [save-kbd-macro(3)](save-kbd-macro(3)).
 !! me-id: m2cmd012
 ! 2 beginning-of-buffer
 ! 2 end-of-buffer
@@ -43178,6 +43185,33 @@ $a
 
 
   [ClearCase(3)](ClearCase(3)), [csv(3)](csv(3)).
+!! me-id: m3mac097
+! 3 save-kbd-macro
+## NAME
+
+
+|save-kbd-macro
+  save-kbd-macro - saves a recorded and named keyboard macro
+$a
+  
+## SYNOPSIS
+
+   __save-kbd-macro__ ["macro-name"]
+   
+## DESCRIPTION
+   
+  Saves the last recorded keyboard macro with the given name. If the argument 
+  "macro-name" is missing requests a macro name from the user. The macro is 
+  saved usually in the `user-name.emf` file. Th file usually has to be saved 
+  manually before closing MicroEmacs to be available in the next session.
+
+## NOTES
+
+  __save-kbd-macro__ is defined in file `tools.emf`.
+
+## SEE ALSO
+
+  [Macro Commands](Macro Commands)
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME
