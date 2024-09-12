@@ -21823,7 +21823,7 @@ $a
   For example the following expansion string inserts the string "`!continue`"
   and a newline:-
 
-      "`!abort\r`"
+  >  `"!continue\r"`
 
   Note that '`\r`' is used instead of '`\n`' as __C-m__ is bound to [newline(2)](newline(2)) and
   not __C-j__. The expansion string can also make use of a few useful
@@ -58293,7 +58293,7 @@ $a
      may include special tokens, delimited by a backslash ('`\`') character
      which are interpreted as follows:-
 
-  >   __\b__ Move cursor backwards
+  >   __\B__ Move cursor backwards
   
   > >   A positioning control. Allows the cursor to be moved backwards 1
         character.
@@ -58302,7 +58302,7 @@ $a
   
   > >   Back tab. Deletes a tab character backwards.
 
-  >   __\m"___<string>___"__ Macro execution
+  >   __\m"__<string>" Macro execution
   
   > >   Takes the remainder of the line as a keyboard macro definition.
         The macro string is generated using [insert-macro(2)](insert-macro(2)) and must be
@@ -58337,13 +58337,13 @@ $a
   language, found in file __c.eaf__. All cursor positions in the examples are
   shown by __<@>__.
 
-      #i #include <\p>\r
-      #d #define \p
-      if if(\p)\r{\r\r}\r
-      ef else if(\p)\r{\r\r}\r
-      el else\r{\r\p\r}\r
-      wh while(\p)\r{\r\r}\r
-      sw switch(\p)\r{\rcase :\rdefault :\r}\r
+      #i "#include <\p>\r"
+      #d "#define \p"
+      if "if(\p)\r{\r\r}\r"
+      ef "else if(\p)\r{\r\r}\r"
+      el "else\r{\r\p\r}\r"
+      wh "while(\p)\r{\r\r}\r"
+      sw "switch(\p)\r{\rcase :\rdefault :\r}\r"
 
 
   Given that the abbreviation file has been declared then expansion of:
@@ -58385,11 +58385,11 @@ $a
   to move the cursor to the correct position; alternatively a sequence of
   cursor movements may be used.
 
-  The "\b" and "\d" are typically used for positioning the cursor on
+  The "\B" and "\d" are typically used for positioning the cursor on
   subsequent lines. "\d" is the inverse of "\t". Consider the following
   Pascal definition for an _else_, _begin_ and _end_ sequence:-
 
-       el else\rbegin\r\t\p;\r\dend;
+       el "else\rbegin\r\t\p;\r\dend;"
 
 
   with [indent(2m)](indent(2m)) mode enabled generates:-
@@ -58400,13 +58400,13 @@ $a
                  end;
 
 
-  Similarly the "\b" is typically used when [indent(2m)](indent(2m)) is enabled, but when
+  Similarly the "\B" is typically used when [indent(2m)](indent(2m)) is enabled, but when
   the tab spacing is known. Consider the following example used in the
   MicroEmacs 2009 __.emf__ files to define a help entry. In this case the indent
   is known to be 5 characters. Hence to move the cursor back 5 characters
-  then a sequence of __\b__'s are used:- 
+  then a sequence of __\B__'s are used:- 
 
-      !h def .. \rSEE ALSO\r     <cross references>\r\b\b\b\b\b!ehelp
+      !h "def .. \rSEE ALSO\r     <cross references>\r\B\B\B\B!ehelp"
 
 
   the expansion in this case is:-
