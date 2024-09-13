@@ -50,11 +50,35 @@ function theme-dracula {
     printf "\033]19;#545454\007"
     printf "\033]5;0;#ffffff\007"
 }
+function find-themes {
+   path=""
+   if [ -d ~/.jasspa/themes ]; then
+       path=~/.jasspa/themes
+   elif [ -d ~/.config/jasspa/themes ]; then
+        path=~/.config/jasspa/themes
+   else
+      return 0
+   fi
+   for th in $(find $path -type f -name "theme*.sh" | awk '{print $0}' | sed -E 's/.+\/theme-(.+).sh/\1/') ; do #'
+       themes+=("$th")
+   done 
+}
+
+function lsort () {
+    local list=$@
+    nlist=$(echo ${list[@]} | sed -E 's/ /\n/g' | sort | paste -sd ' ')
+    unset list
+    echo "${nlist[@]}"
+}
+find-themes
+themes=($(lsort ${themes[@]}))
+#unset themes
+#themes=$themesn
 function inlist() {
     local search_string="$1"   # The string to search for
     shift                      # Shift the arguments to access the list
-    local list=("$@")          # The remaining arguments are the list
-    for item in "${list[@]}"; do
+    local list=$@             # The remaining arguments are the list
+    for item in ${list[@]}; do
         if [[ "$item" == "$search_string" ]]; then
                return 0  # String found
         fi
@@ -71,13 +95,18 @@ for arg in "$@"; do
        theme="${@##*--theme=}"
        theme="${theme%% *}"
        if inlist "$theme" "${themes[@]}"; then
-           echo "Theme: $theme is there"        
-           theme-$theme
+           if [ -f ~/.jasspa/themes/theme-${theme}.sh ]; then
+              source ~/.jasspa/themes/theme-${theme}.sh
+           elif [ -f ~/.config/jasspa/themes/theme-${theme}.sh ]; then
+              source ~/.jasspa/themes/theme-${theme}.sh
+           else   
+               theme-$theme
+           fi
        elif [[ -f "${SCRIPT_DIR}/theme-${theme}.sh" ]]; then
            source "${SCRIPT_DIR}/theme-${theme}.sh"
-           echo "sourced theme $theme"
        else
-           echo "Wrong theme $theme!"
+           echo "Error: Wrong theme '$theme!'!"
+           echo "Available themes are: ${themes[@]}"
            exit
        fi
     elif [[ "$arg" == --encoding=* ]]; then
@@ -92,7 +121,7 @@ for arg in "$@"; do
         echo -e "                    CP1252     (WEST-EUROPEAN)"
         echo -e "              use luit -list to see all available ones"
         echo -e "   --theme=THEME"
-        echo -e "      where themes are: artur, dracula, espresso, iterm"
+        echo -e "      where themes are:\n      $(echo ${themes[@]} | paste -s -d ' ')\n"
         exit
     else    
         new_args+=("$arg")
