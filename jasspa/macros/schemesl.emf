@@ -43,17 +43,17 @@ add-color-scheme .scheme.osd-title .col2 .col0 .col10 .col8 .col0 .col2 .col8 .c
 add-color-scheme .scheme.osd-child .col4 .col1 .col12 .col9 .col16 .col4 .col16 .col12 0 8 0 8 8 0 8 0
 add-color-scheme .scheme.osd-sbar .col9 .col0 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
 ; Programming Langs
-add-color-scheme .scheme.prepro .col4 .col1 .col4 .col9 .col4 .col16 .col4 .col15 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.function .col7 .col1 .col15 .col9 .col7 .col16 .col7 .col15 17 25 17 25 17 25 17 25
-add-color-scheme .scheme.keyword .col7 .col1 .col15 .col9 .col7 .col16 .col7 .col15 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.prepro .col4 .col1 .col4 .col9 .col4 .col16 .col4 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.function .col7 .col1 .col15 .col9 .col7 .col16 .col7 .col8 17 25 17 25 17 25 17 25
+add-color-scheme .scheme.keyword .col7 .col1 .col15 .col9 .col7 .col16 .col7 .col8 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.type .col3 .col1 .col11 .col1 .col3 .col16 .col3 .col12 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.operator .col4 .col1 .col12 .col9 .col4 .col16 .col4 .col12 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.variable .col3 .col1 .col11 .col9 .col3 .col16 .col3 .col12 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.constant .col10 .col1 .col10 .col9 .col10 .col16 .col10 .col12 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.comment .col2 .col1 .col10 .col9 .col2 .col16 .col10 .col12 2 10 2 10 2 10 2 10
-add-color-scheme .scheme.string .col6 .col1 .col14 .col9 .col6 .col16 .col14 .col12 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.quote .col6 .col1 .col14 .col9 .col6 .col16 .col14 .col12 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.error .col10 .col1 .col2 .col9 .col10 .col16 .col10 .col12 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.operator .col4 .col1 .col12 .col9 .col4 .col16 .col4 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.variable .col3 .col1 .col11 .col9 .col3 .col16 .col3 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.constant .col10 .col1 .col10 .col9 .col10 .col16 .col10 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.comment .col2 .col1 .col10 .col9 .col2 .col16 .col10 .col8 2 10 2 10 2 10 2 10
+add-color-scheme .scheme.string .col6 .col1 .col14 .col9 .col6 .col16 .col14 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.quote .col6 .col1 .col14 .col9 .col6 .col16 .col14 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.error .col10 .col1 .col2 .col9 .col10 .col16 .col10 .col8 0 8 0 8 0 8 0 8
 ; Formatted Text
 add-color-scheme .scheme.header .col4 .col1 .col11 .col9 .col4 .col16 .col4 .col12 1 9 1 9 1 9 1 9
 add-color-scheme .scheme.link .col6 .col1 .col14 .col9 .col6 .col16 .col14 .col12 16 24 16 24 16 24 16 24
