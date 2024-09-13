@@ -3,7 +3,7 @@
 ; See the file me.emf for copying and conditions.
 ; Description: Default White on Black
 set-variable $system &band $system &bnot 0x020
-set-variable .hilight.flags 15
+set-variable .hilight.flags 7
 ; Create the colors first
 add-color &set .col0 0 200 200 200
 add-color &set .col1 1 0 0 0
@@ -14,7 +14,7 @@ add-color &set .col5 5 30 30 255
 add-color &set .col6 6 200 0 200
 add-color &set .col7 7 0 200 200
 add-color &set .col8 8 255 255 255
-add-color &set .col9 9 85 85 85
+add-color &set .col9 9 75 75 75
 add-color &set .col10 10 255 0 0
 add-color &set .col11 11 0 255 0
 add-color &set .col12 12 255 255 0
