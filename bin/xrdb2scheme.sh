@@ -68,3 +68,4 @@ function xrdb2scheme {
 }
 
 xrdb2scheme "$@"
+

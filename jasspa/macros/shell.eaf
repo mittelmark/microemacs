@@ -16,6 +16,6 @@ fok "for key in \"${!dict[@]}\"; do\r    \pecho \"$key = ${dict[$key]}\"\r\B\B\B
 sl  "options=(op1 op2 op3)\rPS3=\"Select your option: \"\rselect option in \"${options[@]}\"; do\r  case\p\rdone\r\P" "  se(lect)"
  "" ""
  "" "\ecCBash File Checks:\ecA"
-fexi  "if [[ ! -f $\pfilename ]]; then\n    echo \"Error: File '$filename' does not exists!\rreturn 1\r\B\B\B\B\B\nfi\n\P" "  f(ile) ex(ists)"
-fext  "if [[ ! $\pfilename == *.ext ]]; then\n    echo \"Error: File '$filename' does not have the extension .ext!\rreturn 1\r\B\B\B\B\B\nfi\n\P" "  f(ile) ex(tension)"
+fexi  "if [[ ! -f $\pfilename ]]; then\r    echo \"Error: File '$filename' does not exists!\"\rreturn 1\r\B\B\B\Bfi\r\P" "  \ecCf\ecA(ile) \ecCexi\ecA(sts)"
+fext  "if [[ ! $\pfilename == *.ext ]]; then\r    echo \"Error: File '$filename' does not have the extension .ext!\"\rreturn 1\r\B\B\B\Bfi\r\P" "  \ecCf\ecA(ile) \ecCext\ecA(ension)"
  "" ""
