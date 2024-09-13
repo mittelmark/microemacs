@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
 
-function check_extension() {
-  local file="$1"
-  local extension="$2"
-
-  # Check if the file name matches the pattern with the desired extension
-  if [[ "$file" == *.$extension ]]; then
-    echo 0
-  else
-    echo 1
-  fi
-}
-
 function xrdb2scheme {
     if [ -z $2 ]; then
         echo "Usage: xrdb2scheme SCHEMENAME XRDBFILE"
@@ -62,6 +50,7 @@ function xrdb2scheme {
                      }
 
                  }' | sort -nk4,4 -n
+       printf "    screen-update\n" 
        printf "!emacro\n"; 
     fi 
     return 0
