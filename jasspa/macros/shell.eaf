@@ -15,5 +15,7 @@ foa "for \pvar in \"${arr[@]}\"; do\r    echo $var\r\B\B\B\Bdone\P" "  foa (fore
 fok "for key in \"${!dict[@]}\"; do\r    \pecho \"$key = ${dict[$key]}\"\r\B\B\B\Bdone\P" "  fok (foreach k,v)"
 sl  "options=(op1 op2 op3)\rPS3=\"Select your option: \"\rselect option in \"${options[@]}\"; do\r  case\p\rdone\r\P" "  se(lect)"
  "" ""
-
- 
+ "" "\ecCBash File Checks:\ecA"
+fexi  "if [[ ! -f $\pfilename ]]; then\n    echo \"Error: File '$filename' does not exists!\rreturn 1\r\B\B\B\B\B\nfi\n\P" "  f(ile) ex(ists)"
+fext  "if [[ ! $\pfilename == *.ext ]]; then\n    echo \"Error: File '$filename' does not have the extension .ext!\rreturn 1\r\B\B\B\B\B\nfi\n\P" "  f(ile) ex(tension)"
+ "" ""
