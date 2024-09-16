@@ -33,7 +33,7 @@ set-variable $cursor-color .col19
 ; Standard
 add-color-scheme $global-scheme .col18 .col17 .col1 .col16 .col0 .col9 .col17 .col9 0 8 0 8 0 8 0 8
 add-color-scheme $ml-scheme .col18 .col17 .col1 .col16 .col8 .col9 .col17 .col9 0 8 0 8 0 8 0 8
-add-color-scheme $mode-line-scheme .col16 .col2 .col10 .col1 .col0 .col2 .col8 .col10 8 0 8 0 0 8 0 8
+add-color-scheme $mode-line-scheme .col0 .col2 .col10 .col1 .col0 .col2 .col8 .col10 8 0 8 0 0 8 0 8
 add-color-scheme $scroll-bar-scheme .col9 .col18 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
 add-color-scheme $trunc-scheme .col4 .col17 .col12 .col16 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.dmf .col18 .col9 .col8 .col9 .col8 .col10 .col9 .col16 0 8 0 8 0 8 0 8
