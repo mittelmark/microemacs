@@ -78,6 +78,7 @@ define-macro-file dmf display-matching-fence
 define-macro-file etfinsrt insert-template
 define-macro-file xfind xfind xgrep rgrep
 define-macro-file schemosd scheme-editor
+define-macro-file xrdb xrdb-scheme
 define-macro-file mouseosd context-menu
 define-macro-file printstp print-setup
 define-macro-file abbrlist abbrev-list

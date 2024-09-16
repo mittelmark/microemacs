@@ -535,7 +535,7 @@
   [restyle-region(3)](restyle-region(3)) Automatically reformat a regions indentation  
   [scheme-editor(3)](scheme-editor(3)) Color Scheme Editor  
   [show-region(2)](show-region(2)) Show the current copy region  
-
+  [xrdb-scheme(3)](xrdb-scheme(3)) - load xrdb color scheme files into ME  
 
 ## Variables 
 
@@ -831,7 +831,7 @@
   [toolbar-open(3)](toolbar-open(3)) Open the tool bar  
   [toolbar-refresh(3)](toolbar-refresh(3)) Update the tool bar  
   [user-setup(3)](user-setup(3)) Configure MicroEmacs for a specific user  
-
+  [xrdb-scheme(3)](xrdb-scheme(3)) - load xrdb color scheme files into ME  
 
 ## Variables 
 
@@ -2198,6 +2198,7 @@
   [xdiff(3)](xdiff(3)) External graphical file difference  
   [xfind(3)](xfind(3)) Execute find command  
   [xgrep(3)](xgrep(3)) Execute grep command  
+  [xrdb-scheme(3)](xrdb-scheme(3)) - load xrdb color scheme files into ME  
   [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer  
   [yank-rectangle(2)](yank-rectangle(2)) (esc C-y) Insert a column of text  
   [yank-rectangle-overwrite(3)](yank-rectangle-overwrite(3)) Insert a column of text with overwrite  
@@ -2655,6 +2656,7 @@
   [xdiff(3)](xdiff(3)) External graphical file difference  
   [xfind(3)](xfind(3)) Execute find command  
   [xgrep(3)](xgrep(3)) Execute grep command  
+  [xrdb-scheme(3)](xrdb-scheme(3)) - load xrdb color scheme files into ME  
   [yank-rectangle-overwrite(3)](yank-rectangle-overwrite(3)) Insert a column of text with overwrite  
   [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
 !! me-id: amicr033
@@ -3912,6 +3914,7 @@
   [xml-forward-tag(3)](xml-forward-tag(3)) Find the next XML tag  
   [xml-goto-matching-tag(3)](xml-goto-matching-tag(3)) Find matching opening/closing XML tag  
   [xml-verify(3)](xml-verify(3)) Verify syntax of XML file  
+  [xrdb-scheme(3)](xrdb-scheme(3)) - load xrdb color scheme files into ME  
   [xsl(9)](xsl(9)) Extensible Stylesheet Language  
   [xul(9)](xul(9)) XML User Interface Language  
   [y(9)](y(9)) YACC programming language  
@@ -43212,6 +43215,52 @@ $a
 ## SEE ALSO
 
   [Macro Commands](Macro Commands)
+!! me-id: m3mac098
+! 3 xrdb-scheme
+## NAME
+
+
+|xrdb-scheme
+  xrdb-scheme - load xrdb color scheme files into MicroEmacs
+$a
+  
+## SYNOPSIS
+
+   __xrdb-scheme__ ["theme-name"]
+   
+## DESCRIPTION
+   
+  Loads X11-themes stored in xrdb files from the folder `themes` in the
+  users config  folder  usually  `~/.jasspa`  or  `~/.config/jasspa`  into the
+  running editor session. Themes in xrdb format are available from 
+  https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/xrdb
+  The files needs to be saved as `THEME-NAME.xrdb` in the `themes` folder.
+  If the users executed the `xrdb-scheme` command without a theme name as 
+  argument an interactive menu is presented which show all available menues in
+  the themes folder. So a typical themes folder might look like this;
+
+        $ ls ~/.jasspa/themes/*.xrdb
+        /home/username/.jasspa/themes/3024-day.xrdb         
+        /home/username/.jasspa/themes/3024-night.xrdb
+        /home/username/.jasspa/themes/belafonte-day.xrdb 
+        /home/username/.jasspa/themes/belafonte-night.xrdb
+        /home/username/.jasspa/themes/django.xrdb         
+        /home/username/.jasspa/themes/dracula-plus.xrdb   
+        /home/username/.jasspa/themes/floraverse.xrdb     
+        /home/username/.jasspa/themes/material-dark.xrdb  
+        /home/username/.jasspa/themes/material-light.xrdb
+
+ 
+## NOTES
+
+  __xrdb-scheme__ is defined in file `xrdb.emf`. Please note that
+  the colors in a xrdb file can't be changed in the [scheme-editor(3)](scheme-editor(3)).
+  To change the colors for an xrdb scheme you have to editor the 
+  xrdb file directly.
+  
+## SEE ALSO
+
+  [scheme-editor(3)](scheme-editor(3))
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

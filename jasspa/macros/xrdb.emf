@@ -1,0 +1,147 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : Detlef Groth, University of Potsdam
+;  Created By    : Detlef Groth
+;  Created       : Mon Sep 16 17:09:35 2024
+;  Last Modified : <240916.1726>
+;
+;  Description   : Load xrdb themes for X11 applications
+;                  directly as schemes into MicroEmacs
+;
+;  Notes         : you can install editor themes from
+;                  https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/xrdb
+;                  To install schemes, download the files to 
+;                  ~/.jasspa/themes or ~/.config/jasspa/themes
+;                  as filenames like theme-github-dark.sh
+;  History
+;
+;  Copyright (c) 2024 Detlef Groth, University of Potsdam, Germany.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Usage: xrdb-scheme ?scheme-name?
+;        if no scheme name is given then a message line request with valid
+;        theme names  is shown, you can use tab completion to select a theme
+;        a command like `xrdb-scheme "github-light"` will load the 
+;        theme data from a file ~/.jasspa/themes/theme-github-light.xrdb
+; the actual scheme parsing for a given filename
+
+0 define-macro xrdb-scheme-parse
+    find-file @1
+    1 buffer-mode "magic"
+    beginning-of-buffer
+    ; check if light or dark mode theme
+    !force search-buffer "me" "#define Background_Color"
+    !if $status
+        set-variable  .line @wl
+        !if &xse .line "#define Background_Color \\(#[0-9a-f]+\\)"
+            set-variable #l1 &slower &rep @s1 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2                        
+            !if &less .red 128
+                execute-file "schemead" ; ayu-dark
+            !else
+                execute-file "schemeal" ; ayu-light
+            !endif
+        !endif
+    !endif
+    ; extract the 21 colors
+    ; col1-col16 ansicolors 0-15
+    ; col17 background, col18 foreground, col19 cursor
+    ; col20 selection background, col21 selection foreground
+    beginning-of-buffer
+    !force search-buffer "me" "#define"
+    !while $status
+        set-variable  .line @wl
+        !if &xse .line "#define Ansi_\\([0-9]+\\)_Color \\(#[0-9a-f]+\\)"
+            set-variable #l0 @s1
+            set-variable #l0 &add #l0 1
+            set-variable #l1 &slower &rep @s2 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2    
+            set-variable .cn  &spr ".col%d" #l0
+            set-variable .n #l0
+            add-color &set .cn .n .red .green .blue ; Ansi_Color%d" 
+        !elif &xse .line "#define Background_Color \\(#[0-9a-f]+\\)"
+            set-variable #l1 &slower &rep @s1 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2                        
+            add-color &set .col17 17 .red .green .blue ; Background" 
+        !elif &xse .line "#define Foreground_Color \\(#[0-9a-f]+\\)"
+            set-variable #l1 &slower &rep @s1 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2                        
+            add-color &set .col18 18 .red .green .blue ; Foreground" 
+        !elif &xse .line "#define Cursor_Color \\(#[0-9a-f]+\\)"
+            set-variable #l1 &slower &rep @s1 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2                        
+            add-color &set .col19 19 .red .green .blue ; Cursor" 
+        !elif &xse .line "#define Selection_Color \\(#[0-9a-f]+\\)"
+            set-variable #l1 &slower &rep @s1 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2                        
+            add-color &set .col20 20 .red .green .blue ; Selection Background
+        !elif &xse .line "#define Selected_Text_Color \\(#[0-9a-f]+\\)"
+            set-variable #l1 &slower &rep @s1 "#" ""
+            set-variable .red   &spr "%d" &cat "0x" &mid #l1 0 2
+            set-variable .green &spr "%d" &cat "0x" &mid #l1 2 2            
+            set-variable .blue  &spr "%d" &cat "0x" &mid #l1 4 2                        
+            add-color &set .col21 21 .red .green .blue ; Selection Foreground
+        !endif
+        end-of-line
+        !force search-buffer "me" "#define"
+    !done
+    screen-update
+!emacro
+
+; return all valid theme names ino $user-path/themes folder
+0 define-macro xrdb-scheme-get-files
+    ;set-variable $debug 1
+    set-variable .xrdb-scheme.themes "|"
+    set-variable #l1  &cat $user-path "themes/.*.xrdb"
+    set-variable $file-names #l1
+    ;2000 ml-write $file-names
+    !while &not &seq &set #l2 $file-names ""
+        set-variable .xrdb-scheme.themes &cat &cat .xrdb-scheme.themes #l2 "|"
+    !done
+    set-variable .xrdb-scheme.themes &rep .xrdb-scheme.themes ".xrdb" ""
+!emacro
+
+; the public function
+; xrdb-scheme ?"theme-name"?
+define-macro xrdb-scheme
+    set-variable #l2 $buffer-fname
+    set-position "\x88"
+    xrdb-scheme-get-files
+    !force set-variable #l3 @1
+    !if $status
+        !if &less &lfind .xrdb-scheme.themes #l3 1
+            ml-write &cat "Error: No such theme " #l3
+        !else
+            set-variable #l1 &cat &cat &cat $user-path "themes/" #l3 ".xrdb"
+            xrdb-scheme-parse #l1
+            delete-buffer &cat #l3 ".xrdb"
+            find-buffer #l2
+            goto-position "\x88"
+        !endif
+    !else
+        !force set-variable #l0 .xrdb-scheme.themes
+        !if &not &seq #l0 "ERROR"
+            set-variable #l0 @ml19 "Theme name (press tab to see all): " &lget .xrdb-scheme.themes 1 .xrdb-scheme.themes
+            set-variable #l1 &cat &cat &cat $user-path "themes/" #l0 ".xrdb"
+            ;2000 ml-write #l1
+            xrdb-scheme-parse #l1
+            delete-buffer &cat #l0 ".xrdb"
+            find-buffer #l2
+            goto-position "\x88"
+        !endif
+    !endif
+!emacro
+
