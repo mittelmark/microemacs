@@ -640,7 +640,7 @@ Miscellaneous Information
     lsrestyle-region(3)lmrestyle-region(3)le Automatically reformat a regions indentation  
     lsscheme-editor(3)lmscheme-editor(3)le Color Scheme Editor  
     lsshow-region(2)lmshow-region(2)le Show the current copy region  
-
+    lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
 
 cEVariables  cA
 
@@ -930,7 +930,7 @@ Miscellaneous Information
     lstoolbar-open(3)lmtoolbar-open(3)le Open the tool bar  
     lstoolbar-refresh(3)lmtoolbar-refresh(3)le Update the tool bar  
     lsuser-setup(3)lmuser-setup(3)le Configure MicroEmacs for a specific user  
-
+    lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
 
 cEVariables  cA
 
@@ -2281,6 +2281,7 @@ Miscellaneous Information
     lsxdiff(3)lmxdiff(3)le External graphical file difference  
     lsxfind(3)lmxfind(3)le Execute find command  
     lsxgrep(3)lmxgrep(3)le Execute grep command  
+    lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
     lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
@@ -2737,6 +2738,7 @@ Miscellaneous Information
     lsxdiff(3)lmxdiff(3)le External graphical file difference  
     lsxfind(3)lmxfind(3)le Execute find command  
     lsxgrep(3)lmxgrep(3)le Execute grep command  
+    lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
     lszfile-setup(3)lmzfile-setup(3)le Compressed file support setup  
 !   MicroEmacs - Variable Glossary
@@ -3991,6 +3993,7 @@ Miscellaneous Information
     lsxml-forward-tag(3)lmxml-forward-tag(3)le Find the next XML tag  
     lsxml-goto-matching-tag(3)lmxml-goto-matching-tag(3)le Find matching opening/closing XML tag  
     lsxml-verify(3)lmxml-verify(3)le Verify syntax of XML file  
+    lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
     lsxsl(9)lmxsl(9)le Extensible Stylesheet Language  
     lsxul(9)lmxul(9)le XML User Interface Language  
     lsy(9)lmy(9)le YACC programming language  
@@ -42636,6 +42639,51 @@ $a
 cESEE ALSO cA
 
     lsMacro CommandslmMacro Commandsle
+! 3 xrdb-scheme
+cEcENAME cEcA
+
+
+|xrdb-scheme
+    xrdb-scheme - load xrdb color scheme files into MicroEmacs
+$a
+    
+cESYNOPSIS cA
+
+     cDxrdb-schemecA ["theme-name"]
+     
+cEDESCRIPTION cA
+     
+    Loads X11-themes stored in xrdb files from the folder cGthemescA in the
+    users config  folder  usually  cG~/.jasspacA  or  cG~/.config/jasspacA  into the
+    running editor session. Themes in xrdb format are available from 
+    https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/xrdb
+    The files needs to be saved as cGTHEME-NAME.xrdbcA in the cGthemescA folder.
+    If the users executed the cGxrdb-schemecA command without a theme name as 
+    argument an interactive menu is presented which show all available menues in
+    the themes folder. So a typical themes folder might look like this;
+
+          $ ls ~/.jasspa/themes/*.xrdb
+          /home/username/.jasspa/themes/3024-day.xrdb         
+          /home/username/.jasspa/themes/3024-night.xrdb
+          /home/username/.jasspa/themes/belafonte-day.xrdb 
+          /home/username/.jasspa/themes/belafonte-night.xrdb
+          /home/username/.jasspa/themes/django.xrdb         
+          /home/username/.jasspa/themes/dracula-plus.xrdb   
+          /home/username/.jasspa/themes/floraverse.xrdb     
+          /home/username/.jasspa/themes/material-dark.xrdb  
+          /home/username/.jasspa/themes/material-light.xrdb
+
+ 
+cENOTES cA
+
+    cDxrdb-schemecA is defined in file cGxrdb.emfcA. Please note that
+    the colors in a xrdb file can't be changed in the lsscheme-editor(3)lmscheme-editor(3)le.
+    To change the colors for an xrdb scheme you have to editor the 
+    xrdb file directly.
+    
+cESEE ALSO cA
+
+    lsscheme-editor(3)lmscheme-editor(3)le
 ! 3 user-setup
 cEcENAME cEcA
 
@@ -57422,7 +57470,7 @@ $a
        may include special tokens, delimited by a backslash (cCcG\cAcA) character
        which are interpreted as follows:-
 
-        cD\bcA Move cursor backwards
+        cD\BcA Move cursor backwards
     
          A positioning control. Allows the cursor to be moved backwards 1
           character.
@@ -57466,13 +57514,13 @@ $a
     language, found in file cDc.eafcA. All cursor positions in the examples are
     shown by cD<@>cA.
 
-        #i #include <\p>\r
-        #d #define \p
-        if if(\p)\r{\r\r}\r
-        ef else if(\p)\r{\r\r}\r
-        el else\r{\r\p\r}\r
-        wh while(\p)\r{\r\r}\r
-        sw switch(\p)\r{\rcase :\rdefault :\r}\r
+        #i "#include <\p>\r"
+        #d "#define \p"
+        if "if(\p)\r{\r\r}\r"
+        ef "else if(\p)\r{\r\r}\r"
+        el "else\r{\r\p\r}\r"
+        wh "while(\p)\r{\r\r}\r"
+        sw "switch(\p)\r{\rcase :\rdefault :\r}\r"
 
 
     Given that the abbreviation file has been declared then expansion of:
@@ -57514,11 +57562,11 @@ $a
     to move the cursor to the correct position; alternatively a sequence of
     cursor movements may be used.
 
-    The "\b" and "\d" are typically used for positioning the cursor on
+    The "\B" and "\d" are typically used for positioning the cursor on
     subsequent lines. "\d" is the inverse of "\t". Consider the following
     Pascal definition for an cCelsecA, cCbegincA and cCendcA sequence:-
 
-         el else\rbegin\r\t\p;\r\dend;
+         el "else\rbegin\r\t\p;\r\dend;"
 
 
     with lsindent(2m)lmindent(2m)le mode enabled generates:-
@@ -57529,13 +57577,13 @@ $a
                    end;
 
 
-    Similarly the "\b" is typically used when lsindent(2m)lmindent(2m)le is enabled, but when
+    Similarly the "\B" is typically used when lsindent(2m)lmindent(2m)le is enabled, but when
     the tab spacing is known. Consider the following example used in the
     MicroEmacs 2009 cD.emfcA files to define a help entry. In this case the indent
     is known to be 5 characters. Hence to move the cursor back 5 characters
-    then a sequence of cD\bcA's are used:- 
+    then a sequence of cD\BcA's are used:- 
 
-        !h def .. \rSEE ALSO\r     <cross references>\r\b\b\b\b\b!ehelp
+        !h "def .. \rSEE ALSO\r     <cross references>\r\B\B\B\B!ehelp"
 
 
     the expansion in this case is:-
