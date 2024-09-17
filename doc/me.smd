@@ -4971,6 +4971,7 @@
 
   - [240920]
     - documenting save-kbd-macro(3)
+    - mecu wrapper script now Zsh and Bash aware
     - expanding shell.eaf, double bracket fixes
     - switching dracula and ayu themes to 21 color themes
     - extending mecu unicode aware wrapper scripts for Bash and Zsh
