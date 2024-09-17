@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 ## file: mecu 
 ## Description: wrapper to run MicroEmacs with extended character settings
 ##              on UTF-8 enabled terminals
@@ -11,22 +11,8 @@
 ## Installation:
 ##           fedora: sudo dnf install abduco luit  
 ##           debian: sudo apt install abduco luit
+## should work with Bash and Zsh
 
-## check for none interactive arguments like:
-## help, version, message, pipe
-
-new_args=()
-encoding=ISO-8859-15
-themes=("artur" "dracula" "espresso" "iterm")
-## add your own themes from here:
-## https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/dynamic-colors
-## if you like to take a theme crete a function theme-NAME for it and place
-## the shell script code into that function or just place files into a folder 
-## ~/.jasspa/themes or ~/.config/jasspa/themes depending what your ME home is
-## filename should be lowercased like this-one: 
-## ~/.jasspa/themes/theme-github-dark.sh
-
-## first however inline themes - they should be always available
 function theme-artur {
     printf "\033]4;0;#3d352a;1;#cd5c5c;2;#86af80;3;#e8ae5b;4;#6495ed;5;#deb887;6;#b0c4de;7;#bbaa99;8;#554444;9;#cc5533;10;#88aa22;11;#ffa75d;12;#87ceeb;13;#996600;14;#b0c4de;15;#ddccbb\007"
     printf "\033]10;#ddeedd;#1c1c1c;#e2bbef\007"
@@ -34,6 +20,14 @@ function theme-artur {
     printf "\033]19;#ffffff\007"
     printf "\033]5;0;#ffffff\007"
 }
+function theme-ayu-dark {
+    printf "\033]4;0;#000000;1;#ff3333;2;#b8cc52;3;#e7c547;4;#36a3d9;5;#f07178;6;#95e6cb;7;#ffffff;8;#323232;9;#ff6565;10;#eafe84;11;#fff779;12;#68d5ff;13;#ffa3aa;14;#c7fffd;15;#ffffff\007"
+    printf "\033]10;#e6e1cf;#0f1419;#f29718\007"
+    printf "\033]17;#253340\007"
+    printf "\033]19;#e6e1cf\007"
+    printf "\033]5;0;#e6e1cf\007"
+}
+
 function theme-dracula {
     printf "\033]4;0;#21222c;1;#ff5555;2;#50fa7b;3;#ffcb6b;4;#82aaff;5;#c792ea;6;#8be9fd;7;#f8f8f2;8;#545454;9;#ff6e6e;10;#69ff94;11;#ffcb6b;12;#d6acff;13;#ff92df;14;#a4ffff;15;#f8f8f2\007"
     printf "\033]10;#f8f8f2;#212121;#eceff4\007"
@@ -55,78 +49,87 @@ function theme-iterm {
     printf "\033]19;#000000\007"
     printf "\033]5;0;#ffffff\007"
 }
-## or place your theme as theme-theme-name.sh into a folder themes in your ME users home.
-## from here https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/dynamic-colors
-## my one is in ~/.jasspa/themes/
-## filename should be lowercased like this-one: theme-github-dark.sh
-function find-themes {
-   path=""
-   if [ -d ~/.jasspa/themes ]; then
-       path=~/.jasspa/themes
-   elif [ -d ~/.config/jasspa/themes ]; then
-        path=~/.config/jasspa/themes
-   else
-      return 0
-   fi
-   for th in $(find $path -type f -name "theme*.sh" | awk '{print $0}' | sed -E 's/.+\/theme-(.+).sh/\1/') ; do #'
-       themes+=("$th")
-   done 
-}
-
-function lsort () {
-    local list=$@
-    nlist=$(echo ${list[@]} | sed -E 's/ /\n/g' | sort | paste -sd ' ')
-    unset list
-    echo "${nlist[@]}"
-}
-find-themes
-
-themes=($(lsort ${themes[@]}))
-#unset themes
-#themes=$themesn
-function inlist() {
-    local search_string="$1"   # The string to search for
-    shift                      # Shift the arguments to access the list
-    local list=$@             # The remaining arguments are the list
-    for item in ${list[@]}; do
-        if [[ "$item" == "$search_string" ]]; then
-               return 0  # String found
-        fi
-    done
-    return 1  # String not found
-}
-# Loop through all the provided arguments
-SCRIPT_PATH="${BASH_SOURCE}"
-SCRIPT_DIR="$(dirname "${SCRIPT_PATH}")"
+theme=""
+encoding="ISO8859-15"
+if [[ "$BASH_VERSION" ]]; then
+    # Parse options
+    ## Bash running
+    while getopts ":t:e:" opt; do
+      case ${opt} in
+        t)
+          theme=${OPTARG}; 
+          ;;
+        e)
+          encoding=${OPTARG}
+          ;;
+        :)
+          echo "Option -$OPTARG requires an argument." >&2
+          exit 1
+          ;;
+       esac
+   done
+elif [[ "$ZSH_VERSION" ]]; then
+    zparseopts -D -E -M -- t:=theme e:=encoding
+    theme=$(echo ${theme} | sed -E 's/.+[ =]//')
+    encoding=$(echo ${encoding} | sed -E 's/.+[ =]//')
+else
+    echo "Error: This script must be run in Bash or Zsh!"
+    exit 0
+fi
+## remove -t and -e arguments and given values
+flag=0
+args=()
 for arg in "$@"; do
-    # Check if the argument starts with --theme=
-    if [[ "$arg" == --theme=* ]]; then
-        # If it doesn't, add it to the new_args array
-       theme="${@##*--theme=}"
-       theme="${theme%% *}"
-       if inlist "$theme" "${themes[@]}"; then
-           if [ -f ~/.jasspa/themes/theme-${theme}.sh ]; then
-              source ~/.jasspa/themes/theme-${theme}.sh
-           elif [ -f ~/.config/jasspa/themes/theme-${theme}.sh ]; then
-              source ~/.jasspa/themes/theme-${theme}.sh
-           else   
-               theme-$theme
-           fi
-       elif [[ -f "${SCRIPT_DIR}/theme-${theme}.sh" ]]; then
-           source "${SCRIPT_DIR}/theme-${theme}.sh"
-       else
-           echo "Error: Wrong theme '$theme!'!"
-           echo "Available themes are: ${themes[@]}"
-           exit
-       fi
-    elif [[ "$arg" == --encoding=* ]]; then
-       encoding="${@##*--encoding=}"
-       encoding="${encoding%% *}"
-       echo "Encoding: $encoding"
-    elif [[ "$arg" == "-h" ]]; then
-        mecb -h
-        printf "   --encoding=ENCODING\n"
-        printf "       like:  ISO8859-15 (WEST-EUROPEAN)\n" 
+       if [[ $flag -eq 1 ]]; then
+        flag=0
+        continue
+    fi
+    if [[ "$arg" == "-t" ]]; then
+        flag=1
+        continue
+    fi
+    if [[ "$arg" == "-e" ]]; then
+        flag=1
+        continue
+    fi
+    args+=($arg)
+done
+
+## collect themes from jasspa configuration folder
+if [[ -d ~/.jasspa/themes ]]; then
+    themes=`ls ~/.jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
+elif [[ -d ~/.config/jasspa/themes ]]; then
+    themes=`ls ~/.config/jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
+else
+    themes=""
+fi    
+if [[ -n $theme ]]; then
+    if [[ $theme == "artur" ]]; then
+        theme-artur
+    elif [[ $theme == "ayu-dark" ]]; then
+        theme-ayu-dark
+    elif [[ $theme == "dracula" ]]; then
+        theme-dracula
+    elif [[ $theme == "espresso" ]]; then
+        theme-espresso
+    elif [[ $theme == "iterm" ]]; then
+        theme-iterm
+    elif [[ -f ~/.jasspa/themes/theme-${theme}.sh ]]; then
+        source ~/.jasspa/themes/theme-${theme}.sh
+    elif [[ -f ~/.config/jasspa/themes/theme-${theme}.sh ]]; then
+        source ~/.config/jasspa/themes/theme-${theme}.sh
+    else 
+        printf "Error: Invalid theme. Valid themes are:\n       artur, ayu-dark, dracula, espresso, iterm,\n       $(echo ${themes[@]} | sed -E 's/ /, /g')\n"
+        exit 0
+    fi
+fi
+## overwrite existing parameter list 
+set -- "${args[@]}"
+if [[ "$1" == "-h" || "$1" == "-V" || "$1" == "-m" || "$1" == "-o" || "$1" == "-p" || "$1" == "-P" ]] ;  then 
+    mecb "$@"
+    if [[ "$1" == "-h" ]]; then
+        printf "  -e ENCODING\n"
+        printf "        like: ISO8859-15 (WEST-EUROPEAN)\n" 
         printf "              ISO8859-2  (CENT-EUROPEAN)\n"
         printf "              ISO8859-3  (SOUTH-EUROPEAN)\n"
         printf "              ISO8859-4  (NORDIC/BALTIC)\n"        
@@ -136,30 +139,18 @@ for arg in "$@"; do
         printf "              ISO8859-10 (NORDIC/BALTIC)\n"                                        
         printf "              ISO8859-13 (NORDIC/BALTIC)\n" 
         printf "        use: 'luit -list' to see all available ones\n\n"
-        printf "  --themes=THEME\n"
-        printf "        like: artur, ayu-dark\n"
-        echo -e "              use luit -list to see all available ones"
-        echo -e "   --theme=THEME"
-        echo -e "      where themes are:\n      $(echo ${themes[@]} | paste -s -d ' ')\n"
-        exit
-    else    
-        new_args+=("$arg")
+        printf "  -t THEME\n"
+        printf "        like: artur, ayu-dark, dracula, espresso, iterm\n"
+        printf "              ${themes}\n"
     fi
-done
-## overwrite main argument list with new args
-set -- "${new_args[@]}"
-if [ "$1" == "-h" -o "$1" == "-V" -o "$1" == "-m" -o "$1" == "-o" -o "$1" == "-p" -o "$1" == "-P" ] ;  then 
-    mecb "$@"
+
 else
-    ## interactive ME session
-    ## session creation for the current tty 
     tty=$(tty | grep -Eo '[0-9]+')
     res=$(abduco -l | grep mec$tty)
     ## (press in ME Ctrl-l to update screen)
     ## running session, if no create an new one
     ## otherwise attach to the old one
-
-    if [ "$res" == "" ] ; then 
+    if [[ "$res" == "" ]] ; then 
         ## a new one
        TERM=xterm abduco -A -e ^z mec$tty luit -encoding $encoding mecb "$@"
     else
