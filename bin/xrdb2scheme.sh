@@ -37,6 +37,11 @@ function xrdb2scheme {
              BEGIN { $scheme = "xyz" };
              END { 
                      printf("define-macro scheme-$scheme\n");
+                     if (int(sprintf("%d",hex("0x$colors[16][1]"))) < 128) {
+                         printf("    execute-file \"schemead\"\n");
+                     } else {
+                         printf("    execute-file \"schemeal\"\n");
+                     }
                      foreach $x (0..20) { 
                         $i = $x + 1;
                         printf("    add-color &set .col%d %d %d %d %d ; %s\n", 
