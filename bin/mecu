@@ -80,6 +80,7 @@ function lsort () {
     echo "${nlist[@]}"
 }
 find-themes
+
 themes=($(lsort ${themes[@]}))
 #unset themes
 #themes=$themesn
@@ -124,10 +125,19 @@ for arg in "$@"; do
        echo "Encoding: $encoding"
     elif [[ "$arg" == "-h" ]]; then
         mecb -h
-        echo -e "   --encoding=ENCODING"
-        echo -e "              like: ISO8859-15 (WEST-EUROPEAN)" 
-        echo -e "                    ISO8859-5  (CYRILLIC)"
-        echo -e "                    CP1252     (WEST-EUROPEAN)"
+        printf "   --encoding=ENCODING\n"
+        printf "       like:  ISO8859-15 (WEST-EUROPEAN)\n" 
+        printf "              ISO8859-2  (CENT-EUROPEAN)\n"
+        printf "              ISO8859-3  (SOUTH-EUROPEAN)\n"
+        printf "              ISO8859-4  (NORDIC/BALTIC)\n"        
+        printf "              ISO8859-5  (CYRILLIC)\n"                
+        printf "              ISO8859-7  (GREEK)\n"                        
+        printf "              ISO8859-9  (TURKISH)\n"                                
+        printf "              ISO8859-10 (NORDIC/BALTIC)\n"                                        
+        printf "              ISO8859-13 (NORDIC/BALTIC)\n" 
+        printf "        use: 'luit -list' to see all available ones\n\n"
+        printf "  --themes=THEME\n"
+        printf "        like: artur, ayu-dark\n"
         echo -e "              use luit -list to see all available ones"
         echo -e "   --theme=THEME"
         echo -e "      where themes are:\n      $(echo ${themes[@]} | paste -s -d ' ')\n"

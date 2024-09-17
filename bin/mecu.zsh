@@ -20,7 +20,13 @@ zparseopts -D -E -- -theme:=theme
 # Remove the leading '--' from the option name
 encoding=${encoding/#--/}
 theme=${theme/#--/}
-
+if [[ -d ~/.jasspa/themes ]]; then
+    themes=`ls ~/.jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
+elif [[ -d ~/.config/jasspa/themes ]]; then
+    themes=`ls ~/.config/jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
+else
+    themes=""
+fi    
 if [[ -n $theme ]]; then
     theme=${theme#*=}
     if [[ $theme == "artur" ]]; then
@@ -56,9 +62,9 @@ if [[ "$1" == "-h" || "$1" == "-V" || "$1" == "-m" || "$1" == "-o" || "$1" == "-
         printf "              ISO8859-10 (NORDIC/BALTIC)\n"                                        
         printf "              ISO8859-13 (NORDIC/BALTIC)\n" 
         printf "        use: 'luit -list' to see all available ones\n\n"
-        printf "  --themes=THEME\n"
+        printf "  --theme=THEME\n"
         printf "        like: artur, ayu-dark\n"
-        printf "              `ls ~/.jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`"
+        printf "              ${themes}\n"
     fi
 
 else
