@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <240903.1626>
+#  Last Modified : <240917.1732>
 #
 #  Description	
 #
@@ -69,8 +69,10 @@ release: $(app)
 
 brew: mecb mewb
 	mkdir -p brew-macos-$(VERSION)/bin
-	cp $(RELEASE)-mecb.bin   brew-macos-$(VERSION)/bin/jmc
-	cp $(RELEASE)-mewb.bin   brew-macos-$(VERSION)/bin/jmw	
+	cp $(RELEASE)-mecb.bin   brew-macos-$(VERSION)/bin/mecb
+	cp $(RELEASE)-mewb.bin   brew-macos-$(VERSION)/bin/mewb	
+	cp bin/mecu              brew-macos-$(VERSION)/bin/mecu
+	chmod 755                brew-macos-$(VERSION)/bin/mecu
 	cp COPYING               brew-macos-$(VERSION)/license.txt
 	cp README-standalone.md  brew-macos-$(VERSION)/README.md
 	tar cfz brew-macos-$(VERSION).tar.gz brew-macos-$(VERSION)/*
