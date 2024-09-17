@@ -39,7 +39,7 @@ set-variable .change-font.type 0
     set-variable $window-chars "=-#*%=^   v*==^^      vv**|<   >*||<<      >>** x* > <>\\.$$\\"
     set-variable $system &band $system &bnot 0x10000
     set-variable #l1 0
-!elif &seq #l0 "Win-ANSI"
+  !elif &seq #l0 "microsoft-cp1252"
     set-char-mask "M" ""
     set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"
     ;set-char-mask "M" ""
