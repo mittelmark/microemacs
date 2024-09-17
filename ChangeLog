@@ -7,9 +7,19 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <240910.0743>
+>  Last Modified : <240917.1113>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
   
+ [240920]
+ 
+    - documenting save-kbd-macro(3)
+    - expanding shell.eaf, double bracket fixes
+    - switching dracula and ayu themes to 21 color themes
+    - extending mecu unicode aware wrapper scripts for Bash and Zsh
+      to load as well dynamic color shell schemes
+    - xrdb-scheme(3) function for directly loading xrdb themes
+    - fixing issue with cp1252 encoding
+
  [240913]
  
     - tango, artur, ayu dark, solarized dark and light themes added
