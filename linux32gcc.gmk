@@ -57,8 +57,11 @@ app-image: bfs/bin
 
 brew: mecb mewb
 	mkdir -p brew-linux-$(VERSION)/bin
-	cp $(RELEASE)-mecb.bin   brew-linux-$(VERSION)/bin/jmc
-	cp $(RELEASE)-mewb.bin   brew-linux-$(VERSION)/bin/jmw	
+	cp bin/mecu              brew-linux-$(VERSION)/bin/
+	chmod 755                brew-linux-$(VERSION)/bin/mecu  
+	cp bfs/bfs               brew-linux-$(VERSION)/bin/
+	cp $(RELEASE)-mecb.bin   brew-linux-$(VERSION)/bin/mecb
+	cp $(RELEASE)-mewb.bin   brew-linux-$(VERSION)/bin/mewb
 	cp COPYING               brew-linux-$(VERSION)/license.txt
 	cp README-standalone.md  brew-linux-$(VERSION)/README.md
 	tar cfz brew-linux-$(VERSION).tar.gz brew-linux-$(VERSION)/*

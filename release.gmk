@@ -2,7 +2,7 @@
 #
 #  Created By    : Detlef Groth
 #  Created       : Sat Aug 24 05:46:12 2024
-#  Last Modified : <240824.0646>
+#  Last Modified : <240917.1709>
 #
 #  Description	 : This Makefile should be called from other Makefiles
 #                  with the app and RELEASE variables given  
@@ -26,8 +26,8 @@ ext="bin"
 bfs="bfs"
 me=$(app).bin
 meout=$(app)
-mesh="me-linux.sh"
-meshout="me"
+mesh="mecu"
+meshout="mecu"
 ifeq ($(ext),exe)
   bfs="bfs.exe"
   me=$(app).exe
