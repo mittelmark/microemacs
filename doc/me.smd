@@ -18294,7 +18294,7 @@ $a
   >  The content of the brackets (__[__...__]__) include a set of special short
      cuts and regular expression syntax definitions as follows:-
 
-  >   `[abc]`
+  >  `[abc]`
   
   > >       A list of characters.
 
@@ -43199,7 +43199,7 @@ $a
   
 ## SYNOPSIS
 
-   __save-kbd-macro__ ["macro-name"]
+   __save-kbd-macro__ [macro-name] 
    
 ## DESCRIPTION
    
@@ -43226,7 +43226,7 @@ $a
   
 ## SYNOPSIS
 
-   __xrdb-scheme__ ["theme-name"]
+  __xrdb-scheme__ ["theme-name"]
    
 ## DESCRIPTION
    

@@ -56,7 +56,8 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
   hilight .hilight.md 1 "_[^_]+_"       .scheme.italic
   hilight .hilight.md 1 "`[^`]+`"       .scheme.quote
   ;xhilight .hilight.md 1 "\\[[^\\[]+\\)"       .scheme.quote
-  hilight .hilight.md 0x804 "\\[" ")" "\\" .scheme.link
+  hilight .hilight.md 0x804 "\\[" "\\]" "\\" .scheme.link
+  hilight .hilight.md 0x804 "(" ")" "\\" .scheme.link  
   ;hilight .hilight.md 0x804 "(" ")" "\\" .scheme.link  
   ;hilight .hilight.md 4 "\\](" ")" "\\"   .scheme.link  
   ;hilight .hilight.md 0x44 "\\[" "\\](" "" ""   .scheme.link  
