@@ -48,7 +48,7 @@ jobs:
     - name: make scope package
       run: |
         make -f win32mingw.gmk scoop
-        rm -rf scoop-*/
+        rm -rf mecw-scoop-*/
         
     - name: Download zlib1.dll
       run: |
