@@ -30,3 +30,12 @@ brew: mecb mewb
 	cp README-standalone.md  brew-windows-$(VERSION)/README.md
 	zip -r brew-windows-$(VERSION).zip brew-windows-$(VERSION)/*
 	sha256sum brew-windows-$(VERSION).zip > brew-windows-$(VERSION).sha256
+
+scoop: mecb mewb
+	mkdir mecw-scoop-$(VERSION)
+	cp $(RELEASE)-mecb.exe   mecw-scoop-$(VERSION)/mecb.exe
+	cp $(RELEASE)-mewb.exe   mecw-scoop-$(VERSION)/mewb.exe
+	cp COPYING               mecw-scoop-$(VERSION)/license.txt
+	cp README-standalone.md  mecw-scoop-$(VERSION)/README.md
+	zip mecw-scoop-$(VERSION).zip mecw-scoop-$(VERSION)/*
+	sha256sum mecw-scoop-$(VERSION).zip > mecw-scoop-$(VERSION).sha256
