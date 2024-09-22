@@ -64,3 +64,55 @@
     ; set-variable %git-com "c:/msys2/bin/git.exe"
 !endif
 
+
+; some scheme function
+define-macro scheme-mathias
+    execute-file "schemead"
+    add-color &set .col1 1 0 0 0         ; black
+    add-color &set .col2 2 229 34 34     ; red
+    add-color &set .col3 3 166 227 45    ; green
+    add-color &set .col4 4 252 149 30    ; yellow
+    add-color &set .col5 5 196 141 255   ; blue
+    add-color &set .col6 6 250 37 115    ; purple
+    add-color &set .col7 7 103 217 240   ; cyan
+    add-color &set .col8 8 242 242 242   ; white
+    add-color &set .col9 9 85 85 85      ; bright black
+    add-color &set .col10 10 255 85 85   ; bright red
+    add-color &set .col11 11 85 255 85   ; bright green
+    add-color &set .col12 12 255 255 85  ; bright yellow
+    add-color &set .col13 13 85 85 255   ; bright blue
+    add-color &set .col14 14 255 85 255  ; bright purple
+    add-color &set .col15 15 85 255 255  ; bright cyan
+    add-color &set .col16 16 255 255 255 ; bright white
+    add-color &set .col17 17 0 0 0       ; background
+    add-color &set .col18 18 187 187 187 ; foreground
+    add-color &set .col19 19 187 187 187 ; cursor
+    add-color &set .col20 20 85 85 85    ; selection background
+    add-color &set .col21 21 242 242 242 ; seleection foreground
+    screen-update
+!emacro
+define-macro scheme-material-dark
+    execute-file "schemead"
+    add-color &set .col1 1 33 33 33      ; black                
+    add-color &set .col2 2 183 20 31     ; red                  
+    add-color &set .col3 3 69 123 36     ; green                
+    add-color &set .col4 4 246 152 30    ; yellow               
+    add-color &set .col5 5 19 78 178     ; blue                 
+    add-color &set .col6 6 86 0 136      ; purple               
+    add-color &set .col7 7 14 113 124    ; cyan                 
+    add-color &set .col8 8 239 239 239   ; white                
+    add-color &set .col9 9 66 66 66      ; bright black         
+    add-color &set .col10 10 232 59 63   ; bright red           
+    add-color &set .col11 11 122 186 58  ; bright green         
+    add-color &set .col12 12 255 234 46  ; bright yellow        
+    add-color &set .col13 13 84 164 243  ; bright blue          
+    add-color &set .col14 14 170 77 188  ; bright purple        
+    add-color &set .col15 15 38 187 209  ; bright cyan          
+    add-color &set .col16 16 217 217 217 ; bright white         
+    add-color &set .col17 17 35 35 34    ; background           
+    add-color &set .col18 18 229 229 229 ; foreground           
+    add-color &set .col19 19 22 175 202  ; cursor               
+    add-color &set .col20 20 223 223 223 ; selection background 
+    add-color &set .col21 21 61 61 61    ; seleection foreground
+    screen-update
+!emacro
