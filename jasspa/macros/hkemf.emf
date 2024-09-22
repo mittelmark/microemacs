@@ -59,6 +59,15 @@ set-variable .fhook-emf.item-list-r1 "Macr \ecB\\1\ecA"
     hilight .hilight.emf 4  "@"   "\\}\\s" ""           .scheme.variable
     hilight .hilight.emf 1  "#[gpl][[:digit:]]"         .scheme.variable
     hilight .hilight.emf 0  "^*\\w+"                    .scheme.link
+    ; support for Markdown hilighting in define-help
+    !if &not &exi .hilight.md 
+        !force execute-file "hkmd" 
+        ; special links to other help pages within ME
+        hilight .hilight.md 1 "\\[\\[[-$&!A-Za-z0-9()]+\\]\\]"     .scheme.link
+    !endif
+
+    hilight .hilight.emf 0x080 "^## NAME"  .hilight.md  .scheme.header
+    hilight .hilight.md 0x080 "^!ehelp"    .hilight.emf .scheme.keyword
     !if &band .hilight.flags 0x08
         ; hilight constants, e.g. numbers
         hilight .hilight.emf 1 "[[:digit:]]+"           .scheme.constant
