@@ -7,8 +7,12 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <240917.1113>
+>  Last Modified : <240922.0632>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+ [240927]
+
+    - support for Markdown as define-help language
   
  [240920]
  

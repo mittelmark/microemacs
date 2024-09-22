@@ -4969,6 +4969,9 @@
 
 ## Development History 
 
+  - [20240927]
+    - support for Markdown as define-help language
+
   - [240920]
     - documenting save-kbd-macro(3)
     - mecu wrapper script now Zsh and Bash aware
