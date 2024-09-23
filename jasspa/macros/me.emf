@@ -71,7 +71,7 @@ define-macro-file mail mail mail-check stop-mail-check
 define-macro-file fileopen osd-file-open osd-get-file
 define-macro-file spellaut auto-spell auto-spell-menu
 define-macro-file hkinfo info info-on info-goto-link
-define-macro-file pagefile page-file page-bfile
+define-macro-file hkrdoc rdoc
 define-macro-file zfile find-zfile zfile-setup
 define-macro-file gentags generate-tags-file
 define-macro-file dmf display-matching-fence
@@ -232,6 +232,7 @@ add-file-hook "/ *files*"                                     fhook-dirlst
 add-file-hook "*directory*"                                   fhook-dirtre
 add-file-hook "*registry*"                                    fhook-reg
 add-file-hook "*icommand* *shell*"                            fhook-ipipe
+add-file-hook "*rdoc*"                                        fhook-rdoc
 add-file-hook ".emf"                                          fhook-emf
 add-file-hook ".doc"                                          fhook-doc
 add-file-hook ".txt"                                          fhook-txt
