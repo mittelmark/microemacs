@@ -1163,6 +1163,8 @@ Miscellaneous Information
     lsinfo-on(3)lminfo-on(3)le Display Info on a given topic  
     lslist-buffers(2)lmlist-buffers(2)le (C-x C-b) List all buffers and show their status  
     lsosd-help(3)lmosd-help(3)le GUI based on-line help  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+
 !   Operating Modes
 cEcEOPERATING MODES cEcA
 
@@ -1775,6 +1777,7 @@ Miscellaneous Information
     lsprofile(9)lmprofile(9)le Shell user profile  
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
+    lsr(9)lmr(9)le R language File  
     lsrb(9)lmrb(9)le Ruby programming language  
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsreg(9)lmreg(9)le Registry file  
@@ -2173,6 +2176,7 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -2694,6 +2698,7 @@ Miscellaneous Information
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
     lsread-session(3)lmread-session(3)le Read in session information  
     lsreplace-all-pairs(3)lmreplace-all-pairs(3)le Replace string pairs in a list of files  
     lsreplace-all-string(3)lmreplace-all-string(3)le Replace string with new string in a list of files  
@@ -3827,6 +3832,7 @@ Miscellaneous Information
     lsprofile(9)lmprofile(9)le Shell user profile  
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
+    lsr(9)lmr(9)le R Language File  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings across files  
@@ -3839,6 +3845,7 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -5044,7 +5051,20 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
-    - [240613]
+    - [20240927]
+      - support for Markdown as define-help language
+
+    - [240920]
+      - documenting save-kbd-macro(3)
+      - mecu wrapper script now Zsh and Bash aware
+      - expanding shell.eaf, double bracket fixes
+      - switching dracula and ayu themes to 21 color themes
+      - extending mecu unicode aware wrapper scripts for Bash and Zsh
+        to load as well dynamic color shell schemes
+      - xrdb-scheme(3) function for directly loading xrdb themes
+      - fixing issue with cp1252
+
+    - [240913]
       - tango, artur, ayu dark, solarized dark and light themes added
       - ayu light theme fixes
       - adding theme and encoding selection to mecu wrapper
@@ -19969,7 +19989,9 @@ $a
     the text may contain escape (cCcG^lsehf(8)lmcAcA) key sequences, see [ehf(8)le for more
     information on the format.
 
-
+    Since MicroEmacs 091224b2 for the help text as well a subset of Markdown is 
+    supported. See below for an example.
+    
 cEEXAMPLE cA
 
 
@@ -20009,6 +20031,42 @@ $a
           !ehelp
 
 sA
+    Now the same example written in Markdown:
+
+    
+          define-help "paragraph-to-line" "3"
+
+          ## NAME
+
+             __paragraph-to-line__ - Convert a paragraph to a single line
+          $a
+
+
+          SYNOPSIS
+
+             _n_ __paragraph-to-line__
+
+
+          ## DESCRIPTION
+
+             __paragraph-to-line__  reduces  each of the  next _n_  paragraphs  of text to a
+             single  line.  This  is  used to  prepare  a  document  to go into a word
+             processor environment where end of line marks represent paragraph marks.
+
+
+          ## NOTES
+
+               This command is a macro defined in `format.emf`.
+
+
+          ## SEE ALSO
+
+               [[fill-paragraph(2)]]
+
+          !ehelp
+
+    Please note that the header  characters  cG##cA must be at the  beginning of the
+    line.
 
 cESEE ALSO cA
 
@@ -42699,8 +42757,8 @@ $a
 
     cDxrdb-schemecA is defined in file cGxrdb.emfcA. Please note that
     the colors in a xrdb file can't be changed in the lsscheme-editor(3)lmscheme-editor(3)le.
-    To change the colors for an xrdb scheme you have to editor the 
-    xrdb file directly. Here is an example on how you can install a theme 
+    To change the colors for a xrdb scheme you have to edit the xrdb 
+    file directly. Here is an example on how you can install a theme 
     into your users ME configuation folder:
     
          mkdir ~/.jasspa/themes
@@ -42715,6 +42773,31 @@ $a
     themes after executing: cGEsc xcA and cGxrdb-schemecA and then pressing two
     times the TAB key.
      
+cESEE ALSO cA
+
+    lsscheme-editor(3)lmscheme-editor(3)le
+! 3 rdoc
+cEcENAME cEcA
+
+
+|rdoc
+    rdoc - display documentation for R functions and packages
+$a
+    
+cESYNOPSIS cA
+
+    cDrdoccA ["package|function"]
+     
+cEDESCRIPTION cA
+     
+    Displays in a hypertext browser with R syntax hilighting the manual pages
+    for R packages or R functions.
+
+ 
+cENOTES cA
+
+    cDrdoccA macro is defined in file cGhkrdoc.emfcA.
+    
 cESEE ALSO cA
 
     lsscheme-editor(3)lmscheme-editor(3)le
@@ -62504,4 +62587,56 @@ $a
 
 
     lsdoc(9)lmdoc(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle
+! 9 r
+! 9 R
+cEcESYNOPSIS cEcA
+
+
+    r - R Language File.
+
+
+cEFILES cA
+
+
+    cDhkr.emfcA - R language file hook definition
+
+
+cEEXTENSIONS cA
+
+
+    cD.rcA - Python file  
+    cD.RcA - Python file  
+
+
+cEMAGIC STRINGS cA
+
+
+    cD^#![ \t]*/.*env[ \t]+RscriptcA
+    
+       MicroEmacs 2009 recognizes the magic string on the first line of the
+       file used to locate the executable. The R files may be
+       extension-less and are still recognized.
+
+
+cEDESCRIPTION cA
+
+
+    The cDRcA file type template provides simple hilighting of R files,
+    the template provides minimal hilighting.
+
+    File recognition is performed using the standard file extension cD.rcA, or cD.RcA or by
+    the magic string.
+
+
+cEBUGS cA
+
+
+    There would appear to be too much applied hilighting in this file, it
+    could probably do with rationalizing.
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle
 

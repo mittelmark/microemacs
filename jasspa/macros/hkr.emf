@@ -208,4 +208,5 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     indent .hilight.r c "\\\\\\s " 3/2t
     indent .hilight.r i "#"
 !endif
+
 buffer-init-fhook "r"

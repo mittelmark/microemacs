@@ -1069,6 +1069,8 @@
   [info-on(3)](info-on(3)) Display Info on a given topic  
   [list-buffers(2)](list-buffers(2)) (C-x C-b) List all buffers and show their status  
   [osd-help(3)](osd-help(3)) GUI based on-line help  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
+
 !! me-id: amicr021
 !   Operating Modes
 ## OPERATING MODES
@@ -1691,6 +1693,7 @@
   [profile(9)](profile(9)) Shell user profile  
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
+  [r(9)](r(9)) R language File  
   [rb(9)](rb(9)) Ruby programming language  
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [reg(9)](reg(9)) Registry file  
@@ -2090,6 +2093,7 @@
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [read-registry(2)](read-registry(2)) Read in a registry definition file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -2612,6 +2616,7 @@
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
   [read-session(3)](read-session(3)) Read in session information  
   [replace-all-pairs(3)](replace-all-pairs(3)) Replace string pairs in a list of files  
   [replace-all-string(3)](replace-all-string(3)) Replace string with new string in a list of files  
@@ -3748,6 +3753,7 @@
   [profile(9)](profile(9)) Shell user profile  
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
+  [r(9)](r(9)) R Language File  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings across files  
@@ -3760,6 +3766,7 @@
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [read-registry(2)](read-registry(2)) Read in a registry definition file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -20168,7 +20175,9 @@ $a
   the text may contain escape ('`^[`') key sequences, see [ehf(8)](ehf(8)) for more
   information on the format.
 
-
+  Since MicroEmacs 091224b2 for the help text as well a subset of Markdown is 
+  supported. See below for an example.
+  
 ## EXAMPLE
 
 
@@ -20209,6 +20218,42 @@ $a
 
 ```
 
+  Now the same example written in Markdown:
+
+  
+        define-help "paragraph-to-line" "3"
+
+        ## NAME
+
+           __paragraph-to-line__ - Convert a paragraph to a single line
+        $a
+
+
+        SYNOPSIS
+
+           _n_ __paragraph-to-line__
+
+
+        ## DESCRIPTION
+
+           __paragraph-to-line__  reduces  each of the  next _n_  paragraphs  of text to a
+           single  line.  This  is  used to  prepare  a  document  to go into a word
+           processor environment where end of line marks represent paragraph marks.
+
+
+        ## NOTES
+
+             This command is a macro defined in `format.emf`.
+
+
+        ## SEE ALSO
+
+             [[fill-paragraph(2)]]
+
+        !ehelp
+
+  Please note that the header  characters  `##` must be at the  beginning of the
+  line.
 
 ## SEE ALSO
 
@@ -43308,6 +43353,32 @@ $a
 ## SEE ALSO
 
   [scheme-editor(3)](scheme-editor(3))
+!! me-id: m3mac099
+! 3 rdoc
+## NAME
+
+
+|rdoc
+  rdoc - display documentation for R functions and packages
+$a
+  
+## SYNOPSIS
+
+  __rdoc__ ["package|function"]
+   
+## DESCRIPTION
+   
+  Displays in a hypertext browser with R syntax hilighting the manual pages
+  for R packages or R functions.
+
+ 
+## NOTES
+
+  __rdoc__ macro is defined in file `hkrdoc.emf`.
+  
+## SEE ALSO
+
+  [scheme-editor(3)](scheme-editor(3))
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME
@@ -63450,5 +63521,58 @@ $a
 
 
   [doc(9)](doc(9)), [Supported File Types](MicroEmacs - Supported File Types)
+!! me-id: m9typ049
+! 9 r
+! 9 R
+## SYNOPSIS
+
+
+  r - R Language File.
+
+
+## FILES
+
+
+  __hkr.emf__ - R language file hook definition
+
+
+## EXTENSIONS
+
+
+  __.r__ - Python file  
+  __.R__ - Python file  
+
+
+## MAGIC STRINGS
+
+
+  __^#![ \t]*/.*env[ \t]+Rscript__
+  
+  >  MicroEmacs 2009 recognizes the magic string on the first line of the
+     file used to locate the executable. The R files may be
+     extension-less and are still recognized.
+
+
+## DESCRIPTION
+
+
+  The __R__ file type template provides simple hilighting of R files,
+  the template provides minimal hilighting.
+
+  File recognition is performed using the standard file extension __.r__, or __.R__ or by
+  the magic string.
+
+
+## BUGS
+
+
+  There would appear to be too much applied hilighting in this file, it
+  could probably do with rationalizing.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
 
 !! me-id: meende

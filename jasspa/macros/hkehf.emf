@@ -38,7 +38,7 @@ set-variable .fhook-ehf.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move
         set-variable .hilight.ehf  &pinc .hilight.next 1
         set-variable .hilight.ehfB &pinc .hilight.next 1
         set-variable .hilight.ehfL &pinc .hilight.next 1
-        set-variable .hilight.ehfM  &pinc .hilight.next 1
+        set-variable .hilight.ehfM &pinc .hilight.next 1
     !endif
 
     0 hilight  .hilight.ehf 2 50                      $global-scheme
@@ -76,8 +76,8 @@ set-variable .fhook-ehf.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move
     0 hilight  .hilight.ehfL 2 50                     $global-scheme
     hilight .hilight.ehfL 0x80 "\\}\elm" .hilight.ehf $global-scheme
     hilight .hilight.ehfL 0x40 "." ""                 $global-scheme
-    
-    hilight .hilight.ehf 0xc0 "## NAME" "NAME" .hilight.ehfM .scheme.header  ; Markdown start
+    ; support for Markdown as define-help markup
+    hilight .hilight.ehf 0xc0 "^## NAME" "NAME" .hilight.ehfM .scheme.header  ; Markdown start
     0 hilight  .hilight.ehfM 2 50                      $global-scheme
     
     hilight .hilight.ehfM 0x44 "^## "  "" "\n" "" ""      .scheme.header
