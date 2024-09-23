@@ -49,7 +49,13 @@ define-macro rdoc
   !if &not $status
     set-variable #l0 @ml00 "R help on"
   !endif
-  0 pipe-shell-command &spr "LANG=en_US Rscript -e \"help(%s)\"" #l0 "*rdoc*"
+  !if &xse #l0 "\\(.+\\)::\\(.+\\)" 
+      set-variable #l1 &spr "help('%s',package='%s')" @s2 @s1
+      2000 ml-write #l1
+  !else
+      set-variable #l1 &spr "help('%s')" #l1
+  !endif
+  0 pipe-shell-command &spr "LANG=en_US Rscript -e \"%s\"" #l1 "*rdoc*"
   set-variable :mouse-word-select rdoc-process-link
   -1 buffer-mode "view"
   beginning-of-buffer

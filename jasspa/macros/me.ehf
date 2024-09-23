@@ -42786,7 +42786,7 @@ $a
     
 cESYNOPSIS cA
 
-    cDrdoccA ["package|function"]
+    cDrdoccA ["package::function|function"]
      
 cEDESCRIPTION cA
      
@@ -42794,6 +42794,11 @@ $a
     for R packages or R functions.
 
  
+cEEXAMPLE cA
+
+         rdoc "plot"
+         rdoc "cluster::pam"
+        
 cENOTES cA
 
     cDrdoccA macro is defined in file cGhkrdoc.emfcA.

@@ -43364,7 +43364,7 @@ $a
   
 ## SYNOPSIS
 
-  __rdoc__ ["package|function"]
+  __rdoc__ ["package::function|function"]
    
 ## DESCRIPTION
    
@@ -43372,6 +43372,11 @@ $a
   for R packages or R functions.
 
  
+## EXAMPLE
+
+       rdoc "plot"
+       rdoc "cluster::pam"
+      
 ## NOTES
 
   __rdoc__ macro is defined in file `hkrdoc.emf`.
