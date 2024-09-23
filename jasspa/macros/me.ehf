@@ -3832,7 +3832,6 @@ Miscellaneous Information
     lsprofile(9)lmprofile(9)le Shell user profile  
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
-    lsr(9)lmr(9)le R Language File  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings across files  
@@ -3840,6 +3839,7 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsRegisterVariables(4)lmRegisterVariables(4)le Register variables  
     lsRegularExpressions(2)lmRegularExpressions(2)le Regular Expressions  
+    lsr(9)lmr(9)le R Language File  
     lsrb(9)lmrb(9)le Ruby programming language  
     lsrbin(2m)lmrbin(2m)le Reduced binary editor mode  
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
@@ -62638,5 +62638,5 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsrdoc(3)lmrdoc(3)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 

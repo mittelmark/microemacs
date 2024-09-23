@@ -3753,7 +3753,6 @@
   [profile(9)](profile(9)) Shell user profile  
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
-  [r(9)](r(9)) R Language File  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings across files  
@@ -3761,6 +3760,7 @@
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
   [RegisterVariables(4)](RegisterVariables(4)) Register variables  
   [RegularExpressions(2)](RegularExpressions(2)) Regular Expressions  
+  [r(9)](r(9)) R Language File  
   [rb(9)](rb(9)) Ruby programming language  
   [rbin(2m)](rbin(2m)) Reduced binary editor mode  
   [rc(9)](rc(9)) Microsoft Developer resource file  
@@ -63573,6 +63573,6 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [rdoc(3)](rdoc(3)), [Supported File Types](MicroEmacs - Supported File Types).
 
 !! me-id: meende
