@@ -49,11 +49,18 @@ define-macro r-doc
     set-variable #l0 @ml00 "R help on"
   !endif
   !if &xse #l0 "\\(.+\\)::\\(.+\\)" 
-      set-variable #l1 &spr "help('%s',package='%s')" @s2 @s1
-      2000 ml-write #l1
+      !if &or &seq @s1 "library" &seq @s1 "package"
+          set-variable #l1 &spr "library(help='%s')" @s2
+          set-variable .package @s2
+      !else
+          set-variable #l1 &spr "help('%s',package='%s')" @s2 @s1
+          set-variable .package @s1
+      !endif
   !else
+      set-variable .package ""
       set-variable #l1 &spr "help('%s')" #l1
   !endif
+  1000 ml-write &cat "fetching ... " #l1
   0 pipe-shell-command &spr "LANG=en_US Rscript -e \"%s\"" #l1 "*rdoc*"
   set-variable :mouse-word-select r-doc-process-link
   -1 buffer-mode "view"
@@ -95,7 +102,11 @@ define-macro r-doc
             copy-region
             set-variable #l6 @y
             -1 yank
-            r-doc #l6
+            !if &seq .r-doc.package ""
+                r-doc #l6
+            !else
+                r-doc &spr "%s::%s" .r-doc.package #l6
+            !endif
           !endif
         !endif
       !endif
