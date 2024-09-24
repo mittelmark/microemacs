@@ -1069,7 +1069,7 @@
   [info-on(3)](info-on(3)) Display Info on a given topic  
   [list-buffers(2)](list-buffers(2)) (C-x C-b) List all buffers and show their status  
   [osd-help(3)](osd-help(3)) GUI based on-line help  
-  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
+  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
 
 !! me-id: amicr021
 !   Operating Modes
@@ -2093,7 +2093,7 @@
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
-  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
+  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [read-registry(2)](read-registry(2)) Read in a registry definition file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -2616,7 +2616,7 @@
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
-  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
+  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
   [read-session(3)](read-session(3)) Read in session information  
   [replace-all-pairs(3)](replace-all-pairs(3)) Replace string pairs in a list of files  
   [replace-all-string(3)](replace-all-string(3)) Replace string with new string in a list of files  
@@ -3766,7 +3766,7 @@
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
-  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
+  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [read-registry(2)](read-registry(2)) Read in a registry definition file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -20253,10 +20253,18 @@ $a
         !ehelp
 
   Please note that the header  characters  `##` must be at the  beginning of the
-  line.
+  line. For code blocks you just indent everything with at least 8 spaces at the
+  beginning of the line. If you would like to show short fragments of MicroEmacs
+  macro code you should place this code in fenced code blocks like this:
+  
+       ```emf
+             macro code
+       ```
 
+  The backtick code fences must as well like the headers begin at the first character
+  on the documentation line.
+  
 ## SEE ALSO
-
 
   [ehf(8)](ehf(8)), [help-item(2)](help-item(2)), [define-macro(2)](define-macro(2)), [help-command(2)](help-command(2)), [help-variable(2)](help-variable(2)).
 !! me-id: m2cmd094
@@ -26272,8 +26280,8 @@ $a
      a start-up hook command. File names and extensions are bound to a set
      of macro hooks in a space separated list e.g.
 
-            [add-file-hook](add-file-hook(2)) "c cpp" "fhook-cmode"
-            [add-file-hook](add-file-hook(2)) "doc txt README" "fhook-doc"
+     >  [add-file-hook](add-file-hook(2)) "c cpp" "fhook-cmode"  
+        [add-file-hook](add-file-hook(2)) "doc txt README" "fhook-doc"
 
   >  The space separated list of names are interpreted as either file
      extensions or filenames. In this case any file with the extension __.c__,
@@ -26298,8 +26306,8 @@ $a
      hooks, except instead of defining a file extension the location and
      text content of the identifier is defined:
 
-            1 [add-file-hook](add-file-hook(2)) "#!/bin/sh" "fhook-shell"
-            1 [add-file-hook](add-file-hook(2)) "#!/usr/local/bin/wish" "fhook-tcl"
+     >  1 [add-file-hook](add-file-hook(2)) "#!/bin/sh" "fhook-shell"  
+        1 [add-file-hook](add-file-hook(2)) "#!/usr/local/bin/wish" "fhook-tcl"
 
   >  In this case, any file that commences with "__#!/bin/sh__" is interpreted
      as a shell script and invokes the shell hook __fhook-shell__. Where the
@@ -26308,7 +26316,7 @@ $a
      magic sting should be search for without [exact(2m)](exact(2m)) mode then the
      argument should be negated, e.g.
 
-            -4 add-file-hook "<html>" "fhook-html"
+        -4 add-file-hook "<html>" "fhook-html"
 
   >  invokes __fhook-html__ whenever "`<html>`", "`<HTML>`" etc. is found in the
      first 4 lines of a file header, e.g.:
@@ -43354,17 +43362,17 @@ $a
 
   [scheme-editor(3)](scheme-editor(3))
 !! me-id: m3mac099
-! 3 rdoc
+! 3 r-doc
 ## NAME
 
 
-|rdoc
-  rdoc - display documentation for R functions and packages
+|r-doc
+  r-doc - display documentation for R functions and packages
 $a
   
 ## SYNOPSIS
 
-  __rdoc__ ["package::function|function"]
+  __r-doc__ ["package::function|function"]
    
 ## DESCRIPTION
    
@@ -43374,16 +43382,16 @@ $a
  
 ## EXAMPLE
 
-       rdoc "plot"
-       rdoc "cluster::pam"
+       r-doc "plot"
+       r-doc "cluster::pam"
       
 ## NOTES
 
-  __rdoc__ macro is defined in file `hkrdoc.emf`.
+  __r-doc__ macro is defined in file `hkrdoc.emf`.
   
 ## SEE ALSO
 
-  [scheme-editor(3)](scheme-editor(3))
+  [r(9)](r(9))
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

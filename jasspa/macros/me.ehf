@@ -1163,7 +1163,7 @@ Miscellaneous Information
     lsinfo-on(3)lminfo-on(3)le Display Info on a given topic  
     lslist-buffers(2)lmlist-buffers(2)le (C-x C-b) List all buffers and show their status  
     lsosd-help(3)lmosd-help(3)le GUI based on-line help  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
 
 !   Operating Modes
 cEcEOPERATING MODES cEcA
@@ -2176,7 +2176,7 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -2698,7 +2698,7 @@ Miscellaneous Information
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
     lsread-session(3)lmread-session(3)le Read in session information  
     lsreplace-all-pairs(3)lmreplace-all-pairs(3)le Replace string pairs in a list of files  
     lsreplace-all-string(3)lmreplace-all-string(3)le Replace string with new string in a list of files  
@@ -3845,7 +3845,7 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -20066,10 +20066,18 @@ $a
           !ehelp
 
     Please note that the header  characters  cG##cA must be at the  beginning of the
-    line.
+    line. For code blocks you just indent everything with at least 8 spaces at the
+    beginning of the line. If you would like to show short fragments of MicroEmacs
+    macro code you should place this code in fenced code blocks like this:
+    
+         ```emf
+               macro code
+         ```
 
+    The backtick code fences must as well like the headers begin at the first character
+    on the documentation line.
+    
 cESEE ALSO cA
-
 
     lsehf(8)lmehf(8)le, lshelp-item(2)lmhelp-item(2)le, lsdefine-macro(2)lmdefine-macro(2)le, lshelp-command(2)lmhelp-command(2)le, lshelp-variable(2)lmhelp-variable(2)le.
 ! 2 forward-paragraph
@@ -25971,8 +25979,8 @@ $a
        a start-up hook command. File names and extensions are bound to a set
        of macro hooks in a space separated list e.g.
 
-              [add-file-hook](add-file-hook(2)) "c cpp" "fhook-cmode"
-              [add-file-hook](add-file-hook(2)) "doc txt README" "fhook-doc"
+       >  [add-file-hook](add-file-hook(2)) "c cpp" "fhook-cmode"  
+          [add-file-hook](add-file-hook(2)) "doc txt README" "fhook-doc"
 
        The space separated list of names are interpreted as either file
        extensions or filenames. In this case any file with the extension cD.ccA,
@@ -25997,8 +26005,8 @@ $a
        hooks, except instead of defining a file extension the location and
        text content of the identifier is defined:
 
-              1 [add-file-hook](add-file-hook(2)) "#!/bin/sh" "fhook-shell"
-              1 [add-file-hook](add-file-hook(2)) "#!/usr/local/bin/wish" "fhook-tcl"
+       >  1 [add-file-hook](add-file-hook(2)) "#!/bin/sh" "fhook-shell"  
+          1 [add-file-hook](add-file-hook(2)) "#!/usr/local/bin/wish" "fhook-tcl"
 
        In this case, any file that commences with "cD#!/bin/shcA" is interpreted
        as a shell script and invokes the shell hook cDfhook-shellcA. Where the
@@ -26007,7 +26015,7 @@ $a
        magic sting should be search for without lsexact(2m)lmexact(2m)le mode then the
        argument should be negated, e.g.
 
-              -4 add-file-hook "<html>" "fhook-html"
+          -4 add-file-hook "<html>" "fhook-html"
 
        invokes cDfhook-htmlcA whenever cGcG<html>cAcA, cGcG<HTML>cAcA etc. is found in the
        first 4 lines of a file header, e.g.:
@@ -42776,17 +42784,17 @@ $a
 cESEE ALSO cA
 
     lsscheme-editor(3)lmscheme-editor(3)le
-! 3 rdoc
+! 3 r-doc
 cEcENAME cEcA
 
 
-|rdoc
-    rdoc - display documentation for R functions and packages
+|r-doc
+    r-doc - display documentation for R functions and packages
 $a
     
 cESYNOPSIS cA
 
-    cDrdoccA ["package::function|function"]
+    cDr-doccA ["package::function|function"]
      
 cEDESCRIPTION cA
      
@@ -42796,16 +42804,16 @@ $a
  
 cEEXAMPLE cA
 
-         rdoc "plot"
-         rdoc "cluster::pam"
+         r-doc "plot"
+         r-doc "cluster::pam"
         
 cENOTES cA
 
-    cDrdoccA macro is defined in file cGhkrdoc.emfcA.
+    cDr-doccA macro is defined in file cGhkrdoc.emfcA.
     
 cESEE ALSO cA
 
-    lsscheme-editor(3)lmscheme-editor(3)le
+    lsr(9)lmr(9)le
 ! 3 user-setup
 cEcENAME cEcA
 

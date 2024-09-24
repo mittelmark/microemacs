@@ -22,19 +22,18 @@ set-variable .fhook-rdoc.setup-mask "acfhmw"
 !if &and &sin "h" .fhook-rdoc.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.rdoc  set-variable .hilight.rdoc &pinc .hilight.next 1
   !iif &not &exi .hilight.rdocL  set-variable .hilight.rdocL &pinc .hilight.next 1  
-  0 hilight .hilight.rdoc 0                 .scheme.text
-  0 hilight .hilight.rdocL 0                 .scheme.text  
-  hilight .hilight.rdoc 2 "^_"               .scheme.header
-  hilight .hilight.rdocL 4 "'" "'" "\\"    .scheme.link
-  hilight .hilight.rdoc 2 "^[A-Z]"            .scheme.header
-  ;hilight .hilight.rdoc 2 "^ +[a-z]+:"         .scheme.keyword  
+  0 hilight .hilight.rdoc 0                   .scheme.text
+  0 hilight .hilight.rdocL 0                  .scheme.text  
+  hilight .hilight.rdoc  2    "^_"            .scheme.header
+  hilight .hilight.rdoc  2    "^[A-Z]"        .scheme.header
   !iif &not &exi ".hilight.r"  !force execute-file "hkr"
-  hilight .hilight.rdoc 0x80 "^[A-Z].+"  .hilight.rdoc .scheme.header
-  hilight .hilight.rdoc 0x80 "^See Also:"  .hilight.rdocL .scheme.header  
-  hilight .hilight.rdoc 0x80 "^Usage:"  .hilight.r .scheme.header
-  hilight .hilight.rdoc 0x80 "^Examples:"  .hilight.r .scheme.header  
-  hilight .hilight.r 0x80 "^Arguments:"  .hilight.rdoc  .scheme.header
-  hilight .hilight.rdocL 0x80 "^Examples:"  .hilight.r  .scheme.header
+  hilight .hilight.rdoc  0x80 "^See Also:"    .hilight.rdocL .scheme.header  
+  hilight .hilight.rdoc  0x80 "^Usage:"       .hilight.r     .scheme.header
+  hilight .hilight.rdoc  0x80 "^Examples:"    .hilight.r     .scheme.header  
+  hilight .hilight.r     0x80 "^[A-Z].+"      .hilight.rdoc  .scheme.header
+  hilight .hilight.r     0x80 "^Arguments:"   .hilight.rdoc  .scheme.header
+  hilight .hilight.rdocL 4    "'" "'" "\\"    .scheme.link
+  hilight .hilight.rdocL 0x80 "^Examples:"    .hilight.r     .scheme.header
 !endif
 
 !if &sin "f" .fhook-rdoc.setup
@@ -44,7 +43,7 @@ set-variable .fhook-rdoc.setup-mask "acfhmw"
   set-variable .fhook-rdoc.collapse-mnext "-1"
 !endif
 
-define-macro rdoc
+define-macro r-doc
   !force set-variable #l0 @1
   !if &not $status
     set-variable #l0 @ml00 "R help on"
@@ -56,7 +55,7 @@ define-macro rdoc
       set-variable #l1 &spr "help('%s')" #l1
   !endif
   0 pipe-shell-command &spr "LANG=en_US Rscript -e \"%s\"" #l1 "*rdoc*"
-  set-variable :mouse-word-select rdoc-process-link
+  set-variable :mouse-word-select r-doc-process-link
   -1 buffer-mode "view"
   beginning-of-buffer
   3 kill-line
@@ -69,7 +68,7 @@ define-macro rdoc
   !endif
 !emacro    
 
-0 define-macro rdoc-process-link
+0 define-macro r-doc-process-link
   ;set-variable $debug 3
   set-variable #l0 $window-col
   set-variable #l1 $window-line
@@ -96,7 +95,7 @@ define-macro rdoc
             copy-region
             set-variable #l6 @y
             -1 yank
-            rdoc #l6
+            r-doc #l6
           !endif
         !endif
       !endif

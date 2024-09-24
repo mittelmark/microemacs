@@ -8,6 +8,7 @@
 ;
 set-char-mask "2" "-$&#!%:@."
 
+
 define-macro fhook-ehf
     set-variable $buffer-mask "luh12"
     @# buffer-init "ehf"
@@ -77,21 +78,20 @@ set-variable .fhook-ehf.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move
     hilight .hilight.ehfL 0x80 "\\}\elm" .hilight.ehf $global-scheme
     hilight .hilight.ehfL 0x40 "." ""                 $global-scheme
     ; support for Markdown as define-help markup
-    hilight .hilight.ehf 0xc0 "^## NAME" "NAME" .hilight.ehfM .scheme.header  ; Markdown start
-    0 hilight  .hilight.ehfM 2 50                      $global-scheme
-    
-    hilight .hilight.ehfM 0x44 "^## "  "" "\n" "" ""      .scheme.header
-    hilight .hilight.ehfM 0x44 "^      "  "      " "\n" "" ""      .scheme.keyword
-    hilight .hilight.ehfM 0x44 " __" " " "__" "" ""       .scheme.bold  ; bold  
-    hilight .hilight.ehfM 0x44 " _" " " "_" "" ""       .scheme.italic  ; italic    
-    hilight .hilight.ehfM 0x44 " `" " " "`" "" ""       .scheme.keyword  ; code
-    hilight .hilight.ehfM 0x44 "```emf" "\ecB" "```" "\ecA" "" .scheme.keyword  ; code
-    hilight .hilight.ehfM 4  "\"" "\"" "\\"           .scheme.string
-    ;hilight .hilight.ehf 0x44 "`" "" "`" "" ""       .scheme.underline  ; code
+    0 hilight  .hilight.ehfM 2 50                              $global-scheme
+    hilight .hilight.ehf  0xc0  "^## NAME" "NAME"              .hilight.ehfM  .scheme.header  ; Markdown start
+    hilight .hilight.ehfM 0x44  "^## "  "" "\n" "" ""          .scheme.header
+    hilight .hilight.ehfM 0x44 "^        "  "        " "\n" "" ""  .scheme.keyword
+    hilight .hilight.ehfM 0x44 " __" " " "__" "" ""            .scheme.bold  ; bold  
+    hilight .hilight.ehfM 0x44 " _" " " "_" "" ""              .scheme.italic  ; italic    
+    hilight .hilight.ehfM 0x44 " `" " " "`" "" ""              .scheme.keyword  ; code
+    hilight .hilight.ehfM 4  "\"" "\"" "\\"                    .scheme.string
     hilight .hilight.ehfM 0x44 "\\[\\[" "" "\\]\\]" "" ""      .scheme.link  ; italic      
-    hilight .hilight.ehfM 0xc0 "" "" .hilight.ehf $global-scheme
-    hilight .hilight.ehfM 0xc0 "```emf" "" .hilight.ehfB  $global-scheme
-    hilight .hilight.ehfB 0xc0 "```" ""   .hilight.ehfM   $global-scheme
+    hilight .hilight.ehfM 0xc0 "" ""       .hilight.ehf $global-scheme
+    hilight .hilight.ehfM 0x44 "```emf" "\ecB" "```" "\ecA" "" .scheme.keyword  ; code
+    hilight .hilight.ehfM 0xc0 "```emf" "" .hilight.ehfB       .scheme.hidden
+    hilight .hilight.ehfB 0xc0 "```" ""    .hilight.ehfM       .scheme.hidden
+    hilight .hilight.ehfM 2    "```"                           .scheme.hidden ; seems not to work
 !endif
 
 ; Advance to the next link in the forward direction
