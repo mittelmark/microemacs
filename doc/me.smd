@@ -1069,6 +1069,7 @@
   [info-on(3)](info-on(3)) Display Info on a given topic  
   [list-buffers(2)](list-buffers(2)) (C-x C-b) List all buffers and show their status  
   [osd-help(3)](osd-help(3)) GUI based on-line help  
+  [pydoc(3)](pydoc(3)) Display Python module manual pages  
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
 
 !! me-id: amicr021
@@ -2085,6 +2086,7 @@
   [print-region(2)](print-region(2)) Print region, with formatting  
   [print-scheme(2)](print-scheme(2)) Create a new printer color and font scheme  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
+  [pydoc(3)](pydoc(3)) Display Python module manual pages  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings
@@ -2613,6 +2615,7 @@
   [paragraph-to-line(3)](paragraph-to-line(3)) Convert a paragraph to a single line  
   [password-to-phonic(3)](password-to-phonic(3)) Convert a password to phonic string  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
+  [pydoc(3)](pydoc(3)) Display Python module manual pages  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
@@ -3752,6 +3755,7 @@
   [printall(3f)](printall(3f)) Formatted print job  
   [profile(9)](profile(9)) Shell user profile  
   [py(9)](py(9)) Python Language File  
+  [pydoc(3)](pydoc(3)) Display Python module manual pages    
   [python(9)](python(9)) Python Language File  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
@@ -43392,6 +43396,39 @@ $a
 ## SEE ALSO
 
   [r(9)](r(9))
+!! me-id: m3mac100
+! 3 pydoc
+## NAME
+
+
+|pydoc
+  pydoc - display documentation for Python modules and packages
+$a
+  
+## SYNOPSIS
+
+  __pydoc__ ["package|function"]
+   
+## DESCRIPTION
+   
+  Displays with the manual page for a Python package module or package.
+  You can fold or unfold the section and use the [item-list(3)](item-list(3))
+  command to get an overview about section and classes in a module or
+  package. If no argment is given requests a package or function name from
+  the user via the command line.
+  
+## EXAMPLE
+
+       pydoc "argparse"
+       pydoc "sys"
+      
+## NOTES
+
+  __pydoc__ macro is defined in file `hkpydoc.emf`.
+  
+## SEE ALSO
+
+  [py(9)](py(9)).
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME
