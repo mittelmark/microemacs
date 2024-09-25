@@ -1,0 +1,73 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth, University of Potsdam
+;  Author        : Detlef Groth, University of Potsdam
+;  Created       : Wed Sep 25 15:42:35 2024
+;  Last Modified : <240925.1607>
+;
+;  Description   : Documentation viewer within MicroEmacs for
+;                  Python  
+;  Notes
+;
+;  History       : 2024-09-25 initial version
+;
+;  Copyright (c) 2024 Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1999-2024 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+
+
+define-macro fhook-pydoc
+  @# buffer-init "pydoc"
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-pydoc.name "pydoc"
+set-variable .fhook-pydoc.setup &reg "/history/fhook/pydoc" "acfhmw"
+set-variable .fhook-pydoc.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-pydoc.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.pydoc  set-variable .hilight.pydoc &pinc .hilight.next 1
+  0 hilight .hilight.pydoc 0                   .scheme.text
+  hilight .hilight.pydoc  2    "^[A-Z].+"       .scheme.header
+  hilight .hilight.pydoc  2    "^    class"     .scheme.keyword
+!endif
+
+!if &sin "f" .fhook-pydoc.setup
+  ; setup emf collapsing
+  set-variable .fhook-pydoc.collapse-open  "^[A-Z]"
+  set-variable .fhook-pydoc.collapse-close "^\\([A-Z]\\|    class\\|\\'\\)"
+  set-variable .fhook-pydoc.collapse-mnext "-1"
+!endif
+; setup item-list
+set-variable .fhook-pydoc.item-list-s1 "^\\([A-Z][A-Z]\.+\\)"
+set-variable .fhook-pydoc.item-list-r1 "SECT \ecB\\1\ecA"
+set-variable .fhook-pydoc.item-list-s2 "^    class +\\([^(]+\\)"
+set-variable .fhook-pydoc.item-list-r2 "  class \ecB\\1\ecA"
+
+define-macro pydoc
+  !force set-variable #l0 @1
+  !if &not $status
+    set-variable #l0 @ml00 "Python help on"
+  !endif
+  0 pipe-shell-command &spr "LANG=en_US pydoc %s" #l0 "*pydoc*"
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  3 kill-line
+  beginning-of-buffer
+  1 buffer-mode "view"
+
+  !if &band $system 0x01
+    ; some terminals might need this
+    screen-update
+  !endif
+!emacro    
+
+add-file-hook "*pydoc*" fhook-pydoc
+buffer-init-fhook "pydoc"
+ml-write "hkpydoc loaded"
