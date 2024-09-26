@@ -1,13 +1,19 @@
-; -!- emf -!-
-; This is part of the JASSPA MicroEmacs macro files
-; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
-; See the file me.emf for copying and conditions.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
-; Created:     Oct 7 2022
-; Authors:     Detlef Groth
-; Synopsis:    R-doc file hook (https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Rd-format)
-; 
-
+;  Author        : $Author$
+;  Created By    : Detlef Groth
+;  Created       : Thu Sep 26 14:43:10 2024
+;  Last Modified : <240926.1642>
+;
+;  Description
+;
+;  Notes
+;
+;  History
+;
+;  Copyright (c) 2024 Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 define-macro fhook-rdoc
   @# buffer-init "rdoc"
   buffer-init-hooks
@@ -21,102 +27,161 @@ set-variable .fhook-rdoc.setup-mask "acfhmw"
 
 !if &and &sin "h" .fhook-rdoc.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.rdoc  set-variable .hilight.rdoc &pinc .hilight.next 1
-  !iif &not &exi .hilight.rdocL  set-variable .hilight.rdocL &pinc .hilight.next 1  
-  0 hilight .hilight.rdoc 0                   .scheme.text
-  0 hilight .hilight.rdocL 0                  .scheme.text  
-  hilight .hilight.rdoc  2    "^_"            .scheme.header
-  hilight .hilight.rdoc  2    "^[A-Z]"        .scheme.header
+  0 hilight .hilight.rdoc 0                  .scheme.text
   !iif &not &exi ".hilight.r"  !force execute-file "hkr"
-  hilight .hilight.rdoc  0x80 "^See Also:"    .hilight.rdocL .scheme.header  
-  hilight .hilight.rdoc  0x80 "^Usage:"       .hilight.r     .scheme.header
-  hilight .hilight.rdoc  0x80 "^Examples:"    .hilight.r     .scheme.header  
-  hilight .hilight.r     0x80 "^[A-Z].+"      .hilight.rdoc  .scheme.header
-  hilight .hilight.r     0x80 "^Arguments:"   .hilight.rdoc  .scheme.header
-  hilight .hilight.rdocL 4    "'" "'" "\\"    .scheme.link
-  hilight .hilight.rdocL 0x80 "^Examples:"    .hilight.r     .scheme.header
+  hilight .hilight.rdoc  0xc0 "^cEUsage:cA" "Usage:" .hilight.r     .scheme.header
+  hilight .hilight.rdoc  0xc0 "^cEExamples:cA" "Example:" .hilight.r     .scheme.header  
+  hilight .hilight.r     0xc0 "cE(.+)cA" "\\1"       .hilight.rdoc  .scheme.header
+  hilight .hilight.r     0x44 "^cE" "" "cA" "" ""    .scheme.header  
+  hilight .hilight.rdoc  0x44 "^cE" "" "cA" "" ""    .scheme.header
+  hilight .hilight.rdoc  0x44  "ls" "" "le" "" ""    .scheme.link  
+  ;hilight .hilight.rdoc  0x80 "^cEExamples:cB" .hilight.r     .scheme.header  
 !endif
 
 !if &sin "f" .fhook-rdoc.setup
   ; setup emf collapsing
-  set-variable .fhook-rdoc.collapse-open  "^[A-Z]"
-  set-variable .fhook-rdoc.collapse-close "^\\([A-Z]\\|\\'\\)"
+  set-variable .fhook-rdoc.collapse-open  "^\ecE[A-Z]"
+  set-variable .fhook-rdoc.collapse-close "^\ecE[A-Z]\\|\\'\\)"
   set-variable .fhook-rdoc.collapse-mnext "-1"
 !endif
+; setup item-list
+set-variable .fhook-rdoc.item-list-s1 "^\ecE\\([A-Z].+\\)\ecA"
+set-variable .fhook-rdoc.item-list-r1 "SECT \ecB\\1\ecA"
 
-define-macro r-doc
+add-file-hook "*rdoc*" fhook-rdoc
+
+define-macro rdoc
   !force set-variable #l0 @1
   !if &not $status
     set-variable #l0 @ml00 "R help on"
   !endif
-  !if &xse #l0 "\\(.+\\)::\\(.+\\)" 
+  !if &seq #l0 ""
+      !return
+  !endif
+  set-variable #l0 &rep #l0 "::" ":"
+  !if &xse #l0 "\\(.+\\):\\(.+\\)" 
       !if &or &seq @s1 "library" &seq @s1 "package"
-          set-variable #l1 &spr "library(help='%s')" @s2
+          set-variable #l1 &spr "options(useFancyQuotes = FALSE);library(help='%s')" @s2
           set-variable .package @s2
       !else
-          set-variable #l1 &spr "help('%s',package='%s')" @s2 @s1
+          set-variable #l1 &spr "options(useFancyQuotes = FALSE);help('%s',package='%s',help_type='text')" @s2 @s1
           set-variable .package @s1
       !endif
   !else
+      ; options(useFancyQuotes = FALSE);
       set-variable .package ""
-      set-variable #l1 &spr "help('%s')" #l1
+      set-variable #l1 &spr "options(useFancyQuotes = FALSE);help('%s')" #l0
   !endif
-  1000 ml-write &cat "fetching ... " #l1
   0 pipe-shell-command &spr "LANG=en_US Rscript -e \"%s\"" #l1 "*rdoc*"
   set-variable :mouse-word-select r-doc-process-link
   -1 buffer-mode "view"
   beginning-of-buffer
+  ;set-variable $debug 2
+  !force search-buffer "me" "During startup - Warning messages:"
+  !if $status
+      beginning-of-line
+      1 kill-line
+  !endif      
+  !force search-buffer "me" "Setting LC_.+ failed"
+  !while $status
+      beginning-of-line
+      1 kill-line
+      !force search-buffer "me" "Setting LC_.+ failed"
+  !done
+  beginning-of-buffer
   3 kill-line
   replace-string "_" "" 
+  beginning-of-buffer
+  replace-string "^See Also:" "\ecESee Also:\ecA"
+  beginning-of-buffer
+  replace-string "^\\(\\u\\l[^ :]+:\\)$" "\ecE\\1\ecA"
+  beginning-of-buffer
+  replace-string "   \\(package:[^ ]+\\)   " "   \els\\1\ele   "
+  beginning-of-buffer
+  !force search-buffer "me" "^\\ecESee Also:"
+  !if $status
+      2 forward-line
+      ;set-variable $debug 2
+      beginning-of-line
+      set-variable #l1 0
+      ; maximal 5 lines as &xse has problems with while
+      !while &less #l1 6
+          ; &xse @wl "^\\S" does not work ...
+          -1 replace-string "'\\([^']+\\)'" "\els\\1\ele"
+          forward-line
+          beginning-of-line
+          set-variable #l1 &add #l1 1
+      !done
+  !endif
+  beginning-of-buffer
+  ;; package documentation with Index:
+  !force search-buffer "me" "^\\ecEIndex:"
+  !if $status
+      2 forward-line
+      beginning-of-line
+      set-variable #l1 0
+      ; maximal 5 lines
+      !while &less #l1 100
+          ; &xse @wl "^\\S" does not work ...
+          -1 replace-string "^\\([^\\s]+\\)" "\els\\1\ele"
+          !force forward-line
+          !if $status
+              beginning-of-line
+          !endif
+          set-variable #l1 &add #l1 1
+      !done
+      beginning-of-buffer      
+  !endif
+  ;execute-file "hkrdoc"
   beginning-of-buffer
   1 buffer-mode "view"
   !if &band $system 0x01
     ; some terminals might need this
     screen-update
   !endif
+
 !emacro    
 
 0 define-macro r-doc-process-link
   ;set-variable $debug 3
+  set-position "\x80"
   set-variable #l0 $window-col
   set-variable #l1 $window-line
-  set-position "\x80"
-  !force -10 search-backward "^See Also"
+  ;set-variable $debug 2
+  !force -2 search-forward "\ele"
   !if $status
-    goto-position "\x80"
-    !force -2 search-forward "'"
-    !if $status
       set-variable #l2 $window-col
       set-variable #l3 $window-line
-      backward-char
-      !force -2 search-backward "'"
+      3 backward-char
+      !force -2 search-backward "\els"
       !if $status
-        set-variable #l4 $window-col
-        set-variable #l5 $window-line
-        ; all on same line?
-        !if &and &equ #l1 #l3 &equ #l3 #l5
-          !if &and &less #l0 #l2 &great #l0 #l4
-            forward-char
-            set-mark
-            search-forward "'"
-            backward-char
-            copy-region
-            set-variable #l6 @y
-            -1 yank
-            !if &seq .r-doc.package ""
-                r-doc #l6
-            !else
-                r-doc &spr "%s::%s" .r-doc.package #l6
-            !endif
+          set-variable #l4 $window-col
+          set-variable #l5 $window-line
+          3 forward-char
+          ; all on same line? and 
+          !if &and &equ #l1 #l3 &equ #l3 #l5
+              !if &and &less #l0 #l2 &great #l0 #l4
+                  set-mark
+                  search-forward "\ele"
+                  3 backward-char
+                  copy-region
+                  set-variable #l6 @y
+                  -1 yank
+                  ;3000 ml-write &spr "fetching %s" #l6
+                  !if &seq .rdoc.package ""
+                      rdoc #l6
+                  !else
+                      !if &equ &sin "package:" #l6 0
+                          rdoc &spr "%s::%s" .rdoc.package #l6
+                      !else
+                          ; click on package:pkgname
+                          rdoc #l6
+                      !endif
+                  !endif
+              !endif
           !endif
-        !endif
       !endif
-    !endif
-  !else
-    1000 ml-write "We are not in the See Also section."
-    goto-position "\x80"
-  !endif  
+  !endif
 !emacro
 
-;add-file-hook "*rdoc*" fhook-ehf
-buffer-init-fhook "rdoc"
-ml-write "hkrdoc loaded"
+1000 ml-write "load new hkrdoc"
