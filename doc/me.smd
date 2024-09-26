@@ -1070,7 +1070,7 @@
   [list-buffers(2)](list-buffers(2)) (C-x C-b) List all buffers and show their status  
   [osd-help(3)](osd-help(3)) GUI based on-line help  
   [pydoc(3)](pydoc(3)) Display Python module manual pages  
-  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
 
 !! me-id: amicr021
 !   Operating Modes
@@ -2095,7 +2095,7 @@
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
-  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [read-registry(2)](read-registry(2)) Read in a registry definition file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -2619,7 +2619,7 @@
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
-  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
   [read-session(3)](read-session(3)) Read in session information  
   [replace-all-pairs(3)](replace-all-pairs(3)) Replace string pairs in a list of files  
   [replace-all-string(3)](replace-all-string(3)) Replace string with new string in a list of files  
@@ -3770,7 +3770,7 @@
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
-  [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [rdoc(3)](rdoc(3)) Display R function and package manual pages  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [read-registry(2)](read-registry(2)) Read in a registry definition file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -43366,17 +43366,17 @@ $a
 
   [scheme-editor(3)](scheme-editor(3))
 !! me-id: m3mac099
-! 3 r-doc
+! 3 rdoc
 ## NAME
 
 
-|r-doc
-  r-doc - display documentation for R functions and packages
+|rdoc
+  rdoc - display documentation for R functions and packages
 $a
   
 ## SYNOPSIS
 
-  __r-doc__ ["package::function|function"]
+  __rdoc__ ["package::function|function"]
    
 ## DESCRIPTION
    
@@ -43386,12 +43386,13 @@ $a
  
 ## EXAMPLE
 
-       r-doc "plot"
-       r-doc "cluster::pam"
+       rdoc "plot"
+       rdoc "cluster::pam"  
+       rdoc "package::cluster"
       
 ## NOTES
 
-  __r-doc__ macro is defined in file `hkrdoc.emf`.
+  __rdoc__ macro is defined in file `hkrdoc.emf`.
   
 ## SEE ALSO
 
@@ -63623,6 +63624,6 @@ $a
 ## SEE ALSO
 
 
-  [r-doc(3)](r-doc(3)), [Supported File Types](MicroEmacs - Supported File Types).
+  [rdoc(3)](rdoc(3)), [Supported File Types](MicroEmacs - Supported File Types).
 
 !! me-id: meende

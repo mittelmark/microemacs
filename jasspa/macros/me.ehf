@@ -1164,7 +1164,7 @@ Miscellaneous Information
     lslist-buffers(2)lmlist-buffers(2)le (C-x C-b) List all buffers and show their status  
     lsosd-help(3)lmosd-help(3)le GUI based on-line help  
     lspydoc(3)lmpydoc(3)le Display Python module manual pages  
-    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
 
 !   Operating Modes
 cEcEOPERATING MODES cEcA
@@ -2178,7 +2178,7 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -2701,7 +2701,7 @@ Miscellaneous Information
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
     lsread-session(3)lmread-session(3)le Read in session information  
     lsreplace-all-pairs(3)lmreplace-all-pairs(3)le Replace string pairs in a list of files  
     lsreplace-all-string(3)lmreplace-all-string(3)le Replace string with new string in a list of files  
@@ -3849,7 +3849,7 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -42788,17 +42788,17 @@ $a
 cESEE ALSO cA
 
     lsscheme-editor(3)lmscheme-editor(3)le
-! 3 r-doc
+! 3 rdoc
 cEcENAME cEcA
 
 
-|r-doc
-    r-doc - display documentation for R functions and packages
+|rdoc
+    rdoc - display documentation for R functions and packages
 $a
     
 cESYNOPSIS cA
 
-    cDr-doccA ["package::function|function"]
+    cDrdoccA ["package::function|function"]
      
 cEDESCRIPTION cA
      
@@ -42808,12 +42808,13 @@ $a
  
 cEEXAMPLE cA
 
-         r-doc "plot"
-         r-doc "cluster::pam"
+         rdoc "plot"
+         rdoc "cluster::pam"  
+         rdoc "package::cluster"
         
 cENOTES cA
 
-    cDr-doccA macro is defined in file cGhkrdoc.emfcA.
+    cDrdoccA macro is defined in file cGhkrdoc.emfcA.
     
 cESEE ALSO cA
 
@@ -62687,5 +62688,5 @@ $a
 cESEE ALSO cA
 
 
-    lsr-doc(3)lmr-doc(3)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+    lsrdoc(3)lmrdoc(3)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 
