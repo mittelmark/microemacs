@@ -212,6 +212,75 @@ from FreeBSD and does not need the gnu-make version `gmake`.
 
 
 <a name="Downloads"> </a>
+## Download Prebuild MicroEmacs Executables (v09.12.24-beta2)
+
+Release v09.12.24b2 (beta-2) (2024-09-28):
+
+New in comparison to v09.12.24-beta1
+
+- new macro commands rdoc and pydoc for browsing inside ME R and Python documentation
+- writing macro help using Markdown syntax
+- more editor schemes Ayu Dark, Artur,  Solarized  Light and Dark, Tango Light
+  and Dark
+- new macro xommand  xrdb-scheme for loading more editor schemes  directly via
+  xrdb files
+- unicode support for terminal version using luit and abduco
+
+| OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
+|:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
+| Linux 32bit | AntiX (Debian 12) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-debian-12-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-debian-12-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-debian-12-microemacs-091224b2-mecwb.zip) |
+| Linux 64bit | AlmaLinux 8       | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-4-almalinux-8-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-4-almalinux-8-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-4-almalinux-8-microemacs-091224b2-mecwb.zip) |
+|             | AlmaLinux 9       | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-almalinux-9-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-almalinux-9-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-almalinux-9-microemacs-091224b2-mecwb.zip) |
+|             | Fedora 30         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-fedora-30-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-fedora-30-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-fedora-30-microemacs-091224b2-mecwb.zip) |
+|             | Fedora 39         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-fedora-39-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-fedora-39-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-fedora-39-microemacs-091224b2-mecwb.zip) |
+|             | Manjaro Linux     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-manjarolinux-0-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-manjarolinux-0-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-manjarolinux-0-microemacs-091224b2-mecwb.zip) |
+|             | Ubuntu 20         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-ubuntu-20-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-ubuntu-20-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-5-ubuntu-20-microemacs-091224b2-mecwb.zip) |
+|             | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-ubuntu-22-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-ubuntu-22-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-ubuntu-22-microemacs-091224b2-mecwb.zip) |
+|             | Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-ubuntu-24-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-ubuntu-24-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/linux-6-ubuntu-24-microemacs-091224b2-mecwb.zip) |
+| MacOS       | MacOS 12          | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-12-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-12-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-12-microemacs-091224b2-mecwb.zip) |
+|             | MacOS 13          | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-13-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-13-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-13-microemacs-091224b2-mecwb.zip) |
+|             | MacOS 14          | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-14-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-14-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/macos-14-microemacs-091224b2-mecwb.zip) |
+| FreeBSD     | FreeBSD 14        | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/freebsd-14-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/freebsd-14-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/freebsd-14-microemacs-091224b2-mecwb.zip) |
+| Windows     | Windows 10/11     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/windows-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/windows-microemacs-091224b2-mewb.zip) | - |
+|             | Windows Cygwin 3.5 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/cygwin-3.5-microemacs-091224b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/cygwin-3.5-microemacs-091224b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/cygwin-3.5-microemacs-091224b2-mecwb.zip) |
+
+Download more programmers fonts: [TTF-Files](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip) -  [see here on how to install them](README-standalone.md#Fonts):
+
+Installation  of these  executables  is easy.  Make  them  executable  on Unix
+platforms and move them to a folder  belonging to your PATH variable.  Windows
+users should just copy them as well to such a folder.
+
+Just  download an  executable  for your  platform  which matches as closely as
+possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
+On Unix systems you make the file  executable  (chmod 755 filename) and rename
+it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
+Therafter you can run the me executable.  The first thing you have to do is to
+select the right  keyboard  configuration  after  starting your first session.
+Choose the menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
+tab.
+
+The executables linked  above  come with an embedded American  dictionary.  To use other
+dictionaries  download the dictionary  files for your language from the relase
+page: 
+[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
+and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
+instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
+dictionary.
+
+[Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
+[Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
+Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
+compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
+[CentOS](https://www.centos.org)                                           and
+[RHEL](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
+compatible.  [Fedora](https://www.fedora.org) builds can be probably only used
+on Fedora without problems.
+
+Build  for  other   platforms   might  be  provided  if  requested  using  the
+[issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
+repository. 
+
+
 ## Download Prebuild MicroEmacs Executables (v09.12.24-beta1)
 
 Release v09.12.24b1 (beta-1) (2024-08-23):
@@ -249,40 +318,6 @@ New in comparison to v09.12.23
 |             | Windows Cygwin 3.5 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/cygwin-3.5-microemacs-091224b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/cygwin-3.5-microemacs-091224b1-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/cygwin-3.5-microemacs-091224b1-mecwb.zip) |
 
 Download more programmers fonts: [TTF-Files](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip) -  [see here on how to install them](README-standalone.md#Fonts):
-
-Installation  of these  executables  is easy.  Make  them  executable  on Unix
-platforms and move them to a folder  belonging to your PATH variable.  Windows
-users should just copy them as well to such a folder.
-
-Just  download an  executable  for your  platform  which matches as closely as
-possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
-On Unix systems you make the file  executable  (chmod 755 filename) and rename
-it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
-Therafter you can run the me executable.  The first thing you have to do is to
-select the right  keyboard  configuration  after  starting your first session.
-Choose the menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
-tab.
-
-The executables linked  above  come with an embedded American  dictionary.  To use other
-dictionaries  download the dictionary  files for your language from the relase
-page: 
-[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
-and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
-instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
-dictionary.
-
-[Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
-[Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
-Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
-compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
-[CentOS](https://www.centos.org)                                           and
-[RHEL](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
-compatible.  [Fedora](https://www.fedora.org) builds can be probably only used
-on Fedora without problems.
-
-Build  for  other   platforms   might  be  provided  if  requested  using  the
-[issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
-repository. The AppImage  should work on most Linux platforms.
 
 ## Download Prebuild MicroEmacs Executables (v09.12.23)
 
