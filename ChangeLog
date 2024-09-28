@@ -7,12 +7,16 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <240922.0632>
+>  Last Modified : <240928.0451>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
  [240927]
 
     - support for Markdown as define-help language
+    - adding rdoc(3) command
+    - adding r(9) documentation
+    - adding !hm and !he abbreviations for macro help
+    - adding pydoc(3) command
   
  [240920]
  

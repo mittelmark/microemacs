@@ -5057,6 +5057,10 @@ Miscellaneous Information
 
     - [20240927]
       - support for Markdown as define-help language
+      - adding lsrdoc(3)lmrdoc(3)le command
+      - adding lsr(9)lmr(9)le documentation
+      - adding !hm and !he abbreviations for macro help
+      - adding lspydoc(3)lmpydoc(3)le command
 
     - [240920]
       - documenting save-kbd-macro(3)
@@ -42805,16 +42809,26 @@ $a
     Displays in a hypertext browser with R syntax hilighting the manual pages
     for R packages or R functions.
 
+    You can fold or unfold the section and use the  lsitem-list(3)lmitem-list(3)le
+    command  to  navigate  the  documentation  sections.  If no argment is given
+    requests  a package or  function  name from the user via the  command  line.
+    Package    overview   pages   should   be   requested   using   the   syntax
+    "package::pkgname", documentation for specific functions should be requested
+    using the syntax  "pkgname::funcname".  Links to other  functions and to the
+    main package  overview are shown with hilights in the normal text. Usage and
+    Examples sections use R highlighting.
  
 cEEXAMPLE cA
-
-         rdoc "plot"
-         rdoc "cluster::pam"  
-         rdoc "package::cluster"
-        
+         
+sB
+         rdoc                    ; requests a help page from the user 
+         rdoc "plot"             ; function documentation
+         rdoc "cluster::pam"     ; function pam in package cluster
+         rdoc "package::cluster" ; package overview with functions
+sA        
 cENOTES cA
 
-    cDrdoccA macro is defined in file cGhkrdoc.emfcA.
+    cDrdoccA  macro is defined in file  cGhkrdoc.emfcA.  
     
 cESEE ALSO cA
 
@@ -42834,6 +42848,7 @@ $a
 cEDESCRIPTION cA
      
     Displays with the manual page for a Python package module or package.
+
     You can fold or unfold the section and use the lsitem-list(3)lmitem-list(3)le
     command to get an overview about section and classes in a module or
     package. If no argment is given requests a package or function name from
@@ -42841,7 +42856,7 @@ $a
     
 cEEXAMPLE cA
 
-         pydoc "argparse"
+         pydoc "argparse"  
          pydoc "sys"
         
 cENOTES cA
