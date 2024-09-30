@@ -1,5 +1,5 @@
 
-## <img src="jasspa/pixmaps/me_s.png" />  MicroEmacs
+## <img src="jasspa/pixmaps/me_s.png" />  MicroEmacs 2009
 
 [![Release](https://img.shields.io/github/v/release/mittelmark/microemacs.svg?label=current+release)](https://github.com/mittelmark/microemacs/releases)
 [![license](https://img.shields.io/badge/license-GPL2-lightgray.svg)](https://www.gnu.org/licenses/gpl.htm)
@@ -14,9 +14,6 @@
 - [New Schemes](#Schemes)
 - [Compilation](#Compilation)
 - [Prebuild Binaries Downloads](#Downloads)
-
-This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from 
-[https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
 
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
 file  executable  for Windows,  Linux, MacOS and FreeBSD.  
@@ -37,6 +34,11 @@ Cons:
 
 - No Unicode (but full ISO support)
 - No softwrap (but automatic wrap is available)
+
+This  is a fork  of  [Jasspa  MicroEmacs](http://www.jasspa.com)  forked  from
+[https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
+It is an extended  version of the  MicroEmacs  2009 release which was the last
+official release available at the website [http://www.jasspa.com](http://www.jasspa.com).
 
 <a name="Schemes"> </a>
 
@@ -234,7 +236,7 @@ New in comparison to v09.12.24-beta1
   and Dark
 - new macro xommand  xrdb-scheme for loading more editor schemes  directly via
   xrdb files
-- unicode support for terminal version using luit and abduco
+- Unicode support for terminal version using luit and abduco see [below](#luit)
 
 | OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
 |:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
@@ -396,6 +398,61 @@ MEPATH="" TERM=rxvt ./me-linux2.bin -n
 ### in case of problems with the backslash key try
 MEPATH="" TERM=xterm ./me-linux2.bin -n
 ```
+
+<a name="luit">Luit and Abduco for using ME on Unicode terminals</a>
+## Luit and Abduco
+
+To use the  full  ISO-8859-XX  or  Windows-CP125X  character  sets on  Unicode
+terminals you can run ME 2009 using the [Luit](https://invisible-island.net/luit/)
+and [Abduco](https://github.com/martanne/abduco) terminal utilities.
+
+Luit as a wrapper  application  translates  Unicode and ISO characters between
+the Terminal  emulator and  MicroEmacs  and Abduco  allows you to suspend both
+applications  together.  Instead of Abduco other supend tools like [Dtach](https://github.com/crigler/dtach) could
+be used. Here a simple wrapper script which allows allows all Western ISO-8859-15 characters (like the Euro symbol) to be
+used inside MicroEmacs:
+
+```bash
+#!/bin/sh
+### file: mecu 
+### Description: wrapper to run MicroEmacs with extended character settings
+###              on UTF-8 enabled terminals
+###  
+### Tools required:
+###   abduco: session management and detacher
+###           https://www.brain-dump.org/projects/abduco/   
+###   luit:   filter between non-utf-8 applications and utf-8 terminals
+###           https://invisible-island.net/luit/
+### Installation:
+###           fedora: sudo dnf install abduco luit  
+###           debian: sudo apt install abduco luit
+
+### session name creation for the current tty 
+tty=$(tty | grep -Eo '[0-9]+')
+## already running? list abduco sessions
+res=$(abduco -l | grep mecb$tty)
+
+### running session, if no create an new one
+### otherwise attach to the old one
+### (press in ME Ctrl-l to update screen if neccesary)
+
+if [[ "$res" == "" ]] ; then 
+    ### need a new one 
+   TERM=xterm abduco -A -e ^z mecb$tty luit -encoding ISO-8859-15 mecb "$@"
+else
+    ### attach to the old one
+    abduco -a -e ^z mec$tty 
+fi
+```    
+
+Change  the  filename  mecb to the  name  you  give  you  MicroEmacs  terminal
+instance.  Name the bash script above `mec`, Make it executable  and move to a
+folder  belonging to your PATH  variable.  With this little shell script using
+two small tools, you can run MicroEmacs  nicely as well on all UTF-8 terminals
+with a more  extended  character  set.  Obviously  you can as well  change the
+encoding.  Here is a list of all ISO  encodings  with a short  description  of
+their usable letters - [https://en.wikipedia.org/wiki/ISO/IEC_8859](https://en.wikipedia.org/wiki/ISO/IEC_8859).
+
 
 <a name="ProsCons"> </a>
 ## Pros and Cons of Jasspa MicroEmacs
