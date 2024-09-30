@@ -21,27 +21,42 @@ This is a fork of [Jasspa MicroEmacs](http://www.jasspa.com) forked from
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
 file  executable  for Windows,  Linux, MacOS and FreeBSD.  
 
-Main features:
+Main features - Pros:
 
 - small!! and fast!!
 - same user interface in terminal and in GUI mode
 - Windows, Linux, macOS, FreeBSD versions
-- single file installs possible (2.5MB file size)
+- single file installs possible (2.5MB-4MB file size)
 - Emacs (default) or CUA key bindings available
 - menu entries for all main functions (Esc = in Terminal mode for menu)
 - extensible programming language
 - themes, customizations, templates, snippets menu or GUI accessible
 - for its size the text editor with most features without being bloated
 
+Cons: 
+
+- No Unicode (but full ISO support)
+- No softwrap (but automatic wrap is available)
+
+<a name="Schemes"> </a>
+
+<img src="images/ayu-light.png" width="390px"/>&nbsp;&nbsp;<img src="images/dracula.png" width="390px"/>
+
+Left the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf) and
+right the popular "Dracula" theme which is defined in the file [schemedr.emf](src/macros/schemedr.emf).
+See the folding feature for Markdown, in the image below (Dracula theme) the section
+build is folded by the indicated three dots:
+
 <a name="Types"> Executables  can be of three types:</a>
 
-- _mec_ - console  only (around 600kb without macro files)
-- _mew_ - X11/Windows  only (around  630kb without macro files)
-- _mecw_  Terminal and X11 enabled - for Mac with XQuartz and for Linux with X11
+- _mec(b)_ - console  only (around 600kb without macro files)
+- _mew(b)_ - X11/Windows  only (around  630kb without macro files)
+- _mecw(b)_  Terminal and X11 enabled - for Mac with XQuartz and for Linux with X11
  (650kb w/o macro files)
 
 The bfs  executables (mecb, mewb and mecwb) have as well all macro files, the internal help file and
-the American  dictionary  embedded  (file size around  2.5Mb). For  simplicity
+the American  dictionary  embedded  (file size around  2.5-4.0Mb  depending on
+the platform). For  simplicity
 reasons all downloads on the release page are bfs-builds.
 
 <a name="Features">New Features</a>
@@ -53,14 +68,20 @@ changes / extensions:
   buffer (thanks to Steven Phillips)
 * basic git support with commands to add, commit and get status of files etc  
 * easier addition of own user  templates with interactive template selection using the command "insert-template"
-* easier font-selection on X11 using _xfontsel_ and easier resize on X11 (Mac and Linux) and Windows
-* so font size increase and decrease using Ctrl-Plus and Ctrl-Minus keys
-* more schemes (themes) [Ayu Light](https://github.com/ayu-theme/ayu-colors)
-  and [Dracula](https://github.com/dracula/dracula-theme)
+* more schemes  (themes) [Ayu  Light and Dark](https://github.com/ayu-theme/ayu-colors),
+  [Dracula](https://github.com/dracula/dracula-theme), [Solarized Light and Dark](https://ethanschoonover.com/solarized/),
+  and Tango Light and Dark
+* editor themes can be directly loaded from xrdb theme files like these from the [iTerm2-Color-Schemes repo](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/xrdb)   
+  using the _xrdb-scheme_ macro
+* better support for TTF-fonts on X11 and their ISO-8859-1 .. 15 and Windows-Cp1252 encodings
+* easier font-selection on X11 using _xfontsel_ from the _user-setup_ or using the _change-font-xfontsel_ macro 
+* easier fonr resize on X11 (Mac and Linux) and Windows using Ctrl-Plus and Ctrl-Minus keys
+* documenting ME macro functions as well with basic Markdown syntax - see _define-help_ help page
 * much improved Markdown mode (folding, template file, syntax hilghlighting, outline
   in item list, embedding Tcl, Python, R and Dot code in fences with syntax highlight)
-* AppImage for easy install o Linux systems
-* example fonts Chivo  Mono, Ubuntu Mono and Courier Prime for better display on X11
+* improved CUA bindings and jeany-bindings where CUA bindings (C-s, C-x, C-v etc are prefixed with C-j
+  so that still all Emacs bindings  are available
+* AppImage for easy install on Linux systems
 * Linux (Ubuntu 20, 22, 24), Windows, Darwin 20, 21, 22 builds using Github actions
 * Windows builds using cross compilation on Ubuntu with Github actions
 * updates on documentation  
@@ -69,31 +90,20 @@ changes / extensions:
 * fix for hang on error bug if using the -n command line switch
 * fix for frame resize on X11 if the font changes (thanks to Steven Phillips)
 
-New important macro commands (see the internal help pages - version v09.12.22):
+New important macro commands (see the internal help pages - version v09.12.24):
 
 - `change-font-size` can be done as well with key bindings `C-Plus` and `C-Minus`
 - X11 only (Linux, MacOS)
     - `change-font-xfontsel` - direct font selection using _xfontsel_
     - `change-font-bold`
-    - `change-font-courier`
-    - `change-font-lucida`
-    - `change-font-type`
 - `git-add`, `git-commit`, `git-status`, `git-diff`  etc    
 - `execute-region` - for macro development
 - `insert-template` - easier definition of user templates
+- `xrdb-scheme` - load directly [xrdb color schemes]((https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/xrdb)   )
+- `rdoc` - loading R documentation as hypertext help within ME
+- `pydoc` - loading Python documentation within ME
 
-<a name="Schemes"> </a>
 
-Here the Ayu Light theme which is defined in the file [schemeal.emf](src/macros/schemeal.emf)
-
-![](images/ayu-light.png)
-
-Here the popular "Dracula" theme which is defined in the file [schemedr.emf](src/macros/schemedr.emf).
-
-See the folding feature for Markdown, in the image below (Dracula theme) the section
-build is folded by the indicated three dots:
-
-![](images/dracula.png)
 ## Compilation
 
 ### Debian Systems
