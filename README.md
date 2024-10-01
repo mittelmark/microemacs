@@ -49,7 +49,7 @@ right the popular "Dracula" theme which is defined in the file [schemedr.emf](sr
 See the folding feature for Markdown, in the image below (Dracula theme) the section
 build is folded by the indicated three dots:
 
-<img src="images/terminal-greek-text.png" width="390px"/>&nbsp;&nbsp;<img src="images/solarized-light-rcode.png" width="390px"/>
+<img src="images/terminal-greek-text.png" width="390px"/>&nbsp;&nbsp;<img src="images/solarized-light-rcode.png" width="400px"/>
 
 Left  Greek  Lipum text in a ME  terminal  session as well displaying the menu.  Please  note, that to use
 extended  char sets you need for  MicroEmacs 09 the luit  application.  On the
