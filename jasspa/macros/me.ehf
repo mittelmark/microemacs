@@ -10643,7 +10643,7 @@ John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 
     lsread-session(3)lmread-session(3)le, ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le, ls$MENAME(5)lm$MENAME(5)le, ls$MEPATH(5)lm$MEPATH(5)le,
     ls$MEUSERPATH(5)lm$MEUSERPATH(5)le, lsemf(8)lmemf(8)le, lserf(8)lmerf(8)le, lsesf(8)lmesf(8)le, ls$home(5)lm$home(5)le, emacs(1) [GNU], more(1),
-    lsClient-Server(2)lmClient-Server Interfacele, lsCommand-Line-FilterslmCommand Line Filtersle.
+    lsClient-Server(2)lmClient-Server Interfacele, lsCommand Line FilterslmCommand Line Filtersle.
 
     And cDvi(1)cA, cDvim(1)cA,cDnano(1)cA. 
 
@@ -32633,7 +32633,7 @@ $a
  
        Enable multiple tags. This enables the existence of 2 tags with the
        same tag name, but typically with different locations. See help on
-> - lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
+       lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
 
     cGrcA
  
@@ -43615,7 +43615,7 @@ $a
        can be wrong. This entry can be used to correct this problem. For one
        button mice, the button is considered to be the cGleftcA mouse button, two
        button mice have an cGleftcA and cGrightcA button. This indirectly sets the
-> - ls$mouse(5)lm$mouse(5)le variable.
+      ls$mouse(5)lm$mouse(5)le variable.
 
     `Swap Buttons`
     
@@ -45185,13 +45185,20 @@ $a
                    available scheme list, and associated text.  
     cGschemed.emfcA - Default white on black color scheme.  
     cGschemej.emfcA - Black on cream color scheme.  
-    cGschemealcA - Ayu Light.    
-    cGschemedrcA - Dracula.      
-    cGschemevicA - Sandy shores.  
-    cGschemesfcA - Sherwood Forest.  
+    cGschemearcA - Artur.      
+    cGschemealcA - Ayu Light - 21 color theme used by xrdb-scheme.    
+    cGschemealcA - Ayu Dark  - 21 color theme used by xrdb-scheme.      
     cGschemebhcA - Blue Hue.  
+    cGschemebrcA - Browie.        
+    cGschemedrcA - Dracula.      
     cGschemepdcA - Plain Black on Cream.  
     cGschemeplcA - Plain White on Black.  
+    cGschemevicA - Sandy shores.  
+    cGschemesfcA - Sherwood Forest.  
+    cGschemeslcA - Solarized Light.  
+    cGschemesdcA - Solarized Dark.    
+    cGschemetlcA - Tango Light.  
+    cGschemetdcA - Tango Dark.    
     cGschemelcA - Black on grey.  
     cGschememdcA - Microsoft Developer Studio Colors.  
     cGprinters.emfcA - Defines the list of available printer schemes and drivers.  

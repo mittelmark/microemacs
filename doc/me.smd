@@ -10630,7 +10630,7 @@ John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 
   [read-session(3)](read-session(3)), [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)), [$MENAME(5)]($MENAME(5)), [$MEPATH(5)]($MEPATH(5)),
   [$MEUSERPATH(5)]($MEUSERPATH(5)), [emf(8)](emf(8)), [erf(8)](erf(8)), [esf(8)](esf(8)), [$home(5)]($home(5)), emacs(1) [GNU], more(1),
-  [Client-Server Interface](Client-Server(2)), [Command Line Filters](Command-Line-Filters).
+  [Client-Server Interface](Client-Server(2)), [Command Line Filters](Command Line Filters).
 
   And __vi(1)__, __vim(1)__,__nano(1)__. 
 
@@ -33046,7 +33046,7 @@ $a
  
   >  Enable multiple tags. This enables the existence of 2 tags with the
      same tag name, but typically with different locations. See help on
-> - [find-tag(2)](find-tag(2)) for more information on multiple tag support.
+     [find-tag(2)](find-tag(2)) for more information on multiple tag support.
 
   `r`
  
@@ -44196,7 +44196,7 @@ $a
      can be wrong. This entry can be used to correct this problem. For one
      button mice, the button is considered to be the `left` mouse button, two
      button mice have an `left` and `right` button. This indirectly sets the
-> - [$mouse(5)]($mouse(5)) variable.
+    [$mouse(5)]($mouse(5)) variable.
 
   `Swap Buttons`
   
@@ -45771,13 +45771,20 @@ $a
                  available scheme list, and associated text.  
   `schemed.emf` - Default white on black color scheme.  
   `schemej.emf` - Black on cream color scheme.  
-  `schemeal` - Ayu Light.    
-  `schemedr` - Dracula.      
-  `schemevi` - Sandy shores.  
-  `schemesf` - Sherwood Forest.  
+  `schemear` - Artur.      
+  `schemeal` - Ayu Light - 21 color theme used by xrdb-scheme.    
+  `schemeal` - Ayu Dark  - 21 color theme used by xrdb-scheme.      
   `schemebh` - Blue Hue.  
+  `schemebr` - Browie.        
+  `schemedr` - Dracula.      
   `schemepd` - Plain Black on Cream.  
   `schemepl` - Plain White on Black.  
+  `schemevi` - Sandy shores.  
+  `schemesf` - Sherwood Forest.  
+  `schemesl` - Solarized Light.  
+  `schemesd` - Solarized Dark.    
+  `schemetl` - Tango Light.  
+  `schemetd` - Tango Dark.    
   `schemel` - Black on grey.  
   `schememd` - Microsoft Developer Studio Colors.  
   `printers.emf` - Defines the list of available printer schemes and drivers.  
