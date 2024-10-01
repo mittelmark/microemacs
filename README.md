@@ -49,6 +49,13 @@ right the popular "Dracula" theme which is defined in the file [schemedr.emf](sr
 See the folding feature for Markdown, in the image below (Dracula theme) the section
 build is folded by the indicated three dots:
 
+<img src="images/terminal-greek-text.png" width="390px"/>&nbsp;&nbsp;<img src="images/solarized-light-rcode.png" width="390px"/>
+
+Left  Greek  Lipum text in a ME  terminal  session as well displaying the menu.  Please  note, that to use
+extended  char sets you need for  MicroEmacs 09 the luit  application.  On the
+right the Solarized  Light theme showing R documentation  for the function pam
+in the cluster package.
+
 <a name="Types"> Executables  can be of three types:</a>
 
 - _mec(b)_ - console  only (around 600kb without macro files)
@@ -203,14 +210,16 @@ binaries for Windows on your Linux machine.
 
 ## FreeBSD
 
-If you install gcc on FeeeBSD it comes with the ncurses libraries already included so for the 
+If you  install  gcc on  FeeeBSD it comes with the  ncurses  libraries
+already included so for the 
 
 ```bash
 sudo pkg install gcc
 sudo pkg install xorg libX11
 ```
 
-Therafter you should be able to compile the application using the Makefile in the microemacs root project folder.
+Therafter  you  should be able to compile  the  application  using the
+Makefile in the microemacs root project folder.
 
 ```bash
 ### compile the barebone executables
@@ -219,8 +228,8 @@ make -f freebsd.mak bfs/bin mec mew mecw
 make -f freebsd.mak mecb mewb mecwb
 ```
 
-The  Makefile has the  extension  `mak` as it can use the default `make` utility
-from FreeBSD and does not need the gnu-make version `gmake`.
+The Makefile has the extension  `mak` as it can use the default `make`
+utility from FreeBSD and does not need the gnu-make version `gmake`.
 
 
 <a name="Downloads"> </a>
@@ -230,13 +239,15 @@ Release v09.12.24b2 (beta-2) (2024-09-28):
 
 New in comparison to v09.12.24-beta1
 
-- new macro commands rdoc and pydoc for browsing inside ME R and Python documentation
+- new  macro  commands  rdoc and  pydoc for  browsing  inside ME R and
+  Python documentation
 - writing macro help using Markdown syntax
-- more editor schemes Ayu Dark, Artur,  Solarized  Light and Dark, Tango Light
-  and Dark
-- new macro xommand  xrdb-scheme for loading more editor schemes  directly via
-  xrdb files
-- Unicode support for terminal version using luit and abduco see [below](#luit)
+- more editor schemes Ayu Dark, Artur, Solarized Light and Dark, Tango
+  Light and Dark
+- new macro  xommand  xrdb-scheme  for  loading  more  editor  schemes
+  directly via xrdb files
+- Unicode  support  for  terminal  version  using  luit and abduco see
+  [below](#luit)
 
 | OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
 |:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
