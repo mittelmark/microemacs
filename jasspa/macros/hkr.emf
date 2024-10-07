@@ -205,6 +205,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     0 indent  .hilight.r 0 10
     indent .hilight.r n "{"  t
     indent .hilight.r o "}" -t
+    indent .hilight.r e "\"" "\"" "\\"    
     indent .hilight.r b "(" ")"
     indent .hilight.r c "\\\\\\s " 3/2t
     indent .hilight.r i "#"
