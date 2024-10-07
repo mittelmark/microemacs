@@ -22,15 +22,15 @@ set-variable .fhook-r.setup &reg "/history/fhook/r" "dfghopx"
 set-variable .fhook-r.setup-mask "adefghikmoptux"
 set-variable .fhook-r.comment "|#||#|# | #|r|"
 
-set-variable .fhook-r.collapse-open  "^[a-zA-Z].+ function\\s *.+{"
+set-variable .fhook-r.collapse-open  "^[a-zA-Z].+ function\\s* (.+"
 set-variable .fhook-r.collapse-close "^}"
 set-variable .fhook-r.collapse-mclose "1"
 set-variable .fhook-r.collapse-mnext "-1"
 
 ; setup item-list
-set-variable .fhook-r.item-list-s1 "\\s*\\([_a-zA-Z0-9.\\$]*\\).+ function\\s *.+{ *\$"
+set-variable .fhook-r.item-list-s1 "^\\s*\\(['%_>a-zA-Z0-9.\\$]+\\) [-=<]+ function\\s *("
 set-variable .fhook-r.item-list-r1 "Func \ecB\\1\ecA"
-set-variable .fhook-r.item-list-s2 "^#'\\s+##\\s+\\([a-zA-Z0-9.\\s\\$]*\\) *\$"
+set-variable .fhook-r.item-list-s2 "^#'\\s+##\\s+\\([a-zA-Z0-9.\\s\\$]+\\) *\$"
 set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
 
 !if &not &exist .hilight.r
