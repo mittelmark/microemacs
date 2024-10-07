@@ -5054,6 +5054,12 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
+    - [241007]
+      - small improvements in r-mode fo item-list and folding
+      
+    - [240928]
+      - Release v09.12.24.b2 (beta-2)
+
 
     - [20240927]
       - support for Markdown as define-help language
