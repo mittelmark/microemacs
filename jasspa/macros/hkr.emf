@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; -!- emf -!-
 ; This is part of the JASSPA MicroEmacs macro files
-; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
+; Copyright (C) 1999-2024 JASSPA (www.jasspa.com)
 ; See the file me.emf for copying and conditions.
 ;
 ; Synopsis:   R/S-Plus hook (http://www.r-project.org)
@@ -22,7 +22,7 @@ set-variable .fhook-r.setup &reg "/history/fhook/r" "dfghopx"
 set-variable .fhook-r.setup-mask "adefghikmoptux"
 set-variable .fhook-r.comment "|#||#|# | #|r|"
 
-set-variable .fhook-r.collapse-open  "^[a-zA-Z].+ function\\s* (.+"
+set-variable .fhook-r.collapse-open  "^['a-zA-Z].+ function\\s* (.+"
 set-variable .fhook-r.collapse-close "^}"
 set-variable .fhook-r.collapse-mclose "1"
 set-variable .fhook-r.collapse-mnext "-1"
@@ -187,6 +187,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     ; operators
     hilight .hilight.r 0    "&"         .scheme.operator
     hilight .hilight.r 0    "|"         .scheme.operator
+    hilight .hilight.r 0    "|>"        .scheme.operator    
     hilight .hilight.r 0    "%in%"      .scheme.operator    
     hilight .hilight.r 0    "%ni%"      .scheme.operator        
     hilight .hilight.r 1 "TRUE"         .scheme.prepro

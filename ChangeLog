@@ -1,14 +1,20 @@
 > -!- document; fill-mode:both; fill-column:78 -!-
 >
 >  Copyright 1998-2009 JASSPA (www.jasspa.com).
->            2021-2023 Detlef Groth (https://github.com/mittelmark/microemacs)
+>            2021-2024 Detlef Groth (https://github.com/mittelmark/microemacs)
 > 
 >  License:  GPL (see the file COPYING) 
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <240928.0451>
+>  Last Modified : <241007.1504>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+ [241007]
+    - small improvements in r-mode fo item-list and folding
+    
+ [240928]
+    - Release v09.12.24.b2 (beta-2)
 
  [240927]
 
