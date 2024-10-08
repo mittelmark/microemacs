@@ -21,6 +21,9 @@ jobs:
         unzip -q winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
         PATH=%CD%\mingw32\bin;%PATH%
         gcc --version
+        export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+        echo "VRS=$VRS" >> $GITHUB_ENV
+        
     - name: compile bfs
       shell: cmd
       run: |
