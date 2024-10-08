@@ -38,7 +38,7 @@ jobs:
 
         # Output the result
         Write-Host "Extracted values: $env:VERSION"
-        echo VERSION=$env:VERSION >>  $GITHUB_ENV
+        echo "VERSION=$env:VERSION" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
     - name: download winlibs
       shell: cmd
       run: |
