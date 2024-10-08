@@ -3,8 +3,8 @@ name: Binaries Windows (windows-winlibs)
 on:
   workflow_dispatch:
     branches: [ master ]
-env:
-   VERSION: "091224b1"
+#env:
+#   VERSION: "091224b1"
 
 jobs:
   build:
