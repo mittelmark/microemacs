@@ -20,6 +20,8 @@ jobs:
         sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
         sudo apt install libz-mingw-w64 libz-mingw-w64-dev
         sudo apt install desktop-file-utils
+        export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+        echo "VRS=$VRS" >> $GITHUB_ENV
 
     - name: make bfs binary
       run:  make -f win32mingw.gmk bfs/bin
@@ -59,64 +61,64 @@ jobs:
 
     - name: Make release
       run: |
-        mkdir MicroEmacs09-${VERSION}-Windows
-        mkdir MicroEmacs09-${VERSION}-Windows/bin
-        #cp zlib1.dll MicroEmacs09-${VERSION}-Windows/bin/
-        #cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows/bin/
-        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows/bin/
-        cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-${VERSION}-Windows/bin/
-        cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-${VERSION}-Windows/bin/
-        cp windows-*me*.exe MicroEmacs09-${VERSION}-Windows/bin/
-        cp license.txt MicroEmacs09-${VERSION}-Windows/
-        cp COPYING MicroEmacs09-${VERSION}-Windows/
-        cp README-standalone.md MicroEmacs09-${VERSION}-Windows/
+        mkdir MicroEmacs09-${VRS}-Windows
+        mkdir MicroEmacs09-${VRS}-Windows/bin
+        #cp zlib1.dll MicroEmacs09-${VRS}-Windows/bin/
+        #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows/bin/
+        cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows/bin/
+        cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-${VRS}-Windows/bin/
+        cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-${VRS}-Windows/bin/
+        cp windows-*me*.exe MicroEmacs09-${VRS}-Windows/bin/
+        cp license.txt MicroEmacs09-${VRS}-Windows/
+        cp COPYING MicroEmacs09-${VRS}-Windows/
+        cp README-standalone.md MicroEmacs09-${VRS}-Windows/
         cd jasspa 
         zip macros.zip macros/*
         cd ..
-        cp jasspa/macros.zip MicroEmacs09-${VERSION}-Windows/
+        cp jasspa/macros.zip MicroEmacs09-${VRS}-Windows/
 
     - name: Make mecb release
       run: |
-        mkdir MicroEmacs09-${VERSION}-Windows-mecb
-        mkdir MicroEmacs09-${VERSION}-Windows-mecb/bin
-        #cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mecb/bin/
-        #cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mecb/bin/
-        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
-        cp windows-*-mecb.exe MicroEmacs09-${VERSION}-Windows-mecb/bin/
-        cp license.txt MicroEmacs09-${VERSION}-Windows-mecb/
-        cp COPYING MicroEmacs09-${VERSION}-Windows-mecb/
-        cp README-standalone.md MicroEmacs09-${VERSION}-Windows-mecb/
+        mkdir MicroEmacs09-${VRS}-Windows-mecb
+        mkdir MicroEmacs09-${VRS}-Windows-mecb/bin
+        #cp zlib1.dll MicroEmacs09-${VRS}-Windows-mecb/bin/
+        #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows-mecb/bin/
+        cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows-mecb/bin/
+        cp windows-*-mecb.exe MicroEmacs09-${VRS}-Windows-mecb/bin/
+        cp license.txt MicroEmacs09-${VRS}-Windows-mecb/
+        cp COPYING MicroEmacs09-${VRS}-Windows-mecb/
+        cp README-standalone.md MicroEmacs09-${VRS}-Windows-mecb/
 
     - name: Make mewb release
       run: |
-        mkdir MicroEmacs09-${VERSION}-Windows-mewb
-        mkdir MicroEmacs09-${VERSION}-Windows-mewb/bin
-        #cp zlib1.dll MicroEmacs09-${VERSION}-Windows-mewb/bin/
-        #cp zlib-LICENSE.txt MicroEmacs09-${VERSION}-Windows-mewb/bin/
-        cp bfs/bfs.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
-        cp windows-*-mewb.exe MicroEmacs09-${VERSION}-Windows-mewb/bin/
-        cp license.txt MicroEmacs09-${VERSION}-Windows-mewb/
-        cp COPYING MicroEmacs09-${VERSION}-Windows-mewb/
-        cp README-standalone.md MicroEmacs09-${VERSION}-Windows-mewb/
+        mkdir MicroEmacs09-${VRS}-Windows-mewb
+        mkdir MicroEmacs09-${VRS}-Windows-mewb/bin
+        #cp zlib1.dll MicroEmacs09-${VRS}-Windows-mewb/bin/
+        #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows-mewb/bin/
+        cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows-mewb/bin/
+        cp windows-*-mewb.exe MicroEmacs09-${VRS}-Windows-mewb/bin/
+        cp license.txt MicroEmacs09-${VRS}-Windows-mewb/
+        cp COPYING MicroEmacs09-${VRS}-Windows-mewb/
+        cp README-standalone.md MicroEmacs09-${VRS}-Windows-mewb/
 
     - name: Upload Windows Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09-${{ env.VERSION }}-Windows
-        path: MicroEmacs09-${{ env.VERSION }}-Windows
+        name: MicroEmacs09-${{ env.VRS }}-Windows
+        path: MicroEmacs09-${{ env.VRS }}-Windows
     
 
     - name: Upload Windows mecb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09-${{ env.VERSION }}-Windows-mecb
-        path: MicroEmacs09-${{ env.VERSION }}-Windows-mecb
+        name: MicroEmacs09-${{ env.VRS }}-Windows-mecb
+        path: MicroEmacs09-${{ env.VRS }}-Windows-mecb
     
     - name: Upload Windows mewb Release files
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
-        path: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
+        name: MicroEmacs09-${{ env.VRS }}-Windows-mewb
+        path: MicroEmacs09-${{ env.VRS }}-Windows-mewb
 
     - name: Combined Release
       run: |
