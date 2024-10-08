@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     branches: [ master ]
 env:
-   VERSION: "091224b3"
+   VERSION: "091224b1"
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: extract version
+    - name: extract version from src/evers.h using powershell
       shell: pwsh
       run: |
         $pattern = '#define me(YEAR|MONTH|DAY)'
@@ -34,11 +34,11 @@ jobs:
         $result = $extractedValues -join ''
 
         # Set the VRS environment variable
-        $env:VRS = $result
+        $env:VERSION = $result
 
         # Output the result
-        Write-Host "Extracted values: $env:VRS"
-        echo VRS=env:VRS >>  $GITHUB_ENV
+        Write-Host "Extracted values: $env:VERSION"
+        echo VERSION=$env:VERSION >>  $GITHUB_ENV
     - name: download winlibs
       shell: cmd
       run: |
@@ -83,7 +83,7 @@ jobs:
     - name: Make release
       shell: pwsh
       run: |
-        $env:VERSION ='091224b1'
+        # $env:VERSION ='091224b1'
         mkdir MicroEmacs09-${env:VERSION}-Windows
         mkdir MicroEmacs09-${env:VERSION}-Windows/bin
         cp bfs/bfs.exe MicroEmacs09-${env:VERSION}-Windows/bin/
@@ -101,8 +101,8 @@ jobs:
     - name: Upload Windows WinlibRelease files
       uses: actions/upload-artifact@v4
       with: 
-        name: MicroEmacs09-091224b1-Windows
-        path: MicroEmacs09-091224b1-Windows
+        name: MicroEmacs09-${{ env.VERSION }}-Windows
+        path: MicroEmacs09-${{ env.VERSION }}-Windows
     
         
     - name: Make mecb release
