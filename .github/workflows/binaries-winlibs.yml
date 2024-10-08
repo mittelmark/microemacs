@@ -38,7 +38,7 @@ jobs:
 
         # Output the result
         Write-Host "Extracted values: $env:VRS"
-     
+        echo VRS=env:VRS >>  $GITHUB_ENV
     - name: download winlibs
       shell: cmd
       run: |
