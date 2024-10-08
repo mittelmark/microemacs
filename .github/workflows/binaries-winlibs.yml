@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: extract version
-      shell: pwrsh
+      shell: pwsh
       run: |
         $pattern = '#define me(YEAR|MONTH|DAY)'
 
