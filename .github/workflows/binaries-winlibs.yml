@@ -13,6 +13,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: extract version
+    - shell: pwrsh
+    - run: |
+        $pattern = '#define me(YEAR|MONTH|DAY)'
+
+        $extractedValues = Get-Content -Path "evers.mk" | 
+        Select-String -Pattern $pattern | 
+        ForEach-Object {
+            # Split the line and get the third element (index 2)
+            $elements = $_.Line -split '\s+'
+            if ($elements.Count -ge 3) {
+                # Remove the quotes from the third element
+                $elements[2].Trim('"')
+            }
+        }
+
+        # Join the extracted values into a single string
+        $result = $extractedValues -join ''
+
+        # Set the VRS environment variable
+        $env:VRS = $result
+
+        # Output the result
+        Write-Host "Extracted values: $env:VRS"
      
     - name: download winlibs
       shell: cmd
