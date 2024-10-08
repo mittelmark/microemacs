@@ -15,11 +15,11 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: extract version
-    - shell: pwrsh
-    - run: |
+      shell: pwrsh
+      run: |
         $pattern = '#define me(YEAR|MONTH|DAY)'
 
-        $extractedValues = Get-Content -Path "evers.mk" | 
+        $extractedValues = Get-Content -Path "src\evers.h" | 
         Select-String -Pattern $pattern | 
         ForEach-Object {
             # Split the line and get the third element (index 2)
