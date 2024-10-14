@@ -21,7 +21,6 @@ set-variable .fhook-r.name "R/S-Plus"
 set-variable .fhook-r.setup &reg "/history/fhook/r" "dfghopx"
 set-variable .fhook-r.setup-mask "adefghikmoptux"
 set-variable .fhook-r.comment "|#||#|# | #|r|"
-
 set-variable .fhook-r.collapse-open  "^['a-zA-Z].+ function\\s* (.+"
 set-variable .fhook-r.collapse-close "^}"
 set-variable .fhook-r.collapse-mclose "1"
@@ -40,6 +39,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
     ; High-light R Mode
     0 hilight .hilight.r 0              $global-scheme
     hilight .hilight.r 0 "^\\s *\\{#.*" .scheme.comment
+    hilight .hilight.r 2 "\\s#"         .scheme.comment
     hilight .hilight.r 0 "^#.*"         .scheme.comment   
     
     hilight .hilight.r 4 "\"" "\"" "\\" .scheme.string
@@ -48,6 +48,7 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
         hilight .hilight.r 1 "[a-zA-Z0-9_\\$.]+\\s+<-\\s+function"   .scheme.function
     !endif
     hilight .hilight.r 2 "^library"     .scheme.prepro
+    hilight .hilight.r 2 "^#!"          .scheme.header
     hilight .hilight.r 1 "abline"       .scheme.keyword
     hilight .hilight.r 1 "abs"          .scheme.keyword    
     hilight .hilight.r 1 "all"          .scheme.keyword
