@@ -5,7 +5,7 @@
 ;
 ; Created:     Sat Sep 15 2001
 ; Synopsis:    Language setup routines
-; Authors:     Steven Phillips
+; Authors:     Steven Phillips, Detlef Groth
 ;
 ; Notes:
 ;     Originally part of language.emf but broken out to keep language.emf
@@ -20,7 +20,7 @@
     !force execute-file &cat "lsr" .spell.language
     !if &not $status
         !if @#
-            set-variable #l0 &spr "  Rules and dictionaries for language \"%s\"  \n     are not available, please download." &reg "/history/language" "Default"
+            set-variable #l0 &spr "  Rules and dictionaries for language \"%s\"  \n     are not available, please download from\nhttps://github.com/mittelmark/microemacs/releases/download/v0.9.0/\n      or try to run spell-install on Linux!" &reg "/history/language" "Default"
             osd-dialog "Spelling Checker" #l0 "  \HOk  "
         !endif
         !abort
