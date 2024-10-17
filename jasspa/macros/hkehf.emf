@@ -207,6 +207,21 @@ set-variable .fhook-ehf.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move
 0 define-macro ehf-process-link
     set-variable #l0 $window-col
     set-variable #l1 $window-line
+    ; markdown links
+    !force -1 search-forward "]]"
+    !if $status 
+        2 backward-char
+        set-mark
+        -1 search-backward "\\[\\["
+        !if $status
+            2 forward-char
+            copy-region
+            set-variable #l0 @y
+            -1 yank
+            ehf-find-help #l0
+            !return
+        !endif
+    !endif
     ; end of link must be found within 5 lines
     !force -5 search-forward "\ele"
     !if $status
@@ -256,7 +271,8 @@ set-variable .fhook-ehf.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move
         ehf-find-help #l2
         !return
     !endif
-    ml-write "Error! Not in a link"
+    1000 ml-write @wc
+    ml-write "Error! Not in a link2!"
     !abort
 !emacro
 
