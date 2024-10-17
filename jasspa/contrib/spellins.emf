@@ -1,7 +1,7 @@
 ; windows powershell:
 ;
 ; curl "url" -OutFile file_name.ext
-; MacOS ?
+; MacOS ? 
 define-macro spell-install
     !if &seq &which "curl" ""
         1000 ml-write "Error: curl is not installed! Please install!"

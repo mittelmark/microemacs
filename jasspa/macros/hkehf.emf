@@ -271,8 +271,7 @@ set-variable .fhook-ehf.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move
         ehf-find-help #l2
         !return
     !endif
-    1000 ml-write @wc
-    ml-write "Error! Not in a link2!"
+    ml-write "Error! Not in a link!"
     !abort
 !emacro
 
