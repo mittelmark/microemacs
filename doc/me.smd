@@ -881,6 +881,7 @@
   [spell-add-word(3)](spell-add-word(3)) Add a word to the main dictionary  
   [spell-buffer(3)](spell-buffer(3)) Spell check the current buffer  
   [spell-edit-word(3)](spell-edit-word(3)) Edits a spell word entry  
+  [spell-install(3)](spell-install(3)) Install a spelling dictionary from Github project  
   [spell-word(3)](spell-word(3)) (esc $) Spell check a single word  
 
 
@@ -2162,6 +2163,7 @@
   [spell-add-word(3)](spell-add-word(3)) Add a word to the main dictionary  
   [spell-buffer(3)](spell-buffer(3)) Spell check the current buffer  
   [spell-edit-word(3)](spell-edit-word(3)) Edits a spell word entry  
+  [spell-install(3)](spell-install(3)) Install a spelling dictionary from Github project  
   [spell-word(3)](spell-word(3)) (esc $) Spell check a single word  
   [split-window-horizontally(2)](split-window-horizontally(2)) (C-x 3) Split current window into two
      (horizontally)  
@@ -2640,6 +2642,7 @@
   [spell-add-word(3)](spell-add-word(3)) Add a word to the main dictionary  
   [spell-buffer(3)](spell-buffer(3)) Spell check the current buffer  
   [spell-edit-word(3)](spell-edit-word(3)) Edits a spell word entry  
+  [spell-install(3)](spell-install(3)) Install a spelling dictionary from Github project  
   [spell-word(3)](spell-word(3)) (esc $) Spell check a single word  
   [start-up(3)](start-up(3)) Editor startup callback command  
   [stop-mail-check(3)](stop-mail-check(3)) Disable the check for new email  
@@ -3847,6 +3850,7 @@
   [spell-add-word(3)](spell-add-word(3)) Add a word to the main dictionary  
   [spell-buffer(3)](spell-buffer(3)) Spell check the current buffer  
   [spell-edit-word(3)](spell-edit-word(3)) Edits a spell word entry  
+  [spell-install(3)](spell-install(3)) Install a spelling dictionary from Github project  
   [spell-word(3)](spell-word(3)) (esc $) Spell check a single word  
   [split-window-horizontally(2)](split-window-horizontally(2)) (C-x 3) Split current window into two (horizontally)  
   [split-window-vertically(2)](split-window-vertically(2)) (C-x 2) Split the current window into two  
@@ -45170,6 +45174,7 @@ $a
 ! 3 spell-buffer
 ! 3 spell-word
 ! 3 spell-edit-word
+! 3 spell-install
 ! 3 find-word
 ## NAME
 
@@ -45180,6 +45185,8 @@ $a
   spell-word - Spell check a single word
 |spell-edit-word
   spell-edit-word - Edits a spell word entry
+|spell-install
+  spell-install - Installs a spelling dictionary from Github project
 |find-word
   find-word - Find a using spelling dictionaries
 $a
@@ -45192,6 +45199,7 @@ $a
   _n_ __spell-word__ ["_word_"] (__esc $__)  
   __spell-edit-word__ ["_word_"]  
   __find-word__ ["_word_"]
+  __spell-install__ ["_dict_"]  
 
 
 ## DESCRIPTION
@@ -45393,6 +45401,11 @@ $a
   200 words, selecting __next__ gets the next 200 words, and so on. The __Close__
   button exits the dialog.
 
+  __spell-install__ allow the user to install one of the available dictionaries directly
+  from within MicroEmacs. The user can interactively select one of the available dictionaries
+  from the MicroEmacs message line which is then downloaded directly from the Github project
+  if the command line tools `curl` and `unzip` are available on the users machine.
+  
 
 ## NOTES
 
@@ -45413,6 +45426,10 @@ $a
   use of derivatives in the spell algorithm allows a single word to be
   present several times. __find-word__ counts each occurrence but it is only
   listed once.
+  
+  __spell-install__ is a macro implemented in `spellins.emf` and was introduced with
+  MicroEmacs v091224. It is currently working only on Linux and MacOS if the command
+  line tools `curl` and `unzip` are installed.
 
 
 ## SEE ALSO

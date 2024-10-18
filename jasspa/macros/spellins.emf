@@ -1,0 +1,64 @@
+; windows powershell:
+;
+; curl "url" -OutFile file_name.ext
+; MacOS ? 
+define-macro spell-install
+    !if &seq &which "curl" ""
+        1000 ml-write "Error: curl is not installed! Please install!"
+        !abort
+    !endif
+    !if &seq &which "unzip" ""
+        1000 ml-write "unzip is not installed, please install!"
+        !abort
+    !endif
+    !force set-variable #l1 @1
+    ; no argument given
+    !if &not $status
+        set-variable .lang "|American|British|Deutsch|Espanol|Finish|Francais|Italian|Polish|Portugues|Russian (YE)|Russian (YO)|"
+        set-variable .lang-dict "|Deutsch|dede|American|enus|British|engb|Espanol|eses|Finish|fifi|French|frfr|Italian|itit|Polish|plpl|Portugues|ptpt|Russian (YE)|ruye|Russian (YO)|ruyo|"
+        set-variable #l0 @ml19 "Template name (press tab to see all): " "American" .lang
+        set-variable #l1 &lfind .lang-dict #l0
+        !if &gre #l1 0
+            set-variable #l1 &add #l1 1
+            set-variable #l1 &lget .lang-dict #l1
+        !else
+            1000 ml-write "Spelling dictionary not found!"
+            !abort
+        !endif
+    !endif
+    !force execute-file &cat "lsr" #l1
+    !if $status 
+        1000 ml-write &spr "Language files for %s already installed!" #l1
+    !else
+        ipipe-shell-command &spr "curl --location https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip --output %s/ls_%s.zip" #l1 $user-path #l1 "*curl*"
+        ipipe-shell-command &spr "unzip %s/ls_%s.zip -d %s" $user-path #l1 $user-path
+    !endif
+!emacro
+define-help "spell-install" "3"
+## NAME
+
+    spell-install - install spelling dictionary from within MicroEmacs
+$a
+
+## SYNOPSIS
+
+    __spell-install__ ["lang"]
+   
+## DESCRIPTION
+   
+    Install the spelling dictionaries for MicroEmacs directly from within
+    MicroEmacs. If the argument "lang" is not given it ask for the language.
+    The argument lang should be one of "dede" (German), "engb" (British), 
+    "enus" (American), "eses" (Spanish), "fifi" (Finish), "frfr" (French),
+    "itit" (Italian), "plpl" (Polish), "ptpt" (Portugues), "ruye" (Russion (Ye)
+    or "ruyo" (Russian (Yo)).
+  
+## NOTES
+
+    The macro is implemented in the file "dinstall.emf" and requires the command line
+    tools `curl` and `unzip` to be installed. Currently only tested on Linux.
+  
+## SEE ALSO
+    [[user-setup(3)]], [[Spelling Commands]]
+!ehelp
+;spell-install 
