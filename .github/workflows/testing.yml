@@ -35,6 +35,22 @@ jobs:
           ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
           ./menv/bin/meapp -V
 
+  macos13:
+    runs-on: macos-13
+    name: Build on MacOS 13
+    steps:
+      - uses: actions/checkout@v4
+      - name: check Python package install
+        run:  |
+          uname 
+          uname -a
+          uname -n
+          uname -s
+          python --version
+          python -m venv menv
+          ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
+          ./menv/bin/meapp -V
+
   windows:
     runs-on: windows-2022
     name: Build on Windows 2022
