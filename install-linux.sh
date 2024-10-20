@@ -125,7 +125,7 @@ function install-me {
 
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
 install-me
-if [[ $OS != "Darwin" ]];
+if [[ $OS != "Darwin" ]]; then
     install-fonts
 fi
 
