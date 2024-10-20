@@ -57,10 +57,14 @@ function install-me {
 
         # Download the dummy.sh script from the internet
         URL=${BASEURL}${MECB}
-        wget -P /tmp/ "${URL}.zip"
+        if [[ ! -f "/tmp/${MECB}.zip" ]]; then
+            wget -P /tmp/ "${URL}.zip"
+        fi
         unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb > ~/.local/bin/mecb
         URL=${BASEURL}${MEWB}
-        wget -P /tmp/ "${URL}.zip"
+        if [[ ! -f "/tmp/${MEWB}.zip" ]]; then
+            wget -P /tmp/ "${URL}.zip"
+        fi
         unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb > ~/.local/bin/mewb
         # Make the script executable
         chmod 755 ~/.local/bin/me?b
