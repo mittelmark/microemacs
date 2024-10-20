@@ -114,13 +114,19 @@ New important macro commands (see the internal help pages - version v09.12.24):
 
 ## Installation
 
-For Linux and FreeBSD systems the following line might work:
+For Linux and FreeBSD systems the following lines might work:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
+source ~/.bashrc ## for the current session
+me -V
 ```
 
-This line requires the tools curl, wget and unzip to be installed on your Linux system.
+This  line  requires  the  tools  curl  and  unzip  to be  installed  on  your
+Linux/FreeBSD system.
+
+You can then start  either the  terminal  version with the command `me arguments` or the
+X11/Windows version with `me -w arguments`.
 
 ## Compilation
 

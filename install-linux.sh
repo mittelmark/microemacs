@@ -2,6 +2,20 @@
 OS=`uname`
 BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
+if [[ $OS == "Darwin" ]]; then
+    if [[ $KERNEL -eq 21 ]]; then    
+       MECB="macos-12-microemacs-091224b2-mecb"
+       MEWB="macos-12-microemacs-091224b2-mewb"   
+    elif [[ $KERNEL -eq 22 ]]; then    
+       MECB="macos-13-microemacs-091224b2-mecb"
+       MEWB="macos-13-microemacs-091224b2-mewb"   
+    elif [[ $KERNEL -eq 23 ]]; then    
+       MECB="macos-14-microemacs-091224b2-mecb"
+       MEWB="macos-14-microemacs-091224b2-mewb"   
+    else
+        echo "Error: Kernel $KERNEL on $OS not supported!"    
+        exit
+    fi
 if [[ $OS == "FreeBSD" ]]; then
     if [[ $KERNEL -eq 14 ]]; then    
        MECB="freebsd-14-microemacs-091224b2-mecb"
