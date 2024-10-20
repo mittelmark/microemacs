@@ -1,7 +1,7 @@
 #!/bin/bash
 OS=`uname`
 BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
-KERNEL=`uname -r | grep -Eo '^[0-9]'`
+KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 if [[ $OS == "FreeBSD" ]]; then
     if [[ $KERNEL -eq 14 ]]; then    
        MECB="freebsd-14-microemacs-091224b2-mecb"
