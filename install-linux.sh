@@ -91,6 +91,7 @@ function install-me {
         unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb > ~/.local/bin/mewb
         # Make the script executable
         chmod 755 ~/.local/bin/me?b
+        chmod 755 ~/.local/bin/mecu
         if [[ ! -f ~/.local/bin/me ]]; then
             curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
             chmod 755 ~/.local/bin/me
