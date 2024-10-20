@@ -1,8 +1,15 @@
 #!/bin/bash
-
+OS=`uname`
 BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
 KERNEL=`uname -r | grep -Eo '^[0-9]'`
-if [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
+if [[ $OS == "FreeBSD" ]]; then
+    if [[ $KERNEL -eq 14 ]]; then    
+       MECB="freebsd-14-microemacs-091224b2-mecb"
+       MEWB="freebsd-14-microemacs-091224b2-mewb"   
+    else
+        echo "Error: Kernel $KERNEL on $OS not supported!"    
+    fi
+elif [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
     ## fedora
     if [[ $KERNEL -eq 5 ]]; then    
        MECB="linux-5-fedora-30-microemacs-091224b2-mecb"
