@@ -114,10 +114,10 @@ New important macro commands (see the internal help pages - version v09.12.24):
 
 ## Installation
 
-For Linux systems the following line might work:
+For Linux and FreeBSD systems the following line might work:
 
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
 ```
 
 This line requires the tools curl, wget and unzip to be installed on your Linux system.
