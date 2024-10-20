@@ -40,16 +40,12 @@ jobs:
     name: Build on MacOS 13
     steps:
       - uses: actions/checkout@v4
-      - name: check Python package install
+      - name: check MicroEmacs curl install
+        shell: bash
         run:  |
-          uname 
-          uname -a
-          uname -n
-          uname -s
-          python --version
-          python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
-          ./menv/bin/meapp -V
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
+          source ~/.bashrc ## for the current session
+          me -V
 
   windows:
     runs-on: windows-2022
