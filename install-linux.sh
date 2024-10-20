@@ -8,6 +8,7 @@ if [[ $OS == "FreeBSD" ]]; then
        MEWB="freebsd-14-microemacs-091224b2-mewb"   
     else
         echo "Error: Kernel $KERNEL on $OS not supported!"    
+        exit
     fi
 elif [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
     ## fedora
@@ -19,7 +20,7 @@ elif [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
        MEWB="linux-6-fedora-40-microemacs-091224b2-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
-        
+        exit
     fi
 elif [[ "`uname -r | grep -E 'el[0-9]'`" != "" ]]; then
     ## AlmaLinux Or REdHat Enterprise Linux
@@ -31,7 +32,7 @@ elif [[ "`uname -r | grep -E 'el[0-9]'`" != "" ]]; then
        MEWB="linux-5-almalinux-9-microemacs-091224b2-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
-        
+        exit
     fi
 elif [[ "`uname -r | grep -E 'MANJARO'`" != "" ]]; then
     ## AlmaLinux Or REdHat Enterprise Linux
@@ -40,7 +41,7 @@ elif [[ "`uname -r | grep -E 'MANJARO'`" != "" ]]; then
        MEWB="linux-6-manjaro-0-microemacs-091224b2-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
-        
+        exit
     fi
 else
     if [[ $KERNEL -eq 5 ]]; then
@@ -51,6 +52,7 @@ else
         MEWB="linux-6-ubuntu-22-microemacs-091224b2-mewb"
     else
         echo "Error: Kernel $KERNEL not supported!"    
+        exit
     fi
 fi
 
