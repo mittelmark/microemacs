@@ -16,7 +16,7 @@ if [[ $OS == "Darwin" ]]; then
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit
     fi
-if [[ $OS == "FreeBSD" ]]; then
+elif [[ $OS == "FreeBSD" ]]; then
     if [[ $KERNEL -eq 14 ]]; then    
        MECB="freebsd-14-microemacs-091224b2-mecb"
        MEWB="freebsd-14-microemacs-091224b2-mewb"   
