@@ -26,6 +26,15 @@ elif [[ "`uname -r | grep -E 'el[0-9]'`" != "" ]]; then
         echo "Error: Kernel $KERNEL not supported!"    
         
     fi
+elif [[ "`uname -r | grep -E 'MANJARO'`" != "" ]]; then
+    ## AlmaLinux Or REdHat Enterprise Linux
+    if [[ $KERNEL -eq 6 ]]; then    
+       MECB="linux-6-manjaro-0-microemacs-091224b2-mecb"
+       MEWB="linux-6-manjaro-0-microemacs-091224b2-mewb"   
+    else
+        echo "Error: Kernel $KERNEL not supported!"    
+        
+    fi
 else
     if [[ $KERNEL -eq 5 ]]; then
         MECB="linux-5-ubuntu-20-microemacs-091224b2-mecb"
