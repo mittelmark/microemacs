@@ -61,6 +61,7 @@ function install-me {
             wget -P /tmp/ "${URL}.zip"
         fi
         unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb > ~/.local/bin/mecb
+        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
         URL=${BASEURL}${MEWB}
         if [[ ! -f "/tmp/${MEWB}.zip" ]]; then
             wget -P /tmp/ "${URL}.zip"
@@ -68,8 +69,10 @@ function install-me {
         unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb > ~/.local/bin/mewb
         # Make the script executable
         chmod 755 ~/.local/bin/me?b
-        wget https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh -O ~/.local/bin/me
-        chmod 755 ~/.local/bin/me
+        if [[ ! -f ~/.local/bin/me ]]; then
+            wget https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh -O ~/.local/bin/me
+            chmod 755 ~/.local/bin/me
+        fi
         echo "Installation complete."
     fi    
 }
