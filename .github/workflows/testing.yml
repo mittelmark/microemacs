@@ -47,7 +47,7 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh -o install.sh
           bash install.sh
           source ~/.bashrc ## for the current session
-          me -V
+          mecb -V
 
   windows:
     runs-on: windows-2022
