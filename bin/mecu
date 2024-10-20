@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ## file: mecu 
 ## Description: wrapper to run MicroEmacs with extended character settings
 ##              on UTF-8 enabled terminals
