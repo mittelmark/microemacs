@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
-OS=`uname`
+OS=`uname | grep -Eo '^[A-Za-z]+'`
 BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
-if [[ $OS == "Darwin" ]]; then
+
+if [[ $OS == "MSYS" ]]; then
+    MECB="windows-microemacs-091224b2-mecb.zip"
+    MEWB="windows-microemacs-091224b2-mewb.zip"
+elif [[ $OS == "CYGWIN" ]]; then
+    MECB="cygwin-3.5-microemacs-091224b2-mecb.zip"
+    MEWB="cygwin-3.5-microemacs-091224b2-mewb.zip"
+elif [[ $OS == "Darwin" ]]; then
     if [[ $KERNEL -eq 21 ]]; then    
        MECB="macos-12-microemacs-091224b2-mecb"
        MEWB="macos-12-microemacs-091224b2-mewb"   
@@ -125,7 +132,7 @@ function install-me {
 
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
 install-me
-if [[ $OS != "Darwin" ]]; then
+if [[ $OS == "Linux" || $OS == "FreeBSD" ]]; then
     install-fonts
 fi
 
