@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 OS=`uname`
 BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
