@@ -3,8 +3,8 @@ OS=`uname | grep -Eo '^[A-Za-z]+'`
 BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 
-MECB="windows-microemacs-091224b2-mecb.zip"
-MEWB="windows-microemacs-091224b2-mewb.zip"
+MECB="windows-microemacs-091224b2-mecb"
+MEWB="windows-microemacs-091224b2-mewb"
 
 function install-me {
     if [[ ! -f ~/.local/bin/mecb ]]; then
@@ -24,21 +24,17 @@ function install-me {
         # Download the dummy.sh script from the internet
         URL=${BASEURL}${MECB}
         if [[ ! -f "/tmp/${MECB}.zip" ]]; then
-            curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
+            curl  -fsSL "${URL}.zip" -o /tmp/${MECB}.zip 
         fi
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb > ~/.local/bin/mecb
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
+        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb.exe > ~/.local/bin/mecb.exe
         URL=${BASEURL}${MEWB}
         if [[ ! -f "/tmp/${MEWB}.zip" ]]; then
-            curl -fsSL "${URL}.zip" --output /tmp/${MEWB}.zip 
+            curl -fsSL "${URL}.zip" -o /tmp/${MEWB}.zip 
         fi
-        unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb > ~/.local/bin/mewb
+        unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb.exe > ~/.local/bin/mewb.exe
         # Make the script executable
-        chmod 755 ~/.local/bin/me?b
-        chmod 755 ~/.local/bin/mecu
         if [[ ! -f ~/.local/bin/me ]]; then
-            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh --output ~/.local/bin/me 
-            chmod 755 ~/.local/bin/me
+            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh -o ~/.local/bin/me 
         fi
         echo "Installation complete."
     fi    
@@ -49,10 +45,10 @@ install-me
 
 if [[ $1 == "-w" ]]; then
     shift
-    cmd //c "`cygpath -wa ~/.local/bin/mewb`" "$@"
+    cmd //c "`cygpath -wa ~/.local/bin/mewb.exe | sed -E 's/ /\\ /'`" "$@"
 elif [[ $1 == "-n" ]]; then
     shift
-    cmd //c  "`cygpath -wa ~/.local/bin/mecb`" "$@"
+    cmd //c  "`cygpath -wa ~/.local/bin/mecb.exe | sed -E 's/ /\\ /'`" "$@"
 else
-    cmd //c  "`cygpath -wa ~/.local/bin/mecb`" "$@"
+    cmd //c  "`cygpath -wa ~/.local/bin/mecb.exe  | sed -E 's/ /\\ /'`" "$@"
 fi
