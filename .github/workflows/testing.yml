@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run:  |
           brew install xquartz
-          curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh  -o install.sh
+          curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-unix.sh  -o install.sh
           bash install.sh -V
           source ~/.bashrc ## for the current session
           me -V
