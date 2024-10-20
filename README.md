@@ -128,7 +128,7 @@ Linux/FreeBSD system.
 You can then start  either the  terminal  version with the command `me arguments` or the
 X11/Windows version with `me -w arguments`.
 
-For Windows with the msys2 system that should work:
+For Windows with the msys2 or the Cygwin system that should work:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh)"
@@ -137,6 +137,21 @@ me -V
 me -w ## window version
 me # command line version
 ````
+
+For Cygwin Windows (3.5) you replace install-msys2.sh with install-cygwin.sh.
+
+For a Windows installation you can do the following after opening a Powershell Terminal:
+
+```
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/blob/master/install-windows.sh | Invoke-Expression
+mewb 
+```
+
+The  executable  mewb is then in the PATH and you can run it from any terminal
+window or after pressing the Win-r combination and then typing mewb in the run
+command line..
+
 
 ## Compilation
 
