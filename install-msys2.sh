@@ -37,7 +37,7 @@ function install-me {
         chmod 755 ~/.local/bin/me?b
         chmod 755 ~/.local/bin/mecu
         if [[ ! -f ~/.local/bin/me ]]; then
-            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-unix.sh --output ~/.local/bin/me 
+            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh --output ~/.local/bin/me 
             chmod 755 ~/.local/bin/me
         fi
         echo "Installation complete."
