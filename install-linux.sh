@@ -14,6 +14,18 @@ if [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
         echo "Error: Kernel $KERNEL not supported!"    
         
     fi
+elif [[ "`uname -r | grep -E 'el[0-9]'`" != "" ]]; then
+    ## AlmaLinux Or REdHat Enterprise Linux
+    if [[ $KERNEL -eq 4 ]]; then    
+       MECB="linux-4-almalinux-8-microemacs-091224b2-mecb"
+       MEWB="linux-4-almalinux-8-microemacs-091224b2-mewb"   
+    elif [[ $KERNEL -eq 5 ]]; then    
+       MECB="linux-5-almalinux-9-microemacs-091224b2-mecb"
+       MEWB="linux-5-almalinux-9-microemacs-091224b2-mewb"   
+    else
+        echo "Error: Kernel $KERNEL not supported!"    
+        
+    fi
 else
     if [[ $KERNEL -eq 5 ]]; then
         MECB="linux-5-ubuntu-20-microemacs-091224b2-mecb"
