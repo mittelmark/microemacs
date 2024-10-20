@@ -112,6 +112,15 @@ New important macro commands (see the internal help pages - version v09.12.24):
 - `rdoc` - loading R documentation as hypertext help within ME
 - `pydoc` - loading Python documentation within ME
 
+## Installation
+
+For Linux systems the following line might work:
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
+```
+
+This line requires the tools curl, wget and unzip to be installed on your Linux system.
 
 ## Compilation
 
