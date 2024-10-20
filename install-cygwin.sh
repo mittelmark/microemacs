@@ -35,8 +35,10 @@ function install-me {
         unzip -p "${MEWB}.zip" $MEWB/bin/mewb.exe > ~/.local/bin/mewb.exe
         # Make the script executable
         if [[ ! -f ~/.local/bin/me ]]; then
-            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-cygwin.sh -o ~/.local/bin/me 
+            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-cygwin.sh -o me 
+            cp me ~/.local/bin/
         fi
+        chmod 755 ~/.local/bin/me*
         echo "Installation complete."
     fi    
 }
