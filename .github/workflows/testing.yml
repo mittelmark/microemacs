@@ -45,9 +45,9 @@ jobs:
         run:  |
           brew install xquartz
           curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh -o install.sh
-          bash install.sh
+          bash install.sh -V
           source ~/.bashrc ## for the current session
-          which me
+          me -V
 
   windows:
     runs-on: windows-2022
