@@ -7,6 +7,7 @@ MECB="cygwin-3.5-microemacs-091224b2-mecb"
 MEWB="cygwin-3.5-microemacs-091224b2-mewb"
 
 function install-me {
+    cd ~
     if [[ ! -f ~/.local/bin/mecb ]]; then
         if [ ! -d ~/.local/bin ]; then
             mkdir -p ~/.local/bin
