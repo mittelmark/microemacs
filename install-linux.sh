@@ -77,16 +77,12 @@ function install-me {
 install-me
 install-fonts
 
-echo $0
 if [[ $1 == "-w" ]]; then
     shift
-    echo here2   
     mewb "$@"
 elif [[ $1 == "-n" ]]; then
     shift
-    echo here3   
-    mecb "$@"
+    TERM=xterm mecb "$@"
 else
-    echo here4
-    mecb "$@"
+    TERM=xterm mecb "$@"
 fi
