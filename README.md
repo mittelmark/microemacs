@@ -128,7 +128,15 @@ Linux/FreeBSD system.
 You can then start  either the  terminal  version with the command `me arguments` or the
 X11/Windows version with `me -w arguments`.
 
-The script might be easily adapted to MacOS but we can't currently test this.
+For Windows with the msys2 system that should work:
+
+```
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh)"
+source ~/.bashrc
+me -V
+me -w ## window version
+me # command line version
+````
 
 ## Compilation
 
