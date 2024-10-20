@@ -53,6 +53,7 @@ function install-me {
             echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
             # Update the PATH for the current session
             export PATH="$HOME/.local/bin:$PATH"
+            echo "To update the current Bash session with the new PATH variable use: 'source ~/.bashrc'"
         fi
 
         # Download the dummy.sh script from the internet
