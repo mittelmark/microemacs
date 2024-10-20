@@ -114,10 +114,10 @@ New important macro commands (see the internal help pages - version v09.12.24):
 
 ## Installation
 
-For Linux and FreeBSD systems the following lines might work:
+For Linux, MacOS and FreeBSD systems the following lines might work:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-unix.sh)"
 source ~/.bashrc ## for the current session
 me -V
 ```
@@ -127,6 +127,8 @@ Linux/FreeBSD system.
 
 You can then start  either the  terminal  version with the command `me arguments` or the
 X11/Windows version with `me -w arguments`.
+
+The script might be easily adapted to MacOS but we can't currently test this.
 
 ## Compilation
 
