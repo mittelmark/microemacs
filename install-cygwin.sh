@@ -23,18 +23,18 @@ function install-me {
 
         # Download the dummy.sh script from the internet
         URL=${BASEURL}${MECB}
-        if [[ ! -f "/tmp/${MECB}.zip" ]]; then
-            curl  -fsSL "${URL}.zip" -o /tmp/${MECB}.zip 
+        if [[ ! -f "${MECB}.zip" ]]; then
+            curl  -fsSL "${URL}.zip" -o ${MECB}.zip 
         fi
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb.exe > ~/.local/bin/mecb.exe
+        unzip -p "${MECB}.zip" $MECB/bin/mecb.exe > ~/.local/bin/mecb.exe
         URL=${BASEURL}${MEWB}
-        if [[ ! -f "/tmp/${MEWB}.zip" ]]; then
-            curl -fsSL "${URL}.zip" -o /tmp/${MEWB}.zip 
+        if [[ ! -f "${MEWB}.zip" ]]; then
+            curl -fsSL "${URL}.zip" -o ${MEWB}.zip 
         fi
-        unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb.exe > ~/.local/bin/mewb.exe
+        unzip -p "${MEWB}.zip" $MEWB/bin/mewb.exe > ~/.local/bin/mewb.exe
         # Make the script executable
         if [[ ! -f ~/.local/bin/me ]]; then
-            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh -o ~/.local/bin/me 
+            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-cygwin.sh -o ~/.local/bin/me 
         fi
         echo "Installation complete."
     fi    
