@@ -978,6 +978,7 @@ Miscellaneous Information
     lsspell-add-word(3)lmspell-add-word(3)le Add a word to the main dictionary  
     lsspell-buffer(3)lmspell-buffer(3)le Spell check the current buffer  
     lsspell-edit-word(3)lmspell-edit-word(3)le Edits a spell word entry  
+    lsspell-install(3)lmspell-install(3)le Install a spelling dictionary from Github project  
     lsspell-word(3)lmspell-word(3)le (esc $) Spell check a single word  
 
 
@@ -2245,6 +2246,7 @@ Miscellaneous Information
     lsspell-add-word(3)lmspell-add-word(3)le Add a word to the main dictionary  
     lsspell-buffer(3)lmspell-buffer(3)le Spell check the current buffer  
     lsspell-edit-word(3)lmspell-edit-word(3)le Edits a spell word entry  
+    lsspell-install(3)lmspell-install(3)le Install a spelling dictionary from Github project  
     lsspell-word(3)lmspell-word(3)le (esc $) Spell check a single word  
     lssplit-window-horizontally(2)lmsplit-window-horizontally(2)le (C-x 3) Split current window into two
        (horizontally)  
@@ -2722,6 +2724,7 @@ Miscellaneous Information
     lsspell-add-word(3)lmspell-add-word(3)le Add a word to the main dictionary  
     lsspell-buffer(3)lmspell-buffer(3)le Spell check the current buffer  
     lsspell-edit-word(3)lmspell-edit-word(3)le Edits a spell word entry  
+    lsspell-install(3)lmspell-install(3)le Install a spelling dictionary from Github project  
     lsspell-word(3)lmspell-word(3)le (esc $) Spell check a single word  
     lsstart-up(3)lmstart-up(3)le Editor startup callback command  
     lsstop-mail-check(3)lmstop-mail-check(3)le Disable the check for new email  
@@ -3926,6 +3929,7 @@ Miscellaneous Information
     lsspell-add-word(3)lmspell-add-word(3)le Add a word to the main dictionary  
     lsspell-buffer(3)lmspell-buffer(3)le Spell check the current buffer  
     lsspell-edit-word(3)lmspell-edit-word(3)le Edits a spell word entry  
+    lsspell-install(3)lmspell-install(3)le Install a spelling dictionary from Github project  
     lsspell-word(3)lmspell-word(3)le (esc $) Spell check a single word  
     lssplit-window-horizontally(2)lmsplit-window-horizontally(2)le (C-x 3) Split current window into two (horizontally)  
     lssplit-window-vertically(2)lmsplit-window-vertically(2)le (C-x 2) Split the current window into two  
@@ -44587,6 +44591,7 @@ $a
 ! 3 spell-buffer
 ! 3 spell-word
 ! 3 spell-edit-word
+! 3 spell-install
 ! 3 find-word
 cEcENAME cEcA
 
@@ -44597,6 +44602,8 @@ $a
     spell-word - Spell check a single word
 |spell-edit-word
     spell-edit-word - Edits a spell word entry
+|spell-install
+    spell-install - Installs a spelling dictionary from Github project
 |find-word
     find-word - Find a using spelling dictionaries
 $a
@@ -44609,6 +44616,7 @@ $a
     cCncA cDspell-wordcA ["cCwordcA"] (cDesc $cA)  
     cDspell-edit-wordcA ["cCwordcA"]  
     cDfind-wordcA ["cCwordcA"]
+    cDspell-installcA ["cCdictcA"]  
 
 
 cEDESCRIPTION cA
@@ -44810,6 +44818,11 @@ $a
     200 words, selecting cDnextcA gets the next 200 words, and so on. The cDClosecA
     button exits the dialog.
 
+    cDspell-installcA allow the user to install one of the available dictionaries directly
+    from within MicroEmacs. The user can interactively select one of the available dictionaries
+    from the MicroEmacs message line which is then downloaded directly from the Github project
+    if the command line tools cGcurlcA and cGunzipcA are available on the users machine.
+    
 
 cENOTES cA
 
@@ -44830,6 +44843,10 @@ $a
     use of derivatives in the spell algorithm allows a single word to be
     present several times. cDfind-wordcA counts each occurrence but it is only
     listed once.
+    
+    cDspell-installcA is a macro implemented in cGspellins.emfcA and was introduced with
+    MicroEmacs v091224. It is currently working only on Linux and MacOS if the command
+    line tools cGcurlcA and cGunzipcA are installed.
 
 
 cESEE ALSO cA
@@ -45387,15 +45404,24 @@ $a
 
     cGFavoritescA
     
-       Opens a sub-menu enabling the user to add new favorite files, edit the
-       existing list of favorite files, or select an existing favorite file
-       in which case the file is opened using command lsfind-file(2)lmfind-file(2)le. The
-       favorite file using to store the list is "cD$MENAMEcAcG.effcA" and is saved in
-       the first path given in the ls$search-path(5)lm$search-path(5)le. Each favorite file takes
+       Opens a sub-menu enabling the user to add new favorite files or macros, edit the
+       existing list of favorite files or macros, or select an existing favorite file
+       in which case the file is opened using command lsfind-file(2)lmfind-file(2)le. 
+       If the line starts with a exclamation mark the text following this exclamation mark
+       is executed using the "execute-string" macro. For instance the two lines:
+
+            \Ha help Operating modes
+            !help-item "Operating Modes"
+            
+       would load the appropiate help page. Macros can't be not added like files using the "Add"
+       menu entry but must be written manually using the "Edit" menu entry.
+       
+       The favorite file using to store the list is "__$MENAME__`.eff`" and is saved in
+       the first path given in the [$search-path(5)]($search-path(5)). Each favorite file takes
        2 lines in the file, the first is the text displayed in the dialog
-       (note that characters cCcG\cAcA and cCcG&cAcA must be protected with a cCcG\cAcA and the
-       cCcG&cAcA can be used to set the Hot key) and the second line is the file
-       name. A line with a single cCcG-cAcA character creates a separater line in
+       (note that characters '`\`' and '`&`' must be protected with a '`\`' and the
+       '`&`' can be used to set the Hot key) and the second line is the file
+       name. A line with a single '`-`' character creates a separater line in
        the dialog.
 
     cGClosecA

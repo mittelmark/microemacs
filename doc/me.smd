@@ -45991,10 +45991,19 @@ $a
 
   `Favorites`
   
-  >  Opens a sub-menu enabling the user to add new favorite files, edit the
-     existing list of favorite files, or select an existing favorite file
-     in which case the file is opened using command [find-file(2)](find-file(2)). The
-     favorite file using to store the list is "__$MENAME__`.eff`" and is saved in
+  >  Opens a sub-menu enabling the user to add new favorite files or macros, edit the
+     existing list of favorite files or macros, or select an existing favorite file
+     in which case the file is opened using command [find-file(2)](find-file(2)). 
+     If the line starts with a exclamation mark the text following this exclamation mark
+     is executed using the "execute-string" macro. For instance the two lines:
+
+          \Ha help Operating modes
+          !help-item "Operating Modes"
+          
+     would load the appropiate help page. Macros can't be not added like files using the "Add"
+     menu entry but must be written manually using the "Edit" menu entry.
+     
+     The favorite file using to store the list is "__$MENAME__`.eff`" and is saved in
      the first path given in the [$search-path(5)]($search-path(5)). Each favorite file takes
      2 lines in the file, the first is the text displayed in the dialog
      (note that characters '`\`' and '`&`' must be protected with a '`\`' and the
