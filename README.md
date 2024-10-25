@@ -1,5 +1,5 @@
 
-## <img src="jasspa/pixmaps/me_s.png" />  MicroEmacs 2009
+## <img src="jasspa/pixmaps/me_s.png" />  MicroEmacs 2009 / [MicroEmacs 2024](https://github.com/bjasspa/jasspa)
 
 [![Release](https://img.shields.io/github/v/release/mittelmark/microemacs.svg?label=current+release)](https://github.com/mittelmark/microemacs/releases)
 [![license](https://img.shields.io/badge/license-GPL2-lightgray.svg)](https://www.gnu.org/licenses/gpl.htm)
@@ -8,6 +8,10 @@
 ![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS-12,13,14%20(macos-gcc)/badge.svg)
 ![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
 ![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin/badge.svg)
+
+__Hint:__ New users should consider using [MicroEmacs 2024](https://github.com/bjasspa/jasspa) - which has better support for
+Unicode in terminals and as well adds SSL (https) support. New development will
+take place in the ME 24 project.
 
 - [Executable Types](#Types)
 - [New Features](#Features)
