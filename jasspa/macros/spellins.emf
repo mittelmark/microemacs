@@ -30,8 +30,20 @@ define-macro spell-install
     !if $status 
         1000 ml-write &spr "Language files for %s already installed!" #l1
     !else
-        ipipe-shell-command &spr "curl --location https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip --output %s/ls_%s.zip" #l1 $user-path #l1 "*curl*"
-        ipipe-shell-command &spr "unzip %s/ls_%s.zip -d %s" $user-path #l1 $user-path
+        !if &lfind "|win32|win32s|cygwin|cygwinc|" %platform
+            ipipe-shell-command &spr "curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip -o ls_%s.zip" #l1 #l1 "*curl*"
+            ; TODO
+            !if &lfind "|win32|win32s|" %platform
+                ; tar for zip on Windows
+                ipipe-shell-command &spr "unzip ls_%s.zip -d %s" #l1 $user-path
+            !else
+                ipipe-shell-command &spr "unzip ls_%s.zip -d %s" #l1 $user-path
+                
+            !endif
+        !else 
+            ipipe-shell-command &spr "curl --location https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip --output %s/ls_%s.zip" #l1 $user-path #l1 "*curl*"
+            ipipe-shell-command &spr "unzip %s/ls_%s.zip -d %s" $user-path #l1 $user-path
+        !endif
     !endif
 !emacro
 define-help "spell-install" "3"
