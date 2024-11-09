@@ -7,8 +7,25 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <241007.1504>
+>  Last Modified : <241109.0737>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+ [241109]
+
+    - Release v09.12.24b3 (beta-3) - last beta for final release
+    
+ [241021]
+ 
+    - small improvements in r-mode fo item-list and folding
+    - fixing indenting issues for R code if hash symbol is in string
+    - jeany.emf added to repository - CUA bindings behind C-j key
+    - shebang hilighting for R and Python
+    - fixing Markdown link browsing in help pages
+    - spell-install command to install dictionaries from within MicroEmacs
+    - shell scripts to install MicroEmacs via curl and unzip on
+      Linux, MacOS, FreeBSD, Windows/Msys2, Windows/Cygwin and Windows    
+    - on Linunx and FreeBSD as well True Type fonts are installed
+    - adding exectute-string via !-prefix in favorites (thanks to Steven Phillips)
 
  [241007]
     - small improvements in r-mode fo item-list and folding
