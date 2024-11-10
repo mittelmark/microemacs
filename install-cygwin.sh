@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 OS=`uname | grep -Eo '^[A-Za-z]+'`
-BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
+BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 
-MECB="cygwin-3.5-microemacs-091224b2-mecb"
-MEWB="cygwin-3.5-microemacs-091224b2-mewb"
+MECB="cygwin-3.5-microemacs-091224b3-mecb"
+MEWB="cygwin-3.5-microemacs-091224b3-mewb"
 
 function install-me {
     cd ~

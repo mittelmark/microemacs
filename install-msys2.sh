@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 OS=`uname | grep -Eo '^[A-Za-z]+'`
-BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta2/"
+BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 
-MECB="windows-microemacs-091224b2-mecb"
-MEWB="windows-microemacs-091224b2-mewb"
+MECB="windows-microemacs-091224b3-mecb"
+MEWB="windows-microemacs-091224b3-mewb"
 
 function install-me {
     if [[ ! -f ~/.local/bin/mecb ]]; then
