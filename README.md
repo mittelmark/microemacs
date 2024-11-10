@@ -121,9 +121,11 @@ New important macro commands (see the internal help pages - version v09.12.24):
 For Linux, MacOS and FreeBSD systems the following lines might work:
 
 ```
+## remove old installaed mecb application if it is there
+[[ -f ~/.local/bin/mecb ]] && rm -rf ~/.local/bin/mecb
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-unix.sh)"
 source ~/.bashrc ## for the current session
-me -V
+mecb -V
 ```
 
 This  line  requires  the  tools  curl  and  unzip  to be  installed  on  your
