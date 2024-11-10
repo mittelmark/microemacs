@@ -291,6 +291,8 @@ New in comparison to v09.12.24-beta2
 - improvements in editing R-code
 - various fixes jeany.emf key bindings and documentation
 
+| OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
+|:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
 | Linux 32bit | AntiX (Debian 12) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux32-5-debian-12-microemacs-091224b3-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux32-5-debian-12-microemacs-091224b3-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux32-5-debian-12-microemacs-091224b3-mecwb.zip) |
 |             | Ubuntu 18         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux32-5-ubuntu-18-microemacs-091224b3-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux32-5-ubuntu-18-microemacs-091224b3-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux32-5-ubuntu-18-microemacs-091224b3-mecwb.zip) |
 | Linux 64bit | AppImage          | - | - | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/Jasspa_MicroEmacs_091224b3_x86_64.AppImage) |
