@@ -49,7 +49,7 @@
 #define meCENTURY       "20"          /* Current century. Y2 complient :-) */
 #define meYEAR          "09"          /* Current year */
 #define meMONTH         "12"          /* Current month */
-#define meDAY           "24b3"        /* Day of the month */
+#define meDAY           "24"        /* Day of the month */
 #define meGITHUB        "github.com/mittelmark/microemacs"
 #define meAUTHOR        "D.Groth"
 #define meRELEASE       "24"
