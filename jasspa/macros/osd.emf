@@ -364,7 +364,7 @@ osd 3 0   "bo" 1 0
 osd 3 10  ""  "Incremental \HSearch   C-s"       f isearch-forward
 osd 3 20  ""  "\HHilight Search..."              3 osd-search
 osd 3 30  "-"
-osd 3 40  ""  "\HFind...              C-x C-s"   1 osd-search
+osd 3 40  ""  "\HFind...              "          1 osd-search
 osd 3 50  ""  "Find \HNext            C-x h"     f hunt-forward
 osd 3 60  ""  "Find \HPrev            C-x C-h"   f hunt-backward
 osd 3 70  ""  "\HReplace...           esc C-r"   2 osd-search
