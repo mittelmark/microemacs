@@ -3,7 +3,7 @@
 ;  Author        : $Author$
 ;  Created By    : <unknown>
 ;  Created       : Mon Mar 25 17:52:20 2024
-;  Last Modified : <240325.2006>
+;  Last Modified : <241117.1209>
 ;
 ;  Description
 ;
@@ -96,7 +96,7 @@ define-macro jeany-osd-undo
     osd 2 110 ""  "C\Hopy Rectangle"                 f copy-rectangle
     ; search menu
     osd 3 10  ""  "Incremental \HSearch   C-s"       f isearch-forward
-    osd 3 40  ""  "\HFind...              C-x C-s"   1 osd-search
+    osd 3 40  ""  "\HFind...                 "       1 osd-search
     osd 3 50  ""  "Find \HNext            C-x h"     f hunt-forward
     osd 3 60  ""  "Find \HPrev            C-x C-h"   f hunt-backward
     osd 3 70  ""  "\HReplace...           esc C-r"   2 osd-search
