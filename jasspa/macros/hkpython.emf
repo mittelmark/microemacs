@@ -14,7 +14,7 @@ define-macro fhook-python
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-python.setup &reg "/history/fhook/python" "fghiopx"
+set-variable .fhook-python.setup &reg "/history/fhook/python" "bfghiopx"
 set-variable .fhook-python.setup-mask "aefghikmnoptux"
 set-variable .fhook-python.comment "|#||#|# | #|r|"
 

@@ -18,7 +18,7 @@ define-macro fhook-r
 
 ; buffer-init variables
 set-variable .fhook-r.name "R/S-Plus"
-set-variable .fhook-r.setup &reg "/history/fhook/r" "dfghopx"
+set-variable .fhook-r.setup &reg "/history/fhook/r" "bdfghopx"
 set-variable .fhook-r.setup-mask "adefghikmoptux"
 set-variable .fhook-r.comment "|#||#|# | #|r|"
 set-variable .fhook-r.collapse-open  "^['a-zA-Z].+ function\\s* (.+"
