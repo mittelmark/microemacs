@@ -452,6 +452,7 @@ Miscellaneous Information
     lsread-session(3)lmread-session(3)le Read in session information  
     lssave-session(3)lmsave-session(3)le Write session information to session file  
     lsuncomment-line(3)lmuncomment-line(3)le Uncomment current line  
+    lsutf8-to-iso(3lmutf8-to-iso(3)le] Convert UTF-8 encoding to current character set  
 
 
 cEVariables  cA
@@ -1906,8 +1907,10 @@ Miscellaneous Information
     lscharset-change(3)lmcharset-change(3)le Convert buffer between two character sets  
     lscharset-iso-to-user(3)lmcharset-iso-to-user(3)le Convert buffer from ISO standard to user character
        set  
+    lscharset-iso-to-utf8(3lmcharset-iso-to-utf8(3)le] Convert current character set to UTF-8 encodings  
     lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character
        set  
+    lscharset-utf8-to-iso(3lmcharset-utf8-to-iso(3)le] Convert from UTF-8 to current character set  
     lscheck-line-length(3)lmcheck-line-length(3)le Check the length of text lines are valid  
     lsclean(3)lmclean(3)le Remove redundant white spaces from the current buffer  
     lscollapse-all(3)lmcollapse-all(3)le (f3) (Un)Fold all regions in the current buffer  
@@ -2561,7 +2564,9 @@ Miscellaneous Information
     lschange-scheme(3)lmchange-scheme(3)le Change the current highlight scheme  
     lscharset-change(3)lmcharset-change(3)le Convert buffer between two character sets  
     lscharset-iso-to-user(3)lmcharset-iso-to-user(3)le Convert buffer from ISO standard to user character set
+    lscharset-iso-to-utf8(3lmcharset-iso-to-utf8(3)le] Convert current character set to UTF-8 encodings  
     lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character set
+    lscharset-utf8-to-iso(3lmcharset-utf8-to-iso(3)le] Convert from UTF-8 to current character set  
     lscheck-line-length(3)lmcheck-line-length(3)le Check the length of text lines are valid  
     lsclean(3)lmclean(3)le Remove redundant white spaces from the current buffer  
     lscollapse-all(3)lmcollapse-all(3)le (f3) (Un)Fold all regions in the current buffer  
@@ -3463,7 +3468,9 @@ Miscellaneous Information
     lschange-window-width(2)lmchange-window-width(2)le Change the width of the current window  
     lscharset-change(3)lmcharset-change(3)le Convert buffer between two character sets  
     lscharset-iso-to-user(3)lmcharset-iso-to-user(3)le Convert buffer from ISO standard to user character set  
-    lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character set  
+    lscharset-iso-to-utf8(3lmcharset-iso-to-utf8(3)le] Convert current character set to UTF-8 encodings  
+    lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character set
+    lscharset-utf8-to-iso(3lmcharset-utf8-to-iso(3)le] Convert from UTF-8 to current character set  
     lscheck-line-length(3)lmcheck-line-length(3)le Check the length of text lines are valid  
     lsclean(3)lmclean(3)le Remove redundant white spaces from the current buffer  
     lscls(9)lmcls(9)le Visual Basic  
@@ -3693,6 +3700,7 @@ Miscellaneous Information
     lsisearch-forward(2)lmisearch-forward(2)le (C-s) Search forward incrementally (interactive)  
     lsishell(3)lmishell(3)le Open a Cygwin BASH window  
     lsiso-accents-mode(3)lmiso-accents-mode(3)le ISO accent expansion short-cut mode  
+    lsiso-to-utf8(3lmiso-to-utf8(3)le] Convert current character set to UTF-8 encodings    
     lsitem-list(3)lmitem-list(3)le (F7) Abbreviated search and list buffer contents  
     lsitem-list-close(3)lmitem-list-close(3)le (esc F7) Close the item list  
     lsitem-list-find(3)lmitem-list-find(3)le Find the selected item in the item list  
@@ -5058,6 +5066,12 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
+
+    - [241120]
+      - fixing Find osd type for wrong key shortcut
+      - improved abbreviation handling for R and Python Esc Esc now expands
+      - adding more code chunk abbreviations in Markdown mode
+      - adding functions charset-ut8-to-iso and charset-iso-to-utf8 using iconv tool
 
     - [241109]
       - Release v09.12.24b3 (beta-3) last beta for final release
@@ -16104,18 +16118,18 @@ $a
 cESYNOPSIS cA
 
 
-    cDfilter-buffercA (cDC-x #cA)
+    cDfilter-buffercA "cCcommandcA" (cDC-x #cA)
 
 
 cEDESCRIPTION cA
 
 
-    cDfilter-buffercA executes one operating system command, using the contents of
-    the current buffer as input, sending the results back to the same buffer,
-    replacing the original text.
+    cDfilter-buffercA executes one given operating system command, using the 
+    contents of the current buffer as input, sending the results back to the
+    same buffer, replacing the original text.
 
     This would typically be used in conjunction with cDsort(1)cA, cDawk(1)cA or cDsed(1)cA
-    to translate the contents of the buffer.
+    or cDiconv(1)cA to translate the contents of the buffer.
 
 
 cESEE ALSO cA
@@ -36818,6 +36832,9 @@ $a
 ! 3 charset-change
 ! 3 charset-iso-to-user
 ! 3 charset-user-to-iso
+! 3 charset-utf8-to-iso
+! 3 charset-iso-to-utf8
+
 cEcENAME cEcA
 
 
@@ -36827,6 +36844,10 @@ $a
     charset-iso-to-user - Convert buffer; ISO standard to user character set
 |charset-user-to-iso
     charset-user-to-iso - Convert buffer; user to ISO standard character set
+|charset-utf8-to-iso
+    charset-utf8-to-iso - Convert UTF-8 buffern to current ISO/Windows encoding using iconv
+|charset-iso-to-utf8
+    charset-iso-to-utf8 - Convert ISO/Windows encoded buffer to UTF-8 encoding using iconv
 $a
 
 
@@ -36835,7 +36856,10 @@ $a
 
     cDcharset-changecA  
     cDcharset-iso-to-usercA  
-    cDcharset-user-to-isocA
+    cDcharset-user-to-isocA  
+    cDcharset-utf8-to-isocA  
+    cDcharset-iso-to-utf8cA  
+    
 
 
 cEDESCRIPTION cA
@@ -36856,6 +36880,14 @@ $a
     user's character set to ISO-8859-1 (Latin 1), this is typically used for
     the transfer of text files between different systems.
 
+    The utf8 conversion functions can be used to convert UTF-8 characters to the 
+    ISO or Windows encoding selected currently in lsuser-setup(3)lmuser-setup(3)le. 
+    The UTF-8 characters cant be displayed by MicroEmacs so they should be converted 
+    usually using these  functions. 
+    If you your file mainly has non-Unicode characters you might just ignore the few 
+    Unicode characters. The function cDiso-to-utf8cA is usually used at the end to export
+    a file back into the UTF-8 encoding.
+
     The current character set is configured using the lsuser-setup(3)lmuser-setup(3)le dialog
     (see lsuser-setup(3)lmDisplay Font Setle). This in turn uses the command lsset-char-mask(2)lmset-char-mask(2)le to
     create the low level character conversion tables.
@@ -36864,8 +36896,9 @@ $a
 cENOTES cA
 
 
-    cDcharset-changecA, cDcharset-iso-to-usercA and cDcharset-user-to-isocA are macros
-    defined in cGlangutl.emfcA.
+    cDcharset-changecA, cDcharset-iso-to-usercA,  cDcharset-user-to-isocA, cDcharset-utf8-to-isocA and
+    __charset-iso-to-utf9 are macros defined in cGcharsutl.emfcA. The UTF-8 conversions require the command
+    line tool cDiconv(1)cA. If this is not installed the user will get a warning in the message line.
 
 
 cESEE ALSO cA

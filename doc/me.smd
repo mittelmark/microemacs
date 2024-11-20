@@ -342,6 +342,7 @@
   [read-session(3)](read-session(3)) Read in session information  
   [save-session(3)](save-session(3)) Write session information to session file  
   [uncomment-line(3)](uncomment-line(3)) Uncomment current line  
+  [utf8-to-iso(3)](utf8-to-iso(3)] Convert UTF-8 encoding to current character set  
 
 
 ## Variables 
@@ -1823,8 +1824,10 @@
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
   [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character
      set  
+  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)] Convert current character set to UTF-8 encodings  
   [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character
      set  
+  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)] Convert from UTF-8 to current character set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [collapse-all(3)](collapse-all(3)) (f3) (Un)Fold all regions in the current buffer  
@@ -2479,7 +2482,9 @@
   [change-scheme(3)](change-scheme(3)) Change the current highlight scheme  
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
   [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character set
+  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)] Convert current character set to UTF-8 encodings  
   [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character set
+  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)] Convert from UTF-8 to current character set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [collapse-all(3)](collapse-all(3)) (f3) (Un)Fold all regions in the current buffer  
@@ -3384,7 +3389,9 @@
   [change-window-width(2)](change-window-width(2)) Change the width of the current window  
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
   [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character set  
-  [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character set  
+  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)] Convert current character set to UTF-8 encodings  
+  [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character set
+  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)] Convert from UTF-8 to current character set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [cls(9)](cls(9)) Visual Basic  
@@ -3614,6 +3621,7 @@
   [isearch-forward(2)](isearch-forward(2)) (C-s) Search forward incrementally (interactive)  
   [ishell(3)](ishell(3)) Open a Cygwin BASH window  
   [iso-accents-mode(3)](iso-accents-mode(3)) ISO accent expansion short-cut mode  
+  [iso-to-utf8(3)](iso-to-utf8(3)] Convert current character set to UTF-8 encodings    
   [item-list(3)](item-list(3)) (F7) Abbreviated search and list buffer contents  
   [item-list-close(3)](item-list-close(3)) (esc F7) Close the item list  
   [item-list-find(3)](item-list-find(3)) Find the selected item in the item list  
@@ -4983,6 +4991,12 @@
 
 
 ## Development History 
+
+  - [241120]
+    - fixing Find osd type for wrong key shortcut
+    - improved abbreviation handling for R and Python Esc Esc now expands
+    - adding more code chunk abbreviations in Markdown mode
+    - adding functions charset-ut8-to-iso and charset-iso-to-utf8 using iconv tool
 
   - [241109]
     - Release v09.12.24b3 (beta-3) last beta for final release
@@ -16210,18 +16224,18 @@ $a
 ## SYNOPSIS
 
 
-  __filter-buffer__ (__C-x #__)
+  __filter-buffer__ "_command_" (__C-x #__)
 
 
 ## DESCRIPTION
 
 
-  __filter-buffer__ executes one operating system command, using the contents of
-  the current buffer as input, sending the results back to the same buffer,
-  replacing the original text.
+  __filter-buffer__ executes one given operating system command, using the 
+  contents of the current buffer as input, sending the results back to the
+  same buffer, replacing the original text.
 
   This would typically be used in conjunction with __sort(1)__, __awk(1)__ or __sed(1)__
-  to translate the contents of the buffer.
+  or __iconv(1)__ to translate the contents of the buffer.
 
 
 ## SEE ALSO
@@ -37302,6 +37316,9 @@ $a
 ! 3 charset-change
 ! 3 charset-iso-to-user
 ! 3 charset-user-to-iso
+! 3 charset-utf8-to-iso
+! 3 charset-iso-to-utf8
+
 ## NAME
 
 
@@ -37311,6 +37328,10 @@ $a
   charset-iso-to-user - Convert buffer; ISO standard to user character set
 |charset-user-to-iso
   charset-user-to-iso - Convert buffer; user to ISO standard character set
+|charset-utf8-to-iso
+  charset-utf8-to-iso - Convert UTF-8 buffern to current ISO/Windows encoding using iconv
+|charset-iso-to-utf8
+  charset-iso-to-utf8 - Convert ISO/Windows encoded buffer to UTF-8 encoding using iconv
 $a
 
 
@@ -37319,7 +37340,10 @@ $a
 
   __charset-change__  
   __charset-iso-to-user__  
-  __charset-user-to-iso__
+  __charset-user-to-iso__  
+  __charset-utf8-to-iso__  
+  __charset-iso-to-utf8__  
+  
 
 
 ## DESCRIPTION
@@ -37340,6 +37364,14 @@ $a
   user's character set to ISO-8859-1 (Latin 1), this is typically used for
   the transfer of text files between different systems.
 
+  The utf8 conversion functions can be used to convert UTF-8 characters to the 
+  ISO or Windows encoding selected currently in [user-setup(3)](user-setup(3)). 
+  The UTF-8 characters cant be displayed by MicroEmacs so they should be converted 
+  usually using these  functions. 
+  If you your file mainly has non-Unicode characters you might just ignore the few 
+  Unicode characters. The function __iso-to-utf8__ is usually used at the end to export
+  a file back into the UTF-8 encoding.
+
   The current character set is configured using the [user-setup(3)](user-setup(3)) dialog
   (see [Display Font Set](user-setup(3))). This in turn uses the command [set-char-mask(2)](set-char-mask(2)) to
   create the low level character conversion tables.
@@ -37348,8 +37380,9 @@ $a
 ## NOTES
 
 
-  __charset-change__, __charset-iso-to-user__ and __charset-user-to-iso__ are macros
-  defined in `langutl.emf`.
+  __charset-change__, __charset-iso-to-user__,  __charset-user-to-iso__, __charset-utf8-to-iso__ and
+  __charset-iso-to-utf9 are macros defined in `charsutl.emf`. The UTF-8 conversions require the command
+  line tool __iconv(1)__. If this is not installed the user will get a warning in the message line.
 
 
 ## SEE ALSO

@@ -151,6 +151,30 @@ define-macro charset-change
     charset-change-exec .from .to
 !emacro
 
+define-macro charset-utf8-to-iso
+    !if &seq &which "iconv" "ERROR"
+        ml-write "Error: iconv is not installed, please install!"
+        !return
+    !endif
+    set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+    set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+    set-variable #l0 &xre #l0 "cp" "WINDOWS-" #l0    
+    set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+    filter-buffer &spr "iconv -f UTF-8 -t %s" #l0
+!emacro
+
+define-macro charset-iso-to-utf8
+    !if &seq &which "iconv" "ERROR"
+        ml-write "Error: iconv is not installed, please install!"
+        !return
+    !endif
+    set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+    set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+    set-variable #l0 &xre #l0 "cp" "WINDOWS-" #l0    
+    set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+    filter-buffer &spr "iconv -t UTF-8 -f %s" #l0
+!emacro
+
 -1 osd .osd.charset
 osd .osd.charset 0   "batcDIHs" 3 6 43 0 -1 -1 620 630 .scheme.osd-title "Character Set Change"
 osd .osd.charset 10  ""
