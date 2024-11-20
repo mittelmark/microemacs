@@ -36834,7 +36834,6 @@ $a
 ! 3 charset-user-to-iso
 ! 3 charset-utf8-to-iso
 ! 3 charset-iso-to-utf8
-
 cEcENAME cEcA
 
 
@@ -36842,12 +36841,12 @@ $a
     charset-change - Convert buffer; between two character sets
 |charset-iso-to-user
     charset-iso-to-user - Convert buffer; ISO standard to user character set
+|charset-iso-to-utf8
+    charset-iso-to-utf8 - Convert ISO/Windows encoded buffer to UTF-8 encoding using iconv
 |charset-user-to-iso
     charset-user-to-iso - Convert buffer; user to ISO standard character set
 |charset-utf8-to-iso
     charset-utf8-to-iso - Convert UTF-8 buffern to current ISO/Windows encoding using iconv
-|charset-iso-to-utf8
-    charset-iso-to-utf8 - Convert ISO/Windows encoded buffer to UTF-8 encoding using iconv
 $a
 
 
@@ -36856,9 +36855,9 @@ $a
 
     cDcharset-changecA  
     cDcharset-iso-to-usercA  
+    cDcharset-iso-to-utf8cA  
     cDcharset-user-to-isocA  
     cDcharset-utf8-to-isocA  
-    cDcharset-iso-to-utf8cA  
     
 
 
@@ -36897,7 +36896,7 @@ $a
 
 
     cDcharset-changecA, cDcharset-iso-to-usercA,  cDcharset-user-to-isocA, cDcharset-utf8-to-isocA and
-    __charset-iso-to-utf9 are macros defined in cGcharsutl.emfcA. The UTF-8 conversions require the command
+    cDcharset-iso-to-utf9cA are macros defined in cGcharsutl.emfcA. The UTF-8 conversions require the command
     line tool cDiconv(1)cA. If this is not installed the user will get a warning in the message line.
 
 

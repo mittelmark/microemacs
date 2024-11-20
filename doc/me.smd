@@ -37318,7 +37318,6 @@ $a
 ! 3 charset-user-to-iso
 ! 3 charset-utf8-to-iso
 ! 3 charset-iso-to-utf8
-
 ## NAME
 
 
@@ -37326,12 +37325,12 @@ $a
   charset-change - Convert buffer; between two character sets
 |charset-iso-to-user
   charset-iso-to-user - Convert buffer; ISO standard to user character set
+|charset-iso-to-utf8
+  charset-iso-to-utf8 - Convert ISO/Windows encoded buffer to UTF-8 encoding using iconv
 |charset-user-to-iso
   charset-user-to-iso - Convert buffer; user to ISO standard character set
 |charset-utf8-to-iso
   charset-utf8-to-iso - Convert UTF-8 buffern to current ISO/Windows encoding using iconv
-|charset-iso-to-utf8
-  charset-iso-to-utf8 - Convert ISO/Windows encoded buffer to UTF-8 encoding using iconv
 $a
 
 
@@ -37340,9 +37339,9 @@ $a
 
   __charset-change__  
   __charset-iso-to-user__  
+  __charset-iso-to-utf8__  
   __charset-user-to-iso__  
   __charset-utf8-to-iso__  
-  __charset-iso-to-utf8__  
   
 
 
@@ -37381,7 +37380,7 @@ $a
 
 
   __charset-change__, __charset-iso-to-user__,  __charset-user-to-iso__, __charset-utf8-to-iso__ and
-  __charset-iso-to-utf9 are macros defined in `charsutl.emf`. The UTF-8 conversions require the command
+  __charset-iso-to-utf9__ are macros defined in `charsutl.emf`. The UTF-8 conversions require the command
   line tool __iconv(1)__. If this is not installed the user will get a warning in the message line.
 
 
