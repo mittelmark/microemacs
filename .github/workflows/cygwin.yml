@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     branches: [ master ]
 env:
-   VERSION: "091224b3"
+   VERSION: "091224b"
 jobs:
   build:
     runs-on: windows-latest
