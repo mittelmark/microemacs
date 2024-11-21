@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     branches: [ master, dev ]
 env:
-   VERSION: "091224b2"
+   VERSION: "091224b"
 jobs:
   build:
     strategy:
