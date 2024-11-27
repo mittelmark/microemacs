@@ -2,6 +2,8 @@
 ## <img src="jasspa/pixmaps/me_s.png" />  Jasspa MicroEmacs 2009 / [Jasspa MicroEmacs 2024](https://github.com/bjasspa/jasspa)
 
 [![Release](https://img.shields.io/github/v/release/mittelmark/microemacs.svg?label=current+release)](https://github.com/mittelmark/microemacs/releases)
+![Commits](https://img.shields.io/github/commits-since/mittelmark/microemacs/latest)
+
 [![License](https://img.shields.io/badge/license-GPL2-lightgray.svg)](https://www.gnu.org/licenses/gpl.htm)
 ![Downloads](https://img.shields.io/github/downloads/mittelmark/microemacs/total)
 
