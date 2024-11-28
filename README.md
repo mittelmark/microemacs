@@ -14,13 +14,16 @@
 
 __Hint:__ New users should consider using [MicroEmacs 2024](https://github.com/bjasspa/jasspa) - which has better support for
 Unicode in terminals and as well adds SSL (https) support. New development will
-take place in the ME 24 project.
+take place mainly in the MicroEmacs 24  project.  Here we will add  bugfixes  and just
+small scale improvements. Currently FreeBSD and Windows Cygwin builds are only
+available for MicroEmacs 09.
 
 - [Executable Types](#Types)
 - [New Features](#Features)
 - [New Schemes](#Schemes)
+- [Installation](#installation)
 - [Compilation](#Compilation)
-- [Prebuild Binaries Downloads](#Downloads)
+- [Binaries Downloads](#Downloads)
 
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
 file  executable  for Windows,  Linux, MacOS and FreeBSD.  
@@ -119,6 +122,7 @@ New important macro commands (see the internal help pages - version v09.12.24):
 - `r-doc` - loading R documentation as hypertext help within ME
 - `pydoc` - loading Python documentation within ME
 
+<a name="installation" </a>
 ## Installation
 
 For Linux, MacOS and FreeBSD systems the following lines might work:
