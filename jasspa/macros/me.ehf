@@ -59983,19 +59983,21 @@ $a
 cEFILES cA
 
 
-    cDhkshell.emfcA - UNIX shell file hook definition
+    cDhkshell.emfcA - UNIX shell file hook definition  
+    cDshell.eafcA   - UNIX shell abbreviation file  
+    cDshell.etfcA   - UNIX shell programming language template file  
 
 
 cEEXTENSIONS cA
 
 
-    cD.shcA - Bourne shell file  
-    cD.kshcA - Korn shell file  
-    cD.cshcA - C-Shell file  
-    cD.zshcA - Z-Shell file  
-    cD.logincA - Shell user login file  
+    cD.shcA      - Bourne/Bash shell file  
+    cD.kshcA     - Korn shell file  
+    cD.cshcA     - C-Shell file  
+    cD.zshcA     - Z-Shell file  
+    cD.logincA   - Shell user login file  
     cD.profilecA - Shell user profile  
-    cD.tcshrccA - T-Shell start up file
+    cD.tcshrccA  - T-Shell start up file
 
 
 cEMAGIC STRINGS cA
@@ -60003,24 +60005,75 @@ $a
 
     cD#![ \t]*/.*shcA
     
-       MicroEmacs 2009 recognizes the magic string on the first line of the
-       file used to locate the executable. The shell files may be extension
-       less and are still recognized. Note that this is the typical method of
-       identifying shell files and will recognize other files not mentioned
-       above i.e. cDbashcA shells.
+    MicroEmacs 2009 recognizes the magic string on the first line of the
+    file used to locate the executable. The shell files may be extension
+    less and are still recognized. Note that this is the typical method of
+    identifying shell files and will recognize other files not mentioned
+    above i.e. cDbashcA shells.
 
 
 cEDESCRIPTION cA
 
 
     The cDshellcA file type template provides simple hilighting of the shell
-    files.
+    files.  It offers as well folding and support for displaying and outline
+    of the functions of the shell script for easy navigation using the 
+    lsitem-list(3)lmitem-list(3)le  command and expanding abbreviations either via short 
+    strings using the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command and visual
+    inserting abbreviations using the lsabbrev-list(3)lmabbrev-list(3)le macro.
 
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Shell files. The folds occur about the
+       function keyword and closing braces cGfunction...{...}cA located on the
+       left-hand margin. The following commands are supported to show and hide
+       the function bodies. 
+       
+       lscollapse-all(3)lmcollapse-all(3)le -  (un)folds all regions in the file,  
+       lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region.
+
+    cDList ItemscA
+
+       Item listing is available and the key constructs of the file may be listed
+       using  the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbreviationscA
+
+       The installation comes with a default abbreviation file for shell editing
+       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCfuncA" - 
+       for a Bourne shell or Z-shell function - and then pressing the key-binding for
+       the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le  command. The list
+       of abbreviations can be used interactively in the GUI version of MicroEmacs
+       using the  lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+          
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA   - Restyle the current region.  
+       cDesc qcA   - Format a comment.  
+       cDesc ocA   - Format a comment.  
+       cDf2cA      - (un)fold the current region  
+       cDf3cA      - (un)fold all regions
+       cDf6cA      - show the item-list outline
+       cDEsc f6cA  - hide the item-list outline
+
+cENOTES cA
+
+    The file hook is implemented in the  cDshell.emfcA  file, the  abbreviations
+    are placed within  the cDshell.eafcA file, the template for the initialization
+    of the new file is defined in the  cDshell.etfcA file. To add your own
+    abbreviations or your own template copy these files to your  config folder 
+    and edit them within this folder.
 
 cEBUGS cA
 
 
-    None reported.
+    Functions  defined without using the function  keyword can't currenly folded
+    and as well do not appear in the item-list outline.
 
     There is a heavy bias towards Bourne, Korn and Zsh shells. The author is
     not a csh shell user so has probably missed a lot of csh features.
@@ -61108,8 +61161,8 @@ $a
 cEFILES cA
 
 
-    cDhkpython.emfcA - Python Language file hook definition
-
+    cDhkpython.emfcA - Python language file hook definition  
+    cDpython.eafcA   - Python abbreviation file   
 
 cEEXTENSIONS cA
 
@@ -61136,6 +61189,50 @@ $a
     File recognition is performed using the standard file extension cD.pycA, or by
     the magic string.
 
+    The Python file hook offers as well folding and support for displaying an outline
+    of the functions and classes of the Python script for easy navigation using the 
+    lsitem-list(3)lmitem-list(3)le  command and expanding abbreviations either via short strings using
+    the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command and visually  inserting abbreviations using the
+    lsabbrev-list(3)lmabbrev-list(3)le macro.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Python files. The folds occur about the
+       cDdefcA or  cDclasscA  keywords  located on the   left-hand  margin.  The following
+       commands are supported to show and hide  the function bodies. 
+       
+       lscollapse-all(3)lmcollapse-all(3)le     -  (un)folds all regions in the file,  
+       lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region.
+
+    cDList ItemscA
+
+       Item listing is available and the key constructs of the file may be listed
+       using  the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbreviationscA
+
+       The installation comes with a default abbreviation file for Python editing
+       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCdefcA" - 
+       for Python functions. More extended abbreviations are "cCmaincA" for an Python
+       application outline or "cCclasscA" for a Python class template. The short strings
+       are then replaced by pressing the key-binding for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le
+       command. The list of abbreviations can be used as well interactively in the GUI
+       version of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+          
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA   - Restyle the current region.  
+       cDesc qcA   - Format a comment.  
+       cDesc ocA   - Format a comment.  
+       cDf2cA      - (un)fold the current region  
+       cDf3cA      - (un)fold all regions
+       cDf6cA      - show the item-list outline
+       cDEsc f6cA  - hide the item-list outline
 
 cEBUGS cA
 
@@ -61147,7 +61244,7 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsr(9)lmr(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 scheme
 ! 9 scm
 ! 9 sch
@@ -62746,7 +62843,8 @@ $a
 cEFILES cA
 
 
-    cDhkr.emfcA - R language file hook definition
+    cDhkr.emfcA - R language file hook definition  
+    cDr.eafcA   - R abbreviation file
 
 
 cEEXTENSIONS cA
@@ -62775,6 +62873,51 @@ $a
     File recognition is performed using the standard file extension cD.rcA, or cD.RcA or by
     the magic string.
 
+    The R file hook offers as well folding and support for displaying an outline
+    of the functions of the R script for easy navigation using the  lsitem-list(3)lmitem-list(3)le command
+    and expanding abbreviations either via short strings using the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command and visually inserting abbreviations
+    using the lsabbrev-list(3)lmabbrev-list(3)le macro.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the R files. The folds occur about the
+       function definitions  located on the   left-hand  margin using the smaller-minus
+       assignment operator. 
+       The following  commands are supported to show and hide  the function bodies. 
+       
+       lscollapse-all(3)lmcollapse-all(3)le     - (un)folds all regions in the file,  
+       lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region.
+
+    cDList ItemscA
+
+       Item listing is available and the key constructs of the file may be listed
+       using  the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbreviationscA
+
+       The installation comes with a default abbreviation file for R editing
+       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCfunccA" - 
+       for R functions. More extended abbreviations are "cCmaincA" for an Rscript
+       application outline or "cCopenrcA" and "cCopenwcA" for reading and writing text files.
+       The short strings  are then replaced by pressing the key-binding for the 
+       lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le  command.
+       The list of abbreviations can be used as well interactively in the GUI version 
+       of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+          
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA   - Restyle the current region.  
+       cDesc qcA   - Format a comment.  
+       cDesc ocA   - Format a comment.  
+       cDf2cA      - (un)fold the current region  
+       cDf3cA      - (un)fold all regions
+       cDf6cA      - show the item-list outline
+       cDEsc f6cA  - hide the item-list outline
 
 cEBUGS cA
 
@@ -62786,5 +62929,5 @@ $a
 cESEE ALSO cA
 
 
-    lsrdoc(3)lmrdoc(3)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+    lsrdoc(3)lmrdoc(3)le, lspy(9)lmpy(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 

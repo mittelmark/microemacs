@@ -60887,19 +60887,21 @@ $a
 ## FILES
 
 
-  __hkshell.emf__ - UNIX shell file hook definition
+  __hkshell.emf__ - UNIX shell file hook definition  
+  __shell.eaf__   - UNIX shell abbreviation file  
+  __shell.etf__   - UNIX shell programming language template file  
 
 
 ## EXTENSIONS
 
 
-  __.sh__ - Bourne shell file  
-  __.ksh__ - Korn shell file  
-  __.csh__ - C-Shell file  
-  __.zsh__ - Z-Shell file  
-  __.login__ - Shell user login file  
+  __.sh__      - Bourne/Bash shell file  
+  __.ksh__     - Korn shell file  
+  __.csh__     - C-Shell file  
+  __.zsh__     - Z-Shell file  
+  __.login__   - Shell user login file  
   __.profile__ - Shell user profile  
-  __.tcshrc__ - T-Shell start up file
+  __.tcshrc__  - T-Shell start up file
 
 
 ## MAGIC STRINGS
@@ -60907,24 +60909,75 @@ $a
 
   __#![ \t]*/.*sh__
   
-  >  MicroEmacs 2009 recognizes the magic string on the first line of the
-     file used to locate the executable. The shell files may be extension
-     less and are still recognized. Note that this is the typical method of
-     identifying shell files and will recognize other files not mentioned
-     above i.e. __bash__ shells.
+  MicroEmacs 2009 recognizes the magic string on the first line of the
+  file used to locate the executable. The shell files may be extension
+  less and are still recognized. Note that this is the typical method of
+  identifying shell files and will recognize other files not mentioned
+  above i.e. __bash__ shells.
 
 
 ## DESCRIPTION
 
 
   The __shell__ file type template provides simple hilighting of the shell
-  files.
+  files.  It offers as well folding and support for displaying and outline
+  of the functions of the shell script for easy navigation using the 
+  [item-list(3)](item-list(3))  command and expanding abbreviations either via short 
+  strings using the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command and visual
+  inserting abbreviations using the [abbrev-list(3)](abbrev-list(3)) macro.
 
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Shell files. The folds occur about the
+     function keyword and closing braces `function...{...}` located on the
+     left-hand margin. The following commands are supported to show and hide
+     the function bodies. 
+     
+  >  [collapse-all(3)](collapse-all(3)) -  (un)folds all regions in the file,  
+     [collapse-current(3)](collapse-current(3)) - (un)folds the current region.
+
+  __List Items__
+
+  >  Item listing is available and the key constructs of the file may be listed
+     using  the [item-list(3)](item-list(3)) command.
+
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for shell editing
+     which can be used by writing short abbreviations like "_for_", "_if_" or "_fun_" - 
+     for a Bourne shell or Z-shell function - and then pressing the key-binding for
+     the [expand-abbrev-handle(3)](expand-abbrev-handle(3))  command. The list
+     of abbreviations can be used interactively in the GUI version of MicroEmacs
+     using the  [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+        
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__   - Restyle the current region.  
+     __esc q__   - Format a comment.  
+     __esc o__   - Format a comment.  
+     __f2__      - (un)fold the current region  
+     __f3__      - (un)fold all regions
+     __f6__      - show the item-list outline
+     __Esc f6__  - hide the item-list outline
+
+## NOTES
+
+  The file hook is implemented in the  __shell.emf__  file, the  abbreviations
+  are placed within  the __shell.eaf__ file, the template for the initialization
+  of the new file is defined in the  __shell.etf__ file. To add your own
+  abbreviations or your own template copy these files to your  config folder 
+  and edit them within this folder.
 
 ## BUGS
 
 
-  None reported.
+  Functions  defined without using the function  keyword can't currenly folded
+  and as well do not appear in the item-list outline.
 
   There is a heavy bias towards Bourne, Korn and Zsh shells. The author is
   not a csh shell user so has probably missed a lot of csh features.
@@ -62029,8 +62082,8 @@ $a
 ## FILES
 
 
-  __hkpython.emf__ - Python Language file hook definition
-
+  __hkpython.emf__ - Python language file hook definition  
+  __python.eaf__   - Python abbreviation file   
 
 ## EXTENSIONS
 
@@ -62057,6 +62110,50 @@ $a
   File recognition is performed using the standard file extension __.py__, or by
   the magic string.
 
+  The Python file hook offers as well folding and support for displaying an outline
+  of the functions and classes of the Python script for easy navigation using the 
+  [item-list(3)](item-list(3))  command and expanding abbreviations either via short strings using
+  the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command and visually  inserting abbreviations using the
+  [abbrev-list(3)](abbrev-list(3)) macro.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Python files. The folds occur about the
+     __def__ or  __class__  keywords  located on the   left-hand  margin.  The following
+     commands are supported to show and hide  the function bodies. 
+     
+  >  [collapse-all(3)](collapse-all(3))     -  (un)folds all regions in the file,  
+     [collapse-current(3)](collapse-current(3)) - (un)folds the current region.
+
+  __List Items__
+
+  >  Item listing is available and the key constructs of the file may be listed
+     using  the [item-list(3)](item-list(3)) command.
+
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for Python editing
+     which can be used by writing short abbreviations like "_for_", "_if_" or "_def_" - 
+     for Python functions. More extended abbreviations are "_main_" for an Python
+     application outline or "_class_" for a Python class template. The short strings
+     are then replaced by pressing the key-binding for the [expand-abbrev-handle(3)](expand-abbrev-handle(3))
+     command. The list of abbreviations can be used as well interactively in the GUI
+     version of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+        
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__   - Restyle the current region.  
+     __esc q__   - Format a comment.  
+     __esc o__   - Format a comment.  
+     __f2__      - (un)fold the current region  
+     __f3__      - (un)fold all regions
+     __f6__      - show the item-list outline
+     __Esc f6__  - hide the item-list outline
 
 ## BUGS
 
@@ -62068,7 +62165,7 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [r(9)](r(9)), [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ034
 ! 9 scheme
 ! 9 scm
@@ -63683,7 +63780,8 @@ $a
 ## FILES
 
 
-  __hkr.emf__ - R language file hook definition
+  __hkr.emf__ - R language file hook definition  
+  __r.eaf__   - R abbreviation file
 
 
 ## EXTENSIONS
@@ -63712,6 +63810,51 @@ $a
   File recognition is performed using the standard file extension __.r__, or __.R__ or by
   the magic string.
 
+  The R file hook offers as well folding and support for displaying an outline
+  of the functions of the R script for easy navigation using the  [item-list(3)](item-list(3)) command
+  and expanding abbreviations either via short strings using the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command and visually inserting abbreviations
+  using the [abbrev-list(3)](abbrev-list(3)) macro.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the R files. The folds occur about the
+     function definitions  located on the   left-hand  margin using the smaller-minus
+     assignment operator. 
+     The following  commands are supported to show and hide  the function bodies. 
+     
+  >  [collapse-all(3)](collapse-all(3))     - (un)folds all regions in the file,  
+     [collapse-current(3)](collapse-current(3)) - (un)folds the current region.
+
+  __List Items__
+
+  >  Item listing is available and the key constructs of the file may be listed
+     using  the [item-list(3)](item-list(3)) command.
+
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for R editing
+     which can be used by writing short abbreviations like "_for_", "_if_" or "_func_" - 
+     for R functions. More extended abbreviations are "_main_" for an Rscript
+     application outline or "_openr_" and "_openw_" for reading and writing text files.
+     The short strings  are then replaced by pressing the key-binding for the 
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3))  command.
+     The list of abbreviations can be used as well interactively in the GUI version 
+     of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+        
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__   - Restyle the current region.  
+     __esc q__   - Format a comment.  
+     __esc o__   - Format a comment.  
+     __f2__      - (un)fold the current region  
+     __f3__      - (un)fold all regions
+     __f6__      - show the item-list outline
+     __Esc f6__  - hide the item-list outline
 
 ## BUGS
 
@@ -63723,6 +63866,6 @@ $a
 ## SEE ALSO
 
 
-  [rdoc(3)](rdoc(3)), [Supported File Types](MicroEmacs - Supported File Types).
+  [rdoc(3)](rdoc(3)), [py(9)](py(9)), [Supported File Types](MicroEmacs - Supported File Types).
 
 !! me-id: meende
