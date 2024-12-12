@@ -1,0 +1,116 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : Detlef Groth, University of Potsdam, Germany
+;  Created By    : Detlef Groth
+;  Created       : Wed Dec 4 17:39:58 2024
+;  Last Modified : <241212.1528>
+;
+;  Description   : functions useful to be used for R development
+;
+;  Notes         : - r-format requires the R package formatR to be installed
+;                  - r-lint   requires the R package lintr to be installed
+;
+;  History       : 2024-12-04 - first version
+;
+;  Copyright (c) 2024 Detlef Groth, University of Potsdam, Germany
+;  License       : Same as MicroEmacs - GPL 2
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+define-macro r-format
+  !if &bmod "edit"
+    set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+    !if &iseq #l0 "y" 
+      save-buffer 
+    !endif
+  !endif 
+  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+  set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+  set-variable #l0 &xre #l0 "cp" "CP" #l0    
+  set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+  2 pipe-shell-command &spr "Rscript  -e 'options(\"encoding\"=\"%s\");formatR::tidy_file(\"%s\")'" #l0 $buffer-fname "*command*"
+  !if &equ $result 1
+    ml-write "Error: It seems that R package formatR is not installed!"
+  !else
+    0 reread-file
+  !endif
+!emacro
+
+0 define-macro r-rscript
+  !force set-variable #l0 %rscript-com
+  ;set-variable $file-names "/home/dgroth/.local/share/fonts/*"
+  !if &seq #l0 "ERROR"
+    set-variable %rscript-com "Rscript"
+  !endif
+  ; TODO: 
+  ; - Windows check for set-variable $file-names "c:/Program File/R/*"
+  ; - then check for bin/x64/Rscript.exe file
+  !if &seq &which %rscript-com ""
+    1000 ml-write &spr "Error: Executable '%s' is not in the path! Please install it!" %rscript-com
+    !abort
+  !else
+    ml-write "all fine"
+  !endif
+  
+!emacro
+
+define-macro r-lint
+  !force set-variable #l1 .lint
+  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+  set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+  set-variable #l0 &xre #l0 "cp" "CP" #l0    
+  set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+  ;!if &seq #l1 "ERROR"
+    set-variable .lint "Rscript -e 'options(\"encoding\"=\"%s\");library(lintr);lintr::lint(\"%s\",linters = linters_with_defaults( indentation_linter = indentation_linter(indent = 4L) ))'" #l0
+    set-variable #l1 .lint
+  ;!endif
+  !if &bmod "edit"
+    set-variable #l2 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+    !if &iseq #l2 "y" 
+      save-buffer 
+    !endif
+  !endif 
+  2 pipe-shell-command &spr #l1 #l0 $buffer-fname "*lintr*"
+  !if &equ $result 1
+    ml-write "Error: It seems that R package lintr is not installed!"
+  !else
+    set-variable .buffer $buffer-bname
+    next-window-find-buffer "*lintr*"
+    buffer-init "r-lint"
+    set-variable :mouse-word-select r-lint-find-line
+    buffer-bind-create "bio" "return" "0" r-lint-find-line
+  !endif
+!emacro
+
+0 define-macro r-lint-find-line
+  set-variable #l0 @wl
+  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):.+"
+    next-window-find-buffer .r-lint.buffer
+    goto-line @s2
+    beginning-of-line
+    @s3 forward-char
+  !else
+    ml-write "Not a error line!"
+  !endif
+!emacro
+
+define-macro fhook-r-lint
+  buffer-init-hooks
+!emacro
+
+set-variable .fhook-r-lint.name "R Lint"
+set-variable .fhook-r-lint.setup &reg "/history/fhook/r-lint" "acfhmw"
+set-variable .fhook-r-lint.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-r-lint.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.r-lint  set-variable .hilight.r-lint &pinc  .hilight.next 1
+  0 hilight .hilight.r-lint 2 200                                     $global-scheme
+  hilight .hilight.r-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
+  hilight .hilight.r-lint   1 "commas_linter"                         .scheme.operator
+  hilight .hilight.r-lint   1 "infix_spaces_linter"                   .scheme.operator
+  hilight .hilight.r-lint   1 "function_left_parentheses_linter"      .scheme.operator
+  hilight .hilight.r-lint   1 "indentation_linter"                    .scheme.operator  
+  ;hilight .hilight.r-lint   0 "\[.+\]"   .scheme.operator  ; does not work
+!endif
+
+add-file-hook "*lintr*" fhook-r-lint
+

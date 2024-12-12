@@ -3,7 +3,7 @@
 ;  Author        : $Author$
 ;  Created By    : Detlef Groth
 ;  Created       : Thu Sep 26 19:12:38 2024
-;  Last Modified : <240928.0506>
+;  Last Modified : <241212.1436>
 ;
 ;  Description
 ;
@@ -14,7 +14,7 @@
 ;  Copyright (c) 2024 Detlef Groth.
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-define-macro rdoc
+define-macro r-doc
   !force set-variable #l0 @1
   !if &not $status
     set-variable #l0 @ml00 "R help on"
@@ -36,8 +36,6 @@ define-macro rdoc
       set-variable .package ""
       set-variable #l1 &spr "options(useFancyQuotes = FALSE);help('%s')" #l0
   !endif
-  r-doc-test #l1
-  1000 ml-write .docu
   0 pipe-shell-command &spr "LANG=en_US Rscript -e \"%s\"" #l1 "*rdoc*"
   set-variable :mouse-word-select r-doc-process-link
   -1 buffer-mode "view"
@@ -152,13 +150,13 @@ define-macro r-doc-test
                   -1 yank
                   ;3000 ml-write &spr "fetching %s" #l6
                   !if &seq .rdoc.package ""
-                      rdoc #l6
+                      r-doc #l6
                   !else
                       !if &equ &sin "package:" #l6 0
-                          rdoc &spr "%s::%s" .rdoc.package #l6
+                          r-doc &spr "%s::%s" .rdoc.package #l6
                       !else
                           ; click on package:pkgname
-                          rdoc #l6
+                          r-doc #l6
                       !endif
                   !endif
               !endif

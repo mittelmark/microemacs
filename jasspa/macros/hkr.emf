@@ -15,7 +15,7 @@ define-macro fhook-r
     @# buffer-init "r"
     buffer-init-hooks
 !emacro
-
+define-macro-file rtools r-lint r-format
 ; buffer-init variables
 set-variable .fhook-r.name "R/S-Plus"
 set-variable .fhook-r.setup &reg "/history/fhook/r" "bdfghopx"

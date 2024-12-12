@@ -1166,7 +1166,7 @@ Miscellaneous Information
     lslist-buffers(2)lmlist-buffers(2)le (C-x C-b) List all buffers and show their status  
     lsosd-help(3)lmosd-help(3)le GUI based on-line help  
     lspydoc(3)lmpydoc(3)le Display Python module manual pages  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
 
 !   Operating Modes
 cEcEOPERATING MODES cEcA
@@ -2182,7 +2182,9 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsr-format(3)lmr-format(3)le Format the currently edited R script file  
+    lsr-lint(3)lmr-lint(3)le Source code check of the currently edited R script file  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -2708,7 +2710,9 @@ Miscellaneous Information
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsr-format(3)lmr-format(3)le Format the currently edited R script file  
+    lsr-lint(3)lmr-lint(3)le Source code check of the currently edited R script file  
     lsread-session(3)lmread-session(3)le Read in session information  
     lsreplace-all-pairs(3)lmreplace-all-pairs(3)le Replace string pairs in a list of files  
     lsreplace-all-string(3)lmreplace-all-string(3)le Replace string with new string in a list of files  
@@ -3860,7 +3864,9 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
-    lsrdoc(3)lmrdoc(3)le Display R function and package manual pages  
+    lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsr-format(3)lmr-format(3)le Format the currently edited R script file  
+    lsr-lint(3)lmr-lint(3)le Source code check of the currently edited R script file  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsread-registry(2)lmread-registry(2)le Read in a registry definition file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -5066,6 +5072,7 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
+
 
     - [241120]
       - fixing Find osd type for wrong key shortcut
@@ -42846,22 +42853,30 @@ $a
 cESEE ALSO cA
 
     lsscheme-editor(3)lmscheme-editor(3)le
-! 3 rdoc
+! 3 r-doc
+! 3 r-format
+! 3 r-lint
 cEcENAME cEcA
 
-
-|rdoc
-    rdoc - display documentation for R functions and packages
+|r-doc
+    r-doc - display documentation for R functions and packages
+|r-format
+    r-format - format a R script using the formatR library
+|r-lint
+    r-lint - R source code linter using the lintr library
 $a
     
 cESYNOPSIS cA
 
-    cDrdoccA ["package::function|function"]
+    cDr-doccA ["package::function|function"]
+    cDr-formatcA  
+    cDr-lintcA    
+
      
 cEDESCRIPTION cA
      
-    Displays in a hypertext browser with R syntax hilighting the manual pages
-    for R packages or R functions.
+    The cDr-doccA macro displays in a hypertext browser with R syntax hilighting
+    the manual pages for R packages or R functions.
 
     You can fold or unfold the section and use the  lsitem-list(3)lmitem-list(3)le
     command  to  navigate  the  documentation  sections.  If no argment is given
@@ -42871,18 +42886,35 @@ $a
     using the syntax  "pkgname::funcname".  Links to other  functions and to the
     main package  overview are shown with hilights in the normal text. Usage and
     Examples sections use R highlighting.
- 
+    
+    The cDr-formatcA  macro formats the currently edited R script file using the
+    formats the currently  edited file using the R library  cGformatRcA which must
+    be    installed    by   the   user   for    instance    using    the   usual
+    cGinstall.packages('formatR')cA syntax from within a R console.
+    
+    The cDr-lintcA   macro checks the currently edited file using the R package
+    cGlintrcA which must be installed by the user for instance using the usual 
+    cGinstall.packages('lintr)cA syntax from within a R console. 
+
+    After executing the macro a popup-window (cG*lintr*cA) displays the warning
+    messages of the linter package, the user can click on the hilighted lines
+    showing  warnings and jump directly to the problematic line. The same can
+    be achieved by pressing the ENTER key on the hilighted line.
+
 cEEXAMPLE cA
          
 sB
-         rdoc                    ; requests a help page from the user 
-         rdoc "plot"             ; function documentation
-         rdoc "cluster::pam"     ; function pam in package cluster
-         rdoc "package::cluster" ; package overview with functions
+         r-doc                    ; requests a help page from the user 
+         r-doc "plot"             ; plot function documentation
+         r-doc "cluster::pam"     ; function pam in package cluster docu
+         r-doc "package::cluster" ; package overview with functions
+         r-format                 ; formats and reloads the currently edited R script
+         r-lint                   ; gives code advise for the currently edited  R script 
 sA        
 cENOTES cA
 
-    cDrdoccA  macro is defined in file  cGhkrdoc.emfcA.  
+    cDr-doccA  macro is defined in file  cGhkrdoc.emfcA.  The macros  cDr-formatcA
+    and cDr-lintcA are implemented in the file cGrtools.emfcA.
     
 cESEE ALSO cA
 

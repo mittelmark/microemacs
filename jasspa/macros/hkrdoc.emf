@@ -3,7 +3,7 @@
 ;  Author        : $Author$
 ;  Created By    : Detlef Groth
 ;  Created       : Thu Sep 26 14:43:10 2024
-;  Last Modified : <240926.1936>
+;  Last Modified : <241212.1427>
 ;
 ;  Description
 ;
@@ -56,5 +56,3 @@ set-variable .fhook-rdoc.setup-mask "acfhmw"
 set-variable .fhook-rdoc.item-list-s1 "^\ecE\\([A-Z].+\\)\ecA"
 set-variable .fhook-rdoc.item-list-r1 "SECT \ecB\\1\ecA"
 
-
-1000 ml-write "load new hkrdoc"
