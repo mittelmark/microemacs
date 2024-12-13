@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-13, macos-13-xlarge, macos-14, macos-15]  # Specify the MacOS version
+        os: [macos-13, macos-14, macos-15]  # Specify the MacOS version
 
     runs-on: ${{ matrix.os }}
     steps:
