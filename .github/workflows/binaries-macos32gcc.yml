@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-13, macos-14, macos-15]  # Specify the MacOS version
+        os: [macos-13, macos-13-xlarge macos-14, macos-15]  # Specify the MacOS version
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -32,6 +32,12 @@ jobs:
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-13" ]]; then
+              export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
+              export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              echo "VRS=$VRS" >> $GITHUB_ENV
+              echo "GCC=gcc-12" >> $GITHUB_ENV
+           elif [[ "${{ matrix.os }}" == "macos-13-xlarge" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
               export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
