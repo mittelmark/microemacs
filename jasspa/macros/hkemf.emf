@@ -28,14 +28,16 @@ set-variable .fhook-emf.command-kbind "||A-q|C-c C-q|"
 set-variable .fhook-emf.command-desc  "|Complete co\Hmmand|\HQuote command||"
 
 ; setup emf collapsing
-set-variable .fhook-emf.collapse-open  "^0? ?define-macro[ \t]"
-set-variable .fhook-emf.collapse-close "^!emacro"
+set-variable .fhook-emf.collapse-open  "^0? ?define-\\(macro\\|help\\)[ \t]"
+set-variable .fhook-emf.collapse-close "^!\\(emacro\\|ehelp\\)"
 set-variable .fhook-emf.collapse-mclose "1"
 set-variable .fhook-emf.collapse-mnext "-1"
 
 ; setup item-list
 set-variable .fhook-emf.item-list-s1 "^[ \t]*[0-9]*[ \t]*define-macro[ \t]+\\(\\w+\\)"
 set-variable .fhook-emf.item-list-r1 "Macr \ecB\\1\ecA"
+set-variable .fhook-emf.item-list-s2 "^[ \t]*[0-9]*[ \t]*define-help[ \t]+\"\\(\\w+\\)\""
+set-variable .fhook-emf.item-list-r2 "Help \ecB\\1\ecA"
 
 !if &not &exist .hilight.emf
     set-variable .hilight.emf &pinc .hilight.next 1
