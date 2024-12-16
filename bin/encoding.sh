@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/sh
 ## Name:         me-encoding.sh
 ## Author:       Detlef Groth, University of Potsdam
 ## Date:         2024-12-16
@@ -32,16 +32,16 @@
 ME=mecb
 ## select one of these two lines below to declare your default
 ## theme, uncomment all three if you like to have no theme
-if [ "$THEME" == "" ]; then 
+if [ "$THEME" = "" ]; then 
     THEME="ayu-dark"
     #THEME="dracula"
     #THEME="iterm2"    
 fi
-if [ "`which $ME`" == "" ]; then
+if [ "`which $ME`" = "" ]; then
     echo "Error: Application '$ME' is not in the PATH! Please install!" 
     exit
 fi    
-if [ "`which luit`" == "" ]; then
+if [ "`which luit`" = "" ]; then
     echo "Error: Application 'luit' is not in the PATH! Please install!" 
     exit
 fi 
@@ -79,11 +79,11 @@ set-variable #l0 &xre #l0 "microsoft-" "" #l0
 quick-exit
 ' > temp.emf
 }
-if [ "$THEME" == "ayu-dark" ]; then
+if [ "$THEME" = "ayu-dark" ]; then
     theme_ayu_dark
-elif [ "$THEME" == "dracula" ]; then
+elif [ "$THEME" = "dracula" ]; then
     theme_dracula
-elif [ "$THEME" == "iterm2" ]; then
+elif [ "$THEME" = "iterm2" ]; then
     theme_iterm2
 fi
 
