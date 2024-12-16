@@ -5,13 +5,17 @@
 ## License:      GPL2 - same as MicroEmacs
 ## Description:  Start a terminal instance of ME09 (mecb) and translate
 ##               UTF-8 encodings into MEs current ISO encodings and back
+##               using the luit command line tool.
 ##               It as well allows the selection of different color schemes
-##               such as iterm2 ayu-dark or dracula 
-## Installation: rename ME=mecb below to the filename to your current ME console
+##               such as iterm2 ayu-dark or dracula .
+##
+## Installation: install luit (`sudo apt install luit` or `brew install luit`)
+##               rename ME=mecb below to the filename to your current ME console
 ##               version, make the shell script executable and copy it for instance
-##               as 'mecu' into folder belonging to your PATH
-## Note:         suspending ME behind luit does not work, you could run the tool
-##               abduco for instance before you run luit to get suspending back
+##               as 'mecu' into a folder belonging to your PATH
+##
+## Notes:        Suspending ME behind Luit does not work, you could run the tool
+##               abduco for instance before you run luit to get suspending back.
 ##               If you choose a theme you terminal colors will be changed even after closing ME again.
 ## 
 ## Example:     
@@ -20,6 +24,7 @@
 ##
 ## Links:        - ME09 - https://github.com/mittelmark/microemacs
 ##               - ME24 - https://github.com/bjasspa/jasspa
+##               - Luit - https://invisible-island.net/luit/luit.html
 ##               - Terminal rhemes: https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/dynamic-colors
 
 ## Configuration:
