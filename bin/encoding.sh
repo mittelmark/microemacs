@@ -15,14 +15,17 @@
 ##               as 'mecu' into a folder belonging to your PATH
 ##
 ## Notes:        Suspending ME behind Luit does not work, you could run the tool
-##               abduco for instance before you run luit to get suspending back.
+##               abduco or detach for instance before you run luit to get suspending back.
 ##               If you choose a theme you terminal colors will be changed even after closing ME again.
 ## 
 ## Example:     
 ##               ## open FILENAME and jump to line 20
 ##               THEME=iterm2 mecu -l 20 FILENAME
-##
-## Links:        - ME09 - https://github.com/mittelmark/microemacs
+##               ## run luit behind dtach to allow detaching again
+##               ##       socket     application FILENAME
+##               dtach -A mecu -e ^z mecu FILENAME
+##               
+##               ## Links:        - ME09 - https://github.com/mittelmark/microemacs
 ##               - ME24 - https://github.com/bjasspa/jasspa
 ##               - Luit - https://invisible-island.net/luit/luit.html
 ##               - Terminal rhemes: https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/dynamic-colors
