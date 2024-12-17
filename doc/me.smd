@@ -2100,6 +2100,7 @@
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [r-exec(3)](r-exec(3)) Run the currently edited R script file using R-script   
   [r-format(3)](r-format(3)) Format the currently edited R script file  
   [r-lint(3)](r-lint(3)) Source code check of the currently edited R script file  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
@@ -2629,6 +2630,7 @@
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [r-exec(3)](r-exec(3)) Run the currently edited R script file using R-script   
   [r-format(3)](r-format(3)) Format the currently edited R script file  
   [r-lint(3)](r-lint(3)) Source code check of the currently edited R script file  
   [read-session(3)](read-session(3)) Read in session information  
@@ -3786,6 +3788,7 @@
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
+  [r-exec(3)](r-exec(3)) Run the currently edited R script file using R-script   
   [r-format(3)](r-format(3)) Format the currently edited R script file  
   [r-lint(3)](r-lint(3)) Source code check of the currently edited R script file  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
@@ -43432,12 +43435,15 @@ $a
   [scheme-editor(3)](scheme-editor(3))
 !! me-id: m3mac099
 ! 3 r-doc
+! 3 r-exec
 ! 3 r-format
 ! 3 r-lint
 ## NAME
 
 |r-doc
   r-doc - display documentation for R functions and packages
+|r-exec
+  r-doc - execute the current R script using the Rscript interpreter
 |r-format
   r-format - format a R script using the formatR library
 |r-lint
@@ -43447,6 +43453,7 @@ $a
 ## SYNOPSIS
 
   __r-doc__ ["package::function|function"]
+  __r-exec__  
   __r-format__  
   __r-lint__    
 
@@ -43465,6 +43472,11 @@ $a
   main package  overview are shown with hilights in the normal text. Usage and
   Examples sections use R highlighting.
   
+  The __r-exec__  macro executes the currently edited R script file using the
+  Rscript interpreter. It uswes the current selected character encoding as 
+  an argument for the Rscript interpreter to avoid error messages due to 
+  wrong characters.
+
   The __r-format__  macro formats the currently edited R script file using the
   formats the currently  edited file using the R library  `formatR` which must
   be    installed    by   the   user   for    instance    using    the   usual
@@ -43486,13 +43498,14 @@ $a
        r-doc "plot"             ; plot function documentation
        r-doc "cluster::pam"     ; function pam in package cluster docu
        r-doc "package::cluster" ; package overview with functions
+       r-exex                   ; calls Rscript in the current R file
        r-format                 ; formats and reloads the currently edited R script
        r-lint                   ; gives code advise for the currently edited  R script 
 ```
       
 ## NOTES
 
-  __r-doc__  macro is defined in file  `hkrdoc.emf`.  The macros  __r-format__
+  __r-doc__  macro is defined in file  `hkrdoc.emf`.  The macros __r-exec__,  __r-format__
   and __r-lint__ are implemented in the file `rtools.emf`.
   
 ## SEE ALSO

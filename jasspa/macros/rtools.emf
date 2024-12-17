@@ -3,7 +3,7 @@
 ;  Author        : Detlef Groth, University of Potsdam, Germany
 ;  Created By    : Detlef Groth
 ;  Created       : Wed Dec 4 17:39:58 2024
-;  Last Modified : <241212.1528>
+;  Last Modified : <241217.0815>
 ;
 ;  Description   : functions useful to be used for R development
 ;
@@ -23,55 +23,43 @@ define-macro r-format
       save-buffer 
     !endif
   !endif 
+  !if &seq %rscript-com "ERROR"
+    r-rscript
+  !endif
   set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
   set-variable #l0 &xre #l0 "iso" "ISO-" #l0
   set-variable #l0 &xre #l0 "cp" "CP" #l0    
   set-variable #l0 &xre #l0 "microsoft-" "" #l0        
-  2 pipe-shell-command &spr "Rscript  -e 'options(\"encoding\"=\"%s\");formatR::tidy_file(\"%s\")'" #l0 $buffer-fname "*command*"
+  2 pipe-shell-command &spr "%s  -e \"options('encoding'='%s');formatR::tidy_file('%s')\"" %rscript-com #l0 $buffer-fname "*command*"
   !if &equ $result 1
-    ml-write "Error: It seems that R package formatR is not installed!"
+    ml-write "Error: It seems that R or the R package formatR is not installed!"
   !else
     0 reread-file
   !endif
 !emacro
 
-0 define-macro r-rscript
-  !force set-variable #l0 %rscript-com
-  ;set-variable $file-names "/home/dgroth/.local/share/fonts/*"
-  !if &seq #l0 "ERROR"
-    set-variable %rscript-com "Rscript"
-  !endif
-  ; TODO: 
-  ; - Windows check for set-variable $file-names "c:/Program File/R/*"
-  ; - then check for bin/x64/Rscript.exe file
-  !if &seq &which %rscript-com ""
-    1000 ml-write &spr "Error: Executable '%s' is not in the path! Please install it!" %rscript-com
-    !abort
-  !else
-    ml-write "all fine"
-  !endif
-  
-!emacro
-
 define-macro r-lint
-  !force set-variable #l1 .lint
+  !if &seq %rscript-com "ERROR"
+    r-rscript
+  !endif
   set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
   set-variable #l0 &xre #l0 "iso" "ISO-" #l0
   set-variable #l0 &xre #l0 "cp" "CP" #l0    
   set-variable #l0 &xre #l0 "microsoft-" "" #l0        
-  ;!if &seq #l1 "ERROR"
-    set-variable .lint "Rscript -e 'options(\"encoding\"=\"%s\");library(lintr);lintr::lint(\"%s\",linters = linters_with_defaults( indentation_linter = indentation_linter(indent = 4L) ))'" #l0
+  !force set-variable #l1 .lint
+  !if &seq #l1 "ERROR"
+    set-variable .lint "%s -e \"options('encoding'='%s');library(lintr);lintr::lint('%s',linters = linters_with_defaults( indentation_linter = indentation_linter(indent = 4L) ))\""
     set-variable #l1 .lint
-  ;!endif
+  !endif
   !if &bmod "edit"
     set-variable #l2 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
     !if &iseq #l2 "y" 
       save-buffer 
     !endif
   !endif 
-  2 pipe-shell-command &spr #l1 #l0 $buffer-fname "*lintr*"
+  2 pipe-shell-command &spr .lint %rscript-com #l0 $buffer-fname "*lintr*"
   !if &equ $result 1
-    ml-write "Error: It seems that R package lintr is not installed!"
+    ml-write "Error: It seems that either R or the R package lintr is not installed!"
   !else
     set-variable .buffer $buffer-bname
     next-window-find-buffer "*lintr*"
@@ -80,6 +68,7 @@ define-macro r-lint
     buffer-bind-create "bio" "return" "0" r-lint-find-line
   !endif
 !emacro
+
 
 0 define-macro r-lint-find-line
   set-variable #l0 @wl
@@ -96,7 +85,6 @@ define-macro r-lint
 define-macro fhook-r-lint
   buffer-init-hooks
 !emacro
-
 set-variable .fhook-r-lint.name "R Lint"
 set-variable .fhook-r-lint.setup &reg "/history/fhook/r-lint" "acfhmw"
 set-variable .fhook-r-lint.setup-mask "acfhmw"
@@ -104,13 +92,67 @@ set-variable .fhook-r-lint.setup-mask "acfhmw"
 !if &and &sin "h" .fhook-r-lint.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.r-lint  set-variable .hilight.r-lint &pinc  .hilight.next 1
   0 hilight .hilight.r-lint 2 200                                     $global-scheme
-  hilight .hilight.r-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
-  hilight .hilight.r-lint   1 "commas_linter"                         .scheme.operator
-  hilight .hilight.r-lint   1 "infix_spaces_linter"                   .scheme.operator
-  hilight .hilight.r-lint   1 "function_left_parentheses_linter"      .scheme.operator
-  hilight .hilight.r-lint   1 "indentation_linter"                    .scheme.operator  
-  ;hilight .hilight.r-lint   0 "\[.+\]"   .scheme.operator  ; does not work
+  ; windows
+  hilight .hilight.r-lint   0  "[C-H]:[ /\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
+  ; unix
+  hilight .hilight.r-lint   0  "[ /\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link    
+  hilight .hilight.r-lint   0 "style: .*"                         .scheme.operator
+  hilight .hilight.r-lint   0 "warning: .*"                         .scheme.error
 !endif
 
 add-file-hook "*lintr*" fhook-r-lint
+
+0 define-macro r-rscript
+  !force set-variable #l0 %rscript-com
+  !if &and &seq #l0 "ERROR" &not &seq $platform "windows"
+    !if &not &seq &which "Rscript" ""
+      set-variable %rscript-com "Rscript"
+    !endif
+  !else 
+    set-variable $file-names "C:/Program Files/R/R-.*"
+    !while &not &seq &set #l0 $file-names ""
+      !if &xse #l0 "R-[3-9].[0-9].[0-9].+"
+        set-variable %rscript-com &spr "\"C:/Program Files/R/%sbin/Rscript.exe\"" #l0
+      !endif
+    !done
+  !endif
+  !if &seq &which %rscript-com ""
+    1000 ml-write &spr "Error: Executable '%s' is not in the path! Please install it!" %rscript-com
+    !abort
+  !else
+    ml-write &spr "OK: Executable is '%s'!" %rscript-com
+  !endif
+!emacro
+
+; execute a R file using Rscript executable directly from MicroEmacs using the current
+; ISO or Windows encodings
+define-macro r-exec
+  !if &bmod "edit"
+    set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+    !if &iseq #l0 "y" 
+      save-buffer 
+    !endif
+  !endif 
+  !if &seq %rscript-com "ERROR"
+    r-rscript
+  !endif
+  ; command line arguments
+  set-variable #l1 ""
+  !if @?
+    set-variable #l1 @ml "Add command line arguments" 
+  !endif
+  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+  set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+  set-variable #l0 &xre #l0 "cp" "CP" #l0    
+  set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+  0 pipe-shell-command &spr "%s  --encoding=%s \"%s\" %s" %rscript-com #l0 $buffer-fname #l1 "*command*"
+  find-buffer "*command*"
+  ;buffer-is-utf8 #l1
+  ;!if #l1  
+  ;  -1 buffer-mode "view"
+  ;  4 change-buffer-charset "utf8" "display"
+  ;  -1 buffer-mode "view"
+  ;!endif
+!emacro
+
 

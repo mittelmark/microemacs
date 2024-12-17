@@ -2183,6 +2183,7 @@ Miscellaneous Information
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsr-exec(3)lmr-exec(3)le Run the currently edited R script file using R-script   
     lsr-format(3)lmr-format(3)le Format the currently edited R script file  
     lsr-lint(3)lmr-lint(3)le Source code check of the currently edited R script file  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
@@ -2711,6 +2712,7 @@ Miscellaneous Information
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsr-exec(3)lmr-exec(3)le Run the currently edited R script file using R-script   
     lsr-format(3)lmr-format(3)le Format the currently edited R script file  
     lsr-lint(3)lmr-lint(3)le Source code check of the currently edited R script file  
     lsread-session(3)lmread-session(3)le Read in session information  
@@ -3865,6 +3867,7 @@ Miscellaneous Information
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
+    lsr-exec(3)lmr-exec(3)le Run the currently edited R script file using R-script   
     lsr-format(3)lmr-format(3)le Format the currently edited R script file  
     lsr-lint(3)lmr-lint(3)le Source code check of the currently edited R script file  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
@@ -42854,12 +42857,15 @@ $a
 
     lsscheme-editor(3)lmscheme-editor(3)le
 ! 3 r-doc
+! 3 r-exec
 ! 3 r-format
 ! 3 r-lint
 cEcENAME cEcA
 
 |r-doc
     r-doc - display documentation for R functions and packages
+|r-exec
+    r-doc - execute the current R script using the Rscript interpreter
 |r-format
     r-format - format a R script using the formatR library
 |r-lint
@@ -42869,6 +42875,7 @@ $a
 cESYNOPSIS cA
 
     cDr-doccA ["package::function|function"]
+    cDr-execcA  
     cDr-formatcA  
     cDr-lintcA    
 
@@ -42887,6 +42894,11 @@ $a
     main package  overview are shown with hilights in the normal text. Usage and
     Examples sections use R highlighting.
     
+    The cDr-execcA  macro executes the currently edited R script file using the
+    Rscript interpreter. It uswes the current selected character encoding as 
+    an argument for the Rscript interpreter to avoid error messages due to 
+    wrong characters.
+
     The cDr-formatcA  macro formats the currently edited R script file using the
     formats the currently  edited file using the R library  cGformatRcA which must
     be    installed    by   the   user   for    instance    using    the   usual
@@ -42908,12 +42920,13 @@ $a
          r-doc "plot"             ; plot function documentation
          r-doc "cluster::pam"     ; function pam in package cluster docu
          r-doc "package::cluster" ; package overview with functions
+         r-exex                   ; calls Rscript in the current R file
          r-format                 ; formats and reloads the currently edited R script
          r-lint                   ; gives code advise for the currently edited  R script 
 sA        
 cENOTES cA
 
-    cDr-doccA  macro is defined in file  cGhkrdoc.emfcA.  The macros  cDr-formatcA
+    cDr-doccA  macro is defined in file  cGhkrdoc.emfcA.  The macros cDr-execcA,  cDr-formatcA
     and cDr-lintcA are implemented in the file cGrtools.emfcA.
     
 cESEE ALSO cA
