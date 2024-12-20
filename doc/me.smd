@@ -2091,6 +2091,7 @@
   [print-scheme(2)](print-scheme(2)) Create a new printer color and font scheme  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
+  [py-format(3)](py-format(3)) Format Python source code using either black or yapf  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings
@@ -2626,6 +2627,7 @@
   [password-to-phonic(3)](password-to-phonic(3)) Convert a password to phonic string  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
+  [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
@@ -3773,6 +3775,7 @@
   [profile(9)](profile(9)) Shell user profile  
   [py(9)](py(9)) Python Language File  
   [py-doc(3)](py-doc(3)) Display Python module manual pages    
+  [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
   [python(9)](python(9)) Python Language File  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
@@ -43513,34 +43516,50 @@ $a
   [r(9)](r(9))
 !! me-id: m3mac100
 ! 3 py-doc
+! 3 py-format
 ## NAME
 
 
-|pydoc
+|py-doc
   py-doc - display documentation for Python modules and packages
+|py-format
+  py-format - format Python source code using either black or yapf
 $a
   
 ## SYNOPSIS
 
-  __py-doc__ ["package|function"]
+  __py-doc__ ["package|function"]  
+  __py-format__ 
    
 ## DESCRIPTION
    
-  Displays with the manual page for a Python package module or package.
+  __py-doc__ displays the manual page for a Python package module or package
+  within MicroEmacs..
 
   You can fold or unfold the section and use the [item-list(3)](item-list(3))
   command to get an overview about section and classes in a module or
   package. If no argment is given requests a package or function name from
   the user via the command line.
   
+  The __py-format__ macro formats the currently edited file using one of the
+  Python formatters either `yapf` or `black`. You can usually install these 
+  application using your systems package manager or using the pip package 
+  manager. To set your formatter to "black" even if you have "yapf" installed,
+  you can change the value of the variable _.py-format.format_ to "black". 
+
+  
 ## EXAMPLE
 
-       py-doc "argparse"  
+```{.emf}
+       py-doc "argparse"      ; load the documentation of argparse module
        py-doc "sys"
-      
+       py-format              ; formats the current Python file using yapf (or black)
+       set-variable .py-format.format "black"
+```      
+
 ## NOTES
 
-  __py-doc__ macro is defined in file `pytools.emf`.
+  The __py-doc__ and the __py-format__ macros are defined in the file `pytools.emf`.
   
 ## SEE ALSO
 

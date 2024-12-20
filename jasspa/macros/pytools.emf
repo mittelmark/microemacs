@@ -3,7 +3,7 @@
 ;  Created By    : Detlef Groth, University of Potsdam
 ;  Author        : Detlef Groth, University of Potsdam
 ;  Created       : Wed Sep 25 15:42:35 2024
-;  Last Modified : <240925.1607>
+;  Last Modified : <241220.1806>
 ;
 ;  Description   : Documentation viewer within MicroEmacs for
 ;                  Python  
@@ -21,41 +21,41 @@
 ;
 
 
-define-macro fhook-pydoc
-  @# buffer-init "pydoc"
+define-macro fhook-py-doc
+  @# buffer-init "py-doc"
   buffer-init-hooks
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-pydoc.name "pydoc"
-set-variable .fhook-pydoc.setup &reg "/history/fhook/pydoc" "acfhmw"
-set-variable .fhook-pydoc.setup-mask "acfhmw"
+set-variable .fhook-py-doc.name "py-doc"
+set-variable .fhook-py-doc.setup &reg "/history/fhook/py-doc" "acfhmw"
+set-variable .fhook-py-doc.setup-mask "acfhmw"
 
-!if &and &sin "h" .fhook-pydoc.setup &band .hilight.flags 0x02
-  !iif &not &exi .hilight.pydoc  set-variable .hilight.pydoc &pinc .hilight.next 1
-  0 hilight .hilight.pydoc 0                   .scheme.text
-  hilight .hilight.pydoc  2    "^[A-Z].+"       .scheme.header
-  hilight .hilight.pydoc  2    "^    class"     .scheme.keyword
+!if &and &sin "h" .fhook-py-doc.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.py-doc  set-variable   .hilight.py-doc &pinc .hilight.next 1
+  0 hilight .hilight.py-doc 0                    .scheme.text
+  hilight .hilight.py-doc  2    "^[A-Z].+"       .scheme.header
+  hilight .hilight.py-doc  2    "^    class"     .scheme.keyword
 !endif
 
-!if &sin "f" .fhook-pydoc.setup
+!if &sin "f" .fhook-py-doc.setup
   ; setup emf collapsing
-  set-variable .fhook-pydoc.collapse-open  "^[A-Z]"
-  set-variable .fhook-pydoc.collapse-close "^\\([A-Z]\\|    class\\|\\'\\)"
-  set-variable .fhook-pydoc.collapse-mnext "-1"
+  set-variable .fhook-py-doc.collapse-open  "^\\([A-Z]\\|    class\\)"
+  set-variable .fhook-py-doc.collapse-close "^\\([A-Z]\\|    class\\|\\'\\)"
+  set-variable .fhook-py-doc.collapse-mnext "-1"
 !endif
 ; setup item-list
-set-variable .fhook-pydoc.item-list-s1 "^\\([A-Z][A-Z]\.+\\)"
-set-variable .fhook-pydoc.item-list-r1 "SECT \ecB\\1\ecA"
-set-variable .fhook-pydoc.item-list-s2 "^    class +\\([^(]+\\)"
-set-variable .fhook-pydoc.item-list-r2 "  class \ecB\\1\ecA"
+set-variable .fhook-py-doc.item-list-s1 "^\\([A-Z][A-Z]\.+\\)"
+set-variable .fhook-py-doc.item-list-r1 "SECT \ecB\\1\ecA"
+set-variable .fhook-py-doc.item-list-s2 "^    class +\\([^(]+\\)"
+set-variable .fhook-py-doc.item-list-r2 "  class \ecB\\1\ecA"
 
-define-macro pydoc
+define-macro py-doc
   !force set-variable #l0 @1
   !if &not $status
     set-variable #l0 @ml00 "Python help on"
   !endif
-  0 pipe-shell-command &spr "LANG=en_US pydoc %s" #l0 "*pydoc*"
+  0 pipe-shell-command &spr "LANG=en_US pydoc %s" #l0 "*py-doc*"
   -1 buffer-mode "view"
   beginning-of-buffer
   3 kill-line
@@ -68,6 +68,33 @@ define-macro pydoc
   !endif
 !emacro    
 
-add-file-hook "*pydoc*" fhook-pydoc
-buffer-init-fhook "pydoc"
-ml-write "hkpydoc loaded"
+add-file-hook "*py-doc*" fhook-py-doc
+buffer-init-fhook "py-doc"
+
+define-macro py-format
+  !if &bmod "edit"
+    set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+    !if &iseq #l0 "y" 
+      save-buffer 
+    !endif
+  !endif 
+  !force set-variable #l1 .format
+  !if &seq #l1 "ERROR"
+    !if &and &seq &which "yapf" "" &seq &which "black" ""
+      ml-write "Error: You must have either the black or the yapf formatter installed!"
+      !abort
+    !endif  
+    !if &and &seq #l1 "ERROR" &not &seq &which "yapf" ""
+      set-variable .format "yapf -i"
+    !else 
+      set-variable .format "black -q"
+    !endif
+    set-variable #l1 .format
+  !endif
+  2 pipe-shell-command &spr "%s %s" #l1 $buffer-fname "*command*"
+  !if &equ $result 1
+    ml-write "Error: It seems that python linters yapf or black are not installed!"
+  !else
+    0 reread-file
+  !endif
+!emacro

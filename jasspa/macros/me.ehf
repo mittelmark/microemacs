@@ -2174,6 +2174,7 @@ Miscellaneous Information
     lsprint-scheme(2)lmprint-scheme(2)le Create a new printer color and font scheme  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
+    lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings
@@ -2708,6 +2709,7 @@ Miscellaneous Information
     lspassword-to-phonic(3)lmpassword-to-phonic(3)le Convert a password to phonic string  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
+    lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf    
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
@@ -3852,6 +3854,7 @@ Miscellaneous Information
     lsprofile(9)lmprofile(9)le Shell user profile  
     lspy(9)lmpy(9)le Python Language File  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages    
+    lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf    
     lspython(9)lmpython(9)le Python Language File  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
@@ -42933,34 +42936,48 @@ $a
 
     lsr(9)lmr(9)le
 ! 3 py-doc
+! 3 py-format
 cEcENAME cEcA
 
 
-|pydoc
+|py-doc
     py-doc - display documentation for Python modules and packages
+|py-format
+    py-format - format Python source code using either black or yapf
 $a
     
 cESYNOPSIS cA
 
-    cDpy-doccA ["package|function"]
+    cDpy-doccA ["package|function"]  
+    cDpy-formatcA 
      
 cEDESCRIPTION cA
      
-    Displays with the manual page for a Python package module or package.
+    cDpy-doccA displays the manual page for a Python package module or package
+    within MicroEmacs..
 
     You can fold or unfold the section and use the lsitem-list(3)lmitem-list(3)le
     command to get an overview about section and classes in a module or
     package. If no argment is given requests a package or function name from
     the user via the command line.
     
+    The cDpy-formatcA macro formats the currently edited file using one of the
+    Python formatters either cGyapfcA or cGblackcA. You can usually install these 
+    application using your systems package manager or using the pip package 
+    manager. To set your formatter to "black" even if you have "yapf" installed,
+    you can change the value of the variable cC.py-format.formatcA to "black". 
+
+    
 cEEXAMPLE cA
 
-         py-doc "argparse"  
+         py-doc "argparse"      ; load the documentation of argparse module
          py-doc "sys"
+         py-format              ; formats the current Python file using yapf (or black)
+         set-variable .py-format.format "black"
         
 cENOTES cA
 
-    cDpy-doccA macro is defined in file cGpytools.emfcA.
+    The cDpy-doccA and the cDpy-formatcA macros are defined in the file cGpytools.emfcA.
     
 cESEE ALSO cA
 

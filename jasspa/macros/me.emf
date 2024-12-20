@@ -72,8 +72,8 @@ define-macro-file mail mail mail-check stop-mail-check
 define-macro-file fileopen osd-file-open osd-get-file
 define-macro-file spellaut auto-spell auto-spell-menu
 define-macro-file hkinfo info info-on info-goto-link
-define-macro-file rdoc r-doc
-define-macro-file hkpydoc pydoc
+define-macro-file rtools r-doc r-format r-lint r-exec
+define-macro-file pytools py-doc py-format
 define-macro-file zfile find-zfile zfile-setup
 define-macro-file gentags generate-tags-file
 define-macro-file dmf display-matching-fence
