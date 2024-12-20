@@ -1165,7 +1165,7 @@ Miscellaneous Information
     lsinfo-on(3)lminfo-on(3)le Display Info on a given topic  
     lslist-buffers(2)lmlist-buffers(2)le (C-x C-b) List all buffers and show their status  
     lsosd-help(3)lmosd-help(3)le GUI based on-line help  
-    lspydoc(3)lmpydoc(3)le Display Python module manual pages  
+    lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
 
 !   Operating Modes
@@ -2173,7 +2173,7 @@ Miscellaneous Information
     lsprint-region(2)lmprint-region(2)le Print region, with formatting  
     lsprint-scheme(2)lmprint-scheme(2)le Create a new printer color and font scheme  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
-    lspydoc(3)lmpydoc(3)le Display Python module manual pages  
+    lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings
@@ -2707,7 +2707,7 @@ Miscellaneous Information
     lsparagraph-to-line(3)lmparagraph-to-line(3)le Convert a paragraph to a single line  
     lspassword-to-phonic(3)lmpassword-to-phonic(3)le Convert a password to phonic string  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
-    lspydoc(3)lmpydoc(3)le Display Python module manual pages  
+    lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings  across files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
@@ -3851,7 +3851,7 @@ Miscellaneous Information
     lsprintall(3f)lmprintall(3f)le Formatted print job  
     lsprofile(9)lmprofile(9)le Shell user profile  
     lspy(9)lmpy(9)le Python Language File  
-    lspydoc(3)lmpydoc(3)le Display Python module manual pages    
+    lspy-doc(3)lmpy-doc(3)le Display Python module manual pages    
     lspython(9)lmpython(9)le Python Language File  
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
@@ -42932,17 +42932,17 @@ $a
 cESEE ALSO cA
 
     lsr(9)lmr(9)le
-! 3 pydoc
+! 3 py-doc
 cEcENAME cEcA
 
 
 |pydoc
-    pydoc - display documentation for Python modules and packages
+    py-doc - display documentation for Python modules and packages
 $a
     
 cESYNOPSIS cA
 
-    cDpydoccA ["package|function"]
+    cDpy-doccA ["package|function"]
      
 cEDESCRIPTION cA
      
@@ -42955,12 +42955,12 @@ $a
     
 cEEXAMPLE cA
 
-         pydoc "argparse"  
-         pydoc "sys"
+         py-doc "argparse"  
+         py-doc "sys"
         
 cENOTES cA
 
-    cDpydoccA macro is defined in file cGhkpydoc.emfcA.
+    cDpy-doccA macro is defined in file cGpytools.emfcA.
     
 cESEE ALSO cA
 
