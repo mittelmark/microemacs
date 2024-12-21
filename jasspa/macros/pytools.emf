@@ -3,7 +3,7 @@
 ;  Created By    : Detlef Groth, University of Potsdam
 ;  Author        : Detlef Groth, University of Potsdam
 ;  Created       : Wed Sep 25 15:42:35 2024
-;  Last Modified : <241220.1806>
+;  Last Modified : <241221.1556>
 ;
 ;  Description   : Documentation viewer within MicroEmacs for
 ;                  Python  
@@ -98,3 +98,103 @@ define-macro py-format
     0 reread-file
   !endif
 !emacro
+
+define-macro fhook-py-lint
+  buffer-init-hooks
+!emacro
+
+define-macro py-lint
+  !if &bmod "edit"
+    set-variable #l2 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+    !if &iseq #l2 "y" 
+      save-buffer 
+    !endif
+  !endif 
+  !force set-variable #l0 .lint
+  !if &seq #l0 "ERROR"
+    set-variable #l0 "pylint %s"
+    set-variable .lint #l0
+  !endif
+  2 pipe-shell-command &spr #l0 $buffer-fname "*pylint*"
+  !if &equ $result 1
+    ml-write "Error: It seems that Python package pylint is not installed!"
+  !else
+    set-variable .buffer $buffer-bname
+    next-window-find-buffer "*pylint*"
+    buffer-init "py-lint"
+    set-variable :mouse-word-select py-lint-find-line
+    buffer-bind-create "bio" "return" "0" py-lint-find-line
+  !endif
+!emacro
+
+0 define-macro py-lint-find-line
+  set-variable #l0 @wl
+  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):.+"
+    next-window-find-buffer .py-lint.buffer
+    goto-line @s2
+    beginning-of-line
+    @s3 forward-char
+  !else
+    ml-write "Not a error line!"
+  !endif
+!emacro
+
+set-variable .fhook-py-lint.name "Python Lint"
+set-variable .fhook-py-lint.setup &reg "/history/fhook/py-lint" "acfhmw"
+set-variable .fhook-py-lint.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-py-lint.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.py-lint  set-variable .hilight.py-lint &pinc  .hilight.next 1
+  0 hilight .hilight.py-lint 2 200                                     $global-scheme
+  hilight .hilight.py-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
+!endif
+
+add-file-hook "*pylint*" fhook-py-lint
+
+; execute a Python file directly from MicroEmacs 
+define-macro fhook-py-exec
+  buffer-init-hooks
+!emacro
+
+define-macro py-exec
+  !if &bmod "edit"
+    set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
+    !if &iseq #l0 "y" 
+      save-buffer 
+    !endif
+  !endif 
+  ; command line arguments
+  set-variable #l1 ""
+  !if @?
+    set-variable #l1 @ml "Add command line arguments" 
+  !endif
+  2 pipe-shell-command &spr "python3 %s %s" $buffer-fname #l1 "*pyexec*"
+  set-variable .buffer $buffer-bname
+  next-window-find-buffer "*pyexec*"
+  buffer-init "py-exec"
+  set-variable :mouse-word-select py-exec-find-line
+  buffer-bind-create "bio" "return" "0" py-exec-find-line
+
+!emacro
+
+0 define-macro py-exec-find-line
+  set-variable #l0 @wl
+  !if &xse #l0 ".+line \\([0-9]+\\),.+"
+    next-window-find-buffer .py-exec.buffer
+    goto-line @s1
+  !else
+    ml-write "Not a error line!"
+  !endif
+!emacro
+
+set-variable .fhook-py-exec.name "Python Exec"
+set-variable .fhook-py-exec.setup &reg "/history/fhook/py-exec" "acfhmw"
+set-variable .fhook-py-exec.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-py-exec.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.py-exec  set-variable .hilight.py-exec &pinc  .hilight.next 1
+  0 hilight .hilight.py-exec 2 200                                     $global-scheme
+  hilight .hilight.py-exec   0  "  File.*"      .scheme.link  
+!endif
+
+add-file-hook "*pyexec*" fhook-py-exec

@@ -2091,7 +2091,9 @@
   [print-scheme(2)](print-scheme(2)) Create a new printer color and font scheme  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
+  [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf  
+  [py-lint(3)](py-lint(3)) Check a Python script file for possible problems  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings
@@ -2627,7 +2629,9 @@
   [password-to-phonic(3)](password-to-phonic(3)) Convert a password to phonic string  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
+  [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
+  [py-lint(3)](py-lint(3)) Check a Python script file for possible problems  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings  across files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
@@ -3775,7 +3779,9 @@
   [profile(9)](profile(9)) Shell user profile  
   [py(9)](py(9)) Python Language File  
   [py-doc(3)](py-doc(3)) Display Python module manual pages    
+  [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
+  [py-lint(3)](py-lint(3)) Check a Python script file for possible problems  
   [python(9)](python(9)) Python Language File  
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
@@ -43516,30 +43522,43 @@ $a
   [r(9)](r(9))
 !! me-id: m3mac100
 ! 3 py-doc
+! 3 py-exec
 ! 3 py-format
+! 3 py-lint
+! 5 .py-lint.lint
 ## NAME
 
 
 |py-doc
   py-doc - display documentation for Python modules and packages
+|py-exec
+  py-exec - executes the current Python script with or without command line arguments
 |py-format
   py-format - format Python source code using either black or yapf
+|py-lint
+  py-lint - check a Python script file for possible problems
+|.py-lint.lint 
+  .py-lint.lint - linting command to be executed, default: yapf or back
 $a
   
 ## SYNOPSIS
 
   __py-doc__ ["package|function"]  
-  __py-format__ 
+  _n_ __py-exec__  
+  __py-format__  
+  __py-lint__       
+  set-variable _.py-lint.lint_ "_string_"  
+  
    
 ## DESCRIPTION
    
-  __py-doc__ displays the manual page for a Python package module or package
-  within MicroEmacs..
+  The __py-doc__ macro displays the manual page for a Python package module or
+  package within MicroEmacs.
 
-  You can fold or unfold the section and use the [item-list(3)](item-list(3))
-  command to get an overview about section and classes in a module or
-  package. If no argment is given requests a package or function name from
-  the user via the command line.
+  You can fold or unfold the section and use the [item-list(3)](item-list(3)) command 
+  to get an overview about section and classes in a module or package.
+  If no argument is given requests a package or function name from the
+  user is requested via the message line.
   
   The __py-format__ macro formats the currently edited file using one of the
   Python formatters either `yapf` or `black`. You can usually install these 
@@ -43547,19 +43566,56 @@ $a
   manager. To set your formatter to "black" even if you have "yapf" installed,
   you can change the value of the variable _.py-format.format_ to "black". 
 
-  
-## EXAMPLE
+  The __py-lint__ macro checks the currently edited file using the Python
+  package tool `pylint` which must be installed by the user for instance using
+  the standard package manager or using the Python package manager pip like
+  this: 
+
+        pip install pylint --user
+
+  After executing the macro __py-lint__ a popup-window (`*pylint*`) displays the
+  warning messages of the `pylint` program, the user can click on the hilighted 
+  lines showing warnings and jump directly to the problematic line. The same
+  can be achieved by pressing th ENTER key on the highlighted line using
+  the keyboard navigating to the warning or error line and pressing the ENTER key.
+
+  Setting the variable _.py-lint.lint_ allows you to customize the linter
+  settings.
+
+  The __py-exec__ macro executed the currently edited file using the python3
+  command line interpreter. If any numeric argument is given before calling
+  the script, then the user is asked for command line arguments which should
+  be given on the message line.
+
+  After executing the macro a popup-window (`*pyexec*`) displays the results
+  of the script execution. The user can click on the hilighted lines showing
+  warnings and jump directly to the problematic line in the source script. The
+  same can be achieved by pressing the ENTER key on the highlighted line using
+  the keyboard.
+
+## EXAMPLES
 
 ```{.emf}
-       py-doc "argparse"      ; load the documentation of argparse module
-       py-doc "sys"
-       py-format              ; formats the current Python file using yapf (or black)
-       set-variable .py-format.format "black"
+     py-doc "argparse"      ; load the documentation of argparse module
+     py-doc "sys"
+     py-format              ; formats the current Python file using yapf (or black)
+     set-variable .py-format.format "black"
 ```      
+
+  Here an example to lint the currently edited Python script.
+
+```{.emf}
+    ; by modifying the macro variable .py-lint.lint
+    ; you can add no  standard options to pylint like here
+    set-variable .py-lint.lint "pylint  --docstring-min-length 20 %s"
+    ; during editing an Python file press Esc x and then execute
+    py-lint
+```
 
 ## NOTES
 
-  The __py-doc__ and the __py-format__ macros are defined in the file `pytools.emf`.
+  The __py-doc__, __py-exec__, __py-format__ and __py-lint__ macros are defined in the
+  file `pytools.emf`.
   
 ## SEE ALSO
 
