@@ -65,7 +65,7 @@ set-variable .fhook-shell.item-list-r1 "Func \ecB\\1\ecA"
     ; Variables.
     hilight .hilight.shell 4     "\\$" "\\}\\W" "" .scheme.variable
     hilight .hilight.shell 0x80  "\\${" .hilight.shellV .scheme.variable
-    hilight .hilight.shell 4     "\\$(" ")" ""     .scheme.variable
+    hilight .hilight.shell 4     "\\$(" ")\\s" ""     .scheme.variable
     hilight .hilight.shell 0     "\\$\\?"          .scheme.variable
     hilight .hilight.shell 0     "\\$#"            .scheme.variable
     hilight .hilight.shell 0     "\\$\\$"          .scheme.variable
