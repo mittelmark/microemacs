@@ -5085,12 +5085,20 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
-
+    - [241123]
+      - Shell: abbrev-list, item-list and folding for shell scripts
+      - Shell: more abbreviations for shell scripts
+      - R: adding r-exec, r-format, r-lint and renamed rdoc to r-doc and
+        supporting current R encoding, improving abbreviations
+      - Python: adding py-doc, py-exec, py-format (yapf or black) and py-lint 
+      - Python: some more abbreviations for python.eaf
+      - Emf: adding folding and item-list for emf define help commands
+      
     - [241120]
-      - fixing Find osd type for wrong key shortcut
-      - improved abbreviation handling for R and Python Esc Esc now expands
-      - adding more code chunk abbreviations in Markdown mode
-      - adding functions charset-ut8-to-iso and charset-iso-to-utf8 using iconv tool
+      - OSD: fixing "Find ..." osd type for wrong key shortcut
+      - R/Python: improved abbreviation handling for R and Python Esc Esc now expands
+      - Markdown: adding more code chunk abbreviations in Markdown mode
+      - UTF-8: adding functions charset-ut8-to-iso and charset-iso-to-utf8 using iconv tool
 
     - [241109]
       - Release v09.12.24b3 (beta-3) last beta for final release
