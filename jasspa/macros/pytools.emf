@@ -3,7 +3,7 @@
 ;  Created By    : Detlef Groth, University of Potsdam
 ;  Author        : Detlef Groth, University of Potsdam
 ;  Created       : Wed Sep 25 15:42:35 2024
-;  Last Modified : <241225.1019>
+;  Last Modified : <241225.1026>
 ;
 ;  Description   : Documentation viewer within MicroEmacs for
 ;                  Python  
@@ -80,7 +80,7 @@ define-macro py-format
   !endif 
   !if &not &seq $buffer-fhook "fhook-python"
       ml-write &spr "Error: '%s' is not a Python file!" $buffer-bname
-      !return
+      !abort
   !endif
   !force set-variable #l1 .format
   !if &seq #l1 "ERROR"
@@ -116,7 +116,7 @@ define-macro py-lint
   !endif 
   !if &not &seq $buffer-fhook "fhook-python"
       ml-write &spr "Error: '%s' is not a Python file!" $buffer-bname
-      !return
+      !abort
   !endif
   !force set-variable #l0 .lint
   !if &seq #l0 "ERROR"
@@ -173,7 +173,7 @@ define-macro py-exec
   !endif 
   !if &not &seq $buffer-fhook "fhook-python"
       ml-write &spr "Error: '%s' is not a Python file!" $buffer-bname
-      !return
+      !abort
   !endif
   ; command line arguments
   set-variable #l1 ""
