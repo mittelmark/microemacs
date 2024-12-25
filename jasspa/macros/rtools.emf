@@ -3,7 +3,7 @@
 ;  Author        : Detlef Groth, University of Potsdam, Germany
 ;  Created By    : Detlef Groth
 ;  Created       : Wed Dec 4 17:39:58 2024
-;  Last Modified : <241217.0815>
+;  Last Modified : <241225.1017>
 ;
 ;  Description   : functions useful to be used for R development
 ;
@@ -23,6 +23,10 @@ define-macro r-format
       save-buffer 
     !endif
   !endif 
+  !if &not &seq $buffer-fhook "fhook-r"
+      ml-write &spr "Error: '%s' is not an R file!" $buffer-bname
+      !return
+  !endif
   !if &seq %rscript-com "ERROR"
     r-rscript
   !endif
@@ -41,6 +45,10 @@ define-macro r-format
 define-macro r-lint
   !if &seq %rscript-com "ERROR"
     r-rscript
+  !endif
+  !if &not &seq $buffer-fhook "fhook-r"
+    ml-write &spr "Error: '%s' is not an R file!" $buffer-bname
+    !return
   !endif
   set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
   set-variable #l0 &xre #l0 "iso" "ISO-" #l0
@@ -133,6 +141,10 @@ define-macro r-exec
       save-buffer 
     !endif
   !endif 
+  !if &not &seq $buffer-fhook "fhook-r"
+      ml-write &spr "Error: '%s' is not an R file!" $buffer-bname
+      !return
+  !endif
   !if &seq %rscript-com "ERROR"
     r-rscript
   !endif

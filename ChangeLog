@@ -7,10 +7,20 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <241120.1818>
+>  Last Modified : <241225.1006>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
-  [241120]
+ [241123]
+ 
+    - Shell: abbrev-list, item-list and folding for shell scripts
+    - Shell:  more abbreviations for shell scripts
+    - R: adding r-exec, r-format, r-lint and renamed rdoc to r-doc and supporting
+      current R encoding, improving abbreviations
+    - Python: adding py-doc, py-exec, py-format (yapf or black) and py-lint  
+    - Python: some more abbreviations for python.eaf
+    - Emf: adding folding and item-list for emf define help commands
+    
+ [241120]
 
     - fixing "Find ..." osd menu entry for wrong key shortcut
     - improved abbreviation handling for R and Python Esc Esc now expands

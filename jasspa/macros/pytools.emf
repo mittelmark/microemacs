@@ -3,7 +3,7 @@
 ;  Created By    : Detlef Groth, University of Potsdam
 ;  Author        : Detlef Groth, University of Potsdam
 ;  Created       : Wed Sep 25 15:42:35 2024
-;  Last Modified : <241221.1556>
+;  Last Modified : <241225.1019>
 ;
 ;  Description   : Documentation viewer within MicroEmacs for
 ;                  Python  
@@ -78,6 +78,10 @@ define-macro py-format
       save-buffer 
     !endif
   !endif 
+  !if &not &seq $buffer-fhook "fhook-python"
+      ml-write &spr "Error: '%s' is not a Python file!" $buffer-bname
+      !return
+  !endif
   !force set-variable #l1 .format
   !if &seq #l1 "ERROR"
     !if &and &seq &which "yapf" "" &seq &which "black" ""
@@ -110,6 +114,10 @@ define-macro py-lint
       save-buffer 
     !endif
   !endif 
+  !if &not &seq $buffer-fhook "fhook-python"
+      ml-write &spr "Error: '%s' is not a Python file!" $buffer-bname
+      !return
+  !endif
   !force set-variable #l0 .lint
   !if &seq #l0 "ERROR"
     set-variable #l0 "pylint %s"
@@ -163,6 +171,10 @@ define-macro py-exec
       save-buffer 
     !endif
   !endif 
+  !if &not &seq $buffer-fhook "fhook-python"
+      ml-write &spr "Error: '%s' is not a Python file!" $buffer-bname
+      !return
+  !endif
   ; command line arguments
   set-variable #l1 ""
   !if @?
