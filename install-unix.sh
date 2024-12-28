@@ -3,12 +3,15 @@ OS=`uname | grep -Eo '^[A-Za-z]+'`
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 BASEURL=`curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
 VERSION=`echo ${BASEURL} | sed -E 's/.+v//' | sed -E 's/\.//g' | sed -E 's/beta/b/'`
+EXE=""
 if [[ $OS == "MSYS" ]]; then
-    MECB="windows-microemacs-${VERSION}-mecb.zip"
-    MEWB="windows-microemacs-${VERSION}-mewb.zip"
+    MECB="windows-microemacs-${VERSION}-mecb"
+    MEWB="windows-microemacs-${VERSION}-mewb"
+    EXE=".exe"
 elif [[ $OS == "CYGWIN" ]]; then
-    MECB="cygwin-3.5-microemacs-${VERSION}-mecb.zip"
-    MEWB="cygwin-3.5-microemacs-${VERSION}-mewb.zip"
+    MECB="cygwin-3.5-microemacs-${VERSION}-mecb"
+    MEWB="cygwin-3.5-microemacs-${VERSION}-mewb"
+    EXE=".exe"
 elif [[ $OS == "Darwin" ]]; then
     if [[ $KERNEL -eq 21 ]]; then    
        MECB="macos-12-microemacs-${VERSION}-mecb"
@@ -116,19 +119,23 @@ function install-me {
         if [[ ! -f "/tmp/${MECB}.zip" ]]; then
             curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
         fi
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb > ~/.local/bin/mecb
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
+        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
+        if [ "$EXE" = "" ]; then
+            unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
+            chmod 755 ~/.local/bin/mecu
+        fi
         URL=${BASEURL}/${MEWB}
         if [[ ! -f "/tmp/${MEWB}.zip" ]]; then
             curl -fsSL "${URL}.zip" --output /tmp/${MEWB}.zip 
         fi
-        unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb > ~/.local/bin/mewb
+        unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
         # Make the script executable
-        chmod 755 ~/.local/bin/me?b
-        chmod 755 ~/.local/bin/mecu
-        if [[ ! -f ~/.local/bin/me ]]; then
-            curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
-            chmod 755 ~/.local/bin/me
+        if [ "$EXE" = "" ]; then
+            chmod 755 ~/.local/bin/me?b
+            if [[ ! -f ~/.local/bin/me ]]; then
+                curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
+                chmod 755 ~/.local/bin/me
+            fi
         fi
         echo "Installation complete."
     fi    
