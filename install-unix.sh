@@ -143,7 +143,7 @@ function install-me {
 
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
 install-me
-if [[ "$OS" == "Linux"  || "$OS" == "FreeBSD" ]]; then
+if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ]; then
     install-fonts
 fi
 
