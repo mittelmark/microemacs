@@ -3,7 +3,7 @@
 ;  Author        : $Author$
 ;  Created By    : Detlef Groth
 ;  Created       : Thu Sep 26 19:12:38 2024
-;  Last Modified : <241212.1436>
+;  Last Modified : <241228.0952>
 ;
 ;  Description
 ;
@@ -105,7 +105,7 @@ define-macro r-doc
   !endif
 
 !emacro    
-define-macro r-doc-test 
+0 define-macro r-doc-test 
     0 pipe-shell-command &spr "LANG=en_US Rscript -e \"%s\"" @1 "*tmp*"
     find-buffer "*tmp*"
     !force search-forward "No documentation for"
