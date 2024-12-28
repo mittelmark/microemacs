@@ -139,10 +139,12 @@ function install-me {
         unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
         # Make the script executable
         if [ "$OS" != "MSYS" ]; then
-            chmod 755 ~/.local/bin/me?b
-            if [[ ! -f ~/.local/bin/me ]]; then
-                curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
-                chmod 755 ~/.local/bin/me
+            chmod 755 ~/.local/bin/me?b$EXE
+            if [ ! -f ~/.local/bin/me ]; then
+                if [ "$OS" != "CYGWIN" ]; then
+                    curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
+                    chmod 755 ~/.local/bin/me
+                fi
             fi
         fi
         echo "Installation complete."
