@@ -138,7 +138,7 @@ function install-me {
         fi
         unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
         # Make the script executable
-        if [ "$EXE" = "" ]; then
+        if [ "$OS" != "MSYS" ]; then
             chmod 755 ~/.local/bin/me?b
             if [[ ! -f ~/.local/bin/me ]]; then
                 curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
