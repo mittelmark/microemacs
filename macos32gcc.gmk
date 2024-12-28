@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <241228.0810>
+#  Last Modified : <241228.1140>
 #
 #  Description	
 #
@@ -35,7 +35,7 @@ VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ 
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
-KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/ | sed 's/24/15/' | sed 's/25/16/)
+KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/' | sed 's/24/15/' | sed 's/25/16/')
 OS=macos-$(KERNEL)
 RELEASE=macos-$(KERNEL)-microemacs-$(VERSION)
 app=mecb
