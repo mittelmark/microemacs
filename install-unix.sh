@@ -96,7 +96,6 @@ function install-fonts {
 }
 
 function install-me {
-    echo "Hi"
     if [[ ! -f ~/.local/bin/mecb ]]; then
         if [ ! -d ~/.local/bin ]; then
             mkdir -p ~/.local/bin
@@ -113,7 +112,7 @@ function install-me {
 
         # Download the dummy.sh script from the internet
         URL=${BASEURL}/${MECB}
-        echo $URL
+        echo "fetching $URL"
         if [[ ! -f "/tmp/${MECB}.zip" ]]; then
             curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
         fi
