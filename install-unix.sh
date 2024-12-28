@@ -1,32 +1,35 @@
 #!/usr/bin/env bash
 OS=`uname | grep -Eo '^[A-Za-z]+'`
-BASEURL="https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/"
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
-
+BASEURL=`curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
+VERSION=`echo ${BASEURL} | sed -E 's/.+v//' | sed -E 's/\.//g' | sed -E 's/beta/b/'`
 if [[ $OS == "MSYS" ]]; then
-    MECB="windows-microemacs-091224b3-mecb.zip"
-    MEWB="windows-microemacs-091224b3-mewb.zip"
+    MECB="windows-microemacs-${VERSION}-mecb.zip"
+    MEWB="windows-microemacs-${VERSION}-mewb.zip"
 elif [[ $OS == "CYGWIN" ]]; then
-    MECB="cygwin-3.5-microemacs-091224b3-mecb.zip"
-    MEWB="cygwin-3.5-microemacs-091224b3-mewb.zip"
+    MECB="cygwin-3.5-microemacs-${VERSION}-mecb.zip"
+    MEWB="cygwin-3.5-microemacs-${VERSION}-mewb.zip"
 elif [[ $OS == "Darwin" ]]; then
     if [[ $KERNEL -eq 21 ]]; then    
-       MECB="macos-12-microemacs-091224b3-mecb"
-       MEWB="macos-12-microemacs-091224b3-mewb"   
+       MECB="macos-12-microemacs-${VERSION}-mecb"
+       MEWB="macos-12-microemacs-${VERSION}-mewb"   
     elif [[ $KERNEL -eq 22 ]]; then    
-       MECB="macos-13-microemacs-091224b3-mecb"
-       MEWB="macos-13-microemacs-091224b3-mewb"   
+       MECB="macos-13-microemacs-${VERSION}-mecb"
+       MEWB="macos-13-microemacs-${VERSION}-mewb"   
     elif [[ $KERNEL -eq 23 ]]; then    
-       MECB="macos-14-microemacs-091224b3-mecb"
-       MEWB="macos-14-microemacs-091224b3-mewb"   
+       MECB="macos-14-microemacs-${VERSION}-mecb"
+       MEWB="macos-14-microemacs-${VERSION}-mewb"   
+    elif [[ $KERNEL -eq 24 ]]; then    
+       MECB="macos-15-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit
     fi
 elif [[ $OS == "FreeBSD" ]]; then
     if [[ $KERNEL -eq 14 ]]; then    
-       MECB="freebsd-14-microemacs-091224b3-mecb"
-       MEWB="freebsd-14-microemacs-091224b3-mewb"   
+       MECB="freebsd-14-microemacs-${VERSION}-mecb"
+       MEWB="freebsd-14-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit
@@ -34,11 +37,11 @@ elif [[ $OS == "FreeBSD" ]]; then
 elif [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
     ## fedora
     if [[ $KERNEL -eq 5 ]]; then    
-       MECB="linux-5-fedora-30-microemacs-091224b3-mecb"
-       MEWB="linux-5-fedora-30-microemacs-091224b3-mewb"   
+       MECB="linux-5-fedora-30-microemacs-${VERSION}-mecb"
+       MEWB="linux-5-fedora-30-microemacs-${VERSION}-mewb"   
     elif [[ $KERNEL -eq 6 ]]; then    
-       MECB="linux-6-fedora-40-microemacs-091224b3-mecb"
-       MEWB="linux-6-fedora-40-microemacs-091224b3-mewb"   
+       MECB="linux-6-fedora-40-microemacs-${VERSION}-mecb"
+       MEWB="linux-6-fedora-40-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
@@ -46,11 +49,11 @@ elif [[ "`uname -r | grep -E 'fc[0-9]'`" != "" ]]; then
 elif [[ "`uname -r | grep -E 'el[0-9]'`" != "" ]]; then
     ## AlmaLinux Or REdHat Enterprise Linux
     if [[ $KERNEL -eq 4 ]]; then    
-       MECB="linux-4-almalinux-8-microemacs-091224b3-mecb"
-       MEWB="linux-4-almalinux-8-microemacs-091224b3-mewb"   
+       MECB="linux-4-almalinux-8-microemacs-${VERSION}-mecb"
+       MEWB="linux-4-almalinux-8-microemacs-${VERSION}-mewb"   
     elif [[ $KERNEL -eq 5 ]]; then    
-       MECB="linux-5-almalinux-9-microemacs-091224b3-mecb"
-       MEWB="linux-5-almalinux-9-microemacs-091224b3-mewb"   
+       MECB="linux-5-almalinux-9-microemacs-${VERSION}-mecb"
+       MEWB="linux-5-almalinux-9-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
@@ -58,19 +61,19 @@ elif [[ "`uname -r | grep -E 'el[0-9]'`" != "" ]]; then
 elif [[ "`uname -r | grep -E 'MANJARO'`" != "" ]]; then
     ## AlmaLinux Or REdHat Enterprise Linux
     if [[ $KERNEL -eq 6 ]]; then    
-       MECB="linux-6-manjaro-0-microemacs-091224b2-mecb"
-       MEWB="linux-6-manjaro-0-microemacs-091224b2-mewb"   
+       MECB="linux-6-manjaro-0-microemacs-${VERSION}-mecb"
+       MEWB="linux-6-manjaro-0-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
     fi
 else
     if [[ $KERNEL -eq 5 ]]; then
-        MECB="linux-5-ubuntu-20-microemacs-091224b3-mecb"
-        MEWB="linux-5-ubuntu-20-microemacs-091224b3-mewb"
+        MECB="linux-5-ubuntu-20-microemacs-${VERSION}-mecb"
+        MEWB="linux-5-ubuntu-20-microemacs-${VERSION}-mewb"
     elif [[ $KERNEL -eq 6 ]]; then
-        MECB="linux-6-ubuntu-22-microemacs-091224b3-mecb"
-        MEWB="linux-6-ubuntu-22-microemacs-091224b3-mewb"
+        MECB="linux-6-ubuntu-22-microemacs-${VERSION}-mecb"
+        MEWB="linux-6-ubuntu-22-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
@@ -93,6 +96,7 @@ function install-fonts {
 }
 
 function install-me {
+    echo "Hi"
     if [[ ! -f ~/.local/bin/mecb ]]; then
         if [ ! -d ~/.local/bin ]; then
             mkdir -p ~/.local/bin
@@ -108,13 +112,14 @@ function install-me {
         fi
 
         # Download the dummy.sh script from the internet
-        URL=${BASEURL}${MECB}
+        URL=${BASEURL}/${MECB}
+        echo $URL
         if [[ ! -f "/tmp/${MECB}.zip" ]]; then
             curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
         fi
         unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb > ~/.local/bin/mecb
         unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
-        URL=${BASEURL}${MEWB}
+        URL=${BASEURL}/${MEWB}
         if [[ ! -f "/tmp/${MEWB}.zip" ]]; then
             curl -fsSL "${URL}.zip" --output /tmp/${MEWB}.zip 
         fi
