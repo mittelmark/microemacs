@@ -42892,7 +42892,7 @@ $a
 cESYNOPSIS cA
 
     cDr-doccA ["package::function|function"]
-    cDr-execcA  
+    cCncA cDr-execcA  
     cDr-formatcA  
     cDr-lintcA    
 
@@ -42912,9 +42912,10 @@ $a
     Examples sections use R highlighting.
     
     The cDr-execcA  macro executes the currently edited R script file using the
-    Rscript interpreter. It uswes the current selected character encoding as 
+    Rscript interpreter. It uses the current selected character encoding as 
     an argument for the Rscript interpreter to avoid error messages due to 
-    wrong characters.
+    wrong characters. If a numeric argument is given the user is asked for possible
+    command line arguments.
 
     The cDr-formatcA  macro formats the currently edited R script file using the
     formats the currently  edited file using the R library  cGformatRcA which must
@@ -42937,7 +42938,8 @@ $a
          r-doc "plot"             ; plot function documentation
          r-doc "cluster::pam"     ; function pam in package cluster docu
          r-doc "package::cluster" ; package overview with functions
-         r-exex                   ; calls Rscript in the current R file
+         r-exec                   ; calls Rscript in the current R file
+         0 r-exec                 ; ask for command line arguments and calls then Rscript
          r-format                 ; formats and reloads the currently edited R script
          r-lint                   ; gives code advise for the currently edited  R script 
 sA        
