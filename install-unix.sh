@@ -4,6 +4,14 @@ KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 BASEURL=`curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
 VERSION=`echo ${BASEURL} | sed -E 's/.+v//' | sed -E 's/\.//g' | sed -E 's/beta/b/'`
 EXE=""
+if [ "`which unzip 2>/dev/null`" = "" ]; then
+    echo "Error: Please install unzip before installing MicroEmacs!"
+    exit
+fi
+if [ "`which curl 2>/dev/null`" = "" ]; then
+    echo "Error: Please install curl before installing MicroEmacs!"
+    exit
+fi
 if [ $OS = "MSYS" ]; then
     MECB="windows-microemacs-${VERSION}-mecb"
     MEWB="windows-microemacs-${VERSION}-mewb"
@@ -143,6 +151,10 @@ function install-me {
 
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
 install-me
+if [ "`which mecb 2>/dev/null`" != "" ]; then
+    echo "Installed:"
+    mecb -V
+fi
 if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ]; then
     install-fonts
 fi
