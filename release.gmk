@@ -2,7 +2,7 @@
 #
 #  Created By    : Detlef Groth
 #  Created       : Sat Aug 24 05:46:12 2024
-#  Last Modified : <240917.1709>
+#  Last Modified : <241228.0738>
 #
 #  Description	 : This Makefile should be called from other Makefiles
 #                  with the app and RELEASE variables given  
@@ -35,7 +35,7 @@ ifeq ($(ext),exe)
   mesh="me-msys2.sh"
   meshout="me.sh"
 endif
-
+appx=`echo $(app) | sed -E 's/b//'`
 default:
 	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
 	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
@@ -50,4 +50,25 @@ default:
 	cp doc/me.1 $(RELEASE)/$(RELEASE)-$(app)/man/
 	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
 	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
+	
+macos-12:
 
+	cp -r jasspa jasspa-temp
+	rm -rf jasspa-temp/*/*~
+	mkdir -p macos-12-microemacs-091224
+	mkdir -p macos-12-microemacs-091224-$(app)/bin
+	mkdir -p macos-12-microemacs-091224-$(app)/share/microemacs
+	mkdir -p macos-12-microemacs-091224-$(app)/man
+	cp doc/me.1 macos-12-microemacs-091224-$(app)/man/
+	cp macos-12-091224/bfs macos-12-microemacs-091224-$(app)/bin/
+	cp bfs/bfs-readme.md macos-12-microemacs-091224-$(app)/share/microemacs/
+	cp bin/mecu macos-12-microemacs-091224-$(app)/bin/
+	chmod 755 bin/mecu macos-12-microemacs-091224-$(app)/bin/mecu
+	cp license.txt COPYING README-standalone.md macos-12-microemacs-091224-$(app)/share/microemacs/
+	./bfs/bfs -a macos-12-091224/$(appx) -o macos-12-microemacs-091224-$(app)/bin/$(app) ./jasspa-temp
+	zip -r macos-12-microemacs-091224-$(app).zip macos-12-microemacs-091224-$(app)/* 
+	cp macos-12-microemacs-091224-$(app).zip macos-12-microemacs-091224/
+	rm -rf jasspa-temp
+	rm -rf macos-12-microemacs-091224-$(app)
+test2:
+	echo $(appx)	
