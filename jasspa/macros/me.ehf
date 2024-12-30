@@ -452,7 +452,6 @@ Miscellaneous Information
     lsread-session(3)lmread-session(3)le Read in session information  
     lssave-session(3)lmsave-session(3)le Write session information to session file  
     lsuncomment-line(3)lmuncomment-line(3)le Uncomment current line  
-    lsutf8-to-iso(3lmutf8-to-iso(3)le] Convert UTF-8 encoding to current character set  
 
 
 cEVariables  cA
@@ -36908,10 +36907,15 @@ $a
 
     The utf8 conversion functions can be used to convert UTF-8 characters to the 
     ISO or Windows encoding selected currently in lsuser-setup(3)lmuser-setup(3)le. 
-    The UTF-8 characters cant be displayed by MicroEmacs so they should be converted 
+    The UTF-8 characters can't be displayed by MicroEmacs - so they should be converted 
     usually using these  functions. 
+    To  convert  your  current  opened  file  into the  current  character set from
+    UTF-8  Unicode  you use  the  function  cDcharset-utf8-to-isocA.  In case of
+    trouble  you might get an empty  buffer, you should  then reload the current
+    file without saving it.
+    
     If you your file mainly has non-Unicode characters you might just ignore the few 
-    Unicode characters. The function cDiso-to-utf8cA is usually used at the end to export
+    Unicode characters. The function cDcharset-iso-to-utf8cA is usually used at the end to export
     a file back into the UTF-8 encoding.
 
     The current character set is configured using the lsuser-setup(3)lmuser-setup(3)le dialog
@@ -36923,7 +36927,7 @@ $a
 
 
     cDcharset-changecA, cDcharset-iso-to-usercA,  cDcharset-user-to-isocA, cDcharset-utf8-to-isocA and
-    cDcharset-iso-to-utf9cA are macros defined in cGcharsutl.emfcA. The UTF-8 conversions require the command
+    cDcharset-iso-to-utf8cA are macros defined in cGcharsutl.emfcA. The UTF-8 conversions require the command
     line tool cDiconv(1)cA. If this is not installed the user will get a warning in the message line.
 
 

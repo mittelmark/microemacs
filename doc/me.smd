@@ -342,7 +342,6 @@
   [read-session(3)](read-session(3)) Read in session information  
   [save-session(3)](save-session(3)) Write session information to session file  
   [uncomment-line(3)](uncomment-line(3)) Uncomment current line  
-  [utf8-to-iso(3)](utf8-to-iso(3)] Convert UTF-8 encoding to current character set  
 
 
 ## Variables 
@@ -37392,10 +37391,15 @@ $a
 
   The utf8 conversion functions can be used to convert UTF-8 characters to the 
   ISO or Windows encoding selected currently in [user-setup(3)](user-setup(3)). 
-  The UTF-8 characters cant be displayed by MicroEmacs so they should be converted 
+  The UTF-8 characters can't be displayed by MicroEmacs - so they should be converted 
   usually using these  functions. 
+  To  convert  your  current  opened  file  into the  current  character set from
+  UTF-8  Unicode  you use  the  function  __charset-utf8-to-iso__.  In case of
+  trouble  you might get an empty  buffer, you should  then reload the current
+  file without saving it.
+  
   If you your file mainly has non-Unicode characters you might just ignore the few 
-  Unicode characters. The function __iso-to-utf8__ is usually used at the end to export
+  Unicode characters. The function __charset-iso-to-utf8__ is usually used at the end to export
   a file back into the UTF-8 encoding.
 
   The current character set is configured using the [user-setup(3)](user-setup(3)) dialog
@@ -37407,7 +37411,7 @@ $a
 
 
   __charset-change__, __charset-iso-to-user__,  __charset-user-to-iso__, __charset-utf8-to-iso__ and
-  __charset-iso-to-utf9__ are macros defined in `charsutl.emf`. The UTF-8 conversions require the command
+  __charset-iso-to-utf8__ are macros defined in `charsutl.emf`. The UTF-8 conversions require the command
   line tool __iconv(1)__. If this is not installed the user will get a warning in the message line.
 
 
