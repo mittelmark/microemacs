@@ -48,8 +48,8 @@ app-image: bfs/bin
 	rm -rf jasspa-bfs/spelling
 	rm -f jasspa-bfs/macros/*~
 	rm -f jasspa-bfs/macros/*.bak
-	wget https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta3/linux-5-ubuntu-18-microemacs-091224b3-mecwb.zip
-	unzip -p linux-5-ubuntu-18-microemacs-091224b3-mecwb.zip "linux-5-ubuntu-18-microemacs-091224b3-mecwb/bin/mecwb" > mecw-ubuntu-18
+	wget https://github.com/mittelmark/microemacs/releases/download/v09.12.24/linux-5-ubuntu-18-microemacs-091224-mecwb.zip
+	unzip -p linux-5-ubuntu-18-microemacs-091224-mecwb.zip "linux-5-ubuntu-18-microemacs-091224-mecwb/bin/mecwb" > mecw-ubuntu-18
 	./bfs/bfs -s mecw-ubuntu-18 # strip of the archive to get the latest macros
 	./bfs/bfs -a mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
 	appimagetool-x86_64.AppImage jme.AppDir
