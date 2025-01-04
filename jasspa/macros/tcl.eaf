@@ -1,4 +1,5 @@
  "" "<FOLD+> \ecCProgram Flow:\ecA"
+main "namespace eval ::app { }\rproc ::app::usage {app} {\r    puts \"Usage $app -h,--help ARGUMENTS\"\r}\rproc ::app::help {app argv} {\r    puts help\r}\rproc ::app::main {argv} {\r    puts main\r}\rif {[info exists argv0] && $argv0 eq [info script]} {\r    if {[lsearch -regex $argv {(-h|--help)}] > -1} {\r        ::app::help $argv0 $argv\r} elseif {[llength $argv] != 2} {\r::app::usage $argv0\r} else {\rputs main\r}\r}\r" "  main"
 for "for {set i 0} {$i < \p} {incr i 1} {\r\r}\P" "  for"
 if "if {\p} {\r\r}\P" "  if"
 elif "elseif {\p} {\r\r}\P"  "  elif"

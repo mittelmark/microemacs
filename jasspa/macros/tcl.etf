@@ -1,20 +1,17 @@
+#!/usr/bin/env tclsh
 ##############################################################################
 #
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
 #  Date          : $Date$
 #  Author        : $Author$
 #  Created By    : $USER_NAME$
 #  Created       : $ASCII_TIME$
-#  Last Modified : <090829.1750>
+#  Last Modified : <250104.0735>
 #
-#  Description	
+#  Description	 :
 #
-#  Notes
+#  Notes         :
 #
-#  History
+#  History       :
 #	
 ##############################################################################
 #
