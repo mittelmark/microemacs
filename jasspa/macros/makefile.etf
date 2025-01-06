@@ -1,22 +1,13 @@
 ##-*- makefile -*-############################################################
 #
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
-#  Date          : $Date$
 #  Author        : $Author$
 #  Created By    : $USER_NAME$
 #  Created       : $ASCII_TIME$
-#  Last Modified : <090829.1748>
+#  Last Modified : <250106.1238>
 #
-#  Description	
+#  Description	 :
 #
-#  Notes
-#
-#  History
-#	
-#  $Log$
+#  Notes         :
 #
 ##############################################################################
 #
@@ -30,4 +21,12 @@
 #
 ##############################################################################
 
+CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
+
+## argument delegation
+ARGS=
+
+## default: list existing tasks 
+tasks:  ## list all tasks
+	@grep -Eo '^[a-z0-9]+:.+' $(CURRENT_MAKEFILE) | sed -E 's/:\s+##/\t- /g'
 
