@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : $USER_NAME$
 #  Created       : $ASCII_TIME$
-#  Last Modified : <250106.1238>
+#  Last Modified : <250106.1241>
 #
 #  Description	 :
 #
@@ -27,6 +27,7 @@ CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
 ARGS=
 
 ## default: list existing tasks 
+.PHONY: tasks
 tasks:  ## list all tasks
 	@grep -Eo '^[a-z0-9]+:.+' $(CURRENT_MAKEFILE) | sed -E 's/:\s+##/\t- /g'
 
