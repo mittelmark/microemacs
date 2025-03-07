@@ -1,15 +1,36 @@
-/* -*- go -*-
- *  $RCSfile$ $Revision$ : $Date$ : $Author$
- *
- *  Description	
- *
- *  Notes
- *
- **************
- *
- *  Copyright (c) $YEAR$ $COMPANY_NAME$. All Rights Reserved.
- * 
- * This document may not, in whole or in part, be copied, photocopied,
- * reproduced, translated, or reduced to any electronic medium or machine
- * readable form without prior written consent from $COMPANY_NAME$.
- */
+// -!- go -!- //////////////////////////////////////////////////////////////
+//
+//  System        : 
+//  Module        : 
+//  Date          : $Date$
+//  Author        : $Author$
+//  Created By    : $USER_NAME$
+//  Created       : $ASCII_TIME$
+//  Last Modified : <250307.1557>
+//
+//  Description   :
+//
+//  Notes         : 
+//
+//  History       :
+//      
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) $YEAR$ $COMPANY_NAME$.
+// 
+//  All Rights Reserved.
+// 
+// This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
+// reproduced,  translated,  or  reduced to any  electronic  medium or machine
+// readable form without prior written consent from $COMPANY_NAME$.
+//
+//////////////////////////////////////////////////////////////////////////////
+
+
+package $CURSOR$ main
+
+import "fmt"
+
+func main () {
+    fmt.Println("Hello World!")
+}   

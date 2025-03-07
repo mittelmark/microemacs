@@ -1,207 +1,119 @@
-; -!- emf -!-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
-; Created:     2011-05-03
-; Modified:    2011-05-12
-; Synopsis:    Go mode hook
-; Authors:     Jeremy Cowgar
+;  Created By    : Detlef Groth
+;  Created       : Fri Mar 6th, 2025
+;  Last Modified : <250307.1612>
 ;
-; http://www.jasspa.com - MicroEmacs
-; http://www.golang.org - Go
-; http://jeremy.cowgar.com - Jeremy's Blog
+;  Description
+;   Go Language Template
+;   https://go.dev/
 ;
+;  Notes
+;
+;  History: 2025-03-07 first version
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 define-macro fhook-go
     set-variable $buffer-mask "luh1"
     @# buffer-init "go"
     buffer-init-hooks
-    
-    ; Go standard is indent with tabs
-    -1 buffer-mode "tab"
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-go.setup &reg "/history/fhook/go" "bdfghnopxlqv"
-set-variable .fhook-go.setup-mask "abdefghikmnoptuxclqrvy"
-set-variable .fhook-go.comment    "|/*| */|*| * | * |f|"
-set-variable .fhook-go.comment-1  "|//||//|// | //|r|"
-set-variable .fhook-go.indent-width 8
+set-variable .fhook-go.setup &reg "/history/fhook/go" "bdfghinopx"
+set-variable .fhook-go.setup-mask "abdefghikmnoptux"
+set-variable .fhook-go.comment "|/*| */|*| * | * |fr|"
 
-; Setup collapse
-set-variable .fhook-go.collapse-open "^\\(func\\|type\\)"
+set-variable .fhook-go.collapse-open  "^func"
 set-variable .fhook-go.collapse-close "^}"
+set-variable .fhook-go.collapse-mclose "1"
+set-variable .fhook-go.collapse-mnext "-1"
 
-; Setup item-list
-set-variable .fhook-go.item-list-s1 "^\\s*\\(func\\|type\\)\\s+\\(.+\\)\\s+{"
-set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
-
-; Setup Commands
-set-variable .fhook-go.command-flag "|t|th|th|th|th|"
-set-variable .fhook-go.command-name "||gofmt|goimports|gobuild|gorun|"
-set-variable .fhook-go.command-nbind "||||||"
-set-variable .fhook-go.command-kbind "||||||"
-set-variable .fhook-go.command-desc  "||Go \HFormat|Go \HImports|Go \HBuild|Go \HRun|"
+set-variable .fhook-go.item-list-s1 "^[\t ]*func[\t ]+\\(\\w[1-9A-Za-z_]*\\)"
+set-variable .fhook-go.item-list-r1 "func \ecB\\1\ecA"
 
 !if &not &exist .hilight.go
-    set-variable .hilight.go &pinc .hilight.next 1
+    set-variable .hilight.go  &pinc .hilight.next 1
 !endif
 
 !if &and &sin "h" .fhook-go.setup &band .hilight.flags 0x02
-    0 hilight .hilight.go 2 50 $global-scheme
-    
-    hilight .hilight.go  2 "//"                    .scheme.comment
-    hilight .hilight.go 20 "/\\*" "*/" ""          .scheme.comment
-    hilight .hilight.go  4 "\"" "\"" "\\"          .scheme.string
-    hilight .hilight.go  4 "'" "'" "\\"            .scheme.string
-    hilight .hilight.go  4 "`" "`" ""              .scheme.string
-    
-    hilight .hilight.go  20 "/\\*\\s*TODO" "*/" "" .scheme.error
-    hilight .hilight.go  18 "//\\s*TODO"           .scheme.error
-    
-    hilight .hilight.go  1 "break"                 .scheme.keyword
-    hilight .hilight.go  1 "case"                  .scheme.keyword
-    hilight .hilight.go  1 "const"                 .scheme.keyword
-    hilight .hilight.go  1 "continue"              .scheme.keyword
-    hilight .hilight.go  1 "default"               .scheme.keyword
-    hilight .hilight.go  1 "defer"                 .scheme.keyword
-    hilight .hilight.go  1 "else"                  .scheme.keyword
-    hilight .hilight.go  1 "fallthrough"           .scheme.keyword
-    hilight .hilight.go  1 "false"                 .scheme.keyword
-    hilight .hilight.go  1 "for"                   .scheme.keyword
-    hilight .hilight.go  1 "func"                  .scheme.keyword
-    hilight .hilight.go  1 "go"                    .scheme.keyword
-    hilight .hilight.go  1 "goto"                  .scheme.keyword
-    hilight .hilight.go  1 "if"                    .scheme.keyword
-    hilight .hilight.go  1 "import"                .scheme.keyword
-    hilight .hilight.go  1 "interface"             .scheme.keyword
-    hilight .hilight.go  1 "iota"                  .scheme.keyword
-    hilight .hilight.go  1 "nil"                   .scheme.keyword
-    hilight .hilight.go  1 "package"               .scheme.keyword
-    hilight .hilight.go  1 "range"                 .scheme.keyword
-    hilight .hilight.go  1 "return"                .scheme.keyword
-    hilight .hilight.go  1 "select"                .scheme.keyword
-    hilight .hilight.go  1 "struct"                .scheme.keyword
-    hilight .hilight.go  1 "switch"                .scheme.keyword
-    hilight .hilight.go  1 "true"                  .scheme.keyword
-    hilight .hilight.go  1 "type"                  .scheme.keyword
-    hilight .hilight.go  1 "var"                   .scheme.keyword
-    
-    hilight .hilight.go  1 "bool"                  .scheme.type
-    hilight .hilight.go  1 "byte"                  .scheme.type
-    hilight .hilight.go  1 "chan"                  .scheme.type
-    hilight .hilight.go  1 "complex64"             .scheme.type
-    hilight .hilight.go  1 "complex128"            .scheme.type
-    hilight .hilight.go  1 "float32"               .scheme.type
-    hilight .hilight.go  1 "float64"               .scheme.type
-    hilight .hilight.go  1 "int"                   .scheme.type
-    hilight .hilight.go  1 "int8"                  .scheme.type
-    hilight .hilight.go  1 "int16"                 .scheme.type
-    hilight .hilight.go  1 "int32"                 .scheme.type
-    hilight .hilight.go  1 "int64"                 .scheme.type
-    hilight .hilight.go  1 "map"                   .scheme.type
-    hilight .hilight.go  1 "string"                .scheme.type
-    hilight .hilight.go  1 "uint"                  .scheme.type
-    hilight .hilight.go  1 "uintptr"               .scheme.type
-    hilight .hilight.go  1 "uint8"                 .scheme.type
-    hilight .hilight.go  1 "uint16"                .scheme.type
-    hilight .hilight.go  1 "uint32"                .scheme.type
-    hilight .hilight.go  1 "uint64"                .scheme.type
-    
-    hilight .hilight.go  1 "append"                .scheme.function
-    hilight .hilight.go  1 "cap"                   .scheme.function
-    hilight .hilight.go  1 "close"                 .scheme.function
-    hilight .hilight.go  1 "complex"               .scheme.function
-    hilight .hilight.go  1 "copy"                  .scheme.function
-    hilight .hilight.go  1 "imag"                  .scheme.function
-    hilight .hilight.go  1 "len"                   .scheme.function
-    hilight .hilight.go  1 "make"                  .scheme.function
-    hilight .hilight.go  1 "new"                   .scheme.function
-    hilight .hilight.go  1 "panic"                 .scheme.function
-    hilight .hilight.go  1 "print"                 .scheme.function
-    hilight .hilight.go  1 "println"               .scheme.function
-    hilight .hilight.go  1 "real"                  .scheme.function
-    hilight .hilight.go  1 "recover"               .scheme.function
-    
-    !if &band .hilight.flags 0x08
-        ; hilight consts, e.g. numbers
-        hilight .hilight.go 1 "\\d+"               .scheme.constant
-        hilight .hilight.go 1 "-\\d+"              .scheme.constant
-        hilight .hilight.go 1 "\\d+\\.\\d+"        .scheme.constant
-        hilight .hilight.go 1 "-\\d+\\.\\d+"       .scheme.constant
-        hilight .hilight.go 1 "\\d+[Ee]\\d+"       .scheme.constant
-        hilight .hilight.go 1 "0x[0-9a-f]+"        .scheme.constant
-        hilight .hilight.go 1 "0o[0-7]+"           .scheme.constant
-        
-        hilight .hilight.go 1 "[A-Z_][A-Z0-9_]*"   .scheme.constant
-    !endif
+  0 hilight .hilight.go 0x00 $global-scheme
+  ; Comments
+  hilight .hilight.go 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.go  2 "//"           .scheme.comment
+  ; Comment TODO's
+  hilight .hilight.go 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+  hilight .hilight.go 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  
+  ; Strings
+  hilight .hilight.go  4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.go  4 "\'" "\'" "\\"  .scheme.string
+  hilight .hilight.go  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote
+  ; go string literal /.foo[0-9]\s*bar/ hiligh gets confused with simple division.
+  ;hilight .hilight.go  4 "/" "/" "" .scheme.quote
+  
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.go 1    "[A-Z_]+"        .scheme.constant
+  ; package keywords
+  hilight .hilight.go 0x12 "^\\s*package"   .scheme.prepro
+  hilight .hilight.go 1    "^\\s*import"    .scheme.prepro
+  ; keywords
+  hilight .hilight.go 1    "break"          .scheme.keyword
+  hilight .hilight.go 1    "case"           .scheme.keyword
+  hilight .hilight.go 1    "chan"           .scheme.keyword
+  hilight .hilight.go 1    "const"          .scheme.keyword
+  hilight .hilight.go 1    "continue"       .scheme.keyword    
+  hilight .hilight.go 1    "default"        .scheme.keyword
+  hilight .hilight.go 1    "defer"          .scheme.keyword
+  hilight .hilight.go 1    "else"           .scheme.keyword
+  hilight .hilight.go 1    "fallthrough"    .scheme.keyword    
+  hilight .hilight.go 1    "for"            .scheme.keyword
+  hilight .hilight.go 1    "func"           .scheme.keyword
+  hilight .hilight.go 1    "go"             .scheme.keyword
+  hilight .hilight.go 1    "goto"           .scheme.keyword
+  hilight .hilight.go 1    "if"             .scheme.keyword
+  hilight .hilight.go 1    "interface"      .scheme.keyword
+  hilight .hilight.go 1    "map"            .scheme.keyword
+  hilight .hilight.go 1    "range"          .scheme.keyword
+  hilight .hilight.go 1    "return"         .scheme.keyword
+  hilight .hilight.go 1    "select"         .scheme.keyword
+  hilight .hilight.go 1    "struct"         .scheme.keyword
+  hilight .hilight.go 1    "switch"         .scheme.keyword
+  hilight .hilight.go 1    "type"           .scheme.keyword
+  hilight .hilight.go 1    "var"            .scheme.keyword
+  hilight .hilight.go 1    "false"          .scheme.operator
+  hilight .hilight.go 1    "iotae"          .scheme.operator  
+  hilight .hilight.go 1    "true"           .scheme.operator
+  hilight .hilight.go 1    "bool"           .scheme.type
+  hilight .hilight.go 1    "byte"           .scheme.type  
+  hilight .hilight.go 1    "complex64"      .scheme.type    
+  hilight .hilight.go 1    "complex128"     .scheme.type      
+  hilight .hilight.go 1    "float32"        .scheme.type        
+  hilight .hilight.go 1    "float64"        .scheme.type          
+  hilight .hilight.go 1    "int"            .scheme.type
+  hilight .hilight.go 1    "int8"           .scheme.type
+  hilight .hilight.go 1    "int16"          .scheme.type
+  hilight .hilight.go 1    "int32"          .scheme.type
+  hilight .hilight.go 1    "int64"          .scheme.type
+  hilight .hilight.go 1    "rune"           .scheme.type  
+  hilight .hilight.go 1    "string"         .scheme.type
+  hilight .hilight.go 1    "uint"           .scheme.type
+  hilight .hilight.go 1    "uint8"          .scheme.type
+  hilight .hilight.go 1    "uint16"         .scheme.type
+  hilight .hilight.go 1    "uint32"         .scheme.type
+  hilight .hilight.go 1    "uint64"         .scheme.type
+  hilight .hilight.go 1    "uintptr"        .scheme.type  
 !endif
 
 !if &sin "d" .fhook-go.setup
-    0 indent .hilight.go 0 100
-    
-    indent .hilight.go n "{" t
-    indent .hilight.go o "}" -t
-    indent .hilight.go n "(" t
-    indent .hilight.go o ")" -t
-    indent .hilight.go n "\\[" t
-    indent .hilight.go o "\\]" -t
-    indent .hilight.go s "case[^:]+:" -t
-    indent .hilight.go s "default[ \t]*:" -t
-    
-    indent .hilight.go n "/\\*" 1
-    indent .hilight.go n "\\*/" -1
-    
-    indent .hilight.go c "\\+$" t
-    indent .hilight.go c "-$" t
-    indent .hilight.go c "\\*$" t
-    indent .hilight.go c "/$" t
+  0 indent  .hilight.go 0 10
+  indent .hilight.go n "{"  t
+  indent .hilight.go o "}" -t
+  indent .hilight.go e "\"" "\"" "\\"
+  indent .hilight.go b "\\[" "]"
+  indent .hilight.go b "(" ")"
 !endif
 
-;define-macro gofmt
-;    filter-buffer "gofmt -w"
-;    ; DANGER would like to save-buffer auto here, but if gofmt hits an error
-;    ; the output of filter-buffer is empty, nuking your file! Need some logic
-;    ; here to detect empty filter-buffer?
-;    ;save-buffer
-;!emacro
-
-define-macro gofmt
-    set-variable .file $buffer-bname
-    ;filter-buffer "gofmt"
-    5 shell-command &cat "gofmt -w " .file
-    
-    !if &equ $result 0
-        0 reread-file
-        ;save-buffer
-    !endif
-!emacro
-
-define-macro goimports
-    set-variable .file $buffer-bname
-    ;filter-buffer "goimports"
-    5 shell-command &cat "goimports -w " .file
-    
-    !if &equ $result 0
-        0 reread-file
-        ;save-buffer
-    !endif
-!emacro
-
-define-macro gobuild
-    set-variable .file $buffer-bname
-    compile &cat "go build " .file
-;    delete-other-windows
-!emacro
-
-define-macro gorun
-    set-variable .file $buffer-bname
-    compile &cat "go run " .file
-!emacro
-
 buffer-init-fhook "go"
-
-; Useful shortcuts
-global-bind-key "gofmt" "esc A-f"
-global-bind-key "goimports" "esc A-i"
-global-bind-key "gobuild" "esc A-b"
-global-bind-key "gorun" "esc A-r"
-global-bind-key "delete-other-windows" "esc f1"

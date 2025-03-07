@@ -257,6 +257,7 @@ add-file-hook ".lhtm .lhtml"                                  fhook-lhtml
 add-file-hook ".css"                                          fhook-css
 add-file-hook ".bas .cls"                                     fhook-vb
 add-file-hook ".asp"                                          fhook-asp
+add-file-hook ".go"                                           fhook-go
 add-file-hook ".java .jav"                                    fhook-java
 add-file-hook ".jsp"                                          fhook-jsp
 add-file-hook ".js"                                           fhook-js
