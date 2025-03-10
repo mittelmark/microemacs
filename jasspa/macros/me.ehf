@@ -1742,6 +1742,7 @@ Miscellaneous Information
     lsfvwm(9)lmfvwm(9)le FVWM configuration file  
     lsfvwmrc(9)lmfvwmrc(9)le FVWM configuration file  
     lsgawk(9)lmgawk(9)le GNU AWK File  
+    lsgo(9)lmgo(9)le Go programming language  
     lsh(9)lmh(9)le C programming language header  
     lshpj(9)lmhpj(9)le MS-Windows Help Project File  
     lshtm(9)lmhtm(9)le HyperText Markup Language File  
@@ -3658,6 +3659,7 @@ Miscellaneous Information
     lsglobal-bind-key(2)lmglobal-bind-key(2)le (esc k) Bind a key to a named command or macro  
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
     lsglobal-unbind-key(2)lmglobal-unbind-key(2)le (esc C-k) Unbind a key from a named command or macro  
+    lsgo(9)lmgo(9)le Go programming language  
     lsgoto-alpha-mark(2)lmgoto-alpha-mark(2)le (C-x a) Move the cursor to a alpha marked location  
     lsgoto-line(2)lmgoto-line(2)le (esc g) Move the cursor to specified line  
     lsgoto-matching-fence(2)lmgoto-matching-fence(2)le (esc C-f) Move the cursor to matching fence  
@@ -63062,4 +63064,95 @@ $a
 
 
     lsrdoc(3)lmrdoc(3)le, lspy(9)lmpy(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+! 9 go
+cEcESYNOPSIS cEcA
 
+
+    go- Go programming language templates
+
+
+cEFILES cA
+
+
+    cDhkgo.emfcA - Go programming language hook definition  
+    cDgo.etfcA - Go programming language template file
+
+
+cEEXTENSIONS cA
+
+
+    cD.gocA - Go
+
+
+cEDESCRIPTION cA
+
+
+    The cDgocA file type templates share much with the lsc(9)lmc(9)le template
+    definitions, utilising the electric 'C' features for automatic layout of
+    text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Java files. The folds occur
+       about the cDfunccA keyword and a closing curly brace, both at the
+       beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
+       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
+       current region. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmygo.emfcA
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.

@@ -1658,6 +1658,7 @@
   [fvwm(9)](fvwm(9)) FVWM configuration file  
   [fvwmrc(9)](fvwmrc(9)) FVWM configuration file  
   [gawk(9)](gawk(9)) GNU AWK File  
+  [go(9)](go(9)) Go programming language  
   [h(9)](h(9)) C programming language header  
   [hpj(9)](hpj(9)) MS-Windows Help Project File  
   [htm(9)](htm(9)) HyperText Markup Language File  
@@ -3579,6 +3580,7 @@
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
   [global-unbind-key(2)](global-unbind-key(2)) (esc C-k) Unbind a key from a named command or macro  
+  [go(9)](go(9)) Go programming language  
   [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
   [goto-line(2)](goto-line(2)) (esc g) Move the cursor to specified line  
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
@@ -64001,5 +64003,97 @@ $a
 
 
   [rdoc(3)](rdoc(3)), [py(9)](py(9)), [Supported File Types](MicroEmacs - Supported File Types).
+!! me-id: m9typ050
+! 9 go
+## SYNOPSIS
 
+
+  go- Go programming language templates
+
+
+## FILES
+
+
+  __hkgo.emf__ - Go programming language hook definition  
+  __go.etf__ - Go programming language template file
+
+
+## EXTENSIONS
+
+
+  __.go__ - Go
+
+
+## DESCRIPTION
+
+
+  The __go__ file type templates share much with the [c(9)](c(9)) template
+  definitions, utilising the electric 'C' features for automatic layout of
+  text.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logical,
+     preprocessor definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
+
+  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph. If a comment commences with
+     `/***...` then the comment is automatically formatted to a box.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Java files. The folds occur
+     about the __func__ keyword and a closing curly brace, both at the
+     beginning of a line. [collapse-all(3)](collapse-all(3))
+     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
+     current region. 
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __mygo.emf__
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: meende
