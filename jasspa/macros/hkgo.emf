@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250307.1612>
+;  Last Modified : <250311.1324>
 ;
 ;  Description
 ;   Go Language Template
@@ -33,6 +33,10 @@ set-variable .fhook-go.collapse-mnext "-1"
 
 set-variable .fhook-go.item-list-s1 "^[\t ]*func[\t ]+\\(\\w[1-9A-Za-z_]*\\)"
 set-variable .fhook-go.item-list-r1 "func \ecB\\1\ecA"
+set-variable .fhook-go.item-list-s2 "^[\t ]*func[\t ]+(\\w* +\\([1-9A-Za-z_]*\\)) *\\(\\w[1-9A-Za-z_]*\\)"
+set-variable .fhook-go.item-list-r2 "meth \ecB\\1.\\2\ecA"
+set-variable .fhook-go.item-list-s3 "^[\t ]*type[\t ]+\\(\\w[1-9A-Za-z_]*\\)"
+set-variable .fhook-go.item-list-r3 "type \ecB\\1\ecA"
 
 !if &not &exist .hilight.go
     set-variable .hilight.go  &pinc .hilight.next 1

@@ -1,36 +1,21 @@
-// -!- go -!- //////////////////////////////////////////////////////////////
+// -!- go -!- 
+// Copyright (c) $YEAR$ $COMPANY$.
 //
-//  System        : 
-//  Module        : 
-//  Date          : $Date$
-//  Author        : $Author$
-//  Created By    : $USER_NAME$
-//  Created       : $ASCII_TIME$
-//  Last Modified : <250307.1557>
+// LICENSE:
 //
-//  Description   :
-//
-//  Notes         : 
-//
-//  History       :
-//      
-/////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) $YEAR$ $COMPANY_NAME$.
-// 
-//  All Rights Reserved.
-// 
-// This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-// reproduced,  translated,  or  reduced to any  electronic  medium or machine
-// readable form without prior written consent from $COMPANY_NAME$.
-//
-//////////////////////////////////////////////////////////////////////////////
+// Synopsis:    $CURSOR$
+// Authors:     $USER_NAME$
 
 
-package $CURSOR$ main
+package main
 
-import "fmt"
+import (
+    "fmt"
+    "os"
+)
 
 func main () {
+    argv := os.Args
+    fmt.Printf("Usage: %s\n",argv[0])
     fmt.Println("Hello World!")
 }   
