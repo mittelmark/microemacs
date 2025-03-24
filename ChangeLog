@@ -7,10 +7,46 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <241225.1006>
+>  Last Modified : <250324.1312>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
- [241123]
+ [250324]
+  
+    - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint
+
+ [250314]
+  
+    - initial support for Go programming language   
+    - Python abbreviations now with Google docstrings
+  
+ [250213]
+ 
+    - improved Markdown snippets
+
+ [250130]
+  
+    - better Python templates and snippets for csv and SQLite
+    - better R abbreviations for SQLite package
+
+ [250109]
+
+    - better Tcl templates and snippets
+    - better error lines for r-lint
+    - improved Makefile template with task listening
+
+ [250101]
+
+    - bumping dev version to v09.12.25b1
+
+ [241230]
+  
+    - adding tcltest abbreviations
+ 
+ [241228]
+  
+    - Release v09.12.24
+
+  [241223]
  
     - Shell: abbrev-list, item-list and folding for shell scripts
     - Shell:  more abbreviations for shell scripts

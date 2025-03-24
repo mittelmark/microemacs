@@ -2268,6 +2268,9 @@ Miscellaneous Information
     lsTriangle(3)lmTriangle(3)le MicroEmacs 2009 version of Triangle patience game  
     lstab(2)lmtab(2)le (tab) Handle the tab key  
     lstabs-to-spaces(3)lmtabs-to-spaces(3)le Converts all tabs to spaces  
+    lstcl-exec(3)lmtcl-exec(3)le Executes the current Tcl script with or without command line arguments  
+    lstcl-format(3)lmtcl-format(3)le Format Tcl source code using the Python program tclfmt  
+    lstcl-lint(3)lmtcl-lint(3)le Check a Tcl script file for possible problems using the Python program tclint
     lstex2nr(3)lmtex2nr(3)le Convert a Latex file into nroff  
     lstime(3)lmtime(3)le Command time evaluator  
     lstoolbar(3)lmtoolbar(3)le Toggle tool bar visibility  
@@ -2748,6 +2751,9 @@ Miscellaneous Information
     lsstring-rectangle(3)lmstring-rectangle(3)le Add a string vertically  
     lsTriangle(3)lmTriangle(3)le MicroEmacs 2009 version of Triangle patience game  
     lstabs-to-spaces(3)lmtabs-to-spaces(3)le Converts all tabs to spaces  
+    lstcl-exec(3)lmtcl-exec(3)le Executes the current Tcl script with or without command line arguments  
+    lstcl-format(3)lmtcl-format(3)le Format Tcl source code using the Python program tclfmt  
+    lstcl-lint(3)lmtcl-lint(3)le Check a Tcl script file for possible problems using the Python program tclint
     lstex2nr(3)lmtex2nr(3)le Convert a Latex file into nroff  
     lstime(3)lmtime(3)le Command time evaluator  
     lstoolbar(3)lmtoolbar(3)le Toggle tool bar visibility  
@@ -3973,6 +3979,9 @@ Miscellaneous Information
     lstabs-to-spaces(3)lmtabs-to-spaces(3)le Converts all tabs to spaces  
     lstcl(9)lmtcl(9)le TCL programming language  
     lstcltags(3f)lmtcltags(3f)le Generate a Tcl/Tk tags file  
+    lstcl-exec(3)lmtcl-exec(3)le Executes the current Tcl script with or without command line arguments  
+    lstcl-format(3)lmtcl-format(3)le Format Tcl source code using the Python program tclfmt  
+    lstcl-lint(3)lmtcl-lint(3)le Check a Tcl script file for possible problems using the Python program tclint
     lstcshrc(9)lmtcshrc(9)le T-Shell start up file  
     lstex(9)lmtex(9)le TeX Documentation  
     lstex2nr(3)lmtex2nr(3)le Convert a Latex file into nroff  
@@ -5086,7 +5095,27 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
-    - [241123]
+    - [250324]
+      - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint
+    - [250314]
+      - initial support for Go programming language   
+      - Python abbreviations now with Google docstrings
+    - [250213]
+      - improved Markdown snippets
+    - [250130]
+      - better Python templates and snippets for csv and SQLite
+      - better R abbreviations for SQLite package
+    - [250109]
+      - better Tcl templates and snippets
+      - better error lines for r-lint
+      - improved Makefile template with task listening
+    - [250101]
+      - bumping dev version to v09.12.25b1
+    - [241230]
+      - adding tcltest abbreviations
+    - [241228]
+      - Release v09.12.24
+    - [241223]
       - Shell: abbrev-list, item-list and folding for shell scripts
       - Shell: more abbreviations for shell scripts
       - R: adding r-exec, r-format, r-lint and renamed rdoc to r-doc and
@@ -43054,6 +43083,94 @@ $a
 cESEE ALSO cA
 
     lspy(9)lmpy(9)le.
+! 3 tcl-exec
+! 3 tcl-format
+! 3 tcl-lint
+! 5 .tcl-lint.lint
+! 5 .tcl-format.format
+cEcENAME cEcA
+
+
+|tcl-exec
+    tcl-exec - executes the current Tcl script with or without command line arguments
+|tcl-format
+    tcl-format - format Tcl source code using the Python package tclint
+|tcl-lint
+    tcl-lint - check a Tcl script file for  possible  problems  using the Python  package tclint/tclfmt
+|.tcl-lint.format 
+    .tcl-lint.format - formatting command to be executed, default: tclfmt
+|.tcl-lint.lint 
+    .tcl-lint.lint - linting command to be executed, default: tclint 
+$a
+    
+cESYNOPSIS cA
+
+    cCncA cDtcl-execcA  
+    cDtcl-formatcA  
+    cDtcl-lintcA       
+    set-variable cC.tcl-lint.lintcA "cCstringcA"  
+    set-variable cC.tcl-format.formatcA "cCstringcA"    
+     
+cEDESCRIPTION cA
+     
+    The cDtcl-formatcA macro formats the currently edited file using one the
+    Tcl formatter cGtclfmtcA which is a Python script which you can install usually
+     using the pip3 package manager with `pip3 install tclint --user`. This package
+    contains  the command  line  applications  cGtclintcA and cGtclfmtcA. To set the
+    options  for  the  formatter,  you can  change  the  value  of the  variable
+    cC.tcl-format.formatcA  for instance like this: 
+    
+          set-variable .tcl-format.format "tclfmt --spaces-in-braces"
+
+    The cDtcl-lintcA macro checks the currently edited file using the Python
+    package  tool cGtclintcA  which must be installed by the user using the Python
+    package manager  pip like  this: 
+
+          pip install tclint --user
+
+    After executing the macro cDtcl-lintcA a popup-window (cG*tclint*cA) displays the
+    warning messages of the cGtclintcA program, the user can click on the hilighted 
+    lines showing warnings and jump directly to the problematic line. The same
+    can be achieved by pressing th ENTER key on the highlighted line using
+    the keyboard navigating to the warning or error line and pressing the ENTER key.
+
+    Setting the variable cC.tcl-lint.lintcA allows you to customize the linter
+    settings.
+
+    The cDtcl-execcA macro executed the currently edited file using the tclsh
+    command line interpreter. If any numeric argument is given before calling
+    the script, then the user is asked for command line arguments which should
+    be given on the message line.
+
+    After executing the macro a popup-window (cG*tclexec*cA) displays the results
+    of the script execution. The user can click on the hilighted lines showing
+    warnings and jump directly to the problematic line in the source script. The
+    same can be achieved by pressing the ENTER key on the highlighted line using
+    the keyboard.
+
+cEEXAMPLES cA
+
+sB
+       tcl-format              ; formats the current Tcl file using tclfmt
+       set-variable .tcl-format.format "tclfmt --spaces-in-braces"
+sA
+    Here an example to lint the currently edited Tcl script.
+
+sB
+      ; by modifying the macro variable .py-lint.lint
+      ; you can add no  standard options to pylint like here
+      set-variable .tcl-lint.lint "tclint  --style-line-length 120"
+      ; during editing an Python file press Esc x and then execute
+      tcl-lint
+sA
+cENOTES cA
+
+    The cDtcl-execcA, cDtcl-formatcA and cDtcl-lintcA macros are defined in the
+    file cGtcltools.emfcA.
+    
+cESEE ALSO cA
+
+    lstcl(9)lmtcl(9)le.
 ! 3 user-setup
 cEcENAME cEcA
 
