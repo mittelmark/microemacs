@@ -74,6 +74,7 @@ define-macro-file spellaut auto-spell auto-spell-menu
 define-macro-file hkinfo info info-on info-goto-link
 define-macro-file rtools r-doc r-format r-lint r-exec
 define-macro-file pytools py-doc py-format py-lint py-exec
+define-macro-file tcltools tcl-format tcl-lint tcl-exec
 define-macro-file zfile find-zfile zfile-setup
 define-macro-file gentags generate-tags-file
 define-macro-file dmf display-matching-fence
