@@ -43088,6 +43088,7 @@ $a
 ! 3 tcl-lint
 ! 5 .tcl-lint.lint
 ! 5 .tcl-format.format
+! 5 %tclsh-com
 cEcENAME cEcA
 
 
@@ -43097,10 +43098,12 @@ $a
     tcl-format - format Tcl source code using the Python package tclint
 |tcl-lint
     tcl-lint - check a Tcl script file for  possible  problems  using the Python  package tclint/tclfmt
-|.tcl-lint.format 
-    .tcl-lint.format - formatting command to be executed, default: tclfmt
-|.tcl-lint.lint 
-    .tcl-lint.lint - linting command to be executed, default: tclint 
+|%tcl-format-opts
+    %tcl-format-opts - formatting command to be executed, default: "cCtcldmt --in-place %scA"
+| %tcl-lint-opts 
+    %tcl-lint-opts - linting command to be executed, default: "cCtclint %scA"
+|%tclsh-com 
+    %tclsh-com - name of the Tcl interpreter or PATH to it, default: "cCtclshcA"
 $a
     
 cESYNOPSIS cA
@@ -43108,8 +43111,9 @@ $a
     cCncA cDtcl-execcA  
     cDtcl-formatcA  
     cDtcl-lintcA       
-    set-variable cC.tcl-lint.lintcA "cCstringcA"  
-    set-variable cC.tcl-format.formatcA "cCstringcA"    
+    set-variable cC%tcl-format-optscA "cCstringcA"    
+    set-variable cC%tcl-lint-optscA "cCstringcA"  
+    set-variable cC%tclsh-comcA "cCstringcA"  
      
 cEDESCRIPTION cA
      
@@ -43118,48 +43122,58 @@ $a
      using the pip3 package manager with `pip3 install tclint --user`. This package
     contains  the command  line  applications  cGtclintcA and cGtclfmtcA. To set the
     options  for  the  formatter,  you can  change  the  value  of the  variable
-    cC.tcl-format.formatcA  for instance like this: 
+    cC%tcl-format-optscA  for instance like this: 
     
-          set-variable .tcl-format.format "tclfmt --spaces-in-braces"
+          set-variable %tcl-format-opts "tclfmt --spaces-in-braces %s"
 
     The cDtcl-lintcA macro checks the currently edited file using the Python
     package  tool cGtclintcA  which must be installed by the user using the Python
     package manager  pip like  this: 
 
-          pip install tclint --user
+          pip3 install tclint --user
 
-    After executing the macro cDtcl-lintcA a popup-window (cG*tclint*cA) displays the
+    After executing the macro cDtcl-lintcA a popup-window (cG*tcl-lint*cA) displays the
     warning messages of the cGtclintcA program, the user can click on the hilighted 
     lines showing warnings and jump directly to the problematic line. The same
     can be achieved by pressing th ENTER key on the highlighted line using
     the keyboard navigating to the warning or error line and pressing the ENTER key.
 
-    Setting the variable cC.tcl-lint.lintcA allows you to customize the linter
+    Setting the variable cC%tcl-lint-optscA allows you to customize the linter
     settings.
 
     The cDtcl-execcA macro executed the currently edited file using the tclsh
-    command line interpreter. If any numeric argument is given before calling
+    command line interpreter. Before the script is executed lssave-some-buffers(2)lmsave-some-buffersle
+    is executed to allow the user to ensure that all relevant buffers are saved.
+    If bit  cG0x01cA  of the  numeric  argument  cCncA is  clear  then all  modified
+    buffers are automatically saved, when set (the default) the user is prompted for
+    each  buffer. If bit cG0x02cA of the numeric  argument is clear (the  default)
+    the user is prompted for any additional  cCcommand-line-argumentscA  which are
+    passed to the Tcl command. The arguments given are stored in a buffer variable,
+    cD:tcl-exec-argscA, and used as the default arguments next time the script is executed.
+    
+    After  executing the script, a cG*tcl-exec*cA  buffer is opened with the output
+    of the script execution.If any numeric argument is given before calling
     the script, then the user is asked for command line arguments which should
     be given on the message line.
 
-    After executing the macro a popup-window (cG*tclexec*cA) displays the results
-    of the script execution. The user can click on the hilighted lines showing
-    warnings and jump directly to the problematic line in the source script. The
-    same can be achieved by pressing the ENTER key on the highlighted line using
-    the keyboard.
+    After executing the macro a popup-window (cG*tcl-exec*cA) displays the results
+    of the script  execution. The user can click on the hilighted  lines showing
+    warnings and errors and jump directly to the problematic  line in the source
+    script.  The  same  can  be  achieved  by  pressing  the  ENTER  key  on the
+    highlighted line using the keyboard.
 
 cEEXAMPLES cA
 
 sB
        tcl-format              ; formats the current Tcl file using tclfmt
-       set-variable .tcl-format.format "tclfmt --spaces-in-braces"
+       set-variable %tcl-format-opts "tclfmt --spaces-in-braces %s"
 sA
     Here an example to lint the currently edited Tcl script.
 
 sB
       ; by modifying the macro variable .py-lint.lint
       ; you can add no  standard options to pylint like here
-      set-variable .tcl-lint.lint "tclint  --style-line-length 120"
+      set-variable %tcl-lint-opts "tclint  --style-line-length 120 %s"
       ; during editing an Python file press Esc x and then execute
       tcl-lint
 sA

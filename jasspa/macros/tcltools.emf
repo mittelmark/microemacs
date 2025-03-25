@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250324.1252>
+;  Last Modified : <250325.1416>
 ;
 ;  Description   : Support for editing Tcl files with
 ;                  macros tcl-exec, tcl-format and tcl-lint
@@ -16,36 +16,26 @@
 define-macro fhook-tcl-lint
   buffer-init-hooks
 !emacro
-
 define-macro tcl-lint
-  !if &seq &which &which "tclint" "ERROR"
-      -8 ml-write "Pyton package tclint not installed but required!"
+  !if &and &not &exi %tcl-lint-opts &seq &which "tclint" "ERROR"
+    -8 ml-write "Python package tclint not installed but required!"
   !endif
-  !if &bmod "edit"
-    set-variable #l2 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
-    !if &iseq #l2 "y" 
-      save-buffer 
-    !endif
-  !endif 
   !if &not &seq $buffer-fhook "fhook-tcl"
-      ml-write &spr "Error: '%s' is not a Tcl file!" $buffer-bname
-      !abort
+    ml-write &spr "Error: '%s' is not a Tcl file!" $buffer-bname
+    !abort
   !endif
-  !force set-variable #l0 .lint
+  &band @# 1 save-some-buffers @mna
+  !force set-variable #l0 %tcl-lint-opts
   !if &seq #l0 "ERROR"
     set-variable #l0 "tclint %s"
-    set-variable .lint #l0
+    set-variable %tcl-lint-opts #l0
   !endif
-  2 pipe-shell-command &spr #l0 $buffer-fname "*tclint*"
-  ;!if &equ $result 1
-  ;  ml-write "Error: It seems that Python package tclint is not installed!"
-  ;!else
-    set-variable .buffer $buffer-bname
-    next-window-find-buffer "*tclint*"
-    buffer-init "tcl-lint"
-    set-variable :mouse-word-select tcl-lint-find-line
-    buffer-bind-create "bio" "return" "0" tcl-lint-find-line
-  ;!endif
+  2 pipe-shell-command &spr #l0 $buffer-fname "*tcl-lint*"
+  set-variable .buffer $buffer-bname
+  next-window-find-buffer "*tcl-lint*"
+  buffer-init "tcl-lint"
+  set-variable :mouse-word-select tcl-lint-find-line
+  buffer-bind-create "bio" "return" "0" tcl-lint-find-line
 !emacro
 
 0 define-macro tcl-lint-find-line
@@ -70,28 +60,25 @@ set-variable .fhook-tcl-lint.setup-mask "acfhmw"
   hilight .hilight.tcl-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
 !endif
 
-add-file-hook "*tclint*" fhook-tcl-lint
+add-file-hook "*tcl-lint*" fhook-tcl-lint
 
 define-macro tcl-format
-  !if &seq &which "tclfmt" "ERROR"
+  ; on Windows the syntax for tcl-format-opts might be
+  ; C:/Program Files/Python/../python.exe -m tclfmt
+  !if &and &not &exi %tcl-format-opts &seq &which "tclfmt" "ERROR"
       -8 ml-write "Python package tclint for tclfmt not installed but required!"
   !endif
-  !if &bmod "edit"
-    set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
-    !if &iseq #l0 "y" 
-      save-buffer 
-    !endif
-  !endif 
-  !force set-variable #l1 .format
+  !force set-variable #l1 %tcl-format-opts
   !if &seq #l1 "ERROR"
-    set-variable #l1 "tclfmt --in-place"
-    set-variable .format #l1
+    set-variable #l1 "tclfmt --in-place %s"
+    set-variable %tcl-format-opts #l1
   !endif
+  &band @# 1 save-some-buffers @mna  
   !if &not &seq $buffer-fhook "fhook-tcl"
       ml-write &spr "Error: '%s' is not a Tcl file!" $buffer-bname
       !abort
   !endif
-  2 pipe-shell-command &spr "%s %s" .format $buffer-fname "*command*"
+  2 pipe-shell-command &spr %tcl-format-opts $buffer-fname "*command*"
   0 reread-file
 !emacro
 
@@ -100,24 +87,18 @@ define-macro fhook-tcl-exec
 !emacro
 
 define-macro tcl-exec
-  !if &bmod "edit"
-    set-variable #l0 @mc5 "Save buffer first (?/y/n) ? " "nNyY" "(Y)es, (N)o, (C-g)Abort ? "
-    !if &iseq #l0 "y" 
-      save-buffer 
-    !endif
-  !endif 
+  !iif &not &exi %tclsh-com  tcl-tclsh-setup
+  &band @# 1 save-some-buffers @mna
   !if &not &seq $buffer-fhook "fhook-tcl"
       ml-write &spr "Error: '%s' is not a Tcl file!" $buffer-bname
       !abort
   !endif
   ; command line arguments
-  set-variable #l1 ""
-  !if @?
-    set-variable #l1 @ml "Add command line arguments" 
-  !endif
-  2 pipe-shell-command &spr "tclsh %s %s" $buffer-fname #l1 "*tclexec*"
+  !iif &not &exi :tcl-exec-args  set-variable :tcl-exec-args ""
+  !iif &not &band @# 2  set-variable :tcl-exec-args @ml2 "Additional command-line arguments" :tcl-exec-args 
+  2 pipe-shell-command &spr "%s %s %s" %tclsh-com $buffer-fname :tcl-exec-args "*tcl-exec*"
   set-variable .buffer $buffer-bname
-  next-window-find-buffer "*tclexec*"
+  next-window-find-buffer "*tcl-exec*"
   buffer-init "tcl-exec"
   set-variable :mouse-word-select tcl-exec-find-line
   buffer-bind-create "bio" "return" "0" tcl-exec-find-line
@@ -145,6 +126,22 @@ define-macro tcl-exec
   !endif
 !emacro
 
+0 define-macro tcl-tclsh-setup
+  !iif &exi %tclsh-com !return
+  set-variable #l0 0
+  !while &not &seq "" &set #l1 &lget "|tclsh|tclsh9.0|" &inc #l0 1
+    !if &not &seq "ERROR" &which #l1
+      set-variable %tclsh-com #l1
+      ml-write &spr "Tcl %s executable found in path" #l1
+      !return
+    !endif
+  !done
+  !if &seq $platform "windows"
+    ; Add code to look for the tclsh on windows
+  !endif
+  -24 ml-write "Error: Tcl's tclsh executable not found, please install Tcl or set %tclsh-com"
+!emacro
+
 set-variable .fhook-tcl-exec.name "Tcl Exec"
 set-variable .fhook-tcl-exec.setup &reg "/history/fhook/tcl-exec" "acfhmw"
 set-variable .fhook-tcl-exec.setup-mask "acfhmw"
@@ -156,5 +153,5 @@ set-variable .fhook-tcl-exec.setup-mask "acfhmw"
   hilight .hilight.tcl-exec   1  "(file.*line.*"      .scheme.link
 !endif
 
-add-file-hook "*tclexec*" fhook-tcl-exec
+add-file-hook "*tcl-exec*" fhook-tcl-exec
 

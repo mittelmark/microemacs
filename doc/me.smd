@@ -43671,6 +43671,7 @@ $a
 ! 3 tcl-lint
 ! 5 .tcl-lint.lint
 ! 5 .tcl-format.format
+! 5 %tclsh-com
 ## NAME
 
 
@@ -43680,10 +43681,12 @@ $a
   tcl-format - format Tcl source code using the Python package tclint
 |tcl-lint
   tcl-lint - check a Tcl script file for  possible  problems  using the Python  package tclint/tclfmt
-|.tcl-lint.format 
-  .tcl-lint.format - formatting command to be executed, default: tclfmt
-|.tcl-lint.lint 
-  .tcl-lint.lint - linting command to be executed, default: tclint 
+|%tcl-format-opts
+  %tcl-format-opts - formatting command to be executed, default: "_tcldmt --in-place %s_"
+| %tcl-lint-opts 
+  %tcl-lint-opts - linting command to be executed, default: "_tclint %s_"
+|%tclsh-com 
+  %tclsh-com - name of the Tcl interpreter or PATH to it, default: "_tclsh_"
 $a
   
 ## SYNOPSIS
@@ -43691,8 +43694,9 @@ $a
   _n_ __tcl-exec__  
   __tcl-format__  
   __tcl-lint__       
-  set-variable _.tcl-lint.lint_ "_string_"  
-  set-variable _.tcl-format.format_ "_string_"    
+  set-variable _%tcl-format-opts_ "_string_"    
+  set-variable _%tcl-lint-opts_ "_string_"  
+  set-variable _%tclsh-com_ "_string_"  
    
 ## DESCRIPTION
    
@@ -43701,41 +43705,51 @@ $a
    using the pip3 package manager with `pip3 install tclint --user`. This package
   contains  the command  line  applications  `tclint` and `tclfmt`. To set the
   options  for  the  formatter,  you can  change  the  value  of the  variable
-  _.tcl-format.format_  for instance like this: 
+  _%tcl-format-opts_  for instance like this: 
   
-        set-variable .tcl-format.format "tclfmt --spaces-in-braces"
+        set-variable %tcl-format-opts "tclfmt --spaces-in-braces %s"
 
   The __tcl-lint__ macro checks the currently edited file using the Python
   package  tool `tclint`  which must be installed by the user using the Python
   package manager  pip like  this: 
 
-        pip install tclint --user
+        pip3 install tclint --user
 
-  After executing the macro __tcl-lint__ a popup-window (`*tclint*`) displays the
+  After executing the macro __tcl-lint__ a popup-window (`*tcl-lint*`) displays the
   warning messages of the `tclint` program, the user can click on the hilighted 
   lines showing warnings and jump directly to the problematic line. The same
   can be achieved by pressing th ENTER key on the highlighted line using
   the keyboard navigating to the warning or error line and pressing the ENTER key.
 
-  Setting the variable _.tcl-lint.lint_ allows you to customize the linter
+  Setting the variable _%tcl-lint-opts_ allows you to customize the linter
   settings.
 
   The __tcl-exec__ macro executed the currently edited file using the tclsh
-  command line interpreter. If any numeric argument is given before calling
+  command line interpreter. Before the script is executed [save-some-buffers](save-some-buffers(2))
+  is executed to allow the user to ensure that all relevant buffers are saved.
+  If bit  `0x01`  of the  numeric  argument  _n_ is  clear  then all  modified
+  buffers are automatically saved, when set (the default) the user is prompted for
+  each  buffer. If bit `0x02` of the numeric  argument is clear (the  default)
+  the user is prompted for any additional  _command-line-arguments_  which are
+  passed to the Tcl command. The arguments given are stored in a buffer variable,
+  __:tcl-exec-args__, and used as the default arguments next time the script is executed.
+  
+  After  executing the script, a `*tcl-exec*`  buffer is opened with the output
+  of the script execution.If any numeric argument is given before calling
   the script, then the user is asked for command line arguments which should
   be given on the message line.
 
-  After executing the macro a popup-window (`*tclexec*`) displays the results
-  of the script execution. The user can click on the hilighted lines showing
-  warnings and jump directly to the problematic line in the source script. The
-  same can be achieved by pressing the ENTER key on the highlighted line using
-  the keyboard.
+  After executing the macro a popup-window (`*tcl-exec*`) displays the results
+  of the script  execution. The user can click on the hilighted  lines showing
+  warnings and errors and jump directly to the problematic  line in the source
+  script.  The  same  can  be  achieved  by  pressing  the  ENTER  key  on the
+  highlighted line using the keyboard.
 
 ## EXAMPLES
 
 ```{.emf}
      tcl-format              ; formats the current Tcl file using tclfmt
-     set-variable .tcl-format.format "tclfmt --spaces-in-braces"
+     set-variable %tcl-format-opts "tclfmt --spaces-in-braces %s"
 ```      
 
   Here an example to lint the currently edited Tcl script.
@@ -43743,7 +43757,7 @@ $a
 ```{.emf}
     ; by modifying the macro variable .py-lint.lint
     ; you can add no  standard options to pylint like here
-    set-variable .tcl-lint.lint "tclint  --style-line-length 120"
+    set-variable %tcl-lint-opts "tclint  --style-line-length 120 %s"
     ; during editing an Python file press Esc x and then execute
     tcl-lint
 ```
