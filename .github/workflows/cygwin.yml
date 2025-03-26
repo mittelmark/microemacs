@@ -77,11 +77,3 @@ jobs:
         name: Release-cygwin-3.6-windows
         path: cygwin-*/
         
-    - name: Install MicroEmacs
-      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-      run: |
-        echo $PATH
-        which pip3
-        pip3 install https://github.com/user-attachments/files/16840516/meapp-9.12.24b1.tar.gz
-        export PATH=~/.local/bin:$PATH
-        meapp -V
