@@ -1959,6 +1959,9 @@
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
   [global-unbind-key(2)](global-unbind-key(2)) (esc C-k) Unbind a key from a named command or macro  
+  [go-exec(3)](go-exec(3)) Executes the current Go program with or without command line arguments  
+  [go-format(3)](go-format(3)) Format Go source code using the `go fmt` command  
+  [go-lint(3)](go-lint(3))  Check a Go soruce code file for possible  problems using the program `go vet`  
   [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
   [goto-line(2)](goto-line(2)) (esc g) Move the cursor to specified line  
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
@@ -2570,6 +2573,9 @@
   [git-state(3)](git-state(3)) MicroEmacs Git interface - list state of directory files  
   [git-status(3)](git-status(3)) MicroEmacs Git interface - status of file  
   [git-tag(3)](git-tag(3)) MicroEmacs Git interface - view and add Git tags  
+  [go-exec(3)](go-exec(3)) Executes the current Go program with or without command line arguments  
+  [go-format(3)](go-format(3)) Format Go source code using the `go fmt` command  
+  [go-lint(3)](go-lint(3))  Check a Go soruce code file for possible  problems using the program `go vet`  
   [grep(3)](grep(3)) Search a file for a pattern  
   [ifill-paragraph(3)](ifill-paragraph(3)) (esc q) Format a paragraph  
   [indent-decrease(3)](indent-decrease(3)) Decrease the line indentation  
@@ -3587,6 +3593,9 @@
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
   [global-unbind-key(2)](global-unbind-key(2)) (esc C-k) Unbind a key from a named command or macro  
   [go(9)](go(9)) Go programming language  
+  [go-exec(3)](go-exec(3)) Executes the current Go program with or without command line arguments  
+  [go-format(3)](go-format(3)) Format Go source code using the `go fmt` command  
+  [go-lint(3)](go-lint(3))  Check a Go soruce code file for possible  problems using the program `go vet`  
   [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
   [goto-line(2)](goto-line(2)) (esc g) Move the cursor to specified line  
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
@@ -5020,6 +5029,9 @@
 
 ## Development History 
 
+  - [250326]
+    - improved support for Go coding with macros go-exec, go-format and go-lint
+    - fixing tab issue in Go templates and indentation
   - [250324]
     - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint
   - [250314]
@@ -43653,7 +43665,7 @@ $a
     ; by modifying the macro variable .py-lint.lint
     ; you can add no  standard options to pylint like here
     set-variable .py-lint.lint "pylint  --docstring-min-length 20 %s"
-    ; during editing an Python file press Esc x and then execute
+    ; during editing a Python file press Esc x and then execute
     py-lint
 ```
 
@@ -43669,8 +43681,8 @@ $a
 ! 3 tcl-exec
 ! 3 tcl-format
 ! 3 tcl-lint
-! 5 .tcl-lint.lint
-! 5 .tcl-format.format
+! 5 %tcl-lint-opts
+! 5 %tcl-format-opts
 ! 5 %tclsh-com
 ## NAME
 
@@ -43755,10 +43767,10 @@ $a
   Here an example to lint the currently edited Tcl script.
 
 ```{.emf}
-    ; by modifying the macro variable .py-lint.lint
-    ; you can add no  standard options to pylint like here
+    ; by modifying the macro variable %tcl-lint-opts
+    ; you can add no  standard options to tclint like here
     set-variable %tcl-lint-opts "tclint  --style-line-length 120 %s"
-    ; during editing an Python file press Esc x and then execute
+    ; during editing a Tcl file press Esc x and then execute
     tcl-lint
 ```
 
@@ -43770,6 +43782,100 @@ $a
 ## SEE ALSO
 
   [tcl(9)](tcl(9)).
+!! me-id: m3mac102
+! 3 go-exec
+! 3 go-format
+! 3 go-lint
+! 5 %go-lint-opts
+! 5 %go-format-opts
+! 5 %go-com
+## NAME
+
+
+|go-exec
+  go-exec - executes the current Go program with or without command line arguments
+|go-format
+  go-format - format Go source code using the go fmt command
+|go-lint
+  go-lint - check a Go source code file for  possible problems using the go vet command
+|%go-format-opts
+  %go-format-opts - formatting command to be executed, default: "_go fmt %s_"
+| %go-lint-opts 
+  %go-lint-opts - linting command to be executed, default: "_go vet %s_"
+|%go-com 
+  %go-com - name of the Go interpreter or PATH to it, default: "_go_"
+$a
+  
+## SYNOPSIS
+
+  _n_ __go-exec__  
+  __go-format__  
+  __go-lint__       
+  set-variable _%go-format-opts_ "_string_"    
+  set-variable _%go-lint-opts_ "_string_"  
+  set-variable _%go-com_ "_string_"  
+   
+## DESCRIPTION
+   
+  The __go-format__ macro formats the currently edited file using the
+  default formatter `go fmt` You can  change  the  value  of the  variable
+  _%go-format-opts_  for instance like this: 
+  
+        __set-variable__ _%go-format-opts_ "_go fmt -r '(a) -> a' -w  %s_"
+
+  The __go-lint__ macro checks the currently edited file using the standard
+  command `go vet`.
+
+  After executing the macro __go-lint__ a popup-window (`*go-lint*`) displays the
+  warning messages of the `go vet` program, the user can click on the hilighted 
+  lines showing warnings and jump directly to the problematic line. The same
+  can be achieved by pressing th ENTER key on the highlighted line using
+  the keyboard navigating to the warning or error line and pressing the ENTER key.
+
+  Setting the variable _%go-lint-opts_ allows you to customize the linter
+  settings. similar to the `go fmt` settings shown above.
+
+  The __go-exec__ macro executed the currently edited file using the `go run`
+  call for that file. Before the script is executed [save-some-buffers](save-some-buffers(2))
+  is executed to allow the user to ensure that all relevant buffers are saved.
+  If bit  `0x01`  of the  numeric  argument  _n_ is  clear  then all  modified
+  buffers are automatically saved, when set (the default) the user is prompted for
+  each  buffer. If bit `0x02` of the numeric  argument is clear (the  default)
+  the user is prompted for any additional  _command-line-arguments_  which are
+  passed to the Go application. The arguments given are stored in a buffer variable,
+  __:go-exec-args__, and used as the default arguments next time the script is executed.
+  
+  After executing the macro a popup-window (`*go-exec*`) displays the results
+  of the script  execution. The user can click on the hilighted  lines showing
+  warnings and errors and jump directly to the problematic  line in the source
+  script.  The  same  can  be  achieved  by  pressing  the  ENTER  key  on the
+  highlighted line using the keyboard.
+
+## EXAMPLES
+
+```{.emf}
+     go-format          ; formats the current Go file using `go fmt -w`
+     set-variable %go-format-opts "go fmt -r '(a) -> a' -w  %s"
+```      
+
+  Here an example to lint the currently edited Go program
+
+```{.emf}
+    ; by modifying the macro variable %go-lint-opts
+    ; you can add no  standard options to `go vet` like here
+    set-variable %go-lint-opts "go vet -c=3 %s"
+    ; during editing an Go file press Esc x and then execute
+    go-lint
+```
+
+## NOTES
+
+  The __go-exec__, __go-format__ and __go-lint__ macros are defined in the
+  file `gotools.emf`.
+  
+## SEE ALSO
+
+  [go(9)](go(9)).
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

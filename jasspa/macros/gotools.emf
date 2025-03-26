@@ -1,0 +1,146 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth, University of Potsdam, Germany
+;  Created       : Mon Mar 24 11:14:06 2025
+;  Last Modified : <250325.1958>
+;
+;  Description   : Support for editing Go files with
+;                  macros go-exec, go-format and go-lint using the 
+;                  command `go run` - `go fmt` - `go vet`
+;  Notes         : Based on tcltools.emf 
+;
+;  History
+;
+;  Copyright (c) 2025 Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+define-macro fhook-go-lint
+  buffer-init-hooks
+!emacro
+define-macro go-lint
+  !if &and &not &exi %go-lint-opts &seq &which "go" "ERROR"
+    -8 ml-write "Go is not installed or not in the PATH but required!"
+  !endif
+  !if &not &seq $buffer-fhook "fhook-go"
+    ml-write &spr "Error: '%s' is not a Go file!" $buffer-bname
+    !abort
+  !endif
+  &band @# 1 save-some-buffers @mna
+  !force set-variable #l0 %go-lint-opts
+  !if &seq #l0 "ERROR"
+    set-variable #l0 "go vet %s"
+    set-variable %go-lint-opts #l0
+  !endif
+  2 pipe-shell-command &spr #l0 $buffer-fname "*go-lint*"
+  set-variable .buffer $buffer-bname
+  next-window-find-buffer "*go-lint*"
+  buffer-init "go-lint"
+  set-variable :mouse-word-select go-lint-find-line
+  buffer-bind-create "bio" "return" "0" go-lint-find-line
+!emacro
+
+0 define-macro go-lint-find-line
+  set-variable #l0 @wl
+  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):.+"
+    next-window-find-buffer .go-lint.buffer
+    goto-line @s2
+    beginning-of-line
+    @s3 forward-char
+  !else
+    ml-write "Not an error line!"
+  !endif
+!emacro
+
+set-variable .fhook-go-lint.name "Go Lint"
+set-variable .fhook-go-lint.setup &reg "/history/fhook/go-lint" "acfhmw"
+set-variable .fhook-go-lint.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-go-lint.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.go-lint  set-variable .hilight.go-lint &pinc  .hilight.next 1
+  0 hilight .hilight.go-lint 2 200                                     $global-scheme
+  hilight .hilight.go-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
+!endif
+
+add-file-hook "*go-lint*" fhook-go-lint
+
+define-macro go-format
+  ; on Windows the syntax for go-format-opts might be
+  ; C:/Program Files/GO/../go.exe fmt %s
+  !if &and &not &exi %go-format-opts &seq &which "go" "ERROR"
+      -8 ml-write "Go Language not installed or not in the PATH but required!"
+  !endif
+  !force set-variable #l1 %go-format-opts
+  !if &seq #l1 "ERROR"
+    set-variable #l1 "go fmt %s"
+    set-variable %go-format-opts #l1
+  !endif
+  &band @# 1 save-some-buffers @mna  
+  !if &not &seq $buffer-fhook "fhook-go"
+      ml-write &spr "Error: '%s' is not a Go file!" $buffer-bname
+      !abort
+  !endif
+  2 pipe-shell-command &spr %go-format-opts $buffer-fname "*command*"
+  0 reread-file
+!emacro
+
+define-macro fhook-go-exec
+  buffer-init-hooks
+!emacro
+
+define-macro go-exec
+  !iif &not &exi %go-com  go-bin-setup
+  &band @# 1 save-some-buffers @mna
+  !if &not &seq $buffer-fhook "fhook-go"
+      ml-write &spr "Error: '%s' is not a Go file!" $buffer-bname
+      !abort
+  !endif
+  ; command line arguments
+  !iif &not &exi :go-exec-args  set-variable :go-exec-args ""
+  !iif &not &band @# 2  set-variable :go-exec-args @ml2 "Additional command-line arguments" :go-exec-args 
+  2 pipe-shell-command &spr "%s run %s %s" %go-com $buffer-fname :go-exec-args "*go-exec*"
+  set-variable .buffer $buffer-bname
+  next-window-find-buffer "*go-exec*"
+  buffer-init "go-exec"
+  set-variable :mouse-word-select go-exec-find-line
+  buffer-bind-create "bio" "return" "0" go-exec-find-line
+!emacro
+
+0 define-macro go-exec-find-line
+    set-variable #l0 @wl
+  !if &xse #l0 ".+go:\\([0-9]+\\):\\([0-9]+\\).*"
+      next-window-find-buffer .go-exec.buffer
+      goto-line @s1
+      @s2 forward-char
+  !else
+      ml-write "Not an error line!"
+  !endif
+!emacro
+
+0 define-macro go-bin-setup
+  !iif &exi %go-com !return
+  set-variable #l0 0
+  !while &not &seq "" &set #l1 &lget "|go|" &inc #l0 1
+    !if &not &seq "ERROR" &which #l1
+      set-variable %go-com #l1
+      ml-write &spr "Go %s executable found in path" #l1
+      !return
+    !endif
+  !done
+  !if &seq $platform "windows"
+    ; Add code to look for the go on windows
+  !endif
+  -24 ml-write "Error: GO's go executable not found, please install Go or set %go-com"
+!emacro
+
+set-variable .fhook-go-exec.name "Go Exec"
+set-variable .fhook-go-exec.setup &reg "/history/fhook/go-exec" "acfhmw"
+set-variable .fhook-go-exec.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-go-exec.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.go-exec  set-variable .hilight.go-exec &pinc  .hilight.next 1
+  0 hilight .hilight.go-exec 2 200                                     $global-scheme
+  hilight .hilight.go-exec   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link    
+!endif
+
+add-file-hook "*go-exec*" fhook-go-exec
+

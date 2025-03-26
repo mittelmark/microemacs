@@ -2042,6 +2042,9 @@ Miscellaneous Information
     lsglobal-bind-key(2)lmglobal-bind-key(2)le (esc k) Bind a key to a named command or macro  
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
     lsglobal-unbind-key(2)lmglobal-unbind-key(2)le (esc C-k) Unbind a key from a named command or macro  
+    lsgo-exec(3)lmgo-exec(3)le Executes the current Go program with or without command line arguments  
+    lsgo-format(3)lmgo-format(3)le Format Go source code using the cGgo fmtcA command  
+    lsgo-lint(3)lmgo-lint(3)le  Check a Go soruce code file for possible  problems using the program cGgo vetcA  
     lsgoto-alpha-mark(2)lmgoto-alpha-mark(2)le (C-x a) Move the cursor to a alpha marked location  
     lsgoto-line(2)lmgoto-line(2)le (esc g) Move the cursor to specified line  
     lsgoto-matching-fence(2)lmgoto-matching-fence(2)le (esc C-f) Move the cursor to matching fence  
@@ -2652,6 +2655,9 @@ Miscellaneous Information
     lsgit-state(3)lmgit-state(3)le MicroEmacs Git interface - list state of directory files  
     lsgit-status(3)lmgit-status(3)le MicroEmacs Git interface - status of file  
     lsgit-tag(3)lmgit-tag(3)le MicroEmacs Git interface - view and add Git tags  
+    lsgo-exec(3)lmgo-exec(3)le Executes the current Go program with or without command line arguments  
+    lsgo-format(3)lmgo-format(3)le Format Go source code using the cGgo fmtcA command  
+    lsgo-lint(3)lmgo-lint(3)le  Check a Go soruce code file for possible  problems using the program cGgo vetcA  
     lsgrep(3)lmgrep(3)le Search a file for a pattern  
     lsifill-paragraph(3)lmifill-paragraph(3)le (esc q) Format a paragraph  
     lsindent-decrease(3)lmindent-decrease(3)le Decrease the line indentation  
@@ -3666,6 +3672,9 @@ Miscellaneous Information
     lsglobal-mode(2)lmglobal-mode(2)le (esc m) Change a global buffer mode  
     lsglobal-unbind-key(2)lmglobal-unbind-key(2)le (esc C-k) Unbind a key from a named command or macro  
     lsgo(9)lmgo(9)le Go programming language  
+    lsgo-exec(3)lmgo-exec(3)le Executes the current Go program with or without command line arguments  
+    lsgo-format(3)lmgo-format(3)le Format Go source code using the cGgo fmtcA command  
+    lsgo-lint(3)lmgo-lint(3)le  Check a Go soruce code file for possible  problems using the program cGgo vetcA  
     lsgoto-alpha-mark(2)lmgoto-alpha-mark(2)le (C-x a) Move the cursor to a alpha marked location  
     lsgoto-line(2)lmgoto-line(2)le (esc g) Move the cursor to specified line  
     lsgoto-matching-fence(2)lmgoto-matching-fence(2)le (esc C-f) Move the cursor to matching fence  
@@ -5095,6 +5104,9 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [250326]
+      - improved support for Go coding with macros go-exec, go-format and go-lint
+      - fixing tab issue in Go templates and indentation
     - [250324]
       - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint
     - [250314]
@@ -43072,7 +43084,7 @@ $a
       ; by modifying the macro variable .py-lint.lint
       ; you can add no  standard options to pylint like here
       set-variable .py-lint.lint "pylint  --docstring-min-length 20 %s"
-      ; during editing an Python file press Esc x and then execute
+      ; during editing a Python file press Esc x and then execute
       py-lint
 sA
 cENOTES cA
@@ -43086,8 +43098,8 @@ $a
 ! 3 tcl-exec
 ! 3 tcl-format
 ! 3 tcl-lint
-! 5 .tcl-lint.lint
-! 5 .tcl-format.format
+! 5 %tcl-lint-opts
+! 5 %tcl-format-opts
 ! 5 %tclsh-com
 cEcENAME cEcA
 
@@ -43171,10 +43183,10 @@ $a
     Here an example to lint the currently edited Tcl script.
 
 sB
-      ; by modifying the macro variable .py-lint.lint
-      ; you can add no  standard options to pylint like here
+      ; by modifying the macro variable %tcl-lint-opts
+      ; you can add no  standard options to tclint like here
       set-variable %tcl-lint-opts "tclint  --style-line-length 120 %s"
-      ; during editing an Python file press Esc x and then execute
+      ; during editing a Tcl file press Esc x and then execute
       tcl-lint
 sA
 cENOTES cA
@@ -43185,6 +43197,97 @@ $a
 cESEE ALSO cA
 
     lstcl(9)lmtcl(9)le.
+! 3 go-exec
+! 3 go-format
+! 3 go-lint
+! 5 %go-lint-opts
+! 5 %go-format-opts
+! 5 %go-com
+cEcENAME cEcA
+
+
+|go-exec
+    go-exec - executes the current Go program with or without command line arguments
+|go-format
+    go-format - format Go source code using the go fmt command
+|go-lint
+    go-lint - check a Go source code file for  possible problems using the go vet command
+|%go-format-opts
+    %go-format-opts - formatting command to be executed, default: "cCgo fmt %scA"
+| %go-lint-opts 
+    %go-lint-opts - linting command to be executed, default: "cCgo vet %scA"
+|%go-com 
+    %go-com - name of the Go interpreter or PATH to it, default: "cCgocA"
+$a
+    
+cESYNOPSIS cA
+
+    cCncA cDgo-execcA  
+    cDgo-formatcA  
+    cDgo-lintcA       
+    set-variable cC%go-format-optscA "cCstringcA"    
+    set-variable cC%go-lint-optscA "cCstringcA"  
+    set-variable cC%go-comcA "cCstringcA"  
+     
+cEDESCRIPTION cA
+     
+    The cDgo-formatcA macro formats the currently edited file using the
+    default formatter cGgo fmtcA You can  change  the  value  of the  variable
+    cC%go-format-optscA  for instance like this: 
+    
+          __set-variable__ _%go-format-opts_ "_go fmt -r '(a) -> a' -w  %s_"
+
+    The cDgo-lintcA macro checks the currently edited file using the standard
+    command `go vet`.
+
+    After executing the macro cDgo-lintcA a popup-window (cG*go-lint*cA) displays the
+    warning messages of the cGgo vetcA program, the user can click on the hilighted 
+    lines showing warnings and jump directly to the problematic line. The same
+    can be achieved by pressing th ENTER key on the highlighted line using
+    the keyboard navigating to the warning or error line and pressing the ENTER key.
+
+    Setting the variable cC%go-lint-optscA allows you to customize the linter
+    settings. similar to the cGgo fmtcA settings shown above.
+
+    The cDgo-execcA macro executed the currently edited file using the `go run`
+    call for that file. Before the script is executed lssave-some-buffers(2)lmsave-some-buffersle
+    is executed to allow the user to ensure that all relevant buffers are saved.
+    If bit  cG0x01cA  of the  numeric  argument  cCncA is  clear  then all  modified
+    buffers are automatically saved, when set (the default) the user is prompted for
+    each  buffer. If bit cG0x02cA of the numeric  argument is clear (the  default)
+    the user is prompted for any additional  cCcommand-line-argumentscA  which are
+    passed to the Go application. The arguments given are stored in a buffer variable,
+    cD:go-exec-argscA, and used as the default arguments next time the script is executed.
+    
+    After executing the macro a popup-window (cG*go-exec*cA) displays the results
+    of the script  execution. The user can click on the hilighted  lines showing
+    warnings and errors and jump directly to the problematic  line in the source
+    script.  The  same  can  be  achieved  by  pressing  the  ENTER  key  on the
+    highlighted line using the keyboard.
+
+cEEXAMPLES cA
+
+sB
+       go-format          ; formats the current Go file using `go fmt -w`
+       set-variable %go-format-opts "go fmt -r '(a) -> a' -w  %s"
+sA
+    Here an example to lint the currently edited Go program
+
+sB
+      ; by modifying the macro variable %go-lint-opts
+      ; you can add no  standard options to `go vet` like here
+      set-variable %go-lint-opts "go vet -c=3 %s"
+      ; during editing an Go file press Esc x and then execute
+      go-lint
+sA
+cENOTES cA
+
+    The cDgo-execcA, cDgo-formatcA and cDgo-lintcA macros are defined in the
+    file cGgotools.emfcA.
+    
+cESEE ALSO cA
+
+    lsgo(9)lmgo(9)le.
 ! 3 user-setup
 cEcENAME cEcA
 
