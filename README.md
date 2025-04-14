@@ -14,9 +14,10 @@
 
 __Hint:__ New users should consider using [MicroEmacs 2025](https://github.com/bjasspa/jasspa) - which has better support for
 Unicode in terminals and as well adds SSL (https) support. New development will
-take place mainly in the MicroEmacs 24  project.  Here we will add  bugfixes  and just
+take place mainly in the MicroEmacs 25  project.  Here we will add  bugfixes  and just
 small scale  improvements.  Currently FreeBSD, Linux 32 bit and Windows Cygwin
-builds as well as Go programming language support are only available for MicroEmacs 09.
+builds as well as Go  programming  language  support  are only  available  for
+MicroEmacs 09, so the binaries for this project here which you find below.
 
 - [Executable Types](#Types)
 - [New Features](#Features)
