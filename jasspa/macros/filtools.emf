@@ -1,0 +1,129 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth, University of Potsdam, Germany
+;  Created       : Mon Mar 24 11:14:06 2025
+;  Last Modified : <250414.0923>
+;
+;  Description   : Support for editing language files with generic
+;                  macros file-exec, file-format and file-lint using the 
+;                  buffer provided variables with commands for
+;                  formatting, linting and executing a source code file
+;  Notes         : Based on tcltools.emf 
+;     
+;  Example       ; to activate the three commands you have to declare three buffer
+;                ; variables for formatting, linting and executing the current buffer
+;                ; for instance for Python files you could add the following three lines
+;                ; to your mypython.emf or to your username.emf file
+;                set-variable %fhook-python-format "ruff format %s" ; using the ruff formatter
+;                set-variable %fhook-python-lint   "ruff check %s"    ; using the ruff linter
+;                set-variable %fhook-python-exec   "python3 %s"
+;                ; for the Go programming language it could be within mygo.emf
+;                set-variable %fhook-go-format     "go fmt %s"
+;                set-variable %fhook-go-lint       "go vet %s"
+;                set-variable %fhook-go-exec       "go run %s"
+;  History       : 2025-04-14 - first version
+;
+;  Copyright (c) 2025 Detlef Groth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+define-macro fhook-file-lint
+  buffer-init-hooks
+!emacro
+define-macro file-lint
+  set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-lint"
+  !if &seq #l0 "ERROR"
+      -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-lint declared!"
+      !abort
+  !endif
+  &band @# 1 save-some-buffers @mna
+  2 pipe-shell-command &spr #l0 $buffer-fname "*file-lint*"
+  set-variable .buffer $buffer-bname
+  next-window-find-buffer "*file-lint*"
+  buffer-init "file-lint"
+  set-variable :mouse-word-select file-lint-find-line
+  buffer-bind-create "bio" "return" "0" file-lint-find-line
+!emacro
+
+0 define-macro file-lint-find-line
+  set-variable #l0 @wl
+  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):.+"
+    next-window-find-buffer .file-lint.buffer
+    goto-line @s2
+    beginning-of-line
+    @s3 forward-char
+  !else
+    ml-write "Not an error line!"
+  !endif
+!emacro
+
+set-variable .fhook-file-lint.name "File Lint"
+set-variable .fhook-file-lint.setup &reg "/history/fhook/file-lint" "acfhmw"
+set-variable .fhook-file-lint.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-file-lint.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.file-lint  set-variable .hilight.file-lint &pinc  .hilight.next 1
+  0 hilight .hilight.file-lint 2 200                                     $global-scheme
+  hilight .hilight.file-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
+!endif
+
+add-file-hook "*file-lint*" fhook-file-lint
+
+define-macro file-format
+  ; on Windows the syntax for format-opts might be something like
+  ; C:/Program Files/GO/../go.exe fmt %s
+  set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-format"
+  !if &seq #l0 "ERROR"
+      -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-format declared!"
+      !abort
+  !endif
+  &band @# 1 save-some-buffers @mna  
+  2 pipe-shell-command &spr #l0 $buffer-fname "*command*"
+  0 reread-file
+!emacro
+
+define-macro fhook-file-exec
+  buffer-init-hooks
+!emacro
+
+define-macro file-exec
+  set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-exec"
+  !if &seq #l0 "ERROR"
+      -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-exec declared!"
+      !abort
+  !endif
+  &band @# 1 save-some-buffers @mna
+  ; command line arguments
+  !iif &not &exi :file-exec-args  set-variable :file-exec-args ""
+  !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
+  set-variable #l1 &spr #l0 $buffer-fname 
+  2 pipe-shell-command &spr "%s %s" #l1 :file-exec-args "*file-exec*"
+  set-variable .buffer $buffer-bname
+  next-window-find-buffer "*file-exec*"
+  buffer-init "file-exec"
+  set-variable :mouse-word-select file-exec-find-line
+  buffer-bind-create "bio" "return" "0" file-exec-find-line
+!emacro
+
+0 define-macro file-exec-find-line
+    set-variable #l0 @wl
+  !if &xse #l0 ".+:\\([0-9]+\\):\\([0-9]+\\).*"
+      next-window-find-buffer .file-exec.buffer
+      goto-line @s1
+      @s2 forward-char
+  !else
+      ml-write "Not an error line!"
+  !endif
+!emacro
+
+set-variable .fhook-file-exec.name "File Exec"
+set-variable .fhook-file-exec.setup &reg "/history/fhook/file-exec" "acfhmw"
+set-variable .fhook-file-exec.setup-mask "acfhmw"
+
+!if &and &sin "h" .fhook-file-exec.setup &band .hilight.flags 0x02
+  !iif &not &exi .hilight.file-exec  set-variable .hilight.file-exec &pinc  .hilight.next 1
+  0 hilight .hilight.file-exec 2 200                                     $global-scheme
+  hilight .hilight.file-exec   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link    
+!endif
+
+add-file-hook "*file-exec*" fhook-file-exec
+
