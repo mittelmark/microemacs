@@ -134,7 +134,7 @@ New important macro commands (see the internal help pages - version v09.12.24):
 - `tcl-exec`,  `tcl-format`  and `tcl-lint` to execute,  reformat or check Tcl code for
 - `go-exec`,  `go-format`  and `go-lint` to execute,  reformat or check Go code for
 
-<a name="installation" </a>
+<a name="installation"> </a>
 ## Installation
 
 For Linux, MacOS and FreeBSD systems the following lines might work:
