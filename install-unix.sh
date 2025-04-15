@@ -58,7 +58,7 @@ elif [ "`uname -r | grep -E 'fc[0-9]'`" != "" ]; then
         exit
     fi
 elif [ "`uname -r | grep -E 'el[0-9]'`" != "" ]; then
-    ## AlmaLinux Or REdHat Enterprise Linux
+    ## AlmaLinux Or RedHat Enterprise Linux
     if [ $KERNEL -eq 4 ]; then    
        MECB="linux-4-almalinux-8-microemacs-${VERSION}-mecb"
        MEWB="linux-4-almalinux-8-microemacs-${VERSION}-mewb"   
