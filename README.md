@@ -87,7 +87,10 @@ changes / extensions:
 * improved  terminal mode for  suspend-emacs  with using alternative  terminal
   buffer (thanks to Steven Phillips)
 * basic git support with commands to add, commit and get status of files etc  
-* easier addition of own user  templates with interactive template selection using the command "insert-template"
+* easier addition of own user  templates with interactive  template  selection
+  using the command "insert-template"
+* support for Go, Tcl and Python for linters and formatters, other programming
+  languages on request 
 * more schemes  (themes) [Ayu  Light and Dark](https://github.com/ayu-theme/ayu-colors),
   [Dracula](https://github.com/dracula/dracula-theme), [Solarized Light and Dark](https://ethanschoonover.com/solarized/),
   and Tango Light and Dark
@@ -95,15 +98,17 @@ changes / extensions:
   using the _xrdb-scheme_ macro
 * better support for TTF-fonts on X11 and their ISO-8859-1 .. 15 and Windows-Cp1252 encodings
 * easier font-selection on X11 using _xfontsel_ from the _user-setup_ or using the _change-font-xfontsel_ macro 
-* easier fonr resize on X11 (Mac and Linux) and Windows using Ctrl-Plus and Ctrl-Minus keys
+* easier font resize on X11 (Mac and Linux) and Windows using Ctrl-Plus and Ctrl-Minus keys
 * documenting ME macro functions as well with basic Markdown syntax - see _define-help_ help page
 * much improved Markdown mode (folding, template file, syntax hilghlighting, outline
   in item list, embedding Tcl, Python, R and Dot code in fences with syntax highlight)
+* improved Python, Shell, Tcl and R support with folding, item-list and abbreviations
 * improved CUA bindings and jeany-bindings where CUA bindings (C-s, C-x, C-v etc are prefixed with C-j
   so that still all Emacs bindings  are available
 * AppImage for easy install on Linux systems
-* Linux (Ubuntu 20, 22, 24), Windows, Darwin 20, 21, 22 builds using Github actions
-* Windows builds using cross compilation on Ubuntu with Github actions
+* Linux (Ubuntu 20, 22, 24), Windows, Windows Cygwin, Darwin 21, 22, 23, 24 builds using Github actions
+* Windows  builds  using cross  compilation  on Ubuntu with Github  actions on
+  Windows Visual Studio build as Github action
 * updates on documentation  
 * fix for str_errlist[errno] by replacing it with strerror(errno) on Linux x64
   Fedora with gcc 10.3
@@ -126,6 +131,8 @@ New important macro commands (see the internal help pages - version v09.12.24):
 - `py-doc` - loading Python documentation within ME
 - `py-exec`,  `py-format`  and `py-lint` to execute,  reformat or check Python code for
   possible problems
+- `tcl-exec`,  `tcl-format`  and `tcl-lint` to execute,  reformat or check Tcl code for
+- `go-exec`,  `go-format`  and `go-lint` to execute,  reformat or check Go code for
 
 <a name="installation" </a>
 ## Installation

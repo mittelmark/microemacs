@@ -7,8 +7,14 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <250324.1312>
+>  Last Modified : <250415.0711>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+ [250414]
+    - bumping dev version to v09.12.25b2
+    - adding generic macros file-exec, file-format and file-lint
+
+ [250411]
+    - Release v09.12.25b1
 
  [250324]
   

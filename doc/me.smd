@@ -5029,14 +5029,19 @@
 
 ## Development History 
 
-  - [250326]
-    - improved support for Go coding with macros go-exec, go-format and go-lint
-    - fixing tab issue in Go templates and indentation
-  - [250324]
-    - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint
-  - [250314]
+  - [250414]  
+    - bumping dev version to v09.12.25b2  
+    - adding generic macros file-exec, file-format and file-lint   
+  - [250411]  
+    - Release v09.12.25b1  
+  - [250326]  
+    - improved support for Go coding with macros go-exec, go-format and go-lint  
+    - fixing tab issue in Go templates and indentation  
+  - [250324]  
+    - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint  
+  - [250314]  
     - initial support for Go programming language   
-    - Python abbreviations now with Google docstrings
+    - Python abbreviations now with Google docstrings  
   - [250213]
     - improved Markdown snippets
   - [250130]
