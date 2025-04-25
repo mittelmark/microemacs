@@ -110,8 +110,6 @@ set-variable .fhook-latex.paragraph-srch "\\(^$\\|^[ \t]*%\\|^[ \t]*$\\|^[ \t]*\
         set-variable #l2 @2
         ; Comments
         hilight #l1 2 "^%"                .scheme.comment
-        ; TODO's
-        hilight #l1 18 "%\\s+[Tt][Oo][Dd][Oo]" .scheme.operator
         ;symbols
         hilight #l1 64 "\\$\\\\bullet\\$" "·" #l2
         hilight #l1 64 "\\\\>" "    ‘" #l2
@@ -238,6 +236,8 @@ set-variable .fhook-latex.paragraph-srch "\\(^$\\|^[ \t]*%\\|^[ \t]*$\\|^[ \t]*\
     hilight .hilight.latexs 68 "\\\\markboth{" "" "}{[^}]*}" "" ""        .scheme.header
     hilight .hilight.latexs 68 "\\\\bibliography{" "<<Bibliography: " "}" ">>" "" .scheme.keyword
     hilight .hilight.latexs 64 "\\\\tableofcontents" "<<Table of Contents>>" .scheme.keyword
+    ; TODO's
+    hilight .hilight.latex 18 "%\\s+[Tt][Oo][Dd][Oo]" .scheme.operator
     ;
     ; hide some unimportant tokens completely
     hilight .hilight.latexs 64 "\\\\bibliographystyle{[^}]*}" ""          $global-scheme
