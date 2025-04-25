@@ -57,6 +57,8 @@ set-variable .fhook-latex.item-list-s5 "^[ \t]*\\\\subsubsection\\*?{\\([^}]*\\)
 set-variable .fhook-latex.item-list-r5 "SSSc \ecB\\1\ecA"
 set-variable .fhook-latex.item-list-s6 "^[ \t]*\\\\markboth\\*?{\\([^}]*\\)}"
 set-variable .fhook-latex.item-list-r6 "Mark \ecB\\1\ecA"
+set-variable .fhook-latex.item-list-s7 "^[ \t]*\% TODO: ?\\(.*\\)"
+set-variable .fhook-latex.item-list-r7 "Todo \ecB\\1\ecA"
 
 set-variable .fhook-latex.paragraph-srch "\\(^$\\|^[ \t]*%\\|^[ \t]*$\\|^[ \t]*\\\\\\(newpag\\|section\\|chap\\|subsec\\|subsubsec\\|label\\|begin\\|paragraph\\|subparagraph\\|end\\)\\)"
 
@@ -108,6 +110,8 @@ set-variable .fhook-latex.paragraph-srch "\\(^$\\|^[ \t]*%\\|^[ \t]*$\\|^[ \t]*\
         set-variable #l2 @2
         ; Comments
         hilight #l1 2 "^%"                .scheme.comment
+        ; TODO's
+        hilight #l1 18 "%\\s+[Tt][Oo][Dd][Oo]" .scheme.operator
         ;symbols
         hilight #l1 64 "\\$\\\\bullet\\$" "·" #l2
         hilight #l1 64 "\\\\>" "    ‘" #l2
