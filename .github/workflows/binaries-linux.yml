@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm]  # Specify the Ubuntu version
+        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm]  # Specify the Ubuntu version
 
     runs-on: ${{ matrix.os }}
     steps:
