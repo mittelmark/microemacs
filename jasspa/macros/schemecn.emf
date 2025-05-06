@@ -1,0 +1,115 @@
+; Generated color scheme file for JASSPA MicroEmacs
+; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+; Description: Catppuccin Mocha
+set-variable $system &band $system &bnot 0x020
+set-variable .hilight.flags 15
+; Create the colors first
+add-color &set .col0 0 200 200 200 ; men
+add-color &set .col1 1 69 71 90 ; Ansi_0
+add-color &set .col2 2 243 139 168 ; Ansi_1
+add-color &set .col3 3 166 227 161 ; Ansi_2
+add-color &set .col4 4 249 226 175 ; Ansi_3
+add-color &set .col5 5 137 180 250 ; Ansi_4
+add-color &set .col6 6 245 194 231 ; Ansi_5
+add-color &set .col7 7 148 226 213 ; Ansi_6
+add-color &set .col8 8 166 173 200 ; Ansi_7
+add-color &set .col9 9 88 91 112 ; Ansi_8
+add-color &set .col10 10 243 119 153 ; Ansi_9
+add-color &set .col11 11 137 216 139 ; Ansi_10
+add-color &set .col12 12 235 211 145 ; Ansi_11
+add-color &set .col13 13 116 168 252 ; Ansi_12
+add-color &set .col14 14 242 174 222 ; Ansi_13
+add-color &set .col15 15 107 215 202 ; Ansi_14
+add-color &set .col16 16 186 194 222 ; Ansi_15
+add-color &set .col17 17 30 30 46 ; Background
+add-color &set .col18 18 205 214 244 ; Foreground
+add-color &set .col19 19 245 224 220 ; Cursor
+add-color &set .col20 20 88 91 112 ; Selection Background
+add-color &set .col21 21 205 214 244 ; Selection Foreground
+; Set the required cursor-color
+set-variable $cursor-color .col19
+; Create the color schemes
+; Standard
+add-color-scheme $global-scheme .col18 .col17 .col16 .col1 .col0 .col9 .col16 .col9 0 8 0 8 0 8 0 8
+add-color-scheme $ml-scheme .col18 .col17 .col16 .col1 .col8 .col9 .col16 .col9 0 8 0 8 0 8 0 8
+add-color-scheme $mode-line-scheme .col18 .col2 .col10 .col1 .col0 .col2 .col8 .col10 8 0 8 0 0 8 0 8
+add-color-scheme $scroll-bar-scheme .col9 .col18 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
+add-color-scheme $trunc-scheme .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dmf .col18 .col9 .col8 .col9 .col8 .col10 .col9 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.no1 .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.no2 .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
+; OSD
+add-color-scheme $osd-scheme .col18 .col17 .col18 .col2 .col8 .col9 .col2 .col9 8 0 24 16 0 8 16 24
+add-color-scheme .scheme.osd-entry .col18 .col17 .col2 .col1 .col9 .col0 .col9 .col2 0 8 0 8 8 0 8 0
+add-color-scheme .scheme.osd-ebtt .col18 .col17 .col2 .col17 .col9 .col0 .col9 .col2 0 8 16 24 8 0 24 16
+add-color-scheme .scheme.osd-dbtt .col9 .col17 .col2 .col17 .col9 .col1 .col9 .col2 0 8 0 8 8 0 8 0
+add-color-scheme .scheme.osd-title .col2 .col18 .col10 .col16 .col0 .col2 .col16 .col10 8 0 8 0 0 8 0 8
+add-color-scheme .scheme.osd-child .col4 .col17 .col12 .col1 .col16 .col4 .col16 .col12 0 8 0 8 8 0 8 0
+add-color-scheme .scheme.osd-sbar .col9 .col18 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
+; Programming Langs
+add-color-scheme .scheme.prepro .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.function .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 17 25 17 25 17 25 17 25
+add-color-scheme .scheme.keyword .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.type .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.operator .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.variable .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.constant .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.comment .col2 .col17 .col10 .col1 .col2 .col9 .col10 .col9 2 10 2 10 2 10 2 10
+add-color-scheme .scheme.string .col6 .col17 .col14 .col1 .col6 .col9 .col14 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.quote .col6 .col17 .col14 .col1 .col6 .col9 .col14 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.error .col2 .col17 .col10 .col1 .col2 .col9 .col10 .col9 0 8 0 8 0 8 0 8
+; Formatted Text
+add-color-scheme .scheme.header .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 1 9 1 9 1 9 1 9
+add-color-scheme .scheme.link .col6 .col17 .col14 .col1 .col6 .col9 .col14 .col9 16 24 16 24 16 24 16 24
+add-color-scheme .scheme.bold .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 1 9 1 9 1 9 1 9
+add-color-scheme .scheme.italic .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 2 10 2 10 2 10 2 10
+add-color-scheme .scheme.under .col2 .col17 .col10 .col1 .col2 .col9 .col10 .col9 16 24 16 24 16 24 16 24
+add-color-scheme .scheme.bold-italic .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 3 11 3 11 3 11 3 11
+add-color-scheme .scheme.bold-under .col5 .col17 .col13 .col1 .col5 .col9 .col13 .col9 17 25 17 25 17 25 17 25
+add-color-scheme .scheme.italic-under .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 18 26 18 26 18 26 18 26
+add-color-scheme .scheme.bold-italic-under .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 19 27 19 27 19 27 19 27
+add-color-scheme .scheme.spell-error .col2 .col17 .col10 .col1 .col2 .col9 .col10 .col9 0 8 0 8 0 8 0 8
+; Directory Listings
+add-color-scheme .scheme.file .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.select .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir-select .col6 .col17 .col14 .col1 .col6 .col9 .col14 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir-slink .col2 .col17 .col10 .col1 .col2 .col9 .col10 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir-tree .col9 .col17 .col9 .col1 .col1 .col9 .col0 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir-open .col2 .col17 .col10 .col1 .col2 .col9 .col10 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir-closed .col3 .col9 .col11 .col9 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dir-uknown .col4 .col1 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+; Line Schemes
+add-color-scheme .scheme.hide .col4 .col17 .col4 .col1 .col4 .col9 .col0 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.fold-close .col3 .col9 .col11 .col9 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.fold-open .col4 .col9 .col12 .col9 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.trace .col4 .col9 .col12 .col9 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlwhite .col17 .col8 .col9 .col8 .col1 .col8 .col9 .col8 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlblack .col18 .col9 .col8 .col9 .col0 .col1 .col8 .col1 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlred .col17 .col10 .col9 .col10 .col1 .col2 .col9 .col2 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlgreen .col17 .col11 .col9 .col11 .col1 .col3 .col9 .col3 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlyellow .col17 .col12 .col9 .col12 .col1 .col4 .col9 .col4 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlblue .col17 .col13 .col9 .col13 .col1 .col5 .col9 .col5 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlmagenta .col17 .col14 .col8 .col14 .col1 .col6 .col8 .col6 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.hlcyan .col17 .col15 .col9 .col15 .col1 .col7 .col9 .col7 0 8 0 8 0 8 0 8
+; Graphical Diff
+add-color-scheme .scheme.gdfchange .col17 .col12 .col9 .col12 .col1 .col12 .col9 .col12 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.gdfadd .col17 .col15 .col9 .col15 .col1 .col15 .col9 .col15 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.gdfpad .col18 .col13 .col8 .col13 .col0 .col13 .col8 .col13 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.gdfsel .col17 .col11 .col9 .col11 .col1 .col11 .col9 .col11 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.gdfselpad .col17 .col3 .col9 .col3 .col1 .col3 .col9 .col3 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.gdfrej .col17 .col10 .col9 .col10 .col1 .col10 .col9 .col10 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.gdfrejpad .col17 .col2 .col8 .col2 .col1 .col2 .col8 .col2 0 8 0 8 0 8 0 8
+; Games
+add-color-scheme .scheme.cardback .col11 .col3 .col11 .col3 .col11 .col3 .col11 .col3 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.cardfore .col17 .col18 .col2 .col0 .col12 .col6 .col7 .col5 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.mjg1 .col7 .col17 .col8 .col1 .col9 .col7 .col9 .col3 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.mjg2 .col9 .col12 .col9 .col10 .col9 .col0 .col9 .col0 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.mi1 .col8 .col17 .col7 .col1 .col3 .col12 .col3 .col4 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.mi2 .col4 .col12 .col11 .col5 .col1 .col12 .col1 .col4 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.mi3 .col18 .col3 .col0 .col2 .col2 .col12 .col2 .col4 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.met-back .col7 .col17 .col3 .col1 .col10 .col1 .col2 .col1 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.met-fore1 .col12 .col17 .col4 .col1 .col14 .col1 .col6 .col1 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.met-fore2 .col11 .col17 .col3 .col1 .col7 .col1 .col10 .col1 0 8 0 8 0 8 0 8
+
