@@ -1,0 +1,52 @@
+; -!- emf -!-
+;
+; Copyright (C) 1997-2025 JASSPA (www.jasspa.com)
+;
+; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
+; Synopsis:    Microsoft Windows initalisation file hook.
+; Authors:     Detlef Groth
+;
+; Notes:       Typically used for configuration files either standalone or
+;              within a configuration section for instance of Markdown files
+;              as YAML header
+;
+; Usage:       .yml, .yaml - Configuration files
+;
+define-macro fhook-yaml
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "yaml"
+  buffer-init-hooks
+!emacro
+
+add-file-hook ".yml .yaml" fhook-yaml
+
+; buffer-init variables
+set-variable .fhook-yaml.setup &reg "/history/fhook/yaml" "fghiopx"
+set-variable .fhook-yaml.setup-mask "aefghikmoptux"
+;set-variable .fhook-yaml.comment "|#||#|# | #|r|"
+
+; setup yaml file collapse
+set-variable .fhook-yaml.collapse-open  "^[a-z]"
+set-variable .fhook-yaml.collapse-close "^[a-z]\\|\\'"
+set-variable .fhook-yaml.collapse-mnext "-1"
+
+!if &and &sin "h" .fhook-yaml.setup &band .hilight.flags 0x02 
+  !if &not &exist .hilight.yaml
+    set-variable .hilight.yaml &pinc .hilight.next 1
+  !endif
+  0 hilight .hilight.yaml 0                $global-scheme
+  hilight .hilight.yaml  4 "\"" "\"" "\\"   .scheme.string
+  hilight .hilight.yaml  4 "'" "'" "\\"     .scheme.string  
+  hilight .hilight.yaml 1 "\\w+:"          .scheme.keyword  
+  hilight .hilight.yaml 1 "\\d+"           .scheme.prepro
+  hilight .hilight.yaml 0 "false"          .scheme.prepro
+  hilight .hilight.yaml 0 "true"           .scheme.prepro
+
+  hilight .hilight.yaml 2     "---"       .scheme.comment 
+  hilight .hilight.yaml 2     "#"         .scheme.comment 
+  hilight .hilight.yaml 0x20  "[a-z]*:"   .scheme.keyword
+!endif
+
+buffer-init-fhook "yaml"
