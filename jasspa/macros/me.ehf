@@ -835,6 +835,9 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
+    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
+    lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
     lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
     lsfind-bfile(3)lmfind-bfile(3)le (C-x 9) Load a file as binary data  
@@ -1642,6 +1645,9 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
+    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
+    lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
     lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
     lsfind-bfile(3)lmfind-bfile(3)le (C-x 9) Load a file as binary data  
@@ -1990,6 +1996,9 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
+    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
+    lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
     lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
     lsfile-type-setup(3)lmfile-type-setup(3)le Define file type set  
@@ -2622,6 +2631,9 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
+    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
+    lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
     lsfile-type-setup(3)lmfile-type-setup(3)le Define file type set  
     lsfind(3)lmfind(3)le Execute built-in find command  
@@ -3613,6 +3625,9 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
+    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
+    lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
     lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
     lsfile-type-setup(3)lmfile-type-setup(3)le Define file type set  
@@ -5104,14 +5119,27 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
-    - [250326]
-      - improved support for Go coding with macros go-exec, go-format and go-lint
-      - fixing tab issue in Go templates and indentation
-    - [250324]
-      - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint
-    - [250314]
+    - [250517] 
+      - adding documentation for file-exec, file-format and file-lint macros
+    - [250506] 
+      - support for Yaml files
+    - [250504] 
+      - support for Catppuccin themeses
+    - [250425]
+      - todo in item-list and highlighting for LaTex files
+    - [250414]  
+      - bumping dev version to v09.12.25b2  
+      - adding generic macros file-exec, file-format and file-lint   
+    - [250411]  
+      - Release v09.12.25b1  
+    - [250326]  
+      - improved support for Go coding with macros go-exec, go-format and go-lint  
+      - fixing tab issue in Go templates and indentation  
+    - [250324]  
+      - improved support for Tcl coding with macros tcl-exec, tcl-format and tcl-lint  
+    - [250314]  
       - initial support for Go programming language   
-      - Python abbreviations now with Google docstrings
+      - Python abbreviations now with Google docstrings  
     - [250213]
       - improved Markdown snippets
     - [250130]
@@ -43288,6 +43316,92 @@ $a
 cESEE ALSO cA
 
     lsgo(9)lmgo(9)le.
+! 3 file-exec
+! 3 file-format
+! 3 file-lint
+cEcENAME cEcA
+
+|file-exec
+    file-exec - execute the current script using a interpreter or after compilation  
+|file-format
+    file-format - format the current file using a language dependent formatter  
+|file-lint
+    file-lint - check the current file for possible problems using a language dependent formatter
+$a
+    
+cESYNOPSIS cA
+
+    cCncA cDfile-execcA  
+    cDfile-formatcA  
+    cDfile-lintcA    
+
+     
+cEDESCRIPTION cA
+     
+    The three commands described below require the definition of global variables 
+    which should declare the command lines to be used for executing, linting or 
+    formatting the current file. The variable names are of type:
+    
+      _fhook-FHOOK-(exec|format|lint)_ 
+    
+    where cCFHOOKcA is the file hook name of the file.  The variable declaration can be 
+    added to the users configuration file, cCUSERNAME.emfcA or into the cCmyFHOOK.emfcA
+    file within the users configuration folder. See below for a few examples.
+    
+    The cDfile-execcA  macro executes or compiles the currently edited file using 
+    a global variable which needs to be defined for the current file hook. See below
+    for a few examples for defining these global variables. If a numeric argument
+    is given the user is asked for possible command line arguments. After executing 
+    this macro a popup-window command should appear showing the output or possible 
+    errors of the code.
+
+    The cDfile-formatcA macro formats the currently edited  file using the
+    a language specific formatter which needs to be defined using an user defined
+    global file hook dependent variable. See below for a few examples.
+    
+    The cDfile-lintcA   macro checks the currently edited file using an user an user
+    defined global variable for the current file hook.
+
+    After executing the macro a popup-window (cG*lintr*cA) displays the warning
+    messages of the linter package, the user can click on the hilighted lines
+    showing  warnings and jump directly to the problematic line. This requires that
+    the linter defined in the variable supports the cCFILENAME:LINE:CHAR:cA syntax.
+    The same can jumping to the error be achieved by pressing the ENTER key on 
+    the hilighted line.
+    
+    These three macros can be seen as simplified  versions for the Go, Python, R
+    and Tcl macros like  cDgo-lintcA,  cDgo-formatcA,  cDgo-execcA.  They can be
+    used as well to use  alternative  tools for  formatting  and linting as well
+    allow easy support of other programming languages.
+
+cEEXAMPLE cA
+         
+sB
+         ; user-defined variables in the users emf or in the mypython.emf 
+         set-variable %fhook-python-format "ruff format %s" ; using the ruff formatter
+         set-variable %fhook-python-lint   "ruff check %s"  ; using the ruff linter
+         set-variable %fhook-python-exec   "python3 %s"
+         ; for the Go programming language it could be as well within username.emf or mygo.emf
+         set-variable %fhook-go-format     "go fmt %s"
+         set-variable %fhook-go-lint       "go vet %s"
+         set-variable %fhook-go-exec       "go run %s"
+         ; working with C++ code using cppcheck, astyle and g++
+         set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %s"
+         set-variable %fhook-cpp-exec "g++ %s 2>&1; ./a.out"
+         set-variable %fhook-cpp-format "astyle %s"
+         ; command execution
+         file-exec          ; executes the current file using the fhook-FHOOKNAME-exec var
+         0 file-exec        ; ask for command line arguments and calls then executes
+         file-format        ; formats and reloads the currently edited file uisng the formatter
+         file-lint          ; gives code advise for the currently edited file
+sA        
+cENOTES cA
+
+    The macros cDfile-execcA,  cDfile-formatcA  and cDfile-lintcA are implemented in the file cGfiltools.emfcA.
+    
+cESEE ALSO cA
+
+    lsfile-tool-setup(3)lmfile-tool-setup(3)le
 ! 3 user-setup
 cEcENAME cEcA
 
