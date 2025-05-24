@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250524.1352>
+;  Last Modified : <250524.1410>
 ;
 ;  Description
 ;   Go Language Template
@@ -146,4 +146,3 @@ set-variable .fhook-dart.item-list-r3 "Class \ecB\\1\ecA"
 !endif
 
 buffer-init-fhook "dart"
-add-file-hook ".dart .drt"                                           fhook-dart
