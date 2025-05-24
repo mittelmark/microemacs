@@ -1,0 +1,149 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth
+;  Created       : Fri Mar 6th, 2025
+;  Last Modified : <250524.1352>
+;
+;  Description
+;   Go Language Template
+;   https://go.dev/
+;
+;  Notes
+;
+;  History: 2025-03-07 first version
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+define-macro fhook-dart
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "dart"
+    buffer-init-hooks
+!emacro
+
+set-variable .fhook-dart.setup &reg "/history/fhook/dart" "bdfghinopTx"
+set-variable .fhook-dart.setup-mask "abdefghikmnoptux"
+set-variable .fhook-dart.comment "|/*| */|*| * | * |fr|"
+
+set-variable .fhook-dart.collapse-open  "^\\w.+{"
+set-variable .fhook-dart.collapse-close "^}"
+set-variable .fhook-dart.collapse-mclose "1"
+set-variable .fhook-dart.collapse-mnext "-1"
+
+set-variable .fhook-dart.item-list-s1 "^\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-dart.item-list-r1 "Func \ecB\\2\ecA"
+set-variable .fhook-dart.item-list-s2 "^    \\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-dart.item-list-r2 "  Func \ecB\\2\ecA"
+set-variable .fhook-dart.item-list-s3 "^class +\\(\\w+\\)"
+set-variable .fhook-dart.item-list-r3 "Class \ecB\\1\ecA"
+
+!if &not &exist .hilight.dart
+    set-variable .hilight.dart  &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-dart.setup &band .hilight.flags 0x02
+  0 hilight .hilight.dart 0x00 $global-scheme
+  ; Comments
+  hilight .hilight.dart 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.dart  2 "//"           .scheme.comment
+  ; Comment TODO's
+  hilight .hilight.dart 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+  hilight .hilight.dart 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  
+  ; Strings
+  hilight .hilight.dart  4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.dart  4 "\'" "\'" "\\"  .scheme.string
+  hilight .hilight.dart  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote
+  ; go string literal /.foo[0-9]\s*bar/ hiligh gets confused with simple division.
+  ;hilight .hilight.dart  4 "/" "/" "" .scheme.quote
+  
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.dart 1    "[A-Z_]+"        .scheme.constant
+  ; package keywords
+  ;hilight .hilight.dart 0x12 "^\\s*package"   .scheme.prepro
+  hilight .hilight.dart 1    "import"         .scheme.prepro
+  hilight .hilight.dart 1    "export"         .scheme.prepro  
+  hilight .hilight.dart 1    "external"       .scheme.prepro    
+  hilight .hilight.dart 1    "library"        .scheme.prepro    
+  ; keywords
+  hilight .hilight.dart 1    "abstract"       .scheme.keyword  
+  hilight .hilight.dart 1    "as"             .scheme.keyword    
+  hilight .hilight.dart 1    "assert"         .scheme.keyword      
+  hilight .hilight.dart 1    "async"          .scheme.keyword        
+  hilight .hilight.dart 1    "await"          .scheme.keyword
+  hilight .hilight.dart 1    "base"           .scheme.keyword  
+  hilight .hilight.dart 1    "break"          .scheme.keyword
+  hilight .hilight.dart 1    "case"           .scheme.keyword  
+  hilight .hilight.dart 1    "catch"          .scheme.keyword    
+  hilight .hilight.dart 1    "class"          .scheme.keyword      
+  hilight .hilight.dart 1    "continue"       .scheme.keyword          
+  hilight .hilight.dart 1    "covariant"      .scheme.keyword            
+  hilight .hilight.dart 1    "default"        .scheme.keyword              
+  hilight .hilight.dart 1    "deferred"       .scheme.keyword                
+  hilight .hilight.dart 1    "do"             .scheme.keyword                  
+  hilight .hilight.dart 1    "else"           .scheme.keyword                      
+  hilight .hilight.dart 1    "enum"           .scheme.keyword                      
+  hilight .hilight.dart 1    "extends"        .scheme.keyword                        
+  hilight .hilight.dart 1    "extension"      .scheme.keyword                          
+  hilight .hilight.dart 1    "factory"        .scheme.keyword                            
+  hilight .hilight.dart 1    "for"            .scheme.keyword                              
+  hilight .hilight.dart 1    "Function"       .scheme.keyword                                
+  hilight .hilight.dart 1    "get"            .scheme.keyword                                  
+  hilight .hilight.dart 1    "hide"           .scheme.keyword                                    
+  hilight .hilight.dart 1    "if"             .scheme.keyword
+  hilight .hilight.dart 1    "implements"     .scheme.keyword  
+  hilight .hilight.dart 1    "in"             .scheme.keyword      
+  hilight .hilight.dart 1    "interface"      .scheme.keyword    
+  hilight .hilight.dart 1    "is"             .scheme.keyword      
+  hilight .hilight.dart 1    "late"           .scheme.keyword        
+  hilight .hilight.dart 1    "mixin"          .scheme.keyword          
+  hilight .hilight.dart 1    "new"            .scheme.keyword          
+  hilight .hilight.dart 1    "of"             .scheme.keyword            
+  hilight .hilight.dart 1    "on"             .scheme.keyword              
+  hilight .hilight.dart 1    "operator"       .scheme.keyword
+  hilight .hilight.dart 1    "part"           .scheme.keyword  
+  hilight .hilight.dart 1    "required"       .scheme.keyword    
+  hilight .hilight.dart 1    "rethrow"        .scheme.keyword      
+  hilight .hilight.dart 1    "return"         .scheme.keyword    
+  hilight .hilight.dart 1    "sealed"         .scheme.keyword    
+  hilight .hilight.dart 1    "set"            .scheme.keyword      
+  hilight .hilight.dart 1    "show"           .scheme.keyword      
+  hilight .hilight.dart 1    "static"         .scheme.keyword      
+  hilight .hilight.dart 1    "super"          .scheme.keyword      
+  hilight .hilight.dart 1    "switch"         .scheme.keyword        
+  hilight .hilight.dart 1    "sync"           .scheme.keyword        
+  hilight .hilight.dart 1    "this"           .scheme.keyword        
+  hilight .hilight.dart 1    "throw"          .scheme.keyword        
+  hilight .hilight.dart 1    "try"            .scheme.keyword          
+  hilight .hilight.dart 1    "type"           .scheme.keyword            
+  hilight .hilight.dart 1    "typedef"        .scheme.keyword              
+  hilight .hilight.dart 1    "when"           .scheme.keyword                
+  hilight .hilight.dart 1    "with"           .scheme.keyword              
+  hilight .hilight.dart 1    "while"          .scheme.keyword              
+  hilight .hilight.dart 1    "yield"          .scheme.keyword                
+  hilight .hilight.dart 1    "bool"           .scheme.type
+  hilight .hilight.dart 1    "double"         .scheme.type                       
+  hilight .hilight.dart 1    "dynamic"        .scheme.type                     
+  hilight .hilight.dart 1    "false"          .scheme.constant
+  hilight .hilight.dart 1    "int"            .scheme.type  
+  hilight .hilight.dart 1    "null"           .scheme.type  
+  hilight .hilight.dart 1    "String"         .scheme.type
+  hilight .hilight.dart 1    "true"           .scheme.constant
+  hilight .hilight.dart 1    "var"            .scheme.type
+  hilight .hilight.dart 1    "void"           .scheme.type  
+  hilight .hilight.dart 1    "const"          .scheme.operator
+  hilight .hilight.dart 1    "final"          .scheme.operator
+
+!endif
+
+!if &sin "d" .fhook-dart.setup
+  0 indent  .hilight.dart 0 10
+  indent .hilight.dart n "{"  t
+  indent .hilight.dart o "}" -t
+  indent .hilight.dart e "\"" "\"" "\\"
+  indent .hilight.dart b "\\[" "]"
+  indent .hilight.dart b "(" ")"
+!endif
+
+buffer-init-fhook "dart"
+add-file-hook ".dart .drt"                                           fhook-dart

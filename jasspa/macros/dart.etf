@@ -1,0 +1,13 @@
+#!/usr/bin/env dart
+// -!- dart -!- 
+// Copyright (c) $YEAR$ $COMPANY$.
+//
+// LICENSE:
+//
+// Synopsis:    $CURSOR$
+// Authors:     $USER_NAME$
+
+
+void main (List<String> args) {
+    print("Hello");
+}
