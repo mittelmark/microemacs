@@ -35,6 +35,8 @@ set-variable .fhook-ini.collapse-mnext "-1"
         set-variable .hilight.ini &pinc .hilight.next 1
     !endif
     0 hilight .hilight.ini 0                   .scheme.keyword
+    hilight .hilight.ini  4 "\"" "\"" "\\"     .scheme.string
+    hilight .hilight.ini  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote    
     hilight .hilight.ini 0     "/"             $global-scheme
     hilight .hilight.ini 2     "="             $global-scheme
     hilight .hilight.ini 0     ":="            $global-scheme
