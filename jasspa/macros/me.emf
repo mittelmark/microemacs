@@ -310,6 +310,7 @@ add-file-hook ".cfm .cfml .cfc"                               fhook-cfm
 add-file-hook ".iss"                                          fhook-iss
 add-file-hook ".go"                                           fhook-go
 add-file-hook ".dart .drt"                                    fhook-dart
+add-file-hook ".c2 .c3"                                       fhook-c3
 add-file-hook ".md .rmd .Rmd .tmd .Tmd"                       fhook-md
 add-file-hook ".yml .yaml"                                    fhook-yaml
 ; Add magic hooks

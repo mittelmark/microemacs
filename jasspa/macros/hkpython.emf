@@ -123,5 +123,12 @@ set-variable .fhook-python.item-list-r2 "Class \ecB\\1\ecA"
     hilight   .hilight.python 1 "\\.reverse"        .scheme.operator
     hilight   .hilight.python 1 "\\.sort"           .scheme.operator
 !endif
+set-variable #l0 &which "ruff"
+!if &not &seq #l0 "ERROR"
+    set-variable %fhook-python-format "ruff format %f"
+    set-variable %fhook-python-lint   "ruff check %f"
+
+!endif
+set-variable %fhook-python-exec   "python3 %f"
 
 buffer-init-fhook "python"

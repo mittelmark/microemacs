@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250414.0923>
+;  Last Modified : <250524.2317>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -36,7 +36,11 @@ define-macro file-lint
       !abort
   !endif
   &band @# 1 save-some-buffers @mna
-  2 pipe-shell-command &spr #l0 $buffer-fname "*file-lint*"
+  set-variable #l2 &xrep $buffer-bname "\\.[A-Za-z0-9]+$" "" ; basename ohne dir path
+  set-variable #l1 &xrep #l0 "%b" #l2
+  set-variable #l1 &xrep #l1 "%f" $buffer-fname
+  set-variable #l1 &spr #l1 $buffer-fname 
+  2 pipe-shell-command #l1 "*file-lint*"
   set-variable .buffer $buffer-bname
   next-window-find-buffer "*file-lint*"
   buffer-init "file-lint"
@@ -46,11 +50,14 @@ define-macro file-lint
 
 0 define-macro file-lint-find-line
   set-variable #l0 @wl
-  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\):.+"
+  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+"
     next-window-find-buffer .file-lint.buffer
     goto-line @s2
     beginning-of-line
-    @s3 forward-char
+    set-variable #l0 @s3 
+    ;1000 ml-write &decr #l0 1
+    set-variable #l0 &decr #l0 1
+    #l0 forward-char
   !else
     ml-write "Not an error line!"
   !endif
@@ -63,7 +70,9 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
 !if &and &sin "h" .fhook-file-lint.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.file-lint  set-variable .hilight.file-lint &pinc  .hilight.next 1
   0 hilight .hilight.file-lint 2 200                                     $global-scheme
-  hilight .hilight.file-lint   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link  
+  hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]+"      .scheme.link  
+  hilight .hilight.file-lint   0  "[/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
+  ;[/\\.A-Za-z0-9]+
 !endif
 
 add-file-hook "*file-lint*" fhook-file-lint
@@ -77,7 +86,11 @@ define-macro file-format
       !abort
   !endif
   &band @# 1 save-some-buffers @mna  
-  2 pipe-shell-command &spr #l0 $buffer-fname "*command*"
+  set-variable #l2 &xrep $buffer-bname "\\.[A-Za-z0-9]+$" "" ; basename ohne dir path
+  set-variable #l1 &xrep #l0 "%b" #l2
+  set-variable #l1 &xrep #l1 "%f" $buffer-fname
+  set-variable #l1 &spr #l1 $buffer-fname 
+  2 pipe-shell-command #l1 "*command*"
   0 reread-file
 !emacro
 
@@ -95,7 +108,10 @@ define-macro file-exec
   ; command line arguments
   !iif &not &exi :file-exec-args  set-variable :file-exec-args ""
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
-  set-variable #l1 &spr #l0 $buffer-fname 
+  set-variable #l2 &xrep $buffer-bname "\\.[A-Za-z0-9]+$" "" ; basename ohne dir path
+  set-variable #l1 &xrep #l0 "%b" #l2
+  set-variable #l1 &xrep #l1 "%f" $buffer-fname
+  set-variable #l1 &spr #l1 $buffer-fname 
   2 pipe-shell-command &spr "%s %s" #l1 :file-exec-args "*file-exec*"
   set-variable .buffer $buffer-bname
   next-window-find-buffer "*file-exec*"
@@ -106,13 +122,14 @@ define-macro file-exec
 
 0 define-macro file-exec-find-line
     set-variable #l0 @wl
-  !if &xse #l0 ".+:\\([0-9]+\\):\\([0-9]+\\).*"
-      next-window-find-buffer .file-exec.buffer
-      goto-line @s1
-      @s2 forward-char
-  !else
-      ml-write "Not an error line!"
-  !endif
+    1000 ml-write #l0
+    !if &xse #l0 ".+:\\([0-9]+\\):\\([0-9]+\\).*"
+        next-window-find-buffer .file-exec.buffer
+        goto-line @s1
+        @s2 forward-char
+    !else
+        ml-write "Not an error line!"
+    !endif
 !emacro
 
 set-variable .fhook-file-exec.name "File Exec"
