@@ -5043,7 +5043,12 @@
 
 
 ## Development History 
-
+  
+  - [250526]
+    - placeholder %f, %b for file-lint, file-format and file-exec
+    - support for C99 bool
+  - [250525]
+    - adding support for Dart, C3 and Toml files
   - [250517] 
     - adding documentation for file-exec, file-format and file-lint macros
   - [250506] 

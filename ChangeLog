@@ -7,8 +7,28 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <250415.0711>
+>  Last Modified : <250526.1211>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+ [250526]
+    - placeholder %f, %b for file-lint, file-format and file-exec
+    - support for C99 bool types, true and false in highlighting
+    
+ [250525]
+    - adding support for Dart, C3 and Toml files
+    
+ [250517]
+    - documenting file-lint, file-format and file-exec
+
+ [250504]
+    - Support for four Catppuccin themes
+
+ [250428]
+    - Support for Ubuntu-ARM builds
+
+ [250425]
+    - TODO highlighting and outline in LaTeX files 
+
  [250414]
     - bumping dev version to v09.12.25b2
     - adding generic macros file-exec, file-format and file-lint
