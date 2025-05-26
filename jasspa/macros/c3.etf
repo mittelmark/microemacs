@@ -1,0 +1,20 @@
+/* -*- C3 -*- ***************************************************************
+ *
+ *  Copyright (c) $YEAR$, $COMPANY_NAME$
+ *  License       :
+ *  Date          : $Date$
+ *  Author        : $Author$
+ *  Created By    : $USER_NAME$
+ *  Created       : $ASCII_TIME$
+ *  Last Modified : <250526.1224>
+ *
+ *  Description	  :
+ *
+ ****************************************************************************/
+module hello;
+import std::io;
+
+fn int main () {
+  io::printfn("Hello World!");
+  return 0;
+}
