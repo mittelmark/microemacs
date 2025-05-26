@@ -203,6 +203,7 @@ define-macro item-list-create
     ; to simple click the function
     buffer-bind-create "bio" "return" "" item-list-find
     buffer-bind-create "bio" "delete" "" item-list-close
+    buffer-bind-create "bio" "C-return" "3" item-list-order    
     buffer-bind-create "bio" "1" "1" item-list-order
     buffer-bind-create "bio" "2" "2" item-list-order
     buffer-bind-create "bio" "3" "3" item-list-order
