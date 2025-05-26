@@ -145,6 +145,7 @@ set-variable .fhook-c.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.c    1 "while"        .scheme.keyword
     ; tokens
     hilight .hilight.c    1 "auto"         .scheme.type
+    hilight .hilight.c    1 "bool"         .scheme.type    
     hilight .hilight.c    1 "char"         .scheme.type
     hilight .hilight.c    1 "const"        .scheme.type
     hilight .hilight.c    1 "double"       .scheme.type
@@ -183,6 +184,9 @@ set-variable .fhook-c.item-list-r6 "Clss \ecB\\1\ecA"
         hilight .hilight.c 1 "-\\d+\\.\\d+"   .scheme.constant
         hilight .hilight.c 1 "\\d+\\.\\d+f"   .scheme.constant
         hilight .hilight.c 1 "-\\d+\\.\\d+f"  .scheme.constant
+        hilight .hilight.c 1 "false"          .scheme.constant        
+        hilight .hilight.c 1 "true"           .scheme.constant        
+        
     !endif
 
     ; JASSPA MicroEmacs specific tokens for source editing. This is a special
