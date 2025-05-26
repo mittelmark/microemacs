@@ -43933,9 +43933,17 @@ $a
   
     _fhook-FHOOK-(exec|format|lint)_ 
   
-  where _FHOOK_ is the file hook name of the file.  The variable declaration can be 
-  added to the users configuration file, _USERNAME.emf_ or into the _myFHOOK.emf_
-  file within the users configuration folder. See below for a few examples.
+  where _FHOOK_ is the file hook name of the file. The variable declaration
+  can be added to the users configuration file, _USERNAME.emf_ or into the
+  _myFHOOK.emf_ file within the users configuration folder. These variables
+  should point to the tool or compiler or interpreter and take place holders
+  for the filename or the file buffer basename like this:
+
+  - "%f" - the filename of the currently edited file  
+  - "%b" - the basename of the current file buffer name  
+  - "%s" - will be replaced with the filename 
+  
+See below for a few examples.
   
   The __file-exec__  macro executes or compiles the currently edited file using 
   a global variable which needs to be defined for the current file hook. See below
