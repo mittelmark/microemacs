@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250529.0759>
+;  Last Modified : <250530.0852>
 ;
 ;  Description
 ;   Go Language Template
@@ -139,5 +139,5 @@ set-variable #l0 &which "astyle"
     set-variable %fhook-c3-format "astyle --indent=spaces=2 %f"
 !endif
 set-variable %fhook-c3-lint   "c3c compile %f -o %b"
-set-variable %fhook-c3-exec   "c3c compile %f -o %b && ./%b"
+set-variable %fhook-c3-exec   "c3c compile-run %f --"
 buffer-init-fhook "c3"

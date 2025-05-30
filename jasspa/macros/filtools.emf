@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250529.0841>
+;  Last Modified : <250530.0850>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -27,6 +27,9 @@
 ;  Copyright (c) 2025 Detlef Groth.
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; not sure how to safely load the macros from find.emf for instance
+
 0 define-macro return-get-next-line
     !force backward-line
     get-next-line
@@ -40,8 +43,9 @@ define-macro fhook-file-lint
   buffer-init-hooks
 !emacro
 
-add-next-line "*file-exec*" "%f:%l:\\d+: "
-add-next-line "*file-lint*" "%f:%l:\\d+: "
+; minmal defaulzs
+add-next-line "*file-exec*" "%f:%l:\\d+"
+add-next-line "*file-lint*" "%f:%l:\\d+"
 
 define-macro file-lint
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-lint"
@@ -101,6 +105,8 @@ define-macro file-exec
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
   buffer-init "file-exec"
+  ; clicking on errors does not jump to the file but openes a new 
+  ; file.ext<1> buffer
   set-variable :mouse-word-select "mouse-get-next-line"
   buffer-bind-key return-get-next-line "return"
 !emacro
@@ -112,7 +118,7 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 !if &and &sin "h" .fhook-file-exec.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.file-exec  set-variable .hilight.file-exec &pinc  .hilight.next 1
   0 hilight .hilight.file-exec 2 200                                     $global-scheme
-  hilight .hilight.file-exec   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+:"      .scheme.link    
+  hilight .hilight.file-exec   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
 !endif
 
 add-file-hook "*file-exec*" fhook-file-exec
