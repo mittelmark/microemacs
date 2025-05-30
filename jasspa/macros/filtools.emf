@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250530.1015>
+;  Last Modified : <250530.1048>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -100,6 +100,7 @@ define-macro fhook-file-exec
 
 define-macro file-exec
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-exec"
+  set-variable #l1 $buffer-fhook
   !if &seq #l0 "ERROR"
       -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-exec declared!"
       !abort
@@ -111,6 +112,9 @@ define-macro file-exec
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
   replace-filename-parenthesis
+  !if &seq #l1 "fhook-python"
+      replace-filename-python
+  !endif
   buffer-init "file-exec"
   ; clicking on errors does not jump to the file but openes a new 
   ; file.ext<1> buffer
@@ -135,6 +139,15 @@ add-file-hook "*file-exec*" fhook-file-exec
   -1 buffer-mode "view"
   beginning-of-buffer
   replace-string "^(\\(.+[0-9]\\))" "\\1"
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
+
+0 define-macro replace-filename-python
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string "File \"\\(.+\\)\", line \\(.+\\)," "\\1:\\2:0"
   beginning-of-buffer
   -1 buffer-mode "edit"
   1 buffer-mode "view"  
