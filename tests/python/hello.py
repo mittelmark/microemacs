@@ -12,7 +12,7 @@ __version__ = "0.1"
 import sys, os
 # import os
 # import re
-
+#import fileline
 
 def help(argv):
     print(__doc__.format(argv[1]))
@@ -29,7 +29,8 @@ def main(argv):
 
     elif "-h" in argv or "--help" in argv:
         help(argv)
-
+    else:
+        print(argv[2])
 
 if __name__ == "__main__":
     main(sys.argv)
