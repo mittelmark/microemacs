@@ -711,7 +711,8 @@ dirDrawDirectory(meBuffer *bp, DIRNODE *dnode, int iLen, meUByte *iStr, meUByte 
         
         /* Add the filename */
         flen = meStrlen(dnode->dname) ;
-        meStrncpy(buf+len,dnode->dname,flen) ;
+        //meStrncpy(buf+len,dnode->dname,flen) ;
+        memcpy(buf+len,dnode->dname,flen);
         len += flen ;
         if(flen > 1)
             len-- ;

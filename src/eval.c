@@ -2711,7 +2711,8 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             ii = meStrlen(arg3) ;
             if(ii+index < meBUF_SIZE_MAX)
             {
-                meStrncpy(evalResult+index,arg3,ii) ;
+                //meStrncpy(evalResult+index,arg3,ii) ;
+                memcpy(evalResult+index,arg3,ii);
                 index += ii ;
                 if(fnum == UFLINS)
                     s2 = s1-1 ;
