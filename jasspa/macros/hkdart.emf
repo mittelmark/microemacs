@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250524.1438>
+;  Last Modified : <250529.0731>
 ;
 ;  Description
 ;   Go Language Template
@@ -146,7 +146,7 @@ set-variable .fhook-dart.item-list-r3 "Class \ecB\\1\ecA"
   indent .hilight.dart b "(" ")"
 !endif
 
-set-variable %fhook-dart-lint   "dart analyze %s"
-set-variable %fhook-dart-format "dart format %s"
-set-variable %fhook-dart-exec   "dart run %s"
+set-variable %fhook-dart-lint   "dart analyze %f"
+set-variable %fhook-dart-format "dart format %f"
+set-variable %fhook-dart-exec   "dart run %f"
 buffer-init-fhook "dart"

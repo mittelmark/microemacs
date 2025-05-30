@@ -325,8 +325,9 @@ gft_directory:
             size_t ii, jj ;
             int maxi=10 ;
 
-            ii = meStrlen(file) ;
-            meStrncpy(lbuf,file,ii) ;
+            ii = meStrlen(file);
+            //meStrncpy(lbuf,file,ii) ;
+            memcpy(lbuf,file,ii);
             do {
                 if(file[ii-1] == DIR_CHAR)
                     ii-- ;

@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250524.2317>
+;  Last Modified : <250529.0841>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -14,21 +14,35 @@
 ;                ; variables for formatting, linting and executing the current buffer
 ;                ; for instance for Python files you could add the following three lines
 ;                ; to your mypython.emf or to your username.emf file
-;                set-variable %fhook-python-format "ruff format %s" ; using the ruff formatter
-;                set-variable %fhook-python-lint   "ruff check %s"    ; using the ruff linter
-;                set-variable %fhook-python-exec   "python3 %s"
+;                set-variable %fhook-python-format "ruff format %f" ; using the ruff formatter
+;                set-variable %fhook-python-lint   "ruff check %f"    ; using the ruff linter
+;                set-variable %fhook-python-exec   "python3 %f"
 ;                ; for the Go programming language it could be within mygo.emf
-;                set-variable %fhook-go-format     "go fmt %s"
-;                set-variable %fhook-go-lint       "go vet %s"
-;                set-variable %fhook-go-exec       "go run %s"
+;                set-variable %fhook-go-format     "go fmt %f"
+;                set-variable %fhook-go-lint       "go vet %f"
+;                set-variable %fhook-go-exec       "go run %f"
 ;  History       : 2025-04-14 - first version
+;                  2025-05-29 - rewrite using file-tools-run anf add-next-line macros
 ;
 ;  Copyright (c) 2025 Detlef Groth.
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0 define-macro return-get-next-line
+    !force backward-line
+    get-next-line
+!emacro
+0 define-macro mouse-get-next-line
+    set-cursor-to-mouse
+    !force backward-line
+    get-next-line
+!emacro
 define-macro fhook-file-lint
   buffer-init-hooks
 !emacro
+
+add-next-line "*file-exec*" "%f:%l:\\d+: "
+add-next-line "*file-lint*" "%f:%l:\\d+: "
+
 define-macro file-lint
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-lint"
   !if &seq #l0 "ERROR"
@@ -36,32 +50,11 @@ define-macro file-lint
       !abort
   !endif
   &band @# 1 save-some-buffers @mna
-  set-variable #l2 &xrep $buffer-bname "\\.[A-Za-z0-9]+$" "" ; basename ohne dir path
-  set-variable #l1 &xrep #l0 "%b" #l2
-  set-variable #l1 &xrep #l1 "%f" $buffer-fname
-  set-variable #l1 &spr #l1 $buffer-fname 
-  2 pipe-shell-command #l1 "*file-lint*"
-  set-variable .buffer $buffer-bname
-  next-window-find-buffer "*file-lint*"
+  0x4088 file-tool-run #l0 $buffer-fname "*file-lint*"
   buffer-init "file-lint"
-  set-variable :mouse-word-select file-lint-find-line
-  buffer-bind-create "bio" "return" "0" file-lint-find-line
-!emacro
-
-0 define-macro file-lint-find-line
-  set-variable #l0 @wl
-  !if &xse #l0 "\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+"
-    next-window-find-buffer .file-lint.buffer
-    goto-line @s2
-    beginning-of-line
-    set-variable #l0 @s3 
-    ;1000 ml-write &decr #l0 1
-    set-variable #l0 &decr #l0 1
-    #l0 forward-char
-  !else
-    ml-write "Not an error line!"
-  !endif
-!emacro
+  set-variable :mouse-word-select "mouse-get-next-line"
+  buffer-bind-key return-get-next-line "return"
+!emacro  
 
 set-variable .fhook-file-lint.name "File Lint"
 set-variable .fhook-file-lint.setup &reg "/history/fhook/file-lint" "acfhmw"
@@ -72,7 +65,6 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
   0 hilight .hilight.file-lint 2 200                                     $global-scheme
   hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]+"      .scheme.link  
   hilight .hilight.file-lint   0  "[/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
-  ;[/\\.A-Za-z0-9]+
 !endif
 
 add-file-hook "*file-lint*" fhook-file-lint
@@ -81,16 +73,14 @@ define-macro file-format
   ; on Windows the syntax for format-opts might be something like
   ; C:/Program Files/GO/../go.exe fmt %s
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-format"
+  set-variable #l1 $buffer-bname
   !if &seq #l0 "ERROR"
-      -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-format declared!"
-      !abort
+    -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-format declared!"
+    !abort
   !endif
   &band @# 1 save-some-buffers @mna  
-  set-variable #l2 &xrep $buffer-bname "\\.[A-Za-z0-9]+$" "" ; basename ohne dir path
-  set-variable #l1 &xrep #l0 "%b" #l2
-  set-variable #l1 &xrep #l1 "%f" $buffer-fname
-  set-variable #l1 &spr #l1 $buffer-fname 
-  2 pipe-shell-command #l1 "*command*"
+  0x4188 file-tool-run #l0 $buffer-fname "*file-format*"
+  ;next-window-find-buffer #l1
   0 reread-file
 !emacro
 
@@ -108,28 +98,11 @@ define-macro file-exec
   ; command line arguments
   !iif &not &exi :file-exec-args  set-variable :file-exec-args ""
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
-  set-variable #l2 &xrep $buffer-bname "\\.[A-Za-z0-9]+$" "" ; basename ohne dir path
-  set-variable #l1 &xrep #l0 "%b" #l2
-  set-variable #l1 &xrep #l1 "%f" $buffer-fname
-  set-variable #l1 &spr #l1 $buffer-fname 
-  2 pipe-shell-command &spr "%s %s" #l1 :file-exec-args "*file-exec*"
-  set-variable .buffer $buffer-bname
-  next-window-find-buffer "*file-exec*"
+  set-variable #l0 &spr "%s %s" #l0 :file-exec-args
+  0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
   buffer-init "file-exec"
-  set-variable :mouse-word-select file-exec-find-line
-  buffer-bind-create "bio" "return" "0" file-exec-find-line
-!emacro
-
-0 define-macro file-exec-find-line
-    set-variable #l0 @wl
-    1000 ml-write #l0
-    !if &xse #l0 ".+:\\([0-9]+\\):\\([0-9]+\\).*"
-        next-window-find-buffer .file-exec.buffer
-        goto-line @s1
-        @s2 forward-char
-    !else
-        ml-write "Not an error line!"
-    !endif
+  set-variable :mouse-word-select "mouse-get-next-line"
+  buffer-bind-key return-get-next-line "return"
 !emacro
 
 set-variable .fhook-file-exec.name "File Exec"

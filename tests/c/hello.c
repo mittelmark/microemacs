@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 int main (char * argv[]) {
-    bool x = true ;
+    ool x = true ;
     printf("Hello World!\n");
     printf("%d\n",x);
     return(0);

@@ -9,9 +9,9 @@ Arguments:
 
 __author__ = "first last"
 __version__ = "0.1"
-import sys
-#import os
-#import re
+import sys, os
+# import os
+# import re
 
 
 def help(argv):
@@ -20,6 +20,7 @@ def help(argv):
 
 def usage(argv):
     print(f"Usage: {argv[0]} args")
+    print("Hi")
 
 
 def main(argv):

@@ -1101,6 +1101,8 @@ m9typ047.html	jst(9)
 m9typ048.html	Markdown(9)
 m9typ048.html	md(9)
 m9typ049.html	r(9)
-m9typ050.html	go9)
+m9typ050.html	go(9)
+m9typ051.html	dart(9)
+m9typ052.html	c3(9)
 home.html	home
 home.html	MicroEmacs

@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250524.2101>
+;  Last Modified : <250529.0759>
 ;
 ;  Description
 ;   Go Language Template
@@ -136,7 +136,6 @@ set-variable .fhook-c3.item-list-r1 "Func \ecB\\2\ecA"
 
 set-variable #l0 &which "astyle"
 !if &not &seq #l0 "ERROR"
-    1000 ml-write #l0
     set-variable %fhook-c3-format "astyle --indent=spaces=2 %f"
 !endif
 set-variable %fhook-c3-lint   "c3c compile %f -o %b"
