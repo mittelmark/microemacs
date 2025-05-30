@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250530.0850>
+;  Last Modified : <250530.1015>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -21,10 +21,14 @@
 ;                set-variable %fhook-go-format     "go fmt %f"
 ;                set-variable %fhook-go-lint       "go vet %f"
 ;                set-variable %fhook-go-exec       "go run %f"
+;                ; for the C programming language
+;                set-variable %fhook-c-exec "gcc %f -o %b && ./%b"
+;                set-variable %fhook-c-lint "cppcheck %f"
+;                set-variable %fhook-c-format "astyle --indent=spaces=4 %f"
 ;  History       : 2025-04-14 - first version
 ;                  2025-05-29 - rewrite using file-tools-run anf add-next-line macros
-;
-;  Copyright (c) 2025 Detlef Groth.
+;               
+;  Copyright (c) 2025 Detlef Groth. License same as Jasspa's MicroEmacs
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -39,11 +43,12 @@
     !force backward-line
     get-next-line
 !emacro
+
 define-macro fhook-file-lint
   buffer-init-hooks
 !emacro
 
-; minmal defaulzs
+; minimal defaults
 add-next-line "*file-exec*" "%f:%l:\\d+"
 add-next-line "*file-lint*" "%f:%l:\\d+"
 
@@ -55,6 +60,7 @@ define-macro file-lint
   !endif
   &band @# 1 save-some-buffers @mna
   0x4088 file-tool-run #l0 $buffer-fname "*file-lint*"
+  replace-filename-parenthesis
   buffer-init "file-lint"
   set-variable :mouse-word-select "mouse-get-next-line"
   buffer-bind-key return-get-next-line "return"
@@ -104,6 +110,7 @@ define-macro file-exec
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
+  replace-filename-parenthesis
   buffer-init "file-exec"
   ; clicking on errors does not jump to the file but openes a new 
   ; file.ext<1> buffer
@@ -123,3 +130,12 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 
 add-file-hook "*file-exec*" fhook-file-exec
 
+; workaround for filenames in parenthesis like for the c3c compiler
+0 define-macro replace-filename-parenthesis
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string "^(\\(.+[0-9]\\))" "\\1"
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
