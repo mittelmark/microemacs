@@ -1645,6 +1645,7 @@
   [bnf(9)](bnf(9)) Backus-Naur Form  
   [btm(9)](btm(9)) 4-DOS Batch File  
   [c(9)](c(9)) C programming language  
+  [c3(9)](dc3(9)) C3 Language File    
   [cbl(9)](cbl(9)) Cobol (85) File  
   [cc(9)](cc(9)) C++ programming language  
   [cfc(9)](cfc(9)) ColdFusion Markup Language  
@@ -1653,6 +1654,7 @@
   [cls(9)](cls(9)) Visual Basic  
   [cpp(9)](cpp(9)) C++ programming language  
   [csh(9)](csh(9)) C-Shell file  
+  [dart(9)](dart(9)) Dart Language File  
   [def(9)](def(9)) C or C++ definition file  
   [doc(9)](doc(9)) ASCII plain text document file  
   [ehf(9)](ehf(9)) MicroEmacs 2009 help file  
@@ -3386,6 +3388,7 @@
   [Compatibility(2)](Compatibility(2)) Compatibility with the original MicroEmacs  
   [CurrentBufferVariables(4)](CurrentBufferVariables(4)) Extract information from the current buffer  
   [c(9)](c(9)) C programming language  
+  [c3(9)](c3(9)) C3 programming language    
   [c-deslashify(3)](c-deslashify(3)) C language, remove backslash to end of lines of region  
   [c-hash-del(3)](c-hash-del(3)) Remove C/C++ #define evaluation  
   [c-hash-eval(3)](c-hash-eval(3)) Evaluate C/C++ #defines  
@@ -3470,6 +3473,7 @@
   [cvs-tag(3)](cvs-tag(3)) MicroEmacs CVS interface - tag files  
   [cvs-update(3)](cvs-update(3)) MicroEmacs CVS interface - update directory files  
   [cygwin(3)](cygwin(3)) Open a Cygwin BASH window  
+  [dart(9)](dart(9)) Dart programming language  
   [dbx(3)](dbx(3)) UNIX Debugger  
   [def(9)](def(9)) C or C++ definition file  
   [define-help(2)](define-help(2)) Define help information  
@@ -5043,7 +5047,9 @@
 
 
 ## Development History 
-  
+  - [250530]
+    - fixing a few warnings about meStrncpy on MacOS
+    - using file-tool-run add-next-line macros within file tools
   - [250526]
     - placeholder %f, %b for file-lint, file-format and file-exec
     - support for C99 bool
@@ -43936,7 +43942,7 @@ $a
   which should declare the command lines to be used for executing, linting or 
   formatting the current file. The variable names are of type:
   
-    _fhook-FHOOK-(exec|format|lint)_ 
+    _%fhook-FHOOK-(exec|format|lint)_ 
   
   where _FHOOK_ is the file hook name of the file. The variable declaration
   can be added to the users configuration file, _USERNAME.emf_ or into the
@@ -43946,7 +43952,6 @@ $a
 
   - "%f" - the filename of the currently edited file  
   - "%b" - the basename of the current file buffer name  
-  - "%s" - will be replaced with the filename 
   
 See below for a few examples.
   
@@ -43974,27 +43979,28 @@ See below for a few examples.
   These three macros can be seen as simplified  versions for the Go, Python, R
   and Tcl macros like  __go-lint__,  __go-format__,  __go-exec__.  They can be
   used as well to use  alternative  tools for  formatting  and linting as well
-  allow easy support of other programming languages.
+  allow easy support of other  programming  languages for linting,  formatting
+  and running the currently edited file.
 
 ## EXAMPLE
        
 ```{.emf}
        ; user-defined variables in the users emf or in the mypython.emf 
-       set-variable %fhook-python-format "ruff format %s" ; using the ruff formatter
-       set-variable %fhook-python-lint   "ruff check %s"  ; using the ruff linter
-       set-variable %fhook-python-exec   "python3 %s"
+       set-variable %fhook-python-format "ruff format %f" ; using the ruff formatter
+       set-variable %fhook-python-lint   "ruff check %f"  ; using the ruff linter
+       set-variable %fhook-python-exec   "python3 %f"
        ; for the Go programming language it could be as well within username.emf or mygo.emf
-       set-variable %fhook-go-format     "go fmt %s"
-       set-variable %fhook-go-lint       "go vet %s"
-       set-variable %fhook-go-exec       "go run %s"
+       set-variable %fhook-go-format     "go fmt %f"
+       set-variable %fhook-go-lint       "go vet %f"
+       set-variable %fhook-go-exec       "go run %f"
        ; working with C++ code using cppcheck, astyle and g++
-       set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %s"
-       set-variable %fhook-cpp-exec "g++ %s 2>&1; ./a.out"
-       set-variable %fhook-cpp-format "astyle %s"
+       set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
+       set-variable %fhook-cpp-exec "g++ %f 2>&1; ./a.out"
+       set-variable %fhook-cpp-format "astyle %f"
        ; command execution
        file-exec          ; executes the current file using the fhook-FHOOKNAME-exec var
        0 file-exec        ; ask for command line arguments and calls then executes
-       file-format        ; formats and reloads the currently edited file uisng the formatter
+       file-format        ; formats and reloads the currently edited file using the formatter
        file-lint          ; gives code advise for the currently edited file
 ```
       
@@ -64467,23 +64473,38 @@ $a
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ051
 ! 9 dart
+! 5 %fhook-dart-exec
+! 5 %fhook-dart-format
+! 5 %fhook-dart-lint
+
+## NAME
+
+|%fhook-dart-exec
+  %fhook-dart-exec - command to execute dart files
+|%fhook-dart-format
+  %fhook-dart-format - formatting command for dart files
+|%fhook-dart-lint
+  %fhook-dart-lint - linting command for dart files
+$a
+
 ## SYNOPSIS
 
 
-  dart - Dart programming language templates
-
-
+  dart - Dart programming language templates  
+  __%fhook-dart-exec__  
+  __%fhook-dart-format__  
+  __%fhook-dart-lint__  
+  
 ## FILES
-
 
   __hkdart.emf__ - Dart programming language hook definition  
   __dart.etf__ - Dart programming language template file
-
+  __dart.eaf__ - Dart abbreviation file   
 
 ## EXTENSIONS
 
 
-  __.dart__, __.drt__ - Go
+  __.dart__, __.drt__ - Dart files
 
 
 ## DESCRIPTION
@@ -64528,8 +64549,11 @@ $a
   __Working Environment__
   
   >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
-     to save any files.
-
+     to save any files. The command [file-exec(3)](file-exec(3)) can be called
+     to run the currently edited Dart file, the command [file-format(3)](file-format(3))
+     can be called to reformat the current dart file and the command [file-lint(3)](file-lint(3))
+     can be used to check the current file for possible problems.
+     
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -64545,19 +64569,30 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
-
+  __%fhook-dart-exec__ - The command to execute the current dart file, default
+            is set to _"dart run %f"_ where %f represents the file name  
+  __%fhook-dart-format__ - The command to format current dart file, default  
+            is set to _"dart format %f"_ where %f represents the file name  
+  __%fhook-dart-lint__ - The command to check/lint the current dart file, 
+            default is set to _"dart analyze %f"_ 
+  
+  The setting assume that the dart compiler is available via the PATH
+  environment variable. On Windows you must insert here either the complete PATH to the 
+  dart executable or add the filder where this file is in to the PATH variable.
+  
 ## NOTES
 
 
   The hilighting is typically extended using a file __mydart.emf__ located
-  within the users configuration folder, usually ~/.jasspa.
+  within the users configuration folder, usually _~/.jasspa_.
 
 
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types),
-  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [Supported File Types](MicroEmacs - Supported File Types), [c(9)](c(9)), 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)),  
+  [file-exec(3)](file-exec(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3))  
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ052
 ! 9 c3

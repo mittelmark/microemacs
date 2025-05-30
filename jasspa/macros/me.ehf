@@ -1729,6 +1729,7 @@ Miscellaneous Information
     lsbnf(9)lmbnf(9)le Backus-Naur Form  
     lsbtm(9)lmbtm(9)le 4-DOS Batch File  
     lsc(9)lmc(9)le C programming language  
+    lsdc3(9)lmc3(9)le C3 Language File    
     lscbl(9)lmcbl(9)le Cobol (85) File  
     lscc(9)lmcc(9)le C++ programming language  
     lscfc(9)lmcfc(9)le ColdFusion Markup Language  
@@ -1737,6 +1738,7 @@ Miscellaneous Information
     lscls(9)lmcls(9)le Visual Basic  
     lscpp(9)lmcpp(9)le C++ programming language  
     lscsh(9)lmcsh(9)le C-Shell file  
+    lsdart(9)lmdart(9)le Dart Language File  
     lsdef(9)lmdef(9)le C or C++ definition file  
     lsdoc(9)lmdoc(9)le ASCII plain text document file  
     lsehf(9)lmehf(9)le MicroEmacs 2009 help file  
@@ -3465,6 +3467,7 @@ Miscellaneous Information
     lsCompatibility(2)lmCompatibility(2)le Compatibility with the original MicroEmacs  
     lsCurrentBufferVariables(4)lmCurrentBufferVariables(4)le Extract information from the current buffer  
     lsc(9)lmc(9)le C programming language  
+    lsc3(9)lmc3(9)le C3 programming language    
     lsc-deslashify(3)lmc-deslashify(3)le C language, remove backslash to end of lines of region  
     lsc-hash-del(3)lmc-hash-del(3)le Remove C/C++ #define evaluation  
     lsc-hash-eval(3)lmc-hash-eval(3)le Evaluate C/C++ #defines  
@@ -3549,6 +3552,7 @@ Miscellaneous Information
     lscvs-tag(3)lmcvs-tag(3)le MicroEmacs CVS interface - tag files  
     lscvs-update(3)lmcvs-update(3)le MicroEmacs CVS interface - update directory files  
     lscygwin(3)lmcygwin(3)le Open a Cygwin BASH window  
+    lsdart(9)lmdart(9)le Dart programming language  
     lsdbx(3)lmdbx(3)le UNIX Debugger  
     lsdef(9)lmdef(9)le C or C++ definition file  
     lsdefine-help(2)lmdefine-help(2)le Define help information  
@@ -5118,7 +5122,14 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
-
+    - [250530]
+      - fixing a few warnings about meStrncpy on MacOS
+      - using file-tool-run add-next-line macros within file tools
+    - [250526]
+      - placeholder %f, %b for file-lint, file-format and file-exec
+      - support for C99 bool
+    - [250525]
+      - adding support for Dart, C3 and Toml files
     - [250517] 
       - adding documentation for file-exec, file-format and file-lint macros
     - [250506] 
@@ -43342,11 +43353,18 @@ $a
     which should declare the command lines to be used for executing, linting or 
     formatting the current file. The variable names are of type:
     
-      _fhook-FHOOK-(exec|format|lint)_ 
+      _%fhook-FHOOK-(exec|format|lint)_ 
     
-    where cCFHOOKcA is the file hook name of the file.  The variable declaration can be 
-    added to the users configuration file, cCUSERNAME.emfcA or into the cCmyFHOOK.emfcA
-    file within the users configuration folder. See below for a few examples.
+    where cCFHOOKcA is the file hook name of the file. The variable declaration
+    can be added to the users configuration file, cCUSERNAME.emfcA or into the
+    cCmyFHOOK.emfcA file within the users configuration folder. These variables
+    should point to the tool or compiler or interpreter and take place holders
+    for the filename or the file buffer basename like this:
+
+    - "%f" - the filename of the currently edited file  
+    - "%b" - the basename of the current file buffer name  
+    
+See below for a few examples.
     
     The cDfile-execcA  macro executes or compiles the currently edited file using 
     a global variable which needs to be defined for the current file hook. See below
@@ -43372,27 +43390,28 @@ $a
     These three macros can be seen as simplified  versions for the Go, Python, R
     and Tcl macros like  cDgo-lintcA,  cDgo-formatcA,  cDgo-execcA.  They can be
     used as well to use  alternative  tools for  formatting  and linting as well
-    allow easy support of other programming languages.
+    allow easy support of other  programming  languages for linting,  formatting
+    and running the currently edited file.
 
 cEEXAMPLE cA
          
 sB
          ; user-defined variables in the users emf or in the mypython.emf 
-         set-variable %fhook-python-format "ruff format %s" ; using the ruff formatter
-         set-variable %fhook-python-lint   "ruff check %s"  ; using the ruff linter
-         set-variable %fhook-python-exec   "python3 %s"
+         set-variable %fhook-python-format "ruff format %f" ; using the ruff formatter
+         set-variable %fhook-python-lint   "ruff check %f"  ; using the ruff linter
+         set-variable %fhook-python-exec   "python3 %f"
          ; for the Go programming language it could be as well within username.emf or mygo.emf
-         set-variable %fhook-go-format     "go fmt %s"
-         set-variable %fhook-go-lint       "go vet %s"
-         set-variable %fhook-go-exec       "go run %s"
+         set-variable %fhook-go-format     "go fmt %f"
+         set-variable %fhook-go-lint       "go vet %f"
+         set-variable %fhook-go-exec       "go run %f"
          ; working with C++ code using cppcheck, astyle and g++
-         set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %s"
-         set-variable %fhook-cpp-exec "g++ %s 2>&1; ./a.out"
-         set-variable %fhook-cpp-format "astyle %s"
+         set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
+         set-variable %fhook-cpp-exec "g++ %f 2>&1; ./a.out"
+         set-variable %fhook-cpp-format "astyle %f"
          ; command execution
          file-exec          ; executes the current file using the fhook-FHOOKNAME-exec var
          0 file-exec        ; ask for command line arguments and calls then executes
-         file-format        ; formats and reloads the currently edited file uisng the formatter
+         file-format        ; formats and reloads the currently edited file using the formatter
          file-lint          ; gives code advise for the currently edited file
 sA        
 cENOTES cA
@@ -63416,7 +63435,7 @@ $a
 cEcESYNOPSIS cEcA
 
 
-    go- Go programming language templates
+    go - Go programming language templates
 
 
 cEFILES cA
@@ -63465,7 +63484,7 @@ $a
 
     cDFolding and Information HidingcA
     
-       Generic folding is enabled within the Java files. The folds occur
+       Generic folding is enabled within the Go files. The folds occur
        about the cDfunccA keyword and a closing curly brace, both at the
        beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
        (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
@@ -63496,6 +63515,220 @@ $a
 
 
     The hilighting is typically extended using a file cDmygo.emfcA
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 dart
+! 5 %fhook-dart-exec
+! 5 %fhook-dart-format
+! 5 %fhook-dart-lint
+
+cEcENAME cEcA
+
+|%fhook-dart-exec
+    %fhook-dart-exec - command to execute dart files
+|%fhook-dart-format
+    %fhook-dart-format - formatting command for dart files
+|%fhook-dart-lint
+    %fhook-dart-lint - linting command for dart files
+$a
+
+cESYNOPSIS cA
+
+
+    dart - Dart programming language templates  
+    cD%fhook-dart-execcA  
+    cD%fhook-dart-formatcA  
+    cD%fhook-dart-lintcA  
+    
+cEFILES cA
+
+    cDhkdart.emfcA - Dart programming language hook definition  
+    cDdart.etfcA - Dart programming language template file
+    cDdart.eafcA - Dart abbreviation file   
+
+cEEXTENSIONS cA
+
+
+    cD.dartcA, cD.drtcA - Dart files
+
+
+cEDESCRIPTION cA
+
+
+    The cDdartcA file type templates share much with the lsc(9)lmc(9)le template
+    definitions, utilising the electric 'C' features for automatic layout of
+    text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Dart files. The folds occur around
+       function and class definitions and ends a closing curly brace, both at the
+       beginning  of a line.  lscollapse-all(3)lmcollapse-all(3)le  (un)folds  all
+       regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
+       current region. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files. The command lsfile-exec(3)lmfile-exec(3)le can be called
+       to run the currently edited Dart file, the command lsfile-format(3)lmfile-format(3)le
+       can be called to reformat the current dart file and the command lsfile-lint(3)lmfile-lint(3)le
+       can be used to check the current file for possible problems.
+       
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cD%fhook-dart-execcA - The command to execute the current dart file, default
+              is set to cC"dart run %f"cA where %f represents the file name  
+    cD%fhook-dart-formatcA - The command to format current dart file, default  
+              is set to cC"dart format %f"cA where %f represents the file name  
+    cD%fhook-dart-lintcA - The command to check/lint the current dart file, 
+              default is set to cC"dart analyze %f"cA 
+    
+    The setting assume that the dart compiler is available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    dart executable or add the filder where this file is in to the PATH variable.
+    
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmydart.emfcA located
+    within the users configuration folder, usually cC~/.jasspacA.
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsc(9)lmc(9)le, 
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le,  
+    lsfile-exec(3)lmfile-exec(3)le, lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le  
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 c3
+cEcESYNOPSIS cEcA
+
+
+    c3 - C3 programming language templates
+
+
+cEFILES cA
+
+
+    cDhkc3.emfcA - C3 programming language hook definition  
+    cDc3.etfcA - C3 programming language template file
+
+
+cEEXTENSIONS cA
+
+
+    cD.c3cA - C3
+
+
+cEDESCRIPTION cA
+
+
+    The cDc3cA file type templates share much with the lsc(9)lmc(9)le template
+    definitions, utilising the electric 'C' features for automatic layout of
+    text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Go files. The folds occur
+       about the cDfncA keyword and a closing curly brace, both at the
+       beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
+       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
+       current region. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmyc3.emfcA
 
 
 cESEE ALSO cA
