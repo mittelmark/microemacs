@@ -10,9 +10,10 @@
 set-char-mask "2" "-$&#!%:@."
 
 define-macro fhook-emf
-    set-variable $buffer-mask "luh12"
-    @# buffer-init "emf"
-    buffer-init-hooks
+  set-variable $buffer-mask "luh12"
+  @# buffer-init "emf"
+  buffer-init-hooks
+  set-variable $buffer-indent-width 2
 !emacro
 
 ; buffer-init variables
