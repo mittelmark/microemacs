@@ -539,6 +539,7 @@
 #include <stdlib.h>                     /* Usually need this             */
 #include <string.h>                     /* Usually need this             */
 #include <errno.h>                      /* Need errno and sys_errlist    */
+#include <time.h>
 
 #ifdef _ME_WIN32_FULL_DEBUG
 #define _CRTDBG_MAP_ALLOC
