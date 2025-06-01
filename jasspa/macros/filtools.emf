@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250530.1048>
+;  Last Modified : <250601.1535>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -27,27 +27,17 @@
 ;                set-variable %fhook-c-format "astyle --indent=spaces=4 %f"
 ;  History       : 2025-04-14 - first version
 ;                  2025-05-29 - rewrite using file-tools-run anf add-next-line macros
-;               
+;                  2025-06-01 - using find.emf for the macros to locate the problematic line
+;
 ;  Copyright (c) 2025 Detlef Groth. License same as Jasspa's MicroEmacs
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; not sure how to safely load the macros from find.emf for instance
-
-0 define-macro return-get-next-line
-    !force backward-line
-    get-next-line
-!emacro
-0 define-macro mouse-get-next-line
-    set-cursor-to-mouse
-    !force backward-line
-    get-next-line
-!emacro
+define-macro-file find return-get-next-line mouse-get-next-line
 
 define-macro fhook-file-lint
   buffer-init-hooks
 !emacro
-
 ; minimal defaults
 add-next-line "*file-exec*" "%f:%l:\\d+"
 add-next-line "*file-lint*" "%f:%l:\\d+"
