@@ -171,6 +171,7 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    1 "int"          .scheme.type
     hilight .hilight.cpp    1 "long"         .scheme.type
     hilight .hilight.cpp    1 "namespace"    .scheme.type
+    hilight .hilight.cpp    1 "override"     .scheme.type    
     hilight .hilight.cpp    1 "register"     .scheme.type
     hilight .hilight.cpp    1 "short"        .scheme.type
     hilight .hilight.cpp    1 "signed"       .scheme.type
@@ -217,8 +218,8 @@ set-variable .fhook-cpp.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.cpp    0 "__TIME__"     .scheme.prepro
     hilight .hilight.cpp    0 "NULL"         .scheme.prepro
     
-    hilight .hilight.cpp    0 "module"       .scheme.prepro
-    hilight .hilight.cpp    0 "import"       .scheme.prepro
+    hilight .hilight.cpp    2 "^module"       .scheme.prepro
+    hilight .hilight.cpp    2 "^import"       .scheme.prepro
     
     
 
