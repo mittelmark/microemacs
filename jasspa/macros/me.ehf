@@ -43362,9 +43362,12 @@ $a
     for the filename or the file buffer basename like this:
 
     - "%f" - the filename of the currently edited file  
-    - "%b" - the basename of the current file buffer name  
+    - "%b" - the basename of the current file buffer name 
     
-See below for a few examples.
+    For more usable abbreviations see the help page of the  lsfile-tool-setup(3)lmfile-tool-setup(3)le
+    macro.
+    
+    See below for a few examples to declare some variables.
     
     The cDfile-execcA  macro executes or compiles the currently edited file using 
     a global variable which needs to be defined for the current file hook. See below
@@ -43380,12 +43383,12 @@ See below for a few examples.
     The cDfile-lintcA   macro checks the currently edited file using an user an user
     defined global variable for the current file hook.
 
-    After executing the macro a popup-window (cG*lintr*cA) displays the warning
-    messages of the linter package, the user can click on the hilighted lines
-    showing  warnings and jump directly to the problematic line. This requires that
-    the linter defined in the variable supports the cCFILENAME:LINE:CHAR:cA syntax.
-    The same can jumping to the error be achieved by pressing the ENTER key on 
-    the hilighted line.
+    After executing the macro a popup-window (cG*file-lint*cA) displays the
+    warning messages of the linter, the user can click on the hilighted lines
+    showing warnings and that way jumping directly to the problematic line. This
+    requires that the linter defined in the variable supports the
+    cC^FILENAME:LINE:CHARcA syntax. The same can jumping to the error be achieved
+    by pressing the ENTER key on the hilighted line.
     
     These three macros can be seen as simplified  versions for the Go, Python, R
     and Tcl macros like  cDgo-lintcA,  cDgo-formatcA,  cDgo-execcA.  They can be
@@ -43404,10 +43407,14 @@ See below for a few examples.
          set-variable %fhook-go-format     "go fmt %f"
          set-variable %fhook-go-lint       "go vet %f"
          set-variable %fhook-go-exec       "go run %f"
-         ; working with C++ code using cppcheck, astyle and g++
-         set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
+         ; working with C++ code using clang-tidy, astyle and g++
+         set-variable %fhook-cpp-lint "clang-tidy %f -- -std=c++17"
+         ; set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
          set-variable %fhook-cpp-exec "g++ %f 2>&1; ./a.out"
-         set-variable %fhook-cpp-format "astyle %f"
+         ; working with C code using clang-tidy, astyle and gcc
+         set-variable %fhook-c-lint "clang-tidy %f -- -std=c99"
+         set-variable %fhook-c-exec "gcc %f 2>&1; ./a.out"
+         set-variable %fhook-c-format "astyle --indent=spaces=4 %f"
          ; command execution
          file-exec          ; executes the current file using the fhook-FHOOKNAME-exec var
          0 file-exec        ; ask for command line arguments and calls then executes

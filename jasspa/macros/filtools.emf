@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250601.1535>
+;  Last Modified : <250602.1214>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -49,8 +49,12 @@ define-macro file-lint
       !abort
   !endif
   &band @# 1 save-some-buffers @mna
+  set-variable #l2 &spr "%s-replace"  $buffer-fhook
+  1000 ml-write #l2
   0x4088 file-tool-run #l0 $buffer-fname "*file-lint*"
-  replace-filename-parenthesis
+  !if &exi &ind #l2
+    !force execute-named-command #l2
+  !endif
   buffer-init "file-lint"
   set-variable :mouse-word-select "mouse-get-next-line"
   buffer-bind-key return-get-next-line "return"
@@ -100,14 +104,12 @@ define-macro file-exec
   !iif &not &exi :file-exec-args  set-variable :file-exec-args ""
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
+  set-variable #l2 &spr "%s-replace"  $buffer-fhook
   0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
-  replace-filename-parenthesis
-  !if &seq #l1 "fhook-python"
-      replace-filename-python
+  !if &exi &ind #l2
+    !force !force execute-named-command #l2
   !endif
   buffer-init "file-exec"
-  ; clicking on errors does not jump to the file but openes a new 
-  ; file.ext<1> buffer
   set-variable :mouse-word-select "mouse-get-next-line"
   buffer-bind-key return-get-next-line "return"
 !emacro
@@ -125,7 +127,7 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 add-file-hook "*file-exec*" fhook-file-exec
 
 ; workaround for filenames in parenthesis like for the c3c compiler
-0 define-macro replace-filename-parenthesis
+0 define-macro fhook-c3-replace
   -1 buffer-mode "view"
   beginning-of-buffer
   replace-string "^(\\(.+[0-9]\\))" "\\1"
@@ -134,11 +136,13 @@ add-file-hook "*file-exec*" fhook-file-exec
   1 buffer-mode "view"  
 !emacro
 
-0 define-macro replace-filename-python
+0 define-macro fhook-python-replace
   -1 buffer-mode "view"
   beginning-of-buffer
-  replace-string "File \"\\(.+\\)\", line \\(.+\\)," "\\1:\\2:0"
+  replace-string " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
   beginning-of-buffer
   -1 buffer-mode "edit"
   1 buffer-mode "view"  
 !emacro
+
+;1000 ml-write &exi "fhook-python-rep"

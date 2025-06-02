@@ -19,8 +19,8 @@ def help(argv):
 
 
 def usage(argv):
-    print(f"Usage: {argv[0]} args")
-    print("Hi")
+     print(f"Usage: {argv[0]} args")
+      print("Hi")
 
 
 def main(argv):
