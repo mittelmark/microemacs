@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250602.1214>
+;  Last Modified : <250606.1854>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -68,7 +68,7 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
   !iif &not &exi .hilight.file-lint  set-variable .hilight.file-lint &pinc  .hilight.next 1
   0 hilight .hilight.file-lint 2 200                                     $global-scheme
   hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]+"      .scheme.link  
-  hilight .hilight.file-lint   0  "[/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
+  hilight .hilight.file-lint   0  "[-_/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
 !endif
 
 add-file-hook "*file-lint*" fhook-file-lint
@@ -121,7 +121,7 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 !if &and &sin "h" .fhook-file-exec.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.file-exec  set-variable .hilight.file-exec &pinc  .hilight.next 1
   0 hilight .hilight.file-exec 2 200                                     $global-scheme
-  hilight .hilight.file-exec   0  "[/\\.A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
+  hilight .hilight.file-exec   0  "[-_/\\.A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
 !endif
 
 add-file-hook "*file-exec*" fhook-file-exec

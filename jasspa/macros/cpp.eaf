@@ -23,9 +23,9 @@ whilegz "// #include <zlib.h>\r\tgzFile file = gzopen(\p, \"rb\");\rif (!file) {
 
  "" ""
  "" "</FOLD><FOLD+> \ecCStructure Commands\ecA"
-cls "class \p {\rpublic:\rName() {}; \rprivate:\rint x = 0;\r};\r\P" "  class"
-nsp "namespace \p {\r\r}\r\P" "  namespace"
-tmp "template <typename T>\r" "  template"
+cl "class \p {\rpublic:\rName() {}; \rprivate:\rint x = 0;\r};\r\P" "  class"
+ns "namespace \p {\r\r}\r\P" "  namespace"
+tm "template <typename T>\r" "  template"
  "" ""
  "" "</FOLD><FOLD+> \ecCSTL/Pointers\ecA"
 vec "std::vector<\p> v = {};" "  std::vector"
