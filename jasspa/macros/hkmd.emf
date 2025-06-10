@@ -20,8 +20,8 @@ define-macro fhook-md
 
 ; buffer-init variables
 set-variable .fhook-md.name "Markdown"
-set-variable .fhook-md.setup &reg "/history/fhook/md" "bfghijnopswx"
-set-variable .fhook-md.setup-mask "abefghijkmnopstuwx"
+set-variable .fhook-md.setup &reg "/history/fhook/md" "bfghijnopsx"
+set-variable .fhook-md.setup-mask "abefghijkmnopstux"
 set-variable .fhook-md.comment "|<!---|-->|-|  -- | --||"
 
 ; setup item-list
