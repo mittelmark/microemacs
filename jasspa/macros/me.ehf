@@ -1818,6 +1818,7 @@ Miscellaneous Information
     lsvb(9)lmvb(9)le Visual Basic  
     lsverilog(9)lmverilog(9)le Verilog hardware description language  
     lsvhdl(9)lmvhdl(9)le VHDL hardware simulation File  
+    lsvlang(9)lmvlang(9)le V programming language    
     lsvrml(9)lmvrml(9)le VRML File  
     lswiki(9)lmwiki(9)le GNU Wiki File  
     lswish(9)lmwish(9)le TCL shell file  
@@ -4044,12 +4045,12 @@ Miscellaneous Information
     lsuser-setup(3)lmuser-setup(3)le Configure MicroEmacs for a specific user  
     lsusr(2m)lmusr(2m)le User buffer modes  
     lsVariables(4)lmVariables(4)le User defined macro variables  
-    lsv(9)lmv(9)le Verilog hardware description language  
     lsvb(9)lmvb(9)le Visual Basic  
     lsverilog(9)lmverilog(9)le Verilog hardware description language  
     lsvhdl(9)lmvhdl(9)le VHDL hardware simulation File  
     lsview(2m)lmview(2m)le Read only  
     lsview-file(2)lmview-file(2)le (C-x C-v) Load a file read only  
+    lsvlang(9)lmvlang(9)le V programming language      
     lsvm(3)lmvm(3)le Email viewer  
     lsvoid(2)lmvoid(2)le Null command  
     lsvrml(9)lmvrml(9)le VRML File  
@@ -5122,6 +5123,16 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
+
+    - [250611]
+      - support for V programming language
+    - [250610]
+      - wrap as default disabled for Markdown documents
+    - [250601]
+      - file-exec with Python
+      - 2 space indentation for emf files
+      - more C++20 keywords
+      - generic fix facility for file-exec and file-lint macros
     - [250530]
       - fixing a few warnings about meStrncpy on MacOS
       - using file-tool-run add-next-line macros within file tools
@@ -63636,7 +63647,7 @@ $a
     
     The setting assume that the dart compiler is available via the PATH
     environment variable. On Windows you must insert here either the complete PATH to the 
-    dart executable or add the filder where this file is in to the PATH variable.
+    dart executable or add the folder where this file is in to the PATH variable.
     
 cENOTES cA
 
@@ -63743,4 +63754,134 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 vlang
+! 5 %fhook-v-exec
+! 5 %fhook-v-format
+! 5 %fhook-v-lint
+
+cEcENAME cEcA
+
+|%fhook-v-exec
+    %fhook-v-exec - command to execute V files
+|%fhook-v-format
+    %fhook-v-format - formatting command for V files
+|%fhook-v-lint
+    %fhook-v-lint - linting command for v files
+$a
+
+cESYNOPSIS cA
+
+
+    vlang, v - V programming language templates
+    cD%fhook-v-execcA  
+    cD%fhook-v-formatcA  
+    cD%fhook-v-lintcA  
+
+
+cEFILES cA
+
+
+    cDhkv.emfcA - V programming language hook definition  
+    cDv.etfcA - V programming language template file
+    cDv.eafcA - V programming language abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.vcA - V file
+
+
+cEDESCRIPTION cA
+
+
+    The cDvcA file type templates share much with the lsc(9)lmc(9)le template
+    definitions, utilising the electric 'C' features for automatic layout of
+    text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Go files. The folds occur
+       about the cDfunccA keyword and a closing curly brace, both at the
+       beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
+       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
+       current region. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+
+    cD%fhook-v-execcA - The command to execute the current V file, default
+              is set to cC"v crun %f"cA where %f represents the file name  
+    cD%fhook-v-formatcA - The command to format current V file, default  
+              is set to cC"v fmt -w %f"cA where %f represents the file name  
+    cD%fhook-v-lintcA - The command to check/lint the current V file, 
+              default is set to cC"v vet %f"cA 
+    
+    The setting assume that the V compiler is available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    cGvcA executable or add the folder where this file is to the PATH variable.
+
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmyv.emfcA. As this language
+    shares the same extensions as Verilog files you might be adding the add the 
+    following line to your user emf file.
+    
+       add-file-hook ".v" fhook-v
+    
+    In addition you can add the following first line to your V-files so that they 
+    are automatically recognized a V-language and not Verilog files.
+
+    cC// -!- v-lang -!-cA
+      
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.

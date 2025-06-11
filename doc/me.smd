@@ -1734,6 +1734,7 @@
   [vb(9)](vb(9)) Visual Basic  
   [verilog(9)](verilog(9)) Verilog hardware description language  
   [vhdl(9)](vhdl(9)) VHDL hardware simulation File  
+  [vlang(9)](vlang(9)) V programming language    
   [vrml(9)](vrml(9)) VRML File  
   [wiki(9)](wiki(9)) GNU Wiki File  
   [wish(9)](wish(9)) TCL shell file  
@@ -3965,12 +3966,12 @@
   [user-setup(3)](user-setup(3)) Configure MicroEmacs for a specific user  
   [usr(2m)](usr(2m)) User buffer modes  
   [Variables(4)](Variables(4)) User defined macro variables  
-  [v(9)](v(9)) Verilog hardware description language  
   [vb(9)](vb(9)) Visual Basic  
   [verilog(9)](verilog(9)) Verilog hardware description language  
   [vhdl(9)](vhdl(9)) VHDL hardware simulation File  
   [view(2m)](view(2m)) Read only  
   [view-file(2)](view-file(2)) (C-x C-v) Load a file read only  
+  [vlang(9)](vlang(9)) V programming language      
   [vm(3)](vm(3)) Email viewer  
   [void(2)](void(2)) Null command  
   [vrml(9)](vrml(9)) VRML File  
@@ -5047,6 +5048,16 @@
 
 
 ## Development History 
+
+  - [250611]
+    - support for V programming language
+  - [250610]
+    - wrap as default disabled for Markdown documents
+  - [250601]
+    - file-exec with Python
+    - 2 space indentation for emf files
+    - more C++20 keywords
+    - generic fix facility for file-exec and file-lint macros
   - [250530]
     - fixing a few warnings about meStrncpy on MacOS
     - using file-tool-run add-next-line macros within file tools
@@ -64585,7 +64596,7 @@ $a
   
   The setting assume that the dart compiler is available via the PATH
   environment variable. On Windows you must insert here either the complete PATH to the 
-  dart executable or add the filder where this file is in to the PATH variable.
+  dart executable or add the folder where this file is in to the PATH variable.
   
 ## NOTES
 
@@ -64693,5 +64704,136 @@ $a
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ053
+! 9 vlang
+! 5 %fhook-v-exec
+! 5 %fhook-v-format
+! 5 %fhook-v-lint
+
+## NAME
+
+|%fhook-v-exec
+  %fhook-v-exec - command to execute V files
+|%fhook-v-format
+  %fhook-v-format - formatting command for V files
+|%fhook-v-lint
+  %fhook-v-lint - linting command for v files
+$a
+
+## SYNOPSIS
+
+
+  vlang, v - V programming language templates
+  __%fhook-v-exec__  
+  __%fhook-v-format__  
+  __%fhook-v-lint__  
+
+
+## FILES
+
+
+  __hkv.emf__ - V programming language hook definition  
+  __v.etf__ - V programming language template file
+  __v.eaf__ - V programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.v__ - V file
+
+
+## DESCRIPTION
+
+
+  The __v__ file type templates share much with the [c(9)](c(9)) template
+  definitions, utilising the electric 'C' features for automatic layout of
+  text.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logical,
+     preprocessor definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
+
+  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph. If a comment commences with
+     `/***...` then the comment is automatically formatted to a box.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Go files. The folds occur
+     about the __func__ keyword and a closing curly brace, both at the
+     beginning of a line. [collapse-all(3)](collapse-all(3))
+     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
+     current region. 
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+
+  __%fhook-v-exec__ - The command to execute the current V file, default
+            is set to _"v crun %f"_ where %f represents the file name  
+  __%fhook-v-format__ - The command to format current V file, default  
+            is set to _"v fmt -w %f"_ where %f represents the file name  
+  __%fhook-v-lint__ - The command to check/lint the current V file, 
+            default is set to _"v vet %f"_ 
+  
+  The setting assume that the V compiler is available via the PATH
+  environment variable. On Windows you must insert here either the complete PATH to the 
+  `v` executable or add the folder where this file is to the PATH variable.
+
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __myv.emf__. As this language
+  shares the same extensions as Verilog files you might be adding the add the 
+  following line to your user emf file.
+  
+     add-file-hook ".v" fhook-v
+  
+  In addition you can add the following first line to your V-files so that they 
+  are automatically recognized a V-language and not Verilog files.
+
+  _// -!- v-lang -!-_
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: meende
