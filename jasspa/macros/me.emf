@@ -341,6 +341,7 @@ add-file-hook ".yml .yaml"                                    fhook-yaml
 -1 add-file-hook "-[*!]-[ \t]*ruby.*-[*!]-"      fhook-ruby   ; -*- ruby -*-
 -1 add-file-hook "-!-[ \t]*mhg.*-!-"             fhook-mhg    ; -!- mhg -!-
 -1 add-file-hook "-!-[ \t]*msdos.*-!-"           fhook-dos    ; -!- msdos -!-
+-1 add-file-hook "-!-[ \t]*v-lang.*-!-"           fhook-v     ; -!- v-lang -!-
 -1 add-file-hook "-!-[ \t]*imakefile.*-!-"       fhook-imake  ; -!- imakefile -!-
 -1 add-file-hook "-!-[ \t]*document.*-!-"        fhook-doc    ; -!- document -!-
 -1 add-file-hook "-!-[ \t]*jst.*-!-"             fhook-jst    ; -!- jst -!-

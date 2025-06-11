@@ -1,0 +1,6 @@
+// -!- v-lang -!-
+module main
+
+fn main() {
+    println("Hello V World!")
+}
