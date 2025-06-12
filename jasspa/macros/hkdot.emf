@@ -28,7 +28,7 @@ set-variable .fhook-dot.collapse-mclose "1"
 set-variable .fhook-dot.collapse-mnext "-1"
 
 ; setup item-list
-set-variable .fhook-dot.item-list-s1 "    +subgraph[ \t]+\\([a-zA-Z0-9.]*\\)[ \t]*{[ \t]\$"
+set-variable .fhook-dot.item-list-s1 "    +subgraph[ \t]+\\([a-zA-Z0-9.]*\\)[ \t]*{[ \t]*\$"
 set-variable .fhook-dot.item-list-r1 "SuGr \ecB\\1\ecA"
 set-variable .fhook-dot.item-list-s2 "digraph[ \t]+\\([a-zA-Z0-9.]*\\)[ \t]*{[ \t]*\$"
 set-variable .fhook-dot.item-list-r2 "DiGr \ecB\\1\ecA"
