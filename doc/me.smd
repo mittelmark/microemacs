@@ -3971,7 +3971,7 @@
   [vhdl(9)](vhdl(9)) VHDL hardware simulation File  
   [view(2m)](view(2m)) Read only  
   [view-file(2)](view-file(2)) (C-x C-v) Load a file read only  
-  [vlang(9)](vlang(9)) V programming language      
+  [vlang(9)](vlang(9)) V programming language    
   [vm(3)](vm(3)) Email viewer  
   [void(2)](void(2)) Null command  
   [vrml(9)](vrml(9)) VRML File  
@@ -43953,7 +43953,7 @@ $a
   which should declare the command lines to be used for executing, linting or 
   formatting the current file. The variable names are of type:
   
-    _%fhook-FHOOK-(exec|format|lint)_ 
+  _%fhook-FHOOK-(exec|format|lint)_ 
   
   where _FHOOK_ is the file hook name of the file. The variable declaration
   can be added to the users configuration file, _USERNAME.emf_ or into the
@@ -64614,10 +64614,27 @@ $a
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ052
 ! 9 c3
+! 5 %fhook-c3-exec
+! 5 %fhook-c3-format
+! 5 %fhook-c3-lint
+
+## NAME
+
+|%fhook-c3-exec
+  %fhook-c3-exec - command to compile and execute C3 files
+|%fhook-c3-format
+  %fhook-c3-format - formatting command for C3 files
+|%fhook-c3-lint
+  %fhook-c3-lint - linting command for C3 files
+$a
+
 ## SYNOPSIS
 
 
   c3 - C3 programming language templates
+  __%fhook-c3-exec__  
+  __%fhook-c3-format__  
+  __%fhook-c3-lint__  
 
 
 ## FILES
@@ -64696,14 +64713,21 @@ $a
 ## NOTES
 
 
-  The hilighting is typically extended using a file __myc3.emf__
-
+  The hilighting is typically extended using a file __myc3.emf__. Executing, linting and
+  formatting of C3 files can be achieved by setting the variables:
+  
+```{.emf}
+     set-variable %fhook-c3-format "astyle --indent=spaces=2 %f" ; if astyle is available
+     set-variable %fhook-c3-lint   "c3c compile %f -o %b"
+     set-variable %fhook-c3-exec   "c3c compile-run %f --"
+```
 
 ## SEE ALSO
 
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ053
 ! 9 vlang
@@ -64746,9 +64770,8 @@ $a
 ## DESCRIPTION
 
 
-  The __v__ file type templates share much with the [c(9)](c(9)) template
-  definitions, utilising the electric 'C' features for automatic layout of
-  text.
+  The __v__ file type templates share much with the [c(9)](c(9)) template definitions,
+  utilising the electric 'C' features for automatic layout of text.
 
   __General Editing__
   
@@ -64824,8 +64847,8 @@ $a
   
      add-file-hook ".v" fhook-v
   
-  In addition you can add the following first line to your V-files so that they 
-  are automatically recognized a V-language and not Verilog files.
+  As an alternative you can add the following first line to your V-files so that
+  they are automatically recognized as V language files and not as Verilog files.
 
   _// -!- v-lang -!-_
     

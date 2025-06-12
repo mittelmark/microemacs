@@ -101,6 +101,8 @@ set-variable .fhook-c.item-list-r5 "Type \ecB\\1\ecA"
 ; Added cpp class support as header files are often mis-identified as C headers
 set-variable .fhook-c.item-list-s6 "^[ \t]*class[ \t]+\\(\\w+\\)\\([ \t]+:\\|[ \t]*{\\|[ \t]*$\\)"
 set-variable .fhook-c.item-list-r6 "Clss \ecB\\1\ecA"
+set-variable .fhook-c.item-list-s7 "^[ \t]*struct[ \t]+\\(\\w+\\)[ \t]+{"
+set-variable .fhook-c.item-list-r7 "Strc \ecB\\1\ecA"
 
 !if &not &exi .hilight.c
     set-variable .hilight.c &pinc .hilight.next 1

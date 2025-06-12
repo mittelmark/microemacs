@@ -4050,7 +4050,7 @@ Miscellaneous Information
     lsvhdl(9)lmvhdl(9)le VHDL hardware simulation File  
     lsview(2m)lmview(2m)le Read only  
     lsview-file(2)lmview-file(2)le (C-x C-v) Load a file read only  
-    lsvlang(9)lmvlang(9)le V programming language      
+    lsvlang(9)lmvlang(9)le V programming language    
     lsvm(3)lmvm(3)le Email viewer  
     lsvoid(2)lmvoid(2)le Null command  
     lsvrml(9)lmvrml(9)le VRML File  
@@ -63664,10 +63664,27 @@ $a
     lsfile-exec(3)lmfile-exec(3)le, lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le  
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 ! 9 c3
-cEcESYNOPSIS cEcA
+! 5 %fhook-c3-exec
+! 5 %fhook-c3-format
+! 5 %fhook-c3-lint
+
+cEcENAME cEcA
+
+|%fhook-c3-exec
+    %fhook-c3-exec - command to compile and execute C3 files
+|%fhook-c3-format
+    %fhook-c3-format - formatting command for C3 files
+|%fhook-c3-lint
+    %fhook-c3-lint - linting command for C3 files
+$a
+
+cESYNOPSIS cA
 
 
     c3 - C3 programming language templates
+    cD%fhook-c3-execcA  
+    cD%fhook-c3-formatcA  
+    cD%fhook-c3-lintcA  
 
 
 cEFILES cA
@@ -63746,14 +63763,20 @@ $a
 cENOTES cA
 
 
-    The hilighting is typically extended using a file cDmyc3.emfcA
-
-
+    The hilighting is typically extended using a file cDmyc3.emfcA. Executing, linting and
+    formatting of C3 files can be achieved by setting the variables:
+    
+sB
+       set-variable %fhook-c3-format "astyle --indent=spaces=2 %f" ; if astyle is available
+       set-variable %fhook-c3-lint   "c3c compile %f -o %b"
+       set-variable %fhook-c3-exec   "c3c compile-run %f --"
+sA
 cESEE ALSO cA
 
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 ! 9 vlang
 ! 5 %fhook-v-exec
@@ -63795,9 +63818,8 @@ $a
 cEDESCRIPTION cA
 
 
-    The cDvcA file type templates share much with the lsc(9)lmc(9)le template
-    definitions, utilising the electric 'C' features for automatic layout of
-    text.
+    The cDvcA file type templates share much with the lsc(9)lmc(9)le template definitions,
+    utilising the electric 'C' features for automatic layout of text.
 
     cDGeneral EditingcA
     
@@ -63873,8 +63895,8 @@ $a
     
        add-file-hook ".v" fhook-v
     
-    In addition you can add the following first line to your V-files so that they 
-    are automatically recognized a V-language and not Verilog files.
+    As an alternative you can add the following first line to your V-files so that
+    they are automatically recognized as V language files and not as Verilog files.
 
     cC// -!- v-lang -!-cA
       
