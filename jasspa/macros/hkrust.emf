@@ -1,0 +1,140 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth
+;  Created       : Fri Mar 6th, 2025
+;  Last Modified : <250615.0728>
+;
+;  Description
+;   V Language Template
+;   https://vlang.io/
+;
+;  Notes: Based on the Go language defintion
+;
+;  History: 2025-06-15 first version
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+define-macro fhook-rust
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "rust"
+    buffer-init-hooks
+!emacro
+
+; buffer-init variables
+; TODO: disable Tab mode
+set-variable .fhook-rust.setup &reg "/history/fhook/rust" "bdfghinoptx"
+set-variable .fhook-rust.setup-mask "abdefghikmnoptux"
+set-variable .fhook-rust.comment "|/*| */|*| * | * |fr|"
+
+set-variable .fhook-rust.collapse-open  "^\\(fn\\|impl\\|struct\\|mod\\)"
+set-variable .fhook-rust.collapse-close "^}"
+set-variable .fhook-rust.collapse-mclose "1"
+set-variable .fhook-rust.collapse-mnext "-1"
+
+set-variable .fhook-rust.item-list-s1 "^\\([\t ]*\\)fn[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
+set-variable .fhook-rust.item-list-r1 "func \\1\ecB\\2\ecA"
+set-variable .fhook-rust.item-list-s2 "^\\([\t ]*\\)pub [\t ]*fn[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
+set-variable .fhook-rust.item-list-r2 "\ecCfunc\ecA \\1\ecB\\2\ecA"
+set-variable .fhook-rust.item-list-s3 "^[\t ]*struct[\t ]+\\(\\w[1-9A-Za-z_]*\\)"
+set-variable .fhook-rust.item-list-r3 "strc \ecB\\1\ecA"
+set-variable .fhook-rust.item-list-s4 "^pub struct[\t ]+\\(\\w[1-9A-Za-z_]*\\)"
+set-variable .fhook-rust.item-list-r4 "\ecCstrc\ecA \ecB\\1\ecA"
+set-variable .fhook-rust.item-list-s5 "^[\t ]*impl[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
+set-variable .fhook-rust.item-list-r5 "impl \ecB\\1\ecA"
+
+!if &not &exist .hilight.rust
+    set-variable .hilight.rust  &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-rust.setup &band .hilight.flags 0x02
+  0 hilight .hilight.rust 0x00 $global-scheme
+  ; Comments
+  hilight .hilight.rust 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.rust  2 "//"           .scheme.comment
+  ; Comment TODO's
+  hilight .hilight.rust 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+  hilight .hilight.rust 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  
+  ; Strings
+  hilight .hilight.rust  4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.rust  4 "\'" "\'" "\\"  .scheme.string
+  hilight .hilight.rust  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote
+  
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.rust 1    "[A-Z_]+"        .scheme.constant
+  ; package keywords
+  hilight .hilight.rust 0x12 "^\\s*mod"    .scheme.prepro
+  hilight .hilight.rust 0x12 "^\\s*use"    .scheme.prepro
+  ; keywords
+  hilight .hilight.rust 1    "as"             .scheme.keyword
+  hilight .hilight.rust 1    "async"          .scheme.keyword
+  hilight .hilight.rust 1    "await"          .scheme.keyword
+  hilight .hilight.rust 1    "break"          .scheme.keyword
+  hilight .hilight.rust 1    "const"          .scheme.keyword
+  hilight .hilight.rust 1    "continue"       .scheme.keyword
+  hilight .hilight.rust 1    "crate"          .scheme.keyword
+  hilight .hilight.rust 1    "dyn"            .scheme.keyword
+  hilight .hilight.rust 1    "else"           .scheme.keyword
+  hilight .hilight.rust 1    "extern"         .scheme.keyword
+  hilight .hilight.rust 1    "for"            .scheme.keyword
+  hilight .hilight.rust 1    "fn"             .scheme.keyword
+  hilight .hilight.rust 1    "if"             .scheme.keyword
+  hilight .hilight.rust 1    "impl"           .scheme.keyword
+  hilight .hilight.rust 1    "in"             .scheme.keyword
+  hilight .hilight.rust 1    "let"            .scheme.keyword
+  hilight .hilight.rust 1    "loop"           .scheme.keyword
+  hilight .hilight.rust 1    "match"          .scheme.keyword
+  hilight .hilight.rust 1    "move"           .scheme.keyword
+  hilight .hilight.rust 1    "mut"            .scheme.keyword
+  hilight .hilight.rust 1    "pub"            .scheme.keyword
+  hilight .hilight.rust 1    "ref"            .scheme.keyword
+  hilight .hilight.rust 1    "return"         .scheme.keyword
+  hilight .hilight.rust 1    "self"           .scheme.keyword
+  hilight .hilight.rust 1    "Self"           .scheme.keyword
+  hilight .hilight.rust 1    "super"          .scheme.keyword
+  hilight .hilight.rust 1    "trait"          .scheme.keyword
+  hilight .hilight.rust 1    "type"           .scheme.keyword
+  hilight .hilight.rust 1    "unsafe"         .scheme.keyword
+  hilight .hilight.rust 1    "where"          .scheme.keyword
+  hilight .hilight.rust 1    "while"          .scheme.keyword
+  hilight .hilight.rust 1    "or"             .scheme.operator
+  hilight .hilight.rust 1    "true"           .scheme.operator
+  hilight .hilight.rust 1    "bool"           .scheme.type
+  hilight .hilight.rust 1    "chr"            .scheme.type
+  hilight .hilight.rust 1    "enum"           .scheme.type
+  hilight .hilight.rust 1    "f32"            .scheme.type
+  hilight .hilight.rust 1    "f64"            .scheme.type
+  hilight .hilight.rust 1    "i8"             .scheme.type
+  hilight .hilight.rust 1    "i16"            .scheme.type
+  hilight .hilight.rust 1    "i32"            .scheme.type
+  hilight .hilight.rust 1    "i64"            .scheme.type
+  hilight .hilight.rust 1    "i128"           .scheme.type  
+  hilight .hilight.rust 1    "isize"          .scheme.type
+  hilight .hilight.rust 1    "str"            .scheme.type
+  hilight .hilight.rust 1    "static"         .scheme.type
+  hilight .hilight.rust 1    "struct"         .scheme.type  
+  hilight .hilight.rust 1    "u8"             .scheme.type
+  hilight .hilight.rust 1    "u16"            .scheme.type
+  hilight .hilight.rust 1    "u32"            .scheme.type
+  hilight .hilight.rust 1    "u64"            .scheme.type
+  hilight .hilight.rust 1    "u128"           .scheme.type  
+  hilight .hilight.rust 1    "usize"          .scheme.type
+  hilight .hilight.rust 1    "union"          .scheme.type
+  hilight .hilight.rust 1    "unsafe"         .scheme.type
+!endif
+
+!if &sin "d" .fhook-v.setup
+  0 indent  .hilight.rust 0 10
+  indent .hilight.rust n "{"  t
+  indent .hilight.rust o "}" -t
+  indent .hilight.rust e "\"" "\"" "\\"
+  indent .hilight.rust b "\\[" "]"
+  indent .hilight.rust b "(" ")"
+!endif
+
+set-variable %fhook-rust-lint    "rustc %f"
+set-variable %fhook-rust-exec    "cargo run %f"
+set-variable %fhook-rust-format  "rustfmt %f"
+
+buffer-init-fhook "rust"
