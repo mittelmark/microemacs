@@ -1,0 +1,14 @@
+// -!- rust -!- 
+// Copyright (c) $YEAR$ $COMPANY$.
+//
+// LICENSE:
+//
+// Synopsis:    $CURSOR$
+// Authors:     $USER_NAME$
+
+
+use std::io;
+
+fn main () {
+    println!("Hello World!");
+}
