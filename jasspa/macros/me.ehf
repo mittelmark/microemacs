@@ -1793,6 +1793,7 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsreg(9)lmreg(9)le Registry file  
     lsrgy(9)lmrgy(9)le Registry file  
+    lsrust(9)lmrust(9)le Rust programming language  
     lsruby(9)lmruby(9)le Ruby programming language  
     lsrul(9)lmrul(9)le Install Shield Rules  
     lss(9)lms(9)le Assembler File  
@@ -3911,6 +3912,7 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
+    lsrs(9)lmrs(9)le Rust programming language file    
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
     lsr-exec(3)lmr-exec(3)le Run the currently edited R script file using R-script   
     lsr-format(3)lmr-format(3)le Format the currently edited R script file  
@@ -3936,6 +3938,7 @@ Miscellaneous Information
     lsrgrep(3)lmrgrep(3)le Execute recursive grep command  
     lsrgy(9)lmrgy(9)le Registry file  
     lsruby(9)lmruby(9)le Ruby programming language  
+    lsrust(9)lmrust(9)le Rust programming language    
     lsrul(9)lmrul(9)le Install Shield Rules  
     lsSearchGroups(4)lmSearchGroups(4)le Last search group values  
     lss(9)lms(9)le Assembler File  
@@ -43364,7 +43367,7 @@ $a
     which should declare the command lines to be used for executing, linting or 
     formatting the current file. The variable names are of type:
     
-      _%fhook-FHOOK-(exec|format|lint)_ 
+    cC%fhook-FHOOK-(exec|format|lint)cA 
     
     where cCFHOOKcA is the file hook name of the file. The variable declaration
     can be added to the users configuration file, cCUSERNAME.emfcA or into the
@@ -63790,7 +63793,7 @@ $a
 |%fhook-v-format
     %fhook-v-format - formatting command for V files
 |%fhook-v-lint
-    %fhook-v-lint - linting command for v files
+    %fhook-v-lint - linting command for V files
 $a
 
 cESYNOPSIS cA
@@ -63847,8 +63850,8 @@ $a
 
     cDFolding and Information HidingcA
     
-       Generic folding is enabled within the Go files. The folds occur
-       about the cDfunccA keyword and a closing curly brace, both at the
+       Generic folding is enabled within the V files. The folds occur
+       about the cDfncA keyword and a closing curly brace, both at the
        beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
        (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
        current region. 
@@ -63899,6 +63902,130 @@ $a
     they are automatically recognized as V language files and not as Verilog files.
 
     cC// -!- v-lang -!-cA
+      
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 rs
+! 9 rust
+! 5 %fhook-rust-exec
+! 5 %fhook-rust-format
+! 5 %fhook-rust-lint
+
+cEcENAME cEcA
+
+|%fhook-rust-exec
+    %fhook-rust-exec - command to execute Rust files
+|%fhook-rust-format
+    %fhook-rust-format - formatting command for Rust files
+|%fhook-rust-lint
+    %fhook-rust-lint - linting command for Rust files
+$a
+
+cESYNOPSIS cA
+
+
+    rust, rs - Rust programming language templates
+    cD%fhook-rust-execcA  
+    cD%fhook-rust-formatcA  
+    cD%fhook-rust-lintcA  
+
+
+cEFILES cA
+
+
+    cDhkrust.emfcA - Rust programming language hook definition  
+    cDrust.etfcA - Rust programming language template file
+    cDrust.eafcA - Rust programming language abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.rscA - Rust file
+
+
+cEDESCRIPTION cA
+
+
+    The cDrustcA file type templates share much with the lsc(9)lmc(9)le template definitions,
+    utilising the electric 'C' features for automatic layout of text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Rust files. The folds occur
+       about the cDfncA keyword and a closing curly brace, both at the
+       beginning of a line. Furthermore cDimplcA sections for method definitions
+       of classes are foldable. lscollapse-all(3)lmcollapse-all(3)le
+       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
+       current region. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+
+    cD%fhook-rust-execcA - The command to execute the current Rust file, default
+              is set to cC"rustc %f -o %b && ./%b"cA where %f represents the file name 
+              and %b the the filename without extension 
+    cD%fhook-rust-formatcA - The command to format current Rust file, default  
+              is set to cC"rustfmt  %f"cA where %f represents the file name  
+    cD%fhook-rust-lintcA - The command to check/lint the current Rust file, 
+              default is set to cC"rustc %f"cA 
+    
+    The  setting  assume  that  the  Rust  compiler  and the Rust  formatter  is
+    available via the PATH environment variable. On Windows you must insert here
+    either the complete  PATH to the cGrustccA executable or add the folder where this
+    file is to the PATH variable.
+
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmyrust.emfcA. 
       
 cESEE ALSO cA
 

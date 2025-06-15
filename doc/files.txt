@@ -1104,5 +1104,8 @@ m9typ049.html	r(9)
 m9typ050.html	go(9)
 m9typ051.html	dart(9)
 m9typ052.html	c3(9)
+m9typ053.html	vlang(9)
+m9typ054.html	rs(9)
+m9typ054.html	rust(9)
 home.html	home
 home.html	MicroEmacs

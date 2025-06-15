@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250611.1754>
+;  Last Modified : <250615.2026>
 ;
 ;  Description
 ;   V Language Template
@@ -27,7 +27,7 @@ set-variable .fhook-v.setup &reg "/history/fhook/v" "bdfghinopTx"
 set-variable .fhook-v.setup-mask "abdefghikmnopux"
 set-variable .fhook-v.comment "|/*| */|*| * | * |fr|"
 
-set-variable .fhook-v.collapse-open  "^fn"
+set-variable .fhook-v.collapse-open  "^\\(fn\\|pub fn\\)"
 set-variable .fhook-v.collapse-close "^}"
 set-variable .fhook-v.collapse-mclose "1"
 set-variable .fhook-v.collapse-mnext "-1"

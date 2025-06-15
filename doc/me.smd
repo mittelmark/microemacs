@@ -1709,6 +1709,7 @@
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [reg(9)](reg(9)) Registry file  
   [rgy(9)](rgy(9)) Registry file  
+  [rust(9)](rust(9)) Rust programming language  
   [ruby(9)](ruby(9)) Ruby programming language  
   [rul(9)](rul(9)) Install Shield Rules  
   [s(9)](s(9)) Assembler File  
@@ -3832,6 +3833,7 @@
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
+  [rs(9)](rs(9)) Rust programming language file    
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
   [r-exec(3)](r-exec(3)) Run the currently edited R script file using R-script   
   [r-format(3)](r-format(3)) Format the currently edited R script file  
@@ -3857,6 +3859,7 @@
   [rgrep(3)](rgrep(3)) Execute recursive grep command  
   [rgy(9)](rgy(9)) Registry file  
   [ruby(9)](ruby(9)) Ruby programming language  
+  [rust(9)](rust(9)) Rust programming language    
   [rul(9)](rul(9)) Install Shield Rules  
   [SearchGroups(4)](SearchGroups(4)) Last search group values  
   [s(9)](s(9)) Assembler File  
@@ -64742,7 +64745,7 @@ $a
 |%fhook-v-format
   %fhook-v-format - formatting command for V files
 |%fhook-v-lint
-  %fhook-v-lint - linting command for v files
+  %fhook-v-lint - linting command for V files
 $a
 
 ## SYNOPSIS
@@ -64799,8 +64802,8 @@ $a
 
   __Folding and Information Hiding__
   
-  >  Generic folding is enabled within the Go files. The folds occur
-     about the __func__ keyword and a closing curly brace, both at the
+  >  Generic folding is enabled within the V files. The folds occur
+     about the __fn__ keyword and a closing curly brace, both at the
      beginning of a line. [collapse-all(3)](collapse-all(3))
      (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
      current region. 
@@ -64851,6 +64854,131 @@ $a
   they are automatically recognized as V language files and not as Verilog files.
 
   _// -!- v-lang -!-_
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ054
+! 9 rs
+! 9 rust
+! 5 %fhook-rust-exec
+! 5 %fhook-rust-format
+! 5 %fhook-rust-lint
+
+## NAME
+
+|%fhook-rust-exec
+  %fhook-rust-exec - command to execute Rust files
+|%fhook-rust-format
+  %fhook-rust-format - formatting command for Rust files
+|%fhook-rust-lint
+  %fhook-rust-lint - linting command for Rust files
+$a
+
+## SYNOPSIS
+
+
+  rust, rs - Rust programming language templates
+  __%fhook-rust-exec__  
+  __%fhook-rust-format__  
+  __%fhook-rust-lint__  
+
+
+## FILES
+
+
+  __hkrust.emf__ - Rust programming language hook definition  
+  __rust.etf__ - Rust programming language template file
+  __rust.eaf__ - Rust programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.rs__ - Rust file
+
+
+## DESCRIPTION
+
+
+  The __rust__ file type templates share much with the [c(9)](c(9)) template definitions,
+  utilising the electric 'C' features for automatic layout of text.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logical,
+     preprocessor definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
+
+  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph. If a comment commences with
+     `/***...` then the comment is automatically formatted to a box.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Rust files. The folds occur
+     about the __fn__ keyword and a closing curly brace, both at the
+     beginning of a line. Furthermore __impl__ sections for method definitions
+     of classes are foldable. [collapse-all(3)](collapse-all(3))
+     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
+     current region. 
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+
+  __%fhook-rust-exec__ - The command to execute the current Rust file, default
+            is set to _"rustc %f -o %b && ./%b"_ where %f represents the file name 
+            and %b the the filename without extension 
+  __%fhook-rust-format__ - The command to format current Rust file, default  
+            is set to _"rustfmt  %f"_ where %f represents the file name  
+  __%fhook-rust-lint__ - The command to check/lint the current Rust file, 
+            default is set to _"rustc %f"_ 
+  
+  The  setting  assume  that  the  Rust  compiler  and the Rust  formatter  is
+  available via the PATH environment variable. On Windows you must insert here
+  either the complete  PATH to the `rustc` executable or add the folder where this
+  file is to the PATH variable.
+
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __myrust.emf__. 
     
 ## SEE ALSO
 
