@@ -1744,7 +1744,9 @@
   [xsl(9)](xsl(9)) Extensible Stylesheet Language  
   [xul(9)](xul(9)) XML User Interface Language  
   [y(9)](y(9)) YACC programming language  
+  [zig(9)](zig(9)) Zig file  
   [zsh(9)](zsh(9)) Z-Shell file  
+  
 !! me-id: amicr031
 !   MicroEmacs - Command Glossary
 !9  Command Glossary - MicroEmacs
@@ -4005,6 +4007,7 @@
   [yank-rectangle(2)](yank-rectangle(2)) (esc C-y) Insert a column of text  
   [yank-rectangle-overwrite(3)](yank-rectangle-overwrite(3)) Insert a column of text with overwrite  
   [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
+  [zig(9)](zig(9)) Zig file  
   [zsh(9)](zsh(9)) Z-Shell file  
 !! me-id: amicr036
 !   MicroEmacs - Acknowledgments
@@ -5051,7 +5054,10 @@
 
 
 ## Development History 
-
+  - [250617]
+    - support for Zig language
+  - [250615]
+    - support for Rust language
   - [250611]
     - support for V programming language
   - [250610]
@@ -64979,6 +64985,128 @@ $a
 
 
   The hilighting is typically extended using a file __myrust.emf__. 
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ055
+! 9 zig
+! 5 %fhook-zig-exec
+! 5 %fhook-zig-format
+! 5 %fhook-zig-lint
+
+## NAME
+
+|%fhook-zig-exec
+  %fhook-zig-exec - command to execute Zig files
+|%fhook-zig-format
+  %fhook-zig-format - formatting command for Zig files
+|%fhook-zig-lint
+  %fhook-zig-lint - linting command for Zig files
+$a
+
+## SYNOPSIS
+
+
+  zig - Zig programming language templates
+  __%fhook-zig-exec__  
+  __%fhook-zig-format__  
+  __%fhook-zig-lint__  
+
+
+## FILES
+
+
+  __hkzig.emf__ - Zig programming language hook definition  
+  __zig.etf__ - Zig programming language template file
+  __zig.eaf__ - Zig programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.zig__ - Zig file
+
+
+## DESCRIPTION
+
+
+  The __zig__ file type templates share much with the [c(9)](c(9)) template definitions,
+  utilising the electric 'C' features for automatic layout of text.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logical,
+     preprocessor definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
+
+  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph. 
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Zig files. The folds occur
+     about the __fn__ keyword and a closing curly brace, both at the
+     beginning of a line. Furthermore __enum__ and __struct__ sections for 
+     method definitions  of classes are foldable. [collapse-all(3)](collapse-all(3))
+     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
+     current region. 
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+
+  __%fhook-zig-exec__ - The command to execute the current Zig file, default
+            is set to _"zig run %f"_ where %f represents the file name 
+  __%fhook-zig-format__ - The command to format current Zig file, default  
+            is set to _"zig fmt %f"_ where %f represents the file name  
+  __%fhook-zig-lint__ - The command to check/lint the current Zig file, 
+            default is set to _"zig ast-check %f"_ 
+  
+  The  setting  assume  that  the  Zig  compiler  is  available  via the  PATH
+  environment  variable.  On Windows you must insert here either the  complete
+  PATH to the `zig`  executable  or add the  folder  where this file is to the
+  PATH variable.
+
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __myzig.emf__. 
     
 ## SEE ALSO
 

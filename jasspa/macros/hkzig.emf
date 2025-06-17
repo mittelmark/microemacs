@@ -1,0 +1,163 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth
+;  Created       : Fri Mar 6th, 2025
+;  Last Modified : <250617.0706>
+;
+;  Description
+;   Zig Language Template
+;   https://ziglang.org/
+;
+;  Notes: Based on the Go language defintion
+;
+;  History: 2025-06-17 first version
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+define-macro fhook-zig
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "zig"
+    buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-zig.setup &reg "/history/fhook/zig" "bdfghinoptx"
+set-variable .fhook-zig.setup-mask "abdefghikmnoptux"
+set-variable .fhook-zig.comment "|/*| */|*| * | * |fr|"
+
+set-variable .fhook-zig.collapse-open  "^\\(pub\\|fn\\|const\\|test\\)"
+set-variable .fhook-zig.collapse-close "^}"
+set-variable .fhook-zig.collapse-mclose "1"
+set-variable .fhook-zig.collapse-mnext "-1"
+
+set-variable .fhook-zig.item-list-s1 "^\\([\t ]*\\)fn[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
+set-variable .fhook-zig.item-list-r1 "func \\1\ecB\\2\ecA"
+set-variable .fhook-zig.item-list-s2 "^\\([\t ]*\\)pub [\t ]*fn[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
+set-variable .fhook-zig.item-list-r2 "\ecCfunc\ecA \\1\ecB\\2\ecA"
+set-variable .fhook-zig.item-list-s3 "^const[\t ]+\\(\\w[1-9A-Za-z_]*\\)[\t ]*=[\t ]*enum"
+set-variable .fhook-zig.item-list-r3 "enum \ecB\\1\ecA"
+set-variable .fhook-zig.item-list-s4 " \\(\w[1-9A-Za-z_]*\\)[\t ]*= [\t ] union[\t ]+{"
+set-variable .fhook-zig.item-list-r4 "unio \ecB\\1\ecA"
+set-variable .fhook-zig.item-list-s5 "^const[\t ]+\\(\\w[1-9A-Za-z_]*\\)[\t ]*=[\t ]*struct"
+set-variable .fhook-zig.item-list-r5 "strc \ecB\\1\ecA"
+set-variable .fhook-zig.item-list-s6 "^[\t ]*test[\t ]+\"\\([\\w ]+\\)\"[\t ]*"
+set-variable .fhook-zig.item-list-r6 "test \ecB\\1\ecA"
+set-variable .fhook-zig.item-list-s7 "^// TODO: \\([\\w ]+\\)"
+set-variable .fhook-zig.item-list-r7 "todo \ecB\\1\ecA"
+
+!if &not &exist .hilight.zig
+    set-variable .hilight.zig  &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-zig.setup &band .hilight.flags 0x02
+  0 hilight .hilight.zig 0x00 $global-scheme
+  ; Comments
+  hilight .hilight.zig  2 "//"           .scheme.comment
+  ; Comment TODO's
+  hilight .hilight.zig 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  
+  ; Strings
+  hilight .hilight.zig  4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.zig  4 "\'" "\'" "\\"  .scheme.string
+  hilight .hilight.zig  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote
+  
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.zig 1    "[A-Z_]+"        .scheme.constant
+  ; package keywords
+  hilight .hilight.zig 0x12 "@import"    .scheme.prepro
+  ; keywords
+  hilight .hilight.zig 1    "_"              .scheme.keyword
+  hilight .hilight.zig 1    "align"          .scheme.keyword
+  hilight .hilight.zig 1    "anyerror"       .scheme.keyword
+  hilight .hilight.zig 1    "anytype"        .scheme.keyword
+  hilight .hilight.zig 1    "asm"            .scheme.keyword
+  hilight .hilight.zig 1    "async"          .scheme.keyword
+  hilight .hilight.zig 1    "await"          .scheme.keyword
+  hilight .hilight.zig 1    "break"          .scheme.keyword
+  hilight .hilight.zig 1    "callconv"       .scheme.keyword
+  hilight .hilight.zig 1    "catch"          .scheme.keyword
+  hilight .hilight.zig 1    "comptime"       .scheme.keyword
+  hilight .hilight.zig 1    "const"          .scheme.keyword
+  hilight .hilight.zig 1    "continue"       .scheme.keyword
+  hilight .hilight.zig 1    "defer"          .scheme.keyword
+  hilight .hilight.zig 1    "else"           .scheme.keyword
+  hilight .hilight.zig 1    "errdefer"       .scheme.keyword
+  hilight .hilight.zig 1    "error"          .scheme.keyword
+  hilight .hilight.zig 1    "export"         .scheme.keyword
+  hilight .hilight.zig 1    "extern"         .scheme.keyword
+  hilight .hilight.zig 1    "fn"             .scheme.keyword
+  hilight .hilight.zig 1    "for"            .scheme.keyword
+  hilight .hilight.zig 1    "if"             .scheme.keyword
+  hilight .hilight.zig 1    "inline"         .scheme.keyword
+  hilight .hilight.zig 1    "noalias"        .scheme.keyword
+  hilight .hilight.zig 1    "orelse"         .scheme.keyword
+  hilight .hilight.zig 1    "packed"         .scheme.keyword
+  hilight .hilight.zig 1    "pub"            .scheme.keyword
+  hilight .hilight.zig 1    "resume"         .scheme.keyword
+  hilight .hilight.zig 1    "return"         .scheme.keyword
+  hilight .hilight.zig 1    "suspend"        .scheme.keyword
+  hilight .hilight.zig 1    "switch"         .scheme.keyword
+  hilight .hilight.zig 1    "test"           .scheme.keyword
+  hilight .hilight.zig 1    "type"           .scheme.keyword
+  hilight .hilight.zig 1    "threadlocal"    .scheme.keyword
+  hilight .hilight.zig 1    "try"            .scheme.keyword
+  hilight .hilight.zig 1    "unreachable"    .scheme.keyword
+  hilight .hilight.zig 1    "usingnamespace" .scheme.keyword
+  hilight .hilight.zig 1    "var"            .scheme.keyword
+  hilight .hilight.zig 1    "volatile"       .scheme.keyword
+  hilight .hilight.zig 1    "while"          .scheme.keyword
+  hilight .hilight.zig 1    "false"          .scheme.operator  
+  hilight .hilight.zig 1    "true"           .scheme.operator
+  hilight .hilight.zig 1    "anyerror"       .scheme.type
+  hilight .hilight.zig 1    "bool"           .scheme.type
+  hilight .hilight.zig 1    "enum"           .scheme.type
+  hilight .hilight.zig 1    "f16"            .scheme.type
+  hilight .hilight.zig 1    "f32"            .scheme.type
+  hilight .hilight.zig 1    "f64"            .scheme.type
+  hilight .hilight.zig 1    "f80"            .scheme.type
+  hilight .hilight.zig 1    "f128"           .scheme.type
+  hilight .hilight.zig 1    "i8"             .scheme.type
+  hilight .hilight.zig 1    "i16"            .scheme.type
+  hilight .hilight.zig 1    "i32"            .scheme.type
+  hilight .hilight.zig 1    "i64"            .scheme.type
+  hilight .hilight.zig 1    "i128"           .scheme.type
+  hilight .hilight.zig 1    "isize"          .scheme.type
+  hilight .hilight.zig 1    "noreturn"       .scheme.type
+  hilight .hilight.zig 1    "null"           .scheme.type
+  hilight .hilight.zig 1    "struct"         .scheme.type
+  hilight .hilight.zig 1    "u8"             .scheme.type
+  hilight .hilight.zig 1    "u16"            .scheme.type
+  hilight .hilight.zig 1    "u32"            .scheme.type
+  hilight .hilight.zig 1    "u64"            .scheme.type
+  hilight .hilight.zig 1    "u128"           .scheme.type
+  hilight .hilight.zig 1    "usize"          .scheme.type
+  hilight .hilight.zig 1    "union"          .scheme.type
+  hilight .hilight.zig 1    "undefined"      .scheme.type
+  hilight .hilight.zig 1    "void"           .scheme.type
+  hilight .hilight.zig 1    "c_char"         .scheme.type
+  hilight .hilight.zig 1    "c_short"        .scheme.type
+  hilight .hilight.zig 1    "c_ushort"       .scheme.type
+  hilight .hilight.zig 1    "c_int"          .scheme.type
+  hilight .hilight.zig 1    "c_uint"         .scheme.type
+  hilight .hilight.zig 1    "c_long"         .scheme.type
+  hilight .hilight.zig 1    "c_ulong"        .scheme.type
+  hilight .hilight.zig 1    "c_longlong"     .scheme.type
+  hilight .hilight.zig 1    "c_ulonglong"    .scheme.type
+  hilight .hilight.zig 1    "c_longdouble"   .scheme.type
+!endif
+
+!if &sin "d" .fhook-v.setup
+  0 indent  .hilight.zig 0 10
+  indent .hilight.zig n "{"  t
+  indent .hilight.zig o "}" -t
+  indent .hilight.zig e "\"" "\"" "\\"
+  indent .hilight.zig b "\\[" "]"
+  indent .hilight.zig b "(" ")"
+!endif
+
+set-variable %fhook-zig-lint    "zig ast-check %f"
+set-variable %fhook-zig-exec    "zig run %f"
+set-variable %fhook-zig-format  "zig fmt %f"
+
+buffer-init-fhook "zig"

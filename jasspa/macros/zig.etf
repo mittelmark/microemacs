@@ -1,0 +1,19 @@
+// -*- Zig -*- ****************************************************************/
+//
+//  Copyright (c) $YEAR$, $COMPANY_NAME$
+//  License       :
+//  Date          : $Date$
+//  Author        : $Author$
+//  Created By    : $USER_NAME$
+//  Created       : $ASCII_TIME$
+//  Last Modified : <250617.0646>
+//
+//  Description	  :
+//
+// ****************************************************************************/
+
+const std = @import("std");
+
+pub fn main() void {
+    std.debug.print("Hello, world!\n", .{});
+}

@@ -2,11 +2,12 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250615.1947>
+;  Last Modified : <250617.0626>
 ;
-;  Description
-;   V Language Template
-;   https://vlang.io/
+;  Description:
+
+;   Rust Language Template
+;   https://www.rust-lang.org/b
 ;
 ;  Notes: Based on the Go language defintion
 ;
