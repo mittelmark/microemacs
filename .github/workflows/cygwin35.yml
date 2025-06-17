@@ -1,0 +1,79 @@
+name: Binaries Windows-Cygwin 3.5
+
+on:
+  workflow_dispatch:
+    branches: [ master ]
+env:
+   VERSION: "091225b2"
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Cygwin
+      uses: egor-tensin/setup-cygwin@v4
+      with:
+        packages: bash git make gcc-core gcc-g++ python3-pip wget zlib-devel libncurses-devel libXt-devel zip unzip
+        install-dir: C:\cygwin
+        
+    - name: Modify PATH
+      run: |
+        echo "C:\cygwin\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        
+    - name: Verify Cygwin installation
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        echo $PATH
+        which bash
+        bash --version
+
+    - name: Run your commands
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        # Your Cygwin commands here
+        cygcheck -c
+        make --version
+        gcc --version
+        
+    - name: Install apt-cyg
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg
+        install apt-cyg /bin
+        chmod +x /bin/apt-cyg
+        apt-cyg install nano
+        
+    - name: Verify Python Installation
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        python3 --version
+        which python3
+
+    - name: Clone MicroEmacs
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        mkdir workspace
+        cd workspace
+        git clone https://github.com/mittelmark/microemacs.git
+        cd microemacs
+        make -f cygwin.gmk mec  mecb
+        make -f cygwin.gmk mew  mewb        
+        make -f cygwin.gmk mecw mecwb                
+        ls
+        ls -l ./cygwin-3.6-microemacs-${VERSION}-mecb.exe
+        echo `./cygwin-3.6-microemacs-${VERSION}-mecb.exe -V`
+        
+    - name: Cygwin Combined Release 
+      run: |
+        make -f cygwin.gmk release app=mecb
+        make -f cygwin.gmk release app=mewb        
+        make -f cygwin.gmk release app=mecwb                
+
+    - name: Upload Cygwin Combined Release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Release-cygwin-3.6-windows
+        path: cygwin-*/
+        
