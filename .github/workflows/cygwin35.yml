@@ -59,9 +59,9 @@ jobs:
         cyg-get install bash
         cyg-get install git
         cyg-get install make
-        apt-get install gcc-core
-        apt-get install gcc-g++        
-        apt-get install python3-pip wget zlib-devel libncurses-devel libXt-devel zip unzip
+        cyg-get install gcc-core
+        cyg-get install gcc-g++        
+        cyg-get install python3-pip wget zlib-devel libncurses-devel libXt-devel zip unzip
         bash --version
         & dir c:\ProgramData\chocolatey\bin
         & dir c:\ProgramData\chocolatey
