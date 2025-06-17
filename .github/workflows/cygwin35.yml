@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 env:
    VERSION: "091225b2"
-   INSTALLDIR: c:\cygwin
+   INSTALLDIR: c:\cygwin35
 jobs:
   build:
     runs-on: windows-latest
@@ -49,21 +49,26 @@ jobs:
       shell: pwsh
     - name: Modify PATH
       run: |
-        echo "C:\cygwin\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "C:\ProgramData\choclatey\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         
     - name: Verify Cygwin installation
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
         echo $PATH
+        cyg-get install bash
+        cyg-get install git
+        cyg-get install make
         which bash
         bash --version
-        uname -a
-        echo "cygcheck"
-        cygcheck -cd cygwin 
-        echo "/c/cygwin/bin"
-        ls -l /cygdrive/c/cygwin/bin
-        echo "/c/ProgramData ..."        
-        ls -l /cygdrive/c/ProgramData/chocolatey/bin
-        which cygwin
-        /cygdrive/c/ProgramData/chocolatey/bin/cygwin.exe --version
+        #  uname -a
+        #echo "cygcheck"
+        #cygcheck -cd cygwin 
+        #echo "/c/cygwin/bin"
+
+        #ls -l /cygdrive/c/cygwin/bin
+        #echo "/c/ProgramData ..."        
+        #ls -l /cygdrive/c/ProgramData/chocolatey/bin
+        #which cygwin
+        #/cygdrive/c/ProgramData/chocolatey/bin/cygwin.exe --version
         
+                
