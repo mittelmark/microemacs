@@ -28,6 +28,7 @@ jobs:
         echo $PATH
         which bash
         bash --version
+        uname -a
 
     - name: Run your commands
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
@@ -62,8 +63,8 @@ jobs:
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls
-        ls -l ./cygwin-3.6-microemacs-${VERSION}-mecb.exe
-        echo `./cygwin-3.6-microemacs-${VERSION}-mecb.exe -V`
+        ls -l ./cygwin-3.5-microemacs-${VERSION}-mecb.exe
+        echo `./cygwin-3.5-microemacs-${VERSION}-mecb.exe -V`
         
     - name: Cygwin Combined Release 
       run: |
@@ -74,6 +75,6 @@ jobs:
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-cygwin-3.6-windows
+        name: Release-cygwin-3.5-windows
         path: cygwin-*/
         
