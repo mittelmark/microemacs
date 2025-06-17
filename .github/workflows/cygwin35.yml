@@ -59,4 +59,4 @@ jobs:
         bash --version
         uname -a
         cygcheck -cd cygwin 
-
+        ls /cygdrive/c/ProgramData/chocolatey/bin
