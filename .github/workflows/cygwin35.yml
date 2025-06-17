@@ -59,6 +59,8 @@ jobs:
         cyg-get install git
         cyg-get install make
         bash --version
+        & dir c:\ProgramData\chocolatey\bin
+        & dir c:\ProgramData\chocolatey
         #shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
 
         #which bash
