@@ -1,4 +1,19 @@
 name: Binaries Windows-Cygwin 3.5
+inputs:
+  install-dir:
+    description: Installation directory
+    required: false
+    default: C:\tools\cygwin
+  packages:
+    description: Packages to install, separated by a space
+    required: false
+  env:
+    description: Value to set as the CYGWIN environment variable
+    required: false
+  hardlinks:
+    description: Convert symlinks in /usr/bin to hardlinks
+    required: false
+    default: 0
 
 on:
   workflow_dispatch:
@@ -10,71 +25,39 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v4
-
     - name: Install Cygwin
-      uses: mittelmark/setup-cygwin@v2.0.1
-      with:
-        packages: bash git make gcc-core gcc-g++ python3-pip wget zlib-devel libncurses-devel libXt-devel zip unzip
-        install-dir: C:\cygwin
-        
-    - name: Modify PATH
       run: |
-        echo "C:\cygwin\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        
-    - name: Verify Cygwin installation
-      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-      run: |
-        echo $PATH
-        which bash
-        bash --version
-        uname -a
+        New-Variable os -Value ('${{ runner.os }}') -Option Constant
+        New-Variable windows_host -Value ($os -eq 'Windows') -Option Constant
 
-    - name: Run your commands
-      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-      run: |
-        # Your Cygwin commands here
-        cygcheck -c
-        make --version
-        gcc --version
-        
-    - name: Install apt-cyg
-      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-      run: |
-        wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg
-        install apt-cyg /bin
-        chmod +x /bin/apt-cyg
-        apt-cyg install nano
-        
-    - name: Verify Python Installation
-      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-      run: |
-        python3 --version
-        which python3
+        if (!$windows_host) {
+            throw "Sorry, installing Cygwin is unsupported on $os"
+        }
+        New-Variable install_dir -Value '${{ inputs.install-dir }}' -Option Constant
+        New-Variable packages -Value '${{ inputs.packages }}' -Option Constant
+        function Locate-Choco {
+            $path = Get-Command 'choco' -ErrorAction SilentlyContinue
+            if ($path) {
+                $path.Path
+            } else {
+                Join-Path ${env:ProgramData} 'chocolatey' 'bin' 'choco'
+            }
+        }
 
-    - name: Clone MicroEmacs
-      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-      run: |
-        mkdir workspace
-        cd workspace
-        git clone https://github.com/mittelmark/microemacs.git
-        cd microemacs
-        make -f cygwin.gmk mec  mecb
-        make -f cygwin.gmk mew  mewb        
-        make -f cygwin.gmk mecw mecwb                
-        ls
-        ls -l ./cygwin-3.5-microemacs-${VERSION}-mecb.exe
-        echo `./cygwin-3.5-microemacs-${VERSION}-mecb.exe -V`
-        
-    - name: Cygwin Combined Release 
-      run: |
-        make -f cygwin.gmk release app=mecb
-        make -f cygwin.gmk release app=mewb        
-        make -f cygwin.gmk release app=mecwb                
-
-    - name: Upload Cygwin Combined Release
-      uses: actions/upload-artifact@v4
-      with: 
-        name: Release-cygwin-3.5-windows
-        path: cygwin-*/
-        
+        $choco = Locate-Choco
+        $choco_params = @(
+            'install',
+            'cygwin',
+            '--version=3.5.3',
+            '-y',
+            '--no-progress',
+            "--package-parameters='/InstallDir:$install_dir'"
+        )
+        # Assuming that Cygwin is not installed when this is run.
+        & $choco $choco_params
+        # /usr/bin is really just /bin on Cygwin.
+        echo (Join-Path $install_dir bin) >> $env:GITHUB_PATH
+        echo (Join-Path $install_dir usr local bin) >> $env:GITHUB_PATH
+        echo 'CYGWIN=${{ inputs.env }}' >> $env:GITHUB_ENV
+        & $choco install cyg-get 
+      shell: pwsh
