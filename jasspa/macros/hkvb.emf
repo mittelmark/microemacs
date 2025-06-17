@@ -4,8 +4,8 @@
 ; See the file me.emf for copying and conditions.
 ;
 ; Created:     Mon Sep 21 1998
-; Synopsis:    Visual Basic Hook File
-; Authors:     Dave Yip & Steven Phillips
+; Synopsis:    Visual Basic / FreeBasic Hook File, FreeBasic
+; Authors:     Dave Yip, Steven Phillips & Detlef Groth
 ;
 define-macro fhook-vb
     set-variable $buffer-mask "luh1"
@@ -174,5 +174,19 @@ set-variable .fhook-vb.collapse-mnext "-1"
     ; let html based files use the vb indent for any VBScripts
     set-variable .indent.vbscript .hilight.vb
 !endif
+
+0 define-macro fhook-vb-replace
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string "bas(\\([0-9]+\\)) error " "bas:\\1:0 error "
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
+
+; setttings for FreeBasic compiler
+set-variable %fhook-vb-lint   "fbc -c -b %f"
+set-variable %fhook-vb-format "restyle-buffer"
+set-variable %fhook-vb-exec   "fbc -b %f -x %b && ./%b"
 
 buffer-init-fhook "vb"

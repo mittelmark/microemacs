@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250606.1854>
+;  Last Modified : <250617.1807>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -78,14 +78,19 @@ define-macro file-format
   ; C:/Program Files/GO/../go.exe fmt %s
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-format"
   set-variable #l1 $buffer-bname
+  
   !if &seq #l0 "ERROR"
     -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-format declared!"
     !abort
   !endif
   &band @# 1 save-some-buffers @mna  
-  0x4188 file-tool-run #l0 $buffer-fname "*file-format*"
-  ;next-window-find-buffer #l1
-  0 reread-file
+  !if &seq #l0 "restyle-buffer"
+    restyle-buffer
+  !else
+    0x4188 file-tool-run #l0 $buffer-fname "*file-format*"
+    ;next-window-find-buffer #l1
+    0 reread-file
+  !endif
 !emacro
 
 define-macro fhook-file-exec
