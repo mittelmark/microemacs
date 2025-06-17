@@ -1,25 +1,12 @@
 name: Binaries Windows-Cygwin 3.5
-inputs:
-  install-dir:
-    description: Installation directory
-    required: false
-    default: C:\tools\cygwin
-  packages:
-    description: Packages to install, separated by a space
-    required: false
-  env:
-    description: Value to set as the CYGWIN environment variable
-    required: false
-  hardlinks:
-    description: Convert symlinks in /usr/bin to hardlinks
-    required: false
-    default: 0
+description: Install Cygwin & packages
 
 on:
   workflow_dispatch:
     branches: [ master ]
 env:
    VERSION: "091225b2"
+   INSTALLDIR: c:\tools\cygwin
 jobs:
   build:
     runs-on: windows-latest
@@ -33,8 +20,7 @@ jobs:
         if (!$windows_host) {
             throw "Sorry, installing Cygwin is unsupported on $os"
         }
-        New-Variable install_dir -Value '${{ inputs.install-dir }}' -Option Constant
-        New-Variable packages -Value '${{ inputs.packages }}' -Option Constant
+        New-Variable install_dir -Value '${{ env.INSTALLDIR }}' -Option Constant
         function Locate-Choco {
             $path = Get-Command 'choco' -ErrorAction SilentlyContinue
             if ($path) {
