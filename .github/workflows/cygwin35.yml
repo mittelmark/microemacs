@@ -61,6 +61,7 @@ jobs:
         bash --version
         & dir c:\ProgramData\chocolatey\bin
         & dir c:\ProgramData\chocolatey
+        & dir c:\        
         #shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
 
         #which bash
