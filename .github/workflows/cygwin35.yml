@@ -50,6 +50,7 @@ jobs:
     - name: Modify PATH
       run: |
         echo "C:\ProgramData\choclatey\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "C:\cygwin35\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       shell: pwsh        
     - name: Verify Cygwin installation
       shell: pwsh
@@ -58,12 +59,18 @@ jobs:
         cyg-get install bash
         cyg-get install git
         cyg-get install make
+        apt-cyg install gcc-core
+        apt-cyg install gcc-g++        
         bash --version
         & dir c:\ProgramData\chocolatey\bin
         & dir c:\ProgramData\chocolatey
-        & dir c:\        
-        #shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-
+        & dir c:\cygwin35\bin
+    - name: Check Cygwin version                
+      shell: C:\cygwin35\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        which bash
+        bash --version
+        cygcheck -cd cygwin 
+        ls -l /cygdrive/c/cygwin35/bin
         #which bash
         #bash --version
         #  uname -a
