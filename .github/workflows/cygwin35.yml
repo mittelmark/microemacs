@@ -67,6 +67,7 @@ jobs:
         & dir c:\cygwin35\bin
     - name: Check Cygwin version                
       shell: C:\cygwin35\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
         which bash
         bash --version
         cygcheck -cd cygwin 
