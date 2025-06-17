@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install Cygwin
-      uses: mittelmark/setup-cygwin@v1.0.0
+      uses: mittelmark/setup-cygwin@v2.0.0
       with:
         packages: bash git make gcc-core gcc-g++ python3-pip wget zlib-devel libncurses-devel libXt-devel zip unzip
         install-dir: C:\cygwin
