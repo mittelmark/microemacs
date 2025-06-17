@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 env:
    VERSION: "091225b2"
-   INSTALLDIR: c:\tools\cygwin
+   INSTALLDIR: c:\cygwin
 jobs:
   build:
     runs-on: windows-latest
@@ -47,3 +47,15 @@ jobs:
         echo 'CYGWIN=${{ inputs.env }}' >> $env:GITHUB_ENV
         & $choco install cyg-get 
       shell: pwsh
+    - name: Modify PATH
+      run: |
+        echo "C:\cygwin\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        
+    - name: Verify Cygwin installation
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        echo $PATH
+        which bash
+        bash --version
+        uname -a
+
