@@ -58,7 +58,12 @@ jobs:
         which bash
         bash --version
         uname -a
+        echo "cygcheck"
         cygcheck -cd cygwin 
-        ls /cygdrive/c/ProgramData/chocolatey/bin
+        echo "/c/cygwin/bin"
+        ls -l /cygdrive/c/cygwin/bin
+        echo "/c/ProgramData ..."        
+        ls -l /cygdrive/c/ProgramData/chocolatey/bin
         which cygwin
         /cygdrive/c/ProgramData/chocolatey/bin/cygwin.exe --version
+        
