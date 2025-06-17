@@ -58,4 +58,5 @@ jobs:
         which bash
         bash --version
         uname -a
+        cygcheck -cd cygwin 
 
