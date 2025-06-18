@@ -184,7 +184,7 @@ set-variable .fhook-vb.collapse-mnext "-1"
   1 buffer-mode "view"  
 !emacro
 
-; setttings for FreeBasic compiler
+; settings for FreeBasic compiler
 set-variable %fhook-vb-lint   "fbc -c -b %f"
 set-variable %fhook-vb-format "restyle-buffer"
 set-variable %fhook-vb-exec   "fbc -b %f -x %b && ./%b"

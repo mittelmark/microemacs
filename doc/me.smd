@@ -43971,11 +43971,18 @@ $a
   for the filename or the file buffer basename like this:
 
   - "%f" - the filename of the currently edited file  
-  - "%b" - the basename of the current file buffer name 
+  - "%b" - the basename of the current file, so the name without the extension and
+           the directory part
   
   For more usable abbreviations see the help page of the  [file-tool-setup(3)](file-tool-setup(3))
   macro.
-  
+
+  The variable _%fhook-FHOOK-format_ can take as well the value "restyle-buffer",
+  so that the macro [restyle-buffer(3)](restyle-buffer(3)] is executed for the current 
+  buffer. This is useful if there is no sophisticated formatting tool is 
+  available for the programming language. See below for an example using the
+  Freebasic compiler for linting and executing and ME for formatting.
+    
   See below for a few examples to declare some variables.
   
   The __file-exec__  macro executes or compiles the currently edited file using 
@@ -44024,6 +44031,10 @@ $a
        set-variable %fhook-c-lint "clang-tidy %f -- -std=c99"
        set-variable %fhook-c-exec "gcc %f 2>&1; ./a.out"
        set-variable %fhook-c-format "astyle --indent=spaces=4 %f"
+       ; freebasic declarations within hkvb.emf
+       set-variable %fhook-vb-lint   "fbc -c -b %f"
+       set-variable %fhook-vb-format "restyle-buffer"
+       set-variable %fhook-vb-exec   "fbc -b %f -x %b && ./%b"
        ; command execution
        file-exec          ; executes the current file using the fhook-FHOOKNAME-exec var
        0 file-exec        ; ask for command line arguments and calls then executes
@@ -44037,7 +44048,7 @@ $a
   
 ## SEE ALSO
 
-  [file-tool-setup(3)](file-tool-setup(3))
+  [file-tool-setup(3)](file-tool-setup(3)), [restyle-buffer(3)](restyle-buffer(3)]. 
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

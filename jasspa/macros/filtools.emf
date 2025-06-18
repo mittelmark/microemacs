@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250617.1807>
+;  Last Modified : <250618.1537>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -50,7 +50,7 @@ define-macro file-lint
   !endif
   &band @# 1 save-some-buffers @mna
   set-variable #l2 &spr "%s-replace"  $buffer-fhook
-  1000 ml-write #l2
+  delete-other-windows
   0x4088 file-tool-run #l0 $buffer-fname "*file-lint*"
   !if &exi &ind #l2
     !force execute-named-command #l2
@@ -87,7 +87,7 @@ define-macro file-format
   !if &seq #l0 "restyle-buffer"
     restyle-buffer
   !else
-    0x4188 file-tool-run #l0 $buffer-fname "*file-format*"
+    0x4088 file-tool-run #l0 $buffer-fname "*file-format*"
     ;next-window-find-buffer #l1
     0 reread-file
   !endif
@@ -110,6 +110,7 @@ define-macro file-exec
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   set-variable #l2 &spr "%s-replace"  $buffer-fhook
+  delete-other-windows
   0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
   !if &exi &ind #l2
     !force !force execute-named-command #l2
@@ -131,23 +132,6 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 
 add-file-hook "*file-exec*" fhook-file-exec
 
-; workaround for filenames in parenthesis like for the c3c compiler
-0 define-macro fhook-c3-replace
-  -1 buffer-mode "view"
-  beginning-of-buffer
-  replace-string "^(\\(.+[0-9]\\))" "\\1"
-  beginning-of-buffer
-  -1 buffer-mode "edit"
-  1 buffer-mode "view"  
-!emacro
 
-0 define-macro fhook-python-replace
-  -1 buffer-mode "view"
-  beginning-of-buffer
-  replace-string " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
-  beginning-of-buffer
-  -1 buffer-mode "edit"
-  1 buffer-mode "view"  
-!emacro
 
 ;1000 ml-write &exi "fhook-python-rep"

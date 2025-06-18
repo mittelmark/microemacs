@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250601.1930>
+;  Last Modified : <250618.1509>
 ;
 ;  Description
 ;   Go Language Template
@@ -133,6 +133,15 @@ set-variable .fhook-c3.item-list-r1 "Func \ecB\\2\ecA"
   indent .hilight.c3 b "\\[" "]"
   indent .hilight.c3 b "(" ")"
 !endif
+; workaround for filenames in parenthesis like for the c3c compiler
+0 define-macro fhook-c3-replace
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string "^(\\(.+[0-9]\\))" "\\1"
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
 
 set-variable #l0 &which "astyle"
 !if &not &seq #l0 "ERROR"

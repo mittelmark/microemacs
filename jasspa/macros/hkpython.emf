@@ -131,4 +131,13 @@ set-variable #l0 &which "ruff"
 !endif
 set-variable %fhook-python-exec   "python3 %f"
 
+0 define-macro fhook-python-replace
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
+
 buffer-init-fhook "python"
