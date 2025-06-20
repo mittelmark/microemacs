@@ -48,10 +48,10 @@ add-color-scheme .scheme.osd-title .col2 .col1 .col10 .col16 .col0 .col2 .col16 
 add-color-scheme .scheme.osd-child .col4 .col17 .col12 .col17 .col16 .col4 .col16 .col12 0 8 0 8 8 0 8 0
 add-color-scheme .scheme.osd-sbar .col9 .col18 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
 ; Programming Langs
-add-color-scheme .scheme.prepro .col4 .col17 .col12 .col16 .col4 .col18 .col12 .col18 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.prepro .col4 .col17 .col12 .col16 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.function .col7 .col17 .col15 .col16 .col7 .col9 .col15 .col9 17 25 17 25 17 25 17 25
 add-color-scheme .scheme.keyword .col7 .col17 .col15 .col16 .col7 .col9 .col15 .col9 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.type .col3 .col17 .col11 .col16 .col3 .col18 .col11 .col18 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.type .col3 .col17 .col11 .col16 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.operator .col4 .col17 .col12 .col16 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.variable .col3 .col17 .col11 .col16 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.constant .col4 .col17 .col12 .col16 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
