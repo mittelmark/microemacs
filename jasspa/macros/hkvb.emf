@@ -23,15 +23,23 @@ set-variable .fhook-vb.indent-width 2
 set-variable .fhook-vb.exact -1
 
 ; setup item-list
-set-variable .fhook-vb.item-list-s1 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Function[ \t]+\\(\\w+\\)[ \t]*("
+set-variable .fhook-vb.item-list-s1 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Function[ \t]+\\([.\\w+]\\)[ \t]*("
 set-variable .fhook-vb.item-list-r1 "Func \ecB\\2\ecA"
-set-variable .fhook-vb.item-list-s2 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Sub[ \t]+\\(\\w+\\)[ \t]*("
+set-variable .fhook-vb.item-list-s2 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Sub[ \t]+\\([.\\w]+\\)[ \t]*("
 set-variable .fhook-vb.item-list-r2 "Sub  \ecB\\2\ecA"
 set-variable .fhook-vb.item-list-s3 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Property[ \t]+\\(Get\\|Let\\)[ \t]+\\(\\w+\\)[ \t]*("
 set-variable .fhook-vb.item-list-r3 "Prop \ecB\\2 \\3\ecA"
+set-variable .fhook-vb.item-list-s4 "^[ \t]*Type[ \t]+\\(\\w+\\)"
+set-variable .fhook-vb.item-list-r4 "Type \ecB\\1\ecA"
+set-variable .fhook-vb.item-list-s5 "^[ \t]*Constructor[ \t]+\\(\\w+\\)"
+set-variable .fhook-vb.item-list-r5 "Ctor \ecB\\1\ecA"
+set-variable .fhook-vb.item-list-s6 "^[ \t]*Destructor[ \t]+\\(\\w+\\)"
+set-variable .fhook-vb.item-list-r6 "Dtor \ecB\\1\ecA"
+set-variable .fhook-vb.item-list-s7 "^[ \t]*Namespace[ \t]+\\(\\w+\\)"
+set-variable .fhook-vb.item-list-r7 "Nsp  \ecB\\1\ecA"
 
-set-variable .fhook-vb.collapse-open  "^\\(Private[ \t]+\\|Public[ \t]+\\)?\\(Function\\|Sub\\|Property\\)"
-set-variable .fhook-vb.collapse-close "^End[ \t]+\\(Function\\|Sub\\|Property\\)"
+set-variable .fhook-vb.collapse-open  "^\\(Private[ \t]+\\|Public[ \t]+\\)?\\(Constructor\\|Destructor\\|Function\\|Sub\\|Type\\|Property\\)"
+set-variable .fhook-vb.collapse-close "^End[ \t]+\\(Constructor\\|Destructor\\|Function\\|Sub\\|Type\\|Property\\)"
 set-variable .fhook-vb.collapse-mclose "1"
 set-variable .fhook-vb.collapse-mnext "-1"
 
@@ -61,57 +69,94 @@ set-variable .fhook-vb.collapse-mnext "-1"
     hilight .hilight.vb 1 "Read"         .scheme.prepro
     hilight .hilight.vb 1 "Write"        .scheme.prepro
     ; Keywords
+    hilight .hilight.vb 1 "Alias"        .scheme.keyword    
+    hilight .hilight.vb 1 "Any"          .scheme.keyword    
     hilight .hilight.vb 1 "As"           .scheme.keyword
-    hilight .hilight.vb 1 "Option"       .scheme.keyword
-    hilight .hilight.vb 1 "If"           .scheme.keyword
+    hilight .hilight.vb 1 "Begin"        .scheme.keyword
+    hilight .hilight.vb 1 "ByRef"        .scheme.keyword    
+    hilight .hilight.vb 1 "ByVal"        .scheme.keyword        
+    hilight .hilight.vb 1 "Case"         .scheme.keyword
+    hilight .hilight.vb 1 "Cdecl"        .scheme.keyword        
+    hilight .hilight.vb 1 "Common"       .scheme.keyword    
+    hilight .hilight.vb 1 "Constructor"  .scheme.keyword        
+    hilight .hilight.vb 1 "Continue"     .scheme.keyword        
+    hilight .hilight.vb 1 "Destructor"   .scheme.keyword            
+    hilight .hilight.vb 1 "Do"           .scheme.keyword
     hilight .hilight.vb 1 "Else"         .scheme.keyword
     hilight .hilight.vb 1 "ElseIf"       .scheme.keyword
-    hilight .hilight.vb 1 "Else If"      .scheme.error
-    hilight .hilight.vb 1 "GoTo"         .scheme.keyword
-    hilight .hilight.vb 1 "Then"         .scheme.keyword
-    hilight .hilight.vb 1 "Case"         .scheme.keyword
-    hilight .hilight.vb 1 "LCase"        .scheme.keyword
-    hilight .hilight.vb 1 "Select"       .scheme.keyword
-    hilight .hilight.vb 1 "begin"        .scheme.keyword
     hilight .hilight.vb 1 "End"          .scheme.keyword
+    hilight .hilight.vb 1 "Error"        .scheme.keyword
     hilight .hilight.vb 1 "Exit"         .scheme.keyword
+    hilight .hilight.vb 1 "Export"       .scheme.keyword    
+    hilight .hilight.vb 1 "Extends"      .scheme.keyword        
+    hilight .hilight.vb 1 "Extern"       .scheme.keyword    
+    hilight .hilight.vb 1 "For"          .scheme.keyword
     hilight .hilight.vb 1 "Function"     .scheme.keyword
-    hilight .hilight.vb 1 "While"        .scheme.keyword
-    hilight .hilight.vb 1 "Until"        .scheme.keyword
-    hilight .hilight.vb 1 "Wend"         .scheme.keyword
+    hilight .hilight.vb 1 "GoSub"        .scheme.keyword    
+    hilight .hilight.vb 1 "GoTo"         .scheme.keyword
+    hilight .hilight.vb 1 "If"           .scheme.keyword
+    hilight .hilight.vb 1 "LCase"        .scheme.keyword
+    hilight .hilight.vb 1 "Lib"          .scheme.keyword    
     hilight .hilight.vb 1 "Loop"         .scheme.keyword
+    hilight .hilight.vb 1 "Next"         .scheme.keyword
     hilight .hilight.vb 1 "On"           .scheme.keyword
     hilight .hilight.vb 1 "Open"         .scheme.keyword
-    hilight .hilight.vb 1 "Do"           .scheme.keyword
-    hilight .hilight.vb 1 "Sub"          .scheme.keyword
-    hilight .hilight.vb 1 "Set"          .scheme.keyword
-    hilight .hilight.vb 1 "For"          .scheme.keyword
-    hilight .hilight.vb 1 "To"           .scheme.keyword
-    hilight .hilight.vb 1 "Step"         .scheme.keyword
-    hilight .hilight.vb 1 "Next"         .scheme.keyword
+    hilight .hilight.vb 1 "Option"       .scheme.keyword
+    hilight .hilight.vb 1 "Overload"     .scheme.keyword    
+    hilight .hilight.vb 1 "Pascal"       .scheme.keyword        
+    hilight .hilight.vb 1 "Private"      .scheme.keyword    
     hilight .hilight.vb 1 "Property"     .scheme.keyword
-    hilight .hilight.vb 1 "Error"        .scheme.keyword
+    hilight .hilight.vb 1 "Print"        .scheme.keyword    
+    hilight .hilight.vb 1 "Public"       .scheme.keyword        
     hilight .hilight.vb 1 "ReDim"        .scheme.keyword
+    hilight .hilight.vb 1 "Return"       .scheme.keyword    
+    hilight .hilight.vb 1 "Shared"       .scheme.keyword        
+    hilight .hilight.vb 1 "Scope"        .scheme.keyword    
+    hilight .hilight.vb 1 "Select"       .scheme.keyword
+    hilight .hilight.vb 1 "Set"          .scheme.keyword
+    hilight .hilight.vb 1 "Stdcall"      .scheme.keyword    
+    hilight .hilight.vb 1 "Static"       .scheme.keyword
+    hilight .hilight.vb 1 "Step"         .scheme.keyword
+    hilight .hilight.vb 1 "Sub"          .scheme.keyword
+    hilight .hilight.vb 1 "Then"         .scheme.keyword
+    hilight .hilight.vb 1 "To"           .scheme.keyword
+    hilight .hilight.vb 1 "Until"        .scheme.keyword
+    hilight .hilight.vb 1 "Var"          .scheme.keyword    
+    hilight .hilight.vb 1 "Wend"         .scheme.keyword
+    hilight .hilight.vb 1 "While"        .scheme.keyword
     ; Types
     hilight .hilight.vb 1 "Attribute"    .scheme.type
     hilight .hilight.vb 1 "Boolean"      .scheme.type
+    hilight .hilight.vb 1 "Byte"         .scheme.type    
     hilight .hilight.vb 1 "ByVal"        .scheme.type
     hilight .hilight.vb 1 "Collection"   .scheme.type
     hilight .hilight.vb 1 "Const"        .scheme.type
     hilight .hilight.vb 1 "Declare"      .scheme.type
     hilight .hilight.vb 1 "Dim"          .scheme.type
-    hilight .hilight.vb 1 "End\\s+Type" .scheme.type
-    hilight .hilight.vb 1 "Explicit"     .scheme.type
+    hilight .hilight.vb 1 "Double"       .scheme.type
+    hilight .hilight.vb 1 "Ende"         .scheme.type
+    hilight .hilight.vb 1 "Enum"         .scheme.type
     hilight .hilight.vb 1 "Explicit"     .scheme.type
     hilight .hilight.vb 1 "Global"       .scheme.type
     hilight .hilight.vb 1 "Integer"      .scheme.type
     hilight .hilight.vb 1 "Long"         .scheme.type
+    hilight .hilight.vb 1 "LongInt"      .scheme.type    
+    hilight .hilight.vb 1 "Namespace"    .scheme.type    
     hilight .hilight.vb 1 "New"          .scheme.type
     hilight .hilight.vb 1 "Object"       .scheme.type
     hilight .hilight.vb 1 "Private"      .scheme.type
     hilight .hilight.vb 1 "Public"       .scheme.type
+    hilight .hilight.vb 1 "Single"       .scheme.type
+    hilight .hilight.vb 1 "Short"        .scheme.type    
     hilight .hilight.vb 1 "String"       .scheme.type
     hilight .hilight.vb 1 "Type"         .scheme.type
+    hilight .hilight.vb 1 "UByte"        .scheme.type    
+    hilight .hilight.vb 1 "UInteger"     .scheme.type     
+    hilight .hilight.vb 1 "UShort"       .scheme.type         
+    hilight .hilight.vb 1 "ULongInt"     .scheme.type         
+    hilight .hilight.vb 1 "Union"        .scheme.type             
+    hilight .hilight.vb 1 "WString"      .scheme.type                 
+    hilight .hilight.vb 1 "ZString"      .scheme.type             
     !if &band .hilight.flags 0x04
         ; function definitions
         hilight .hilight.vb 0 "\\s\\{Function\\s+\\w+\\s?\\}(" .scheme.function
@@ -132,9 +177,9 @@ set-variable .fhook-vb.collapse-mnext "-1"
     indent .hilight.vb i "^#"
     indent .hilight.vb e "\"" "\"" ""
     indent .hilight.vb N "Declare" -t
-    indent .hilight.vb N "Function" t
+    indent .hilight.vb N "^Function" t
     indent .hilight.vb N "Property" t
-    indent .hilight.vb N "Sub" t
+    indent .hilight.vb N "^Sub" t
     ; A Then at the end of the line, then indent + i; otherwise this is
     ; a single line 'if ... then' and no indenation is required.
     indent .hilight.vb N "Then" t
@@ -148,12 +193,14 @@ set-variable .fhook-vb.collapse-mnext "-1"
     ; the end in 'response.end' (common in asp) throws thing out  
     indent .hilight.vb o "\\.End\\s" 0
     indent .hilight.vb N "Type" t
+    indent .hilight.vb N "Namespace" t    
     indent .hilight.vb S "Resume\\s+Next" 0
     indent .hilight.vb O "End\\s+Select" -2t
     indent .hilight.vb O "End\\s+Function" -t
     indent .hilight.vb O "End\\s+Property" -t
     indent .hilight.vb O "End\\s+Sub" -t
     indent .hilight.vb O "End\\s+Type" -t
+    indent .hilight.vb O "End\\s+Namespace" -t    
     indent .hilight.vb O "Exit\\s+For" 0
     indent .hilight.vb O "Exit\\s+Function" 0
     indent .hilight.vb O "Exit\\s+Property" 0
