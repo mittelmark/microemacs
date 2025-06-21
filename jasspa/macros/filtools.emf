@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250621.1012>
+;  Last Modified : <250621.1024>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -33,6 +33,8 @@
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+; list of formatters: https://github.com/vim-autoformat/vim-autoformat
+; list of linters: https://github.com/vim-syntastic/syntastic/tree/master/syntax_checkers
 define-macro-file find return-get-next-line mouse-get-next-line
 
 define-macro fhook-file-lint
@@ -180,12 +182,14 @@ add-file-hook "*file-exec*" fhook-file-exec
   !endif
 !endif
 
+; Dart
 !if &not &seq &which "dart" ""
   set-variable %fhook-dart-lint   "dart analyze %f"
   set-variable %fhook-dart-format "dart format %f"
   set-variable %fhook-dart-exec   "dart run %f"
 !endif
 
+; Fortran
 !if &not &seq &which "gfortran" ""
   set-variable %fhook-f90-lint   "gfortran -fsyntax-only %f"
   !if &not &seq &which "fprettify" ""
@@ -197,12 +201,14 @@ add-file-hook "*file-exec*" fhook-file-exec
   set-variable %fhook-f90-exec   "gfortran %f -o %b && ./%b"
 !endif
 
+; Go
 !if &not &seq &which "go" ""
   set-variable %fhook-go-lint "go vet %f"
   set-variable %fhook-go-exec "go run %f"
   set-variable %fhook-go-format "go fmt %f"
 !endif
 
+; Java
 !if &not &seq &which "javac" ""
   set-variable %fhook-java-lint "javac -Xlint %f"
   set-variable %fhook-java-exec "javac %f && java -cp . "
@@ -211,6 +217,7 @@ add-file-hook "*file-exec*" fhook-file-exec
   !endif
 !endif
 
+; Lua
 !if &not &seq &which "lua" ""
   set-variable %fhook-lua-lint "luac -p %f"
   set-variable %fhook-lua-exec "lua %f "
@@ -220,14 +227,15 @@ add-file-hook "*file-exec*" fhook-file-exec
   !endif
 !endif
 
-; perl
 
+; Perl
 !if &not &seq &which "perl" ""
   set-variable %fhook-perl-lint "perl -cw %f"
   set-variable %fhook-perl-exec "perl -w %f"
   !if &not &seq &which "perltidy" ""
     set-variable %fhook-perl-format "perltidy %f && cp %f.tdy %f"
   !endif
+  ; need to fix the error line format
   0 define-macro fhook-perl-replace
     -1 buffer-mode "view"
     beginning-of-buffer
@@ -236,6 +244,28 @@ add-file-hook "*file-exec*" fhook-file-exec
     -1 buffer-mode "edit"
     1 buffer-mode "view"  
   !emacro
+!endif
+; Rust
+!if &not &seq &which "rustc" ""
+  set-variable %fhook-rust-lint    "rustc %f"
+  set-variable %fhook-rust-exec    "rustc %f -o %b && ./%b"
+  !if &not &seq &which "rustfmt" ""
+    set-variable %fhook-rust-format  "rustfmt %f"
+  !endif
+!endif
+
+; V
+!if &not &seq &which "v" ""
+  set-variable %fhook-v-lint "v vet %f"
+  set-variable %fhook-v-exec "v crun %f"
+  set-variable %fhook-v-format "v fmt -w %f"
+!endif
+
+; Zig
+!if &not &seq &which "zig" ""
+  set-variable %fhook-zig-lint    "zig ast-check %f"
+  set-variable %fhook-zig-exec    "zig run %f"
+  set-variable %fhook-zig-format  "zig fmt %f"
 !endif
 
 
