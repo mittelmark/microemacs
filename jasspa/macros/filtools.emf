@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250621.1124>
+;  Last Modified : <250621.1139>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -281,6 +281,27 @@ add-file-hook "*file-exec*" fhook-file-exec
   !if &not &seq &which "rustfmt" ""
     set-variable %fhook-rust-format  "rustfmt %f"
   !endif
+!endif
+;
+; Tcl
+!if &not &seq &which "tclsh" ""
+  ; pip3 install tclint
+  !if &not &seq &which "tclint" ""
+    set-variable %fhook-tcl-lint "tclint %f"
+  !endif
+  set-variable %fhook-tcl-exec "tclsh %f"
+  !if &not &seq &which "tclfmt" ""
+    set-variable %fhook-tcl-format "tclfmt --in-place %f"
+  !endif
+  0 define-macro fhook-tcl-replace
+    -1 buffer-mode "view"
+    beginning-of-buffer
+    replace-string " *(file \"\\(.+\\)\" line \\(.+\\))" "file \\1:\\2:0"
+    beginning-of-buffer
+    -1 buffer-mode "edit"
+    1 buffer-mode "view"  
+  !emacro
+
 !endif
 
 ; V
