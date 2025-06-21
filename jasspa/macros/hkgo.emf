@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250529.0622>
+;  Last Modified : <250621.1409>
 ;
 ;  Description
 ;   Go Language Template
@@ -25,7 +25,7 @@ define-macro-file gotools go-format go-lint go-exec
 ; buffer-init variables
 ; TODO: disable Tab mode
 set-variable .fhook-go.setup &reg "/history/fhook/go" "bdfghinopTx"
-set-variable .fhook-go.setup-mask "abdefghikmnoptux"
+set-variable .fhook-go.setup-mask "abdefghikmnopux"
 set-variable .fhook-go.comment "|/*| */|*| * | * |fr|"
 
 set-variable .fhook-go.collapse-open  "^func"

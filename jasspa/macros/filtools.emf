@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250621.1139>
+;  Last Modified : <250621.1449>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -28,6 +28,8 @@
 ;  History       : 2025-04-14 - first version
 ;                  2025-05-29 - rewrite using file-tools-run anf add-next-line macros
 ;                  2025-06-01 - using find.emf for the macros to locate the problematic line
+;                  2025-06-21 - moving the global variables directly into this file to
+;                               simplify installation
 ;
 ;  Copyright (c) 2025 Detlef Groth. License same as Jasspa's MicroEmacs
 ;
@@ -136,6 +138,16 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 add-file-hook "*file-exec*" fhook-file-exec
 ; some code which should be moved into hkHOOK.emf files
 
+0 define-macro fhook-generic-replace
+  set-variable #l1 @1
+  set-variable #l2 @2
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string #l1 #l2
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
 ; ada
 !if &not &seq &which "gnat" ""
   set-variable %fhook-ada-lint "gcc -c -x ada -fsyntax-only  -gnats -gnatef %f"
@@ -173,6 +185,20 @@ add-file-hook "*file-exec*" fhook-file-exec
   !elif &not &seq &which "clang-format" ""
     set-variable %fhook-cpp-format "clang-format %f -- -std=c++17"
   !endif
+!endif
+
+; C3
+!if &not &seq &which "c3c" ""
+  0 define-macro fhook-c3-replace
+    fhook-generic-replace "^(\\(.+[0-9]\\))" "\\1"
+  !emacro
+  
+  set-variable #l0 &which "astyle"
+  !if &not &seq #l0 "ERROR"
+    set-variable %fhook-c3-format "astyle --indent=spaces=2 %f"
+  !endif
+  set-variable %fhook-c3-lint   "c3c compile %f -o %b"
+  set-variable %fhook-c3-exec   "c3c compile-run %f --"
 !endif
 
 ; Cobol
@@ -237,29 +263,28 @@ add-file-hook "*file-exec*" fhook-file-exec
   !endif
   ; need to fix the error line format
   0 define-macro fhook-perl-replace
-    -1 buffer-mode "view"
-    beginning-of-buffer
-    replace-string "at \\(.+\\) line \\([0-9]+\\)" "at \n\\1:\\2:0"
-    beginning-of-buffer
-    -1 buffer-mode "edit"
-    1 buffer-mode "view"  
+    fhook-generic-replace "at \\(.+\\) line \\([0-9]+\\)" "at \n\\1:\\2:0"
   !emacro
 !endif
 
 ; Python
-!if &not &seq &which "python" ""
+!if &not &seq &which "python3" ""
   !if &not &seq &which "ruff" ""
     set-variable %fhook-python-format "ruff format %f"
     set-variable %fhook-python-lint   "ruff check %f"
+  !else
+    !if &not &seq &which "yapf" ""
+      set-variable %fhook-python-format "yapf -i %f"
+    !elif  &not &seq &which "black" ""
+      set-variable %fhook-python-format "black -q %f"
+    !endif
+    !if &not &seq &which "pylint" ""
+      set-variable %fhook-python-lint "pylint %f"
+    !endif
   !endif
   set-variable %fhook-python-exec   "python3 %f"
   0 define-macro fhook-python-replace
-    -1 buffer-mode "view"
-    beginning-of-buffer
-    replace-string " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
-    beginning-of-buffer
-    -1 buffer-mode "edit"
-    1 buffer-mode "view"  
+    fhook-generic-replace " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
   !emacro
 !endif
 
@@ -294,14 +319,8 @@ add-file-hook "*file-exec*" fhook-file-exec
     set-variable %fhook-tcl-format "tclfmt --in-place %f"
   !endif
   0 define-macro fhook-tcl-replace
-    -1 buffer-mode "view"
-    beginning-of-buffer
-    replace-string " *(file \"\\(.+\\)\" line \\(.+\\))" "file \\1:\\2:0"
-    beginning-of-buffer
-    -1 buffer-mode "edit"
-    1 buffer-mode "view"  
+    fhook-generic-replace " *(file \"\\(.+\\)\" line \\(.+\\))" "file \\1:\\2:0"
   !emacro
-
 !endif
 
 ; V

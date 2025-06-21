@@ -1,3 +1,3 @@
 #!/usr/bin/env tclsh
 
-puts Hi
+puts Hi {

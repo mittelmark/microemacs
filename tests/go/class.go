@@ -1,11 +1,10 @@
-// -!- go -!- 
+// -!- go -!-
 // Copyright (c) 2025 $COMPANY$.
 //
 // LICENSE:
 //
-// Synopsis:    
+// Synopsis:
 // Authors:     Detlef Groth
-
 
 package main
 
@@ -14,9 +13,14 @@ import (
 	"os"
 )
 
-func main () {
+func main() {
 	argv := os.Args
-	fmt.Printf("Usage: %s\n",argv[0])
+	fmt.Printf("Usage: %s\n", argv[0])
 	fmt.Println("Hello World!")
+	test()
 }
 
+func test() {
+	fmt.Println("Test")
+
+}
