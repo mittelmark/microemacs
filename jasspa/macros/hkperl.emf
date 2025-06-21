@@ -321,4 +321,10 @@ set-variable .fhook-perl.item-list-r1 "Sub  \ecB\\1\ecA"
     indent .hilight.perl i "#"  
 !endif
 
+define-macro perl-lint
+  add-next-line "*perl-lint*" "at %f line %l."
+  0x4088 file-tool-run "perl -cw %f" $buffer-fname "*perl-lint*"
+  set-variable :mouse-word-select "mouse-get-next-line"
+  buffer-bind-key return-get-next-line "return"
+!emacro
 buffer-init-fhook "perl"
