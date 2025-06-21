@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250621.1024>
+;  Last Modified : <250621.1124>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -245,6 +245,35 @@ add-file-hook "*file-exec*" fhook-file-exec
     1 buffer-mode "view"  
   !emacro
 !endif
+
+; Python
+!if &not &seq &which "python" ""
+  !if &not &seq &which "ruff" ""
+    set-variable %fhook-python-format "ruff format %f"
+    set-variable %fhook-python-lint   "ruff check %f"
+  !endif
+  set-variable %fhook-python-exec   "python3 %f"
+  0 define-macro fhook-python-replace
+    -1 buffer-mode "view"
+    beginning-of-buffer
+    replace-string " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
+    beginning-of-buffer
+    -1 buffer-mode "edit"
+    1 buffer-mode "view"  
+  !emacro
+!endif
+
+; R
+!if &not &seq &which "Rscript" ""
+  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+  set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+  set-variable #l0 &xre #l0 "cp" "CP" #l0    
+  set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+  set-variable %fhook-r-format &spr "Rscript  -e \"options('encoding'='%s');formatR::tidy_file('%%f')\"" #l0
+  set-variable %fhook-r-exec   &spr "Rscript  --encoding=%s %%f" #l0
+  set-variable %fhook-r-lint   &spr "Rscript  -e \"options('encoding'='%s');library(lintr);lintr::lint('%%f',linters = linters_with_defaults( indentation_linter = indentation_linter(indent = 4L) ))\"" #l0
+!endif
+
 ; Rust
 !if &not &seq &which "rustc" ""
   set-variable %fhook-rust-lint    "rustc %f"
