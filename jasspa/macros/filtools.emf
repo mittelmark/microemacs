@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250618.1537>
+;  Last Modified : <250621.1012>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -39,8 +39,8 @@ define-macro fhook-file-lint
   buffer-init-hooks
 !emacro
 ; minimal defaults
-add-next-line "*file-exec*" "%f:%l:\\d+"
-add-next-line "*file-lint*" "%f:%l:\\d+"
+add-next-line "*file-exec*" "%f:%l"
+add-next-line "*file-lint*" "%f:%l"
 
 define-macro file-lint
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-lint"
@@ -51,7 +51,8 @@ define-macro file-lint
   &band @# 1 save-some-buffers @mna
   set-variable #l2 &spr "%s-replace"  $buffer-fhook
   delete-other-windows
-  0x4088 file-tool-run #l0 $buffer-fname "*file-lint*"
+  0x4188 file-tool-run #l0 $buffer-fname "*file-lint*"
+  next-window-find-buffer "*file-lint*"
   !if &exi &ind #l2
     !force execute-named-command #l2
   !endif
@@ -67,8 +68,8 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
 !if &and &sin "h" .fhook-file-lint.setup &band .hilight.flags 0x02
   !iif &not &exi .hilight.file-lint  set-variable .hilight.file-lint &pinc  .hilight.next 1
   0 hilight .hilight.file-lint 2 200                                     $global-scheme
-  hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]+"      .scheme.link  
-  hilight .hilight.file-lint   0  "[-_/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
+  hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]*"      .scheme.link  
+  hilight .hilight.file-lint   0  "[-_/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]*"      .scheme.link    
 !endif
 
 add-file-hook "*file-lint*" fhook-file-lint
@@ -87,7 +88,7 @@ define-macro file-format
   !if &seq #l0 "restyle-buffer"
     restyle-buffer
   !else
-    0x4088 file-tool-run #l0 $buffer-fname "*file-format*"
+    0x4188 file-tool-run #l0 $buffer-fname "*file-format*"
     ;next-window-find-buffer #l1
     0 reread-file
   !endif
@@ -110,8 +111,8 @@ define-macro file-exec
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   set-variable #l2 &spr "%s-replace"  $buffer-fhook
-  delete-other-windows
-  0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
+  0x4188 file-tool-run #l0 $buffer-fname "*file-exec*"
+  next-window-find-buffer "*file-exec*"
   !if &exi &ind #l2
     !force !force execute-named-command #l2
   !endif
@@ -131,7 +132,112 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
 !endif
 
 add-file-hook "*file-exec*" fhook-file-exec
+; some code which should be moved into hkHOOK.emf files
+
+; ada
+!if &not &seq &which "gnat" ""
+  set-variable %fhook-ada-lint "gcc -c -x ada -fsyntax-only  -gnats -gnatef %f"
+  set-variable %fhook-ada-exec "gnatmake %f && ./%b"
+  !if &not &seq &which "gnatpp" ""
+    set-variable %fhook-ada "gnatpp %f"
+  !endif
+!endif
+
+; awk
+!if &not &seq &which "gawk" ""
+  set-variable %fhook-awk-lint "gawk --lint -f %f"
+  set-variable %fhook-awk-exec "gawk -f %f"
+  set-variable %fhook-awk-format "gawk -o%b.new -f %f && cp %b.new %f"
+  !endif
+!endif
+
+; C
+!if &not &seq &which "gcc" ""
+  set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only %f"
+  set-variable %fhook-c-exec "gcc -Wall %f -o %b && ./%b"
+  !if &not &seq &which "astyle" ""
+    set-variable %fhook-c-format "astyle %f"
+  !elif &not &seq &which "clang-format" ""
+    set-variable %fhook-c-format "clang-format %f -- -std=c99"
+  !endif
+!endif
+
+; C++
+!if &not &seq &which "g++" ""
+  set-variable %fhook-cpp-lint "g++ -Wall -x c++ -fsyntax-only %f"
+  set-variable %fhook-cpp-exec "g++ -Wall %f -o %b && ./%b"
+  !if &not &seq &which "astyle" ""
+    set-variable %fhook-cpp-format "astyle %f"
+  !elif &not &seq &which "clang-format" ""
+    set-variable %fhook-cpp-format "clang-format %f -- -std=c++17"
+  !endif
+!endif
+
+; Cobol
+!if &not &seq &which "cobc" ""
+  set-variable %fhook-cobol-lint "cobc --free -fsyntax-only %f"
+  set-variable %fhook-cobol-exec "cobc --free -x %f && ./%b"
+  !endif
+!endif
+
+!if &not &seq &which "dart" ""
+  set-variable %fhook-dart-lint   "dart analyze %f"
+  set-variable %fhook-dart-format "dart format %f"
+  set-variable %fhook-dart-exec   "dart run %f"
+!endif
+
+!if &not &seq &which "gfortran" ""
+  set-variable %fhook-f90-lint   "gfortran -fsyntax-only %f"
+  !if &not &seq &which "fprettify" ""
+    ; python program
+    ; sudo dnf install fprettify
+    ; pip3 install fprettify
+    set-variable %fhook-f90-format "fprettify %f"
+  !endif
+  set-variable %fhook-f90-exec   "gfortran %f -o %b && ./%b"
+!endif
+
+!if &not &seq &which "go" ""
+  set-variable %fhook-go-lint "go vet %f"
+  set-variable %fhook-go-exec "go run %f"
+  set-variable %fhook-go-format "go fmt %f"
+!endif
+
+!if &not &seq &which "javac" ""
+  set-variable %fhook-java-lint "javac -Xlint %f"
+  set-variable %fhook-java-exec "javac %f && java -cp . "
+  !if &not &seq &which "astyle" ""
+    set-variable %fhook-java-format "astyle %f"
+  !endif
+!endif
+
+!if &not &seq &which "lua" ""
+  set-variable %fhook-lua-lint "luac -p %f"
+  set-variable %fhook-lua-exec "lua %f "
+  ; sudo npm install -g lua-fmt
+  !if &not &seq &which "luafmt" ""
+    set-variable %fhook-lua-format "luafmt --write-mode replace %f"
+  !endif
+!endif
+
+; perl
+
+!if &not &seq &which "perl" ""
+  set-variable %fhook-perl-lint "perl -cw %f"
+  set-variable %fhook-perl-exec "perl -w %f"
+  !if &not &seq &which "perltidy" ""
+    set-variable %fhook-perl-format "perltidy %f && cp %f.tdy %f"
+  !endif
+  0 define-macro fhook-perl-replace
+    -1 buffer-mode "view"
+    beginning-of-buffer
+    replace-string "at \\(.+\\) line \\([0-9]+\\)" "at \n\\1:\\2:0"
+    beginning-of-buffer
+    -1 buffer-mode "edit"
+    1 buffer-mode "view"  
+  !emacro
+!endif
 
 
 
-;1000 ml-write &exi "fhook-python-rep"
+
