@@ -31,7 +31,7 @@ whilegz "// #include <zlib.h>\r\tgzFile file = gzopen(\p, \"rb\");\rif (!file) {
  "" "</FOLD><FOLD+> \ecCStructure Commands\ecA"
 cl "class \p {\rpublic:\rName() {}; \rprivate:\rint x = 0;\r};\r\P" "  class"
 ns "namespace \p {\r\r}\r\P" "  namespace"
-tm "template <typename T>\r" "  template"
+tm "template <typename T>\rT \p (T _) {\r\r}\r\P" "  template"
  "" ""
  "" "</FOLD><FOLD+> \ecCSTL/Pointers\ecA"
 vec "std::vector<\p> v = {};" "  std::vector"
