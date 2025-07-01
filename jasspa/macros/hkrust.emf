@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250617.0626>
+;  Last Modified : <250701.1402>
 ;
 ;  Description:
 
@@ -43,6 +43,8 @@ set-variable .fhook-rust.item-list-s4 "^pub struct[\t ]+\\(\\w[1-9A-Za-z_]*\\)"
 set-variable .fhook-rust.item-list-r4 "\ecCstrc\ecA \ecB\\1\ecA"
 set-variable .fhook-rust.item-list-s5 "^[\t ]*impl[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
 set-variable .fhook-rust.item-list-r5 "impl \ecB\\1\ecA"
+set-variable .fhook-rust.item-list-s6 "^[\t ]*mod[\t ]+\\(\\w[\\.1-9A-Za-z_]*\\)"
+set-variable .fhook-rust.item-list-r6 "modl \ecB\\1\ecA"
 
 !if &not &exist .hilight.rust
     set-variable .hilight.rust  &pinc .hilight.next 1
