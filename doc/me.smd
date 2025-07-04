@@ -60459,7 +60459,8 @@ $a
 
 
   __hkemf.emf__ - MicroEmacs 2009 Macro File hook definition  
-  __emf.etf__ - Template file
+  __emf.eaf__ - Abbreviation file
+  __emf.etf__ - Template file  
 
 
 ## EXTENSIONS
@@ -60503,8 +60504,24 @@ $a
   
   >  Generic folding is enabled within the __emf__ files. The folds occur about
      __define-macro__ and __!emacro__ text located on the left-hand margin.
-     [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, [collapse-current(3)](collapse-current(3))
-     (un)folds the current region.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The MicroEmacs macro mode offers beside folding as well support for displaying an outline
+     of the functions and help definitions of the Emf file for easy navigation using the 
+     [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for MicroEnacs
+     macro file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   "_!w_" (while), "_!i_" (if), or "_de_" (define-macro)- and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Short Cuts__
   
@@ -60527,7 +60544,10 @@ $a
 ## SEE ALSO
 
   [Supported File Types](MicroEmacs - Supported File Types),
-  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [emftags(3f)](emftags(3f)), [find-tag(2)](find-tag(2)), [indent(2)](indent(2)),
+  [abbrev-list(3)](abbrev-list(3)), 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [emftags(3f)](emftags(3f)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [find-tag(2)](find-tag(2)), [indent(2)](indent(2)), [item-list(3)](item-list(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 
 !! me-id: m9typ003
