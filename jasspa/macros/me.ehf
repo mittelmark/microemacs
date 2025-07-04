@@ -63383,14 +63383,14 @@ $a
 
 
     cDhkr.emfcA - R language file hook definition  
+    cDr.etfcA   - R template file  
     cDr.eafcA   - R abbreviation file
-
 
 cEEXTENSIONS cA
 
 
-    cD.rcA - Python file  
-    cD.RcA - Python file  
+    cD.rcA - R file  
+    cD.RcA - R file  
 
 
 cEMAGIC STRINGS cA
@@ -63413,8 +63413,9 @@ $a
     the magic string.
 
     The R file hook offers as well folding and support for displaying an outline
-    of the functions of the R script for easy navigation using the  lsitem-list(3)lmitem-list(3)le command
-    and expanding abbreviations either via short strings using the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command and visually inserting abbreviations
+    of the functions of the R script for easy navigation using the lsitem-list(3)lmitem-list(3)le command
+    and expanding abbreviations either via short strings using the 
+    lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command and visually inserting abbreviations
     using the lsabbrev-list(3)lmabbrev-list(3)le macro.
 
     cDFolding and Information HidingcA
@@ -63427,12 +63428,13 @@ $a
        lscollapse-all(3)lmcollapse-all(3)le     - (un)folds all regions in the file,  
        lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region.
 
-    cDList ItemscA
+    cDNavigation via Item ListcA
 
-       Item listing is available and the key constructs of the file may be listed
-       using  the lsitem-list(3)lmitem-list(3)le command.
+       The R mode offers beside folding as well support for displaying an outline
+       of the functions and classes of the R file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command.
 
-    cDAbreviationscA
+    cDAbbreviationscA
 
        The installation comes with a default abbreviation file for R editing
        which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCfunccA" - 
@@ -63481,7 +63483,7 @@ $a
 
     cDhkgo.emfcA - Go programming language hook definition  
     cDgo.etfcA - Go programming language template file
-
+    cDgo.eafcA - Go abbreviation file   
 
 cEEXTENSIONS cA
 
@@ -63512,7 +63514,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -63524,9 +63526,25 @@ $a
     
        Generic folding is enabled within the Go files. The folds occur
        about the cDfunccA keyword and a closing curly brace, both at the
-       beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
-       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
-       current region. 
+       beginning of a line. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Go mode offers beside folding as well support for displaying an outline
+       of the functions and classes of the Go file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Go files  editing
+       which  can  be  used  by  writing  short   abbreviations   like   "cCforcA",
+       "cCifcA", "cCelifcA" or "cCtypecA" - and then pressing the key-binding for the 
+       lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDWorking EnvironmentcA
     
@@ -63630,10 +63648,26 @@ $a
     cDFolding and Information HidingcA
     
        Generic folding is enabled within the Dart files. The folds occur around
-       function and class definitions and ends a closing curly brace, both at the
-       beginning  of a line.  lscollapse-all(3)lmcollapse-all(3)le  (un)folds  all
-       regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
-       current region. 
+       function and class definitions and ends at a closing curly brace, both at the
+       beginning  of a line.
+
+      - lscollapse-all(3)lmcollapse-all(3)le - (un)folds  all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Dart mode offers beside folding as well support for displaying an outline
+       of the functions and classes of the Dart file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Dart file  editing
+       which  can  be  used  by  writing  short   abbreviations   like   "cCforcA",
+       "cCifcA", "cCelifcA" or "cCclasscA" - and then pressing the key-binding for the 
+       lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDWorking EnvironmentcA
     
@@ -63711,7 +63745,8 @@ $a
 
 
     cDhkc3.emfcA - C3 programming language hook definition  
-    cDc3.etfcA - C3 programming language template file
+    cDc3.etfcA - C3 programming language template file  
+    cDc3.eafcA - C3 programming language abbreviation file
 
 
 cEEXTENSIONS cA
@@ -63755,9 +63790,25 @@ $a
     
        Generic folding is enabled within the Go files. The folds occur
        about the cDfncA keyword and a closing curly brace, both at the
-       beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
-       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
-       current region. 
+       beginning of a line. 
+       
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The C3 mode offers beside folding as well support for displaying an outline
+       of the functions and classes of the C3 file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for C3 file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCforcA", "cCifcA", "cCelifcA" or "cCclasscA" - and then pressing the key-binding
+       for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDWorking EnvironmentcA
     
@@ -63869,9 +63920,25 @@ $a
     
        Generic folding is enabled within the V files. The folds occur
        about the cDfncA keyword and a closing curly brace, both at the
-       beginning of a line. lscollapse-all(3)lmcollapse-all(3)le
-       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
-       current region. 
+       beginning of a line. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The V mode offers beside folding as well support for displaying an outline
+       of the functions and classes of the V file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for V file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCforcA", "cCifcA", "cCelifcA" or "cCtypecA" - and then pressing the key-binding
+       for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDWorking EnvironmentcA
     
@@ -64000,9 +64067,25 @@ $a
        Generic folding is enabled within the Rust files. The folds occur
        about the cDfncA keyword and a closing curly brace, both at the
        beginning of a line. Furthermore cDimplcA sections for method definitions
-       of classes are foldable. lscollapse-all(3)lmcollapse-all(3)le
-       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
-       current region. 
+       of classes are foldable. 
+       
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file,
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Rust mode offers beside folding as well support for displaying an outline
+       of the functions, modules, classes and their methods of the Rust file for easy 
+       navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Rust file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCforcA", "cCifcA", "cCelifcA" or "cCfncA" - and then pressing the key-binding
+       for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDWorking EnvironmentcA
     
@@ -64122,9 +64205,10 @@ $a
        Generic folding is enabled within the Zig files. The folds occur
        about the cDfncA keyword and a closing curly brace, both at the
        beginning of a line. Furthermore cDenumcA and cDstructcA sections for 
-       method definitions  of classes are foldable. lscollapse-all(3)lmcollapse-all(3)le
-       (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
-       current region. 
+       method definitions  of classes are foldable. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
 
     cDWorking EnvironmentcA
     

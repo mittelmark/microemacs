@@ -64330,14 +64330,14 @@ $a
 
 
   __hkr.emf__ - R language file hook definition  
+  __r.etf__   - R template file  
   __r.eaf__   - R abbreviation file
-
 
 ## EXTENSIONS
 
 
-  __.r__ - Python file  
-  __.R__ - Python file  
+  __.r__ - R file  
+  __.R__ - R file  
 
 
 ## MAGIC STRINGS
@@ -64360,8 +64360,9 @@ $a
   the magic string.
 
   The R file hook offers as well folding and support for displaying an outline
-  of the functions of the R script for easy navigation using the  [item-list(3)](item-list(3)) command
-  and expanding abbreviations either via short strings using the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command and visually inserting abbreviations
+  of the functions of the R script for easy navigation using the [item-list(3)](item-list(3)) command
+  and expanding abbreviations either via short strings using the 
+  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command and visually inserting abbreviations
   using the [abbrev-list(3)](abbrev-list(3)) macro.
 
   __Folding and Information Hiding__
@@ -64374,12 +64375,13 @@ $a
   >  [collapse-all(3)](collapse-all(3))     - (un)folds all regions in the file,  
      [collapse-current(3)](collapse-current(3)) - (un)folds the current region.
 
-  __List Items__
+  __Navigation via Item List__
 
-  >  Item listing is available and the key constructs of the file may be listed
-     using  the [item-list(3)](item-list(3)) command.
+  >  The R mode offers beside folding as well support for displaying an outline
+     of the functions and classes of the R file for easy navigation using the 
+     [item-list(3)](item-list(3)) command.
 
-  __Abreviations__
+  __Abbreviations__
 
   >  The installation comes with a default abbreviation file for R editing
      which can be used by writing short abbreviations like "_for_", "_if_" or "_func_" - 
@@ -64429,7 +64431,7 @@ $a
 
   __hkgo.emf__ - Go programming language hook definition  
   __go.etf__ - Go programming language template file
-
+  __go.eaf__ - Go abbreviation file   
 
 ## EXTENSIONS
 
@@ -64460,7 +64462,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -64472,9 +64474,25 @@ $a
   
   >  Generic folding is enabled within the Go files. The folds occur
      about the __func__ keyword and a closing curly brace, both at the
-     beginning of a line. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. 
+     beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Go mode offers beside folding as well support for displaying an outline
+     of the functions and classes of the Go file for easy navigation using the 
+     [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Go files  editing
+     which  can  be  used  by  writing  short   abbreviations   like   "_for_",
+     "_if_", "_elif_" or "_type_" - and then pressing the key-binding for the 
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Working Environment__
   
@@ -64579,10 +64597,26 @@ $a
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the Dart files. The folds occur around
-     function and class definitions and ends a closing curly brace, both at the
-     beginning  of a line.  [collapse-all(3)](collapse-all(3))  (un)folds  all
-     regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. 
+     function and class definitions and ends at a closing curly brace, both at the
+     beginning  of a line.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Dart mode offers beside folding as well support for displaying an outline
+     of the functions and classes of the Dart file for easy navigation using the 
+     [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Dart file  editing
+     which  can  be  used  by  writing  short   abbreviations   like   "_for_",
+     "_if_", "_elif_" or "_class_" - and then pressing the key-binding for the 
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Working Environment__
   
@@ -64661,7 +64695,8 @@ $a
 
 
   __hkc3.emf__ - C3 programming language hook definition  
-  __c3.etf__ - C3 programming language template file
+  __c3.etf__ - C3 programming language template file  
+  __c3.eaf__ - C3 programming language abbreviation file
 
 
 ## EXTENSIONS
@@ -64705,9 +64740,25 @@ $a
   
   >  Generic folding is enabled within the Go files. The folds occur
      about the __fn__ keyword and a closing curly brace, both at the
-     beginning of a line. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. 
+     beginning of a line. 
+     
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+  > - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The C3 mode offers beside folding as well support for displaying an outline
+     of the functions and classes of the C3 file for easy navigation using the 
+     [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for C3 file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_for_", "_if_", "_elif_" or "_class_" - and then pressing the key-binding
+     for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Working Environment__
   
@@ -64821,9 +64872,25 @@ $a
   
   >  Generic folding is enabled within the V files. The folds occur
      about the __fn__ keyword and a closing curly brace, both at the
-     beginning of a line. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. 
+     beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The V mode offers beside folding as well support for displaying an outline
+     of the functions and classes of the V file for easy navigation using the 
+     [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for V file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_for_", "_if_", "_elif_" or "_type_" - and then pressing the key-binding
+     for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Working Environment__
   
@@ -64953,9 +65020,25 @@ $a
   >  Generic folding is enabled within the Rust files. The folds occur
      about the __fn__ keyword and a closing curly brace, both at the
      beginning of a line. Furthermore __impl__ sections for method definitions
-     of classes are foldable. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. 
+     of classes are foldable. 
+     
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file,
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Rust mode offers beside folding as well support for displaying an outline
+     of the functions, modules, classes and their methods of the Rust file for easy 
+     navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Rust file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_for_", "_if_", "_elif_" or "_fn_" - and then pressing the key-binding
+     for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Working Environment__
   
@@ -65076,9 +65159,10 @@ $a
   >  Generic folding is enabled within the Zig files. The folds occur
      about the __fn__ keyword and a closing curly brace, both at the
      beginning of a line. Furthermore __enum__ and __struct__ sections for 
-     method definitions  of classes are foldable. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. 
+     method definitions  of classes are foldable. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
 
   __Working Environment__
   
