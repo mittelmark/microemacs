@@ -61136,6 +61136,7 @@ $a
 
 
   __hkpascal.emf__ - Pascal hook definition  
+  __pascal.eaf__ - Pascal abbreviation file
   __pascal.etf__ - Pascal template file.
 
 
@@ -61151,6 +61152,15 @@ $a
   The __pascal__ file type template provides simple hilighting of Pascal files,
   the template provides minimal hilighting.
 
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Pascal file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_el_" (else), "_pr_" (procedure)  or "_wr_" (writeln) - and then 
+     pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+
+  >  The  list  of  abbreviations  can be used  interactively in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
 ## BUGS
 
@@ -61161,7 +61171,8 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)).
 !! me-id: m9typ011
 ! 9 rul
 ## SYNOPSIS

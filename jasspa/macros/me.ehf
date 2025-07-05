@@ -60229,6 +60229,7 @@ $a
 
 
     cDhkpascal.emfcA - Pascal hook definition  
+    cDpascal.eafcA - Pascal abbreviation file
     cDpascal.etfcA - Pascal template file.
 
 
@@ -60244,6 +60245,15 @@ $a
     The cDpascalcA file type template provides simple hilighting of Pascal files,
     the template provides minimal hilighting.
 
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Pascal file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCfocA" (for), "cCifcA", "cCelcA" (else), "cCprcA" (procedure)  or "cCwrcA" (writeln) - and then 
+       pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+
+       The  list  of  abbreviations  can be used  interactively in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
 cEBUGS cA
 
@@ -60254,7 +60264,8 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le.
 ! 9 rul
 cEcESYNOPSIS cEcA
 
