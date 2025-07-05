@@ -63967,14 +63967,15 @@ $a
 
        The V mode offers beside folding as well support for displaying an outline
        of the functions and classes of the V file for easy navigation using the 
-       lsitem-list(3)lmitem-list(3)le command.
+       lsitem-list(3)lmitem-list(3)le command. 
+       Public functions are highlighted with color in the item list.
 
     cDAbbreviationscA
 
        The  installation  comes with a default  abbreviation  file for V file
        editing which  can  be  used  by  writing  short   abbreviations like
-       "cCforcA", "cCifcA", "cCelifcA" or "cCtypecA" - and then pressing the key-binding
-       for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       "cCforcA", "cCifcA", "cCelifcA", "_str" (public structure)  or "cCtypecA" - and then 
+       pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 

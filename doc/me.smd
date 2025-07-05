@@ -64919,14 +64919,15 @@ $a
 
   >  The V mode offers beside folding as well support for displaying an outline
      of the functions and classes of the V file for easy navigation using the 
-     [item-list(3)](item-list(3)) command.
+     [item-list(3)](item-list(3)) command. 
+     Public functions are highlighted with color in the item list.
 
   __Abbreviations__
 
   >  The  installation  comes with a default  abbreviation  file for V file
      editing which  can  be  used  by  writing  short   abbreviations like
-     "_for_", "_if_", "_elif_" or "_type_" - and then pressing the key-binding
-     for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     "_for_", "_if_", "_elif_", "_str" (public structure)  or "_type_" - and then 
+     pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
      The  list  of  abbreviations  can be used  interactively  in the GUI version of
      MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
