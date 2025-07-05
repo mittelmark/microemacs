@@ -1813,6 +1813,7 @@ Miscellaneous Information
     lstexinfo(9)lmtexinfo(9)le GNU Texinfo documentation file  
     lstk(9)lmtk(9)le TK programming language  
     lstni(9)lmtni(9)le UNIX t/nroff include file  
+    lstoml(9)lmtoml(9)le Toml configuration file  
     lstroff(9)lmtroff(9)le UNIX troff file  
     lstxt(9)lmtxt(9)le ASCII plain text file  
     lsv(9)lmv(9)le Verilog hardware description language  
@@ -4026,6 +4027,7 @@ Miscellaneous Information
     lstime(3)lmtime(3)le Command time evaluator  
     lstk(9)lmtk(9)le TK programming language  
     lstni(9)lmtni(9)le UNIX t/nroff include file  
+    lstoml(9)lmtoml(9)le Toml configuration file    
     lstoolbar(3)lmtoolbar(3)le Toggle tool bar visibility  
     lstoolbar-close(3)lmtoolbar-close(3)le Close the tool bar  
     lstoolbar-open(3)lmtoolbar-open(3)le Open the tool bar  
@@ -59611,13 +59613,13 @@ $a
 
     cDNavigation via Item ListcA
 
-       The MicroEmacs macro mode offers beside folding as well support for displaying an outline
-       of the functions and help definitions of the Emf file for easy navigation using the 
-       lsitem-list(3)lmitem-list(3)le command.
+       The MicroEmacs macro mode offers beside folding as well support for displaying
+       an outline of the functions and help definitions of the Emf file for easy 
+       navigation using the lsitem-list(3)lmitem-list(3)le command.
 
     cDAbbreviationscA
 
-       The  installation  comes with a default  abbreviation  file for MicroEnacs
+       The  installation  comes with a default  abbreviation  file for MicroEmacs
        macro file  editing  which  can  be  used  by  writing  short   abbreviations
        like   "cC!wcA" (while), "cC!icA" (if), or "cCdecA" (define-macro)- and then pressing
        the key-binding for the  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
@@ -59851,6 +59853,7 @@ $a
 
     cDhklatex.emfcA - Tex File hook definition  
     cDlatex.etfcA - Template file  
+    cDlatex.eafcA - Abbreviation file  
     cDhkbibtex.emfcA - TeX Bibliography Files
 
 
@@ -59890,6 +59893,15 @@ $a
        Generic folding is enabled, the folds occur about cD\section{...}cA and
        cD\subsection{...}cA constructs. lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in
        the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for LaTeX
+       file editing  which  can  be  used  by  writing  short   abbreviations
+       like "cCverbcA" (verbatim environment), "cCbfcA" (\textbf{}) or "cCseccA" (\section{})
+       and then pressing the key-binding for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDSpellingcA
     
@@ -59931,7 +59943,10 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lstime(2m)lmtime(2m)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, 
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
 ! 9 makefile
 cEcESYNOPSIS cEcA
 
@@ -60097,16 +60112,18 @@ $a
 ! 9 hpj
 ! 9 reg
 ! 9 rgy
+! 9 toml
 cEcESYNOPSIS cEcA
 
 
     ini, hpj, reg, rgy - MS-Windows initialization and registry files
+    toml - Tom's obvious minimal language
 
 
 cEFILES cA
 
 
-    cDhkini.emfcA - MS-Windows initialization and registry files.
+    cDhkini.emfcA - MS-Windows initialization and registry files and Toml files.
 
 
 cEEXTENSIONS cA
@@ -60115,7 +60132,8 @@ $a
     cD.inicA - MS-Windows Initialization File  
     cD.hpjcA - MS-Windows Help Project File  
     cD.regcA - Registry File  
-    cD.rgycA - (Other) registry File
+    cD.rgycA - (Other) registry File  
+    cD.tomlcA - Tom's obvious minimal language file
 
 
 cEDESCRIPTION cA
@@ -60123,8 +60141,8 @@ $a
 
     The cDinicA file type templates provide simple hilighting of MS-Windows
     initialization and registry files. The file format is similar to a number
-    of other registry type files which are also over-loaded into the same
-    template.
+    of other registry type files and to Toml configuration files which are 
+    also over-loaded into the same template.
 
     cDHilightingcA
     

@@ -1729,6 +1729,7 @@
   [texinfo(9)](texinfo(9)) GNU Texinfo documentation file  
   [tk(9)](tk(9)) TK programming language  
   [tni(9)](tni(9)) UNIX t/nroff include file  
+  [toml(9)](toml(9)) Toml configuration file  
   [troff(9)](troff(9)) UNIX troff file  
   [txt(9)](txt(9)) ASCII plain text file  
   [v(9)](v(9)) Verilog hardware description language  
@@ -3947,6 +3948,7 @@
   [time(3)](time(3)) Command time evaluator  
   [tk(9)](tk(9)) TK programming language  
   [tni(9)](tni(9)) UNIX t/nroff include file  
+  [toml(9)](toml(9)) Toml configuration file    
   [toolbar(3)](toolbar(3)) Toggle tool bar visibility  
   [toolbar-close(3)](toolbar-close(3)) Close the tool bar  
   [toolbar-open(3)](toolbar-open(3)) Open the tool bar  
@@ -60510,13 +60512,13 @@ $a
 
   __Navigation via Item List__
 
-  >  The MicroEmacs macro mode offers beside folding as well support for displaying an outline
-     of the functions and help definitions of the Emf file for easy navigation using the 
-     [item-list(3)](item-list(3)) command.
+  >  The MicroEmacs macro mode offers beside folding as well support for displaying
+     an outline of the functions and help definitions of the Emf file for easy 
+     navigation using the [item-list(3)](item-list(3)) command.
 
   __Abbreviations__
 
-  >  The  installation  comes with a default  abbreviation  file for MicroEnacs
+  >  The  installation  comes with a default  abbreviation  file for MicroEmacs
      macro file  editing  which  can  be  used  by  writing  short   abbreviations
      like   "_!w_" (while), "_!i_" (if), or "_de_" (define-macro)- and then pressing
      the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
@@ -60752,6 +60754,7 @@ $a
 
   __hklatex.emf__ - Tex File hook definition  
   __latex.etf__ - Template file  
+  __latex.eaf__ - Abbreviation file  
   __hkbibtex.emf__ - TeX Bibliography Files
 
 
@@ -60791,6 +60794,15 @@ $a
   >  Generic folding is enabled, the folds occur about __\section{...}__ and
      __\subsection{...}__ constructs. [collapse-all(3)](collapse-all(3)) (un)folds all regions in
      the file, [collapse-current(3)](collapse-current(3)) (un)folds the current region.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for LaTeX
+     file editing  which  can  be  used  by  writing  short   abbreviations
+     like "_verb_" (verbatim environment), "_bf_" (\textbf{}) or "_sec_" (\section{})
+     and then pressing the key-binding for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
   __Spelling__
   
@@ -60832,7 +60844,10 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types), [time(2m)](time(2m)).
+  [Supported File Types](MicroEmacs - Supported File Types), 
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [item-list(3)](item-list(3)), [time(2m)](time(2m)).
 !! me-id: m9typ005
 ! 9 makefile
 ## SYNOPSIS
@@ -61002,16 +61017,18 @@ $a
 ! 9 hpj
 ! 9 reg
 ! 9 rgy
+! 9 toml
 ## SYNOPSIS
 
 
   ini, hpj, reg, rgy - MS-Windows initialization and registry files
+  toml - Tom's obvious minimal language
 
 
 ## FILES
 
 
-  __hkini.emf__ - MS-Windows initialization and registry files.
+  __hkini.emf__ - MS-Windows initialization and registry files and Toml files.
 
 
 ## EXTENSIONS
@@ -61020,7 +61037,8 @@ $a
   __.ini__ - MS-Windows Initialization File  
   __.hpj__ - MS-Windows Help Project File  
   __.reg__ - Registry File  
-  __.rgy__ - (Other) registry File
+  __.rgy__ - (Other) registry File  
+  __.toml__ - Tom's obvious minimal language file
 
 
 ## DESCRIPTION
@@ -61028,8 +61046,8 @@ $a
 
   The __ini__ file type templates provide simple hilighting of MS-Windows
   initialization and registry files. The file format is similar to a number
-  of other registry type files which are also over-loaded into the same
-  template.
+  of other registry type files and to Toml configuration files which are 
+  also over-loaded into the same template.
 
   __Hilighting__
   
