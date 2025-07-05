@@ -1,0 +1,9 @@
+main "fn void main()\r{\r\pio::printn(\"Hello, world!\");\r}\r\P" "  main"
+fn "fn void \p() {\r\r}\r\P" "  fn"
+doc "<*\r \pdescription\r@param x `the value x`\r*>\r\P" "  doc"
+if "if (\p) {\r\r}\r\P" "  if"
+ef "else if (\p) {\r\r}\r\P" "  else if"
+el "else {\r\p\r}\r\P" "  else"
+fo "for (int i = 0; i < \p; i++) {\r\r}\P" "  for"
+wh "while (\p)\r{\r\r}\r\P" "  while"
+

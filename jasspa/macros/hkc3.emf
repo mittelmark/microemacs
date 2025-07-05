@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250621.1434>
+;  Last Modified : <250705.0822>
 ;
 ;  Description
 ;   C3 Language Template
@@ -42,6 +42,7 @@ set-variable .fhook-c3.item-list-r1 "Func \ecB\\2\ecA"
   0 hilight .hilight.c3 0x00 $global-scheme
   ; Comments
   hilight .hilight.c3 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.c3 20 "<\\*" "*>" "" .scheme.comment  
   hilight .hilight.c3  2 "//"           .scheme.comment
   ; Comment TODO's
   hilight .hilight.c3 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
