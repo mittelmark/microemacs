@@ -15,8 +15,8 @@ define-macro fhook-sql
 
 ; buffer-init variables
 set-variable .fhook-sql.name "SQL"
-set-variable .fhook-sql.setup &reg "/history/fhook/sql" "ghix"
-set-variable .fhook-sql.setup-mask "aeghikmtux"
+set-variable .fhook-sql.setup &reg "/history/fhook/sql" "ghinx"
+set-variable .fhook-sql.setup-mask "aeghikmntux"
 set-variable .fhook-sql.exact -1
 set-variable .fhook-sql.comment "|/*| */|*| * | * |fr|"
 set-variable .fhook-sql.comment-1 "|--||-|-- | --||"

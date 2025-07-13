@@ -18,7 +18,7 @@ set-variable .fhook-pascal.setup-mask "abefghikmnoptux"
 set-variable .fhook-pascal.comment "|{|}|*|* | *|fr|"
 set-variable .fhook-pascal.exact -1
 
-; Set up collapse for pacal
+; Set up collapse for pascal
 set-variable .fhook-pascal.collapse-open  "^\\([Pp]rocedure \\|[Ff]unction \\|Type \\w+\\)"
 set-variable .fhook-pascal.collapse-close "^[Ee]nd;\\|\\'"
 set-variable .fhook-pascal.collapse-mclose "1"
@@ -50,6 +50,7 @@ set-variable .fhook-pascal.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.pascal 1 "asm"            .scheme.keyword
     hilight .hilight.pascal 1 "begin"          .scheme.keyword
     hilight .hilight.pascal 1 "case"           .scheme.keyword
+    hilight .hilight.pascal 1 "class"          .scheme.keyword    
     hilight .hilight.pascal 1 "const"          .scheme.keyword
     hilight .hilight.pascal 1 "constructor"    .scheme.keyword
     hilight .hilight.pascal 1 "destructor"     .scheme.keyword
@@ -70,7 +71,6 @@ set-variable .fhook-pascal.item-list-r6 "Clss \ecB\\1\ecA"
     hilight .hilight.pascal 1 "nil"            .scheme.keyword
     hilight .hilight.pascal 1 "object"         .scheme.keyword
     hilight .hilight.pascal 1 "of"             .scheme.keyword
-    hilight .hilight.pascal 1 "packed"         .scheme.keyword    
     hilight .hilight.pascal 1 "procedure"      .scheme.keyword
     hilight .hilight.pascal 1 "program"        .scheme.keyword
     hilight .hilight.pascal 1 "public"         .scheme.keyword
