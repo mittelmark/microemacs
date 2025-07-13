@@ -61126,10 +61126,24 @@ $a
 !! me-id: m9typ010
 ! 9 p
 ! 9 pas
+
+## NAME
+
+|%fhook-pascal-exec
+  %fhook-paascal-exec - command to execute Pascal files
+|%fhook-pascal-format
+  %fhook-pascal-format - formatting command for Pascal files
+|%fhook-pascal-lint
+  %fhook-pascal-lint - linting command for Pascal files
+$a
+
 ## SYNOPSIS
 
 
   p, pas - Pascal files
+  __%fhook-pascal-exec__  
+  __%fhook-pascal-format__  
+  __%fhook-pascal-lint__  
 
 
 ## FILES
@@ -61161,6 +61175,58 @@ $a
 
   >  The  list  of  abbreviations  can be used  interactively in the GUI version of
      MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Pascal files. The folds occur
+     about  __type__, __function__ or __procedure__ keywords and a closing _end;_, all at the
+     beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Pascal mode offers beside folding as well support for displaying an outline
+     of the functions, procedures, records, objects and classes of the V file for easy navigation using the 
+     [item-list(3)](item-list(3)) command. 
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+
+  __%fhook-pascal-exec__ - The command to execute the current Pascal file, default on Unix systems
+            is set to _"fpc %f && ./%b"_ where _%f_ represents the file name and _%b_ the
+            basename of the current file on Windows the slash is replaced with a backslash
+            
+  __%fhook-pascal-format__ - The command to format current Pascal file, default  
+            is set to _"ptop %f temp.pas && cp temp.pas %f"_ on a Unix system
+            where _%f_ represents the file name, on Windows the _cp_ command is
+            replaced with _copy_
+  __%fhook-pascal-lint__ - The command to check/lint the current Pascal file, 
+            default is set to _"fpc -Cn %f"_ where _%f_ represents the file name.
+  
+  The setting assume that the V compiler is available via the PATH
+  environment variable. On Windows you must insert here either the complete PATH to the 
+  `v` executable or add the folder where this file is to the PATH variable.
+
 
 ## BUGS
 

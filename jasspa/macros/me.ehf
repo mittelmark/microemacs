@@ -60219,10 +60219,24 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 p
 ! 9 pas
-cEcESYNOPSIS cEcA
+
+cEcENAME cEcA
+
+|%fhook-pascal-exec
+    %fhook-paascal-exec - command to execute Pascal files
+|%fhook-pascal-format
+    %fhook-pascal-format - formatting command for Pascal files
+|%fhook-pascal-lint
+    %fhook-pascal-lint - linting command for Pascal files
+$a
+
+cESYNOPSIS cA
 
 
     p, pas - Pascal files
+    cD%fhook-pascal-execcA  
+    cD%fhook-pascal-formatcA  
+    cD%fhook-pascal-lintcA  
 
 
 cEFILES cA
@@ -60254,6 +60268,58 @@ $a
 
        The  list  of  abbreviations  can be used  interactively in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Pascal files. The folds occur
+       about  cDtypecA, cDfunctioncA or cDprocedurecA keywords and a closing cCend;cA, all at the
+       beginning of a line. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Pascal mode offers beside folding as well support for displaying an outline
+       of the functions, procedures, records, objects and classes of the V file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+
+    cD%fhook-pascal-execcA - The command to execute the current Pascal file, default on Unix systems
+              is set to cC"fpc %f && ./%b"cA where cC%fcA represents the file name and cC%bcA the
+              basename of the current file on Windows the slash is replaced with a backslash
+              
+    cD%fhook-pascal-formatcA - The command to format current Pascal file, default  
+              is set to cC"ptop %f temp.pas && cp temp.pas %f"cA on a Unix system
+              where cC%fcA represents the file name, on Windows the cCcpcA command is
+              replaced with cCcopycA
+    cD%fhook-pascal-lintcA - The command to check/lint the current Pascal file, 
+              default is set to cC"fpc -Cn %f"cA where cC%fcA represents the file name.
+    
+    The setting assume that the V compiler is available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    cGvcA executable or add the folder where this file is to the PATH variable.
+
 
 cEBUGS cA
 

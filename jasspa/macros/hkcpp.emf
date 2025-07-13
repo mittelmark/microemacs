@@ -81,7 +81,7 @@ set-variable .fhook-cpp.command-desc  "|Slashify region|Deslashify region||\HSet
 set-variable .fhook-cpp.setup-flags   "|l|q|r|v|y|"
 set-variable .fhook-cpp.setup-labels  "|Doxygen highlighting|<stdint.h> hilighting|Brace highlighting|Bad C++ highlighting|GNU Indent Style (Set Indent Width=2)|"
 
-; Set up the collaspe for C++
+; Set up the collapse for C++
 set-variable .fhook-cpp.collapse-open  "^{"
 set-variable .fhook-cpp.collapse-close "^}"
 set-variable .fhook-cpp.collapse-mopen  "-1"

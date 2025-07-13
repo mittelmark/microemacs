@@ -13,10 +13,28 @@ define-macro fhook-pascal
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-pascal.setup &reg "/history/fhook/pascal" "bghinopx"
-set-variable .fhook-pascal.setup-mask "abeghikmnoptux"
+set-variable .fhook-pascal.setup &reg "/history/fhook/pascal" "bfghinopx"
+set-variable .fhook-pascal.setup-mask "abefghikmnoptux"
 set-variable .fhook-pascal.comment "|{|}|*|* | *|fr|"
 set-variable .fhook-pascal.exact -1
+
+; Set up collapse for pacal
+set-variable .fhook-pascal.collapse-open  "^\\([Pp]rocedure \\|[Ff]unction \\|Type \\w+\\)"
+set-variable .fhook-pascal.collapse-close "^[Ee]nd;\\|\\'"
+set-variable .fhook-pascal.collapse-mclose "1"
+set-variable .fhook-pascal.collapse-mnext "-1"
+
+; setup item-list
+set-variable .fhook-pascal.item-list-s1 "^[Pp]*rocedure[ \t]+\\([.\\w]+\\)"
+set-variable .fhook-pascal.item-list-r1 "Proc \ecB\\1\ecA"
+set-variable .fhook-pascal.item-list-s2 "^[Ff]*unction[ \t]+\\([.\\w]+\\)"
+set-variable .fhook-pascal.item-list-r2 "Func \ecB\\1\ecA"
+set-variable .fhook-pascal.item-list-s3 "^[Tt]ype[ \t]+\\(\\w+\\) = [Rr]ecord"
+set-variable .fhook-pascal.item-list-r3 "Rcrd \ecB\\1\ecA"
+set-variable .fhook-pascal.item-list-s4 "^[Tt]ype[ \t]+\\(\\w+\\) = [Oo]bject"
+set-variable .fhook-pascal.item-list-r4 "Objc \ecB\\1\ecA"
+set-variable .fhook-pascal.item-list-s5 "^[Tt]ype[ \t]+\\(\\w+\\) = [Cc]lass"
+set-variable .fhook-pascal.item-list-r6 "Clss \ecB\\1\ecA"
 
 !if &and &sin "h" .fhook-pascal.setup &band .hilight.flags 0x02 
     ; High-light Pascal Mode
@@ -52,8 +70,12 @@ set-variable .fhook-pascal.exact -1
     hilight .hilight.pascal 1 "nil"            .scheme.keyword
     hilight .hilight.pascal 1 "object"         .scheme.keyword
     hilight .hilight.pascal 1 "of"             .scheme.keyword
+    hilight .hilight.pascal 1 "packed"         .scheme.keyword    
     hilight .hilight.pascal 1 "procedure"      .scheme.keyword
     hilight .hilight.pascal 1 "program"        .scheme.keyword
+    hilight .hilight.pascal 1 "public"         .scheme.keyword
+    hilight .hilight.pascal 1 "private"        .scheme.keyword
+    hilight .hilight.pascal 1 "protected"      .scheme.keyword
     hilight .hilight.pascal 1 "repeat"         .scheme.keyword
     hilight .hilight.pascal 1 "set"            .scheme.keyword
     hilight .hilight.pascal 1 "then"           .scheme.keyword
@@ -69,19 +91,24 @@ set-variable .fhook-pascal.exact -1
     hilight .hilight.pascal 1 "array"          .scheme.type
     hilight .hilight.pascal 1 "boolean"        .scheme.type
     hilight .hilight.pascal 1 "byte"           .scheme.type
+    hilight .hilight.pascal 1 "cardinal"       .scheme.type
     hilight .hilight.pascal 1 "char"           .scheme.type
     hilight .hilight.pascal 1 "comp"           .scheme.type
     hilight .hilight.pascal 1 "double"         .scheme.type
     hilight .hilight.pascal 1 "extended"       .scheme.type
     hilight .hilight.pascal 1 "integer"        .scheme.type
+    hilight .hilight.pascal 1 "int64"          .scheme.type    
     hilight .hilight.pascal 1 "longint"        .scheme.type
+    hilight .hilight.pascal 1 "longword"       .scheme.type    
     hilight .hilight.pascal 1 "packed"         .scheme.type
     hilight .hilight.pascal 1 "real"           .scheme.type
     hilight .hilight.pascal 1 "record"         .scheme.type
     hilight .hilight.pascal 1 "shortint"       .scheme.type
     hilight .hilight.pascal 1 "single"         .scheme.type
+    hilight .hilight.pascal 1 "smallint"       .scheme.type    
     hilight .hilight.pascal 1 "string"         .scheme.type
     hilight .hilight.pascal 1 "text"           .scheme.type
+    hilight .hilight.pascal 1 "variant"        .scheme.type    
     hilight .hilight.pascal 1 "word"           .scheme.type
     
     hilight .hilight.pascal 1 "and"            .scheme.operator
@@ -100,4 +127,22 @@ set-variable .fhook-pascal.exact -1
     hilight .hilight.pascal 1 "eoln"           .scheme.operator
 !endif
 
+0 define-macro fhook-pascal-replace
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  replace-string "pas(\\(.+\\),\\(.+\\))" "pas:\\1:\\2"
+  beginning-of-buffer
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"  
+!emacro
+
+set-variable %fhook-pascal-lint "fpc -Cn %f"
+!if &seq $platform "win32"
+  set-variable %fhook-pascal-exec "fpc %f && .\\%b"
+  set-variable %fhook-pascal-format "ptop %f temp.pas && copy temp.pas %f"
+!else
+  set-variable %fhook-pascal-exec "fpc %f && ./%b"
+  set-variable %fhook-pascal-format "ptop %f temp.pas && cp temp.pas %f"
+!endif
+	
 buffer-init-fhook "pascal"
