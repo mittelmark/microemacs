@@ -1,3 +1,7 @@
 #!/usr/bin/env tclsh
 
-puts Hi {
+puts Hi 
+
+proc hello {} {
+    puts hello
+}

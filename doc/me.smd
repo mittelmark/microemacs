@@ -61663,6 +61663,7 @@ $a
 
 
   __hkjava.emf__ - Java programming language hook definition  
+  __java.eaf__ - Java programming language abbreviatione file  
   __java.etf__ - Java programming language template file
 
 
@@ -61703,6 +61704,13 @@ $a
      according to the current fill paragraph. If a comment commences with
      `/***...` then the comment is automatically formatted to a box.
 
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for Java editing
+     which can be used by writing short abbreviations like "_fo_", "_if_" or "_cl_" (class) 
+     for Java classes functions. The list of abbreviations can be used as well interactively in the GUI
+     version of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the Java files. The folds occur
@@ -61728,18 +61736,6 @@ $a
      to be located extremely rapidly (certainly faster than IDE
      environments).
 
-  __Folding and Information Hiding__
-  
-  >  Generic folding is enabled within the C and C++ files. The folds occur
-     about braces __{__...__}__ located on the left-hand margin. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. Note that folding does not operate on K&R style code.
-
-  >  The __Tools__ -> __C-Tools__ menu allows `#define`'s to be evaluated within the
-     buffer. Where the state of a `#if` is established to be false (using the
-     `#define` information) then the disabled region of code is grayed out
-     indicating which regions of the code are active.
-
   __Working Environment__
   
   >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
@@ -61760,6 +61756,8 @@ $a
      __esc o__ - Format a comment.  
      __f2__ - (un)fold the current region  
      __f3__ - (un)fold all regions
+     __f6__      - show the item-list outline
+     __Esc f6__  - hide the item-list outline
 
 
 ## NOTES
@@ -61789,6 +61787,7 @@ $a
 
 
   __hktcl.emf__ - TCL/TK programming language hook definition  
+  __tcl.eaf__ - TCL/TK programming abbreviation file  
   __tcl.etf__ - TCL/TK programming language template file
 
 
@@ -61835,16 +61834,31 @@ $a
 
   __Tags__
   
-  >  A C-tags file may be generated within the editor using the __Tools__ ->
+  >  A Tcl-tags file may be generated within the editor using the __Tools__ ->
      __Tcl-Tools__ -> __Create Tag File__. [find-tag(2)](find-tag(2)) takes the user to the file
      using the tag information.
 
   __Folding and Information Hiding__
   
-  >  Generic folding is enabled within the C and C++ files. The folds occur
-     about braces __{__...__}__ located on the left-hand margin. [collapse-all(3)](collapse-all(3))
+  >  Generic folding is enabled within the Tclfiles. The folds occur
+     about procedures or class defintions located on the left-hand margin. [collapse-all(3)](collapse-all(3))
      (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
      current region. Note that folding does not operate on K&R style code.
+
+  __List Items__
+
+  >  Item listing is available and the key constructs of the file may be listed
+     using  the [item-list(3)](item-list(3)) command.
+
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for Tcl editing
+     which can be used by writing short abbreviations like "_for_", "_if_" or "_proc_" - 
+     for Tcl functions. More extended abbreviations are "_main_" for an Tcl
+     application outline or "_oocl_" for an _oo::class_ template. The short strings
+     are then replaced by pressing the key-binding for the [expand-abbrev-handle(3)](expand-abbrev-handle(3))
+     command. The list of abbreviations can be used as well interactively in the GUI
+     version of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
 
   __Short Cuts__
   
@@ -61856,14 +61870,17 @@ $a
      __A-C-i__ - Restyle the current region.  
      __f2__ - (un)fold the current region  
      __f3__ - (un)fold all regions  
+     __f6__      - show the item-list outline
+     __Esc f6__  - hide the item-list outline
 
 
 ## SEE ALSO
 
 
   [Supported File Types](MicroEmacs - Supported File Types),
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [find-tag(2)](find-tag(2)), [indent(2)](indent(2)),
-  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [tcltags(3f)](tcltags(3f)), [time(2m)](time(2m)).
+  [item-list(3)](item-list(3)], [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [tcltags(3f)](tcltags(3f)), [time(2m)](time(2m)).
 !! me-id: m9typ020
 ! 9 asn.1
 ## SYNOPSIS
