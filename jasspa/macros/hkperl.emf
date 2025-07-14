@@ -209,11 +209,13 @@ set-variable .fhook-perl.item-list-r1 "Sub  \ecB\\1\ecA"
     hilight .hilight.perl 1    "local"             .scheme.keyword
     hilight .hilight.perl 1    "lstat"             .scheme.keyword
     hilight .hilight.perl 1    "mkdir"             .scheme.keyword
+    hilight .hilight.perl 1    "my"                .scheme.keyword    
     hilight .hilight.perl 1    "next"              .scheme.keyword
     hilight .hilight.perl 1    "oct"               .scheme.keyword
     hilight .hilight.perl 1    "open"              .scheme.keyword
     hilight .hilight.perl 1    "opendir"           .scheme.keyword
     hilight .hilight.perl 1    "ord"               .scheme.keyword
+    hilight .hilight.perl 1    "our"               .scheme.keyword
     hilight .hilight.perl 1    "pack"              .scheme.keyword
     hilight .hilight.perl 1    "pop"               .scheme.keyword
     hilight .hilight.perl 1    "print"             .scheme.keyword
@@ -320,6 +322,8 @@ set-variable .fhook-perl.item-list-r1 "Sub  \ecB\\1\ecA"
     indent .hilight.perl e "\\$#" "." ""
     indent .hilight.perl i "#"  
 !endif
+
+define-macro-file find return-get-next-line mouse-get-next-line
 
 define-macro perl-lint
   add-next-line "*perl-lint*" "at %f line %l."

@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250621.1449>
+;  Last Modified : <250713.1837>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -259,7 +259,7 @@ add-file-hook "*file-exec*" fhook-file-exec
   set-variable %fhook-perl-lint "perl -cw %f"
   set-variable %fhook-perl-exec "perl -w %f"
   !if &not &seq &which "perltidy" ""
-    set-variable %fhook-perl-format "perltidy %f && cp %f.tdy %f"
+    set-variable %fhook-perl-format "perltidy -b %f"
   !endif
   ; need to fix the error line format
   0 define-macro fhook-perl-replace

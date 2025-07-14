@@ -62117,8 +62117,8 @@ $a
 
 
   __hkperl.emf__ - Practical Extraction and Report Language file hook definition  
-  __perl.etf__ - Practical Extraction and Report Language header template file.  
-  __perl.eaf__ - Practical Extraction and Report Language abbreviation file.
+  __perl.etf__ - Practical Extraction and Report Language header template file  
+  __perl.eaf__ - Practical Extraction and Report Language abbreviation file
 
 
 ## EXTENSIONS
@@ -62177,6 +62177,21 @@ $a
      _sub_...__}__ located on the left-hand margin. [collapse-all(3)](collapse-all(3)) (un)folds all
      regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the current region.
 
+  __Navigation via Item List__
+
+  >  The MicroEmacs macro mode offers beside folding as well support for displaying
+     an outline of the subroutines of the Perl file for easy 
+     navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Perl file editing
+     which  can  be  used  by  writing  short   abbreviations like   "_wh_" (while), 
+     "_if_" (if), or "_sub_" (subroutine) - and then pressing  the key-binding for the  
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -62187,6 +62202,8 @@ $a
      __A-C-i__ - Restyle the current region.  
      __f2__ - (un)fold the current region  
      __f3__ - (un)fold all regions  
+     __f6__ - List items.  
+     __esc f6__ - Close list items window.  
 
   __Debugging__
   
@@ -62206,7 +62223,9 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [indent(2)](indent(2)), [perldb(3)](perldb(3)),
+  [Supported File Types](MicroEmacs - Supported File Types), [abbrev-list(3)](abbrev-list(3)),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
+  [indent(2)](indent(2)), [item-list(3)](item-list(3)), [perldb(3)](perldb(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ025
 ! 9 html
@@ -62543,7 +62562,7 @@ $a
 ## BUGS
 
 
-  The Fortran hilight file is in it's infancy and a number of it's tokens
+  The Cobol hilight file is in it's infancy and a number of it's tokens
   may be misplaced.
 
 
