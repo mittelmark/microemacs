@@ -61866,9 +61866,10 @@ $a
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the Tclfiles. The folds occur
-     about procedures or class defintions located on the left-hand margin. [collapse-all(3)](collapse-all(3))
-     (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
-     current region. Note that folding does not operate on K&R style code.
+     about procedures or class defintions located on the left-hand margin. 
+     [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+     [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+     Note that folding does not operate on K&R style code.
 
   __Navigation via Item List__
 
@@ -61905,16 +61906,16 @@ $a
   > __%fhook-tcl-format__ - The command to format current Tcl file, default  
             is set to _"tclfmt --in-place %f"_  where _%f_ represents the file name.
             The _tclfmt_ program can be installed using the _pip3_ package manager like this:
-            `pip3 install tclint --user`
+            _`pip3 install tclint --user`_
             
   > __%fhook-tcl-lint__ - The command to check/lint the current Tcl file, 
             default is set to _"tclint %f"_ where _%f_ represents the file name.
             The _tclint_ program can be installed using the _pip3_ package manager like this:
-            `pip3 install tclint --user`
+            _`pip3 install tclint --user`_
   
-  The setting assume that the Tcl and the tclint and tclfmt programs are available via the PATH
-  environment variable. On Windows you must insert here either the complete PATH to the 
-  executables or add the folder where this file is to the PATH variable.
+  > The setting assume that the _tclsh_, the _tclint_ and the _tclfmt_ programs are available via the
+    PATH environment variable. On Windows you must insert here either the complete PATH to the 
+    executables or add the folder where this file is to the PATH variable.
 
 ## SEE ALSO
 
@@ -62272,21 +62273,20 @@ $a
   __Executing, Formatting and Linting__
   
   > __%fhook-perl-exec__ - The command to execute the current Perl file, default on Unix systems
-            is set to _"perl %f"_ where _%f_ represents the file name of 
-            the current script
+      is set to _"perl %f"_ where _%f_ represents the file name of the current script.
             
-  > __%fhook-perl-format__ - The command to format current Tcl file, default  
-            is set to _"perltidy -b %f"_  where _%f_ represents the file name.
-            The _perltidy_ program can be installed usually using the standard package manager or using the cpan utility of Perl.
+  > __%fhook-perl-format__ - The command to format current Tcl file, default is set to 
+     _"perltidy -b %f"_  where _%f_ represents the file name.  The _perltidy_ program can 
+     be installed usually using the standard package manager or using the cpan utility of Perl.
             
-  > __%fhook-perl-lint__ - The command to check/lint the current Perl file, 
-            default is set to _"perl -Mstrict -cw %f"_ where _%f_ represents the file name.
-            If the program _perlcritic_ is available it is used instead using the following command line:
-            `perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f`
+  > __%fhook-perl-lint__ - The command to check/lint the current Perl file, default is set to 
+     _"perl -Mstrict -cw %f"_ where _%f_ represents the file name.
+     If the program _perlcritic_ is available it is used instead using the following command line:
+    _`perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f`_
   
-  > The setting assume that the Perl, the perltidy and the perlcritic programs are available via the PATH
-    environment variable. On Windows you must insert here either the complete PATH to the 
-    executables or add the folder where this file is to the PATH variable.
+  > The setting assume that the _perl_, the _perltidy_ and the _perlcritic_ programs are available
+    via the PATH environment variable. On Windows you must insert here either the complete PATH
+    to the executables or add the folder where this file is to the PATH variable.
 
 
 ## BUGS
