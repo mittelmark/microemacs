@@ -61126,6 +61126,10 @@ $a
 !! me-id: m9typ010
 ! 9 p
 ! 9 pas
+! 5 %fhook-pascal-exec
+! 5 %fhook-pascal-format
+! 5 %fhook-pascal-lint
+
 
 ## NAME
 
@@ -61140,7 +61144,7 @@ $a
 ## SYNOPSIS
 
 
-  p, pas - Pascal files
+  p, pas - Pascal files  
   __%fhook-pascal-exec__  
   __%fhook-pascal-format__  
   __%fhook-pascal-lint__  
@@ -61150,7 +61154,7 @@ $a
 
 
   __hkpascal.emf__ - Pascal hook definition  
-  __pascal.eaf__ - Pascal abbreviation file
+  __pascal.eaf__ - Pascal abbreviation file  
   __pascal.etf__ - Pascal template file.
 
 
@@ -61211,21 +61215,22 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
-
-  __%fhook-pascal-exec__ - The command to execute the current Pascal file, default on Unix systems
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-pascal-exec__ - The command to execute the current Pascal file, default on Unix systems
             is set to _"fpc %f && ./%b"_ where _%f_ represents the file name and _%b_ the
             basename of the current file on Windows the slash is replaced with a backslash
             
-  __%fhook-pascal-format__ - The command to format current Pascal file, default  
+  > __%fhook-pascal-format__ - The command to format current Pascal file, default  
             is set to _"ptop %f temp.pas && cp temp.pas %f"_ on a Unix system
             where _%f_ represents the file name, on Windows the _cp_ command is
             replaced with _copy_
-  __%fhook-pascal-lint__ - The command to check/lint the current Pascal file, 
+  > __%fhook-pascal-lint__ - The command to check/lint the current Pascal file, 
             default is set to _"fpc -Cn %f"_ where _%f_ represents the file name.
   
-  The setting assume that the V compiler is available via the PATH
-  environment variable. On Windows you must insert here either the complete PATH to the 
-  `v` executable or add the folder where this file is to the PATH variable.
+  > The setting assume that the Free Pascal compiler and he `ptop` formatter is available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    `fpc` executable or add the folder where this file is to the PATH variable.
 
 
 ## BUGS
@@ -61777,10 +61782,27 @@ $a
 ! 9 tcl
 ! 9 tk
 ! 9 wish
+! 5 %fhook-tcl-exec
+! 5 %fhook-tcl-format
+! 5 %fhook-tcl-lint
+
+## NAME
+
+|%fhook-tcl-exec
+  %fhook-tcl-exec - command to execute Tcl files
+|%fhook-tcl-format
+  %fhook-tcl-format - formatting command for Tcl files
+|%fhook-tcl-lint
+  %fhook-tcl-lint - linting command for Tcl files
+$a
+
 ## SYNOPSIS
 
 
-  tcl, tk - TCL Programming language templates
+  tcl, tk - TCL Programming language files  
+  __%fhook-tcl-exec__  
+  __%fhook-tcl-format__  
+  __%fhook-tcl-lint__  
 
 
 ## FILES
@@ -61803,15 +61825,18 @@ $a
   __^#![ \t]*/.*wish__
   
   >  MicroEmacs 2009 recognizes the magic string on the first line of the
-     file used to locate the executable. The tcl files may be extension
+     file used to locate the executable. The Tcl files may be extension
      less and are still recognized.
 
 
 ## DESCRIPTION
 
 
-  The __tcl__ provides hilighting and automatic formatting features, in addition
-  to a number of tools to handle the file type.
+  The __tcl__ file type template provides hilighting and automatic formatting features,
+  in addition to a number of tools to handle the file type.
+
+  File recognition is performed using the standard file extension __.tcl__, __.tk__
+  or by the magic string.
 
   __General Editing__
   
@@ -61845,7 +61870,7 @@ $a
      (un)folds all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the
      current region. Note that folding does not operate on K&R style code.
 
-  __List Items__
+  __Navigation via Item List__
 
   >  Item listing is available and the key constructs of the file may be listed
      using  the [item-list(3)](item-list(3)) command.
@@ -61873,6 +61898,23 @@ $a
      __f6__      - show the item-list outline
      __Esc f6__  - hide the item-list outline
 
+  > __%fhook-tcl-exec__ - The command to execute the current Tcl file, default on Unix systems
+            is set to _"tclsh %f"_ where _%f_ represents the file name of 
+            the current script
+            
+  > __%fhook-tcl-format__ - The command to format current Tcl file, default  
+            is set to _"tclfmt --in-place %f"_  where _%f_ represents the file name.
+            The _tclfmt_ program can be installed using the _pip3_ package manager like this:
+            `pip3 install tclint --user`
+            
+  > __%fhook-tcl-lint__ - The command to check/lint the current Tcl file, 
+            default is set to _"tclint %f"_ where _%f_ represents the file name.
+            The _tclint_ program can be installed using the _pip3_ package manager like this:
+            `pip3 install tclint --user`
+  
+  The setting assume that the Tcl and the tclint and tclfmt programs are available via the PATH
+  environment variable. On Windows you must insert here either the complete PATH to the 
+  executables or add the folder where this file is to the PATH variable.
 
 ## SEE ALSO
 
@@ -62107,10 +62149,27 @@ $a
 ! 9 perl
 ! 9 pl
 ! 9 pm
+! 5 %fhook-perl-exec
+! 5 %fhook-perl-format
+! 5 %fhook-perl-lint
+
+## NAME
+
+|%fhook-perl-exec
+  %fhook-perl-exec - command to execute Perl files
+|%fhook-perl-format
+  %fhook-perl-format - formatting command for Perl files
+|%fhook-perl-lint
+  %fhook-perl-lint - linting command for Perl files
+$a
+
 ## SYNOPSIS
 
 
-  perl - Practical Extraction and Report Language File.
+  pl, pm, perl - Practical Extraction and Report Language Files
+  __%fhook-perl-exec__  
+  __%fhook-perl-format__  
+  __%fhook-perl-lint__  
 
 
 ## FILES
@@ -62209,6 +62268,25 @@ $a
   
   >  Debugging a perl script can be done inside MicroEmacs by using the
      [perldb(3)](perldb(3)) command.
+
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-perl-exec__ - The command to execute the current Perl file, default on Unix systems
+            is set to _"perl %f"_ where _%f_ represents the file name of 
+            the current script
+            
+  > __%fhook-perl-format__ - The command to format current Tcl file, default  
+            is set to _"perltidy -b %f"_  where _%f_ represents the file name.
+            The _perltidy_ program can be installed usually using the standard package manager or using the cpan utility of Perl.
+            
+  > __%fhook-perl-lint__ - The command to check/lint the current Perl file, 
+            default is set to _"perl -Mstrict -cw %f"_ where _%f_ represents the file name.
+            If the program _perlcritic_ is available it is used instead using the following command line:
+            `perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f`
+  
+  > The setting assume that the Perl, the perltidy and the perlcritic programs are available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    executables or add the folder where this file is to the PATH variable.
 
 
 ## BUGS

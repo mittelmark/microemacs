@@ -60219,6 +60219,10 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 p
 ! 9 pas
+! 5 %fhook-pascal-exec
+! 5 %fhook-pascal-format
+! 5 %fhook-pascal-lint
+
 
 cEcENAME cEcA
 
@@ -60233,7 +60237,7 @@ $a
 cESYNOPSIS cA
 
 
-    p, pas - Pascal files
+    p, pas - Pascal files  
     cD%fhook-pascal-execcA  
     cD%fhook-pascal-formatcA  
     cD%fhook-pascal-lintcA  
@@ -60243,7 +60247,7 @@ $a
 
 
     cDhkpascal.emfcA - Pascal hook definition  
-    cDpascal.eafcA - Pascal abbreviation file
+    cDpascal.eafcA - Pascal abbreviation file  
     cDpascal.etfcA - Pascal template file.
 
 
@@ -60304,21 +60308,22 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
-
-    cD%fhook-pascal-execcA - The command to execute the current Pascal file, default on Unix systems
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-pascal-execcA - The command to execute the current Pascal file, default on Unix systems
               is set to cC"fpc %f && ./%b"cA where cC%fcA represents the file name and cC%bcA the
               basename of the current file on Windows the slash is replaced with a backslash
               
-    cD%fhook-pascal-formatcA - The command to format current Pascal file, default  
+      cD%fhook-pascal-formatcA - The command to format current Pascal file, default  
               is set to cC"ptop %f temp.pas && cp temp.pas %f"cA on a Unix system
               where cC%fcA represents the file name, on Windows the cCcpcA command is
               replaced with cCcopycA
-    cD%fhook-pascal-lintcA - The command to check/lint the current Pascal file, 
+      cD%fhook-pascal-lintcA - The command to check/lint the current Pascal file, 
               default is set to cC"fpc -Cn %f"cA where cC%fcA represents the file name.
     
-    The setting assume that the V compiler is available via the PATH
-    environment variable. On Windows you must insert here either the complete PATH to the 
-    cGvcA executable or add the folder where this file is to the PATH variable.
+      The setting assume that the Free Pascal compiler and he cGptopcA formatter is available via the PATH
+      environment variable. On Windows you must insert here either the complete PATH to the 
+      cGfpccA executable or add the folder where this file is to the PATH variable.
 
 
 cEBUGS cA
@@ -60861,10 +60866,27 @@ $a
 ! 9 tcl
 ! 9 tk
 ! 9 wish
-cEcESYNOPSIS cEcA
+! 5 %fhook-tcl-exec
+! 5 %fhook-tcl-format
+! 5 %fhook-tcl-lint
+
+cEcENAME cEcA
+
+|%fhook-tcl-exec
+    %fhook-tcl-exec - command to execute Tcl files
+|%fhook-tcl-format
+    %fhook-tcl-format - formatting command for Tcl files
+|%fhook-tcl-lint
+    %fhook-tcl-lint - linting command for Tcl files
+$a
+
+cESYNOPSIS cA
 
 
-    tcl, tk - TCL Programming language templates
+    tcl, tk - TCL Programming language files  
+    cD%fhook-tcl-execcA  
+    cD%fhook-tcl-formatcA  
+    cD%fhook-tcl-lintcA  
 
 
 cEFILES cA
@@ -60887,15 +60909,18 @@ $a
     cD^#![ \t]*/.*wishcA
     
        MicroEmacs 2009 recognizes the magic string on the first line of the
-       file used to locate the executable. The tcl files may be extension
+       file used to locate the executable. The Tcl files may be extension
        less and are still recognized.
 
 
 cEDESCRIPTION cA
 
 
-    The cDtclcA provides hilighting and automatic formatting features, in addition
-    to a number of tools to handle the file type.
+    The cDtclcA file type template provides hilighting and automatic formatting features,
+    in addition to a number of tools to handle the file type.
+
+    File recognition is performed using the standard file extension cD.tclcA, cD.tkcA
+    or by the magic string.
 
     cDGeneral EditingcA
     
@@ -60929,7 +60954,7 @@ $a
        (un)folds all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the
        current region. Note that folding does not operate on K&R style code.
 
-    cDList ItemscA
+    cDNavigation via Item ListcA
 
        Item listing is available and the key constructs of the file may be listed
        using  the lsitem-list(3)lmitem-list(3)le command.
@@ -60957,6 +60982,23 @@ $a
        cDf6cA      - show the item-list outline
        cDEsc f6cA  - hide the item-list outline
 
+      cD%fhook-tcl-execcA - The command to execute the current Tcl file, default on Unix systems
+              is set to cC"tclsh %f"cA where cC%fcA represents the file name of 
+              the current script
+              
+      cD%fhook-tcl-formatcA - The command to format current Tcl file, default  
+              is set to cC"tclfmt --in-place %f"cA  where cC%fcA represents the file name.
+              The cCtclfmtcA program can be installed using the cCpip3cA package manager like this:
+              `pip3 install tclint --user`
+              
+      cD%fhook-tcl-lintcA - The command to check/lint the current Tcl file, 
+              default is set to cC"tclint %f"cA where cC%fcA represents the file name.
+              The cCtclintcA program can be installed using the cCpip3cA package manager like this:
+              `pip3 install tclint --user`
+    
+    The setting assume that the Tcl and the tclint and tclfmt programs are available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    executables or add the folder where this file is to the PATH variable.
 
 cESEE ALSO cA
 
@@ -61186,10 +61228,27 @@ $a
 ! 9 perl
 ! 9 pl
 ! 9 pm
-cEcESYNOPSIS cEcA
+! 5 %fhook-perl-exec
+! 5 %fhook-perl-format
+! 5 %fhook-perl-lint
+
+cEcENAME cEcA
+
+|%fhook-perl-exec
+    %fhook-perl-exec - command to execute Perl files
+|%fhook-perl-format
+    %fhook-perl-format - formatting command for Perl files
+|%fhook-perl-lint
+    %fhook-perl-lint - linting command for Perl files
+$a
+
+cESYNOPSIS cA
 
 
-    perl - Practical Extraction and Report Language File.
+    pl, pm, perl - Practical Extraction and Report Language Files
+    cD%fhook-perl-execcA  
+    cD%fhook-perl-formatcA  
+    cD%fhook-perl-lintcA  
 
 
 cEFILES cA
@@ -61288,6 +61347,25 @@ $a
     
        Debugging a perl script can be done inside MicroEmacs by using the
        lsperldb(3)lmperldb(3)le command.
+
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-perl-execcA - The command to execute the current Perl file, default on Unix systems
+              is set to cC"perl %f"cA where cC%fcA represents the file name of 
+              the current script
+              
+      cD%fhook-perl-formatcA - The command to format current Tcl file, default  
+              is set to cC"perltidy -b %f"cA  where cC%fcA represents the file name.
+              The cCperltidycA program can be installed usually using the standard package manager or using the cpan utility of Perl.
+              
+      cD%fhook-perl-lintcA - The command to check/lint the current Perl file, 
+              default is set to cC"perl -Mstrict -cw %f"cA where cC%fcA represents the file name.
+              If the program cCperlcriticcA is available it is used instead using the following command line:
+              `perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f`
+    
+      The setting assume that the Perl, the perltidy and the perlcritic programs are available via the PATH
+      environment variable. On Windows you must insert here either the complete PATH to the 
+      executables or add the folder where this file is to the PATH variable.
 
 
 cEBUGS cA

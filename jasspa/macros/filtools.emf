@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250713.1837>
+;  Last Modified : <250714.0638>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -256,7 +256,11 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; Perl
 !if &not &seq &which "perl" ""
-  set-variable %fhook-perl-lint "perl -cw %f"
+  !if &not &seq &which "perlcritic" ""
+    set-variable %fhook-perl-lint "perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f"
+  !else
+    set-variable %fhook-perl-lint "perl -cw %f"
+  !endif
   set-variable %fhook-perl-exec "perl -w %f"
   !if &not &seq &which "perltidy" ""
     set-variable %fhook-perl-format "perltidy -b %f"
