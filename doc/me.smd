@@ -60225,10 +60225,36 @@ $a
 ! 9 y
 ! 9 i
 ! 9 rc
+! 5 %fhook-c-exec
+! 5 %fhook-c-format
+! 5 %fhook-c-lint
+! 5 %fhook-cpp-exec
+! 5 %fhook-cpp-format
+! 5 %fhook-cpp-lint
+
+## NAME
+
+  C and C++ programming language
+ 
+|%fhook-c-exec
+  %fhook-c-exec - command to execute C files
+|%fhook-c-format
+  %fhook-c-format - formatting command for C files
+|%fhook-c-lint
+  %fhook-c-lint - linting command for C files
+|%fhook-cpp-exec
+  %fhook-cpp-exec - command to execute C++ files
+|%fhook-cpp-format
+  %fhook-cpp-format - formatting command for C++ files
+|%fhook-cpp-lint
+  %fhook-cpp-lint - linting command for C++ files
+$a
+
 ## SYNOPSIS
 
 
   C, C++ - C and C++ programming language templates
+  
 
 
 ## FILES
@@ -60236,6 +60262,9 @@ $a
 
   __hkc.emf__ - C programming language hook definition  
   __hkcpp.emf__ - C++ programming language hook definition  
+
+  __c.eaf__ - C programming language abbreviation file  
+  __cpp.eaf__ - C++ programming language abbreviation file  
 
   __c.etf__ - C programming language template file  
   __h.etf__ - C programming language header template file  
@@ -60330,6 +60359,18 @@ $a
      `#define` information) then the disabled region of code is grayed out
      indicating which regions of the code are active.
 
+  __Navigation via Item List__
+
+  >  Item listing is available and the key constructs of the file may be listed
+     using  the [item-list(3)](item-list(3)) command.
+
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for C and C++ file editing
+     which can be used by writing short abbreviations like "_for_", "_if_" or "_wh_" (while) - 
+     for C and C++ code functions. The list of abbreviations can be used as well interactively in the GUI
+     version of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
   __Working Environment__
  
   >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
@@ -60350,20 +60391,53 @@ $a
      __esc o__ - Format a comment.  
      __f2__ - (un)fold the current region  
      __f3__ - (un)fold all regions  
+     __f6__ - List items.  
+     __esc f6__ - Close list items window.  
 
-  __Additional Commands __
+  __Additional Commands__
   
   >  A number of additional commands are available as follows:-
 
   >  [c-slashify(3)](c-slashify(3)) - Append backslash to end of lines of region.  
-     [c-deslashify(3)](c-deslashify(3)) - Remove backslash to end of lines of
-     region.  
-     [c-to-cpp-convert(3)](c-to-cpp-convert(3)) - Convert a C file to C++  
+     [c-deslashify(3)](c-deslashify(3)) - Remove backslash to end of lines of region.  
+     [c-to-cpp-convert(3)](c-to-cpp-convert(3)) - Convert a C file to C++ file.
      [c-hash-eval(3)](c-hash-eval(3)) - Evaluate C/C++ #defines.  
      [c-hash-del(3)](c-hash-del(3)) - Remove C/C++ #define evaluation.  
      [c-hash-set-define(3)](c-hash-set-define(3)) - Set a C/C++ #define.  
-     [c-hash-unset-define(3)](c-hash-unset-define(3)) - Unset a C/C++ #define  
+     [c-hash-unset-define(3)](c-hash-unset-define(3)) - Unset a C/C++ #define.  
 
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-c-exec__ - The command to execute the current C file, default on Unix systems
+      is set to _"gcc -Wall %f -o %b &&  ./%b"_ where _%f_ represents the file name and _%b_ the
+      basename of the current file on Windows the slash is replaced with a backslash
+            
+  > __%fhook-c-format__ - The command to format current C file, default is set to 
+      _"astyle %f"_ or _"clang-format %f --std=c99"_ in dependence what is installed 
+      on the current system, again _%f_ represents the file name of the currently edited file.
+
+  > __%fhook-c-lint__ - The command to check/lint the current C file, default is set to
+      _"gcc -Wall -x c -fsyntax-only %f"_ or _"clang-tidy %f -- -std=c99"_ if the latter
+      is installed on the system. Again _%f_ represents the currently edited file name.
+
+  > __%fhook-cpp-exec__ - The command to execute the current C++ file, default on Unix systems
+      is set to _"g++ -Wall %f -o %b &&  ./%b"_ where _%f_ represents the file name and _%b_ the
+      basename of the current file on Windows the slash is replaced with a backslash
+            
+  > __%fhook-cpp-format__ - The command to format current C++ file, default is set to 
+      _"astyle %f"_ or _"clang-format %f --std=c++17"_ in dependence what is installed 
+      on the current system, again _%f_ represents the file name of the currently edited file.
+
+  > __%fhook-c++-lint__ - The command to check/lint the current C++ file, default is set to
+      _"g++ -Wall -x c++ -fsyntax-only %f"_ or _"clang-tidy %f -- -std=c++17"_ if the latter
+      is installed on the system. Again _%f_ represents the currently edited file name.
+  
+  > The setting assume that the mentioned compilers or tools are available via the PATH
+    environment variable. On Windows you must insert here either the complete PATH to the 
+    executables or add the folder where these files are to the PATH variable. 
+    
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or _myc.emf_ and _mycpp.emf_ files. 
 
 ## NOTES
 
@@ -60407,11 +60481,10 @@ $a
 
 ## SEE ALSO
 
-
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev--handle(3)](expand-abbrev-handle(3)), 
   [c-deslashify(3)](c-deslashify(3)), [c-slashify(3)](c-slashify(3)), [c-to-cpp-convert(3)](c-to-cpp-convert(3)), [collapse-all(3)](collapse-all(3)),
-  [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [ctags(3f)](ctags(3f)), [find-tag(2)](find-tag(2)), [rcs-file(2)](rcs-file(2)),
-  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
-
+  [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [ctags(3f)](ctags(3f)), [find-tag(2)](find-tag(2)), [item-list(3)](item-list(3)), [rcs-file(2)](rcs-file(2)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)),
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ001
 ! 9 ehf
@@ -61232,6 +61305,8 @@ $a
     environment variable. On Windows you must insert here either the complete PATH to the 
     `fpc` executable or add the folder where this file is to the PATH variable.
 
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mypascal.emf_ file. 
 
 ## BUGS
 
@@ -61788,6 +61863,8 @@ $a
 
 ## NAME
 
+  TCL Programming language
+ 
 |%fhook-tcl-exec
   %fhook-tcl-exec - command to execute Tcl files
 |%fhook-tcl-format
@@ -61916,6 +61993,9 @@ $a
   > The setting assume that the _tclsh_, the _tclint_ and the _tclfmt_ programs are available via the
     PATH environment variable. On Windows you must insert here either the complete PATH to the 
     executables or add the folder where this file is to the PATH variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mytcl.emf_ file. 
 
 ## SEE ALSO
 
@@ -62288,6 +62368,8 @@ $a
     via the PATH environment variable. On Windows you must insert here either the complete PATH
     to the executables or add the folder where this file is to the PATH variable.
 
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myperl.emf_ file. 
 
 ## BUGS
 
@@ -64869,16 +64951,21 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
-  __%fhook-dart-exec__ - The command to execute the current dart file, default
-            is set to _"dart run %f"_ where %f represents the file name  
-  __%fhook-dart-format__ - The command to format current dart file, default  
-            is set to _"dart format %f"_ where %f represents the file name  
-  __%fhook-dart-lint__ - The command to check/lint the current dart file, 
-            default is set to _"dart analyze %f"_ 
+  __Executing, Formatting and Linting__
   
-  The setting assume that the dart compiler is available via the PATH
-  environment variable. On Windows you must insert here either the complete PATH to the 
-  dart executable or add the folder where this file is in to the PATH variable.
+  > __%fhook-dart-exec__ - The command to execute the current dart file, default
+       is set to _"dart run %f"_ where %f represents the file name  
+  > __%fhook-dart-format__ - The command to format current dart file, default  
+       is set to _"dart format %f"_ where %f represents the file name  
+  > __%fhook-dart-lint__ - The command to check/lint the current dart file, 
+       default is set to _"dart analyze %f"_ 
+  
+  > The setting assume that the _dart_ compiler is available via the _PATH_
+    environment variable. On Windows you must insert here either the complete _PATH_ to the 
+    _dart_ executable or add the folder where this file is in to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mydart.emf_ file. 
   
 ## NOTES
 
@@ -65008,6 +65095,22 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-c3-exec__ - The command to execute the current C3 file, default
+       is set to _"c3c compile-run %f --"_ where %f represents the file name.
+  > __%fhook-c3-format__ - The command to format current C3 file, default  
+       is set to _"astyle --indent-spaces=2 %f"_ if _astyle_ is installed.
+  > __%fhook-c3-lint__ - The command to check/lint the current C3 file, 
+       default is set to _"c3c compile %f -o %b"_ 
+  
+  > The setting assume that the _c3c_ compiler is available via the _PATH_
+    environment variable. On Windows you must insert here either the complete _PATH_ to the 
+    _c3c_ executable or add the folder where this file is in to the _PATH_ variable.
+
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myc3.emf_ file. 
 
 ## NOTES
 
@@ -65141,18 +65244,22 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
-
-  __%fhook-v-exec__ - The command to execute the current V file, default
-            is set to _"v crun %f"_ where %f represents the file name  
-  __%fhook-v-format__ - The command to format current V file, default  
-            is set to _"v fmt -w %f"_ where %f represents the file name  
-  __%fhook-v-lint__ - The command to check/lint the current V file, 
-            default is set to _"v vet %f"_ 
+  __Executing, Formatting and Linting__
   
-  The setting assume that the V compiler is available via the PATH
-  environment variable. On Windows you must insert here either the complete PATH to the 
-  `v` executable or add the folder where this file is to the PATH variable.
+  > __%fhook-v-exec__ - The command to execute the current V file, default
+       is set to _"v crun %f"_ where %f represents the file name  
+  > __%fhook-v-format__ - The command to format current V file, default  
+       is set to _"v fmt -w %f"_ where %f represents the file name  
+  > __%fhook-v-lint__ - The command to check/lint the current V file, 
+       default is set to _"v vet %f"_ 
+  
+  > The setting assume that the _V_ compiler is available via the _PATH_
+    environment variable. On Windows you must insert here either the complete 
+    _PATH_ to the  _`v`_ executable or add the folder where this file is to the
+    _PATH_ variable.
 
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myv.emf_ file. 
 
 ## NOTES
 
@@ -65289,23 +65396,25 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
+  __Executing, Formatting and Linting__
 
-  __%fhook-rust-exec__ - The command to execute the current Rust file, default
-            is set to _"rustc %f -o %b && ./%b"_ where %f represents the file name 
-            and %b the the filename without extension 
-  __%fhook-rust-format__ - The command to format current Rust file, default  
-            is set to _"rustfmt  %f"_ where %f represents the file name  
-  __%fhook-rust-lint__ - The command to check/lint the current Rust file, 
-            default is set to _"rustc %f"_ 
+  > __%fhook-rust-exec__ - The command to execute the current Rust file, default
+       is set to _"rustc %f -o %b && ./%b"_ where %f represents the file name 
+       and %b the the filename without extension 
+  > __%fhook-rust-format__ - The command to format current Rust file, default  
+       is set to _"rustfmt  %f"_ where %f represents the file name  
+  > __%fhook-rust-lint__ - The command to check/lint the current Rust file, 
+       default is set to _"rustc %f"_ 
   
-  The  setting  assume  that  the  Rust  compiler  and the Rust  formatter  is
-  available via the PATH environment variable. On Windows you must insert here
-  either the complete  PATH to the `rustc` executable or add the folder where this
-  file is to the PATH variable.
+  > These  settings  assume  that  the  _Rust_  compiler  (_rustc_) and the _Rust_  
+    formatter (_rustfmt_) are available via the _PATH environment variable. 
+    On Windows you must insert here either the complete  PATH to the _rustc_ executable
+    or add the folder where this file is to the PATH variable.
 
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myrust.emf_ file. 
 
 ## NOTES
-
 
   The hilighting is typically extended using a file __myrust.emf__. 
     
@@ -65413,19 +65522,22 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
+  __Executing, Formatting and Linting__
 
-  __%fhook-zig-exec__ - The command to execute the current Zig file, default
-            is set to _"zig run %f"_ where %f represents the file name 
-  __%fhook-zig-format__ - The command to format current Zig file, default  
-            is set to _"zig fmt %f"_ where %f represents the file name  
-  __%fhook-zig-lint__ - The command to check/lint the current Zig file, 
-            default is set to _"zig ast-check %f"_ 
+  > __%fhook-zig-exec__ - The command to execute the current Zig file, default
+       is set to _"zig run %f"_ where %f represents the file name 
+  > __%fhook-zig-format__ - The command to format current Zig file, default  
+       is set to _"zig fmt %f"_ where %f represents the file name  
+  > __%fhook-zig-lint__ - The command to check/lint the current Zig file, 
+       default is set to _"zig ast-check %f"_ 
   
-  The  setting  assume  that  the  Zig  compiler  is  available  via the  PATH
-  environment  variable.  On Windows you must insert here either the  complete
-  PATH to the `zig`  executable  or add the  folder  where this file is to the
-  PATH variable.
+  > The  setting  assume  that  the  Zig  compiler  is  available  via the  _PATH_
+    environment  variable.  On Windows you must insert here either the  complete
+    _PATH_ to the _`zig`_  executable  or add the  folder  where this file is to the
+    _PATH_ variable.
 
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myzig.emf_ file. 
 
 ## NOTES
 

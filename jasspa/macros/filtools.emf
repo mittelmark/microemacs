@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250714.0638>
+;  Last Modified : <250714.0856>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -161,14 +161,25 @@ add-file-hook "*file-exec*" fhook-file-exec
 !if &not &seq &which "gawk" ""
   set-variable %fhook-awk-lint "gawk --lint -f %f"
   set-variable %fhook-awk-exec "gawk -f %f"
-  set-variable %fhook-awk-format "gawk -o%b.new -f %f && cp %b.new %f"
+  !if &seq $platform "win32"
+    set-variable %fhook-awk-format "gawk -o%b.new -f %f && copy %b.new %f"
+  !else
+    set-variable %fhook-awk-format "gawk -o%b.new -f %f && cp %b.new %f"
+  !endif
   !endif
 !endif
 
 ; C
 !if &not &seq &which "gcc" ""
   set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only %f"
-  set-variable %fhook-c-exec "gcc -Wall %f -o %b && ./%b"
+  !if &not &seq &which "clang-tidy" ""
+    set-variable %fhook-c-format "clang-tidy %f -- -std=c99"
+  !endif
+  !if &seq $platform "win32"
+    set-variable %fhook-c-exec "gcc -Wall %f -o %b && .\\%b"
+  !else
+    set-variable %fhook-c-exec "gcc -Wall %f -o %b && ./%b"
+  !endif
   !if &not &seq &which "astyle" ""
     set-variable %fhook-c-format "astyle %f"
   !elif &not &seq &which "clang-format" ""

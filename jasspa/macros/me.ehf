@@ -59330,10 +59330,36 @@ $a
 ! 9 y
 ! 9 i
 ! 9 rc
-cEcESYNOPSIS cEcA
+! 5 %fhook-c-exec
+! 5 %fhook-c-format
+! 5 %fhook-c-lint
+! 5 %fhook-cpp-exec
+! 5 %fhook-cpp-format
+! 5 %fhook-cpp-lint
+
+cEcENAME cEcA
+
+    C and C++ programming language
+ 
+|%fhook-c-exec
+    %fhook-c-exec - command to execute C files
+|%fhook-c-format
+    %fhook-c-format - formatting command for C files
+|%fhook-c-lint
+    %fhook-c-lint - linting command for C files
+|%fhook-cpp-exec
+    %fhook-cpp-exec - command to execute C++ files
+|%fhook-cpp-format
+    %fhook-cpp-format - formatting command for C++ files
+|%fhook-cpp-lint
+    %fhook-cpp-lint - linting command for C++ files
+$a
+
+cESYNOPSIS cA
 
 
     C, C++ - C and C++ programming language templates
+    
 
 
 cEFILES cA
@@ -59341,6 +59367,9 @@ $a
 
     cDhkc.emfcA - C programming language hook definition  
     cDhkcpp.emfcA - C++ programming language hook definition  
+
+    cDc.eafcA - C programming language abbreviation file  
+    cDcpp.eafcA - C++ programming language abbreviation file  
 
     cDc.etfcA - C programming language template file  
     cDh.etfcA - C programming language header template file  
@@ -59435,6 +59464,18 @@ $a
        cG#definecA information) then the disabled region of code is grayed out
        indicating which regions of the code are active.
 
+    cDNavigation via Item ListcA
+
+       Item listing is available and the key constructs of the file may be listed
+       using  the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbreviationscA
+
+       The installation comes with a default abbreviation file for C and C++ file editing
+       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCwhcA" (while) - 
+       for C and C++ code functions. The list of abbreviations can be used as well interactively in the GUI
+       version of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
+
     cDWorking EnvironmentcA
  
        lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
@@ -59455,20 +59496,53 @@ $a
        cDesc ocA - Format a comment.  
        cDf2cA - (un)fold the current region  
        cDf3cA - (un)fold all regions  
+       cDf6cA - List items.  
+       cDesc f6cA - Close list items window.  
 
-    cDAdditional Commands cA
+    cDAdditional CommandscA
     
        A number of additional commands are available as follows:-
 
        lsc-slashify(3)lmc-slashify(3)le - Append backslash to end of lines of region.  
-       lsc-deslashify(3)lmc-deslashify(3)le - Remove backslash to end of lines of
-       region.  
-       lsc-to-cpp-convert(3)lmc-to-cpp-convert(3)le - Convert a C file to C++  
+       lsc-deslashify(3)lmc-deslashify(3)le - Remove backslash to end of lines of region.  
+       lsc-to-cpp-convert(3)lmc-to-cpp-convert(3)le - Convert a C file to C++ file.
        lsc-hash-eval(3)lmc-hash-eval(3)le - Evaluate C/C++ #defines.  
        lsc-hash-del(3)lmc-hash-del(3)le - Remove C/C++ #define evaluation.  
        lsc-hash-set-define(3)lmc-hash-set-define(3)le - Set a C/C++ #define.  
-       lsc-hash-unset-define(3)lmc-hash-unset-define(3)le - Unset a C/C++ #define  
+       lsc-hash-unset-define(3)lmc-hash-unset-define(3)le - Unset a C/C++ #define.  
 
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-c-execcA - The command to execute the current C file, default on Unix systems
+        is set to cC"gcc -Wall %f -o %b &&  ./%b"cA where cC%fcA represents the file name and cC%bcA the
+        basename of the current file on Windows the slash is replaced with a backslash
+              
+      cD%fhook-c-formatcA - The command to format current C file, default is set to 
+        cC"astyle %f"cC or cA"clang-format %f --std=c99"cA in dependence what is installed 
+        on the current system, again cC%fcA represents the file name of the currently edited file.
+
+      cD%fhook-c-lintcA - The command to check/lint the current C file, default is set to
+        cC"gcc -Wall -x c -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c99"cA if the latter
+        is installed on the system. Again cC%fcA represents the currently edited file name.
+
+      cD%fhook-cpp-execcA - The command to execute the current C++ file, default on Unix systems
+        is set to cC"g++ -Wall %f -o %b &&  ./%b"cA where cC%fcA represents the file name and cC%bcA the
+        basename of the current file on Windows the slash is replaced with a backslash
+              
+      cD%fhook-cpp-formatcA - The command to format current C++ file, default is set to 
+        cC"astyle %f"cC or cA"clang-format %f --std=c++17"cA in dependence what is installed 
+        on the current system, again cC%fcA represents the file name of the currently edited file.
+
+      cD%fhook-c++-lintcA - The command to check/lint the current C++ file, default is set to
+        cC"g++ -Wall -x c++ -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c++17"cA if the latter
+        is installed on the system. Again cC%fcA represents the currently edited file name.
+    
+      The setting assume that the mentioned compilers or tools are available via the PATH
+      environment variable. On Windows you must insert here either the complete PATH to the 
+      executables or add the folder where these files are to the PATH variable. 
+      
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or cCmyc.emfcA and cCmycpp.emfcA files. 
 
 cENOTES cA
 
@@ -59510,11 +59584,10 @@ $a
 
 cESEE ALSO cA
 
-
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev--handle(3)le, 
     lsc-deslashify(3)lmc-deslashify(3)le, lsc-slashify(3)lmc-slashify(3)le, lsc-to-cpp-convert(3)lmc-to-cpp-convert(3)le, lscollapse-all(3)lmcollapse-all(3)le,
-    lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsctags(3f)lmctags(3f)le, lsfind-tag(2)lmfind-tag(2)le, lsrcs-file(2)lmrcs-file(2)le,
-    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
-
+    lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsctags(3f)lmctags(3f)le, lsfind-tag(2)lmfind-tag(2)le, lsitem-list(3)lmitem-list(3)le, lsrcs-file(2)lmrcs-file(2)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le,
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 ehf
 cEcESYNOPSIS cEcA
@@ -60325,6 +60398,8 @@ $a
       environment variable. On Windows you must insert here either the complete PATH to the 
       cGfpccA executable or add the folder where this file is to the PATH variable.
 
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmypascal.emfcA file. 
 
 cEBUGS cA
 
@@ -60872,6 +60947,8 @@ $a
 
 cEcENAME cEcA
 
+    TCL Programming language
+ 
 |%fhook-tcl-exec
     %fhook-tcl-exec - command to execute Tcl files
 |%fhook-tcl-format
@@ -61000,6 +61077,9 @@ $a
       The setting assume that the cCtclshcA, the cCtclintcA and the cCtclfmtcA programs are available via the
       PATH environment variable. On Windows you must insert here either the complete PATH to the 
       executables or add the folder where this file is to the PATH variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmytcl.emfcA file. 
 
 cESEE ALSO cA
 
@@ -61367,6 +61447,8 @@ $a
       via the PATH environment variable. On Windows you must insert here either the complete PATH
       to the executables or add the folder where this file is to the PATH variable.
 
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyperl.emfcA file. 
 
 cEBUGS cA
 
@@ -63920,16 +64002,21 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
-    cD%fhook-dart-execcA - The command to execute the current dart file, default
-              is set to cC"dart run %f"cA where %f represents the file name  
-    cD%fhook-dart-formatcA - The command to format current dart file, default  
-              is set to cC"dart format %f"cA where %f represents the file name  
-    cD%fhook-dart-lintcA - The command to check/lint the current dart file, 
-              default is set to cC"dart analyze %f"cA 
+    cDExecuting, Formatting and LintingcA
     
-    The setting assume that the dart compiler is available via the PATH
-    environment variable. On Windows you must insert here either the complete PATH to the 
-    dart executable or add the folder where this file is in to the PATH variable.
+      cD%fhook-dart-execcA - The command to execute the current dart file, default
+         is set to cC"dart run %f"cA where %f represents the file name  
+      cD%fhook-dart-formatcA - The command to format current dart file, default  
+         is set to cC"dart format %f"cA where %f represents the file name  
+      cD%fhook-dart-lintcA - The command to check/lint the current dart file, 
+         default is set to cC"dart analyze %f"cA 
+    
+      The setting assume that the cCdartcA compiler is available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete cCPATHcA to the 
+      cCdartcA executable or add the folder where this file is in to the cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmydart.emfcA file. 
     
 cENOTES cA
 
@@ -64058,6 +64145,22 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-c3-execcA - The command to execute the current C3 file, default
+         is set to cC"c3c compile-run %f --"cA where %f represents the file name.
+      cD%fhook-c3-formatcA - The command to format current C3 file, default  
+         is set to cC"astyle --indent-spaces=2 %f"cA if cCastylecA is installed.
+      cD%fhook-c3-lintcA - The command to check/lint the current C3 file, 
+         default is set to cC"c3c compile %f -o %b"cA 
+    
+      The setting assume that the cCc3ccA compiler is available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete cCPATHcA to the 
+      cCc3ccA executable or add the folder where this file is in to the cCPATHcA variable.
+
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyc3.emfcA file. 
 
 cENOTES cA
 
@@ -64189,18 +64292,22 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
-
-    cD%fhook-v-execcA - The command to execute the current V file, default
-              is set to cC"v crun %f"cA where %f represents the file name  
-    cD%fhook-v-formatcA - The command to format current V file, default  
-              is set to cC"v fmt -w %f"cA where %f represents the file name  
-    cD%fhook-v-lintcA - The command to check/lint the current V file, 
-              default is set to cC"v vet %f"cA 
+    cDExecuting, Formatting and LintingcA
     
-    The setting assume that the V compiler is available via the PATH
-    environment variable. On Windows you must insert here either the complete PATH to the 
-    cGvcA executable or add the folder where this file is to the PATH variable.
+      cD%fhook-v-execcA - The command to execute the current V file, default
+         is set to cC"v crun %f"cA where %f represents the file name  
+      cD%fhook-v-formatcA - The command to format current V file, default  
+         is set to cC"v fmt -w %f"cA where %f represents the file name  
+      cD%fhook-v-lintcA - The command to check/lint the current V file, 
+         default is set to cC"v vet %f"cA 
+    
+      The setting assume that the cCVcA compiler is available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete 
+      cCPATHcA to the  cCcGvcAcA executable or add the folder where this file is to the
+      cCPATHcA variable.
 
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyv.emfcA file. 
 
 cENOTES cA
 
@@ -64336,23 +64443,25 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
+    cDExecuting, Formatting and LintingcA
 
-    cD%fhook-rust-execcA - The command to execute the current Rust file, default
-              is set to cC"rustc %f -o %b && ./%b"cA where %f represents the file name 
-              and %b the the filename without extension 
-    cD%fhook-rust-formatcA - The command to format current Rust file, default  
-              is set to cC"rustfmt  %f"cA where %f represents the file name  
-    cD%fhook-rust-lintcA - The command to check/lint the current Rust file, 
-              default is set to cC"rustc %f"cA 
+      cD%fhook-rust-execcA - The command to execute the current Rust file, default
+         is set to cC"rustc %f -o %b && ./%b"cA where %f represents the file name 
+         and %b the the filename without extension 
+      cD%fhook-rust-formatcA - The command to format current Rust file, default  
+         is set to cC"rustfmt  %f"cA where %f represents the file name  
+      cD%fhook-rust-lintcA - The command to check/lint the current Rust file, 
+         default is set to cC"rustc %f"cA 
     
-    The  setting  assume  that  the  Rust  compiler  and the Rust  formatter  is
-    available via the PATH environment variable. On Windows you must insert here
-    either the complete  PATH to the cGrustccA executable or add the folder where this
-    file is to the PATH variable.
+      These  settings  assume  that  the  cCRustcA  compiler  (cCrustccA) and the cCRustcA  
+      formatter (cCrustfmtcA) are available via the _PATH environment variable. 
+      On Windows you must insert here either the complete  PATH to the cCrustccA executable
+      or add the folder where this file is to the PATH variable.
 
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyrust.emfcA file. 
 
 cENOTES cA
-
 
     The hilighting is typically extended using a file cDmyrust.emfcA. 
       
@@ -64459,19 +64568,22 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
+    cDExecuting, Formatting and LintingcA
 
-    cD%fhook-zig-execcA - The command to execute the current Zig file, default
-              is set to cC"zig run %f"cA where %f represents the file name 
-    cD%fhook-zig-formatcA - The command to format current Zig file, default  
-              is set to cC"zig fmt %f"cA where %f represents the file name  
-    cD%fhook-zig-lintcA - The command to check/lint the current Zig file, 
-              default is set to cC"zig ast-check %f"cA 
+      cD%fhook-zig-execcA - The command to execute the current Zig file, default
+         is set to cC"zig run %f"cA where %f represents the file name 
+      cD%fhook-zig-formatcA - The command to format current Zig file, default  
+         is set to cC"zig fmt %f"cA where %f represents the file name  
+      cD%fhook-zig-lintcA - The command to check/lint the current Zig file, 
+         default is set to cC"zig ast-check %f"cA 
     
-    The  setting  assume  that  the  Zig  compiler  is  available  via the  PATH
-    environment  variable.  On Windows you must insert here either the  complete
-    PATH to the cGzigcA  executable  or add the  folder  where this file is to the
-    PATH variable.
+      The  setting  assume  that  the  Zig  compiler  is  available  via the  cCPATHcA
+      environment  variable.  On Windows you must insert here either the  complete
+      cCPATHcA to the cCcGzigcAcA  executable  or add the  folder  where this file is to the
+      cCPATHcA variable.
 
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyzig.emfcA file. 
 
 cENOTES cA
 
