@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250715.0736>
+;  Last Modified : <250715.0838>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -195,7 +195,11 @@ add-file-hook "*file-exec*" fhook-file-exec
 ; C++
 !if &not &seq &which "g++" ""
   set-variable %fhook-cpp-lint "LANG=en_US g++ -Wall -x c++ -fsyntax-only %f"
+  ;!if &not &seq &which "cppstyle" ""
+  ;  set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
+  ;!else
   set-variable %fhook-cpp-exec "LANG=en_US g++ -pipe -Wall %f -o %b 2>&1 && ./%b"
+  ;!endif
   !if &not &seq &which "astyle" ""
     set-variable %fhook-cpp-format "astyle %f"
   !elif &not &seq &which "clang-format" ""
