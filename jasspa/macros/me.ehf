@@ -61477,7 +61477,9 @@ $a
 cEFILES cA
 
 
-    cDhkhtml.emfcA - HyperText Markup Language file hook definition
+    cDhkhtml.emfcA - HyperText Markup Language file hook definition  
+    cDhtml.eafcA - HyperText Markup abbreviation file  
+    cDhtml.etfcA - HyperText Markup template file  
 
 
 cEEXTENSIONS cA
@@ -61520,6 +61522,19 @@ $a
        preprocessor definitions, comments, strings and characters of the
        language to be differentiated and rendered in different colors.
 
+    cDNavigation via Item ListcA
+
+       The MicroEmacs macro mode offers beside folding as well support for displaying
+       an outline of the headers of the HTML file for easy 
+       navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for HTML file editing
+       which  can  be  used  by  writing  short   abbreviations for tags and attributes.
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
     cDShort CutscA
     
        The short cut keys used within the buffer are:-
@@ -61527,6 +61542,8 @@ $a
        cDC-c C-hcA - Help information.  
        cDC-c C-acA - Toggle the HTML author status.  
        cDhtml-spell-check-wordcA - spell check the current word.  
+       cDf6cA - List items.  
+       cDesc f6cA - Close list items window.  
 
     cDRendered ModecA
     
@@ -61569,7 +61586,9 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsprint-buffer(2)lmprint-buffer(2)le, lsbuffer-setup(3)lmbuffer-setup(3)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsabbrev-list(3)lmabbrev-list(3)le,
+    lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lsitem-list(3)lmitem-list(3)le, 
+    lsprint-buffer(2)lmprint-buffer(2)le, lsbuffer-setup(3)lmbuffer-setup(3)le.
 ! 9 nroff
 ! 9 troff
 ! 9 0-9
@@ -61714,7 +61733,7 @@ $a
 cEFILES cA
 
 
-    cDinfo.emfcA - Info macro file.
+    cDhkinfo.emfcA - Info macro file.
 
 
 cEEXTENSIONS cA
@@ -61952,6 +61971,30 @@ $a
        reformat (re-layout) selected sections of the buffer, or the whole
        buffer, respectively. The default indentation setting is 2.
 
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within VisualBasic files. The folds occur about
+       functions and subroutines. lscollapse-all(3)lmcollapse-all(3)le (un)folds all
+       regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region.
+
+    cDNavigation via Item ListcA
+
+       The MicroEmacs macro mode offers beside folding as well support for displaying
+       an outline of the functions and subroutines of the VisualBasic file for easy 
+       navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c esc esc cA- Command complete.  
+       cDA-C-icA - Restyle the current region.  
+       cDf2cA - (un)fold the current region  
+       cDf3cA - (un)fold all regions  
+       cDf6cA - List items.  
+       cDesc f6cA - Close list items window.  
 
 cESEE ALSO cA
 

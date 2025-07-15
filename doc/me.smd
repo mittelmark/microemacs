@@ -62399,7 +62399,9 @@ $a
 ## FILES
 
 
-  __hkhtml.emf__ - HyperText Markup Language file hook definition
+  __hkhtml.emf__ - HyperText Markup Language file hook definition  
+  __html.eaf__ - HyperText Markup abbreviation file  
+  __html.etf__ - HyperText Markup template file  
 
 
 ## EXTENSIONS
@@ -62442,6 +62444,19 @@ $a
      preprocessor definitions, comments, strings and characters of the
      language to be differentiated and rendered in different colors.
 
+  __Navigation via Item List__
+
+  >  The MicroEmacs macro mode offers beside folding as well support for displaying
+     an outline of the headers of the HTML file for easy 
+     navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for HTML file editing
+     which  can  be  used  by  writing  short   abbreviations for tags and attributes.
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -62449,6 +62464,8 @@ $a
   >  __C-c C-h__ - Help information.  
      __C-c C-a__ - Toggle the HTML author status.  
      __html-spell-check-word__ - spell check the current word.  
+     __f6__ - List items.  
+     __esc f6__ - Close list items window.  
 
   __Rendered Mode__
   
@@ -62491,7 +62508,9 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types), [print-buffer(2)](print-buffer(2)), [buffer-setup(3)](buffer-setup(3)).
+  [Supported File Types](MicroEmacs - Supported File Types), [abbrev-list(3)](abbrev-list(3)),
+  [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [item-list(3)](item-list(3)), 
+  [print-buffer(2)](print-buffer(2)), [buffer-setup(3)](buffer-setup(3)).
 !! me-id: m9typ026
 ! 9 nroff
 ! 9 troff
@@ -62638,7 +62657,7 @@ $a
 ## FILES
 
 
-  __info.emf__ - Info macro file.
+  __hkinfo.emf__ - Info macro file.
 
 
 ## EXTENSIONS
@@ -62881,6 +62900,30 @@ $a
      reformat (re-layout) selected sections of the buffer, or the whole
      buffer, respectively. The default indentation setting is 2.
 
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within VisualBasic files. The folds occur about
+     functions and subroutines. [collapse-all(3)](collapse-all(3)) (un)folds all
+     regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the current region.
+
+  __Navigation via Item List__
+
+  >  The MicroEmacs macro mode offers beside folding as well support for displaying
+     an outline of the functions and subroutines of the VisualBasic file for easy 
+     navigation using the [item-list(3)](item-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c esc esc __- Command complete.  
+     __A-C-i__ - Restyle the current region.  
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - List items.  
+     __esc f6__ - Close list items window.  
 
 ## SEE ALSO
 
