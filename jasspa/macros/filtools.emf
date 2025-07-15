@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250714.0856>
+;  Last Modified : <250715.0736>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -74,6 +74,8 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
   0 hilight .hilight.file-lint 2 200                                     $global-scheme
   hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]*"      .scheme.link  
   hilight .hilight.file-lint   0  "[-_/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]*"      .scheme.link    
+  hilight .hilight.file-lint   0  "warning:.+"     .scheme.operator
+  hilight .hilight.file-lint   0  "error:.+"     .scheme.error
 !endif
 
 add-file-hook "*file-lint*" fhook-file-lint
@@ -115,7 +117,8 @@ define-macro file-exec
   !iif &not &band @# 2  set-variable :file-exec-args @ml2 "Additional command-line arguments" :file-exec-args 
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   set-variable #l2 &spr "%s-replace"  $buffer-fhook
-  0x4188 file-tool-run #l0 $buffer-fname "*file-exec*"
+  ;0x80 ipipe-shell-command #l0 $buffer-fname "*file-exec*"
+  0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
   next-window-find-buffer "*file-exec*"
   !if &exi &ind #l2
     !force !force execute-named-command #l2
@@ -133,6 +136,8 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
   !iif &not &exi .hilight.file-exec  set-variable .hilight.file-exec &pinc  .hilight.next 1
   0 hilight .hilight.file-exec 2 200                                     $global-scheme
   hilight .hilight.file-exec   0  "[-_/\\.A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
+  hilight .hilight.file-exec   0  "warning:.+"     .scheme.operator
+  hilight .hilight.file-exec   0  "error:.+"     .scheme.error
 !endif
 
 add-file-hook "*file-exec*" fhook-file-exec
@@ -176,9 +181,9 @@ add-file-hook "*file-exec*" fhook-file-exec
     set-variable %fhook-c-format "clang-tidy %f -- -std=c99"
   !endif
   !if &seq $platform "win32"
-    set-variable %fhook-c-exec "gcc -Wall %f -o %b && .\\%b"
+    set-variable %fhook-c-exec "gcc -Wall %f -o %b 2>&1 && .\\%b"
   !else
-    set-variable %fhook-c-exec "gcc -Wall %f -o %b && ./%b"
+    set-variable %fhook-c-exec "gcc -Wall %f -o %b 2>&1 && ./%b"
   !endif
   !if &not &seq &which "astyle" ""
     set-variable %fhook-c-format "astyle %f"
@@ -189,8 +194,8 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; C++
 !if &not &seq &which "g++" ""
-  set-variable %fhook-cpp-lint "g++ -Wall -x c++ -fsyntax-only %f"
-  set-variable %fhook-cpp-exec "g++ -Wall %f -o %b && ./%b"
+  set-variable %fhook-cpp-lint "LANG=en_US g++ -Wall -x c++ -fsyntax-only %f"
+  set-variable %fhook-cpp-exec "LANG=en_US g++ -pipe -Wall %f -o %b 2>&1 && ./%b"
   !if &not &seq &which "astyle" ""
     set-variable %fhook-cpp-format "astyle %f"
   !elif &not &seq &which "clang-format" ""
