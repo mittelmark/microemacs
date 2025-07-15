@@ -43439,10 +43439,10 @@ $a
          ; working with C++ code using clang-tidy, astyle and g++
          set-variable %fhook-cpp-lint "clang-tidy %f -- -std=c++17"
          ; set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
-         set-variable %fhook-cpp-exec "g++ %f 2>&1; ./a.out"
+         set-variable %fhook-cpp-exec "g++ -Wall -std=c++17 %f 2>&1 && ./a.out"
          ; working with C code using clang-tidy, astyle and gcc
          set-variable %fhook-c-lint "clang-tidy %f -- -std=c99"
-         set-variable %fhook-c-exec "gcc %f 2>&1; ./a.out"
+         set-variable %fhook-c-exec "gcc -Wall -std=c99 %f 2>&1 && ./a.out"
          set-variable %fhook-c-format "astyle --indent=spaces=4 %f"
          ; freebasic declarations within hkvb.emf
          set-variable %fhook-vb-lint   "fbc -c -b %f"
@@ -59514,19 +59514,19 @@ $a
     cDExecuting, Formatting and LintingcA
     
       cD%fhook-c-execcA - The command to execute the current C file, default on Unix systems
-        is set to cC"gcc -Wall %f -o %b &&  ./%b"cA where cC%fcA represents the file name and cC%bcA the
+        is set to _"LANG=encCUS gcc -Wall -std=c99 %f -o %b 2>&1 &&  ./%b"cA where cC%fcA represents the file name and cC%bcA the
         basename of the current file on Windows the slash is replaced with a backslash
               
       cD%fhook-c-formatcA - The command to format current C file, default is set to 
-        cC"astyle %f"cC or cA"clang-format %f --std=c99"cA in dependence what is installed 
+        cC"astyle %f"cC or cA"clang-format %f -- -std=c99"cA in dependence what is installed 
         on the current system, again cC%fcA represents the file name of the currently edited file.
 
       cD%fhook-c-lintcA - The command to check/lint the current C file, default is set to
-        cC"gcc -Wall -x c -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c99"cA if the latter
+        _"LANG=encCUS gcc -Wall -x c -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c99"cA if the latter
         is installed on the system. Again cC%fcA represents the currently edited file name.
 
       cD%fhook-cpp-execcA - The command to execute the current C++ file, default on Unix systems
-        is set to cC"g++ -Wall %f -o %b &&  ./%b"cA where cC%fcA represents the file name and cC%bcA the
+        is set to _"LANG=encCUS g++ -Wall -std=c++17 %f -o %b 2>&1 && ./%b"cA where cC%fcA represents the file name and cC%bcA the
         basename of the current file on Windows the slash is replaced with a backslash
               
       cD%fhook-cpp-formatcA - The command to format current C++ file, default is set to 
@@ -59537,9 +59537,9 @@ $a
         cC"g++ -Wall -x c++ -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c++17"cA if the latter
         is installed on the system. Again cC%fcA represents the currently edited file name.
     
-      The setting assume that the mentioned compilers or tools are available via the PATH
-      environment variable. On Windows you must insert here either the complete PATH to the 
-      executables or add the folder where these files are to the PATH variable. 
+      The setting assume that the mentioned compilers or tools are available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete cCPATHcA to the 
+      executables or add the folder where these files are to the cCPATHcA variable. 
       
       These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
       or cCmyc.emfcA and cCmycpp.emfcA files. 

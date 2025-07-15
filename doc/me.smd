@@ -44028,10 +44028,10 @@ $a
        ; working with C++ code using clang-tidy, astyle and g++
        set-variable %fhook-cpp-lint "clang-tidy %f -- -std=c++17"
        ; set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
-       set-variable %fhook-cpp-exec "g++ %f 2>&1; ./a.out"
+       set-variable %fhook-cpp-exec "g++ -Wall -std=c++17 %f 2>&1 && ./a.out"
        ; working with C code using clang-tidy, astyle and gcc
        set-variable %fhook-c-lint "clang-tidy %f -- -std=c99"
-       set-variable %fhook-c-exec "gcc %f 2>&1; ./a.out"
+       set-variable %fhook-c-exec "gcc -Wall -std=c99 %f 2>&1 && ./a.out"
        set-variable %fhook-c-format "astyle --indent=spaces=4 %f"
        ; freebasic declarations within hkvb.emf
        set-variable %fhook-vb-lint   "fbc -c -b %f"
@@ -60409,19 +60409,19 @@ $a
   __Executing, Formatting and Linting__
   
   > __%fhook-c-exec__ - The command to execute the current C file, default on Unix systems
-      is set to _"gcc -Wall %f -o %b &&  ./%b"_ where _%f_ represents the file name and _%b_ the
+      is set to _"LANG=en_US gcc -Wall -std=c99 %f -o %b 2>&1 &&  ./%b"_ where _%f_ represents the file name and _%b_ the
       basename of the current file on Windows the slash is replaced with a backslash
             
   > __%fhook-c-format__ - The command to format current C file, default is set to 
-      _"astyle %f"_ or _"clang-format %f --std=c99"_ in dependence what is installed 
+      _"astyle %f"_ or _"clang-format %f -- -std=c99"_ in dependence what is installed 
       on the current system, again _%f_ represents the file name of the currently edited file.
 
   > __%fhook-c-lint__ - The command to check/lint the current C file, default is set to
-      _"gcc -Wall -x c -fsyntax-only %f"_ or _"clang-tidy %f -- -std=c99"_ if the latter
+      _"LANG=en_US gcc -Wall -x c -fsyntax-only %f"_ or _"clang-tidy %f -- -std=c99"_ if the latter
       is installed on the system. Again _%f_ represents the currently edited file name.
 
   > __%fhook-cpp-exec__ - The command to execute the current C++ file, default on Unix systems
-      is set to _"g++ -Wall %f -o %b &&  ./%b"_ where _%f_ represents the file name and _%b_ the
+      is set to _"LANG=en_US g++ -Wall -std=c++17 %f -o %b 2>&1 && ./%b"_ where _%f_ represents the file name and _%b_ the
       basename of the current file on Windows the slash is replaced with a backslash
             
   > __%fhook-cpp-format__ - The command to format current C++ file, default is set to 
@@ -60432,9 +60432,9 @@ $a
       _"g++ -Wall -x c++ -fsyntax-only %f"_ or _"clang-tidy %f -- -std=c++17"_ if the latter
       is installed on the system. Again _%f_ represents the currently edited file name.
   
-  > The setting assume that the mentioned compilers or tools are available via the PATH
-    environment variable. On Windows you must insert here either the complete PATH to the 
-    executables or add the folder where these files are to the PATH variable. 
+  > The setting assume that the mentioned compilers or tools are available via the _PATH_
+    environment variable. On Windows you must insert here either the complete _PATH_ to the 
+    executables or add the folder where these files are to the _PATH_ variable. 
     
   > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
     or _myc.emf_ and _mycpp.emf_ files. 
