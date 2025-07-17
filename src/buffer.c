@@ -333,11 +333,11 @@ setBufferContext(meBuffer *bp)
 	    while(--ii >= 0)
 		if((fileHookArg[ii] == 0) &&
 		   checkExtent(sp,ll,fileHookExt[ii],
-#ifdef _INSENSE_CASE
+//#ifdef _INSENSE_CASE
 			       meStrnicmp
-#else
-			       (meIFuncSSI) strncmp
-#endif
+//#else
+//			       (meIFuncSSI) strncmp
+//#endif
 			       ))
 	    {
 		hooknm = fileHookFunc[ii] ;
