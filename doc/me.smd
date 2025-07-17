@@ -62355,7 +62355,7 @@ $a
   > __%fhook-perl-exec__ - The command to execute the current Perl file, default on Unix systems
       is set to _"perl %f"_ where _%f_ represents the file name of the current script.
             
-  > __%fhook-perl-format__ - The command to format current Tcl file, default is set to 
+  > __%fhook-perl-format__ - The command to format current Perl file, default is set to 
      _"perltidy -b %f"_  where _%f_ represents the file name.  The _perltidy_ program can 
      be installed usually using the standard package manager or using the cpan utility of Perl.
             
@@ -62986,6 +62986,7 @@ $a
 
   __hkpython.emf__ - Python language file hook definition  
   __python.eaf__   - Python abbreviation file   
+  __python.etf__   - Python template file   
 
 ## EXTENSIONS
 
@@ -63057,6 +63058,36 @@ $a
      __f6__      - show the item-list outline
      __Esc f6__  - hide the item-list outline
 
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-python-exec__ - The command to execute the current Python file, default on Unix systems
+      is set to _"python3 %f"_ where _%f_ represents the file name of the current script.
+            
+  > __%fhook-python-format__ - The command to format current Python file, default is set to
+     _"ruff format %f"_  or _"yapf -i %f"_ or _"black -q %f"_ if one of these tools is available, 
+     where again _%f_ represents the file name.
+     If you have installed them as Python packages, you should this variable to _"python -m ruff"_
+     for instance.
+            
+  > __%fhook-python-lint__ - The command to check/lint the current Python file, default is set to 
+     _"ruff check %f"_  or _"pylint %f"_ if one of these tools is available _%f_ represents the file name.
+     If you have installed them as Python packages, you should this variable to _"python -m pylint"_
+     for instance.
+  
+  > The setting assume that the _python3_, the _ruff_ or the _yapf_ programs are available
+    via the _PATH_ environment variable. On Windows you must insert here either the complete
+    file path to the executables or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mypython.emf_ file. Here an example to use ruff as Python package based on a local
+    install of Python into a virtual environment.
+    
+```{.emf}
+        set-variable %fhook-python-exec "/home/username/venv/bin/python3 %f"
+        set-variable %fhook-python-lint "/home/username/venv/bin/python3 -m ruff check %f"
+        set-variable %fhook-python-format "/home/username/venv/bin/python3 -m ruff format %f"
+```
+
 ## BUGS
 
 
@@ -63066,8 +63097,13 @@ $a
 
 ## SEE ALSO
 
-
-  [r(9)](r(9)), [Supported File Types](MicroEmacs - Supported File Types).
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [indent(2)](indent(2)), [item-list(3)](item-list(3)), 
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), 
+  [time(2m)](time(2m)),
+  [perl(9)](perl(9)), [r(9)](r(9)), [tcl(9)](tcl(9)), 
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ034
 ! 9 scheme
 ! 9 scm

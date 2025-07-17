@@ -7057,9 +7057,9 @@ Miscellaneous Information
       prompt to reload the directory when it had changed.
     - [050119] Removed the "cCsub-keycA" argument from all registry related
       calls (see ls&reg(4)lm&reg(4)le and lsset-registry(2)lmset-registry(2)le). The registry calls used to
-      comprise two arguments "cCrootcA" and "cCsub-keycA", the "cCsub-keycA" is really
+      comprise two arguments "cCrootcC" and "cAsub-keycC", the "cAsub-keycA" is really
       redundant and the same effect may be achieved by a simple string
-      concatenation of the "cCsub-keycA" to the "cCrootcA".
+      concatenation of the "cCsub-keycC" to the "cArootcA".
     - [050119] Added cGcGmy-*hook-alwayscAcA macro checks in the buffer hook
       switching of lsbuffer-init(3)lmbuffer-init(3)le to permit global file hooks to be
       defined, this allows a file hook to operate on all buffers.
@@ -7471,7 +7471,7 @@ Miscellaneous Information
     - [040206] Added template support for XML. Thanks to Dr. Detlef Groth.
     - [040204] Re-worked Microsoft Windows lsme32.ini(8)lmme32.ini(8)le file specification.
       Order revised and lookup simplified.
-    - [040203] "cCuser-setupcA" changed name to "cCRebind Home KeyscA" for
+    - [040203] "cCuser-setupcC" changed name to "cARebind Home KeyscA" for
       re-binding of cGhomecA and cGendcA keys to start/end of line. Removed cGcGC-vcAcA
       binding that existed with old "cCMS keys" labelcA.
     - [040203] Reworked all user defined defined directory save locations,
@@ -7580,7 +7580,7 @@ Miscellaneous Information
     - [040104] lsstring-rectangle(3)lmstring-rectangle(3)le command added - Suggested by Salman.
     - [040104] C++ re-style fixes - Problems reported by Salman.
     - [031221] X-Window fixes - Thanks Jeremy Cowgar.
-    - [031120] Added new highlight schemes "cCLemon JellycA" and "cCBrowniecA".
+    - [031120] Added new highlight schemes "cCLemon JellycC" and "cABrowniecA".
     - [031120] CVS. Fixed several issues with the why the cvs dir list
       processed the missing and added files.
     - [031120] HTML Template. Improved indentation.
@@ -11277,9 +11277,9 @@ $a
 cESYNOPSIS cA
 
 
-    cDadd-colorcA "cCcol-nocA" "cCredcA" "cCgreencA" "cCbluecA"  
-    cCncA cDadd-color-schemecA "cCschemeNumcA" "cCforecA" "cCbackcA" 
-             "cCcurrent-forecA" "cCcurrent-backcA"  "selected-fore" "selected-back"
+    cDadd-colorcA "cCcol-nocC" "cAredcC" "cAgreencC" "cAbluecA"  
+    cCncA cDadd-color-schemecA "cCschemeNumcC" "cAforecC" "cAbackcA" 
+             "cCcurrent-forecC" "cAcurrent-backcA"  "selected-fore" "selected-back"
               "current-selected-fore" "current-selected-back"
               [ "fm-fore" "fm-back" "fm-cur-fore" "fm-cur-back"
               "fm-sel-fore" "fm-sel-back"
@@ -11595,7 +11595,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDadd-file-hookcA "cCextensionscA" "cCfhook-namecA"
+    cCncA cDadd-file-hookcA "cCextensionscC" "cAfhook-namecA"
 
 
 cEDESCRIPTION cA
@@ -12013,7 +12013,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDosd-bind-keycA cCncA "cCcommandcA" "cCkeycA"
+    cDosd-bind-keycA cCncA "cCcommandcC" "cAkeycA"
     cDosd-unbind-keycA cCncA "cCkeycA"
 
 
@@ -12156,7 +12156,7 @@ $a
 
 
     cCncA cDbuffer-modecA "cCmodecA" (cDC-x mcA)  
-    cCncA cDnamed-buffer-modecA "cCbuffer-namecA" "cCmodecA"  
+    cCncA cDnamed-buffer-modecA "cCbuffer-namecC" "cAmodecA"  
     cDadd-modecA "cCmodecA"  
     cDdelete-modecA "cCmodecA"  
     cDunmark-buffercA
@@ -12248,7 +12248,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDadd-next-linecA "cCbuffer-namecA" [ "cCstringcA" ]
+    cCncA cDadd-next-linecA "cCbuffer-namecC" [ "cAstringcA" ]
 
 
 cEDESCRIPTION cA
@@ -12384,7 +12384,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDsave-registrycA ["cCrootcA" "cCfilecA"]
+    cCncA cDsave-registrycA ["_rootcC" "cAfile_"]
 
 
 cEDESCRIPTION cA
@@ -12624,7 +12624,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDglobal-bind-keycA "cCcommandcA" "cCkeycA" (cDesc kcA)  
+    cCncA cDglobal-bind-keycA "cCcommandcC" "cAkeycA" (cDesc kcA)  
     cCncA cDglobal-unbind-keycA "cCkeycA" (cDesc C-kcA)
 
 
@@ -12924,7 +12924,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDsearch-buffercA "cCflagscA" "cCstringcA"
+    cCncA cDsearch-buffercA "cCflagscC" "cAstringcA"
 
 
 cEDESCRIPTION cA
@@ -13355,7 +13355,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDlist-registrycA ["cCpathcA"] ["cCbuffercA"]
+    cCncA cDlist-registrycA ["_pathcC"] ["cAbuffer_"]
 
 
 cEDESCRIPTION cA
@@ -13444,7 +13444,7 @@ $a
     cDchange-fontcA "cCfontNamecA"  
 
     cC[IBM-PC / MS-DOS]cA  
-    cDchange-fontcA "cCmode-nocA" "cCspeccA"  
+    cDchange-fontcA "cCmode-nocC" "cAspeccA"  
 
     cC[Microsoft Windows]cA  
     cCncA cDchange-fontcA "cCnamecA" cCcharSetcA cCweightcA cCwidthcA cCheightcA
@@ -14304,10 +14304,10 @@ $a
 cESYNOPSIS cA
 
 
-    cC0cA cDindentcA "cCind-nocA" "cCflagscA" [ "cClook-backcA" ] [ "cCindent-schemecA" ]  
-    cDindentcA "cCind-nocA" "cCtypecA" "cCtokencA" [ "cCclosecA" "cCignorecA" ] [ "cCindentcA" ]  
-    cDindentcA "cCind-nocA" "cDtcA" "cCtokencA" [ "cCtokencA" ] "cCindent-schemecA"  
-    cDindentcA "cCind-nocA" "cDxcA" | "cDwcA" "cCtokencA" "cCindentcA" "cCindent-schemecA"
+    cC0cA cDindentcA "cCind-nocC" "cAflagscC" [ "cAlook-backcC" ] [ "cAindent-schemecA" ]  
+    cDindentcA "cCind-nocC" "cAtypecC" "cAtokencC" [ "cAclosecC" "cAignorecC" ] [ "cAindentcA" ]  
+    cDindentcA "cCind-nocA" "cDtcA" "cCtokencC" [ "cAtokencC" ] "cAindent-schemecA"  
+    cDindentcA "cCind-nocA" "cDxcA" | "cDwcA" "cCtokencC" "cAindentcC" "cAindent-schemecA"
 
 
 cEDESCRIPTION cA
@@ -14322,7 +14322,7 @@ $a
 cEIndentation Method Creation  cA
 
 
-    cC0cA cDindentcA "cCind-nocA" "cCflagscA" "cClook-backcA" [ "cCindent-schemecA" ]
+    cC0cA cDindentcA "cCind-nocC" "cAflagscC" "cAlook-backcC" [ "cAindent-schemecA" ]
 
     With an argument of cG0cA, cDindentcA creates a new indentation method with the
     integer handle cCind-nocA. The indentation method is assigned to a buffer by
@@ -14385,16 +14385,16 @@ $a
 cEC Indentation  cA
 
 
-    cC0cA cDindentcA "cCind-nocA" "cCflagscA"  
-    cDindentcA "cCind-nocA" cGscA "cCstatementcA"  
-    cDindentcA "cCind-nocA" cGccA "cCcontinuecA"  
-    cDindentcA "cCind-nocA" cGxcA "cCmaxcA"  
-    cDindentcA "cCind-nocA" cGbcA "cCbracecA"  
-    cDindentcA "cCind-nocA" cGecA "cCbraceStatementcA"  
-    cDindentcA "cCind-nocA" cGwcA "cCswitchcA"  
-    cDindentcA "cCind-nocA" cGacA "cCcasecA"  
-    cDindentcA "cCind-nocA" cGmcA "cCmargincA"  
-    cDindentcA "cCind-nocA" cGucA "cCcomcontcA"  
+    cC0cA cDindentcA "cCind-nocC" "cAflagscA"  
+    cDindentcA "cCind-nocC" cGscA "cAstatementcA"  
+    cDindentcA "cCind-nocC" cGccA "cAcontinuecA"  
+    cDindentcA "cCind-nocC" cGxcA "cAmaxcA"  
+    cDindentcA "cCind-nocC" cGbcA "cAbracecA"  
+    cDindentcA "cCind-nocC" cGecA "cAbraceStatementcA"  
+    cDindentcA "cCind-nocC" cGwcA "cAswitchcA"  
+    cDindentcA "cCind-nocC" cGacA "cAcasecA"  
+    cDindentcA "cCind-nocC" cGmcA "cAmargincA"  
+    cDindentcA "cCind-nocC" cGucA "cAcomcontcA"  
 
     C mode is built into the editor by default and is enabled by setting the
     indent intialization flag bit cG0x04cA. With this bit enabled then the
@@ -14403,7 +14403,7 @@ $a
     C mode is typically initialized with the value 12. The remaining C
     arguments are defined as follows:
 
-    cDindentcA "cCind-nocA" cGcGscAcA "cCstatementcA" (=t)
+    cDindentcA "cCind-nocC" cGcGscAcA "cAstatementcA" (=t)
  
        The indent of the current line is derived from cCstatementcA value plus
        the indent of the last c token (cCifcA, cCelsecA, cCwhilecA etc.) or the last cCcG{cAcA
@@ -14424,7 +14424,7 @@ $a
     C tokens are only used to indent the next line, whereas cCcG{cAcA are used
     in indenting every line to it's partnering cCcG}cAcA.
 
-    cDindentcA "cCind-nocA" cGcGccAcA "cCcontinuecA" (=3/2t)
+    cDindentcA "cCind-nocC" cGcGccAcA "cAcontinuecA" (=3/2t)
     
        cCcontinuecA sets the indent to be added to a split line, i.e. for an
        indent of 20, a continued statement would be indented to 30. A
@@ -14448,7 +14448,7 @@ $a
                            thirdFuncArg) ;
 
 
-    cDindentcA "cCind-nocA" cGcGxcAcA "cCmaxcA"
+    cDindentcA "cCind-nocC" cGcGxcAcA "cAmaxcA"
 
        cCmaxcA sets an upper limit of the indentation where an open bracket is
        encountered, in the case where the leading indent of the function name
@@ -14471,7 +14471,7 @@ $a
        Where by the second argument indent has been artificially reduced
        because of it's length.
 
-    cDindentcA "cCind-nocA" cGcGbcAcA "cCbracecA" (=0)
+    cDindentcA "cCind-nocC" cGcGbcAcA "cAbracecA" (=0)
     
        Sets the indent of a cCcG{cAcA and a cCcG}cAcA on a new line from the current
        statement indent. For example, a value of 0 results in the following
@@ -14503,18 +14503,18 @@ $a
               brace = 0             brace = 4         brace = 2
 
 
-    cDindentcA "cCind-nocA" cGcGecAcA "cCbraceStatementcA" (t)
+    cDindentcA "cCind-nocC" cGcGecAcA "cAbraceStatementcA" (t)
     
        The cCbraceStatementcA defines the indentation following a curly brace cCcG{cAcA
        which follows a statement.
 
-    cDindentcA "cCind-nocA" cGcGwcAcA "cCswitchcA" (=0)
+    cDindentcA "cCind-nocC" cGcGwcAcA "cAswitchcA" (=0)
     
        The additional indent to be applied after a cDswitchcA statement, the
        cCstatementcA indent is applied in addition to the cCswitchcA indent. See the
        cCcasecA argument.
 
-    cDindentcA "cCind-nocA" cGcGacAcA "cCcasecA" (=-t)
+    cDindentcA "cCind-nocC" cGcGacAcA "cAcasecA" (=-t)
 
        cCswitchcA value sets the offset of a cGcGcasecAcA entry statement from the
        opening brace left margin position. The default value is zero. e.g.
@@ -14580,7 +14580,7 @@ $a
                 case = -t            case = -t
 
 
-    cDindentcA "cCind-nocA" cGcGmcAcA "cCmargincA" (=-1)
+    cDindentcA "cCind-nocC" cGcGmcAcA "cAmargincA" (=-1)
 
        If inserting a comment at the end of a C line, it is tedious typing cCxcA
        number of spaces to the comment column (by default tab does not insert
@@ -14610,7 +14610,7 @@ $a
                   margin = 40                          margin = -1
 
 
-    cDindentcA "cCind-nocA" cGcGucAcA "cCcomcontcA" (cG` * `cA)
+    cDindentcA "cCind-nocC" cGcGucAcA "cAcomcontcA" (cG` * `cA)
     
        This argument is only specified if cCflagscA bit cG0x10cA is set. This defines
        the string which is inserted when a new line is started while in a
@@ -14691,8 +14691,8 @@ $a
 cEIndentation Rule Creation  cA
 
 
-    cDindentcA "cCind-nocA" "cCtypecA" "cCtokencA" [ "cCclosecA" [ "cCignorecA" ]] [ "cCindentcA" ] [
-    "cCindent2cA" ] [ "cCindent-schemecA" ]
+    cDindentcA "cCind-nocC" "cAtypecC" "cAtokencC" [ "cAclosecC" [ "cAignorecC" ]] [ "cAindentcA" ] [
+    "cCindent2cC" ] [ "cAindent-schemecA" ]
 
     With the default argument of cG1cA, cDindentcA creates a new rule for the
     indentation method cCind-nocA which must have previously been defined and
@@ -14708,7 +14708,7 @@ $a
     indentation is determined by searching for tokens in the line and
     assessing their effect on the indentation of the current line.
 
-    The format of the regex valid in the "cCtokencA" and "cCclosecA" arguments are the
+    The format of the regex valid in the "cCtokencC" and "cAclosecA" arguments are the
     same as at used by hilight token creation, see lshilight(2)lmhilight(2)le for more
     information.
 
@@ -15660,8 +15660,8 @@ $a
 cESYNOPSIS cA
 
 
-    cDset-registrycA "cCrootcA" "cCvaluecA"  
-    cC2cA cDset-registrycA "cCrootcA" "cCnew-namecA"
+    cDset-registrycA "cCrootcC" "cAvaluecA"  
+    cC2cA cDset-registrycA "cCrootcC" "cAnew-namecA"
 
 
 cEINTRODUCTION cA
@@ -16995,11 +16995,11 @@ $a
     cC-2cA cDosdcA  
     cC-1cA cDosdcA cCncA  
     cDosdcA cD-1cA cCflagcA  
-    cDosdcA cCncA cD0cA cCflagscA ["cCschemecA"] ["cCx-poscA" "cCy-poscA"] ["cCmin-widthcA" "cCmin-depthcA"
-    "cCmax-widcA" "cCmax-depcA"] ["cCdefault-buttoncA"] ["cCinitial-itemcA"]
+    cDosdcA cCncA cD0cA cCflagscA ["_schemecC"] ["cAx-poscC" "cAy-poscC"] ["cAmin-widthcC" "cAmin-depth_"
+    "cCmax-widcC" "cAmax-depcC"] ["cAdefault-buttoncC"] ["cAinitial-itemcA"]
     [["title-bar-scheme"] ["Text"]] ["resize-command"] ["control-command"]
     ["init-command"]  
-    cDosdcA cCncA cCicA cCflagscA ["cCitem-schemecA"] ["cCwidthcA" "cCdepthcA"] ["cCtextcA"] ["cCargumentcA" "cCcommandcA"]  
+    cDosdcA cCncA cCicA cCflagscA ["_item-schemecC"] ["cAwidthcC" "cAdepthcC"] ["cAtextcC"] ["cAargumentcC" "cAcommand_"]  
     cCncA cDosdcA
 
 
@@ -17027,8 +17027,8 @@ $a
 cEDialog Creation and Redefinition  cA
 
 
-    cDosdcA cCncA cD0cA cCflagscA ["cCschemecA"] ["cCx-poscA" "cCy-poscA"] ["cCmin-widthcA" "cCmin-depthcA"
-    "cCmax-widcA" "cCmax-depcA"] ["cCdefault-buttoncA"] ["cCinitial-itemcA"]
+    cDosdcA cCncA cD0cA cCflagscA ["_schemecC"] ["cAx-poscC" "cAy-poscC"] ["cAmin-widthcC" "cAmin-depth_"
+    "cCmax-widcC" "cAmax-depcC"] ["cAdefault-buttoncC"] ["cAinitial-itemcA"]
     [["title-bar-scheme"] ["Text"]] ["resize-command"] ["control-command"]
     ["init-command"]
 
@@ -17267,8 +17267,8 @@ $a
 cEDialog Item Creation and Redefinition  cA
 
 
-    cDosdcA cCncA cCicA cCflagscA ["cCitem-schemecA"] ["cCwidthcA" "cCdepthcA"] ["cCtextcA"] 
-    ["cCargumentcA" "cCcommandcA"]
+    cDosdcA cCncA cCicA cCflagscA ["_item-schemecC"] ["cAwidthcC" "cAdepthcC"] ["cAtext_"] 
+    ["_argumentcC" "cAcommand_"]
 
     This invocation type adds a new item cCicA to a dialog cCncA, the operation of the
     invocation is controlled by the cCflagscA as follows:-
@@ -17799,7 +17799,7 @@ $a
        used are defined by the scheme variables cGscheme.fold-opencA and
        cGscheme.fold-closedcA.
 
-    cG0x0020cA - "cCout-markup-linecA" | "cCto-top-markup-linecA" "cCto-bottom-markup-linecA"
+    cG0x0020cA - "cCout-markup-linecC" | "cAto-top-markup-linecC" "cAto-bottom-markup-linecA"
     
        Bit cG0x0020cA specifies that mark-up text is used, the text mark up is
        passed into the call. The number of arguments is determined by the
@@ -17960,14 +17960,14 @@ $a
 cESYNOPSIS cA
 
 
-    cC0cA cDhilightcA "cChil-nocA" "cCflagscA" [ "cCnolcA" ] [ "cCbuffer-schemecA" [ "cCtrunc-schemecA" ] ]
+    cC0cA cDhilightcA "cChil-nocC" "cAflagscC" [ "cAnolcC" ] [ "cAbuffer-schemecC" [ "cAtrunc-schemecA" ] ]
 
-    cDhilightcA "cChil-nocA" "cCtypecA" "cCtokencA" [ ["cCrtokencA"] [ ( [ "close" ["rclose"] "ignore" ] ) 
+    cDhilightcA "cChil-nocC" "cAtypecC" "cAtokencC" [ ["cArtokencA"] [ ( [ "close" ["rclose"] "ignore" ] ) 
       | ( ["continue"] ) | ( ["b-hil-no"] ) ] "cCschemeNumcA"  
-    cDhilightcA "cChil-nocA" "cC0x200cA" "cCtokencA"  
-    cDhilightcA "cChil-nocA" "cC0x400cA" "cCfrom-colcA" "cCto-colcA" "cCschemeNumcA"  
+    cDhilightcA "cChil-nocC" "cA0x200cC" "cAtokencA"  
+    cDhilightcA "cChil-nocC" "cA0x400cC" "cAfrom-colcC" "cAto-colcC" "cAschemeNumcA"  
 
-    cC-1cA cDhilightcA "cChil-nocA" "cCtypecA" "cCtokencA"  
+    cC-1cA cDhilightcA "cChil-nocC" "cAtypecC" "cAtokencA"  
 
 
 cEDESCRIPTION cA
@@ -17983,7 +17983,7 @@ $a
 cEHilight Scheme Creation  cA
 
 
-    cC0cA cDhilightcA "cChil-nocA" "cCflagscA" [ "cCnolcA" ] [ "cCbuffer-schemecA" [ "cCtrunc-schemecA" ] ]
+    cC0cA cDhilightcA "cChil-nocC" "cAflagscC" [ "cAnolcC" ] [ "cAbuffer-schemecC" [ "cAtrunc-schemecA" ] ]
 
     With an argument of cG0cA, cDhilightcA initializes or re-initializes the hilight
     scheme cChil-nocA (1-255). Every buffer has a hilight scheme, the default is 0
@@ -18018,7 +18018,7 @@ $a
     The "cChil-nocA" argument specifies which hi-lighting scheme is being
     initialized. Once a hilighting scheme has been initialized, hi-light
     tokens can be added to it and it can be used by setting the current
-    buffer's ls$buffer-hilight(5)lm$buffer-hilight(5)le variable to "cChil-nocA". The "cCflagscA" argument is
+    buffer's ls$buffer-hilight(5)lm$buffer-hilight(5)le variable to "cChil-nocC". The "cAflagscA" argument is
     a bit based flag setting global hi-light characteristics, 
     where:- 
 
@@ -18073,13 +18073,13 @@ $a
 cEHilight Scheme Token Creation  cA
 
 
-    cDhilightcA "cChil-nocA" "cCtypecA" "cCtokencA" [ ["cCrtokencA"]
+    cDhilightcA "cChil-nocC" "cAtypecC" "cAtokencC" [ ["cArtokencA"]
          [ ( [ "close" ["rclose"] "ignore" ] ) |
               ( ["continue" ["rcontinue"] ] ) |
               ( ["b-hil-no"] ) ]
        "cCschemeNumcA"  
-    cDhilightcA "cChil-nocA" "cC0x200cA" "cCtokencA"  
-    cDhilightcA "cChil-nocA" "cC0x400cA" "cCfrom-colcA" "cCto-colcA" "cCschemeNumcA"  
+    cDhilightcA "cChil-nocC" "cA0x200cC" "cAtokencA"  
+    cDhilightcA "cChil-nocC" "cA0x400cC" "cAfrom-colcC" "cAto-colcC" "cAschemeNumcA"  
 
     With the default argument of cG1cA, cDhilightcA creates a hilight token to be used
     in hilight color scheme identified by "cChil-nocA" (1-255) (see the section on
@@ -18254,7 +18254,7 @@ $a
        within a window to be hilighted (irrespective of the contents). This
        bit takes precedence over all other bits and all other bits are
        ignored. Column highlighting is a different concept to token in that
-       it requires a "cCfrom-colcA" and a "cCto-colcA" column positions and a line
+       it requires a "cCfrom-colcC" and a "cAto-colcA" column positions and a line
        will be hilighted in the given scheme between these two columns.
 
     cD0x800cA
@@ -18505,9 +18505,9 @@ $a
 cEHilight Scheme Token Deletion  cA
 
 
-    cC-1cA cDhilightcA "cChil-nocA" "cCtypecA" "cCtokencA" With a negative argument cDhilightcA
+    cC-1cA cDhilightcA "cChil-nocC" "cAtypecC" "cAtokencA" With a negative argument cDhilightcA
     deletes the given "cCtokencA" from a hi-light color scheme identified by
-    "cChil-nocA". The token "cCtypecA" must also be specified to distinguish between
+    "cChil-nocC". The token "cAtypecA" must also be specified to distinguish between
     normal and column token types.
 
 
@@ -18930,7 +18930,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDipipe-shell-commandcA "cCcommandcA" ["cCbuffer-namecA"] ["cCbuffer-ipipe-commandcA"]
+    cCncA cDipipe-shell-commandcA "cCcommandcC" ["cAbuffer-namecC"] ["cAbuffer-ipipe-commandcA"]
  (cDesc \cA)  
     cCncA cDipipe-writecA "cCstringcA"  
     cCncA cDipipe-killcA
@@ -19563,7 +19563,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDbuffer-bind-keycA "cCcommandcA" "cCkeycA"  
+    cCncA cDbuffer-bind-keycA "cCcommandcC" "cAkeycA"  
     cCncA cDbuffer-unbind-keycA "cCkeycA"
 
 
@@ -19611,7 +19611,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDml-bind-keycA "cCcommandcA" "cCkeycA"  
+    cCncA cDml-bind-keycA "cCcommandcC" "cAkeycA"  
     cCncA cDml-unbind-keycA "cCkeycA"
 
 
@@ -20120,7 +20120,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDdefine-helpcA "cCstringcA" ["cCsectioncA"]
+    cDdefine-helpcA "cCstringcC" ["cAsectioncA"]
 
        cCFree form textcA
 
@@ -20493,7 +20493,7 @@ $a
 
 
 |pipe-shell-command
-    cCncA cDpipe-shell-commandcA "cCcommandcA" ["cCbuffer-namecA"] (cDesc @cA)  
+    cCncA cDpipe-shell-commandcA "cCcommandcC" ["cAbuffer-namecA"] (cDesc @cA)  
 |$ME_PIPE_STDERR
     cC[MS-DOS and Win32s Only]cA  
 |$ME_PIPE_STDERR
@@ -22130,7 +22130,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDset-variablecA "cCvariablecA" "cCvaluecA" (cDC-x vcA)  
+    cDset-variablecA "cCvariablecC" "cAvaluecA" (cDC-x vcA)  
     cDunset-variablecA "cCvariablecA"
 
 
@@ -22351,7 +22351,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDspellcA ["cCwordcA"] ["cCrulescA"] ["cCcorrectioncA"] ["cCrulecA"]
+    cCncA cDspellcA ["_wordcC"] ["cArulescC"] ["cAcorrectioncC"] ["cArule_"]
 
 
 cEDESCRIPTION cA
@@ -22380,7 +22380,7 @@ $a
  
        Adds the given word to a dictionary determined by the state of bit
        0x008. If the word is flagged as erroneous (see bit 0x010) then a
-       "cCcorrectioncA" word must be supplied, otherwise a list of "cCrulescA" which
+       "cCcorrectioncC" word must be supplied, otherwise a list of "cArulescA" which
        can be applied to the word must be given, this list can be empty. Note
        that if the word is not flagged as erroneous and it already exists in
        the dictionary, the word is not removed, instead a combined rule list
@@ -22407,7 +22407,7 @@ $a
        If bit cD0x100cA is also set a complete list of valid words derivable from
        the given word are inserted into the current buffer. Otherwise spell
        returns ls$result(5)lm$result(5)le set to the derivative word created when the given
-       "cCrulecA" is applied to "cCwordcA". The rule applied is the first found of
+       "cCrulecC" is applied to "cAwordcA". The rule applied is the first found of
        the given rule letter with a matching base ending (see
        lsadd-spell-rule(2)lmadd-spell-rule(2)le). The word need not exist as not tests for the
        legality of the resultant word is used, for example in American,
@@ -22608,8 +22608,8 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDprint-colorcA "cCcol-nocA" "cCredcA" "cCgreencA" "cCbluecA"  
-    cCncA cDprint-schemecA "cCschemeNumcA" "cCforecA" "cCbackcA" "cCfont-maskcA"
+    cCncA cDprint-colorcA "cCcol-nocC" "cAredcC" "cAgreencC" "cAbluecA"  
+    cCncA cDprint-schemecA "cCschemeNumcC" "cAforecC" "cAbackcC" "cAfont-maskcA"
 
 
 cEDESCRIPTION cA
@@ -22631,7 +22631,7 @@ $a
     cDprint-schemecA creates a new printer scheme. A printer scheme maps the
     lshilight(2)lmhilight(2)le buffer's text into a print scheme. For example key words could
     be printed in cCboldcA or in cCbluecA etc. cDprint-schemecA arguments comprise an
-    identifying index number "cCschemeNumcA", two color values, "cCforecA" and "cCbackcA"
+    identifying index number "cCschemeNumcC", two color values, "cAforecC" and "cAbackcA"
     (defined by cDprint-colorcA) and a font setting "cCfont-maskcA". The cCfont-maskcA is
     a bit mask where each bit is defined as follows:
 
@@ -22885,7 +22885,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDtranslate-keycA [ "cCfromcA" ["cCtocA"] ]
+    cCncA cDtranslate-keycA [ "cCfromcC" ["cAtocA"] ]
 
 
 cEDESCRIPTION cA
@@ -23018,7 +23018,7 @@ $a
 
        `^[[A` = __up__, `^[[B` = __down__, `^[[C` = __right__ and `^[[D` = __left__
 
-    The "cCfromcA" string is specified as this key sequence and the "cCtocA" string is
+    The "cCfromcC" string is specified as this key sequence and the "cAtocA" string is
     simply the key it is to be bound to, see lsglobal-bind-key(2)lmglobal-bind-key(2)le for a guide to
     the string format. For the above example the following set of translations
     are required:-
@@ -23195,7 +23195,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDset-char-maskcA "cCflagscA" ["cCvaluecA"]
+    cCncA cDset-char-maskcA "cCflagscC" ["cAvaluecA"]
 
 
 cEDESCRIPTION cA
@@ -23611,7 +23611,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDadd-spell-rulecA [ "cCrule-lettercA" "cCbase-endingcA" "cCremovecA" "cCderive-endingcA" ]
+    cCncA cDadd-spell-rulecA [ "cCrule-lettercC" "cAbase-endingcC" "cAremovecC" "cAderive-endingcA" ]
 
 
 cEDESCRIPTION cA
@@ -23635,9 +23635,9 @@ $a
        Removes all existing rules and re-initializes. This is, by convention,
        explicitly called before instantiating a new set of rules.
 
-    cG-1cA cDadd-spell-rulecA "cCrule-lettercA" "cCbase-endingcA" "" "cCderiv-endingcA"
+    cG-1cA cDadd-spell-rulecA "cCrule-lettercC" "cAbase-endingcA" "" "cCderiv-endingcA"
 
-    cG-2cA cDadd-spell-rulecA "cCrule-lettercA" "cCbase-endingcA" "" "cCderiv-endingcA"
+    cG-2cA cDadd-spell-rulecA "cCrule-lettercC" "cAbase-endingcA" "" "cCderiv-endingcA"
 
        Adds a prefix rule, an argument of -1 indicates that this prefix rule
        cannot be used with a suffix rule. An argument of -2 indicates it can
@@ -23656,9 +23656,9 @@ $a
        A prefix rule of type cCcGIcAcA can be applied to any base word which has
        rule cCcGIcAcA enabled, and it prefixes cGcGincAcA to the word.
 
- cG1cA cDadd-spell-rulecA "cCrule-lettercA" "cCbase-endingcA" "cCremovecA" "cCderiv-endingcA"
+ cG1cA cDadd-spell-rulecA "cCrule-lettercC" "cAbase-endingcC" "cAremovecC" "cAderiv-endingcA"
 
- cG2cA cDadd-spell-rulecA "cCrule-lettercA" "cCbase-endingcA" "cCremovecA" "cCderiv-endingcA"
+ cG2cA cDadd-spell-rulecA "cCrule-lettercC" "cAbase-endingcC" "cAremovecC" "cAderiv-endingcA"
  
        Add suffix rules. An argument of 1 indicates that this prefix rule
        cannot be used with a prefix rule. An argument of 2 indicates it can
@@ -23686,7 +23686,7 @@ $a
               -2 add-spell-rule "A" "" "" "re"       ; As in enter > reenter
 
 sA
-       to derive "cCrecreationcA" from "cCcreatecA". A rule which cannot be used with
+       to derive "cCrecreationcC" from "cAcreatecA". A rule which cannot be used with
        prefixes, i.e.:
 
 sB
@@ -23695,8 +23695,8 @@ $a
 
 sA
        While some prefix words are legal, such as "cCrecreativecA" but some are
-       not, such as "cCcollectcA" where "cCrecollectcA" is correct, so is
-       "cCcollectivecA" but "cCrecollectivecA" is not.
+       not, such as "cCcollectcC" where "cArecollectcA" is correct, so is
+       "cCcollectivecC" but "cArecollectivecA" is not.
 
 
 cESPECIAL RULES  cA
@@ -23714,7 +23714,7 @@ $a
        default hyphens joining words are allowed. Some Latin language such as
        Spanish do not use this concept so this feature can be disable.
 
-    cDadd-spell-rulecA "cC#cA" "cCscorecA"
+    cDadd-spell-rulecA "cC#cC" "cAscorecA"
 
        Sets the maximum allowed error score when creating a spelling guess
        list. When comparing a dictionary word with the user supplied word,
@@ -23723,7 +23723,7 @@ $a
        exceeded the word is ignored. The default guess error score is 60,
        allowing for 2 errors.
 
-    cDadd-spell-rulecA "cC*cA" "cCregexcA"
+    cDadd-spell-rulecA "cC*cC" "cAregexcA"
 
        Adds a correct word in the form of a lsRegularExpressions(2)lmregexle if a word being spell
        checked is completely matched by the cDregexcA the word is deemed to be
@@ -24252,7 +24252,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDdefine-macro-filecA "cCfile-namecA" ["cCmacro-namecA" "cCmacro2-namecA" ...]
+    cDdefine-macro-filecA "cCfile-namecC" ["cAmacro-namecC" "cAmacro2-namecA" ...]
 
 
 cEDESCRIPTION cA
@@ -24727,7 +24727,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDmark-registrycA "cCrootcA" "cCmodecA"
+    cCncA cDmark-registrycA "cCrootcC" "cAmodecA"
 
 
 cEDESCRIPTION cA
@@ -24928,7 +24928,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDread-registrycA "cCrootcA" "cCfilecA" "cCmodecA"
+    cDread-registrycA "cCrootcC" "cAfilecC" "cAmodecA"
 
 
 cEDESCRIPTION cA
@@ -25050,9 +25050,9 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDfile-opcA [ ( [ "cCfrom-filecA" "cCto-filecA" ] ) |  
-       ( ["cCdelete-filecA"] ) | ( ["cCdir-namecA"] ) |
-       ( [ "cCchmod-filecA" "cCmodecA" ] ) ]
+    cCncA cDfile-opcA [ ( [ "cCfrom-filecC" "cAto-filecA" ] ) |  
+       ( ["_delete-filecC"] ) | ( ["cAdir-name_"] ) |
+       ( [ "cCchmod-filecC" "cAmodecA" ] ) ]
 
 
 cEDESCRIPTION cA
@@ -29917,7 +29917,7 @@ $a
 cEOverview  cA
 
 
-    A "cCregular expressioncA" (or "cCregexcA", or "cCpatterncA") is a text string that
+    A "cCregular expressioncC" (or "cAregexcC", or "cApatterncA") is a text string that
     describes some (mathematical) set of strings. A regex cDRcA "cCmatchescA" a string
     cDScA if cDScA is in the set of strings described by cDRcA.
 
@@ -32389,7 +32389,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDmecA "@gdiff" "cCversion1cA" "cCversion2cA"
+    cDmecA "@gdiff" "cCversion1cC" "cAversion2cA"
 
 
 cEDESCRIPTION cA
@@ -33343,7 +33343,7 @@ $a
 |xgrep
     cDxgrepcA "cCexpression files...cA"
 |rgrep
-    cDrgrepcA "cCexpressioncA" "cCbase-pathcA" "cCfile-maskcA"
+    cDrgrepcA "cCexpressioncC" "cAbase-pathcC" "cAfile-maskcA"
 
 
 cEDESCRIPTION cA
@@ -33616,17 +33616,17 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDreplace-all-stringcA "cCfromcA" "cCtocA" "cCfilescA" ["cCgrep-fromcA"]
+    cCncA cDreplace-all-stringcA "cCfromcC" "cAtocC" "cAfilescC" ["cAgrep-fromcA"]
 
 
 cEDESCRIPTION cA
 
 
     cDreplace-all-stringcA, similar to lsreplace-string(2)lmreplace-string(2)le, replaces all occurrences
-    of "cCfromcA" to "cCtocA" in the given list of files without prompting the user.
+    of "cCfromcC" to "cAtocA" in the given list of files without prompting the user.
 
     The command finds all occurrences of "cCfromcA" by calling the command lsgrep(3)lmgrep(3)le
-    to search for string "cCfromcA" in files "cCfilescA". Thus all relevant edited
+    to search for string "cCfromcC" in files "cAfilescA". Thus all relevant edited
     files must be saved or cDgrepcA may return the wrong line numbers. This is
     achieved by a call to lssave-some-buffers(2)lmsave-some-buffers(2)le which prompts the user to save
     any changed buffers one at a time.
@@ -33638,7 +33638,7 @@ $a
           -1 replace-string "from" "to"
 
 sA
-    This replaces all occurrences of "cCfromcA" to "cCtocA" on the current line only,
+    This replaces all occurrences of "cCfromcC" to "cAtocA" on the current line only,
     hence the line numbers must be correct. This also means that the "cCfromcA"
     search string must be correctly formatted for both grep and
     replace-string, unless bit 0x02 is set (see below).
@@ -33692,18 +33692,18 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDquery-replace-all-stringcA "cCfromcA" "cCtocA" "cCfilescA" ["cCgrep-fromcA"]
+    cCncA cDquery-replace-all-stringcA "cCfromcC" "cAtocC" "cAfilescC" ["cAgrep-fromcA"]
 
 
 cEDESCRIPTION cA
 
 
     cDquery-replace-all-stringcA, similar to lsquery-replace-string(2)lmquery-replace-string(2)le, replaces all
-    occurrences of "cCfromcA" to "cCtocA" in the given list of files prompting the
+    occurrences of "cCfromcC" to "cAtocA" in the given list of files prompting the
     user before replacing each occurrence.
 
     The command finds all occurrences of "cCfromcA" by calling the command lsgrep(3)lmgrep(3)le
-    to search for string "cCfromcA" in files "cCfilescA". Thus all relevant edited
+    to search for string "cCfromcC" in files "cAfilescA". Thus all relevant edited
     files must be saved or cDgrepcA may return the wrong line numbers. This is
     achieved by a call to lssave-some-buffers(2)lmsave-some-buffers(2)le which prompts the user to save
     any changed buffers one at a time.
@@ -33715,7 +33715,7 @@ $a
           -1 query-replace-string "from" "to"
 
 sA
-    This query-replaces all occurrences of "cCfromcA" to "cCtocA" on the current line
+    This query-replaces all occurrences of "cCfromcC" to "cAtocA" on the current line
     only, hence the line numbers must be correct. This also means that the
     "cCfromcA" search string must be correctly formatted for both grep and
     query-replace-string, unless bit 0x02 is set (see below).
@@ -33939,14 +33939,14 @@ $a
 cESYNOPSIS cA
 
 
-    cDalarmcA "cCmessagecA" "cChourscA" "cCminutescA"
+    cDalarmcA "cCmessagecC" "cAhourscC" "cAminutescA"
 
 
 cEDESCRIPTION cA
 
 
     cDalarmcA creates an alarm notification which displays "cCmessagecA" to the user.
-    The alarm time is specified as an elapsed time in "cChourscA" and "cCminutescA"
+    The alarm time is specified as an elapsed time in "cChourscC" and "cAminutescA"
     from the time of creation.
 
     The message is printed on the screen using lsosd(2)lmosd(2)le.
@@ -33993,7 +33993,7 @@ $a
     are removed by matching two identical tiles which have either an open left
     edge or open right edge. The only exception to this rule is that any open
     "cCflowercA" tile (bamboo cG[BAMB]cA, orchid cG[ORCH]cA, plum cG[PLUM]cA, or chrysanthemum
-    cG[CHRY]cA) matches any other open "cCflowercA" tile and any open "cCseasoncA" tile
+    cG[CHRY]cA) matches any other open "cCflowercC" tile and any open "cAseasoncA" tile
     (spring, summer, autumn, or winter) matches any other open "cCseasoncA" tile.
 
     Tiles are stacked on the board, the height of the tile is indicated by the
@@ -34353,7 +34353,7 @@ $a
      "cCesc hcA" for help
 
     To move a card between stacks enter the source and destination column
-    number ("cC1cA","cC2cA",.."cC7cA"). To move from the dealer pile then the source
+    number ("_1cC","cA2cC",.."cA7_"). To move from the dealer pile then the source
     is the "cCspacecA" key.
 
     "cCtabcA" deals the next cards.
@@ -34362,8 +34362,8 @@ $a
     i.e. source and destination are the same.
 
     To move a card from the row to the suit stacks then either enter the
-    card column twice, or enter the destination as "cChcA","cCdcA","cCccA","cCscA" (i.e.
-    "cC2 2cA" or "cC2 scA" to move the card in column 2 to the spades stack).
+    card column twice, or enter the destination as "cChcC","cAdcC","cAccC","cAscA" (i.e.
+    "cC2 2cC" or "cA2 scA" to move the card in column 2 to the spades stack).
 
     "cCC-c C-ccA" to deal the cards again.
 
@@ -34456,14 +34456,14 @@ $a
        "cCesc hcA" for help
 
        To move a card between stacks enter the source and destination column
-       number ("cC1cA","cC2cA",.."cC7cA").
+       number ("_1cC","cA2cC",.."cA7_").
 
        To overturn a card on the row stacks then enter the card column twice
        i.e. source and destination are the same.
 
        To move a card from the row to the suit stacks then either enter the
-       card column twice, or enter the destination as "cChcA","cCdcA","cCccA","cCscA" (i.e.
-       "cC2 2cA" or "cC2 scA" to move the card in column 2 to the spades stack).
+       card column twice, or enter the destination as "cChcC","cAdcC","cAccC","cAscA" (i.e.
+       "cC2 2cC" or "cA2 scA" to move the card in column 2 to the spades stack).
 
        "cCC-c C-ccA" to deal the cards again.
 
@@ -34499,7 +34499,7 @@ $a
 
     cCncA cDc-hash-evalcA  
     cDc-hash-delcA  
-    cDc-hash-set-definecA "cCvariablecA" "cCvaluecA"  
+    cDc-hash-set-definecA "cCvariablecC" "cAvaluecA"  
     cDc-hash-unset-definecA "cCvariablecA"
 
 
@@ -34621,7 +34621,7 @@ $a
 cEEXAMPLE cA
 
 
-    The following is taken from "cChkmake.emfcA" and inserts the "cCmakefile.etfcA"
+    The following is taken from "cChkmake.emfcC" and inserts the "cAmakefile.etfcA"
     template if the buffer has been created.
 
 sB
@@ -34754,8 +34754,8 @@ $a
 cEDESCRIPTION cA
 
 
-    cDreplace-all-pairscA uses the current buffer to extract "cCfromcA" and "cCtocA" pairs
-    and then replaces all occurrences of "cCfromcA" to "cCtocA" in the given list of
+    cDreplace-all-pairscA uses the current buffer to extract "cCfromcC" and "cAtocA" pairs
+    and then replaces all occurrences of "cCfromcC" to "cAtocA" in the given list of
     files without prompting the user. An optional third argument "cCgrepcA" can be
     given which will be used as the grep string, if not given the "cCfromcA"
     string is used. The format of the current buffer must be:
@@ -34769,7 +34769,7 @@ $a
        /fromN/toN/
 
 
-    For each pair the command finds all occurrences of "cCfromcA" (or "cCgrepcA" if
+    For each pair the command finds all occurrences of "cCfromcC" (or "cAgrepcA" if
     specified) by calling the command lsgrep(3)lmgrep(3)le to search for string "cCfromcA" in
     files "cCfilescA". Thus all relevant edited files must be saved or cDgrepcA may
     return the wrong line numbers. This is achieved by a call to
@@ -34783,7 +34783,7 @@ $a
           -1 replace-string "from" "to"
 
 sA
-    This replaces all occurrences of "cCfromcA" to "cCtocA" on the current line only,
+    This replaces all occurrences of "cCfromcC" to "cAtocA" on the current line only,
     hence the line numbers must be correct. This also means that the "cCfromcA"
     search string must be correctly formatted for both grep and
     replace-string.
@@ -36414,11 +36414,11 @@ $a
 
 
 |diff
-    cDdiffcA "cCold-versioncA" "cCnew-versioncA"
+    cDdiffcA "cCold-versioncC" "cAnew-versioncA"
 |diff-changes
     cDdiff-changescA
 |rdiff
-    cDrdiffcA "cCold-versioncA" "cCnew-versioncA"
+    cDrdiffcA "cCold-versioncC" "cAnew-versioncA"
 |%diff-com
     cG%diff-comcA "cCstringcA"; Default is cGcGdiffcAcA
 
@@ -36488,7 +36488,7 @@ $a
 cESYNOPSIS cA
 
 
-    cDcopy-registrycA "cCfromcA" "cCtocA"
+    cDcopy-registrycA "cCfromcC" "cAtocA"
 
 
 cEDESCRIPTION cA
@@ -36532,10 +36532,10 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDosd-dialogcA "cCtitlecA" "cCpromptcA" [ "cCx-poscA" "cCy-poscA" ] "cCbut1cA"  
-    cCncA cDosd-xdialogcA "cCtitlecA" "cCpromptcA" cCdefaultcA [ "cCx-poscA" "cCy-poscA" ]  
-       "cCbut1cA" "cCbut2cA" ...  
-    cCncA cDosd-entrycA "cCtitlecA" "cCpromptcA" cCvariablecA [ "cCx-poscA" "cCy-poscA" ]  
+    cCncA cDosd-dialogcA "cCtitlecC" "cApromptcC" [ "cAx-poscC" "cAy-poscC" ] "cAbut1cA"  
+    cCncA cDosd-xdialogcA "cCtitlecC" "cApromptcA" cCdefaultcA [ "cCx-poscC" "cAy-poscA" ]  
+       "cCbut1cC" "cAbut2cA" ...  
+    cCncA cDosd-entrycA "cCtitlecC" "cApromptcA" cCvariablecA [ "cCx-poscC" "cAy-poscA" ]  
         [ [ "entry-xsize" | "entry-xsizexentry-ysize" ] [ "type" ] ]  
 
 
@@ -36776,8 +36776,8 @@ $a
 
 
     cDfind-zfilecA "cCfile-namecA"  
-    cDzfile-setupcA "cCextensioncA" "cClist-commandcA" "cCcut-tocA"  
-       "cCcolumncA" "cCfile-endcA" "cCextract-commandcA"  
+    cDzfile-setupcA "cCextensioncC" "cAlist-commandcC" "cAcut-tocA"  
+       "cCcolumncC" "cAfile-endcC" "cAextract-commandcA"  
        "cCremove-commandcA"
 
 
@@ -36905,7 +36905,7 @@ $a
     For file extract, consider the file cGcGctags.emfcAcA, the first character cCcGccAcA
     is at column 58 and the first character after the end of the file name is
     the end-of-line character (cCcG\ncAcA) which is matched by the lsRegularExpressions(2)lmregexle string "$",
-    hence the settings on "cCcolumncA" and "cCfile-endcA". When this and the zip file
+    hence the settings on "cCcolumncC" and "cAfile-endcA". When this and the zip file
     name are substituted into the extract-command, it becomes "unzip -o
     /usr/jasspa/memacros.zip calc.emf" and is run from the "cC/tmp.cA" directory.
     Note that the cGcG-ocAcA option disables any overwrite prompts, these are not
@@ -37160,7 +37160,7 @@ $a
           name or it does not have an extension.
     
        Note that "cD%fncA" is always the same as "cD%fb%fecA". Default buffer name
-       when this field is left empty is "cC*command*cA", or "cC*icommand*cA" if Run
+       when this field is left empty is "cC*command*cC", or "cA*icommand*cA" if Run
        Concurrently is enabled.
 
     If more than 10 tools are required (maximum number definable by
@@ -37267,7 +37267,7 @@ $a
 
 
 |gdiff
-    cDgdiffcA "cCversion1cA" "cCversion2cA"
+    cDgdiffcA "cCversion1cC" "cAversion2cA"
 |%gdiff-com
     cG%gdiff-comcA "cCstringcA"; Default is cG`diff -c -w`cA
 
@@ -37506,8 +37506,8 @@ $a
 cESYNOPSIS cA
 
 
-    cDgdbcA "cCprogram-namecA" "cCadditional-argscA"  
-    cDdbxcA "cCprogram-namecA" "cCadditional-argscA"
+    cDgdbcA "cCprogram-namecC" "cAadditional-argscA"  
+    cDdbxcA "cCprogram-namecC" "cAadditional-argscA"
 
 
 cEDESCRIPTION cA
@@ -38008,7 +38008,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDperldbcA [ "cCscript-namecA" ] "cCscript-argscA"
+    cCncA cDperldbcA [ "cCscript-namecC" ] "cAscript-argscA"
 
 
 cEDESCRIPTION cA
@@ -40848,7 +40848,7 @@ $a
 
 
 |xfind
-    cCncA cDxfindcA "cCbase-pathcA" "cCfile-searchcA"
+    cCncA cDxfindcA "cCbase-pathcC" "cAfile-searchcA"
 
     cD%xfind-comcA "cCstringcA"; Default is cGcGfindcAcA
 
@@ -40868,7 +40868,7 @@ $a
     The find command is specified by the macro variable cD%xfind-comcA if not
     defined the default cGfindcA is used. The command line run by cDxfindcA is
 
-    cC%xfind-comcA -name "cCbase-pathcA" -name "cCfile-searchcA" -print
+    cC%xfind-comcA -name "cCbase-pathcC" -name "cAfile-searchcA" -print
 
     The resultant files found are displayed in the cD*find*cA buffer and may be
     selected by double-clicking with the mouse left button or selecting the
@@ -41430,7 +41430,7 @@ $a
     working on different projects, the sessions are created using
     lssave-session(3)lmsave-session(3)le using a new session name. Starting the editor with a
     different session means that the hilighting scheme may be different
-    between different sessions i.e. "cCBluecA cCHuecA" and "cCSherwoordcA cCForestcA". Note
+    between different sessions i.e. "cCBluecA cCHuecC" and "cASherwoordcA cCForestcA". Note
     that the color scheme should be changed with lschange-scheme(3)lmchange-scheme(3)le and not with
     lsuser-setup(3)lmuser-setup(3)le if different sessions are to use different color schemes.
 
@@ -41526,7 +41526,7 @@ $a
 
 
 |xdiff
-    cDxdiffcA "cCleftVersioncA" "cCrightVersioncA"
+    cDxdiffcA "cCleftVersioncC" "cArightVersioncA"
 |%xdiff-com
     cG%xdiff-comcA "cCstringcA"
 
@@ -41911,7 +41911,7 @@ $a
 
 
 |find
-    cDfindcA ["cCfind-optionscA"] "cCfile-maskcA" ["cCfile-maskcA"...] ["cCstarting-pathcA"]
+    cDfindcA ["_find-optionscC"] "cAfile-maskcC" ["cAfile-maskcC"...] ["cAstarting-path_"]
 |find-setup
     cDfind-setupcA
 
@@ -42136,7 +42136,7 @@ $a
 
 
 |grep
-    cDgrepcA ["cCgrep-optionscA"] cCsearch-patterncA "cCfile-maskcA" ["cCfile-maskcA"...]
+    cDgrepcA ["cCgrep-optionscA"] cCsearch-patterncA "cCfile-maskcC" ["cAfile-maskcA"...]
     ["starting-path"]
 
 
@@ -42338,11 +42338,11 @@ $a
 
 
 |replace-string-in-files
-    cDreplace-string-in-filescA "cCfrom-patterncA" "cCto-patterncA" cCfind-optionscA
-    "cCfile-maskcA" ["cCfile-maskcA"...] ["cCstarting-pathcA"]
+    cDreplace-string-in-filescA "cCfrom-patterncC" "cAto-patterncA" cCfind-optionscA
+    "cCfile-maskcC" ["cAfile-maskcC"...] ["cAstarting-pathcA"]
 |query-replace-string-in-files
-    cDquery-replace-string-in-filescA "cCfrom-patterncA" "cCto-patterncA" cCfind-optionscA
-    "cCfile-maskcA" ["cCfile-maskcA"...] ["cCstarting-pathcA"]
+    cDquery-replace-string-in-filescA "cCfrom-patterncC" "cAto-patterncA" cCfind-optionscA
+    "cCfile-maskcC" ["cAfile-maskcC"...] ["cAstarting-pathcA"]
 
 
 cEDESCRIPTION cA
@@ -42556,7 +42556,7 @@ $a
 
 
 |encase
-    cDencasecA "cCstart-stringcA" "cCend-stringcA"
+    cDencasecA "cCstart-stringcC" "cAend-stringcA"
 
 
 cEDESCRIPTION cA
@@ -44521,7 +44521,7 @@ $a
           name or it does not have an extension.
 
        Note that "cD%fncA" is always the same as "cD%fb%fecA". Default buffer name
-       when this field is left empty is "cC*command*cA", or "cC*icommand*cA" if Run
+       when this field is left empty is "cC*command*cC", or "cA*icommand*cA" if Run
        Concurrently is enabled.
 
     cGHidecA
@@ -49650,7 +49650,7 @@ $a
 
     cD@mncA  
     cD@mnacA  
-    cD@mlcA[cCfcA][cChcA] "cCpromptcA" ["cCdefaultcA"] ["cCinitialcA"] ["cCcom-listcA"] ["cCbuffer-namecA"]  
+    cD@mlcA[cCfcA][cChcA] "cCpromptcC" ["cAdefaultcC"] ["cAinitialcC"] ["cAcom-listcC"] ["cAbuffer-namecA"]  
     cD@mccA[cCfcA] cCpromptcA [cCvalid-listcA] [cChelp-stringcA]  
     cD@mxcA "cCcommand-linecA"  
     cD@mxacA "cCcommand-linecA"
@@ -58646,7 +58646,7 @@ $a
 
 
     cC; Comment to the end of the linecA  
-    cC<command>cA ::= cD"cA_<identifier>cB"cD [ cA=cD cA"cA<string>cD_"cD ][ cA{cA cC<command>cA cD}cA ] *  
+    cC<command>cA ::= cD"cA_<identifier>cDcC"cD [ cA=cD cA"cAcA<string>cD_"cD ][ cA{cA cC<command>cA cD}cA ] *  
 
 
 cEDESCRIPTION cA
@@ -59472,7 +59472,7 @@ $a
     cDAbreviationscA
 
        The installation comes with a default abbreviation file for C and C++ file editing
-       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCwhcA" (while) - 
+       which can be used by writing short abbreviations like "cCforcC", "cAifcC" or "cAwhcA" (while) - 
        for C and C++ code functions. The list of abbreviations can be used as well interactively in the GUI
        version of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
 
@@ -59518,11 +59518,11 @@ $a
         basename of the current file on Windows the slash is replaced with a backslash
               
       cD%fhook-c-formatcA - The command to format current C file, default is set to 
-        cC"astyle %f"cC or cA"clang-format %f -- -std=c99"cA in dependence what is installed 
+        cC"astyle %f"cA or cC"clang-format %f -- -std=c99"cA in dependence what is installed 
         on the current system, again cC%fcA represents the file name of the currently edited file.
 
       cD%fhook-c-lintcA - The command to check/lint the current C file, default is set to
-        _"LANG=encCUS gcc -Wall -x c -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c99"cA if the latter
+        _"LANG=encCUS gcc -Wall -x c -fsyntax-only %f"cA or cC"clang-tidy %f -- -std=c99"cA if the latter
         is installed on the system. Again cC%fcA represents the currently edited file name.
 
       cD%fhook-cpp-execcA - The command to execute the current C++ file, default on Unix systems
@@ -59530,11 +59530,11 @@ $a
         basename of the current file on Windows the slash is replaced with a backslash
               
       cD%fhook-cpp-formatcA - The command to format current C++ file, default is set to 
-        cC"astyle %f"cC or cA"clang-format %f --std=c++17"cA in dependence what is installed 
+        cC"astyle %f"cA or cC"clang-format %f --std=c++17"cA in dependence what is installed 
         on the current system, again cC%fcA represents the file name of the currently edited file.
 
       cD%fhook-c++-lintcA - The command to check/lint the current C++ file, default is set to
-        cC"g++ -Wall -x c++ -fsyntax-only %f"cC or cA"clang-tidy %f -- -std=c++17"cA if the latter
+        cC"g++ -Wall -x c++ -fsyntax-only %f"cA or cC"clang-tidy %f -- -std=c++17"cA if the latter
         is installed on the system. Again cC%fcA represents the currently edited file name.
     
       The setting assume that the mentioned compilers or tools are available via the cCPATHcA
@@ -59694,7 +59694,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for MicroEmacs
        macro file  editing  which  can  be  used  by  writing  short   abbreviations
-       like   "cC!wcA" (while), "cC!icA" (if), or "cCdecA" (define-macro)- and then pressing
+       like   "cC!wcC" (while), "cA!icC" (if), or "cAdecA" (define-macro)- and then pressing
        the key-binding for the  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -59971,7 +59971,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for LaTeX
        file editing  which  can  be  used  by  writing  short   abbreviations
-       like "cCverbcA" (verbatim environment), "cCbfcA" (\textbf{}) or "cCseccA" (\section{})
+       like "cCverbcC" (verbatim environment), "cAbfcC" (\textbf{}) or "cAseccA" (\section{})
        and then pressing the key-binding for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -60340,7 +60340,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for Pascal file
        editing which  can  be  used  by  writing  short   abbreviations like
-       "cCfocA" (for), "cCifcA", "cCelcA" (else), "cCprcA" (procedure)  or "cCwrcA" (writeln) - and then 
+       "cCfocC" (for), "cAifcC", "cAelcC" (else), "cAprcC" (procedure)  or "cAwrcA" (writeln) - and then 
        pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
 
        The  list  of  abbreviations  can be used  interactively in the GUI version of
@@ -60773,7 +60773,7 @@ $a
     cDAbreviationscA
 
        The installation comes with a default abbreviation file for shell editing
-       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCfuncA" - 
+       which can be used by writing short abbreviations like "cCforcC", "cAifcC" or "cAfuncA" - 
        for a Bourne shell or Z-shell function - and then pressing the key-binding for
        the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le  command. The list
        of abbreviations can be used interactively in the GUI version of MicroEmacs
@@ -60872,7 +60872,7 @@ $a
     cDAbreviationscA
 
        The installation comes with a default abbreviation file for Java editing
-       which can be used by writing short abbreviations like "cCfocA", "cCifcA" or "cCclcA" (class) 
+       which can be used by writing short abbreviations like "cCfocC", "cAifcC" or "cAclcA" (class) 
        for Java classes functions. The list of abbreviations can be used as well interactively in the GUI
        version of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
 
@@ -61040,7 +61040,7 @@ $a
     cDAbreviationscA
 
        The installation comes with a default abbreviation file for Tcl editing
-       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCproccA" - 
+       which can be used by writing short abbreviations like "cCforcC", "cAifcC" or "cAproccA" - 
        for Tcl functions. More extended abbreviations are "cCmaincA" for an Tcl
        application outline or "cCooclcA" for an cCoo::classcA template. The short strings
        are then replaced by pressing the key-binding for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le
@@ -61406,7 +61406,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for Perl file editing
        which  can  be  used  by  writing  short   abbreviations like   "cCwhcA" (while), 
-       "cCifcA" (if), or "cCsubcA" (subroutine) - and then pressing  the key-binding for the  
+       "cCifcC" (if), or "cAsubcA" (subroutine) - and then pressing  the key-binding for the  
        lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -61434,7 +61434,7 @@ $a
       cD%fhook-perl-execcA - The command to execute the current Perl file, default on Unix systems
         is set to cC"perl %f"cA where cC%fcA represents the file name of the current script.
               
-      cD%fhook-perl-formatcA - The command to format current Tcl file, default is set to 
+      cD%fhook-perl-formatcA - The command to format current Perl file, default is set to 
        cC"perltidy -b %f"cA  where cC%fcA represents the file name.  The cCperltidycA program can 
        be installed usually using the standard package manager or using the cpan utility of Perl.
               
@@ -62055,6 +62055,7 @@ $a
 
     cDhkpython.emfcA - Python language file hook definition  
     cDpython.eafcA   - Python abbreviation file   
+    cDpython.etfcA   - Python template file   
 
 cEEXTENSIONS cA
 
@@ -62104,7 +62105,7 @@ $a
     cDAbreviationscA
 
        The installation comes with a default abbreviation file for Python editing
-       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCdefcA" - 
+       which can be used by writing short abbreviations like "cCforcC", "cAifcC" or "cAdefcA" - 
        for Python functions. More extended abbreviations are "cCmaincA" for an Python
        application outline or "cCclasscA" for a Python class template. The short strings
        are then replaced by pressing the key-binding for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le
@@ -62126,6 +62127,35 @@ $a
        cDf6cA      - show the item-list outline
        cDEsc f6cA  - hide the item-list outline
 
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-python-execcA - The command to execute the current Perl file, default on Unix systems
+        is set to cC"python3 %f"cA where cC%fcA represents the file name of the current script.
+              
+      cD%fhook-python-formatcA - The command to format current Python file, default is set to cC"ruff format %f"cA
+       or cC"yapf -i %f"cA or cC"black -q %f"cA if one of these tools is available, where again 
+       cC%fcA represents the file name.
+       If you have installed them as Python packages, you should this variable to cC"python -m ruff"cA
+       for instance.
+              
+      cD%fhook-python-lintcA - The command to check/lint the current Python file, default is set to 
+       cC"ruff check %f"cA  or cC"pylint %f"cA if one of these tools is available cC%fcA represents the file name.
+       If you have installed them as Python packages, you should this variable to cC"python -m pylint"cA
+       for instance.
+    
+      The setting assume that the cCpython3cA, the cCruffcA or the cCyapfcA programs are available
+      via the cCPATHcA environment variable. On Windows you must insert here either the complete
+      file path to the executables or add the folder where this file is to the cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmypython.emfcA file. Here an example to use ruff as Python package based on a local
+      install of Python into a virtual environment.
+      
+sB
+          set-variable %fhook-python-exec "/home/username/venv/bin/python3 %f"
+          set-variable %fhook-python-lint "/home/username/venv/bin/python3 -m ruff check %f"
+          set-variable %fhook-python-format "/home/username/venv/bin/python3 -m ruff format %f"
+sA
 cEBUGS cA
 
 
@@ -62135,8 +62165,13 @@ $a
 
 cESEE ALSO cA
 
-
-    lsr(9)lmr(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
+    lsindent(2)lmindent(2)le, lsitem-list(3)lmitem-list(3)le, 
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, 
+    lstime(2m)lmtime(2m)le,
+    lsperl(9)lmperl(9)le, lsr(9)lmr(9)le, lstcl(9)lmtcl(9)le, 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 scheme
 ! 9 scm
 ! 9 sch
@@ -63790,9 +63825,9 @@ $a
     cDAbbreviationscA
 
        The installation comes with a default abbreviation file for R editing
-       which can be used by writing short abbreviations like "cCforcA", "cCifcA" or "cCfunccA" - 
+       which can be used by writing short abbreviations like "cCforcC", "cAifcC" or "cAfunccA" - 
        for R functions. More extended abbreviations are "cCmaincA" for an Rscript
-       application outline or "cCopenrcA" and "cCopenwcA" for reading and writing text files.
+       application outline or "cCopenrcC" and "cAopenwcA" for reading and writing text files.
        The short strings  are then replaced by pressing the key-binding for the 
        lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le  command.
        The list of abbreviations can be used as well interactively in the GUI version 
@@ -63894,7 +63929,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for Go files  editing
        which  can  be  used  by  writing  short   abbreviations   like   "cCforcA",
-       "cCifcA", "cCelifcA" or "cCtypecA" - and then pressing the key-binding for the 
+       "cCifcC", "cAelifcC" or "cAtypecA" - and then pressing the key-binding for the 
        lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -64017,7 +64052,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for Dart file  editing
        which  can  be  used  by  writing  short   abbreviations   like   "cCforcA",
-       "cCifcA", "cCelifcA" or "cCclasscA" - and then pressing the key-binding for the 
+       "cCifcC", "cAelifcC" or "cAclasscA" - and then pressing the key-binding for the 
        lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -64163,7 +64198,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for C3 file
        editing which  can  be  used  by  writing  short   abbreviations like
-       "cCforcA", "cCifcA", "cCelifcA" or "cCclasscA" - and then pressing the key-binding
+       "cCforcC", "cAifcC", "cAelifcC" or "cAclasscA" - and then pressing the key-binding
        for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -64310,7 +64345,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for V file
        editing which  can  be  used  by  writing  short   abbreviations like
-       "cCforcA", "cCifcA", "cCelifcA", "_str" (public structure)  or "cCtypecA" - and then 
+       "_forcC", "cAifcC", "cAelifcC", "cAstr" (public structure)  or "cCtypecA" - and then 
        pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
@@ -64461,7 +64496,7 @@ $a
 
        The  installation  comes with a default  abbreviation  file for Rust file
        editing which  can  be  used  by  writing  short   abbreviations like
-       "cCforcA", "cCifcA", "cCelifcA" or "cCfncA" - and then pressing the key-binding
+       "cCforcC", "cAifcC", "cAelifcC" or "cAfncA" - and then pressing the key-binding
        for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.

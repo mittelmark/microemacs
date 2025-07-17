@@ -23,12 +23,12 @@ set-variable .fhook-vb.indent-width 2
 set-variable .fhook-vb.exact -1
 
 ; setup item-list
-set-variable .fhook-vb.item-list-s1 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Function[ \t]*\\([.\\w+]\\)[ \t]*("
+set-variable .fhook-vb.item-list-s1 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Function[ \t]+\\([.\\w+]\\)[ \t]*("
 set-variable .fhook-vb.item-list-r1 "Func \ecB\\2\ecA"
 set-variable .fhook-vb.item-list-s2 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Sub[ \t]+\\([.\\w]+\\)[ \t]*("
 set-variable .fhook-vb.item-list-r2 "Sub  \ecB\\2\ecA"
-set-variable .fhook-vb.item-list-s3 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Property[ \t]*\\(Get\\|Let\\)[ \t]+\\(\\w+\\)[ \t]*("
-set-variable .fhook-vb.item-list-r3 "Prop \ecB\\2 \\3\ecA"
+set-variable .fhook-vb.item-list-s3 "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?Property[ \t]+\\(Get\\|Let\\)[ \t]+\\(\\w+\\)[ \t]*("
+set-variable .fhook-vb.item-list-r3 "P\\1 \ecB\\2 \\3\ecA"
 set-variable .fhook-vb.item-list-s4 "^[ \t]*Type[ \t]+\\(\\w+\\)"
 set-variable .fhook-vb.item-list-r4 "Type \ecB\\1\ecA"
 set-variable .fhook-vb.item-list-s5 "^[ \t]*Constructor[ \t]+\\(\\w+\\)"

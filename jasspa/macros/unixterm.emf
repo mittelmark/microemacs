@@ -33,6 +33,7 @@ set-variable .change-font.xfontsel 0
     ; suspend only on Terminal without questioning
     global-unbind-key "C-z"
     0 global-bind-key suspend-emacs "C-z"
+    0 global-bind-key suspend-emacs "C-c z" ; me25 compatible
 !else
     ; TODO: fix if the font was deleted!
     ; try xset fp default
