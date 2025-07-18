@@ -16,167 +16,167 @@
 set-variable %tag-option   ""
 set-variable %tag-file     "tags"
 set-variable %tag-filemask ":*.bas:*.cls:*.asp:"
-set-variable %tag-ignore   ":SCCS/:CVS/:"
+set-variable %tag-ignore   ":SCCS/:CVS/:.git/:.svn/:"
 
 set-variable #l0 0
 !while &exi &cat ".about.arg" #l0
-    set-variable #l2 &ind &cat ".about.arg" &pinc #l0 1
-    set-variable #l1 &lef #l2 2
-    set-variable #l2 &rig #l2 2
-    !if &seq #l1 "-o"
-        set-variable %tag-option #l2
-    !elif &seq #l1 "-t"
-        set-variable %tag-file #l2
-    !elif &seq #l1 "-m"
-        set-variable %tag-filemask #l2
-    !elif &seq #l1 "-i"
-        set-variable %tag-ignore #l2
-    !endif
+  set-variable #l2 &ind &cat ".about.arg" &pinc #l0 1
+  set-variable #l1 &lef #l2 2
+  set-variable #l2 &rig #l2 2
+  !if &seq #l1 "-o"
+    set-variable %tag-option #l2
+  !elif &seq #l1 "-t"
+    set-variable %tag-file #l2
+  !elif &seq #l1 "-m"
+    set-variable %tag-filemask #l2
+  !elif &seq #l1 "-i"
+    set-variable %tag-ignore #l2
+  !endif
 !done
 
 define-macro vbtags-add-tag
-    set-variable #l1 @1
-    set-variable #l3 @wl
-    next-window
-    !tjump &sin "m" %tag-option 4
-    beginning-of-buffer
-    !force search-forward &spr "^%s\t" #l1
-    !if &not $status
-        end-of-buffer
-        insert-string #l1
-        insert-string "\t"
-        insert-string #p9
-        insert-string "\t/^"
-        insert-string #l3
-        insert-string "$/"
-    !endif
-    next-window
+  set-variable #l1 @1
+  set-variable #l3 @wl
+  next-window
+  !tjump &sin "m" %tag-option 4
+  beginning-of-buffer
+  !force search-forward &spr "^%s\t" #l1
+  !if &not $status
+    end-of-buffer
+    insert-string #l1
+    insert-string "\t"
+    insert-string #p9
+    insert-string "\t/^"
+    insert-string #l3
+    insert-string "$/"
+  !endif
+  next-window
 !emacro
         
 define-macro vbtags-add-file
-    set-variable $buffer-mask "luh1"
-    set-variable #l9 $buffer-fname
-    !if &seq &lef #l9 #g1 #g2
-        set-variable #l9 &rig #l9 #g1
+  set-variable $buffer-mask "luh1"
+  set-variable #l9 $buffer-fname
+  !if &seq &lef #l9 #g1 #g2
+    set-variable #l9 &rig #l9 #g1
+  !endif
+  ml-write &spr "[Parsing file %s]" #l9
+  1 buffer-mode "magic"
+  beginning-of-buffer
+  !repeat
+    !force search-forward "^[ \t]*\\([Pp]rivate[ \t]+\\|[Pp]ublic[ \t]+\\)?\\([Ff]unction\\|[Ss]ub\\|[Pp]roperty[ \t]+\\([Gg]et\\|[Ll]et\\)\\)[ \t]+\\(\\w+\\)[ \t]*("
+    !if $status
+      set-variable #l1 @s4
+      vbtags-add-tag #l1
     !endif
-    ml-write &spr "[Parsing file %s]" #l9
-    1 buffer-mode "magic"
+  !until &not $status
+  !if &sin "v" %tag-option
     beginning-of-buffer
     !repeat
-        !force search-forward "^[ \t]*\\(Private[ \t]+\\|Public[ \t]+\\)?\\(Function\\|Sub\\|Property[ \t]+\\(Get\\|Let\\)\\)[ \t]+\\(\\w+\\)[ \t]*("
-        !if $status
-            set-variable #l1 @s4
-            vbtags-add-tag #l1
-        !endif
+      !force search-forward "^[ \t]*\\([Pp]rivate\\|[Pp]ublic\\)[ \t]+\\(\\w+\\)[ \t]+[Aa]s[ \t]"
+      !if $status
+        set-variable #l1 @s2
+        vbtags-add-tag #l1
+      !endif
     !until &not $status
-    !if &sin "v" %tag-option
-        beginning-of-buffer
-        !repeat
-            !force search-forward "^[ \t]*\\(Private\\|Public\\)[ \t]+\\(\\w+\\)[ \t]+As[ \t]"
-            !if $status
-                set-variable #l1 @s2
-                vbtags-add-tag #l1
-            !endif
-        !until &not $status
-        beginning-of-buffer
-        !repeat
-            !force search-forward "^[ \t]*\\(Private\\|Public\\)[ \t]+Const[ \t]+\\(\\w+\\)[ \t]+=[ \t]"
-            !if $status
-                set-variable #l1 @s2
-                vbtags-add-tag #l1
-            !endif
-        !until &not $status
-    !endif
-    !if &sin "p" %tag-option
-        beginning-of-buffer
-        !repeat
-            !force search-forward "^[ \t]*Declare[ \t]+\\(Function\\|Sub\\|Property[ \t]+\\(Get\\|Let\\)\\)[ \t]+\\(\\w+\\)[ \t]"
-            !if $status
-                set-variable #l1 @s3
-                vbtags-add-tag #l1
-            !endif
-        !until &not $status
-    !endif
+    beginning-of-buffer
+    !repeat
+      !force search-forward "^[ \t]*\\([Pp]rivate\\|[Pp]ublic\\)[ \t]+[Cc]onst[ \t]+\\(\\w+\\)[ \t]+=[ \t]"
+      !if $status
+        set-variable #l1 @s2
+        vbtags-add-tag #l1
+      !endif
+    !until &not $status
+  !endif
+  !if &sin "p" %tag-option
+    beginning-of-buffer
+    !repeat
+      !force search-forward "^[ \t]*[Dd]eclare[ \t]+\\([Ff]unction\\|[Ss]ub\\|[Pp]roperty[ \t]+\\([Gg]et\\|[Ll]et\\)\\)[ \t]+\\(\\w+\\)[ \t]"
+      !if $status
+        set-variable #l1 @s3
+        vbtags-add-tag #l1
+      !endif
+    !until &not $status
+  !endif
 !emacro
 
 define-macro vbtags-parse-tags
-    ml-write "All done! Parsing tags file."
-    beginning-of-buffer
-    set-mark
-    replace-string "\\\\" "\\\\\\\\"
-    end-of-buffer
-    sort-lines
+  ml-write "All done! Parsing tags file."
+  beginning-of-buffer
+  set-mark
+  replace-string "\\\\" "\\\\\\\\"
+  end-of-buffer
+  sort-lines
 !emacro
     
 define-macro vbtags-process-buffers
-    !repeat
-        set-variable #l0 $buffer-bname
-        !if &xse #l0 "^.*<[0-9]*>$"
-            set-variable #l1 &lef #l0 &sub &rsin "<" #l0 1
-        !else
-            set-variable #l1 #l0
-        !endif
-        !if &iseq #l1 %tag-bname
-            !return
-        !elif &lfind %tag-ignore #l1
-        !elif &band $buffer-fmod 0x10000
-            set-variable #l2 $buffer-fname
-            set-variable #l3 0
-            !while &not &seq &set #l4 &lget %tag-filemask &inc #l3 1 ""
-                !force find-file &cat #l2 #l4 
-            !done
-        !else
-            beginning-of-buffer
-            !force vbtags-add-file
-            !if &not $status
-                ml-write &spr "[Warning: vbtags-add-file failed on \"%s\"]" $buffer-fname
-                !bell
-                ;set-variable #l9 @cq
-            !endif
-        !endif
-        0 delete-buffer #l0
-    !until 0
+  !repeat
+    set-variable #l0 $buffer-bname
+    !if &xse #l0 "^.*<[0-9]*>$"
+      set-variable #l1 &lef #l0 &sub &rsin "<" #l0 1
+    !else
+      set-variable #l1 #l0
+    !endif
+    !if &iseq #l1 %tag-bname
+      !return
+    !elif &lfind %tag-ignore #l1
+    !elif &band $buffer-fmod 0x10000
+      set-variable #l2 $buffer-fname
+      set-variable #l3 0
+      !while &not &seq &set #l4 &lget %tag-filemask &inc #l3 1 ""
+        !force find-file &cat #l2 #l4 
+      !done
+    !else
+      beginning-of-buffer
+      !force vbtags-add-file
+      !if &not $status
+        ml-write &spr "[Warning: vbtags-add-file failed on \"%s\"]" $buffer-fname
+        !bell
+        ;set-variable #l9 @cq
+      !endif
+    !endif
+    0 delete-buffer #l0
+  !until 0
 !emacro
 
 define-macro vbtags
-    !if &seq &lget %tag-filemask 1 ""
-        ml-write "[No input file mask set!]"
-        !abort
-    !endif
-    delete-other-windows
-    split-window-vertically
-    find-buffer "*scratch*"
-    set-variable #l0 &stat "a" "."
-    find-file %tag-file
-    set-variable %tag-bname $buffer-bname 
-    -1 buffer-mode "view"
-    !force 0 delete-buffer "*scratch*"
-    set-variable #g1 &rsin "/" $buffer-fname
-    set-variable #g2 &lef $buffer-fname #g1
-    !if &not &sin "a" %tag-option
-        beginning-of-buffer
-        set-mark
-        end-of-buffer
-        -1 kill-region
-    !else
-        end-of-buffer
-    !endif
-    !if &sin "r" %tag-option
-        set-variable %tag-filemask &lins %tag-filemask -1 "[^.]*/"
-    !endif
-    1 buffer-mode "magic"
-    1 buffer-mode "exact"
-    next-window
-    !if &iseq $buffer-bname %tag-bname
-        !force find-file #l0
-    !endif
-    vbtags-process-buffers
-    vbtags-parse-tags
+  !if &seq &lget %tag-filemask 1 ""
+    ml-write "[No input file mask set!]"
+    !abort
+  !endif
+  delete-other-windows
+  split-window-vertically
+  find-buffer "*scratch*"
+  set-variable #l0 &stat "a" "."
+  find-file %tag-file
+  set-variable %tag-bname $buffer-bname 
+  -1 buffer-mode "view"
+  !force 0 delete-buffer "*scratch*"
+  set-variable #g1 &rsin "/" $buffer-fname
+  set-variable #g2 &lef $buffer-fname #g1
+  !if &not &sin "a" %tag-option
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    -1 kill-region
+  !else
+    end-of-buffer
+  !endif
+  !if &sin "r" %tag-option
+    set-variable %tag-filemask &lins %tag-filemask -1 "[^.]*/"
+  !endif
+  1 buffer-mode "magic"
+  1 buffer-mode "exact"
+  next-window
+  !if &iseq $buffer-bname %tag-bname
+    !force find-file #l0
+  !endif
+  vbtags-process-buffers
+  vbtags-parse-tags
 !emacro
-  
+
 define-macro start-up
-    vbtags
-    quick-exit
+  vbtags
+  quick-exit
 !emacro
 
 ; load in user extensions if found

@@ -16,7 +16,7 @@
 set-variable %tag-option   ""
 set-variable %tag-file     "tags"
 set-variable %tag-filemask ":*.js:"
-set-variable %tag-ignore   ":SCCS/:CVS/:"
+set-variable %tag-ignore   ":SCCS/:CVS/:.git/:.svn/:"
 
 set-variable #l0 0
 !while &exi &cat ".about.arg" #l0

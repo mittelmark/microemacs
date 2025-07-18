@@ -524,9 +524,9 @@ Miscellaneous Information
     lsprintall(3f)lmprintall(3f)le Formatted print job  
     lstcltags(3f)lmtcltags(3f)le Generate a Tcl/Tk tags file  
     lstextags(3f)lmtextags(3f)le Generate a LaTeX/BibTeX tags file  
-    lsunix2dos(3f)lmunix2dos(3f)le Convert UNIX format files to DOS format files.  
-    lsunix2win(3f)lmunix2win(3f)le Convert UNIX format files to Windows format files.  
-
+    lsunix2dos(3f)lmunix2dos(3f)le Convert UNIX format files to DOS format files  
+    lsunix2win(3f)lmunix2win(3f)le Convert UNIX format files to Windows format files  
+    lsvbtags(3f)lmvbtags(3f)le Generate a Free/Visual Basic tags file  
 
 cEMacro Functions  cA
 
@@ -4053,6 +4053,7 @@ Miscellaneous Information
     lsusr(2m)lmusr(2m)le User buffer modes  
     lsVariables(4)lmVariables(4)le User defined macro variables  
     lsvb(9)lmvb(9)le Visual Basic  
+    lsvbtags(3f)lmvbtags(3f)le Generate a Free/Visual Basic tags file    
     lsverilog(9)lmverilog(9)le Verilog hardware description language  
     lsvhdl(9)lmvhdl(9)le VHDL hardware simulation File  
     lsview(2m)lmview(2m)le Read only  
@@ -32708,7 +32709,7 @@ $a
     cD%tag-ignoredircA
     
        A list of directories to be ignored when recursive option is used,
-       default value is cGcG:SCCS/:CVS/:cAcA.
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
     These variables can be changed using the -v command-line option or via the
     cGcGmyctags.emfcAcA file
@@ -32836,7 +32837,7 @@ $a
     cD%tag-ignoredircA
  
        A list of directories to be ignored when recursive option is used,
-       default value is cGcG:SCCS/:CVS/:cAcA.
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
     These variables can be changed using the -v command-line option or via the
     cGcGmyemftags.emfcAcA file
@@ -32934,7 +32935,7 @@ $a
     cD%tag-ignoredircA
     
        A list of directories to be ignored when recursive option is used,
-       default value is cGcG:SCCS/:CVS/:cAcA.
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
     These variables can be changed using the -v command-line option or via the
     cGcGmyntags.emfcAcA file
@@ -33054,7 +33055,7 @@ $a
     cD%tag-ignoredircA
     
        A list of directories to be ignored when recursive option is used,
-       default value is cGcG:SCCS/:CVS/:cAcA.
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
     These variables can be changed using the -v command-line option or via the
     cGcGmytcltags.emfcAcA file
@@ -33135,7 +33136,7 @@ $a
     cD%tag-ignoredircA
     
        A list of directories to be ignored when recursive option is used,
-       default value is cGcG:SCCS/:CVS/:cAcA.
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
     These variables can be changed using the -v command-line option or via the
     cGcGmytextags.emfcAcA file
@@ -33233,7 +33234,7 @@ $a
     cD%tag-ignoredircA
     
        A list of directories to be ignored when recursive option is used,
-       default value is cGcG:SCCS/:CVS/:cAcA.
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
  
     These variables can be changed using the -v command-line option or via the
@@ -33274,6 +33275,100 @@ $a
 
 
     lsstart-up(3)lmstart-up(3)le, lsdos2unix(3f)lmdos2unix(3f)le, lsauto(2m)lmauto(2m)le, lscr(2m)lmcr(2m)le, lslf(2m)lmlf(2m)le, lsctrlz(2m)lmctrlz(2m)le.
+! 3fvbtags
+cEcENAME cEcA
+
+
+    vbtags - Generate a Free or Visual Basic tags file
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@vbtags" [cC-v%tag-option=<flags>cA] [cCfilescA]
+
+
+cEDESCRIPTION cA
+
+
+    The start-up file cGvbtags.emfcA may be invoked from the command line to
+    generate a cDtagscA file for Visual or Free Basic files, lsvb(8)lmvb(8)le.
+
+    Given a list of cCfilescA a tags file cGtagscA is generated in the current
+    directory, which may be used by the lsfind-tag(2)lmfind-tag(2)le command. If no cCfilescA are
+    specified the default file list is cGcG./cAcA, i.e. process the current
+    directory. If a directory name is given (such as the default cGcG./cAcA) all
+    Visual or Free Basic files within the directory will be processed.
+
+    The value of variable cD%tag-optioncA is used to control the tag generation
+    process, its value cC<flags>cA can contain any number of the following flags:
+
+    cGacA
+ 
+       Append new tags to the existing tag file, note that if also using flag
+       cCcGmcAcA multiple 'tags' to the same item may be created.
+
+    cGmcA
+ 
+       Enable multiple tags. This enables the existence of 2 tags with the
+       same tag name, but typically with different locations. See help on
+       lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
+
+    cGrcA
+ 
+       Enables recursive mode, any sub-directory found within any given
+       directories will also be processed.
+
+    cGpcA
+ 
+       Add prototype definitions to the tag file (i.e. definitions
+       starting with cCDeclarecA statements).
+
+    cGvcA
+ 
+       Add  private or public module variables to the tag file. (i.e. variables marked with
+       cCPrivatecA or cCPubliccA at the beginning of a line).
+
+cENOTES cA
+
+
+    This function is invoked from menu
+
+       cDTools -> VB Tools -> Create Tags FilecA
+
+    when the user requests a tags file to be generated.
+
+    The user setup file cGcGmyvbtags.emfcAcA is executed by vbtags during
+    start-up, this file can be used to over-ride any of the vbtags
+    configuration variables (see below).
+
+    The following variables are set within cGcGvbtags.emfcAcA and are used to
+    control the process:-
+
+    cD%tag-optioncA
+ 
+       Tags options flag, default value is "". See above for more
+       information.
+
+      cD%tag-filemaskcA
+
+       A list of source file masks to be processed when a directory is given,
+       default value is ":*.bas:*.cls:*.asp:".
+
+    cD%tag-ignoredircA
+ 
+       A list of directories to be ignored when recursive option is used,
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
+
+    These variables can be changed using the -v command-line option or via the
+    cGcGmyvbtags.emfcAcA file
+
+
+cESEE ALSO cA
+
+
+    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsemf(8)lmemf(8)le.
 ! 3 compile
 cEcENAME cEcA
 
@@ -62129,12 +62224,12 @@ $a
 
     cDExecuting, Formatting and LintingcA
     
-      cD%fhook-python-execcA - The command to execute the current Perl file, default on Unix systems
+      cD%fhook-python-execcA - The command to execute the current Python file, default on Unix systems
         is set to cC"python3 %f"cA where cC%fcA represents the file name of the current script.
               
-      cD%fhook-python-formatcA - The command to format current Python file, default is set to cC"ruff format %f"cA
-       or cC"yapf -i %f"cA or cC"black -q %f"cA if one of these tools is available, where again 
-       cC%fcA represents the file name.
+      cD%fhook-python-formatcA - The command to format current Python file, default is set to
+       cC"ruff format %f"cA  or cC"yapf -i %f"cA or cC"black -q %f"cA if one of these tools is available, 
+       where again cC%fcA represents the file name.
        If you have installed them as Python packages, you should this variable to cC"python -m ruff"cA
        for instance.
               

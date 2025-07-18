@@ -416,9 +416,9 @@
   [printall(3f)](printall(3f)) Formatted print job  
   [tcltags(3f)](tcltags(3f)) Generate a Tcl/Tk tags file  
   [textags(3f)](textags(3f)) Generate a LaTeX/BibTeX tags file  
-  [unix2dos(3f)](unix2dos(3f)) Convert UNIX format files to DOS format files.  
-  [unix2win(3f)](unix2win(3f)) Convert UNIX format files to Windows format files.  
-
+  [unix2dos(3f)](unix2dos(3f)) Convert UNIX format files to DOS format files  
+  [unix2win(3f)](unix2win(3f)) Convert UNIX format files to Windows format files  
+  [vbtags(3f)](vbtags(3f)) Generate a Free/Visual Basic tags file  
 
 ## Macro Functions 
 
@@ -3974,6 +3974,7 @@
   [usr(2m)](usr(2m)) User buffer modes  
   [Variables(4)](Variables(4)) User defined macro variables  
   [vb(9)](vb(9)) Visual Basic  
+  [vbtags(3f)](vbtags(3f)) Generate a Free/Visual Basic tags file    
   [verilog(9)](verilog(9)) Verilog hardware description language  
   [vhdl(9)](vhdl(9)) VHDL hardware simulation File  
   [view(2m)](view(2m)) Read only  
@@ -33119,7 +33120,7 @@ $a
   __%tag-ignoredir__
   
   >  A list of directories to be ignored when recursive option is used,
-     default value is "`:SCCS/:CVS/:`".
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
 
   These variables can be changed using the -v command-line option or via the
   "`myctags.emf`" file
@@ -33249,7 +33250,7 @@ $a
   __%tag-ignoredir__
  
   >  A list of directories to be ignored when recursive option is used,
-     default value is "`:SCCS/:CVS/:`".
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
 
   These variables can be changed using the -v command-line option or via the
   "`myemftags.emf`" file
@@ -33348,7 +33349,7 @@ $a
   __%tag-ignoredir__
   
   >  A list of directories to be ignored when recursive option is used,
-     default value is "`:SCCS/:CVS/:`".
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
 
   These variables can be changed using the -v command-line option or via the
   "`myntags.emf`" file
@@ -33470,7 +33471,7 @@ $a
   __%tag-ignoredir__
   
   >  A list of directories to be ignored when recursive option is used,
-     default value is "`:SCCS/:CVS/:`".
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
 
   These variables can be changed using the -v command-line option or via the
   "`mytcltags.emf`" file
@@ -33552,7 +33553,7 @@ $a
   __%tag-ignoredir__
   
   >  A list of directories to be ignored when recursive option is used,
-     default value is "`:SCCS/:CVS/:`".
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
 
   These variables can be changed using the -v command-line option or via the
   "`mytextags.emf`" file
@@ -33651,7 +33652,7 @@ $a
   __%tag-ignoredir__
   
   >  A list of directories to be ignored when recursive option is used,
-     default value is "`:SCCS/:CVS/:`".
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
 
  
   These variables can be changed using the -v command-line option or via the
@@ -33693,6 +33694,101 @@ $a
 
 
   [start-up(3)](start-up(3)), [dos2unix(3f)](dos2unix(3f)), [auto(2m)](auto(2m)), [cr(2m)](cr(2m)), [lf(2m)](lf(2m)), [ctrlz(2m)](ctrlz(2m)).
+!! me-id: m3fcl013
+! 3fvbtags
+## NAME
+
+
+  vbtags - Generate a Free or Visual Basic tags file
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@vbtags" [_-v%tag-option=<flags>_] [_files_]
+
+
+## DESCRIPTION
+
+
+  The start-up file `vbtags.emf` may be invoked from the command line to
+  generate a __tags__ file for Visual or Free Basic files, [vb(8)](vb(8)).
+
+  Given a list of _files_ a tags file `tags` is generated in the current
+  directory, which may be used by the [find-tag(2)](find-tag(2)) command. If no _files_ are
+  specified the default file list is "`./`", i.e. process the current
+  directory. If a directory name is given (such as the default "`./`") all
+  Visual or Free Basic files within the directory will be processed.
+
+  The value of variable __%tag-option__ is used to control the tag generation
+  process, its value _<flags>_ can contain any number of the following flags:
+
+  `a`
+ 
+  >  Append new tags to the existing tag file, note that if also using flag
+     '`m`' multiple 'tags' to the same item may be created.
+
+  `m`
+ 
+  >  Enable multiple tags. This enables the existence of 2 tags with the
+     same tag name, but typically with different locations. See help on
+     [find-tag(2)](find-tag(2)) for more information on multiple tag support.
+
+  `r`
+ 
+  >  Enables recursive mode, any sub-directory found within any given
+     directories will also be processed.
+
+  `p`
+ 
+  >  Add prototype definitions to the tag file (i.e. definitions
+     starting with _Declare_ statements).
+
+  `v`
+ 
+  >  Add  private or public module variables to the tag file. (i.e. variables marked with
+     _Private_ or _Public_ at the beginning of a line).
+
+## NOTES
+
+
+  This function is invoked from menu
+
+  >  __Tools -> VB Tools -> Create Tags File__
+
+  when the user requests a tags file to be generated.
+
+  The user setup file "`myvbtags.emf`" is executed by vbtags during
+  start-up, this file can be used to over-ride any of the vbtags
+  configuration variables (see below).
+
+  The following variables are set within "`vbtags.emf`" and are used to
+  control the process:-
+
+  __%tag-option__
+ 
+  >  Tags options flag, default value is "". See above for more
+     information.
+
+  > __%tag-filemask__
+
+  >  A list of source file masks to be processed when a directory is given,
+     default value is ":*.bas:*.cls:*.asp:".
+
+  __%tag-ignoredir__
+ 
+  >  A list of directories to be ignored when recursive option is used,
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
+
+  These variables can be changed using the -v command-line option or via the
+  "`myvbtags.emf`" file
+
+
+## SEE ALSO
+
+
+  [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [emf(8)](emf(8)).
 !! me-id: m3mac000
 ! 3 compile
 ## NAME
