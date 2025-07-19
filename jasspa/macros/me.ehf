@@ -59804,7 +59804,8 @@ $a
        cDA-C-icA - Restyle the current region.  
        cDf2cA - (un)fold the current region  
        cDf3cA - (un)fold all regions  
-
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
 
 cEBUGS cA
 
@@ -60340,6 +60341,9 @@ $a
 ! 9 f
 ! 9 f77
 ! 9 f90
+! 5 %fhook-f90-exec
+! 5 %fhook-f90-format
+! 5 %fhook-f90-lint
 cEcESYNOPSIS cEcA
 
 
@@ -60350,8 +60354,9 @@ $a
 
 
     cDhkf90.emfcA - Fortran hook definition  
-    cDf90.etfcA - Fortran 90 template file.  
-    cDf.etfcA - Fortran (77) template file.
+    cDf90.etfcA - Fortran 90 template file  
+    cDf90.eafcA - Fortran 90 abbreviation file
+    cDf.etfcA - Fortran (77) template file
 
 
 cEEXTENSIONS cA
@@ -60374,6 +60379,78 @@ $a
     while the other types use a cDccA in column 0.
 
 
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow functions, subroutines, variables, logical, comments,
+       strings and characters of the language to be differentiated and
+       rendered in different colors.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the cDf90cA files. The folds occur about
+       cDfunctioncA, cDsubroutinecA, cDprogramcA,  and cDendcA text located on the left-hand margin.
+
+      - lscollapse-all(3)lmcollapse-all(3)le - (un)folds  all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Fortan mode offers beside folding as well support for displaying
+       an outline of the functions, subroutine, module and programp definitions
+       of the Fortran file for easy  navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Fortran 90
+       file  editing  which  can  be  used  by  writing  short   abbreviations
+       like   cC"if"cA  cC"wh"cA (while), or cC"fu"cA (function) - and then pressing
+       the key-binding for the  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c esc esc cA- Command complete.  
+       cDf2cA - (un)fold the current region  
+       cDf3cA - (un)fold all regions  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cDExecuting, Formatting and LintingcA
+
+      cD%fhook-fortran-execcA - The command to execute the current Fortran file, 
+        default on Unix systems  is set to cC"gfortran %f -o %b && ./%b"cA where 
+        cC%fcA represents the file name and cC%bcA the basename of the current file
+        on Windows the slash is replaced with a backslash
+              
+      cD%fhook-fortran-formatcA - The command to format current Fortran file,
+        default is set to cC"fprettify %"cA if the program is installed. 
+        On a Unix system you might install it using the Python package manager
+         like this: cC"pip3 install fprettify --user"cA.
+
+      cD%fhook-fortran-lintcA - The command to check/lint the current Fotran file, 
+         default is set to cC"gfortran -fsyntax-only %f"cA where cC%fcA represents
+         the file name.
+    
+      The setting assume that the Gnu Fortran compiler and the cGfprettifycA formatter
+      is available via the cCPATHcA environment variable. 
+      On Windows you must insert here either the complete cCPATHcA to the 
+      cGgfortrancA executable or add the folder where this file is to the cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyfortran.emfcA file. 
+
+
 cEBUGS cA
 
 
@@ -60385,6 +60462,10 @@ $a
 
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
+    
 ! 9 p
 ! 9 pas
 ! 5 %fhook-pascal-exec
@@ -60489,7 +60570,7 @@ $a
       cD%fhook-pascal-lintcA - The command to check/lint the current Pascal file, 
               default is set to cC"fpc -Cn %f"cA where cC%fcA represents the file name.
     
-      The setting assume that the Free Pascal compiler and he cGptopcA formatter is available via the PATH
+      The setting assume that the Free Pascal compiler and the cGptopcA formatter is available via the PATH
       environment variable. On Windows you must insert here either the complete PATH to the 
       cGfpccA executable or add the folder where this file is to the PATH variable.
 

@@ -1,113 +1,136 @@
 ; -!- emf -!-
-; This is part of the JASSPA MicroEmacs macro files
-; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
-; See the file me.emf for copying and conditions.
 ;
-; Created:     Fri Feb 5 1999
+; Copyright (C) 1999-2020 JASSPA (www.jasspa.com)
+;
+; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
 ; Synopsis:    Fortran 77/90 hook
 ; Authors:     Jon Green
 ;
 define-macro fhook-f90
-    ; Is this a f77 or other fortran file ??
-    set-variable #l0 &con &isin ".f90" $buffer-bname "f90" "f"
-    set-variable $buffer-mask "luh1"
-    @# buffer-init "f90" #l0
-    buffer-init-hooks
+  ; Is this a f77 or other fortran file ??
+  set-variable #l0 &con &isin ".f90" $buffer-bname "f90" "f"
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "f90" #l0
+  buffer-init-hooks
 !emacro
 
 ; buffer-init variables
 set-variable .fhook-f90.name "Fortran 90"
-set-variable .fhook-f90.setup &reg "/history/fhook/f90" "bghinopx"
-set-variable .fhook-f90.setup-mask "aebghikmnoptux"
+set-variable .fhook-f90.setup &reg "/history/fhook/f90" "bfghinopx"
+set-variable .fhook-f90.setup-mask "abefghikmnoptux"
 set-variable .fhook-f90.comment "|!||!|! | !|r|"
 set-variable .fhook-f90.exact -1
 
+set-variable .fhook-f90.collapse-open  "^\\(program[ \t]+\\|module[ \t]+\\|    function\\|    subroutine\\)"
+set-variable .fhook-f90.collapse-close "^\\(end[ \t]+program\\|contains\\|    end function\\|    end subroutine\\)"
+set-variable .fhook-f90.collapse-mclose "1"
+set-variable .fhook-f90.collapse-mnext "-1"
+
+; setup item-list
+set-variable .fhook-f90.item-list-s1 "^module[ \t]+\\([_\\w]+\\)"
+set-variable .fhook-f90.item-list-r1 "Modl \ecB\\1\ecA"
+set-variable .fhook-f90.item-list-s2 "^\\( \\)*function[ \t]+\\([_\\w]+\\)"
+set-variable .fhook-f90.item-list-r2 "Func \\1\ecB\\2\ecA"
+set-variable .fhook-f90.item-list-s3 "^\\( \\)*subroutine[ \t]+\\([_\\w]+\\)"
+set-variable .fhook-f90.item-list-r3 "Subr \\1\ecB\\1\ecA"
+set-variable .fhook-f90.item-list-s4 "^program[ \t]+\\([_\\w]+\\)"
+set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
+
 !if &and &sin "h" .fhook-f90.setup &band .hilight.flags 0x02 
-    !if &not &exist .hilight.f90
-        set-variable .hilight.f90 &pinc .hilight.next 1
-    !endif
-    ; High-light Fortran 90
-    0 hilight  .hilight.f90 1               $global-scheme
-    hilight .hilight.f90 4 "'" "'" ""       .scheme.string
-    hilight .hilight.f90 4 "\"" "\"" ""     .scheme.string
-    hilight .hilight.f90 2 "!"              .scheme.comment
-    ; Older fortran comment
-    hilight .hilight.f90 0x102 "c"          .scheme.comment
-    
-    hilight .hilight.f90 1 "recursive"      .scheme.keyword
-    hilight .hilight.f90 1 "allocate"       .scheme.keyword
-    hilight .hilight.f90 1 "block data"     .scheme.keyword
-    hilight .hilight.f90 1 "call"           .scheme.keyword
-    hilight .hilight.f90 1 "case"           .scheme.keyword
-    hilight .hilight.f90 1 "common"         .scheme.keyword
-    hilight .hilight.f90 1 "contains"       .scheme.keyword
-    hilight .hilight.f90 1 "continue"       .scheme.keyword
-    hilight .hilight.f90 1 "default"        .scheme.keyword
-    hilight .hilight.f90 1 "do"             .scheme.keyword
-    hilight .hilight.f90 1 "else"           .scheme.keyword
-    hilight .hilight.f90 1 "elseif"         .scheme.keyword
-    hilight .hilight.f90 1 "elsewhere"      .scheme.keyword
-    hilight .hilight.f90 1 "end"            .scheme.keyword
-    hilight .hilight.f90 1 "enddo"          .scheme.keyword
-    hilight .hilight.f90 1 "endif"          .scheme.keyword
-    hilight .hilight.f90 1 "exit"           .scheme.keyword
-    hilight .hilight.f90 1 "format"         .scheme.keyword
-    hilight .hilight.f90 1 "function"       .scheme.keyword
-    hilight .hilight.f90 1 "goto"           .scheme.keyword
-    hilight .hilight.f90 1 "if"             .scheme.keyword
-    hilight .hilight.f90 1 "implicit"       .scheme.keyword
-    hilight .hilight.f90 1 "kind"           .scheme.keyword
-    hilight .hilight.f90 1 "module"         .scheme.keyword
-    hilight .hilight.f90 1 "print"          .scheme.keyword
-    hilight .hilight.f90 1 "private"        .scheme.keyword
-    hilight .hilight.f90 1 "procedure"      .scheme.keyword
-    hilight .hilight.f90 1 "program"        .scheme.keyword
-    hilight .hilight.f90 1 "public"         .scheme.keyword
-    hilight .hilight.f90 1 "read"           .scheme.keyword
-    hilight .hilight.f90 1 "return"         .scheme.keyword
-    hilight .hilight.f90 1 "select"         .scheme.keyword
-    hilight .hilight.f90 1 "step"           .scheme.keyword
-    hilight .hilight.f90 1 "stop"           .scheme.keyword
-    hilight .hilight.f90 1 "subroutine"     .scheme.keyword
-    hilight .hilight.f90 1 "then"           .scheme.keyword
-    hilight .hilight.f90 1 "use"            .scheme.keyword
-    hilight .hilight.f90 1 "where"          .scheme.keyword
-    hilight .hilight.f90 1 "write"          .scheme.keyword
-    
-    hilight .hilight.f90 1 "\\.and\\."      .scheme.operator
-    hilight .hilight.f90 1 "\\.eq\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.false\\."    .scheme.operator
-    hilight .hilight.f90 1 "\\.ge\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.gt\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.le\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.lt\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.ne\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.not\\."      .scheme.operator
-    hilight .hilight.f90 1 "\\.or\\."       .scheme.operator
-    hilight .hilight.f90 1 "\\.true\\."     .scheme.operator
-    
-    hilight .hilight.f90 1 "character"      .scheme.type
-    hilight .hilight.f90 1 "complex"        .scheme.type
-    hilight .hilight.f90 1 "data"           .scheme.type
-    hilight .hilight.f90 1 "digits"         .scheme.type
-    hilight .hilight.f90 1 "double"         .scheme.type
-    hilight .hilight.f90 1 "dimension"      .scheme.type
-    hilight .hilight.f90 1 "epsilon"        .scheme.type
-    hilight .hilight.f90 1 "huge"           .scheme.type
-    hilight .hilight.f90 1 "integer"        .scheme.type
-    hilight .hilight.f90 1 "interface"      .scheme.type
-    hilight .hilight.f90 1 "logical"        .scheme.type
-    hilight .hilight.f90 1 "maxexponent"    .scheme.type
-    hilight .hilight.f90 1 "minexponent"    .scheme.type
-    hilight .hilight.f90 1 "operator"       .scheme.type
-    hilight .hilight.f90 1 "parameter"      .scheme.type
-    hilight .hilight.f90 1 "pointer"        .scheme.type
-    hilight .hilight.f90 1 "precision"      .scheme.type
-    hilight .hilight.f90 1 "radix"          .scheme.type
-    hilight .hilight.f90 1 "range"          .scheme.type
-    hilight .hilight.f90 1 "real"           .scheme.type
-    hilight .hilight.f90 1 "tiny"           .scheme.type
-    hilight .hilight.f90 1 "type"           .scheme.type
+  !if &not &exist .hilight.f90
+    set-variable .hilight.f90 &pinc .hilight.next 1
+  !endif
+  ; High-light Fortran 90
+  0 hilight  .hilight.f90 1               $global-scheme
+  hilight .hilight.f90 4 "'" "'" ""       .scheme.string
+  hilight .hilight.f90 4 "\"" "\"" ""     .scheme.string
+  hilight .hilight.f90 2 "!"              .scheme.comment
+  ; Older fortran comment
+  hilight .hilight.f90 0x102 "c"          .scheme.comment
+  
+  hilight .hilight.f90 1 "recursive"      .scheme.keyword
+  hilight .hilight.f90 1 "allocate"       .scheme.keyword
+  hilight .hilight.f90 1 "block data"     .scheme.keyword
+  hilight .hilight.f90 1 "call"           .scheme.keyword
+  hilight .hilight.f90 1 "case"           .scheme.keyword
+  hilight .hilight.f90 1 "common"         .scheme.keyword
+  hilight .hilight.f90 1 "contains"       .scheme.keyword
+  hilight .hilight.f90 1 "continue"       .scheme.keyword
+  hilight .hilight.f90 1 "default"        .scheme.keyword
+  hilight .hilight.f90 1 "do"             .scheme.keyword
+  hilight .hilight.f90 1 "else"           .scheme.keyword
+  hilight .hilight.f90 1 "elseif"         .scheme.keyword
+  hilight .hilight.f90 1 "elsewhere"      .scheme.keyword
+  hilight .hilight.f90 1 "end"            .scheme.keyword
+  hilight .hilight.f90 1 "enddo"          .scheme.keyword
+  hilight .hilight.f90 1 "endif"          .scheme.keyword
+  hilight .hilight.f90 1 "exit"           .scheme.keyword
+  hilight .hilight.f90 1 "format"         .scheme.keyword
+  hilight .hilight.f90 1 "function"       .scheme.keyword
+  hilight .hilight.f90 1 "goto"           .scheme.keyword
+  hilight .hilight.f90 1 "if"             .scheme.keyword
+  hilight .hilight.f90 1 "implicit"       .scheme.keyword
+  hilight .hilight.f90 1 "kind"           .scheme.keyword
+  hilight .hilight.f90 1 "module"         .scheme.keyword
+  hilight .hilight.f90 1 "only"           .scheme.keyword  
+  hilight .hilight.f90 1 "print"          .scheme.keyword
+  hilight .hilight.f90 1 "private"        .scheme.keyword
+  hilight .hilight.f90 1 "procedure"      .scheme.keyword
+  hilight .hilight.f90 1 "program"        .scheme.keyword
+  hilight .hilight.f90 1 "public"         .scheme.keyword
+  hilight .hilight.f90 1 "read"           .scheme.keyword
+  hilight .hilight.f90 1 "return"         .scheme.keyword
+  hilight .hilight.f90 1 "select"         .scheme.keyword
+  hilight .hilight.f90 1 "step"           .scheme.keyword
+  hilight .hilight.f90 1 "stop"           .scheme.keyword
+  hilight .hilight.f90 1 "subroutine"     .scheme.keyword
+  hilight .hilight.f90 1 "then"           .scheme.keyword
+  hilight .hilight.f90 1 "use"            .scheme.keyword
+  hilight .hilight.f90 1 "where"          .scheme.keyword
+  hilight .hilight.f90 1 "while"          .scheme.keyword  
+  hilight .hilight.f90 1 "write"          .scheme.keyword
+  
+  hilight .hilight.f90 1 "\\.and\\."      .scheme.operator
+  hilight .hilight.f90 1 "\\.eq\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.false\\."    .scheme.operator
+  hilight .hilight.f90 1 "\\.ge\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.gt\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.le\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.lt\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.ne\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.not\\."      .scheme.operator
+  hilight .hilight.f90 1 "\\.or\\."       .scheme.operator
+  hilight .hilight.f90 1 "\\.true\\."     .scheme.operator
+  
+  hilight .hilight.f90 1 "allocatable"    .scheme.type  
+  hilight .hilight.f90 1 "character"      .scheme.type
+  hilight .hilight.f90 1 "complex"        .scheme.type
+  hilight .hilight.f90 1 "data"           .scheme.type
+  hilight .hilight.f90 1 "digits"         .scheme.type
+  hilight .hilight.f90 1 "double"         .scheme.type
+  hilight .hilight.f90 1 "dimension"      .scheme.type
+  hilight .hilight.f90 1 "epsilon"        .scheme.type
+  hilight .hilight.f90 1 "huge"           .scheme.type
+  hilight .hilight.f90 1 "in"             .scheme.type
+  hilight .hilight.f90 1 "inout"          .scheme.type
+  hilight .hilight.f90 1 "integer"        .scheme.type
+  hilight .hilight.f90 1 "intent"         .scheme.type
+  hilight .hilight.f90 1 "interface"      .scheme.type
+  hilight .hilight.f90 1 "logical"        .scheme.type
+  hilight .hilight.f90 1 "maxexponent"    .scheme.type
+  hilight .hilight.f90 1 "minexponent"    .scheme.type
+  hilight .hilight.f90 1 "none"           .scheme.type
+  hilight .hilight.f90 1 "operator"       .scheme.type
+  hilight .hilight.f90 1 "parameter"      .scheme.type
+  hilight .hilight.f90 1 "pointer"        .scheme.type
+  hilight .hilight.f90 1 "precision"      .scheme.type
+  hilight .hilight.f90 1 "radix"          .scheme.type
+  hilight .hilight.f90 1 "range"          .scheme.type
+  hilight .hilight.f90 1 "real"           .scheme.type
+  hilight .hilight.f90 1 "tiny"           .scheme.type
+  hilight .hilight.f90 1 "type"           .scheme.type
 !endif
 
 buffer-init-fhook "f90"

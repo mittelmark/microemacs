@@ -60704,7 +60704,8 @@ $a
      __A-C-i__ - Restyle the current region.  
      __f2__ - (un)fold the current region  
      __f3__ - (un)fold all regions  
-
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
 
 ## BUGS
 
@@ -61247,6 +61248,9 @@ $a
 ! 9 f
 ! 9 f77
 ! 9 f90
+! 5 %fhook-f90-exec
+! 5 %fhook-f90-format
+! 5 %fhook-f90-lint
 ## SYNOPSIS
 
 
@@ -61257,8 +61261,9 @@ $a
 
 
   __hkf90.emf__ - Fortran hook definition  
-  __f90.etf__ - Fortran 90 template file.  
-  __f.etf__ - Fortran (77) template file.
+  __f90.etf__ - Fortran 90 template file  
+  __f90.eaf__ - Fortran 90 abbreviation file
+  __f.etf__ - Fortran (77) template file
 
 
 ## EXTENSIONS
@@ -61281,6 +61286,78 @@ $a
   while the other types use a __c__ in column 0.
 
 
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, subroutines, variables, logical, comments,
+     strings and characters of the language to be differentiated and
+     rendered in different colors.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __f90__ files. The folds occur about
+     __function__, __subroutine__, __program__,  and __end__ text located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Fortan mode offers beside folding as well support for displaying
+     an outline of the functions, subroutine, module and programp definitions
+     of the Fortran file for easy  navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Fortran 90
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"fu"_ (function) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c esc esc __- Command complete.  
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+
+  > __%fhook-fortran-exec__ - The command to execute the current Fortran file, 
+      default on Unix systems  is set to _"gfortran %f -o %b && ./%b"_ where 
+      _%f_ represents the file name and _%b_ the basename of the current file
+      on Windows the slash is replaced with a backslash
+            
+  > __%fhook-fortran-format__ - The command to format current Fortran file,
+      default is set to _"fprettify %"_ if the program is installed. 
+      On a Unix system you might install it using the Python package manager
+       like this: _"pip3 install fprettify --user"_.
+
+  > __%fhook-fortran-lint__ - The command to check/lint the current Fotran file, 
+       default is set to _"gfortran -fsyntax-only %f"_ where _%f_ represents
+       the file name.
+  
+  > The setting assume that the Gnu Fortran compiler and the `fprettify` formatter
+    is available via the _PATH_ environment variable. 
+    On Windows you must insert here either the complete _PATH_ to the 
+    `gfortran` executable or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myfortran.emf_ file. 
+
+
 ## BUGS
 
 
@@ -61292,6 +61369,10 @@ $a
 
 
   [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [item-list(3)](item-list(3)), [time(2m)](time(2m)).
+  
 !! me-id: m9typ010
 ! 9 p
 ! 9 pas
@@ -61397,7 +61478,7 @@ $a
   > __%fhook-pascal-lint__ - The command to check/lint the current Pascal file, 
             default is set to _"fpc -Cn %f"_ where _%f_ represents the file name.
   
-  > The setting assume that the Free Pascal compiler and he `ptop` formatter is available via the PATH
+  > The setting assume that the Free Pascal compiler and the `ptop` formatter is available via the PATH
     environment variable. On Windows you must insert here either the complete PATH to the 
     `fpc` executable or add the folder where this file is to the PATH variable.
 
