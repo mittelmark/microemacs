@@ -63938,11 +63938,24 @@ $a
 
   The __ada__ file type template provides simple highlighting of Ada files.
 
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
   __Highlighting__
   
   >  The highlighting features allow commands, variables, logical,
      preprocessor definitions, comments, strings and characters of the
      language to be differentiated and rendered in different colors.
+
+  __Abreviations__
+
+  >  The installation comes with a default abbreviation file for Ada file editing
+     which can be used by writing short abbreviations like "_fo_" (for), "_if_" or "_wh_" (while) - 
+     for Ada code. The list of abbreviations can be used as well interactively in the GUI
+     version of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
 
   __Short Cuts__
   
@@ -63957,8 +63970,8 @@ $a
 
 ## SEE ALSO
 
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ044
 ! 9 php
 ! 9 php3

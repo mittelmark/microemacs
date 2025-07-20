@@ -62994,11 +62994,24 @@ $a
 
     The cDadacA file type template provides simple highlighting of Ada files.
 
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
     cDHighlightingcA
     
        The highlighting features allow commands, variables, logical,
        preprocessor definitions, comments, strings and characters of the
        language to be differentiated and rendered in different colors.
+
+    cDAbreviationscA
+
+       The installation comes with a default abbreviation file for Ada file editing
+       which can be used by writing short abbreviations like "cCfocC" (for), "cAifcC" or "cAwhcA" (while) - 
+       for Ada code. The list of abbreviations can be used as well interactively in the GUI
+       version of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
 
     cDShort CutscA
     
@@ -63013,8 +63026,8 @@ $a
 
 cESEE ALSO cA
 
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, 
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 php
 ! 9 php3
 ! 9 php4
