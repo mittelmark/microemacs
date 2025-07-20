@@ -63678,7 +63678,8 @@ $a
 
   The __Verilog__ file type template provides simple highlighting of the Verilog
   hardware description language. __.v__ files are automatically recognized as
-  Verilog files.
+  Verilog files. If you use the V programming language and you would like to making 
+  that the default language for __.v__ files look at the [vlang(9)](vlang(9)) documentation.
 
   __Hilighting__
   
@@ -63703,8 +63704,7 @@ $a
 
 ## SEE ALSO
 
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [vlang(9)](vlang(9)), [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ041
 ! 9 xml
 ! 9 xsl
@@ -63824,7 +63824,8 @@ $a
 ## FILES
 
 
-  __hkruby.emf__ - Ruby programming language file hook definition
+  __hkruby.emf__ - Ruby programming language file hook definition  
+  __ruby.etf__ - Ruby template file
 
 
 ## EXTENSIONS

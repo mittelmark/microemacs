@@ -62737,7 +62737,8 @@ $a
 
     The cDVerilogcA file type template provides simple highlighting of the Verilog
     hardware description language. cD.vcA files are automatically recognized as
-    Verilog files.
+    Verilog files. If you use the V programming language and you would like to making 
+    that the default language for cD.vcA files look at the lsvlang(9)lmvlang(9)le documentation.
 
     cDHilightingcA
     
@@ -62762,8 +62763,7 @@ $a
 
 cESEE ALSO cA
 
-
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsvlang(9)lmvlang(9)le, lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 xml
 ! 9 xsl
 ! 9 xul
@@ -62881,7 +62881,8 @@ $a
 cEFILES cA
 
 
-    cDhkruby.emfcA - Ruby programming language file hook definition
+    cDhkruby.emfcA - Ruby programming language file hook definition  
+    cDruby.etfcA - Ruby template file
 
 
 cEEXTENSIONS cA
