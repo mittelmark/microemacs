@@ -1,12 +1,12 @@
 ; -!- emf -!-
 ;
-; Copyright (C) 1999-2020 JASSPA (www.jasspa.com)
+; Copyright (C) 1999-2025 JASSPA (www.jasspa.com)
 ;
 ; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
 ; copying information.
 ;
 ; Synopsis:    Fortran 77/90 hook
-; Authors:     Jon Green
+; Authors:     Jon Green, Detlef Groth
 ;
 define-macro fhook-f90
   ; Is this a f77 or other fortran file ??
@@ -23,18 +23,18 @@ set-variable .fhook-f90.setup-mask "abefghikmnoptux"
 set-variable .fhook-f90.comment "|!||!|! | !|r|"
 set-variable .fhook-f90.exact -1
 
-set-variable .fhook-f90.collapse-open  "^\\(program[ \t]+\\|module[ \t]+\\|    function\\|    subroutine\\)"
-set-variable .fhook-f90.collapse-close "^\\(end[ \t]+program\\|contains\\|    end function\\|    end subroutine\\)"
+set-variable .fhook-f90.collapse-open  "^\\(program[ \t]+\\|module[ \t]+\\|function\\|[ \ta-zA-Z0-9()]+ function \\|subroutine\\|[ \ta-zA-Z0-9()]+ subroutine \\)"
+set-variable .fhook-f90.collapse-close "^\\(end[ \t]+program\\|contains\\|[\t ]*end function\\|[\t ]*end subroutine\\)"
 set-variable .fhook-f90.collapse-mclose "1"
 set-variable .fhook-f90.collapse-mnext "-1"
 
 ; setup item-list
 set-variable .fhook-f90.item-list-s1 "^module[ \t]+\\([_\\w]+\\)"
 set-variable .fhook-f90.item-list-r1 "Modl \ecB\\1\ecA"
-set-variable .fhook-f90.item-list-s2 "^\\( \\)*function[ \t]+\\([_\\w]+\\)"
-set-variable .fhook-f90.item-list-r2 "Func \\1\ecB\\2\ecA"
-set-variable .fhook-f90.item-list-s3 "^\\( \\)*subroutine[ \t]+\\([_\\w]+\\)"
-set-variable .fhook-f90.item-list-r3 "Subr \\1\ecB\\1\ecA"
+set-variable .fhook-f90.item-list-s2 "^\\([ \t][ \t]\\)?\\([ \ta-zA-Z0-9()]+\\)?function[ \t]+\\([_\\w]+\\)"
+set-variable .fhook-f90.item-list-r2 "Func \\1\ecB\\3\ecA"
+set-variable .fhook-f90.item-list-s3 "^\\([ \t][ \t]\\)?\\([ \ta-zA-Z0-9()]+\\)?subroutine[ \t]+\\([_\\w]+\\)"
+set-variable .fhook-f90.item-list-r3 "Subr \\1\ecB\\3\ecA"
 set-variable .fhook-f90.item-list-s4 "^program[ \t]+\\([_\\w]+\\)"
 set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
 
@@ -59,7 +59,9 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "contains"       .scheme.keyword
   hilight .hilight.f90 1 "continue"       .scheme.keyword
   hilight .hilight.f90 1 "default"        .scheme.keyword
+  hilight .hilight.f90 1 "dimension"      .scheme.keyword
   hilight .hilight.f90 1 "do"             .scheme.keyword
+  hilight .hilight.f90 1 "elemental"      .scheme.keyword  
   hilight .hilight.f90 1 "else"           .scheme.keyword
   hilight .hilight.f90 1 "elseif"         .scheme.keyword
   hilight .hilight.f90 1 "elsewhere"      .scheme.keyword
@@ -67,6 +69,7 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "enddo"          .scheme.keyword
   hilight .hilight.f90 1 "endif"          .scheme.keyword
   hilight .hilight.f90 1 "exit"           .scheme.keyword
+  hilight .hilight.f90 1 "external"       .scheme.keyword  
   hilight .hilight.f90 1 "format"         .scheme.keyword
   hilight .hilight.f90 1 "function"       .scheme.keyword
   hilight .hilight.f90 1 "goto"           .scheme.keyword
@@ -80,6 +83,7 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "procedure"      .scheme.keyword
   hilight .hilight.f90 1 "program"        .scheme.keyword
   hilight .hilight.f90 1 "public"         .scheme.keyword
+  hilight .hilight.f90 1 "pure"           .scheme.keyword  
   hilight .hilight.f90 1 "read"           .scheme.keyword
   hilight .hilight.f90 1 "return"         .scheme.keyword
   hilight .hilight.f90 1 "select"         .scheme.keyword
@@ -110,7 +114,6 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "data"           .scheme.type
   hilight .hilight.f90 1 "digits"         .scheme.type
   hilight .hilight.f90 1 "double"         .scheme.type
-  hilight .hilight.f90 1 "dimension"      .scheme.type
   hilight .hilight.f90 1 "epsilon"        .scheme.type
   hilight .hilight.f90 1 "huge"           .scheme.type
   hilight .hilight.f90 1 "in"             .scheme.type

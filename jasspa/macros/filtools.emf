@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250715.0838>
+;  Last Modified : <250720.0917>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -237,14 +237,14 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; Fortran
 !if &not &seq &which "gfortran" ""
-  set-variable %fhook-f90-lint   "gfortran -fsyntax-only %f"
+  set-variable %fhook-f90-lint   "gfortran -Wall -fmax-errors=3 -fsyntax-only %f"
   !if &not &seq &which "fprettify" ""
     ; python program
     ; sudo dnf install fprettify
     ; pip3 install fprettify
-    set-variable %fhook-f90-format "fprettify %f"
+    set-variable %fhook-f90-format "fprettify -i 4 %f"
   !endif
-  set-variable %fhook-f90-exec   "gfortran %f -o %b && ./%b"
+  set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && ./%b"
 !endif
 
 ; Go
