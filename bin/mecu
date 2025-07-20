@@ -97,9 +97,9 @@ done
 
 ## collect themes from jasspa configuration folder
 if [[ -d ~/.jasspa/themes ]]; then
-    themes=`ls ~/.jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
+    themes=`ls ~/.jasspa/themes/*.sh 2>/dev/null | sed -E 's/.+themeq-(.+).sh/\1/' | paste -sd ' '`
 elif [[ -d ~/.config/jasspa/themes ]]; then
-    themes=`ls ~/.config/jasspa/themes/*.sh | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
+    themes=`ls ~/.config/jasspa/themes/*.sh 2>/dev/null | sed -E 's/.+theme-(.+).sh/\1/' | paste -sd ' '`
 else
     themes=""
 fi    
