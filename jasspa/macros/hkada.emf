@@ -7,9 +7,9 @@
 ; Authors:     Gabriel Tabares-Barreiro
 ;
 define-macro fhook-ada
-    set-variable $buffer-mask "luh1"
-    @# buffer-init "ada"
-    buffer-init-hooks
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "ada"
+  buffer-init-hooks
 !emacro
 
 ; buffer-init variables
@@ -32,101 +32,101 @@ set-variable .fhook-ada.item-list-s3 "^[Tt]ype[ \t]+\\(\\w+\\)[ \t]+is"
 set-variable .fhook-ada.item-list-r3 "Rcrd \ecB\\1\ecA"
 
 !if &and &sin "h" .fhook-ada.setup &band .hilight.flags 0x02 
-    ; High-light ada Mode
-    !if &not &exist .hilight.ada
-        set-variable .hilight.ada &pinc .hilight.next 1
-    !endif
-    0 hilight  .hilight.ada 3 50            $global-scheme
-    hilight .hilight.ada 4 "{" "}" ""       .scheme.comment
-    hilight .hilight.ada 4 "(\\*" "*)" ""   .scheme.comment
-    hilight .hilight.ada 2 "//"             .scheme.comment
-    hilight .hilight.ada 2 "--"             .scheme.comment
+  ; High-light ada Mode
+  !if &not &exist .hilight.ada
+    set-variable .hilight.ada &pinc .hilight.next 1
+  !endif
+  0 hilight  .hilight.ada 3 50            $global-scheme
+  hilight .hilight.ada 4 "{" "}" ""       .scheme.comment
+  hilight .hilight.ada 4 "(\\*" "*)" ""   .scheme.comment
+  hilight .hilight.ada 2 "//"             .scheme.comment
+  hilight .hilight.ada 2 "--"             .scheme.comment
+  
+  hilight .hilight.ada 1 "asm"            .scheme.keyword
+  hilight .hilight.ada 1 "begin"          .scheme.keyword
+  hilight .hilight.ada 1 "case"           .scheme.keyword
+  hilight .hilight.ada 1 "const"          .scheme.keyword
+  hilight .hilight.ada 1 "constructor"    .scheme.keyword
+  hilight .hilight.ada 1 "destructor"     .scheme.keyword
+  hilight .hilight.ada 1 "do"             .scheme.keyword
+  hilight .hilight.ada 1 "downto"         .scheme.keyword
+  hilight .hilight.ada 1 "else"           .scheme.keyword
+  hilight .hilight.ada 1 "end"            .scheme.keyword
+  hilight .hilight.ada 1 "file"           .scheme.keyword
+  hilight .hilight.ada 1 "for"            .scheme.keyword
+  hilight .hilight.ada 1 "function"       .scheme.keyword
+  hilight .hilight.ada 1 "goto"           .scheme.keyword
+  hilight .hilight.ada 1 "if"             .scheme.keyword
+  hilight .hilight.ada 1 "implementation" .scheme.keyword
+  hilight .hilight.ada 1 "in"             .scheme.keyword
+  hilight .hilight.ada 1 "inline"         .scheme.keyword
+  hilight .hilight.ada 1 "interface"      .scheme.keyword
+  hilight .hilight.ada 1 "label"          .scheme.keyword
+  hilight .hilight.ada 1 "nil"            .scheme.keyword
+  hilight .hilight.ada 1 "object"         .scheme.keyword
+  hilight .hilight.ada 1 "of"             .scheme.keyword
+  hilight .hilight.ada 1 "procedure"      .scheme.keyword
+  hilight .hilight.ada 1 "program"        .scheme.keyword
+  hilight .hilight.ada 1 "repeat"         .scheme.keyword
+  hilight .hilight.ada 1 "set"            .scheme.keyword
+  hilight .hilight.ada 1 "then"           .scheme.keyword
+  hilight .hilight.ada 1 "to"             .scheme.keyword
+  hilight .hilight.ada 1 "type"           .scheme.keyword
+  hilight .hilight.ada 1 "unit"           .scheme.keyword
+  hilight .hilight.ada 1 "until"          .scheme.keyword
+  hilight .hilight.ada 1 "uses"           .scheme.keyword
+  hilight .hilight.ada 1 "var"            .scheme.keyword
+  hilight .hilight.ada 1 "while"          .scheme.keyword
+  hilight .hilight.ada 1 "with"           .scheme.keyword
+  hilight .hilight.ada 1 "use"            .scheme.keyword
+  hilight .hilight.ada 1 "is"             .scheme.keyword
+  hilight .hilight.ada 1 "new"            .scheme.keyword
+  hilight .hilight.ada 1 "all"            .scheme.keyword
+  hilight .hilight.ada 1 "package"        .scheme.keyword
+  hilight .hilight.ada 1 "private"        .scheme.keyword
+  hilight .hilight.ada 1 "loop"           .scheme.keyword
+  hilight .hilight.ada 1 "body"           .scheme.keyword
     
-    hilight .hilight.ada 1 "asm"            .scheme.keyword
-    hilight .hilight.ada 1 "begin"          .scheme.keyword
-    hilight .hilight.ada 1 "case"           .scheme.keyword
-    hilight .hilight.ada 1 "const"          .scheme.keyword
-    hilight .hilight.ada 1 "constructor"    .scheme.keyword
-    hilight .hilight.ada 1 "destructor"     .scheme.keyword
-    hilight .hilight.ada 1 "do"             .scheme.keyword
-    hilight .hilight.ada 1 "downto"         .scheme.keyword
-    hilight .hilight.ada 1 "else"           .scheme.keyword
-    hilight .hilight.ada 1 "end"            .scheme.keyword
-    hilight .hilight.ada 1 "file"           .scheme.keyword
-    hilight .hilight.ada 1 "for"            .scheme.keyword
-    hilight .hilight.ada 1 "function"       .scheme.keyword
-    hilight .hilight.ada 1 "goto"           .scheme.keyword
-    hilight .hilight.ada 1 "if"             .scheme.keyword
-    hilight .hilight.ada 1 "implementation" .scheme.keyword
-    hilight .hilight.ada 1 "in"             .scheme.keyword
-    hilight .hilight.ada 1 "inline"         .scheme.keyword
-    hilight .hilight.ada 1 "interface"      .scheme.keyword
-    hilight .hilight.ada 1 "label"          .scheme.keyword
-    hilight .hilight.ada 1 "nil"            .scheme.keyword
-    hilight .hilight.ada 1 "object"         .scheme.keyword
-    hilight .hilight.ada 1 "of"             .scheme.keyword
-    hilight .hilight.ada 1 "procedure"      .scheme.keyword
-    hilight .hilight.ada 1 "program"        .scheme.keyword
-    hilight .hilight.ada 1 "repeat"         .scheme.keyword
-    hilight .hilight.ada 1 "set"            .scheme.keyword
-    hilight .hilight.ada 1 "then"           .scheme.keyword
-    hilight .hilight.ada 1 "to"             .scheme.keyword
-    hilight .hilight.ada 1 "type"           .scheme.keyword
-    hilight .hilight.ada 1 "unit"           .scheme.keyword
-    hilight .hilight.ada 1 "until"          .scheme.keyword
-    hilight .hilight.ada 1 "uses"           .scheme.keyword
-    hilight .hilight.ada 1 "var"            .scheme.keyword
-    hilight .hilight.ada 1 "while"          .scheme.keyword
-    hilight .hilight.ada 1 "with"           .scheme.keyword
-    hilight .hilight.ada 1 "use"            .scheme.keyword
-    hilight .hilight.ada 1 "is"             .scheme.keyword
-    hilight .hilight.ada 1 "new"            .scheme.keyword
-    hilight .hilight.ada 1 "all"            .scheme.keyword
-    hilight .hilight.ada 1 "package"        .scheme.keyword
-    hilight .hilight.ada 1 "private"        .scheme.keyword
-    hilight .hilight.ada 1 "loop"           .scheme.keyword
-    hilight .hilight.ada 1 "body"           .scheme.keyword
-    
-    hilight .hilight.ada 1 "array"          .scheme.type
-    hilight .hilight.ada 1 "boolean"        .scheme.type
-    hilight .hilight.ada 1 "byte"           .scheme.type
-    hilight .hilight.ada 1 "char"           .scheme.type
-    hilight .hilight.ada 1 "comp"           .scheme.type
-    hilight .hilight.ada 1 "double"         .scheme.type
-    hilight .hilight.ada 1 "extended"       .scheme.type
-    hilight .hilight.ada 1 "integer"        .scheme.type
-    hilight .hilight.ada 1 "longint"        .scheme.type
-    hilight .hilight.ada 1 "packed"         .scheme.type
-    hilight .hilight.ada 1 "real"           .scheme.type
-    hilight .hilight.ada 1 "record"         .scheme.type
-    hilight .hilight.ada 1 "shortint"       .scheme.type
-    hilight .hilight.ada 1 "single"         .scheme.type
-    hilight .hilight.ada 1 "string"         .scheme.type
-    hilight .hilight.ada 1 "text"           .scheme.type
-    hilight .hilight.ada 1 "word"           .scheme.type
-    
-    hilight .hilight.ada 1 "and"            .scheme.operator
-    hilight .hilight.ada 1 "div"            .scheme.operator
-    hilight .hilight.ada 1 "mod"            .scheme.operator
-    hilight .hilight.ada 1 "not"            .scheme.operator
-    hilight .hilight.ada 1 "or"             .scheme.operator
-    hilight .hilight.ada 1 "shl"            .scheme.operator
-    hilight .hilight.ada 1 "shr"            .scheme.operator
-    hilight .hilight.ada 1 "xor"            .scheme.operator
-    hilight .hilight.ada 1 "\.\."           .scheme.operator
-    
-    hilight .hilight.ada 1 "false"          .scheme.operator
-    hilight .hilight.ada 1 "true"           .scheme.operator
-    hilight .hilight.ada 1 "null"           .scheme.operator
-    
-    hilight .hilight.ada 1 "eof"            .scheme.operator
-    hilight .hilight.ada 1 "eoln"           .scheme.operator
-    
-    hilight .hilight.ada 1 "'class"         .scheme.operator
-    hilight .hilight.ada 1 "'first"         .scheme.operator
-    hilight .hilight.ada 1 "'last"          .scheme.operator
-    
-    hilight .hilight.ada 4 "'" "'" ""       .scheme.string
+  hilight .hilight.ada 1 "array"          .scheme.type
+  hilight .hilight.ada 1 "boolean"        .scheme.type
+  hilight .hilight.ada 1 "byte"           .scheme.type
+  hilight .hilight.ada 1 "char"           .scheme.type
+  hilight .hilight.ada 1 "comp"           .scheme.type
+  hilight .hilight.ada 1 "double"         .scheme.type
+  hilight .hilight.ada 1 "extended"       .scheme.type
+  hilight .hilight.ada 1 "integer"        .scheme.type
+  hilight .hilight.ada 1 "longint"        .scheme.type
+  hilight .hilight.ada 1 "packed"         .scheme.type
+  hilight .hilight.ada 1 "real"           .scheme.type
+  hilight .hilight.ada 1 "record"         .scheme.type
+  hilight .hilight.ada 1 "shortint"       .scheme.type
+  hilight .hilight.ada 1 "single"         .scheme.type
+  hilight .hilight.ada 1 "string"         .scheme.type
+  hilight .hilight.ada 1 "text"           .scheme.type
+  hilight .hilight.ada 1 "word"           .scheme.type
+  
+  hilight .hilight.ada 1 "and"            .scheme.operator
+  hilight .hilight.ada 1 "div"            .scheme.operator
+  hilight .hilight.ada 1 "mod"            .scheme.operator
+  hilight .hilight.ada 1 "not"            .scheme.operator
+  hilight .hilight.ada 1 "or"             .scheme.operator
+  hilight .hilight.ada 1 "shl"            .scheme.operator
+  hilight .hilight.ada 1 "shr"            .scheme.operator
+  hilight .hilight.ada 1 "xor"            .scheme.operator
+  hilight .hilight.ada 1 "\.\."           .scheme.operator
+  
+  hilight .hilight.ada 1 "false"          .scheme.operator
+  hilight .hilight.ada 1 "true"           .scheme.operator
+  hilight .hilight.ada 1 "null"           .scheme.operator
+  
+  hilight .hilight.ada 1 "eof"            .scheme.operator
+  hilight .hilight.ada 1 "eoln"           .scheme.operator
+  
+  hilight .hilight.ada 1 "'class"         .scheme.operator
+  hilight .hilight.ada 1 "'first"         .scheme.operator
+  hilight .hilight.ada 1 "'last"          .scheme.operator
+  
+  hilight .hilight.ada 4 "'" "'" ""       .scheme.string
 !endif
 
 buffer-init-fhook "ada"
