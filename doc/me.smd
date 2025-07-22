@@ -63957,6 +63957,18 @@ $a
      for Ada code. The list of abbreviations can be used as well interactively in the GUI
      version of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
 
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled, the folds occur about __module__ and __class__
+     definitions located on the left-hand margin. [collapse-all(3)](collapse-all(3)) (un)folds
+     all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the current
+     region.
+
+  __List Items__
+  
+  >  Item listing is available and the key constructs of the file may be
+     listed in the _item-list_.
+
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -63966,11 +63978,16 @@ $a
      __C-c C-d__ - Uncomment the current line.  
      __C-c C-e__ - Comment to the end of the line with hash (#).  
      __C-c C-o__ - Format a comment
-
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - List items.  
+     __esc f6__ - Close list items window.
 
 ## SEE ALSO
 
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [item-list(3))](item-list(3)),
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ044
 ! 9 php

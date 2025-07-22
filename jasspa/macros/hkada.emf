@@ -13,10 +13,16 @@ define-macro fhook-ada
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-ada.setup &reg "/history/fhook/ada" "bghinopx"
-set-variable .fhook-ada.setup-mask "abeghikmnoptux"
+set-variable .fhook-ada.setup &reg "/history/fhook/ada" "bfghinopx"
+set-variable .fhook-ada.setup-mask "abefghikmnoptux"
 set-variable .fhook-ada.comment "|{|}|*|* | *|fr|"
 set-variable .fhook-ada.exact -1
+
+; Set up collapse for Ada
+set-variable .fhook-ada.collapse-open  "^\\(procedure \\|function \\|type \\w+ +is\\)"
+set-variable .fhook-ada.collapse-close "^end"
+set-variable .fhook-ada.collapse-mclose "1"
+set-variable .fhook-ada.collapse-mnext "-1"
 
 !if &and &sin "h" .fhook-ada.setup &band .hilight.flags 0x02 
     ; High-light ada Mode
