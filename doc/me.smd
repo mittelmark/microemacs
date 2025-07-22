@@ -64003,7 +64003,8 @@ $a
 ## FILES
 
 
-  __hkphp.emf__ - PHP: Hypertext Preprocessor file hook definition
+  __hkphp.emf__ - PHP: Hypertext Preprocessor file hook definition  
+  __php.eaf__ - PHP: Hypertext Preprocessor abbreviation file 
 
 
 ## EXTENSIONS
@@ -64019,6 +64020,23 @@ $a
   The __php__ file type template provides simple hilighting of the Open Source
   general-purpose scripting language PHP files. PHP is typically used
   embedded within [html(9)](html(9)) files.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification time
+     to be added to the file.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Pascal file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_ei_" (elseif), "_el_" (else) or "_fu_" (function) - and then 
+     pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+
+  >  The  list  of  abbreviations  can be used  interactively in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
 
   __List Items__
   
@@ -64046,7 +64064,8 @@ $a
 
 ## SEE ALSO
 
-
+  [abbrev-list(3)](abbrev-list(3)),  [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
+  [item-list(3)](item-list(3)), 
   [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ045
 ! 9 asp

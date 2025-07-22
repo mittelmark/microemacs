@@ -63058,7 +63058,8 @@ $a
 cEFILES cA
 
 
-    cDhkphp.emfcA - PHP: Hypertext Preprocessor file hook definition
+    cDhkphp.emfcA - PHP: Hypertext Preprocessor file hook definition  
+    cDphp.eafcA - PHP: Hypertext Preprocessor abbreviation file 
 
 
 cEEXTENSIONS cA
@@ -63074,6 +63075,23 @@ $a
     The cDphpcA file type template provides simple hilighting of the Open Source
     general-purpose scripting language PHP files. PHP is typically used
     embedded within lshtml(9)lmhtml(9)le files.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification time
+       to be added to the file.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Pascal file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCfocC" (for), "cAifcC", "cAeicC" (elseif), "cAelcC" (else) or "cAfucA" (function) - and then 
+       pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+
+       The  list  of  abbreviations  can be used  interactively in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
 
     cDList ItemscA
     
@@ -63101,7 +63119,8 @@ $a
 
 cESEE ALSO cA
 
-
+    lsabbrev-list(3)lmabbrev-list(3)le,  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
+    lsitem-list(3)lmitem-list(3)le, 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 asp
 cEcESYNOPSIS cEcA
