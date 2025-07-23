@@ -1,22 +1,25 @@
 ; -!- emf -!-
-; This is part of the JASSPA MicroEmacs macro files
-; Copyright (C) 1998-2009 JASSPA (www.jasspa.com)
-; See the file me.emf for copying and conditions.
 ;
-; Created:     1998
-; Synopsis:    Command-line macro for creating a perl tags file
+; Copyright (C) 1998-2024 JASSPA (www.jasspa.com)
+;
+; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
+; Synopsis:    Command-line macro for creating a php tags file
 ; Authors:     Steven Phillips
 ;
 ; Usage:
-;      me "@perltags" [<files> <dirs>] [-f -o<options> -t<tag_file> -m<file_mask> -i<ignore_files>]
+;      me "@phptags" [<files> <dirs>] [-f -o<options> -t<tag_file> -m<file_mask> -i<ignore_files>]
 ;
 ; Options:
 ;      r - recurse, a - append, m - multiple links to a tag
 ;
 set-variable %tag-option   ""
 set-variable %tag-file     "tags"
-set-variable %tag-filemask ":*.pl:*.pm:"
+set-variable %tag-filemask ":*.php:*.php3:*.php4:*.php5:*.phtml:*.inc:"
 set-variable %tag-ignore   ":SCCS/:CVS/:.git/:.svn/:"
+; set $auto-time to 0 to stop issues with any existing <file># files
+set-variable $auto-time 0
 
 set-variable #l0 0
 !while &exi &cat ".about.arg" #l0
@@ -34,22 +37,21 @@ set-variable #l0 0
   !endif
 !done
 
-; in perl you can have function names with 's
-set-char-mask "3" "'"
+set-char-mask "3" "$."
 
-define-macro perltags-add-file
+define-macro phptags-add-file
   set-variable $buffer-mask "luh13"
   set-variable #l2 $buffer-fname
-  !if &seq &lef #l2 #g1 #g2
-    set-variable #l2 &rig #l2 #g1
+  !if &seq &lef #l2 %tag-plen %tag-path
+    set-variable #l2 &rig #l2 %tag-plen
   !endif
   ml-write &spr "[Parsing file %s]" #l2
   1 buffer-mode "magic"
   beginning-of-buffer
   !repeat
-    !force search-forward "^[ \t]*sub[ \t\n]\\(\\w*\\)[ \t\n]*{"
+    !force search-buffer "me" "\\<\\(function\\|class\\)\\s+\\(\\w+\\)"
     !if $status
-      set-variable #l1 @s1
+      set-variable #l1 @s2
       set-variable #l3 @wl
       next-window
       !tjump &sin "m" %tag-option 4
@@ -66,10 +68,11 @@ define-macro perltags-add-file
       !endif
       next-window
     !endif
+    !force forward-line
   !until &not $status
 !emacro
 
-define-macro perltags-parse-tags
+define-macro phptags-parse-tags
   ml-write "All done! Parsing tags file."
   beginning-of-buffer
   set-mark
@@ -77,8 +80,8 @@ define-macro perltags-parse-tags
   end-of-buffer
   sort-lines
 !emacro
-    
-define-macro perltags-process-buffers
+
+define-macro phptags-process-buffers
   !repeat
     set-variable #l0 $buffer-bname
     !if &xse #l0 "^.*<[0-9]*>$"
@@ -94,12 +97,13 @@ define-macro perltags-process-buffers
       set-variable #l3 0
       !while &not &seq &set #l4 &lget %tag-filemask &inc #l3 1 ""
         !force find-file &cat #l2 #l4 
+        !iif &seq $buffer-fname &cat #l2 #l4  !force 0 delete-buffer $buffer-bname
       !done
     !else
       beginning-of-buffer
-      !force perltags-add-file
+      !force phptags-add-file
       !if &not $status
-        ml-write &spr "[Warning: perltags-add-file failed on \"%s\"]" $buffer-fname
+        ml-write &spr "[Warning: phptags-add-file failed on \"%s\"]" $buffer-fname
         !bell
         ;set-variable #l9 @cq
       !endif
@@ -108,7 +112,7 @@ define-macro perltags-process-buffers
   !until 0
 !emacro
 
-define-macro perltags
+define-macro phptags
   !if &seq &lget %tag-filemask 1 ""
     ml-write "[No input file mask set!]"
     !abort
@@ -121,8 +125,7 @@ define-macro perltags
   set-variable %tag-bname $buffer-bname 
   -1 buffer-mode "view"
   !force 0 delete-buffer "*scratch*"
-  set-variable #g1 &rsin "/" $buffer-fname
-  set-variable #g2 &lef $buffer-fname #g1
+  set-variable %tag-path &lef $buffer-fname &set %tag-plen &rsin "/" $buffer-fname
   !if &not &sin "a" %tag-option
     beginning-of-buffer
     set-mark
@@ -140,14 +143,14 @@ define-macro perltags
   !if &iseq $buffer-bname %tag-bname
     !force find-file #l0
   !endif
-  perltags-process-buffers
-  perltags-parse-tags
+  phptags-process-buffers
+  phptags-parse-tags
 !emacro
-  
+
 0 define-macro start-up
-  perltags
+  phptags
   quick-exit
 !emacro
 
 ; load in user extensions if found
-!force execute-file "myperltags"
+!force execute-file "myphptags"

@@ -521,6 +521,8 @@ Miscellaneous Information
     lsgdiff(3f)lmgdiff(3f)le Command line graphical file difference  
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
     lsntags(3f)lmntags(3f)le Generate a nroff tags file  
+    lsperltags(3f)lmperltags(3f)le Generate a Perl tags file  
+    lsphptags(3f)lmphptags(3f)le Generate a PHP tags file    
     lsprintall(3f)lmprintall(3f)le Formatted print job  
     lstcltags(3f)lmtcltags(3f)le Generate a Tcl/Tk tags file  
     lstextags(3f)lmtextags(3f)le Generate a LaTeX/BibTeX tags file  
@@ -3878,10 +3880,12 @@ Miscellaneous Information
     lspassword-to-phonic(3)lmpassword-to-phonic(3)le Convert a password to phonic string  
     lsperl(9)lmperl(9)le Practical Extraction and Report Language File  
     lsperldb(3)lmperldb(3)le Perl Debugger  
+    lsperltags(3f)lmperltags(3f)le Generate a Perl tags file  
     lsphp(9)lmphp(9)le PHP: Hypertext Preprocessor Language  
     lsphp3(9)lmphp3(9)le PHP: Hypertext Preprocessor Language  
     lsphp4(9)lmphp4(9)le PHP: Hypertext Preprocessor Language  
     lsphphtml(9)lmphphtml(9)le PHP: Hypertext Preprocessor Language  
+    lsphptags(3f)lmphptags(3f)le Generate a PHP tags file    
     lspipe(2m)lmpipe(2m)le Incremental Pipe running  
     lspipe-shell-command(2)lmpipe-shell-command(2)le (esc @) Execute a single operating system command  
     lspl(9)lmpl(9)le Practical Extraction and Report Language File  
@@ -33271,7 +33275,7 @@ $a
     the files and their file type.
 
 
-cESEE ALSO cA
+cESEE ALScO cA
 
 
     lsstart-up(3)lmstart-up(3)le, lsdos2unix(3f)lmdos2unix(3f)le, lsauto(2m)lmauto(2m)le, lscr(2m)lmcr(2m)le, lslf(2m)lmlf(2m)le, lsctrlz(2m)lmctrlz(2m)le.
@@ -33293,7 +33297,7 @@ $a
 
 
     The start-up file cGvbtags.emfcA may be invoked from the command line to
-    generate a cDtagscA file for Visual or Free Basic files, lsvb(8)lmvb(8)le.
+    generate a cDtagscA file for Visual or Free Basic files, see lsvb(9)lmvb(9)le.
 
     Given a list of cCfilescA a tags file cGtagscA is generated in the current
     directory, which may be used by the lsfind-tag(2)lmfind-tag(2)le command. If no cCfilescA are
@@ -33335,7 +33339,7 @@ $a
 
     This function is invoked from menu
 
-       cDTools -> VB Tools -> Create Tags FilecA
+       cDTools -> VB Tools -> Generate Tags FilecA
 
     when the user requests a tags file to be generated.
 
@@ -33368,7 +33372,179 @@ $a
 cESEE ALSO cA
 
 
-    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsemf(8)lmemf(8)le.
+    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsvb(9)lmvb(9)le.
+! 3fperltags
+cEcENAME cEcA
+
+
+    perltags - Generate a Perl tags file
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@perltags" [cC-v%tag-option=<flags>cA] [cCfilescA]
+
+
+cEDESCRIPTION cA
+
+
+    The start-up file cGperltags.emfcA may be invoked from the command line to
+    generate a cDtagscA file for Perl files, see lspl(9)lmpl(9)le.
+
+    Given a list of cCfilescA a tags file cGtagscA is generated in the current
+    directory, which may be used by the lsfind-tag(2)lmfind-tag(2)le command. If no cCfilescA are
+    specified the default file list is cGcG./cAcA, i.e. process the current
+    directory. If a directory name is given (such as the default cGcG./cAcA) all
+    Perl files having the cG.plcA or cG.pmcA file extension within the directory will 
+    be processed.
+
+    The value of variable cD%tag-optioncA is used to control the tag generation
+    process, its value cC<flags>cA can contain any number of the following flags:
+
+    cGacA
+ 
+       Append new tags to the existing tag file, note that if also using flag
+       cCcGmcAcA multiple 'tags' to the same item may be created.
+
+    cGmcA
+ 
+       Enable multiple tags. This enables the existence of 2 tags with the
+       same tag name, but typically with different locations. See help on
+       lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
+
+    cGrcA
+ 
+       Enables recursive mode, any sub-directory found within any given
+       directories will also be processed.
+
+
+cENOTES cA
+
+
+    This function is invoked from menu
+
+       cDTools -> Perl Tools -> Generate Tags FilecA
+
+    when the user requests a tags file to be generated.
+
+    The user setup file cGcGmyperltags.emfcAcA is executed by cGperltagscA during
+    start-up, this file can be used to over-ride any of the cGperltagscA
+    configuration variables (see below).
+
+    The following variables are set within cGcGperltags.emfcAcA and are used to
+    control the process:-
+
+    cD%tag-optioncA
+ 
+       Tags options flag, default value is "". See above for more
+       information.
+
+      cD%tag-filemaskcA
+
+       A list of source file masks to be processed when a directory is given,
+       default value is ":*.pl:*.pm:".
+
+    cD%tag-ignoredircA
+ 
+       A list of directories to be ignored when recursive option is used,
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
+
+    These variables can be changed using the -v command-line option or via the
+    cGcGmyphptagsl.emfcAcA file
+
+
+cESEE ALSO cA
+
+
+    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lspl(9)lmpl(9)le.
+! 3fphptags
+cEcENAME cEcA
+
+
+    phptags - Generate a PHP tags file
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@phptags" [cC-v%tag-option=<flags>cA] [cCfilescA]
+
+
+cEDESCRIPTION cA
+
+
+    The start-up file cGphptags.emfcA may be invoked from the command line to
+    generate a cDtagscA file for PHP files, see lsphp(9)lmphp(9)le.
+
+    Given a list of cCfilescA a tags file cGtagscA is generated in the current
+    directory, which may be used by the lsfind-tag(2)lmfind-tag(2)le command. If no cCfilescA are
+    specified the default file list is cGcG./cAcA, i.e. process the current
+    directory. If a directory name is given (such as the default cGcG./cAcA) all
+    Perl files having the cG.phpcA, cG.php3cA, cG.php4cA, cG.php5cA, cG.phtmlcA or cG.inccA 
+    file extension within the directory will  be processed.
+
+    The value of variable cD%tag-optioncA is used to control the tag generation
+    process, its value cC<flags>cA can contain any number of the following flags:
+
+    cGacA
+ 
+       Append new tags to the existing tag file, note that if also using flag
+       cCcGmcAcA multiple 'tags' to the same item may be created.
+
+    cGmcA
+ 
+       Enable multiple tags. This enables the existence of 2 tags with the
+       same tag name, but typically with different locations. See help on
+       lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
+
+    cGrcA
+ 
+       Enables recursive mode, any sub-directory found within any given
+       directories will also be processed.
+
+
+cENOTES cA
+
+
+    This function is invoked from menu
+
+       cDTools -> PHP Tools -> Generate Tags FilecA
+
+    when the user requests a tags file to be generated.
+
+    The user setup file cGcGmyphptags.emfcAcA is executed by cGphptagscA during
+    start-up, this file can be used to over-ride any of the cGphptagscA
+    configuration variables (see below).
+
+    The following variables are set within cGcGphptags.emfcAcA and are used to
+    control the process:-
+
+    cD%tag-optioncA
+ 
+       Tags options flag, default value is "". See above for more
+       information.
+
+      cD%tag-filemaskcA
+
+       A list of source file masks to be processed when a directory is given,
+       default value is ":*.php:*.php3:*.php4:*.php5:*.phtml:*.inc:".
+
+    cD%tag-ignoredircA
+ 
+       A list of directories to be ignored when recursive option is used,
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
+
+    These variables can be changed using the -v command-line option or via the
+    cGcGmyphptags.emfcAcA file
+
+
+cESEE ALSO cA
+
+
+    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsphp(9)lmphp(9)le.
 ! 3 compile
 cEcENAME cEcA
 
@@ -61587,6 +61763,12 @@ $a
        The  list  of  abbreviations  can be used  interactively  in the GUI version of
        MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
 
+    cDTagscA
+    
+       A C-tags file may be generated within the editor using the cDToolscA ->
+       cDPerl-ToolscA -> cDGenerate Tag FilecA. lsfind-tag(2)lmfind-tag(2)le takes the user to the file
+       using the tag information.
+
     cDShort CutscA
     
        The short cut keys used within the buffer are:-
@@ -61640,7 +61822,7 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsabbrev-list(3)lmabbrev-list(3)le,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
-    lsindent(2)lmindent(2)le, lsitem-list(3)lmitem-list(3)le, lsperldb(3)lmperldb(3)le,
+    lsindent(2)lmindent(2)le, lsitem-list(3)lmitem-list(3)le, lsperldb(3)lmperldb(3)le, lsperltags(3f)lmperltags(3f)le, 
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 ! 9 html
 ! 9 htm
@@ -62159,6 +62341,13 @@ $a
        an outline of the functions and subroutines of the VisualBasic file for easy 
        navigation using the lsitem-list(3)lmitem-list(3)le command.
 
+    cDTagscA
+    
+       A VB-tags file may be generated within the editor using the cDToolscA ->
+       cDVB-ToolscA -> cDGenerate Tag FilecA. lsfind-tag(2)lmfind-tag(2)le takes the user to the file
+       using the tag information.
+
+
     cDShort CutscA
     
        The short cut keys used within the buffer are:-
@@ -62174,7 +62363,7 @@ $a
 
 cESEE ALSO cA
 
-
+    lsvtags(9)lmvbtags(9)le, 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 m4
 cEcESYNOPSIS cEcA
@@ -63098,6 +63287,12 @@ $a
        Item listing is available and the key constructs of the file may be
        listed in the cCitem-listcA.
 
+    cDTagscA
+    
+       A C-tags file may be generated within the editor using the cDToolscA ->
+       cDPHP-ToolscA -> cDGenerate Tag FilecA. lsfind-tag(2)lmfind-tag(2)le takes the user to the file
+       using the tag information.
+
     cDShort CutscA
     
        The short cut keys used within the buffer are:-
@@ -63120,7 +63315,7 @@ $a
 cESEE ALSO cA
 
     lsabbrev-list(3)lmabbrev-list(3)le,  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
-    lsitem-list(3)lmitem-list(3)le, 
+    lsitem-list(3)lmitem-list(3)le, lsphptags(3f)lmphptags(3f)le,  
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 asp
 cEcESYNOPSIS cEcA

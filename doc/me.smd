@@ -413,6 +413,8 @@
   [gdiff(3f)](gdiff(3f)) Command line graphical file difference  
   [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
   [ntags(3f)](ntags(3f)) Generate a nroff tags file  
+  [perltags(3f)](perltags(3f)) Generate a Perl tags file  
+  [phptags(3f)](phptags(3f)) Generate a PHP tags file    
   [printall(3f)](printall(3f)) Formatted print job  
   [tcltags(3f)](tcltags(3f)) Generate a Tcl/Tk tags file  
   [textags(3f)](textags(3f)) Generate a LaTeX/BibTeX tags file  
@@ -3799,10 +3801,12 @@
   [password-to-phonic(3)](password-to-phonic(3)) Convert a password to phonic string  
   [perl(9)](perl(9)) Practical Extraction and Report Language File  
   [perldb(3)](perldb(3)) Perl Debugger  
+  [perltags(3f)](perltags(3f)) Generate a Perl tags file  
   [php(9)](php(9)) PHP: Hypertext Preprocessor Language  
   [php3(9)](php3(9)) PHP: Hypertext Preprocessor Language  
   [php4(9)](php4(9)) PHP: Hypertext Preprocessor Language  
   [phphtml(9)](phphtml(9)) PHP: Hypertext Preprocessor Language  
+  [phptags(3f)](phptags(3f)) Generate a PHP tags file    
   [pipe(2m)](pipe(2m)) Incremental Pipe running  
   [pipe-shell-command(2)](pipe-shell-command(2)) (esc @) Execute a single operating system command  
   [pl(9)](pl(9)) Practical Extraction and Report Language File  
@@ -33690,7 +33694,7 @@ $a
   the files and their file type.
 
 
-## SEE ALSO
+## SEE ALScO
 
 
   [start-up(3)](start-up(3)), [dos2unix(3f)](dos2unix(3f)), [auto(2m)](auto(2m)), [cr(2m)](cr(2m)), [lf(2m)](lf(2m)), [ctrlz(2m)](ctrlz(2m)).
@@ -33713,7 +33717,7 @@ $a
 
 
   The start-up file `vbtags.emf` may be invoked from the command line to
-  generate a __tags__ file for Visual or Free Basic files, [vb(8)](vb(8)).
+  generate a __tags__ file for Visual or Free Basic files, see [vb(9)](vb(9)).
 
   Given a list of _files_ a tags file `tags` is generated in the current
   directory, which may be used by the [find-tag(2)](find-tag(2)) command. If no _files_ are
@@ -33755,7 +33759,7 @@ $a
 
   This function is invoked from menu
 
-  >  __Tools -> VB Tools -> Create Tags File__
+  >  __Tools -> VB Tools -> Generate Tags File__
 
   when the user requests a tags file to be generated.
 
@@ -33788,7 +33792,181 @@ $a
 ## SEE ALSO
 
 
-  [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [emf(8)](emf(8)).
+  [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [vb(9)](vb(9)).
+!! me-id: m3fcl014
+! 3fperltags
+## NAME
+
+
+  perltags - Generate a Perl tags file
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@perltags" [_-v%tag-option=<flags>_] [_files_]
+
+
+## DESCRIPTION
+
+
+  The start-up file `perltags.emf` may be invoked from the command line to
+  generate a __tags__ file for Perl files, see [pl(9)](pl(9)).
+
+  Given a list of _files_ a tags file `tags` is generated in the current
+  directory, which may be used by the [find-tag(2)](find-tag(2)) command. If no _files_ are
+  specified the default file list is "`./`", i.e. process the current
+  directory. If a directory name is given (such as the default "`./`") all
+  Perl files having the `.pl` or `.pm` file extension within the directory will 
+  be processed.
+
+  The value of variable __%tag-option__ is used to control the tag generation
+  process, its value _<flags>_ can contain any number of the following flags:
+
+  `a`
+ 
+  >  Append new tags to the existing tag file, note that if also using flag
+     '`m`' multiple 'tags' to the same item may be created.
+
+  `m`
+ 
+  >  Enable multiple tags. This enables the existence of 2 tags with the
+     same tag name, but typically with different locations. See help on
+     [find-tag(2)](find-tag(2)) for more information on multiple tag support.
+
+  `r`
+ 
+  >  Enables recursive mode, any sub-directory found within any given
+     directories will also be processed.
+
+
+## NOTES
+
+
+  This function is invoked from menu
+
+  >  __Tools -> Perl Tools -> Generate Tags File__
+
+  when the user requests a tags file to be generated.
+
+  The user setup file "`myperltags.emf`" is executed by `perltags` during
+  start-up, this file can be used to over-ride any of the `perltags`
+  configuration variables (see below).
+
+  The following variables are set within "`perltags.emf`" and are used to
+  control the process:-
+
+  __%tag-option__
+ 
+  >  Tags options flag, default value is "". See above for more
+     information.
+
+  > __%tag-filemask__
+
+  >  A list of source file masks to be processed when a directory is given,
+     default value is ":*.pl:*.pm:".
+
+  __%tag-ignoredir__
+ 
+  >  A list of directories to be ignored when recursive option is used,
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
+
+  These variables can be changed using the -v command-line option or via the
+  "`myphptagsl.emf`" file
+
+
+## SEE ALSO
+
+
+  [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [pl(9)](pl(9)).
+!! me-id: m3fcl015
+! 3fphptags
+## NAME
+
+
+  phptags - Generate a PHP tags file
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@phptags" [_-v%tag-option=<flags>_] [_files_]
+
+
+## DESCRIPTION
+
+
+  The start-up file `phptags.emf` may be invoked from the command line to
+  generate a __tags__ file for PHP files, see [php(9)](php(9)).
+
+  Given a list of _files_ a tags file `tags` is generated in the current
+  directory, which may be used by the [find-tag(2)](find-tag(2)) command. If no _files_ are
+  specified the default file list is "`./`", i.e. process the current
+  directory. If a directory name is given (such as the default "`./`") all
+  Perl files having the `.php`, `.php3`, `.php4`, `.php5`, `.phtml` or `.inc` 
+  file extension within the directory will  be processed.
+
+  The value of variable __%tag-option__ is used to control the tag generation
+  process, its value _<flags>_ can contain any number of the following flags:
+
+  `a`
+ 
+  >  Append new tags to the existing tag file, note that if also using flag
+     '`m`' multiple 'tags' to the same item may be created.
+
+  `m`
+ 
+  >  Enable multiple tags. This enables the existence of 2 tags with the
+     same tag name, but typically with different locations. See help on
+     [find-tag(2)](find-tag(2)) for more information on multiple tag support.
+
+  `r`
+ 
+  >  Enables recursive mode, any sub-directory found within any given
+     directories will also be processed.
+
+
+## NOTES
+
+
+  This function is invoked from menu
+
+  >  __Tools -> PHP Tools -> Generate Tags File__
+
+  when the user requests a tags file to be generated.
+
+  The user setup file "`myphptags.emf`" is executed by `phptags` during
+  start-up, this file can be used to over-ride any of the `phptags`
+  configuration variables (see below).
+
+  The following variables are set within "`phptags.emf`" and are used to
+  control the process:-
+
+  __%tag-option__
+ 
+  >  Tags options flag, default value is "". See above for more
+     information.
+
+  > __%tag-filemask__
+
+  >  A list of source file masks to be processed when a directory is given,
+     default value is ":*.php:*.php3:*.php4:*.php5:*.phtml:*.inc:".
+
+  __%tag-ignoredir__
+ 
+  >  A list of directories to be ignored when recursive option is used,
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
+
+  These variables can be changed using the -v command-line option or via the
+  "`myphptags.emf`" file
+
+
+## SEE ALSO
+
+
+  [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [php(9)](php(9)).
 !! me-id: m3mac000
 ! 3 compile
 ## NAME
@@ -62509,6 +62687,12 @@ $a
      The  list  of  abbreviations  can be used  interactively  in the GUI version of
      MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
+  __Tags__
+  
+  >  A C-tags file may be generated within the editor using the __Tools__ ->
+     __Perl-Tools__ -> __Generate Tag File__. [find-tag(2)](find-tag(2)) takes the user to the file
+     using the tag information.
+
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -62562,7 +62746,7 @@ $a
 
   [Supported File Types](MicroEmacs - Supported File Types), [abbrev-list(3)](abbrev-list(3)),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
-  [indent(2)](indent(2)), [item-list(3)](item-list(3)), [perldb(3)](perldb(3)),
+  [indent(2)](indent(2)), [item-list(3)](item-list(3)), [perldb(3)](perldb(3)), [perltags(3f)](perltags(3f)), 
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ025
 ! 9 html
@@ -63089,6 +63273,13 @@ $a
      an outline of the functions and subroutines of the VisualBasic file for easy 
      navigation using the [item-list(3)](item-list(3)) command.
 
+  __Tags__
+  
+  >  A VB-tags file may be generated within the editor using the __Tools__ ->
+     __VB-Tools__ -> __Generate Tag File__. [find-tag(2)](find-tag(2)) takes the user to the file
+     using the tag information.
+
+
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -63104,7 +63295,7 @@ $a
 
 ## SEE ALSO
 
-
+  [vbtags(9)](vtags(9)), 
   [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ032
 ! 9 m4
@@ -64043,6 +64234,12 @@ $a
   >  Item listing is available and the key constructs of the file may be
      listed in the _item-list_.
 
+  __Tags__
+  
+  >  A C-tags file may be generated within the editor using the __Tools__ ->
+     __PHP-Tools__ -> __Generate Tag File__. [find-tag(2)](find-tag(2)) takes the user to the file
+     using the tag information.
+
   __Short Cuts__
   
   >  The short cut keys used within the buffer are:-
@@ -64065,7 +64262,7 @@ $a
 ## SEE ALSO
 
   [abbrev-list(3)](abbrev-list(3)),  [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
-  [item-list(3)](item-list(3)), 
+  [item-list(3)](item-list(3)), [phptags(3f)](phptags(3f)),  
   [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ045
 ! 9 asp

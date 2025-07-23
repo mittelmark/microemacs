@@ -17,6 +17,7 @@ define-macro fhook-php
 set-variable .fhook-php.name "PHP"
 set-variable .fhook-php.setup &reg "/history/fhook/php" "bcdfghinopsx"
 set-variable .fhook-php.setup-mask "abcdefghikmnopstux"
+set-variable .fhook-php.tags "phptags"
 set-variable .fhook-php.command-flag  "|"
 set-variable .fhook-php.command-name  "|"
 set-variable .fhook-php.command-nbind "|"
