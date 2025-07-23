@@ -1,0 +1,35 @@
+/* -*- dot -*- ****************************************************************
+ *
+ *  Copyright (c) 2025, Detlef Groth
+ *  License       :
+ *  Date          : $Date$
+ *  Author        : $Author$
+ *  Created By    : Detlef Groth
+ *  Created       : Wed Jul 23 17:28:33 2025
+ *  Last Modified : <250723.1744>
+ *
+ *  Description	  :
+ *
+ ****************************************************************************/
+
+digraph D {
+    compound=true
+    node [shape=box,style=filled,fillcolor=beige];
+    rankdir=LR;
+    subgraph s1 {
+        cluster=true
+        peripheries=1
+        color=skyblue
+        Hello->World
+        A -> B
+    }
+    subgraph s2 {
+        cluster=true
+        peripheries=1
+        color=salmon
+        C -> D
+    }
+    B -> C
+    
+}
+

@@ -1660,6 +1660,7 @@
   [dart(9)](dart(9)) Dart Language File  
   [def(9)](def(9)) C or C++ definition file  
   [doc(9)](doc(9)) ASCII plain text document file  
+  [dot(9)](dot(9)) Graphviz dot diagram file   
   [ehf(9)](ehf(9)) MicroEmacs 2009 help file  
   [emf(9)](emf(9)) MicroEmacs 2009 Macro File  
   [erf(9)](erf(9)) MicroEmacs 2009 registry file  
@@ -1670,6 +1671,7 @@
   [fvwmrc(9)](fvwmrc(9)) FVWM configuration file  
   [gawk(9)](gawk(9)) GNU AWK File  
   [go(9)](go(9)) Go programming language  
+  [graphviz(9)](graphviz(9)) Graphviz dot diagram file   
   [h(9)](h(9)) C programming language header  
   [hpj(9)](hpj(9)) MS-Windows Help Project File  
   [htm(9)](htm(9)) HyperText Markup Language File  
@@ -3516,6 +3518,7 @@
   [display-whitespaces(3)](display-whitespaces(3)) Toggle the displaying of white characters  
   [doc(9)](doc(9)) ASCII plain text document file  
   [dos2unix(3f)](dos2unix(3f)) Convert DOS format files to UNIX format files  
+  [dot(9)](dot(9)) Graphviz dot diagram file     
   [draw(3)](draw(3)) Simple line drawing utility  
   [eaf(8)](eaf(8)) MicroEmacs abbreviation file format  
   [edf(8)](edf(8)) MicroEmacs spelling dictionary file  
@@ -3631,6 +3634,7 @@
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
   [goto-position(2)](goto-position(2)) Restore a stored position  
   [goto-window(2)](goto-window(2)) Restore a saved window to the current window (historic)  
+  [graphviz(9)](graphviz(9)) Graphviz dot diagram file  
   [grep(3)](grep(3)) Search a file for a pattern  
   [grow-window-horizontally(2)](grow-window-horizontally(2)) Enlarge current window horizontally (relative)  
   [grow-window-vertically(2)](grow-window-vertically(2)) Enlarge the current window (relative change)  
@@ -65273,6 +65277,17 @@ $a
   [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command and visually inserting abbreviations
   using the [abbrev-list(3)](abbrev-list(3)) macro.
 
+  __Abbreviations__
+
+  >  The installation comes with a default abbreviation file for R editing
+     which can be used by writing short abbreviations like "_for_", "_if_" or "_func_" - 
+     for R functions. More extended abbreviations are "_main_" for an Rscript
+     application outline or "_openr_" and "_openw_" for reading and writing text files.
+     The short strings  are then replaced by pressing the key-binding for the 
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3))  command.
+     The list of abbreviations can be used as well interactively in the GUI version 
+     of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the R files. The folds occur about the
@@ -65288,17 +65303,6 @@ $a
   >  The R mode offers beside folding as well support for displaying an outline
      of the functions and classes of the R file for easy navigation using the 
      [item-list(3)](item-list(3)) command.
-
-  __Abbreviations__
-
-  >  The installation comes with a default abbreviation file for R editing
-     which can be used by writing short abbreviations like "_for_", "_if_" or "_func_" - 
-     for R functions. More extended abbreviations are "_main_" for an Rscript
-     application outline or "_openr_" and "_openw_" for reading and writing text files.
-     The short strings  are then replaced by pressing the key-binding for the 
-     [expand-abbrev-handle(3)](expand-abbrev-handle(3))  command.
-     The list of abbreviations can be used as well interactively in the GUI version 
-     of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
 
   __Short Cuts__
         
@@ -65324,8 +65328,11 @@ $a
 
 ## SEE ALSO
 
+  [abbrev-list(3)](abbrev-list(3)], [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [item-list(3)](item-list(3)), [rdoc(3)](rdoc(3)), [py(9)](py(9)), 
 
-  [rdoc(3)](rdoc(3)), [py(9)](py(9)), [Supported File Types](MicroEmacs - Supported File Types).
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ050
 ! 9 go
 ## SYNOPSIS
@@ -66258,4 +66265,91 @@ $a
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
   [find-tag(2)](find-tag(2)), [jstags(3f)](jstags(3f)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ057
+! 9 dot
+! 9 graphviz
+## SYNOPSIS
+
+
+  dot - Graphviz diagram language
+
+
+## FILES
+
+
+  __hkdot.emf__ - Graphviz dot language file hook definition  
+  __dot.etf__   - Graphviz dot template file  
+  __dot.eaf__   - Graphviz dot abbreviation file
+
+## EXTENSIONS
+
+
+  __.dot__ - Graphviz dot file  
+
+
+## DESCRIPTION
+
+
+  The Graphviz __dot__ file type macro file provides simple hilighting of dot files,
+  abbreviations to fastly insert specific text snippetss and item-list and folding 
+  for subgraphs.
+
+  File recognition is performed using the standard file extension __.dot__.
+
+
+  __Abbreviations__
+
+  >  The installation comes with a default abbreviation file for Dot file editing
+     which can be used by writing short abbreviations like _"gr"_ (graph) , _"dg"_ 
+     (digraph), _"sg"_ (subgraph) or _"nd"_ (node). 
+     The short strings  are then replaced by pressing the key-binding for the 
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The list of abbreviations can be used as well interactively in the GUI version 
+     of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Dot files. The folds occur about the
+     subgraph opening brace and and the closing curly brace of this subgraph. 
+     The subgraph keyword and the closing curly brace should be both the first
+     none whitespace character on their line.
+
+     The following commands are supported to show and hide  the subgraph bodies. 
+     
+  >  [collapse-all(3)](collapse-all(3))     - (un)folds all regions in the file,  
+     [collapse-current(3)](collapse-current(3)) - (un)folds the current region.
+
+  __Navigation via Item List__
+
+  >  The Dot mode offers beside folding as well support for displaying an outline
+     of the subgraphs of the current Dot graph of the Dot file for easy navigation
+      using the  [item-list(3)](item-list(3)) command.
+
+  __Short Cuts__
+        
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__   - Restyle the current region.  
+     __esc q__   - Format a comment.  
+     __esc o__   - Format a comment.  
+     __f2__      - (un)fold the current region  
+     __f3__      - (un)fold all regions
+     __f6__      - show the item-list outline
+     __Esc f6__  - hide the item-list outline
+
+## BUGS
+
+  None known, so far.
+
+
+## SEE ALSO
+
+  [abbrev-list(3)](abbrev-list(3)], [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [item-list(3)](item-list(3)),
+    
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: meende

@@ -1,0 +1,8 @@
+dg "digraph D {\r    \p\r}\r\P"  "  digraph (dg)"
+gr "digraph G {\r    \p\r}\r\P"  "  graph   (gr)"
+sg "subgraph s\p {\rcluster=true\r}\r\P"     "  subgraph (dg)"
+nd "node [shape=box,style=filled,fillcolor=beige];" "  node (nd)"
+ed "edge [dir=\pforward]\r\P"    "  edge"
+lb "label = " "  label (lb)"
+ml "label =<{<b>Line 1</b>| Line 2|}>" "  mlabel (ml)"
+rn " { rank=same; \p }\r" "  rank (rn)"
