@@ -1,4 +1,4 @@
-!! me-id: home
+! me-id: home
 !   home
 !   MicroEmacs
 !   Contents
@@ -1677,16 +1677,18 @@
   [htm(9)](htm(9)) HyperText Markup Language File  
   [html(9)](html(9)) HyperText Markup Language File  
   [httpd.conf(9)](httpd.conf(9)) Apache configuration file  
-  [i(9)](i(9)) C/C++ preprocessor outpuit file  
+  [i(9)](i(9)) C/C++ preprocessor output file  
   [imakefile(9)](imakefile(9)) Make file  
   [info(9)](info(9)) GNU Info file  
   [ini(9)](ini(9)) MS-Windows Initialization File  
   [jav(9)](jav(9)) Java programming language  
   [java(9)](java(9)) Java programming language  
-  [javascript(9)](javascipt(9)) Javascript programming language      
+  [javascript(9)](javascipt(9)) Javascript programming language   
+  [jl(9)](jl(9)) Julia programming language    
   [jscript(9)](jscipt(9)) Javascript programming language    
   [js(9)](js(9)) Javascript programming language  
   [jst(9)](jst(9)) JASSPA Structured Text  
+  [julia(9)](julia(9)) Julia programming language   
   [ksh(9)](ksh(9)) Korn shell file  
   [l(9)](l(9)) LEX programming language  
   [latex(9)](latex(9)) TeX Documentation  
@@ -3689,15 +3691,17 @@
   [item-list-find(3)](item-list-find(3)) Find the selected item in the item list  
   [jav(9)](jav(9)) Java programming language  
   [java(9)](java(9)) Java programming language  
-  [javascript(9)](javascipt(9)) Javascript programming language      
+  [javascript(9)](javascipt(9)) Javascript programming language   
+  [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
+  [jl(9)](jl(9)) Julia programming language       
   [jscript(9)](jscipt(9)) Javascript programming language    
   [js(9)](js(9)) Javascript programming language  
-  [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
   [jeany-bindings(3)](jeany-bindings(3)) CUA like bindings with the C-j prefix
   [jeany-osd(3)](jeany-osd(3))  Update  OSD for  jeany-bindings  with  the C-j prefix  
   [jeany-osd-undo(3)](jeany-osd-undo(3))  Change  back to normal OSD  shortcut entries  
   [jst(9)](jst(9)) JASSPA Structured Text  
   [jstags(3f)](jstags(3f)) Generate a Javascript tags file    
+  [julia(9)](julia(9)) Julia programming language     
   [justify(2m)](justify(2m)) Justification Mode  
   [kbd-macro-query(2)](kbd-macro-query(2)) (C-x q) Query termination of keyboard macro  
   [keyNames(2)](keyNames(2)) Key Binding Names  
@@ -66219,7 +66223,7 @@ $a
 
   __Navigation via Item List__
 
-  >  The Javascipt mode offers beside folding as well support for displaying an outline
+  >  The Javascript mode offers beside folding as well support for displaying an outline
      of the functions and classes of the Javascript file for easy navigation using the 
      [item-list(3)](item-list(3)) command. 
 
@@ -66352,4 +66356,100 @@ $a
   [item-list(3)](item-list(3)),
     
   [Supported File Types](MicroEmacs - Supported File Types).
+!! me-id: m9typ057
+! 9 jl
+! 9 julia
+## SYNOPSIS
+
+
+  jl - Julia programming language
+
+
+## FILES
+
+
+  __hkjulia.emf__ - Julia programming language hook definition  
+  __julia.etf__ - Julia programming language template file
+  __julia.eaf__ - Julia programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.jl__ - Julia file
+
+
+## DESCRIPTION
+
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow keywords, variables, logicals,
+     function or struct definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Julia files. The folds occur
+     about the __function__, __struct__, or __macro__ keywords and a closing 
+     __end__ keyword, all at the  beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Julia mode offers beside folding as well support for displaying an outline
+     of the functions and classes of the Julia file for easy navigation using the 
+     [item-list(3)](item-list(3)) command. 
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for V file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_ei_" (elsif), "_func_" (functon)  or "_openr_" (read a file) - 
+     and then pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __myjl.emf__. 
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: meende

@@ -315,6 +315,7 @@ add-file-hook ".c2 .c3"                                       fhook-c3
 add-file-hook ".md .rmd .Rmd .tmd .Tmd"                       fhook-md
 add-file-hook ".yml .yaml"                                    fhook-yaml
 add-file-hook ".zig"                                          fhook-zig
+add-file-hook ".jl"                                           fhook-julia
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
