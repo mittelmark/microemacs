@@ -20,132 +20,132 @@ set-variable %tag-ignore   ":SCCS/:CVS/:.git/:.svn/:"
 
 set-variable #l0 0
 !while &exi &cat ".about.arg" #l0
-    set-variable #l2 &ind &cat ".about.arg" &pinc #l0 1
-    set-variable #l1 &lef #l2 2
-    set-variable #l2 &rig #l2 2
-    !if &seq #l1 "-o"
-        set-variable %tag-option #l2
-    !elif &seq #l1 "-t"
-        set-variable %tag-file #l2
-    !elif &seq #l1 "-m"
-        set-variable %tag-filemask #l2
-    !elif &seq #l1 "-i"
-        set-variable %tag-ignore #l2
-    !endif
+  set-variable #l2 &ind &cat ".about.arg" &pinc #l0 1
+  set-variable #l1 &lef #l2 2
+  set-variable #l2 &rig #l2 2
+  !if &seq #l1 "-o"
+    set-variable %tag-option #l2
+  !elif &seq #l1 "-t"
+    set-variable %tag-file #l2
+  !elif &seq #l1 "-m"
+    set-variable %tag-filemask #l2
+  !elif &seq #l1 "-i"
+    set-variable %tag-ignore #l2
+  !endif
 !done
 
 define-macro jstags-add-file
-    set-variable $buffer-mask "luh1"
-    set-variable #l2 $buffer-fname
-    !if &seq &lef #l2 #g1 #g2
-        set-variable #l2 &rig #l2 #g1
+  set-variable $buffer-mask "luh1"
+  set-variable #l2 $buffer-fname
+  !if &seq &lef #l2 #g1 #g2
+    set-variable #l2 &rig #l2 #g1
+  !endif
+  ml-write &spr "[Parsing file %s]" #l2
+  1 buffer-mode "magic"
+  beginning-of-buffer
+  !repeat
+    !force -1 search-forward "^[ \t]*function[ \t]+\\([[a-zA-Z0-9_]+\\)[ \t]*("
+    !if $status
+      set-variable #l1 @s1
+      set-variable #l3 @wl
+      beginning-of-line
+      next-window
+      !tjump &sin "m" %tag-option 4
+      beginning-of-buffer
+      !force search-forward &spr "^%s\t" #l1
+      !if &not $status
+        end-of-buffer
+        insert-string #l1
+        insert-string "\t"
+        insert-string #l2
+        insert-string "\t/^"
+        insert-string #l3
+        insert-string "$/"
+      !endif
+      next-window
     !endif
-    ml-write &spr "[Parsing file %s]" #l2
-    1 buffer-mode "magic"
-    beginning-of-buffer
-    !repeat
-        !force -1 search-forward "^[ \t]*function[ \t]+\\([[a-zA-Z0-9_]+\\)[ \t]*("
-        !if $status
-            set-variable #l1 @s1
-            set-variable #l3 @wl
-            beginning-of-line
-            next-window
-            !tjump &sin "m" %tag-option 4
-            beginning-of-buffer
-            !force search-forward &spr "^%s\t" #l1
-            !if &not $status
-                end-of-buffer
-                insert-string #l1
-                insert-string "\t"
-                insert-string #l2
-                insert-string "\t/^"
-                insert-string #l3
-                insert-string "$/"
-            !endif
-            next-window
-        !endif
-        !force forward-line
-    !until &not $status
+    !force forward-line
+  !until &not $status
 !emacro
 
 define-macro jstags-parse-tags
-    ml-write "All done! Parsing tags file."
-    beginning-of-buffer
-    set-mark
-    replace-string "\\\\" "\\\\\\\\"
-    end-of-buffer
-    sort-lines
+  ml-write "All done! Parsing tags file."
+  beginning-of-buffer
+  set-mark
+  replace-string "\\\\" "\\\\\\\\"
+  end-of-buffer
+  sort-lines
 !emacro
-    
+
 define-macro jstags-process-buffers
-    !repeat
-        set-variable #l0 $buffer-bname
-        !if &xse #l0 "^.*<[0-9]*>$"
-            set-variable #l1 &lef #l0 &sub &rsin "<" #l0 1
-        !else
-            set-variable #l1 #l0
-        !endif
-        !if &iseq #l1 %tag-bname
-            !return
-        !elif &lfind %tag-ignore #l1
-        !elif &band $buffer-fmod 0x10000
-            set-variable #l2 $buffer-fname
-            set-variable #l3 0
-            !while &not &seq &set #l4 &lget %tag-filemask &inc #l3 1 ""
-                !force find-file &cat #l2 #l4 
-            !done
-        !else
-            beginning-of-buffer
-            !force jstags-add-file
-            !if &not $status
-                ml-write &spr "[Warning: jstags-add-file failed on \"%s\"]" $buffer-fname
-                !bell
-                ;set-variable #l9 @cq
-            !endif
-        !endif
-        0 delete-buffer #l0
-    !until 0
+  !repeat
+    set-variable #l0 $buffer-bname
+    !if &xse #l0 "^.*<[0-9]*>$"
+      set-variable #l1 &lef #l0 &sub &rsin "<" #l0 1
+    !else
+      set-variable #l1 #l0
+    !endif
+    !if &iseq #l1 %tag-bname
+      !return
+    !elif &lfind %tag-ignore #l1
+    !elif &band $buffer-fmod 0x10000
+      set-variable #l2 $buffer-fname
+      set-variable #l3 0
+      !while &not &seq &set #l4 &lget %tag-filemask &inc #l3 1 ""
+        !force find-file &cat #l2 #l4 
+      !done
+    !else
+      beginning-of-buffer
+      !force jstags-add-file
+      !if &not $status
+        ml-write &spr "[Warning: jstags-add-file failed on \"%s\"]" $buffer-fname
+        !bell
+        ;set-variable #l9 @cq
+      !endif
+    !endif
+    0 delete-buffer #l0
+  !until 0
 !emacro
 
 define-macro jstags
-    !if &seq &lget %tag-filemask 1 ""
-        ml-write "[No input file mask set!]"
-        !abort
-    !endif
-    delete-other-windows
-    split-window-vertically
-    find-buffer "*scratch*"
-    set-variable #l0 &stat "a" "."
-    find-file %tag-file
-    set-variable %tag-bname $buffer-bname 
-    -1 buffer-mode "view"
-    !force 0 delete-buffer "*scratch*"
-    set-variable #g1 &rsin "/" $buffer-fname
-    set-variable #g2 &lef $buffer-fname #g1
-    !if &not &sin "a" %tag-option
-        beginning-of-buffer
-        set-mark
-        end-of-buffer
-        -1 kill-region
-    !else
-        end-of-buffer
-    !endif
-    !if &sin "r" %tag-option
-        set-variable %tag-filemask &lins %tag-filemask -1 "[^.]*/"
-    !endif
-    1 buffer-mode "magic"
-    1 buffer-mode "exact"
-    next-window
-    !if &iseq $buffer-bname %tag-bname
-        !force find-file #l0
-    !endif
-    jstags-process-buffers
-    jstags-parse-tags
+  !if &seq &lget %tag-filemask 1 ""
+    ml-write "[No input file mask set!]"
+    !abort
+  !endif
+  delete-other-windows
+  split-window-vertically
+  find-buffer "*scratch*"
+  set-variable #l0 &stat "a" "."
+  find-file %tag-file
+  set-variable %tag-bname $buffer-bname 
+  -1 buffer-mode "view"
+  !force 0 delete-buffer "*scratch*"
+  set-variable #g1 &rsin "/" $buffer-fname
+  set-variable #g2 &lef $buffer-fname #g1
+  !if &not &sin "a" %tag-option
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    -1 kill-region
+  !else
+    end-of-buffer
+  !endif
+  !if &sin "r" %tag-option
+    set-variable %tag-filemask &lins %tag-filemask -1 "[^.]*/"
+  !endif
+  1 buffer-mode "magic"
+  1 buffer-mode "exact"
+  next-window
+  !if &iseq $buffer-bname %tag-bname
+    !force find-file #l0
+  !endif
+  jstags-process-buffers
+  jstags-parse-tags
 !emacro
   
 0 define-macro start-up
-    jstags
-    quick-exit
+  jstags
+  quick-exit
 !emacro
 
 ; load in user extensions if found

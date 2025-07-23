@@ -8,12 +8,7 @@
      Created By    : $USER_NAME$, $COMPANY_NAME$
      Created       : $ASCII_TIME$
 
-     Last Modified : <090829.1748>
-     ID            : $Id$
-     Source        : $Source$
+     Last Modified : <250723.1408>
      Description	
      Notes
 */
-var ns4 = document.layers;
-var ie4 = document.all;
-var nn6 = document.getElementById && !document.all;

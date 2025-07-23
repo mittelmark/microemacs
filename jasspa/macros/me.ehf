@@ -520,6 +520,7 @@ Miscellaneous Information
     lsfiletype(3f)lmfiletype(3f)le Determine file type UNIX, DOS or Windows  
     lsgdiff(3f)lmgdiff(3f)le Command line graphical file difference  
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
+    lsjstags(3f)lmjstags(3f)le Generate a Javascript tags file  
     lsntags(3f)lmntags(3f)le Generate a nroff tags file  
     lsperltags(3f)lmperltags(3f)le Generate a Perl tags file  
     lsphptags(3f)lmphptags(3f)le Generate a PHP tags file    
@@ -1764,6 +1765,9 @@ Miscellaneous Information
     lsini(9)lmini(9)le MS-Windows Initialization File  
     lsjav(9)lmjav(9)le Java programming language  
     lsjava(9)lmjava(9)le Java programming language  
+    lsjavascipt(9)lmjavascript(9)le Javascript programming language      
+    lsjscipt(9)lmjscript(9)le Javascript programming language    
+    lsjs(9)lmjs(9)le Javascript programming language  
     lsjst(9)lmjst(9)le JASSPA Structured Text  
     lsksh(9)lmksh(9)le Korn shell file  
     lsl(9)lml(9)le LEX programming language  
@@ -3760,11 +3764,15 @@ Miscellaneous Information
     lsitem-list-find(3)lmitem-list-find(3)le Find the selected item in the item list  
     lsjav(9)lmjav(9)le Java programming language  
     lsjava(9)lmjava(9)le Java programming language  
+    lsjavascipt(9)lmjavascript(9)le Javascript programming language      
+    lsjscipt(9)lmjscript(9)le Javascript programming language    
+    lsjs(9)lmjs(9)le Javascript programming language  
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
     lsjeany-bindings(3)lmjeany-bindings(3)le CUA like bindings with the C-j prefix
     lsjeany-osd(3)lmjeany-osd(3)le  Update  OSD for  jeany-bindings  with  the C-j prefix  
     lsjeany-osd-undo(3)lmjeany-osd-undo(3)le  Change  back to normal OSD  shortcut entries  
-    lsjst(9)lmjst(9)le JASSPA Structred Text  
+    lsjst(9)lmjst(9)le JASSPA Structured Text  
+    lsjstags(3f)lmjstags(3f)le Generate a Javascript tags file    
     lsjustify(2m)lmjustify(2m)le Justification Mode  
     lskbd-macro-query(2)lmkbd-macro-query(2)le (C-x q) Query termination of keyboard macro  
     lskeyNames(2)lmkeyNames(2)le Key Binding Names  
@@ -33452,7 +33460,7 @@ $a
        default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
 
     These variables can be changed using the -v command-line option or via the
-    cGcGmyphptagsl.emfcAcA file
+    cGcGmyperltags.emfcAcA file
 
 
 cESEE ALSO cA
@@ -33545,6 +33553,92 @@ $a
 
 
     lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsphp(9)lmphp(9)le.
+! 3fjstags
+cEcENAME cEcA
+
+
+    jstags - Generate a Javascript tags file
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@jstags" [cC-v%tag-option=<flags>cA] [cCfilescA]
+
+
+cEDESCRIPTION cA
+
+
+    The start-up file cGjstags.emfcA may be invoked from the command line to
+    generate a cDtagscA file for Javasrcipt files, see lsjs(9)lmjs(9)le.
+
+    Given a list of cCfilescA a tags file cGtagscA is generated in the current
+    directory, which may be used by the lsfind-tag(2)lmfind-tag(2)le command. If no cCfilescA are
+    specified the default file list is cGcG./cAcA, i.e. process the current
+    directory. If a directory name is given (such as the default cGcG./cAcA) all
+    Javascript files having the cG.jscA file extension within the directory will 
+    be processed.
+
+    The value of variable cD%tag-optioncA is used to control the tag generation
+    process, its value cC<flags>cA can contain any number of the following flags:
+
+    cGacA
+ 
+       Append new tags to the existing tag file, note that if also using flag
+       cCcGmcAcA multiple 'tags' to the same item may be created.
+
+    cGmcA
+ 
+       Enable multiple tags. This enables the existence of 2 tags with the
+       same tag name, but typically with different locations. See help on
+       lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
+
+    cGrcA
+ 
+       Enables recursive mode, any sub-directory found within any given
+       directories will also be processed.
+
+
+cENOTES cA
+
+
+    This function is invoked from menu
+
+       cDTools -> Javascript Tools -> Generate Tags FilecA
+
+    when the user requests a tags file to be generated.
+
+    The user setup file cGcGmyjstags.emfcAcA is executed by cGjstagscA during
+    start-up, this file can be used to over-ride any of the cGjstagscA
+    configuration variables (see below).
+
+    The following variables are set within cGcGjstags.emfcAcA and are used to
+    control the process:-
+
+    cD%tag-optioncA
+ 
+       Tags options flag, default value is "". See above for more
+       information.
+
+      cD%tag-filemaskcA
+
+       A list of source file masks to be processed when a directory is given,
+       default value is ":*.js:".
+
+    cD%tag-ignoredircA
+ 
+       A list of directories to be ignored when recursive option is used,
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
+
+    These variables can be changed using the -v command-line option or via the
+    cGcGmyjstags.emfcAcA file
+
+
+cESEE ALSO cA
+
+
+    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsjs(9)lmjs(9)le.
 ! 3 compile
 cEcENAME cEcA
 
@@ -63315,7 +63409,7 @@ $a
 cESEE ALSO cA
 
     lsabbrev-list(3)lmabbrev-list(3)le,  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
-    lsitem-list(3)lmitem-list(3)le, lsphptags(3f)lmphptags(3f)le,  
+    lsfind-tag(2)lmfind-tag(2)le, lsitem-list(3)lmitem-list(3)le, lsphptags(3f)lmphptags(3f)le,  
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 asp
 cEcESYNOPSIS cEcA
@@ -65095,4 +65189,112 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
     lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 js
+
+cEcESYNOPSIS cEcA
+
+
+    js - Javascript programming language
+
+
+cEFILES cA
+
+
+    cDhkjs.emfcA - Javascript programming language hook definition  
+    cDjs.etfcA - Javascript programming language template file
+    cDjs.eafcA - Javascript programming language abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.jscA - Javascript file
+
+
+cEDESCRIPTION cA
+
+
+    The cDjscA file type templates share much with the lsc(9)lmc(9)le template definitions,
+    utilising the electric 'C' features for automatic layout of text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logicals,
+       function or class definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Javascript files. The folds occur
+       about the cDfunctionncA keyword and a closing curly brace, both at the
+       beginning of a line. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Javascipt mode offers beside folding as well support for displaying an outline
+       of the functions and classes of the Javascript file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command. 
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for V file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCforcC", "cAifcC", "cAelifcC", "cAfunccC"   or "cAclasscA" - and then 
+       pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDTagscA
+    
+       A C-tags file may be generated within the editor using the cDToolscA ->
+       cDJavascript-ToolscA -> cDGenerate Tag FilecA. lsfind-tag(2)lmfind-tag(2)le takes the user to the file
+       using the tag information.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmyjs.emfcA. 
+      
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, 
+    lsfind-tag(2)lmfind-tag(2)le, lsjstags(3f)lmjstags(3f)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
