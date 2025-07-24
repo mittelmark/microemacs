@@ -1777,7 +1777,9 @@ Miscellaneous Information
     lsl(9)lml(9)le LEX programming language  
     lslatex(9)lmlatex(9)le TeX Documentation  
     lslogin(9)lmlogin(9)le Shell user login file  
+    lsm(9)lmm(9)le GNU Octave / Matlab programming language  
     lsMarkdown(9)lmMarkdown(9)le Markdown Markup File  
+    lsmatlab(9)lmmatlab(9)le GNU Octave / Matlab programming language  
     lsMetaFont(9)lmMetaFont(9)le MetaFont/MetaPost File  
     lsm4(9)lmm4(9)le M4 Macro Processor  
     lsmakefile(9)lmmakefile(9)le Make File  
@@ -1787,6 +1789,7 @@ Miscellaneous Information
     lsmp(9)lmmp(9)le MetaPost File  
     lsnawk(9)lmnawk(9)le New AWK File  
     lsnroff(9)lmnroff(9)le UNIX nroff file  
+    lsoctave(9)lmoctave(9)le GNU Octave / Matlab programming language  
     lsp(9)lmp(9)le Pascal File  
     lspas(9)lmpas(9)le Pascal File  
     lsperl(9)lmperl(9)le Practical Extraction and Report Language File  
@@ -3803,12 +3806,14 @@ Miscellaneous Information
     lslogin(9)lmlogin(9)le Shell user login file  
     lslower-case-region(2)lmlower-case-region(2)le (C-x C-l) Lowercase a region (downcase)  
     lslower-case-word(2)lmlower-case-word(2)le (esc l) Lowercase word (downcase)  
+    lsm(9)lmm(9)le GNU Octave / Matlab programming language    
     lsMacroArguments(4)lmMacroArguments(4)le Arguments to macros  
     lsMacroNumericArguments(4)lmMacroNumericArguments(4)le Numeric arguments to macros  
     lsMahjongg(3)lmMahjongg(3)le MicroEmacs 2009 version of the solitaire Mah Jongg game  
     lsMainMenu(3)lmMainMenu(3)le The top main menu  
     lsMarkdown(9)lmMarkdown(9)le Markdown Markup File  
     lsMatch-It(3)lmMatch-It(3)le MicroEmacs 2009 version of the Match-It game  
+    lsmatlab(9)lmmatlab(9)le GNU Octave / Matlab programming language    
     lsMessageLineVariables(4)lmMessageLineVariables(4)le Prompt the user for input on message line  
     lsMetaFont(9)lmMetaFont(9)le MetaFont/MetaPost File  
     lsMetris(3)lmMetris(3)le MicroEmacs 2009 version of the falling blocks game  
@@ -3861,6 +3866,7 @@ Miscellaneous Information
     lsntags(3f)lmntags(3f)le Generate a nroff tags file  
     lsnumber-items(3)lmnumber-items(3)le Renumber a vertical list of items  
     lsoccur(3)lmoccur(3)le Regular expression search for occurrences  
+    lsoctave(9)lmoctave(9)le GNU Octave / Matlab programming language    
     lsopen-line(3)lmopen-line(3)le (C-o) Open new line at cursor position  
     lsorganizer(3)lmorganizer(3)le Calendar and address organizer  
     lsosd(2)lmosd(2)le Manage the On-Screen Display  
@@ -61315,7 +61321,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -64551,7 +64557,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -64697,7 +64703,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -64843,7 +64849,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -64994,7 +65000,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -65009,8 +65015,8 @@ $a
        beginning of a line. Furthermore cDimplcA sections for method definitions
        of classes are foldable. 
        
-      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file,
-      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+       - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file,
+       - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
 
     cDNavigation via Item ListcA
 
@@ -65135,7 +65141,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -65244,7 +65250,7 @@ $a
     
        The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
 
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -65433,7 +65439,7 @@ $a
 
     cDAuto LayoutcA
     
-      lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
        (re-layout) selected sections of the buffer, or the whole buffer,
        respectively.
 
@@ -65470,7 +65476,7 @@ $a
 
        cDC-c C-ccA - Comment out the current line.  
        cDC-c C-dcA - Uncomment the current line.  
-       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDC-c C-ecA - Comment to the end of the line with hashes (#).  
        cDA-C-icA - Restyle the current region.  
        cDesc qcA - Format a comment.  
        cDesc ocA - Format a comment.  
@@ -65483,6 +65489,102 @@ $a
 
 
     The hilighting is typically extended using a file cDmyjl.emfcA. 
+      
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 m
+! 9 octave
+! 9 matlab
+cEcESYNOPSIS cEcA
+
+
+    m - GNU Octave / Matlab programming language
+
+
+cEFILES cA
+
+
+    cDhkoctave.emfcA - Octave/Matlab programming language hook definition  
+    cDoctave.etfcA - Octave/Matlab programming language template file
+    cDoctave.eafcA - Octave/Matlab programming language abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.mcA - GNU Octave / Matlab file
+
+
+cEDESCRIPTION cA
+
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow keywords, variables, logicals,
+       or function definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the octave files. The folds occur
+       about the cDfunctioncA  keyword and a closing  cDendfunctioncA keyword, 
+       all at the  beginning of a line. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Octave mode offers beside folding as well support for displaying an outline
+       of the functions of the octave file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command. 
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for V file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCfocA" (for), "cCifcA", "cCeicA" (elsif) or "cCfucA" (function) - 
+       and then pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with hashes (#).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmym.emfcA. 
       
 cESEE ALSO cA
 

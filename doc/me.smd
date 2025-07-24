@@ -1693,7 +1693,9 @@
   [l(9)](l(9)) LEX programming language  
   [latex(9)](latex(9)) TeX Documentation  
   [login(9)](login(9)) Shell user login file  
+  [m(9)](m(9)) GNU Octave / Matlab programming language  
   [Markdown(9)](Markdown(9)) Markdown Markup File  
+  [matlab(9)](matlab(9)) GNU Octave / Matlab programming language  
   [MetaFont(9)](MetaFont(9)) MetaFont/MetaPost File  
   [m4(9)](m4(9)) M4 Macro Processor  
   [makefile(9)](makefile(9)) Make File  
@@ -1703,6 +1705,7 @@
   [mp(9)](mp(9)) MetaPost File  
   [nawk(9)](nawk(9)) New AWK File  
   [nroff(9)](nroff(9)) UNIX nroff file  
+  [octave(9)](octave(9)) GNU Octave / Matlab programming language  
   [p(9)](p(9)) Pascal File  
   [pas(9)](pas(9)) Pascal File  
   [perl(9)](perl(9)) Practical Extraction and Report Language File  
@@ -3724,12 +3727,14 @@
   [login(9)](login(9)) Shell user login file  
   [lower-case-region(2)](lower-case-region(2)) (C-x C-l) Lowercase a region (downcase)  
   [lower-case-word(2)](lower-case-word(2)) (esc l) Lowercase word (downcase)  
+  [m(9)](m(9)) GNU Octave / Matlab programming language    
   [MacroArguments(4)](MacroArguments(4)) Arguments to macros  
   [MacroNumericArguments(4)](MacroNumericArguments(4)) Numeric arguments to macros  
   [Mahjongg(3)](Mahjongg(3)) MicroEmacs 2009 version of the solitaire Mah Jongg game  
   [MainMenu(3)](MainMenu(3)) The top main menu  
   [Markdown(9)](Markdown(9)) Markdown Markup File  
   [Match-It(3)](Match-It(3)) MicroEmacs 2009 version of the Match-It game  
+  [matlab(9)](matlab(9)) GNU Octave / Matlab programming language    
   [MessageLineVariables(4)](MessageLineVariables(4)) Prompt the user for input on message line  
   [MetaFont(9)](MetaFont(9)) MetaFont/MetaPost File  
   [Metris(3)](Metris(3)) MicroEmacs 2009 version of the falling blocks game  
@@ -3782,6 +3787,7 @@
   [ntags(3f)](ntags(3f)) Generate a nroff tags file  
   [number-items(3)](number-items(3)) Renumber a vertical list of items  
   [occur(3)](occur(3)) Regular expression search for occurrences  
+  [octave(9)](octave(9)) GNU Octave / Matlab programming language    
   [open-line(3)](open-line(3)) (C-o) Open new line at cursor position  
   [organizer(3)](organizer(3)) Calendar and address organizer  
   [osd(2)](osd(2)) Manage the On-Screen Display  
@@ -62234,7 +62240,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -65505,7 +65511,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -65652,7 +65658,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -65800,7 +65806,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -65952,7 +65958,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -65967,8 +65973,8 @@ $a
      beginning of a line. Furthermore __impl__ sections for method definitions
      of classes are foldable. 
      
-  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file,
-    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+  >  - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file,
+     - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
 
   __Navigation via Item List__
 
@@ -66094,7 +66100,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -66204,7 +66210,7 @@ $a
   
   >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
 
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -66395,7 +66401,7 @@ $a
 
   __Auto Layout__
   
-  > [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
      (re-layout) selected sections of the buffer, or the whole buffer,
      respectively.
 
@@ -66432,7 +66438,7 @@ $a
 
   >  __C-c C-c__ - Comment out the current line.  
      __C-c C-d__ - Uncomment the current line.  
-     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __C-c C-e__ - Comment to the end of the line with hashes (#).  
      __A-C-i__ - Restyle the current region.  
      __esc q__ - Format a comment.  
      __esc o__ - Format a comment.  
@@ -66445,6 +66451,103 @@ $a
 
 
   The hilighting is typically extended using a file __myjl.emf__. 
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ058
+! 9 m
+! 9 octave
+! 9 matlab
+## SYNOPSIS
+
+
+  m - GNU Octave / Matlab programming language
+
+
+## FILES
+
+
+  __hkoctave.emf__ - Octave/Matlab programming language hook definition  
+  __octave.etf__ - Octave/Matlab programming language template file
+  __octave.eaf__ - Octave/Matlab programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.m__ - GNU Octave / Matlab file
+
+
+## DESCRIPTION
+
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow keywords, variables, logicals,
+     or function definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the octave files. The folds occur
+     about the __function__  keyword and a closing  __endfunction__ keyword, 
+     all at the  beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Octave mode offers beside folding as well support for displaying an outline
+     of the functions of the octave file for easy navigation using the 
+     [item-list(3)](item-list(3)) command. 
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for V file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_ei_" (elsif) or "_fu_" (function) - 
+     and then pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with hashes (#).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __mym.emf__. 
     
 ## SEE ALSO
 

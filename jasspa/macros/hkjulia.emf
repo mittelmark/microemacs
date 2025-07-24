@@ -4,8 +4,8 @@
 ; See the file me.emf for copying and conditions.
 ;
 ; Created:     2025-07-23
-; Synopsis:    Python Language hook
-; Authors:     Pedro Gomes
+; Synopsis:    Julia Language hook
+; Authors:     Detlef Groth
 ;
 define-macro fhook-julia
     set-variable $buffer-mask "luh1"
@@ -97,5 +97,7 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
   hilight    .hilight.julia 1 "UInt64"         .scheme.type                  
   hilight    .hilight.julia 1 "UInt128"        .scheme.type                    
 !endif
+
+buffer-init-fhook "julia"
 
   

@@ -1118,5 +1118,8 @@ m9typ057.html	dot(9)
 m9typ057.html	graphviz(9)
 m9typ058.html	jl(9)
 m9typ058.html	julia(9)
+m9typ059.html	m(9)
+m9typ059.html	matlab(9)
+m9typ059.html	octave(9)
 home.html	home
 home.html	MicroEmacs
