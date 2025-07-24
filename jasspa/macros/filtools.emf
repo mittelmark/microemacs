@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250720.0917>
+;  Last Modified : <250724.1139>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -154,16 +154,16 @@ add-file-hook "*file-exec*" fhook-file-exec
   1 buffer-mode "view"  
 !emacro
 ; ada
-!if &not &seq &which "gnat" ""
+!if &not &seq &which "gnat" "ERROR"
   set-variable %fhook-ada-lint "gcc -c -x ada -fsyntax-only  -gnats -gnatef %f"
   set-variable %fhook-ada-exec "gnatmake %f && ./%b"
-  !if &not &seq &which "gnatpp" ""
+  !if &not &seq &which "gnatpp" "ERROR"
     set-variable %fhook-ada "gnatpp %f"
   !endif
 !endif
 
 ; awk
-!if &not &seq &which "gawk" ""
+!if &not &seq &which "gawk" "ERROR"
   set-variable %fhook-awk-lint "gawk --lint -f %f"
   set-variable %fhook-awk-exec "gawk -f %f"
   !if &seq $platform "win32"
@@ -175,9 +175,9 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 ; C
-!if &not &seq &which "gcc" ""
+!if &not &seq &which "gcc" "ERROR"
   set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only %f"
-  !if &not &seq &which "clang-tidy" ""
+  !if &not &seq &which "clang-tidy" "ERROR"
     set-variable %fhook-c-format "clang-tidy %f -- -std=c99"
   !endif
   !if &seq $platform "win32"
@@ -185,30 +185,30 @@ add-file-hook "*file-exec*" fhook-file-exec
   !else
     set-variable %fhook-c-exec "gcc -Wall %f -o %b 2>&1 && ./%b"
   !endif
-  !if &not &seq &which "astyle" ""
+  !if &not &seq &which "astyle" "ERROR"
     set-variable %fhook-c-format "astyle %f"
-  !elif &not &seq &which "clang-format" ""
+  !elif &not &seq &which "clang-format" "ERROR"
     set-variable %fhook-c-format "clang-format %f -- -std=c99"
   !endif
 !endif
 
 ; C++
-!if &not &seq &which "g++" ""
+!if &not &seq &which "g++" "ERROR"
   set-variable %fhook-cpp-lint "LANG=en_US g++ -Wall -x c++ -fsyntax-only %f"
   ;!if &not &seq &which "cppstyle" ""
   ;  set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
   ;!else
   set-variable %fhook-cpp-exec "LANG=en_US g++ -pipe -Wall %f -o %b 2>&1 && ./%b"
   ;!endif
-  !if &not &seq &which "astyle" ""
+  !if &not &seq &which "astyle" "ERROR"
     set-variable %fhook-cpp-format "astyle %f"
-  !elif &not &seq &which "clang-format" ""
+  !elif &not &seq &which "clang-format" "ERROR"
     set-variable %fhook-cpp-format "clang-format %f -- -std=c++17"
   !endif
 !endif
 
 ; C3
-!if &not &seq &which "c3c" ""
+!if &not &seq &which "c3c" "ERROR"
   0 define-macro fhook-c3-replace
     fhook-generic-replace "^(\\(.+[0-9]\\))" "\\1"
   !emacro
@@ -222,67 +222,85 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 ; Cobol
-!if &not &seq &which "cobc" ""
+!if &not &seq &which "cobc" "ERROR"
   set-variable %fhook-cobol-lint "cobc --free -fsyntax-only %f"
   set-variable %fhook-cobol-exec "cobc --free -x %f && ./%b"
   !endif
 !endif
 
 ; Dart
-!if &not &seq &which "dart" ""
+!if &not &seq &which "dart" "ERROR"
   set-variable %fhook-dart-lint   "dart analyze %f"
   set-variable %fhook-dart-format "dart format %f"
   set-variable %fhook-dart-exec   "dart run %f"
 !endif
 
 ; Fortran
-!if &not &seq &which "gfortran" ""
+!if &not &seq &which "gfortran" "ERROR"
   set-variable %fhook-f90-lint   "gfortran -Wall -fmax-errors=3 -fsyntax-only %f"
-  !if &not &seq &which "fprettify" ""
+  !if &not &seq &which "fprettify" "ERROR"
     ; python program
     ; sudo dnf install fprettify
     ; pip3 install fprettify
     set-variable %fhook-f90-format "fprettify -i 4 %f"
   !endif
-  set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && ./%b"
+  !if &not &seq &which "gfortran.exe" "ERROR"
+    ; windows
+    set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && .\\%b"
+  !else
+    ; unix
+    set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && ./%b"
+  !endif  
 !endif
 
 ; Go
-!if &not &seq &which "go" ""
+!if &not &seq &which "go" "ERROR"
   set-variable %fhook-go-lint "go vet %f"
   set-variable %fhook-go-exec "go run %f"
   set-variable %fhook-go-format "go fmt %f"
 !endif
 
 ; Java
-!if &not &seq &which "javac" ""
+!if &not &seq &which "javac" "ERROR"
   set-variable %fhook-java-lint "javac -Xlint %f"
   set-variable %fhook-java-exec "javac %f && java -cp . "
-  !if &not &seq &which "astyle" ""
+  !if &not &seq &which "astyle" "ERROR"
     set-variable %fhook-java-format "astyle %f"
   !endif
 !endif
 
 ; Lua
-!if &not &seq &which "lua" ""
+!if &not &seq &which "lua" "ERROR"
   set-variable %fhook-lua-lint "luac -p %f"
   set-variable %fhook-lua-exec "lua %f "
   ; sudo npm install -g lua-fmt
-  !if &not &seq &which "luafmt" ""
+  !if &not &seq &which "luafmt" "ERROR"
     set-variable %fhook-lua-format "luafmt --write-mode replace %f"
   !endif
 !endif
 
+; Pascal
+!if &not &seq &which "fpc" "ERROR"
+  set-variable %fhook-pascal-lint "fpc -Cn %f"
+  !if &not &seq &which "fpc.exe" "ERROR"
+    set-variable %fhook-pascal-exec "fpc \"%f\" && .\\%b"
+  !else
+    set-variable %fhook-pascal-exec "fpc \"%f\" && ./%b"
+  !endif
+  !if &not &seq &which "ptop" "ERROR"
+    set-variable %fhook-pascal-format "ptop \"%f\" \"%f\""
+  !endif
+!endif
 
 ; Perl
-!if &not &seq &which "perl" ""
-  !if &not &seq &which "perlcritic" ""
+!if &not &seq &which "perl" "ERROR"
+  !if &not &seq &which "perlcritic" "ERROR"
     set-variable %fhook-perl-lint "perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f"
   !else
     set-variable %fhook-perl-lint "perl -cw %f"
   !endif
   set-variable %fhook-perl-exec "perl -w %f"
-  !if &not &seq &which "perltidy" ""
+  !if &not &seq &which "perltidy" "ERROR"
     set-variable %fhook-perl-format "perltidy -b %f"
   !endif
   ; need to fix the error line format
@@ -292,17 +310,17 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 ; Python
-!if &not &seq &which "python3" ""
-  !if &not &seq &which "ruff" ""
+!if &not &seq &which "python3" "ERROR"
+  !if &not &seq &which "ruff" "ERROR"
     set-variable %fhook-python-format "ruff format %f"
     set-variable %fhook-python-lint   "ruff check %f"
   !else
-    !if &not &seq &which "yapf" ""
+    !if &not &seq &which "yapf" "ERROR"
       set-variable %fhook-python-format "yapf -i %f"
-    !elif  &not &seq &which "black" ""
+    !elif  &not &seq &which "black" "ERROR"
       set-variable %fhook-python-format "black -q %f"
     !endif
-    !if &not &seq &which "pylint" ""
+    !if &not &seq &which "pylint" "ERROR"
       set-variable %fhook-python-lint "pylint %f"
     !endif
   !endif
@@ -313,7 +331,7 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 ; R
-!if &not &seq &which "Rscript" ""
+!if &not &seq &which "Rscript" "ERROR"
   set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
   set-variable #l0 &xre #l0 "iso" "ISO-" #l0
   set-variable #l0 &xre #l0 "cp" "CP" #l0    
@@ -324,22 +342,22 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 ; Rust
-!if &not &seq &which "rustc" ""
+!if &not &seq &which "rustc" "ERROR"
   set-variable %fhook-rust-lint    "rustc %f"
   set-variable %fhook-rust-exec    "rustc %f -o %b && ./%b"
-  !if &not &seq &which "rustfmt" ""
+  !if &not &seq &which "rustfmt" "ERROR"
     set-variable %fhook-rust-format  "rustfmt %f"
   !endif
 !endif
 ;
 ; Tcl
-!if &not &seq &which "tclsh" ""
+!if &not &seq &which "tclsh" "ERROR"
   ; pip3 install tclint
-  !if &not &seq &which "tclint" ""
+  !if &not &seq &which "tclint" "ERROR"
     set-variable %fhook-tcl-lint "tclint %f"
   !endif
   set-variable %fhook-tcl-exec "tclsh %f"
-  !if &not &seq &which "tclfmt" ""
+  !if &not &seq &which "tclfmt" "ERROR"
     set-variable %fhook-tcl-format "tclfmt --in-place %f"
   !endif
   0 define-macro fhook-tcl-replace
@@ -348,14 +366,14 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 ; V
-!if &not &seq &which "v" ""
+!if &not &seq &which "v" "ERROR"
   set-variable %fhook-v-lint "v vet %f"
   set-variable %fhook-v-exec "v crun %f"
   set-variable %fhook-v-format "v fmt -w %f"
 !endif
 
 ; Zig
-!if &not &seq &which "zig" ""
+!if &not &seq &which "zig" "ERROR"
   set-variable %fhook-zig-lint    "zig ast-check %f"
   set-variable %fhook-zig-exec    "zig run %f"
   set-variable %fhook-zig-format  "zig fmt %f"

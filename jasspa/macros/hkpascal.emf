@@ -136,13 +136,4 @@ set-variable .fhook-pascal.item-list-r6 "Clss \ecB\\1\ecA"
   1 buffer-mode "view"  
 !emacro
 
-set-variable %fhook-pascal-lint "fpc -Cn %f"
-!if &seq $platform "win32"
-  set-variable %fhook-pascal-exec "fpc %f && .\\%b"
-  set-variable %fhook-pascal-format "ptop %f temp.pas && copy temp.pas %f"
-!else
-  set-variable %fhook-pascal-exec "fpc %f && ./%b"
-  set-variable %fhook-pascal-format "ptop %f temp.pas && cp temp.pas %f"
-!endif
-	
 buffer-init-fhook "pascal"
