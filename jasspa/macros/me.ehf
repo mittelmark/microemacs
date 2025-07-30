@@ -63268,22 +63268,41 @@ $a
 ! 9 ada
 ! 9 adb
 ! 9 ads
-cEcESYNOPSIS cEcA
+! 5 %fhook-ada-exec
+! 5 %fhook-ada-format
+! 5 %fhook-ada-lint
+
+cEcENAME cEcA
+
+|%fhook-ada-exec
+    %fhook-ada-exec - command to execute Ada files
+|%fhook-ada-format
+    %fhook-ada-format - formatting command for Ada files
+|%fhook-ada-lint
+    %fhook-ada-lint - linting command for Ada files
+$a
+
+cESYNOPSIS cA
 
 
-    Ada - Ada programming language
+    Ada - Ada programming language  
+    cD%fhook-ada-execcA  
+    cD%fhook-ada-formatcA  
+    cD%fhook-ada-lintcA  
+
 
 
 cEFILES cA
 
 
-    cDhkada.emfcA - Ada programming language file hook definition
-
+    cDhkada.emfcA - Ada programming language file hook definition  
+    cDada.eafcA   - Ada programming language abbreviation file  
+    cDada.etfcA   - Ada programming language template file    
 
 cEEXTENSIONS cA
 
 
-    cD.adacA, cD.adbcA, cD.adscA - Ada programming language
+    cD.adacA, cD.adbcA, cD.adscA - Ada programming language files
 
 
 cEDESCRIPTION cA
@@ -63317,10 +63336,15 @@ $a
        all regions in the file, lscollapse-current(3)lmcollapse-current(3)le (un)folds the current
        region.
 
-    cDList ItemscA
+    cDNavigation via Item ListscA
     
-       Item listing is available and the key constructs of the file may be
-       listed in the cCitem-listcA.
+       Item listing is available and the key constructs of the file such as
+       procedures, functions and types may be listed in the cCitem-listcA.
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
 
     cDShort CutscA
     
@@ -63336,10 +63360,34 @@ $a
        cDf6cA - List items.  
        cDesc f6cA - Close list items window.
 
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-ada-execcA - The command to execute the current Ada file, default
+         is set to cC"gnatmake %f && ./%b" cA where %f represents the file name, on
+         Windows the slash for the execution is replaced with a back-slash
+      cD%fhook-ada-formatcA - The command to format current Ada file, default  
+         is set to cC"gnatpp %f"cA where %f represents the file name  
+      cD%fhook-ada-lintcA - The command to check/lint the current Ada file, 
+         default is set to cC"gcc -c -x ada -fsyntax-only  -gnats -gnatef %f"cA 
+    
+      The setting assume that the cCAdacA compiler is available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete 
+      cCPATHcA to the  cCcGgnatmakecAcA and cCcGgcccAcA executable or add the folder where this file is to the
+      cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyada.emfcA file. 
+
+cENOTES cA
+
+
+    The highlighting and item listing is typically extended using a file cDmyada.emfcA.
+
 cESEE ALSO cA
 
     lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, 
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
+    lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
     lsitem-list(3)lmitem-list(3))le,
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 php
@@ -64380,7 +64428,7 @@ $a
 cEBUGS cA
 
 
-    There would appear to be too much applied hilighting in this file, it
+    There would appear to be too much applied highlighting in this file, it
     could probably do with rationalizing.
 
 
@@ -64425,7 +64473,7 @@ $a
 cEEXTENSIONS cA
 
 
-    cD.gocA - Go
+    cD.gocA - Go programming language file
 
 
 cEDESCRIPTION cA
@@ -64531,7 +64579,8 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
-    lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
+    lsfile-exec(3)lmfile-exec(3)le, lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
+    lsitem-list(3)lmitem-list(3))le,  
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 ! 9 dart
 ! 5 %fhook-dart-exec

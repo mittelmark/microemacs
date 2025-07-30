@@ -64215,22 +64215,41 @@ $a
 ! 9 ada
 ! 9 adb
 ! 9 ads
+! 5 %fhook-ada-exec
+! 5 %fhook-ada-format
+! 5 %fhook-ada-lint
+
+## NAME
+
+|%fhook-ada-exec
+  %fhook-ada-exec - command to execute Ada files
+|%fhook-ada-format
+  %fhook-ada-format - formatting command for Ada files
+|%fhook-ada-lint
+  %fhook-ada-lint - linting command for Ada files
+$a
+
 ## SYNOPSIS
 
 
-  Ada - Ada programming language
+  Ada - Ada programming language  
+  __%fhook-ada-exec__  
+  __%fhook-ada-format__  
+  __%fhook-ada-lint__  
+
 
 
 ## FILES
 
 
-  __hkada.emf__ - Ada programming language file hook definition
-
+  __hkada.emf__ - Ada programming language file hook definition  
+  __ada.eaf__   - Ada programming language abbreviation file  
+  __ada.etf__   - Ada programming language template file    
 
 ## EXTENSIONS
 
 
-  __.ada__, __.adb__, __.ads__ - Ada programming language
+  __.ada__, __.adb__, __.ads__ - Ada programming language files
 
 
 ## DESCRIPTION
@@ -64264,10 +64283,15 @@ $a
      all regions in the file, [collapse-current(3)](collapse-current(3)) (un)folds the current
      region.
 
-  __List Items__
+  __Navigation via Item Lists__
   
-  >  Item listing is available and the key constructs of the file may be
-     listed in the _item-list_.
+  >  Item listing is available and the key constructs of the file such as
+     procedures, functions and types may be listed in the _item-list_.
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
 
   __Short Cuts__
   
@@ -64283,10 +64307,34 @@ $a
      __f6__ - List items.  
      __esc f6__ - Close list items window.
 
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-ada-exec__ - The command to execute the current Ada file, default
+       is set to _"gnatmake %f && ./%b" _ where %f represents the file name, on
+       Windows the slash for the execution is replaced with a back-slash
+  > __%fhook-ada-format__ - The command to format current Ada file, default  
+       is set to _"gnatpp %f"_ where %f represents the file name  
+  > __%fhook-ada-lint__ - The command to check/lint the current Ada file, 
+       default is set to _"gcc -c -x ada -fsyntax-only  -gnats -gnatef %f"_ 
+  
+  > The setting assume that the _Ada_ compiler is available via the _PATH_
+    environment variable. On Windows you must insert here either the complete 
+    _PATH_ to the  _`gnatmake`_ and _`gcc`_ executable or add the folder where this file is to the
+    _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myada.emf_ file. 
+
+## NOTES
+
+
+  The highlighting and item listing is typically extended using a file __myada.emf__.
+
 ## SEE ALSO
 
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
   [item-list(3))](item-list(3)),
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ044
@@ -65332,7 +65380,7 @@ $a
 ## BUGS
 
 
-  There would appear to be too much applied hilighting in this file, it
+  There would appear to be too much applied highlighting in this file, it
   could probably do with rationalizing.
 
 
@@ -65378,7 +65426,7 @@ $a
 ## EXTENSIONS
 
 
-  __.go__ - Go
+  __.go__ - Go programming language file
 
 
 ## DESCRIPTION
@@ -65484,7 +65532,8 @@ $a
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
-  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [file-exec(3)](file-exec(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [item-list(3))](item-list(3)),  
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ051
 ! 9 dart

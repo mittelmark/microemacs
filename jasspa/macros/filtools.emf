@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250724.1139>
+;  Last Modified : <250730.2043>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -118,7 +118,8 @@ define-macro file-exec
   set-variable #l0 &spr "%s %s" #l0 :file-exec-args
   set-variable #l2 &spr "%s-replace"  $buffer-fhook
   ;0x80 ipipe-shell-command #l0 $buffer-fname "*file-exec*"
-  0x4088 file-tool-run #l0 $buffer-fname "*file-exec*"
+  delete-other-windows
+  0x4188 file-tool-run #l0 $buffer-fname "*file-exec*"
   next-window-find-buffer "*file-exec*"
   !if &exi &ind #l2
     !force !force execute-named-command #l2
@@ -153,15 +154,6 @@ add-file-hook "*file-exec*" fhook-file-exec
   -1 buffer-mode "edit"
   1 buffer-mode "view"  
 !emacro
-; ada
-!if &not &seq &which "gnat" "ERROR"
-  set-variable %fhook-ada-lint "gcc -c -x ada -fsyntax-only  -gnats -gnatef %f"
-  set-variable %fhook-ada-exec "gnatmake %f && ./%b"
-  !if &not &seq &which "gnatpp" "ERROR"
-    set-variable %fhook-ada "gnatpp %f"
-  !endif
-!endif
-
 ; awk
 !if &not &seq &which "gawk" "ERROR"
   set-variable %fhook-awk-lint "gawk --lint -f %f"
