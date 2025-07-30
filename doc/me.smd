@@ -65345,10 +65345,27 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ050
 ! 9 go
+! 5 %fhook-go-exec
+! 5 %fhook-go-format
+! 5 %fhook-go-lint
+
+## NAME
+
+|%fhook-go-exec
+  %fhook-go-exec - command to execute Go files
+|%fhook-go-format
+  %fhook-go-format - formatting command for Go files
+|%fhook-go-lint
+  %fhook-go-lint - linting command for Go files
+$a
+
 ## SYNOPSIS
 
 
-  go - Go programming language templates
+  go - Go programming language templates  
+  __%fhook-go-exec__  
+  __%fhook-go-format__  
+  __%fhook-go-lint__  
 
 
 ## FILES
@@ -65439,6 +65456,22 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-go-exec__ - The command to execute the current Go file, default
+       is set to _"go run %f"_ where %f represents the file name  
+  > __%fhook-go-format__ - The command to format current Go file, default  
+       is set to _"go fmt -w %f"_ where %f represents the file name  
+  > __%fhook-go-lint__ - The command to check/lint the current Go file, 
+       default is set to _"go vet %f"_ 
+  
+  > The setting assume that the _Go_ compiler is available via the _PATH_
+    environment variable. On Windows you must insert here either the complete 
+    _PATH_ to the  _`go`_ executable or add the folder where this file is to the
+    _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mygo.emf_ file. 
 
 ## NOTES
 
@@ -65451,6 +65484,7 @@ $a
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)),
+  [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ051
 ! 9 dart

@@ -64392,10 +64392,27 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 go
-cEcESYNOPSIS cEcA
+! 5 %fhook-go-exec
+! 5 %fhook-go-format
+! 5 %fhook-go-lint
+
+cEcENAME cEcA
+
+|%fhook-go-exec
+    %fhook-go-exec - command to execute Go files
+|%fhook-go-format
+    %fhook-go-format - formatting command for Go files
+|%fhook-go-lint
+    %fhook-go-lint - linting command for Go files
+$a
+
+cESYNOPSIS cA
 
 
-    go - Go programming language templates
+    go - Go programming language templates  
+    cD%fhook-go-execcA  
+    cD%fhook-go-formatcA  
+    cD%fhook-go-lintcA  
 
 
 cEFILES cA
@@ -64486,6 +64503,22 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-go-execcA - The command to execute the current Go file, default
+         is set to cC"go run %f"cA where %f represents the file name  
+      cD%fhook-go-formatcA - The command to format current Go file, default  
+         is set to cC"go fmt -w %f"cA where %f represents the file name  
+      cD%fhook-go-lintcA - The command to check/lint the current Go file, 
+         default is set to cC"go vet %f"cA 
+    
+      The setting assume that the cCGocA compiler is available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete 
+      cCPATHcA to the  cCcGgocAcA executable or add the folder where this file is to the
+      cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmygo.emfcA file. 
 
 cENOTES cA
 
@@ -64498,6 +64531,7 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le,
+    lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
 ! 9 dart
 ! 5 %fhook-dart-exec
