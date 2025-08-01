@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250730.2043>
+;  Last Modified : <250801.1901>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -168,34 +168,33 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; C
 !if &not &seq &which "gcc" "ERROR"
-  set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only %f"
-  !if &not &seq &which "clang-tidy" "ERROR"
-    set-variable %fhook-c-format "clang-tidy %f -- -std=c99"
-  !endif
+  set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only --max-errors=3 \"%f\""
   !if &seq $platform "win32"
-    set-variable %fhook-c-exec "gcc -Wall %f -o %b 2>&1 && .\\%b"
+    set-variable %fhook-c-exec "gcc -Wall --max-errors=3 \"%f\" -o %b 2>&1 && .\\%b"
   !else
-    set-variable %fhook-c-exec "gcc -Wall %f -o %b 2>&1 && ./%b"
+    set-variable %fhook-c-exec "gcc -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ./%b"
   !endif
   !if &not &seq &which "astyle" "ERROR"
-    set-variable %fhook-c-format "astyle %f"
+    set-variable %fhook-c-format "astyle --indent=spaces=4 \"%f\""
   !elif &not &seq &which "clang-format" "ERROR"
-    set-variable %fhook-c-format "clang-format %f -- -std=c99"
+    set-variable %fhook-c-format "clang-format --style=\"{IndentWidth: 4}\" -i \"%f\""
   !endif
 !endif
 
 ; C++
 !if &not &seq &which "g++" "ERROR"
-  set-variable %fhook-cpp-lint "LANG=en_US g++ -Wall -x c++ -fsyntax-only %f"
-  ;!if &not &seq &which "cppstyle" ""
-  ;  set-variable %fhook-cpp-lint "cppcheck --quiet --enable=all --suppress=missingIncludeSystem %f"
-  ;!else
-  set-variable %fhook-cpp-exec "LANG=en_US g++ -pipe -Wall %f -o %b 2>&1 && ./%b"
+  set-variable %fhook-cpp-lint "g++ -Wall -x c++ -fsyntax-only --max-errors=3 \"%f\""
+  !if &not &seq &which "g++.exe" "ERROR"
+    ; win32
+    set-variable %fhook-cpp-exec "g++ -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ..\\%b"
+  !else
+    set-variable %fhook-cpp-exec "g++ -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ./%b"
+  !endif
   ;!endif
   !if &not &seq &which "astyle" "ERROR"
     set-variable %fhook-cpp-format "astyle %f"
   !elif &not &seq &which "clang-format" "ERROR"
-    set-variable %fhook-cpp-format "clang-format %f -- -std=c++17"
+    set-variable %fhook-cpp-format "clang-format --style=\"{IndentWidth: 4}\" -i \"%f\""
   !endif
 !endif
 
@@ -205,9 +204,8 @@ add-file-hook "*file-exec*" fhook-file-exec
     fhook-generic-replace "^(\\(.+[0-9]\\))" "\\1"
   !emacro
   
-  set-variable #l0 &which "astyle"
-  !if &not &seq #l0 "ERROR"
-    set-variable %fhook-c3-format "astyle --indent=spaces=2 %f"
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-c3-format "astyle --indent=spaces=2 \"%f\""
   !endif
   set-variable %fhook-c3-lint   "c3c compile %f -o %b"
   set-variable %fhook-c3-exec   "c3c compile-run %f --"
@@ -216,7 +214,10 @@ add-file-hook "*file-exec*" fhook-file-exec
 ; Cobol
 !if &not &seq &which "cobc" "ERROR"
   set-variable %fhook-cobol-lint "cobc --free -fsyntax-only %f"
-  set-variable %fhook-cobol-exec "cobc --free -x %f && ./%b"
+  !if &not &seq &which "cobc.exe" "ERROR"
+    set-variable %fhook-cobol-exec "cobc --free -x \"%f\" && .\\%b"
+  !else 
+    set-variable %fhook-cobol-exec "cobc --free -x \"%f\" && ./%b"
   !endif
 !endif
 
@@ -254,10 +255,10 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; Java
 !if &not &seq &which "javac" "ERROR"
-  set-variable %fhook-java-lint "javac -Xlint %f"
-  set-variable %fhook-java-exec "javac %f && java -cp . "
+  set-variable %fhook-java-lint "javac -Xlint \"%f\""
+  set-variable %fhook-java-exec "javac \"%f\" && java -cp . "
   !if &not &seq &which "astyle" "ERROR"
-    set-variable %fhook-java-format "astyle %f"
+    set-variable %fhook-java-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
   !endif
 !endif
 
@@ -289,11 +290,11 @@ add-file-hook "*file-exec*" fhook-file-exec
   !if &not &seq &which "perlcritic" "ERROR"
     set-variable %fhook-perl-lint "perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f"
   !else
-    set-variable %fhook-perl-lint "perl -cw %f"
+    set-variable %fhook-perl-lint "perl -cw \"%f\""
   !endif
-  set-variable %fhook-perl-exec "perl -w %f"
+  set-variable %fhook-perl-exec "perl -w \"%f\""
   !if &not &seq &which "perltidy" "ERROR"
-    set-variable %fhook-perl-format "perltidy -b %f"
+    set-variable %fhook-perl-format "perltidy -b \"%f\""
   !endif
   ; need to fix the error line format
   0 define-macro fhook-perl-replace
@@ -304,19 +305,19 @@ add-file-hook "*file-exec*" fhook-file-exec
 ; Python
 !if &not &seq &which "python3" "ERROR"
   !if &not &seq &which "ruff" "ERROR"
-    set-variable %fhook-python-format "ruff format %f"
-    set-variable %fhook-python-lint   "ruff check %f"
+    set-variable %fhook-python-format "ruff format \"%f\""
+    set-variable %fhook-python-lint   "ruff check \"%f\""
   !else
     !if &not &seq &which "yapf" "ERROR"
-      set-variable %fhook-python-format "yapf -i %f"
+      set-variable %fhook-python-format "yapf -i \"%f\""
     !elif  &not &seq &which "black" "ERROR"
-      set-variable %fhook-python-format "black -q %f"
+      set-variable %fhook-python-format "black -q \"%f\""
     !endif
     !if &not &seq &which "pylint" "ERROR"
-      set-variable %fhook-python-lint "pylint %f"
+      set-variable %fhook-python-lint "pylint \"%f\""
     !endif
   !endif
-  set-variable %fhook-python-exec   "python3 %f"
+  set-variable %fhook-python-exec   "python3 \"%f\""
   0 define-macro fhook-python-replace
     fhook-generic-replace " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
   !emacro
@@ -335,10 +336,14 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; Rust
 !if &not &seq &which "rustc" "ERROR"
-  set-variable %fhook-rust-lint    "rustc %f"
-  set-variable %fhook-rust-exec    "rustc %f -o %b && ./%b"
+  set-variable %fhook-rust-lint    "rustc \"%f\""
+  !if &not &seq &which "rustc.exe" "ERROR"
+    set-variable %fhook-rust-exec    "rustc \"%f\" -o %b && ./%b"
+  !else
+    set-variable %fhook-rust-exec    "rustc \"%f\" -o %b && .\\%b"
+  !endif
   !if &not &seq &which "rustfmt" "ERROR"
-    set-variable %fhook-rust-format  "rustfmt %f"
+    set-variable %fhook-rust-format  "rustfmt \"%f\""
   !endif
 !endif
 ;
@@ -346,11 +351,11 @@ add-file-hook "*file-exec*" fhook-file-exec
 !if &not &seq &which "tclsh" "ERROR"
   ; pip3 install tclint
   !if &not &seq &which "tclint" "ERROR"
-    set-variable %fhook-tcl-lint "tclint %f"
+    set-variable %fhook-tcl-lint "tclint \"%f\""
   !endif
-  set-variable %fhook-tcl-exec "tclsh %f"
+  set-variable %fhook-tcl-exec "tclsh \"%f\""
   !if &not &seq &which "tclfmt" "ERROR"
-    set-variable %fhook-tcl-format "tclfmt --in-place %f"
+    set-variable %fhook-tcl-format "tclfmt --in-place \"%f\""
   !endif
   0 define-macro fhook-tcl-replace
     fhook-generic-replace " *(file \"\\(.+\\)\" line \\(.+\\))" "file \\1:\\2:0"
@@ -359,16 +364,16 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 ; V
 !if &not &seq &which "v" "ERROR"
-  set-variable %fhook-v-lint "v vet %f"
-  set-variable %fhook-v-exec "v crun %f"
-  set-variable %fhook-v-format "v fmt -w %f"
+  set-variable %fhook-v-lint "v vet \"%f\""
+  set-variable %fhook-v-exec "v crun \"%f\""
+  set-variable %fhook-v-format "v fmt -w \"%f\""
 !endif
 
 ; Zig
 !if &not &seq &which "zig" "ERROR"
-  set-variable %fhook-zig-lint    "zig ast-check %f"
-  set-variable %fhook-zig-exec    "zig run %f"
-  set-variable %fhook-zig-format  "zig fmt %f"
+  set-variable %fhook-zig-lint    "zig ast-check \"%f\""
+  set-variable %fhook-zig-exec    "zig run \"%f\""
+  set-variable %fhook-zig-format  "zig fmt \"%f\""
 !endif
 
 
