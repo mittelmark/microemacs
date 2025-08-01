@@ -61992,6 +61992,8 @@ $a
 
 
   __hkawk.emf__ - AWK hook definition  
+  __awk.eaf__ - AWK language abbreviation file  
+  __awk.etf__ - AWK language header template file  
 
 
 ## EXTENSIONS
@@ -62015,9 +62017,51 @@ $a
 ## DESCRIPTION
 
 
-  The __awk__ file type template provides simple hilighting of AWK files, the
-  template provides minimal hilighting.
+  The __awk__ file type template provides simple hilighting, folding, item-listing
+  and code abbreviations for AWK files.
 
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within AWK files. The folds occur about
+     _function_, _BEGIN_ and _END_ block definitions  and their closing curly
+     brace located on the left-hand margin.  
+     [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file,  
+     [collapse-current(3)](collapse-current(3)) (un)folds the current region.
+
+  __Navigation via Item List__
+
+  >  The MicroEmacs macro mode offers beside folding as well support for displaying
+     an outline of the functions and the BEGIN and END blocks of the AWK file for easy 
+     navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for AWK file editing
+     which  can  be  used  by  writing  short   abbreviations like   "_wh_" (while), 
+     "_if_" (if), or "_fu_" (function) - and then pressing  the key-binding for the  
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-s__ - Start comment.  
+     __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with hashes (#).  
+     __C-c C-o__ - Restyle the comment.  
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - List items.  
+     __esc f6__ - Close list items window.  
 
 ## BUGS
 
@@ -62028,8 +62072,9 @@ $a
 
 ## SEE ALSO
 
-
-  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [item-list(3)](item-list(3)), 
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ016
 ! 9 fvwm
 ! 9 fvwmrc

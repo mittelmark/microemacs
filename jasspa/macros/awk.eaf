@@ -1,0 +1,10 @@
+fu "function \p() {\r\r}\r\P" "  function-fu"
+if "if(\p) {\r\r}\r\P" "  if-if"
+ef "else if(\p) {\r\r}\r\P" "  else if-ef"
+el "else {\r\p\r}\r\P" "  else-el"
+fo "for (i = \p; i < _ ; i++) {\r\r}\r\P" "  for-fo"
+fe "for (i in \p) {\r\r}\r\P" "  foreach-fe"
+wh "while (\p) {\r\r}\r\P" "  while-wh"
+sw "switch (\p) {\rcase _ :\rdefault:\r\r}\P" "  switch-sw"
+
+

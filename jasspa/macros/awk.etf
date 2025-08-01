@@ -1,0 +1,17 @@
+#!/usr/bin/awk -f
+#
+# Copyright (C) $YEAR$ $USER_NAME$.
+#
+#
+# Synopsis:    $CURSOR$
+# Authors:     $USER_NAME$
+#
+###############################################
+
+BEGIN {
+
+}
+
+END {
+
+}
