@@ -2,7 +2,7 @@
 function func(i) result(j)
     integer, intent (in) :: i ! input
     integer              :: j ! output
-
+    
     j = i**2 + i**3
 end function
 
