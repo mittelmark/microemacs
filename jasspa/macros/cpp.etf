@@ -1,18 +1,14 @@
 // -!- C++ -!- //////////////////////////////////////////////////////////////
 //
-//  System        : 
-//  Module        : 
-//  Object Name   : $RCSfile$
-//  Revision      : $Revision$
 //  Date          : $Date$
 //  Author        : $Author$
 //  Created By    : $USER_NAME$
 //  Created       : $ASCII_TIME$
-//  Last Modified : <090829.1747>
+//  Last Modified : <250801.2206>
 //
-//  Description	
+//  Description	  :
 //
-//  Notes
+//  Notes         :
 //
 //  History
 //	
@@ -20,13 +16,5 @@
 //
 //  Copyright (c) $YEAR$ $COMPANY_NAME$.
 // 
-//  All Rights Reserved.
-// 
-// This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-// reproduced,  translated,  or  reduced to any  electronic  medium or machine
-// readable form without prior written consent from $COMPANY_NAME$.
-//
 //////////////////////////////////////////////////////////////////////////////
-
-static const char rcsid[] = "@(#) : $Id$";
 

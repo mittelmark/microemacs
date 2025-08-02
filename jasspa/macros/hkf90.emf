@@ -18,8 +18,8 @@ define-macro fhook-f90
 
 ; buffer-init variables
 set-variable .fhook-f90.name "Fortran 90"
-set-variable .fhook-f90.setup &reg "/history/fhook/f90" "bfghinopx"
-set-variable .fhook-f90.setup-mask "abefghikmnoptux"
+set-variable .fhook-f90.setup &reg "/history/fhook/f90" "bdfghinopx"
+set-variable .fhook-f90.setup-mask "abdefghikmnoptux"
 set-variable .fhook-f90.comment "|!||!|! | !|r|"
 set-variable .fhook-f90.exact -1
 
@@ -91,6 +91,7 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "stop"           .scheme.keyword
   hilight .hilight.f90 1 "subroutine"     .scheme.keyword
   hilight .hilight.f90 1 "then"           .scheme.keyword
+  hilight .hilight.f90 1 "type"           .scheme.keyword  
   hilight .hilight.f90 1 "use"            .scheme.keyword
   hilight .hilight.f90 1 "where"          .scheme.keyword
   hilight .hilight.f90 1 "while"          .scheme.keyword  
@@ -98,12 +99,20 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   
   hilight .hilight.f90 1 "\\.and\\."      .scheme.operator
   hilight .hilight.f90 1 "\\.eq\\."       .scheme.operator
+  hilight .hilight.f90 1 "=="             .scheme.operator
+  hilight .hilight.f90 1 "\\.eqv\\."      .scheme.operator  
   hilight .hilight.f90 1 "\\.false\\."    .scheme.operator
   hilight .hilight.f90 1 "\\.ge\\."       .scheme.operator
+  hilight .hilight.f90 1 ">="             .scheme.operator  
   hilight .hilight.f90 1 "\\.gt\\."       .scheme.operator
+  hilight .hilight.f90 1 ">"              .scheme.operator    
   hilight .hilight.f90 1 "\\.le\\."       .scheme.operator
+  hilight .hilight.f90 1 "<="             .scheme.operator    
   hilight .hilight.f90 1 "\\.lt\\."       .scheme.operator
+  hilight .hilight.f90 1 "<"              .scheme.operator      
   hilight .hilight.f90 1 "\\.ne\\."       .scheme.operator
+  hilight .hilight.f90 1 "/="             .scheme.operator  
+  hilight .hilight.f90 1 "\\.neqv\\."     .scheme.operator    
   hilight .hilight.f90 1 "\\.not\\."      .scheme.operator
   hilight .hilight.f90 1 "\\.or\\."       .scheme.operator
   hilight .hilight.f90 1 "\\.true\\."     .scheme.operator
@@ -111,6 +120,7 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "allocatable"    .scheme.type  
   hilight .hilight.f90 1 "character"      .scheme.type
   hilight .hilight.f90 1 "complex"        .scheme.type
+  hilight .hilight.f90 1 "cmplx"          .scheme.type  
   hilight .hilight.f90 1 "data"           .scheme.type
   hilight .hilight.f90 1 "digits"         .scheme.type
   hilight .hilight.f90 1 "double"         .scheme.type
@@ -133,7 +143,36 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "range"          .scheme.type
   hilight .hilight.f90 1 "real"           .scheme.type
   hilight .hilight.f90 1 "tiny"           .scheme.type
-  hilight .hilight.f90 1 "type"           .scheme.type
+
+!endif
+
+!if &sin "d" .fhook-f90.setup
+  0 indent .hilight.f90 1 10
+  indent .hilight.f90    N "program"         t
+  indent .hilight.f90    O "end program"    -t
+  indent .hilight.f90    N "module"          t
+  indent .hilight.f90    S "contains"       -t
+  indent .hilight.f90    O "end module"     -t
+  indent .hilight.f90    N "function"        t
+  indent .hilight.f90    O "end function"   -t
+  indent .hilight.f90    N "subroutine"      t
+  indent .hilight.f90    O "end subroutine" -t
+  indent .hilight.f90    N "type"            t
+  indent .hilight.f90    O "end type"       -t
+  indent .hilight.f90    N "do"              t
+  indent .hilight.f90    O "enddo"          -t
+  indent .hilight.f90    O "end do"         -t     
+  indent .hilight.f90    N "if"              t
+  indent .hilight.f90    S "else"           -t
+  indent .hilight.f90    S "else if"        -t
+  indent .hilight.f90    S "elseif "        -t     
+  indent .hilight.f90    O "end if"         -t
+  indent .hilight.f90    O "endif"          -t     
+  indent .hilight.f90    N "select case"     t
+  indent .hilight.f90    S "case"           -t
+  indent .hilight.f90    S "case default"   -t     
+  indent .hilight.f90    O "end select"     -t
+  indent .hilight.f90    i "!"
 !endif
 
 buffer-init-fhook "f90"

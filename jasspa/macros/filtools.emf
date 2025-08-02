@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250801.1901>
+;  Last Modified : <250802.1051>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -166,37 +166,6 @@ add-file-hook "*file-exec*" fhook-file-exec
   !endif
 !endif
 
-; C
-!if &not &seq &which "gcc" "ERROR"
-  set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only --max-errors=3 \"%f\""
-  !if &seq $platform "win32"
-    set-variable %fhook-c-exec "gcc -Wall --max-errors=3 \"%f\" -o %b 2>&1 && .\\%b"
-  !else
-    set-variable %fhook-c-exec "gcc -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ./%b"
-  !endif
-  !if &not &seq &which "astyle" "ERROR"
-    set-variable %fhook-c-format "astyle --indent=spaces=4 \"%f\""
-  !elif &not &seq &which "clang-format" "ERROR"
-    set-variable %fhook-c-format "clang-format --style=\"{IndentWidth: 4}\" -i \"%f\""
-  !endif
-!endif
-
-; C++
-!if &not &seq &which "g++" "ERROR"
-  set-variable %fhook-cpp-lint "g++ -Wall -x c++ -fsyntax-only --max-errors=3 \"%f\""
-  !if &not &seq &which "g++.exe" "ERROR"
-    ; win32
-    set-variable %fhook-cpp-exec "g++ -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ..\\%b"
-  !else
-    set-variable %fhook-cpp-exec "g++ -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ./%b"
-  !endif
-  ;!endif
-  !if &not &seq &which "astyle" "ERROR"
-    set-variable %fhook-cpp-format "astyle %f"
-  !elif &not &seq &which "clang-format" "ERROR"
-    set-variable %fhook-cpp-format "clang-format --style=\"{IndentWidth: 4}\" -i \"%f\""
-  !endif
-!endif
 
 ; C3
 !if &not &seq &which "c3c" "ERROR"
@@ -231,10 +200,11 @@ add-file-hook "*file-exec*" fhook-file-exec
 ; Fortran
 !if &not &seq &which "gfortran" "ERROR"
   set-variable %fhook-f90-lint   "gfortran -Wall -fmax-errors=3 -fsyntax-only %f"
+  1000 ml-write &which "fprettify"
   !if &not &seq &which "fprettify" "ERROR"
     ; python program
     ; sudo dnf install fprettify
-    ; pip3 install fprettify
+    ; pip3 install fprettify --user
     set-variable %fhook-f90-format "fprettify -i 4 %f"
   !endif
   !if &not &seq &which "gfortran.exe" "ERROR"

@@ -548,4 +548,19 @@ define-macro c-to-cpp-convert
     fhook-cpp
 !emacro
 
+; C
+!if &not &seq &which "gcc" "ERROR"
+  set-variable %fhook-c-lint "gcc -Wall -x c -fsyntax-only --max-errors=3 \"%f\""
+  !if &seq $platform "win32"
+    set-variable %fhook-c-exec "gcc -Wall --max-errors=3 \"%f\" -o %b 2>&1 && .\\%b"
+  !else
+    set-variable %fhook-c-exec "gcc -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ./%b"
+  !endif
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-c-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
+  !elif &not &seq &which "clang-format" "ERROR"
+    set-variable %fhook-c-format &spr "clang-format --style=\"{IndentWidth: %d}\" -i \"%%f\"" $buffer-indent-width
+  !endif
+!endif
+
 buffer-init-fhook "c"

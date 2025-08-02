@@ -469,4 +469,22 @@ set-variable .fhook-cpp.item-list-r8 "Dtor \ecB\\1\ecA"
 ; setup fuctions to auto-load from cmacros
 define-macro-file cmacros c-slashify c-deslashify c-hash-eval c-hash-set-define c-hash-unset-define c-hash-del
 
+; C++
+!if &not &seq &which "g++" "ERROR"
+  set-variable %fhook-cpp-lint "g++ -Wall -x c++ -fsyntax-only --max-errors=3 \"%f\""
+  !if &not &seq &which "g++.exe" "ERROR"
+    ; win32
+    set-variable %fhook-cpp-exec "g++ -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ..\\%b"
+  !else
+    set-variable %fhook-cpp-exec "g++ -Wall --max-errors=3 \"%f\" -o %b 2>&1 && ./%b"
+  !endif
+  ;!endif
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-cpp-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
+  !elif &not &seq &which "clang-format" "ERROR"
+    set-variable %fhook-cpp-format &spr "clang-format --style=\"{IndentWidth: %d}\" -i \"%%f\"" $buffer-indent-width
+  !endif
+!endif
+
+
 buffer-init-fhook "cpp"
