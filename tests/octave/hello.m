@@ -6,7 +6,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Thu Jul 24 06:25:18 2025
-#  Last Modified : <250724.0704>
+#  Last Modified : <250812.1316>
 #
 #  Description	 : Just test code for MicroEmacs
 #                  verifying the Octave mode of ME
@@ -45,7 +45,3 @@ else
 end
 
 fprintf('x was %d\n',x)
-
-for i = 1:10
-    
-endfor
