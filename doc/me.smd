@@ -61585,6 +61585,13 @@ $a
      strings and characters of the language to be differentiated and
      rendered in different colors.
 
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively.
+
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the __f90__ files. The folds occur about

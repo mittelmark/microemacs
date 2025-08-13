@@ -38,7 +38,7 @@ set-variable .fhook-awk.item-list-r2 "Blck \ecB\\1\ecA"
 set-variable .fhook-awk.item-list-s3 "^\/\\(\\w+\\)\/"
 set-variable .fhook-awk.item-list-r3 "Regx \ecB\\1\ecA"
 
-!if &and &sin "h" .fhook-awk.setup &band .hilight.flags 0x02 
+!if &and &sin "h" .fhook-awk.setup &band .hilight.flags 0x02
   !if &not &exist .hilight.awk
     set-variable .hilight.awk &pinc .hilight.next 1
   !endif
@@ -53,17 +53,17 @@ set-variable .fhook-awk.item-list-r3 "Regx \ecB\\1\ecA"
   hilight   .hilight.awk 1 "BEGIN"        .scheme.variable
   hilight   .hilight.awk 1 "END"          .scheme.variable
   hilight   .hilight.awk 1 "ENVIRON"      .scheme.variable
-  hilight   .hilight.awk 1 "FILENAME"     .scheme.variable    
-  hilight   .hilight.awk 1 "FNR"          .scheme.variable      
+  hilight   .hilight.awk 1 "FILENAME"     .scheme.variable
+  hilight   .hilight.awk 1 "FNR"          .scheme.variable
   hilight   .hilight.awk 1 "FS"           .scheme.variable
   hilight   .hilight.awk 1 "IGNORECASE"   .scheme.variable
   hilight   .hilight.awk 1 "NF"           .scheme.variable
-  hilight   .hilight.awk 1 "NR"           .scheme.variable    
-  hilight   .hilight.awk 1 "PROCINFO"     .scheme.variable  
+  hilight   .hilight.awk 1 "NR"           .scheme.variable
+  hilight   .hilight.awk 1 "PROCINFO"     .scheme.variable
   hilight   .hilight.awk 1 "RLENGTH"      .scheme.variable
   hilight   .hilight.awk 1 "RS"           .scheme.variable
   hilight   .hilight.awk 1 "RSTART"       .scheme.variable
-  hilight   .hilight.awk 1 "RT"          .scheme.variable  
+  hilight   .hilight.awk 1 "RT"           .scheme.variable
   ;
   hilight   .hilight.awk 1 "atan2"        .scheme.keyword
   hilight   .hilight.awk 1 "break"        .scheme.keyword

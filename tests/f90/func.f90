@@ -11,8 +11,8 @@ program main
     implicit none
     integer :: i
     integer :: func
-
+    
     i = 3
     print *, "sum of the square and cube of", i, "is", func(i)
-
+    
 end program

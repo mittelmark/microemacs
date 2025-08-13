@@ -59,7 +59,6 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "contains"       .scheme.keyword
   hilight .hilight.f90 1 "continue"       .scheme.keyword
   hilight .hilight.f90 1 "default"        .scheme.keyword
-  hilight .hilight.f90 1 "dimension"      .scheme.keyword
   hilight .hilight.f90 1 "do"             .scheme.keyword
   hilight .hilight.f90 1 "elemental"      .scheme.keyword  
   hilight .hilight.f90 1 "else"           .scheme.keyword
@@ -91,27 +90,27 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "stop"           .scheme.keyword
   hilight .hilight.f90 1 "subroutine"     .scheme.keyword
   hilight .hilight.f90 1 "then"           .scheme.keyword
-  hilight .hilight.f90 1 "type"           .scheme.keyword  
   hilight .hilight.f90 1 "use"            .scheme.keyword
   hilight .hilight.f90 1 "where"          .scheme.keyword
   hilight .hilight.f90 1 "while"          .scheme.keyword  
   hilight .hilight.f90 1 "write"          .scheme.keyword
   
+  hilight .hilight.f90 1 "=="             .scheme.operator
+  hilight .hilight.f90 1 ">="             .scheme.operator  
+  hilight .hilight.f90 1 ">"              .scheme.operator    
+  hilight .hilight.f90 1 "<="             .scheme.operator    
+  hilight .hilight.f90 1 "<"              .scheme.operator      
+  hilight .hilight.f90 1 "/="             .scheme.operator  
+
   hilight .hilight.f90 1 "\\.and\\."      .scheme.operator
   hilight .hilight.f90 1 "\\.eq\\."       .scheme.operator
-  hilight .hilight.f90 1 "=="             .scheme.operator
   hilight .hilight.f90 1 "\\.eqv\\."      .scheme.operator  
   hilight .hilight.f90 1 "\\.false\\."    .scheme.operator
   hilight .hilight.f90 1 "\\.ge\\."       .scheme.operator
-  hilight .hilight.f90 1 ">="             .scheme.operator  
   hilight .hilight.f90 1 "\\.gt\\."       .scheme.operator
-  hilight .hilight.f90 1 ">"              .scheme.operator    
   hilight .hilight.f90 1 "\\.le\\."       .scheme.operator
-  hilight .hilight.f90 1 "<="             .scheme.operator    
   hilight .hilight.f90 1 "\\.lt\\."       .scheme.operator
-  hilight .hilight.f90 1 "<"              .scheme.operator      
   hilight .hilight.f90 1 "\\.ne\\."       .scheme.operator
-  hilight .hilight.f90 1 "/="             .scheme.operator  
   hilight .hilight.f90 1 "\\.neqv\\."     .scheme.operator    
   hilight .hilight.f90 1 "\\.not\\."      .scheme.operator
   hilight .hilight.f90 1 "\\.or\\."       .scheme.operator
@@ -123,6 +122,7 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "cmplx"          .scheme.type  
   hilight .hilight.f90 1 "data"           .scheme.type
   hilight .hilight.f90 1 "digits"         .scheme.type
+  hilight .hilight.f90 1 "dimension"      .scheme.type
   hilight .hilight.f90 1 "double"         .scheme.type
   hilight .hilight.f90 1 "epsilon"        .scheme.type
   hilight .hilight.f90 1 "huge"           .scheme.type
@@ -143,6 +143,7 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   hilight .hilight.f90 1 "range"          .scheme.type
   hilight .hilight.f90 1 "real"           .scheme.type
   hilight .hilight.f90 1 "tiny"           .scheme.type
+  hilight .hilight.f90 1 "type"           .scheme.type  
 
 !endif
 
