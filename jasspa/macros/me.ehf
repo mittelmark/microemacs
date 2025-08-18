@@ -1745,9 +1745,14 @@ Miscellaneous Information
     lsdef(9)lmdef(9)le C or C++ definition file  
     lsdoc(9)lmdoc(9)le ASCII plain text document file  
     lsdot(9)lmdot(9)le Graphviz dot diagram file   
+    lse(9)lme(9)le Euphoria programming language file    
     lsehf(9)lmehf(9)le MicroEmacs 2009 help file  
     lsemf(9)lmemf(9)le MicroEmacs 2009 Macro File  
     lserf(9)lmerf(9)le MicroEmacs 2009 registry file  
+    lseuphoria(9)lmeuphoria(9)le Euphoria programming language file   
+    lseu(9)lmeu(9)le Euphoria programming language file  
+    lsex(9)lmex(9)le Euphoria console application file  
+    lsexw(9)lmexw(9)le Euphoria window application file   
     lsf(9)lmf(9)le Fortran File  
     lsf77(9)lmf77(9)le Fortran 77 File  
     lsf90(9)lmf90(9)le Fortran 90 File  
@@ -3604,6 +3609,7 @@ Miscellaneous Information
     lsdos2unix(3f)lmdos2unix(3f)le Convert DOS format files to UNIX format files  
     lsdot(9)lmdot(9)le Graphviz dot diagram file     
     lsdraw(3)lmdraw(3)le Simple line drawing utility  
+    lse(9)lme(9)le Euphoria programming language file    
     lseaf(8)lmeaf(8)le MicroEmacs abbreviation file format  
     lsedf(8)lmedf(8)le MicroEmacs spelling dictionary file  
     lsedit(2m)lmedit(2m)le Buffer has be changed  
@@ -3640,6 +3646,10 @@ Miscellaneous Information
     lsexpand-iso-accents(3)lmexpand-iso-accents(3)le Expand an ISO accent  
     lsexpand-look-back(3)lmexpand-look-back(3)le Complete a word by looking back for a similar word  
     lsexpand-word(3)lmexpand-word(3)le Complete a word by invocation of the speller  
+    lseuphoria(9)lmeuphoria(9)le Euphoria programming language file   
+    lseu(9)lmeu(9)le Euphoria programming language file  
+    lsex(9)lmex(9)le Euphoria console application file  
+    lsexw(9)lmexw(9)le Euphoria window application file   
     lsf(9)lmf(9)le Fortran File  
     lsf77(9)lmf77(9)le Fortran 77 File  
     lsf90(9)lmf90(9)le Fortran 90 File  
@@ -60693,7 +60703,7 @@ $a
     cDNavigation via Item ListcA
 
        The Fortan mode offers beside folding as well support for displaying
-       an outline of the functions, subroutine, module and programp definitions
+       an outline of the functions, subroutine, module and program definitions
        of the Fortran file for easy  navigation using the lsitem-list(3)lmitem-list(3)le command.
 
     cDAbbreviationscA
@@ -60725,11 +60735,11 @@ $a
         on Windows the slash is replaced with a backslash
               
       cD%fhook-fortran-formatcA - The command to format current Fortran file,
-        default is set to cC"fprettify %"cA if the program is installed. 
+        default is set to cC"fprettify %f"cA if the program is installed. 
         On a Unix system you might install it using the Python package manager
          like this: cC"pip3 install fprettify --user"cA.
 
-      cD%fhook-fortran-lintcA - The command to check/lint the current Fotran file, 
+      cD%fhook-fortran-lintcA - The command to check/lint the current Fortran file, 
          default is set to cC"gfortran -fsyntax-only %f"cA where cC%fcA represents
          the file name.
     
@@ -64959,7 +64969,14 @@ $a
 cEEXTENSIONS cA
 
 
-    cD.vcA - V file
+    cD.vcA - V file - but see NOTES
+
+
+cEMAGIC STRINGS cA
+
+    cD-!- v-lang -!-cA
+    
+       Recognized by MicroEmacs only, defines the file to be a V language file.
 
 
 cEDESCRIPTION cA
@@ -65058,7 +65075,7 @@ $a
 
 
     The hilighting is typically extended using a file cDmyv.emfcA. As this language
-    shares the same extensions as Verilog files you might be adding the add the 
+    shares the same extensions as lsverilog(9)lmVerilog(9)le files you might be adding the add the 
     following line to your user emf file.
     
        add-file-hook ".v" fhook-v
@@ -65727,3 +65744,145 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
     lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.
+! 9 ex
+! 9 exw
+! 9 exu
+! 9 e
+! 9 ew
+! 9 eu
+! 9 euphoria
+! 5 %fhook-euphor-exec
+! 5 %fhook-euphor-format
+! 5 %fhook-euphor-lint
+cEcESYNOPSIS cEcA
+
+
+    e, ew, eu, ex, exu, exw - Euphoria files
+
+
+cEFILES cA
+
+
+    cDhkeuphor.emfcA - Euphoria hook definition  
+    cDeuphor.etfcA - Euphoria template file  
+    cDeuphor.eafcA - Euphoria abbreviation file
+
+
+cEEXTENSIONS cA
+
+
+    cD.ecA, cD.eucA, cD.ewcA - Euphoria file  
+    cD.excA - Euphoria console application file  
+    cD.exwcA - Eurphoria window application file
+
+
+cEMAGIC STRINGS cA
+
+
+    cD^#![ \t]*/.*euicA
+    
+       MicroEmacs 2009 recognizes the magic string on the first line of the
+       file used to locate the executable. The Euphoria files may be extension
+       less and are still recognized.
+
+    cD-!- euphoria -!-cA
+    
+       Recognized by MicroEmacs only, defines the file to be a Euphoria file.
+
+
+
+cEDESCRIPTION cA
+
+
+    The cDEuphoriacA file hook provides simple hilighting of Euphoria
+    files, folding, item listing, abbreviations and indentation support.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow functions, subroutines, variables, logical, comments,
+       strings and characters of the language to be differentiated and
+       rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The lsindent(2)lmindentation mechanismle is enabled which performs performs automatic
+       layout of the text. lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are
+       available to reformat (re-layout) selected sections of the buffer, or
+       the whole buffer, respectively.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the cDeuphoriacA files. The folds occur about
+       cDfunctioncA and cDprocedurecA definitions and their cDendcA text located on the left-hand margin.
+
+      - lscollapse-all(3)lmcollapse-all(3)le - (un)folds  all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Euphoria mode offers beside folding as well support for displaying
+       an outline of the functions, procedures, type and constant definitions
+       of the Euphoria file for easy  navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Euphoria
+       file  editing  which  can  be  used  by  writing  short   abbreviations
+       like   cC"if"cA  cC"wh"cA (while), or cC"fu"cA (function) - and then pressing
+       the key-binding for the  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c esc esc cA- Command complete.  
+       cDf2cA - (un)fold the current region  
+       cDf3cA - (un)fold all regions  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cDExecuting, Formatting and LintingcA
+
+      cD%fhook-euphor-execcA - The command to execute the current Euphoria file, 
+        default is set to cC"eui %f"cA where cC%fcA represents the file name,
+              
+      cD%fhook-euphor-formatcA - The command to format current Euphoria file,
+        default is set to cC"restyle-buffer"cA using MicroEmacs indentation to 
+        indent the current file.
+
+      cD%fhook-euphor-lintcA - The command to check/lint the current Euphoria file, 
+         default is set to cC"eui -test %f"cA where cC%fcA represents
+         the file name.
+    
+      The setting assume that the Euphoria interpreter is available via the cCPATHcA environment variable. 
+      On Windows you must insert here either the complete cCPATHcA to the 
+      cGeuicA executable or add the folder where this file is to the cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyeuphor.emfcA file. 
+
+
+cEBUGS cA
+
+
+    The File hook is not tested  extensively,  so there might be a few  problems
+    waiting for the user.
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.

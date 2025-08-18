@@ -1661,9 +1661,14 @@
   [def(9)](def(9)) C or C++ definition file  
   [doc(9)](doc(9)) ASCII plain text document file  
   [dot(9)](dot(9)) Graphviz dot diagram file   
+  [e(9)](e(9)) Euphoria programming language file    
   [ehf(9)](ehf(9)) MicroEmacs 2009 help file  
   [emf(9)](emf(9)) MicroEmacs 2009 Macro File  
   [erf(9)](erf(9)) MicroEmacs 2009 registry file  
+  [euphoria(9)](euphoria(9)) Euphoria programming language file   
+  [eu(9)](eu(9)) Euphoria programming language file  
+  [ex(9)](ex(9)) Euphoria console application file  
+  [exw(9)](exw(9)) Euphoria window application file   
   [f(9)](f(9)) Fortran File  
   [f77(9)](f77(9)) Fortran 77 File  
   [f90(9)](f90(9)) Fortran 90 File  
@@ -3525,6 +3530,7 @@
   [dos2unix(3f)](dos2unix(3f)) Convert DOS format files to UNIX format files  
   [dot(9)](dot(9)) Graphviz dot diagram file     
   [draw(3)](draw(3)) Simple line drawing utility  
+  [e(9)](e(9)) Euphoria programming language file    
   [eaf(8)](eaf(8)) MicroEmacs abbreviation file format  
   [edf(8)](edf(8)) MicroEmacs spelling dictionary file  
   [edit(2m)](edit(2m)) Buffer has be changed  
@@ -3561,6 +3567,10 @@
   [expand-iso-accents(3)](expand-iso-accents(3)) Expand an ISO accent  
   [expand-look-back(3)](expand-look-back(3)) Complete a word by looking back for a similar word  
   [expand-word(3)](expand-word(3)) Complete a word by invocation of the speller  
+  [euphoria(9)](euphoria(9)) Euphoria programming language file   
+  [eu(9)](eu(9)) Euphoria programming language file  
+  [ex(9)](ex(9)) Euphoria console application file  
+  [exw(9)](exw(9)) Euphoria window application file   
   [f(9)](f(9)) Fortran File  
   [f77(9)](f77(9)) Fortran 77 File  
   [f90(9)](f90(9)) Fortran 90 File  
@@ -61603,7 +61613,7 @@ $a
   __Navigation via Item List__
 
   >  The Fortan mode offers beside folding as well support for displaying
-     an outline of the functions, subroutine, module and programp definitions
+     an outline of the functions, subroutine, module and program definitions
      of the Fortran file for easy  navigation using the [item-list(3)](item-list(3)) command.
 
   __Abbreviations__
@@ -61635,11 +61645,11 @@ $a
       on Windows the slash is replaced with a backslash
             
   > __%fhook-fortran-format__ - The command to format current Fortran file,
-      default is set to _"fprettify %"_ if the program is installed. 
+      default is set to _"fprettify %f"_ if the program is installed. 
       On a Unix system you might install it using the Python package manager
        like this: _"pip3 install fprettify --user"_.
 
-  > __%fhook-fortran-lint__ - The command to check/lint the current Fotran file, 
+  > __%fhook-fortran-lint__ - The command to check/lint the current Fortran file, 
        default is set to _"gfortran -fsyntax-only %f"_ where _%f_ represents
        the file name.
   
@@ -65916,7 +65926,14 @@ $a
 ## EXTENSIONS
 
 
-  __.v__ - V file
+  __.v__ - V file - but see NOTES
+
+
+## MAGIC STRINGS
+
+  __-!- v-lang -!-__
+  
+  >  Recognized by MicroEmacs only, defines the file to be a V language file.
 
 
 ## DESCRIPTION
@@ -66015,7 +66032,7 @@ $a
 
 
   The hilighting is typically extended using a file __myv.emf__. As this language
-  shares the same extensions as Verilog files you might be adding the add the 
+  shares the same extensions as [Verilog(9)](verilog(9)) files you might be adding the add the 
   following line to your user emf file.
   
      add-file-hook ".v" fhook-v
@@ -66497,7 +66514,7 @@ $a
   [item-list(3)](item-list(3)),
     
   [Supported File Types](MicroEmacs - Supported File Types).
-!! me-id: m9typ057
+!! me-id: m9typ058
 ! 9 jl
 ! 9 julia
 ## SYNOPSIS
@@ -66593,7 +66610,7 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
-!! me-id: m9typ058
+!! me-id: m9typ059
 ! 9 m
 ! 9 octave
 ! 9 matlab
@@ -66690,4 +66707,147 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ060
+! 9 ex
+! 9 exw
+! 9 exu
+! 9 e
+! 9 ew
+! 9 eu
+! 9 euphoria
+! 5 %fhook-euphor-exec
+! 5 %fhook-euphor-format
+! 5 %fhook-euphor-lint
+## SYNOPSIS
+
+
+  e, ew, eu, ex, exu, exw - Euphoria files
+
+
+## FILES
+
+
+  __hkeuphor.emf__ - Euphoria hook definition  
+  __euphor.etf__ - Euphoria template file  
+  __euphor.eaf__ - Euphoria abbreviation file
+
+
+## EXTENSIONS
+
+
+  __.e__, __.eu__, __.ew__ - Euphoria file  
+  __.ex__ - Euphoria console application file  
+  __.exw__ - Eurphoria window application file
+
+
+## MAGIC STRINGS
+
+
+  __^#![ \t]*/.*eui__
+  
+  >  MicroEmacs 2009 recognizes the magic string on the first line of the
+     file used to locate the executable. The Euphoria files may be extension
+     less and are still recognized.
+
+  __-!- euphoria -!-__
+  
+  >  Recognized by MicroEmacs only, defines the file to be a Euphoria file.
+
+
+
+## DESCRIPTION
+
+
+  The __Euphoria__ file hook provides simple hilighting of Euphoria
+  files, folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, subroutines, variables, logical, comments,
+     strings and characters of the language to be differentiated and
+     rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __euphoria__ files. The folds occur about
+     __function__ and __procedure__ definitions and their __end__ text located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Euphoria mode offers beside folding as well support for displaying
+     an outline of the functions, procedures, type and constant definitions
+     of the Euphoria file for easy  navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Euphoria
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"fu"_ (function) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c esc esc __- Command complete.  
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+
+  > __%fhook-euphor-exec__ - The command to execute the current Euphoria file, 
+      default is set to _"eui %f"_ where _%f_ represents the file name,
+            
+  > __%fhook-euphor-format__ - The command to format current Euphoria file,
+      default is set to _"restyle-buffer"_ using MicroEmacs indentation to 
+      indent the current file.
+
+  > __%fhook-euphor-lint__ - The command to check/lint the current Euphoria file, 
+       default is set to _"eui -test %f"_ where _%f_ represents
+       the file name.
+  
+  > The setting assume that the Euphoria interpreter is available via the _PATH_ environment variable. 
+    On Windows you must insert here either the complete _PATH_ to the 
+    `eui` executable or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myeuphor.emf_ file. 
+
+
+## BUGS
+
+
+  The File hook is not tested  extensively,  so there might be a few  problems
+  waiting for the user.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [item-list(3)](item-list(3)), [time(2m)](time(2m)).
 !! me-id: meende

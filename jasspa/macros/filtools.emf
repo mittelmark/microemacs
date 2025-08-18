@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250802.1051>
+;  Last Modified : <250813.1554>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -197,10 +197,17 @@ add-file-hook "*file-exec*" fhook-file-exec
   set-variable %fhook-dart-exec   "dart run %f"
 !endif
 
+; Euphoria
+!if &not &seq &which "eui" "ERROR"
+  set-variable %fhook-euphor-lint   "eui -test %f"
+  set-variable %fhook-euphor-exec   "eui %f"  
+  set-variable %fhook-euphor-format "restyle-buffer"
+!endif
+
+
 ; Fortran
 !if &not &seq &which "gfortran" "ERROR"
   set-variable %fhook-f90-lint   "gfortran -Wall -fmax-errors=3 -fsyntax-only %f"
-  1000 ml-write &which "fprettify"
   !if &not &seq &which "fprettify" "ERROR"
     ; python program
     ; sudo dnf install fprettify

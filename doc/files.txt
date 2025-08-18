@@ -1121,5 +1121,11 @@ m9typ058.html	julia(9)
 m9typ059.html	m(9)
 m9typ059.html	matlab(9)
 m9typ059.html	octave(9)
+m9typ060.html	e(9)
+m9typ060.html	ew(9)
+m9typ060.html	ex(9)
+m9typ060.html	exu(9)
+m9typ060.html	exw(9)
+m9typ060.html	euphoria(9)
 home.html	home
 home.html	MicroEmacs

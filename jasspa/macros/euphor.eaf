@@ -1,4 +1,10 @@
-if "if \p then\rend if\r\P"
-wh "while \p do\rend while\r\P"
-fu "function \p\rend function\r\P"
+if "if \p then\rend if\r\P" "  if"
+sw "switch \p do\rcase ... then\r\rcase else\r\rend switch\r\P" "  switch"
+fo "for \p... to ... by ...\r\rend for\r\P" "  for"
+wh "while \p do\rend while\r\P" "  while"
+lo "loop do\r\p\runtil ...\r\P" "  loop"
+fu "function \p()\rend function\r\P" "  function"
+pr "procedure \p()\rend procedure\r\P" "  procedure"
+pu "puts(1,\"\p\")\r\P" "  puts"
+ty "type \p\r}\rend type\r\" "  type"
 
