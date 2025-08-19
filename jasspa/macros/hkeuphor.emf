@@ -81,7 +81,9 @@ set-variable .fhook-euphor.item-list-r4 "Proc \ecB\\2\ecA"
     hilight .hilight.euphor 1 "sequence"     .scheme.type
     hilight .hilight.euphor 1 "atom"         .scheme.type
     hilight .hilight.euphor 1 "integer"      .scheme.type
-
+    hilight .hilight.euphor 1 "TRUE"         .scheme.type ; include std/types.e
+    hilight .hilight.euphor 1 "FALSE"        .scheme.type
+    
     hilight .hilight.euphor 1 "and"          .scheme.operator
     hilight .hilight.euphor 1 "compare"      .scheme.operator
     hilight .hilight.euphor 1 "equal"        .scheme.operator

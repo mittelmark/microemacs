@@ -3,7 +3,7 @@
 --  Author        : $Author$
 --  Created By    : $USER_NAME$
 --  Created       : $ASCII_TIME$
---  Last Modified : <090829.1747>
+--  Last Modified : <250818.2043>
 --
 --  Description
 --
@@ -14,3 +14,6 @@
 --  Copyright (c) $YEAR$ $COMPANY_NAME$.
 --
 ----------------------------------------------------------------------------
+include std/io.e
+include std/types.e
+include std/regex.e as re
