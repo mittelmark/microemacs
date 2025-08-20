@@ -32869,7 +32869,7 @@ $a
        Tags options flag, default value is "". See above for more
        information.
 
-      cD%tag-filemaskcA
+    cD%tag-filemaskcA
 
        A list of source file masks to be processed when a directory is given,
        default value is cGcG:*.emf:cAcA.
@@ -33391,7 +33391,7 @@ $a
        Tags options flag, default value is "". See above for more
        information.
 
-      cD%tag-filemaskcA
+    cD%tag-filemaskcA
 
        A list of source file masks to be processed when a directory is given,
        default value is ":*.bas:*.cls:*.asp:".
@@ -33477,7 +33477,7 @@ $a
        Tags options flag, default value is "". See above for more
        information.
 
-      cD%tag-filemaskcA
+    cD%tag-filemaskcA
 
        A list of source file masks to be processed when a directory is given,
        default value is ":*.pl:*.pm:".
@@ -33563,7 +33563,7 @@ $a
        Tags options flag, default value is "". See above for more
        information.
 
-      cD%tag-filemaskcA
+    cD%tag-filemaskcA
 
        A list of source file masks to be processed when a directory is given,
        default value is ":*.php:*.php3:*.php4:*.php5:*.phtml:*.inc:".
@@ -33649,7 +33649,7 @@ $a
        Tags options flag, default value is "". See above for more
        information.
 
-      cD%tag-filemaskcA
+    cD%tag-filemaskcA
 
        A list of source file masks to be processed when a directory is given,
        default value is ":*.js:".
@@ -33735,7 +33735,7 @@ $a
        Tags options flag, default value is "". See above for more
        information.
 
-      cD%tag-filemaskcA
+    cD%tag-filemaskcA
 
        A list of source file masks to be processed when a directory is given,
        default value is ":*.lua:".
