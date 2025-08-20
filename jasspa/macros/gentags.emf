@@ -84,6 +84,7 @@ osd .osd.gtf 230 "f"    ")"
 osd .osd.gtf 240 ""
 osd .osd.gtf 250 "BhcfHi" .scheme.osd-ebtt " \HGenerate Tags "    f generate-tags-file-exec
 osd .osd.gtf 260 "BcfH"   .scheme.osd-ebtt " \HCancel "    1 void
+set-variable .generate-tags-file.flags &rep %tag-option "c" ""
 
 ; generate-tags-file [tagtype] [start-path]
 ; runs ME @<tagtype> -f -o<tags-options>...
@@ -114,5 +115,3 @@ define-macro generate-tags-file
         .osd.gtf osd
     !endif
 !emacro
-set-variable .generate-tags-file.flags &rep %tag-option "c" ""
-

@@ -521,6 +521,7 @@ Miscellaneous Information
     lsgdiff(3f)lmgdiff(3f)le Command line graphical file difference  
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
     lsjstags(3f)lmjstags(3f)le Generate a Javascript tags file  
+    lsluatags(3f)lmluatags(3f)le Generate a Lua tags file  
     lsntags(3f)lmntags(3f)le Generate a nroff tags file  
     lsperltags(3f)lmperltags(3f)le Generate a Perl tags file  
     lsphptags(3f)lmphptags(3f)le Generate a PHP tags file    
@@ -1782,6 +1783,7 @@ Miscellaneous Information
     lsl(9)lml(9)le LEX programming language  
     lslatex(9)lmlatex(9)le TeX Documentation  
     lslogin(9)lmlogin(9)le Shell user login file  
+    lslua(9)lmlua(9)le Lua programming language  
     lsm(9)lmm(9)le GNU Octave / Matlab programming language  
     lsMarkdown(9)lmMarkdown(9)le Markdown Markup File  
     lsmatlab(9)lmmatlab(9)le GNU Octave / Matlab programming language  
@@ -3816,6 +3818,8 @@ Miscellaneous Information
     lslogin(9)lmlogin(9)le Shell user login file  
     lslower-case-region(2)lmlower-case-region(2)le (C-x C-l) Lowercase a region (downcase)  
     lslower-case-word(2)lmlower-case-word(2)le (esc l) Lowercase word (downcase)  
+    lslua(9)lmlua(9)le Lua programming language  
+    lsluatags(3f)lmluatags(3f)le Generate a Lua tags file  
     lsm(9)lmm(9)le GNU Octave / Matlab programming language    
     lsMacroArguments(4)lmMacroArguments(4)le Arguments to macros  
     lsMacroNumericArguments(4)lmMacroNumericArguments(4)le Numeric arguments to macros  
@@ -33663,6 +33667,92 @@ $a
 
 
     lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lsjs(9)lmjs(9)le.
+! 3fluatags
+cEcENAME cEcA
+
+
+    luatags - Generate a Lua tags file
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@luatags" [cC-v%tag-option=<flags>cA] [cCfilescA]
+
+
+cEDESCRIPTION cA
+
+
+    The start-up file cGluatags.emfcA may be invoked from the command line to
+    generate a cDtagscA file for Lua files, see lslua(9)lmlua(9)le.
+
+    Given a list of cCfilescA a tags file cGtagscA is generated in the current
+    directory, which may be used by the lsfind-tag(2)lmfind-tag(2)le command. If no cCfilescA are
+    specified the default file list is cGcG./cAcA, i.e. process the current
+    directory. If a directory name is given (such as the default cGcG./cAcA) all
+    Lua files having the cG.luacA file extension within the directory will 
+    be processed.
+
+    The value of variable cD%tag-optioncA is used to control the tag generation
+    process, its value cC<flags>cA can contain any number of the following flags:
+
+    cGacA
+ 
+       Append new tags to the existing tag file, note that if also using flag
+       cCcGmcAcA multiple 'tags' to the same item may be created.
+
+    cGmcA
+ 
+       Enable multiple tags. This enables the existence of 2 tags with the
+       same tag name, but typically with different locations. See help on
+       lsfind-tag(2)lmfind-tag(2)le for more information on multiple tag support.
+
+    cGrcA
+ 
+       Enables recursive mode, any sub-directory found within any given
+       directories will also be processed.
+
+
+cENOTES cA
+
+
+    This function is invoked from menu
+
+       cDTools -> Lua Tools -> Generate Tags FilecA
+
+    when the user requests a tags file to be generated.
+
+    The user setup file cGcGmyluatags.emfcAcA is executed by cGluatagscA during
+    start-up, this file can be used to over-ride any of the cGluatagscA
+    configuration variables (see below).
+
+    The following variables are set within cGcGluatags.emfcAcA and are used to
+    control the process:-
+
+    cD%tag-optioncA
+ 
+       Tags options flag, default value is "". See above for more
+       information.
+
+      cD%tag-filemaskcA
+
+       A list of source file masks to be processed when a directory is given,
+       default value is ":*.lua:".
+
+    cD%tag-ignoredircA
+ 
+       A list of directories to be ignored when recursive option is used,
+       default value is cGcG:SCCS/:CVS/:.git/:.svn/:cAcA.
+
+    These variables can be changed using the -v command-line option or via the
+    cGcGmyluatags.emfcAcA file
+
+
+cESEE ALSO cA
+
+
+    lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lslua(9)lmlua(9)le.
 ! 3 compile
 cEcENAME cEcA
 
@@ -38390,11 +38480,11 @@ $a
 cEcENAME cEcA
 
 
-    perldb - Perl Debugger
+!  perldb - Perl Debugger
 $a
 
 
-cESYNOPSIS cA
+cEcESYNOPSIS cEcA
 
 
     cCncA cDperldbcA [ "cCscript-namecA" ] "cCscript-argscA"
@@ -65886,3 +65976,145 @@ $a
     lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
     lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
+! 9 lua
+! 5 %fhook-lua-exec
+! 5 %fhook-lua-format
+! 5 %fhook-lua-lint
+cEcESYNOPSIS cEcA
+
+
+    lua - Lua files
+
+
+cEFILES cA
+
+
+    cDhklua.emfcA - Lua file hook definition  
+    cDlua.etfcA - Lua template file  
+    cDlua.eafcA - Lua abbreviation file
+
+
+cEEXTENSIONS cA
+
+
+    cD.luacA - Lua file  
+
+
+cEMAGIC STRINGS cA
+
+
+    cD^#![ \t]*/.*luacA
+    
+       MicroEmacs 2009 recognizes the magic string on the first line of the
+       file used to locate the executable. The Lua files may be extension
+       less and are still recognized.
+
+    cD-!- lua -!-cA
+    
+       Recognized by MicroEmacs only, defines the file to be a Lua file.
+
+
+
+cEDESCRIPTION cA
+
+
+    The cDLuacA file hook provides simple hilighting of Lua
+    files, folding, item listing, abbreviations and indentation support.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow functions, logicals, comments,
+       strings and characters of the language to be differentiated and
+       rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The lsindent(2)lmindentation mechanismle is enabled which performs performs automatic
+       layout of the text. lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are
+       available to reformat (re-layout) selected sections of the buffer, or
+       the whole buffer, respectively.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the cDluacA files. The folds occur about
+       cDfunctioncA definitions and their cDendcA text located on the left-hand margin.
+
+      - lscollapse-all(3)lmcollapse-all(3)le - (un)folds  all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Lua mode offers beside folding as well support for displaying
+       an outline of the functions definitions
+       of the Lua file for easy  navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Lua
+       file  editing  which  can  be  used  by  writing  short   abbreviations
+       like   cC"if"cA  cC"wh"cA (while), or cC"fu"cA (function) - and then pressing
+       the key-binding for the  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDTagscA
+    
+       A C-tags file may be generated within the editor using the cDToolscA ->
+       cDLua-ToolscA -> cDGenerate Tag FilecA. lsfind-tag(2)lmfind-tag(2)le takes the user to the file
+       using the tag information.
+
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c esc esc cA- Command complete.  
+       cDf2cA - (un)fold the current region  
+       cDf3cA - (un)fold all regions  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cDExecuting, Formatting and LintingcA
+
+      cD%fhook-lua-execcA - The command to execute the current Lua file, 
+        default is set to cC"lua %f"cA where cC%fcA represents the file name,
+              
+      cD%fhook-lua-formatcA - The command to format current Lua file,
+        default is set to cC"luafmt"cA if this tool is installed or "restyle-buffer" 
+        using MicroEmacs indentation to properly indent the current file.
+
+      cD%fhook-lua-lintcA - The command to check/lint the current Lua file, 
+         default is set to cC"luac -p %f"cA where cC%fcA represents
+         the file name.
+    
+      The setting assume that the Lua interpreter is available via the cCPATHcA environment variable. 
+      On Windows you must insert here either the complete cCPATHcA to the 
+      cGluacA executable or add the folder where this file is to the cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmylua.emfcA file. 
+
+
+cEBUGS cA
+
+
+    The File hook is not tested  extensively,  so there might be a few  problems
+    waiting for the user.
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsfind-tag(2)lmfind-tag(2)le, lsrestyle-region(3)lmrestyle-region(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
+    lsitem-list(3)lmitem-list(3)le, lsluatags(3f)lmluatags(3f)le, lstime(2m)lmtime(2m)le.

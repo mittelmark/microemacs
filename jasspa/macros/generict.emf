@@ -1,0 +1,90 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Author        : $Author$
+;  Created By    : dgroth
+;  Created       : Wed Aug 20 06:49:55 2025
+;  Last Modified : <250820.0652>
+;
+;  Description
+;
+;  Notes
+;
+;  History
+;
+;  Copyright (c) 2025 dgroth.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0 define-macro gentags-parse-tags
+  ml-write "All done! Parsing tags file."
+  beginning-of-buffer
+  set-mark
+  replace-string "\\\\" "\\\\\\\\"
+  end-of-buffer
+  sort-lines
+!emacro
+    
+0 define-macro gentags-process-buffers
+  set-variable #l5 @1
+  !repeat
+    set-variable #l0 $buffer-bname
+    !if &xse #l0 "^.*<[0-9]*>$"
+      set-variable #l1 &lef #l0 &sub &rsin "<" #l0 1
+    !else
+      set-variable #l1 #l0
+    !endif
+    !if &iseq #l1 %tag-bname
+      !return
+    !elif &lfind %tag-ignore #l1
+    !elif &band $buffer-fmod 0x10000
+      set-variable #l2 $buffer-fname
+      set-variable #l3 0
+      !while &not &seq &set #l4 &lget %tag-filemask &inc #l3 1 ""
+        !force find-file &cat #l2 #l4 
+      !done
+    !else
+      beginning-of-buffer
+      !force execute-named-command &spr "%stags-add-file" #l5
+      !if &not $status
+        ml-write &spr "[Warning: %s-add-file failed on \"%s\"]" #l5 $buffer-fname
+        !bell
+        ;set-variable #l9 @cq
+      !endif
+    !endif
+    0 delete-buffer #l0
+  !until 0
+!emacro
+
+0 define-macro gentags
+  !if &seq &lget %tag-filemask 1 ""
+    ml-write "[No input file mask set!]"
+    !abort
+  !endif
+  delete-other-windows
+  split-window-vertically
+  find-buffer "*scratch*"
+  set-variable #l0 &stat "a" "."
+  find-file %tag-file
+  set-variable %tag-bname $buffer-bname 
+  -1 buffer-mode "view"
+  !force 0 delete-buffer "*scratch*"
+  set-variable #g1 &rsin "/" $buffer-fname
+  set-variable #g2 &lef $buffer-fname #g1
+  !if &not &sin "a" %tag-option
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    -1 kill-region
+  !else
+    end-of-buffer
+  !endif
+  !if &sin "r" %tag-option
+    set-variable %tag-filemask &lins %tag-filemask -1 "[^.]*/"
+  !endif
+  1 buffer-mode "magic"
+  1 buffer-mode "exact"
+  next-window
+  !if &iseq $buffer-bname %tag-bname
+    !force find-file #l0
+  !endif
+!emacro
+

@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250813.1554>
+;  Last Modified : <250819.1849>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -246,6 +246,8 @@ add-file-hook "*file-exec*" fhook-file-exec
   ; sudo npm install -g lua-fmt
   !if &not &seq &which "luafmt" "ERROR"
     set-variable %fhook-lua-format "luafmt --write-mode replace %f"
+  !else
+    set-variable %fhook-lua-format "restyle-buffer"
   !endif
 !endif
 

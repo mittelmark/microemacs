@@ -1,0 +1,3 @@
+hello	new.lua	/^function hello ()$/
+hi	func.lua	/^function hi ()$/
+test2	new.lua	/^function test2 ()$/

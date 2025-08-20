@@ -42,13 +42,19 @@ set-variable .fhook-lua.collapse-mnext  "-1"
     ; define our highlighting scheme
     0 hilight .hilight.lua 1                    $global-scheme
     
-    hilight .hilight.lua 2 "--"                 .scheme.comment
-    
+    hilight .hilight.lua 2 "--"                     .scheme.comment
+    hilight .hilight.lua 4 "--\\[\\[" "\\]\\]" ""   .scheme.comment
+    hilight .hilight.lua 4 "\\[\\[" "\\]\\]" "" .scheme.string
+    hilight .hilight.lua 4 "--\\[=\\[" "\\]=\\]" "" .scheme.comment
     hilight .hilight.lua 0x804 "\"" "\"" "\\"   .scheme.string
     hilight .hilight.lua 0x804 "'" "'" "\\"     .scheme.string
     hilight .hilight.lua 0x80 "\\[" .hilight.luaS .scheme.string
     hilight .hilight.lua 0 "\\w\\["             $global-scheme
+    hilight .hilight.lua    0 "::\\w+::"        .scheme.link ; label
     
+    hilight .hilight.lua    2 "^#!/"         .scheme.header
+    hilight .hilight.lua    2 "require "     .scheme.prepro
+
     hilight .hilight.lua 1 "break"              .scheme.keyword
     hilight .hilight.lua 1 "do"                 .scheme.keyword
     hilight .hilight.lua 1 "else"               .scheme.keyword
@@ -56,6 +62,7 @@ set-variable .fhook-lua.collapse-mnext  "-1"
     hilight .hilight.lua 1 "end"                .scheme.keyword
     hilight .hilight.lua 1 "for"                .scheme.keyword
     hilight .hilight.lua 1 "function"           .scheme.keyword
+    hilight .hilight.lua 1 "goto"               .scheme.keyword    
     hilight .hilight.lua 1 "if"                 .scheme.keyword
     hilight .hilight.lua 1 "in"                 .scheme.keyword
     hilight .hilight.lua 1 "local"              .scheme.keyword

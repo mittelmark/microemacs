@@ -1,4 +1,4 @@
-! me-id: home
+!! me-id: home
 !   home
 !   MicroEmacs
 !   Contents
@@ -413,6 +413,7 @@
   [gdiff(3f)](gdiff(3f)) Command line graphical file difference  
   [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
   [jstags(3f)](jstags(3f)) Generate a Javascript tags file  
+  [luatags(3f)](luatags(3f)) Generate a Lua tags file  
   [ntags(3f)](ntags(3f)) Generate a nroff tags file  
   [perltags(3f)](perltags(3f)) Generate a Perl tags file  
   [phptags(3f)](phptags(3f)) Generate a PHP tags file    
@@ -1698,6 +1699,7 @@
   [l(9)](l(9)) LEX programming language  
   [latex(9)](latex(9)) TeX Documentation  
   [login(9)](login(9)) Shell user login file  
+  [lua(9)](lua(9)) Lua programming language  
   [m(9)](m(9)) GNU Octave / Matlab programming language  
   [Markdown(9)](Markdown(9)) Markdown Markup File  
   [matlab(9)](matlab(9)) GNU Octave / Matlab programming language  
@@ -3737,6 +3739,8 @@
   [login(9)](login(9)) Shell user login file  
   [lower-case-region(2)](lower-case-region(2)) (C-x C-l) Lowercase a region (downcase)  
   [lower-case-word(2)](lower-case-word(2)) (esc l) Lowercase word (downcase)  
+  [lua(9)](lua(9)) Lua programming language  
+  [luatags(3f)](luatags(3f)) Generate a Lua tags file  
   [m(9)](m(9)) GNU Octave / Matlab programming language    
   [MacroArguments(4)](MacroArguments(4)) Arguments to macros  
   [MacroNumericArguments(4)](MacroNumericArguments(4)) Numeric arguments to macros  
@@ -34086,6 +34090,93 @@ $a
 
 
   [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [js(9)](js(9)).
+!! me-id: m3fcl017
+! 3fluatags
+## NAME
+
+
+  luatags - Generate a Lua tags file
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@luatags" [_-v%tag-option=<flags>_] [_files_]
+
+
+## DESCRIPTION
+
+
+  The start-up file `luatags.emf` may be invoked from the command line to
+  generate a __tags__ file for Lua files, see [lua(9)](lua(9)).
+
+  Given a list of _files_ a tags file `tags` is generated in the current
+  directory, which may be used by the [find-tag(2)](find-tag(2)) command. If no _files_ are
+  specified the default file list is "`./`", i.e. process the current
+  directory. If a directory name is given (such as the default "`./`") all
+  Lua files having the `.lua` file extension within the directory will 
+  be processed.
+
+  The value of variable __%tag-option__ is used to control the tag generation
+  process, its value _<flags>_ can contain any number of the following flags:
+
+  `a`
+ 
+  >  Append new tags to the existing tag file, note that if also using flag
+     '`m`' multiple 'tags' to the same item may be created.
+
+  `m`
+ 
+  >  Enable multiple tags. This enables the existence of 2 tags with the
+     same tag name, but typically with different locations. See help on
+     [find-tag(2)](find-tag(2)) for more information on multiple tag support.
+
+  `r`
+ 
+  >  Enables recursive mode, any sub-directory found within any given
+     directories will also be processed.
+
+
+## NOTES
+
+
+  This function is invoked from menu
+
+  >  __Tools -> Lua Tools -> Generate Tags File__
+
+  when the user requests a tags file to be generated.
+
+  The user setup file "`myluatags.emf`" is executed by `luatags` during
+  start-up, this file can be used to over-ride any of the `luatags`
+  configuration variables (see below).
+
+  The following variables are set within "`luatags.emf`" and are used to
+  control the process:-
+
+  __%tag-option__
+ 
+  >  Tags options flag, default value is "". See above for more
+     information.
+
+  > __%tag-filemask__
+
+  >  A list of source file masks to be processed when a directory is given,
+     default value is ":*.lua:".
+
+  __%tag-ignoredir__
+ 
+  >  A list of directories to be ignored when recursive option is used,
+     default value is "`:SCCS/:CVS/:.git/:.svn/:`".
+
+  These variables can be changed using the -v command-line option or via the
+  "`myluatags.emf`" file
+
+
+## SEE ALSO
+
+
+  [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [lua(9)](lua(9)).
 !! me-id: m3mac000
 ! 3 compile
 ## NAME
@@ -38894,7 +38985,7 @@ $a
 ## NAME
 
 
-  perldb - Perl Debugger
+!  perldb - Perl Debugger
 $a
 
 
@@ -66850,4 +66941,147 @@ $a
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
+!! me-id: m9typ060
+! 9 lua
+! 5 %fhook-lua-exec
+! 5 %fhook-lua-format
+! 5 %fhook-lua-lint
+## SYNOPSIS
+
+
+  lua - Lua files
+
+
+## FILES
+
+
+  __hklua.emf__ - Lua file hook definition  
+  __lua.etf__ - Lua template file  
+  __lua.eaf__ - Lua abbreviation file
+
+
+## EXTENSIONS
+
+
+  __.lua__ - Lua file  
+
+
+## MAGIC STRINGS
+
+
+  __^#![ \t]*/.*lua__
+  
+  >  MicroEmacs 2009 recognizes the magic string on the first line of the
+     file used to locate the executable. The Lua files may be extension
+     less and are still recognized.
+
+  __-!- lua -!-__
+  
+  >  Recognized by MicroEmacs only, defines the file to be a Lua file.
+
+
+
+## DESCRIPTION
+
+
+  The __Lua__ file hook provides simple hilighting of Lua
+  files, folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, logicals, comments,
+     strings and characters of the language to be differentiated and
+     rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __lua__ files. The folds occur about
+     __function__ definitions and their __end__ text located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Lua mode offers beside folding as well support for displaying
+     an outline of the functions definitions
+     of the Lua file for easy  navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Lua
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"fu"_ (function) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Tags__
+  
+  >  A C-tags file may be generated within the editor using the __Tools__ ->
+     __Lua-Tools__ -> __Generate Tag File__. [find-tag(2)](find-tag(2)) takes the user to the file
+     using the tag information.
+
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c esc esc __- Command complete.  
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+
+  > __%fhook-lua-exec__ - The command to execute the current Lua file, 
+      default is set to _"lua %f"_ where _%f_ represents the file name,
+            
+  > __%fhook-lua-format__ - The command to format current Lua file,
+      default is set to _"luafmt"_ if this tool is installed or "restyle-buffer" 
+      using MicroEmacs indentation to properly indent the current file.
+
+  > __%fhook-lua-lint__ - The command to check/lint the current Lua file, 
+       default is set to _"luac -p %f"_ where _%f_ represents
+       the file name.
+  
+  > The setting assume that the Lua interpreter is available via the _PATH_ environment variable. 
+    On Windows you must insert here either the complete _PATH_ to the 
+    `lua` executable or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mylua.emf_ file. 
+
+
+## BUGS
+
+
+  The File hook is not tested  extensively,  so there might be a few  problems
+  waiting for the user.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [find-tag(2)](find-tag(2)), [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
+  [item-list(3)](item-list(3)), [luatags(3f)](luatags(3f)), [time(2m)](time(2m)).
 !! me-id: meende

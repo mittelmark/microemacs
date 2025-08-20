@@ -1,0 +1,93 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1998-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Created:     2025
+; Synopsis:    Command-line macro for creating a Lua tags file
+; Authors:     Steven Phillips, Detlef Groth, based on perltags
+;
+; Usage:
+;      me "@luatags" [<files> <dirs>] [-f -o<options> -t<tag_file> -m<file_mask> -i<ignore_files>]
+;
+; Options:
+;      r - recurse, a - append, m - multiple links to a tag
+;
+define-macro-file generict gentags gentags-parse-tags gentags-process-buffers
+set-variable %tag-option   ""
+set-variable %tag-file     "tags"
+set-variable %tag-filemask ":*.lua:"
+set-variable %tag-ignore   ":SCCS/:CVS/:.git/:.svn/:"
+
+set-variable #l0 0
+!while &exi &cat ".about.arg" #l0
+  set-variable #l2 &ind &cat ".about.arg" &pinc #l0 1
+  set-variable #l1 &lef #l2 2
+  set-variable #l2 &rig #l2 2
+  !if &seq #l1 "-o"
+    set-variable %tag-option #l2
+  !elif &seq #l1 "-t"
+    set-variable %tag-file #l2
+  !elif &seq #l1 "-m"
+    set-variable %tag-filemask #l2
+  !elif &seq #l1 "-i"
+    set-variable %tag-ignore #l2
+  !endif
+!done
+
+; in perl you can have function names with 's - and in Lua?
+set-char-mask "3" "'"
+
+define-macro luatags-add-file
+  set-variable $buffer-mask "luh13"
+  set-variable #l2 $buffer-fname
+  !if &seq &lef #l2 #g1 #g2
+    set-variable #l2 &rig #l2 #g1
+  !endif
+  ml-write &spr "[Parsing file %s]" #l2
+  1 buffer-mode "magic"
+  beginning-of-buffer
+  !repeat
+    !force search-forward "^[ \t]*function[ \t\n]\\(\\w*\\)"
+    !if $status
+      set-variable #l1 @s1
+      set-variable #l3 @wl
+      next-window
+      !tjump &sin "m" %tag-option 4
+      beginning-of-buffer
+      !force search-forward &spr "^%s\t" #l1
+      !if &not $status
+        end-of-buffer
+        insert-string #l1
+        insert-string "\t"
+        insert-string #l2
+        insert-string "\t/^"
+        insert-string #l3
+        insert-string "$/"
+      !endif
+      next-window
+    !endif
+  !until &not $status
+!emacro
+
+define-macro luatags-parse-tags
+  gentags-parse-tags
+!emacro
+    
+define-macro luatags-process-buffers
+  gentags-process-buffers "lua"
+!emacro
+
+define-macro luatags
+  gentags
+  luatags-process-buffers
+  luatags-parse-tags
+!emacro
+  
+0 define-macro start-up
+  luatags
+  quick-exit
+!emacro
+
+; load in user extensions if found
+!force execute-file "myluatags"
