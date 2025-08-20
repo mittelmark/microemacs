@@ -7,7 +7,7 @@ fe "for \p in x\r\rend\r" "  foreach"
 fu "function \p ()\r\r\end\r\P" "  function"
 ma "macro \p
 wh "while \p\r\rend\r\P" "  while"
-tc "try\r\r\pcatch e\rprintln(\"Error: $e\")\r\P" "  try/catch"
+tc "try\r\p\rcatch e\rprintln(\"Error: $e\")\r\P" "  try/catch"
 di "\p = Dict(\"key\" => value)" "  dict"
 or "open(\p)\rdo file)\r\rend\r\P" "  openr"
 wf "for line in eachline(file)\r    println(line)\r\Tend" "  whilef"
