@@ -66712,30 +66712,50 @@ $a
   > __%fhook-julia-exec__ - The command to execute the current Julia file, default
        is set to _"julia %f"_ where _%f_ represents the file name 
   > __%fhook-julia-format__ - The command to format current Julia file, default  
-       is set to _"runic -i fmt %f"_ where %f represents the file name. Installation of this formatter is
+       is set to _"runic -i %f"_ where _%f_ represents the file name. Installation of this formatter is
        described at: _https://github.com/fredrikekre/Runic.jl_
   > __%fhook-julia-lint__ - The command to check/lint the current Julia file, 
-       default is set to _"julia %f 2>&1"_ 
+       default is set to _"julia -e 'import ReLint;ReLint.runUNDERLINElint(\"%f\")'"_. 
+       Installation procedure is described at: _https://github.com/RelationalAI-oss/ReLint.jl_
   
   > The  setting  assume  that  the  Julia  executable  is  available  via the  _PATH_
     environment  variable.  On Windows you must insert here either the  complete
     _PATH_ to the _`julia`_  executable  or add the  folder  where this file is to the
     _PATH_ variable.
+ 
+   > The _runic_ tool can be installed as follows:
 
-  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
-    or the _myjulia.emf_ file. 
+```   
+            ### Download the script into ~/.local/bin
+            curl -fsSL -o ~/.local/bin/runic \
+                https://raw.githubusercontent.com/fredrikekre/Runic.jl/refs/heads/master/bin/runic
+            ### Make the script executable
+            chmod +x ~/.local/bin/runic
+            #### Verify the installation
+            runic --version
+```
+
+   > The procedure to install the "ReLint" Julia linter package in the julia shell is like this:
+
+```
+            import Pkg 
+            Pkg.add(url="https://github.com/RelationalAI-oss/ReLint.jl")
+```
+
+  > These global variables for executing, formatting and linting Julia code should be changed if necessary 
+    usually within your _USERNAME.emf_  or the _myjulia.emf_ file. 
 
 ## NOTES
 
 
-  The hilighting of Julia files and additional other features are typically extended using a file __myjl.emf__. 
+  The hilighting of Julia files and other editing features are typically extended using a file __myjl.emf__. 
     
 ## SEE ALSO
 
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
-  [file-exec(3)], [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), 
+  [file-exec(3)](file-exec(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), 
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ059
 ! 9 m

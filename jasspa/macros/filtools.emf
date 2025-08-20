@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250820.1532>
+;  Last Modified : <250820.2143>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -74,8 +74,10 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
   0 hilight .hilight.file-lint 2 200                                     $global-scheme
   hilight .hilight.file-lint   0  "\\.+:[0-9]+:[0-9]*"      .scheme.link  
   hilight .hilight.file-lint   0  "[-_/A-Za-z0-9]+\\.*[A-Za-z0-9]+:[0-9]+:[0-9]*"      .scheme.link    
-  hilight .hilight.file-lint   0  "warning:.+"     .scheme.operator
-  hilight .hilight.file-lint   0  "error:.+"     .scheme.error
+  hilight .hilight.file-lint   0  "warning:.+"      .scheme.operator
+  hilight .hilight.file-lint   0  "error:.+"        .scheme.error
+  hilight .hilight.file-lint   0  "WARNING.+"       .scheme.operator
+  hilight .hilight.file-lint   0  "ERROR.+"         .scheme.error
 !endif
 
 add-file-hook "*file-lint*" fhook-file-lint
@@ -138,7 +140,9 @@ set-variable .fhook-file-exec.setup-mask "acfhmw"
   0 hilight .hilight.file-exec 2 200                                     $global-scheme
   hilight .hilight.file-exec   0  "[-_/\\.A-Za-z0-9]+:[0-9]+:[0-9]+"      .scheme.link    
   hilight .hilight.file-exec   0  "warning:.+"     .scheme.operator
-  hilight .hilight.file-exec   0  "error:.+"     .scheme.error
+  hilight .hilight.file-exec   0  "error:.+"       .scheme.error
+  hilight .hilight.file-exec   0  "WARNING:.+"     .scheme.operator
+  hilight .hilight.file-exec   0  "ERROR:.+"       .scheme.error
 !endif
 
 add-file-hook "*file-exec*" fhook-file-exec
@@ -240,11 +244,15 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 !if &not &seq &which "julia" "ERROR"
-  set-variable %fhook-julia-lint "julia \"%f\" 2>&1"
+  set-variable %fhook-julia-lint "julia -e 'import ReLint;ReLint.run_lint(\"%f\")'"
   set-variable %fhook-julia-exec "julia \"%f\""
   !if &not &seq &which "runic" "ERROR"
     set-variable %fhook-julia-format "runic -i \"%f\"" 
   !endif
+  0 define-macro fhook-julia-replace
+    fhook-generic-replace "Line \\(.+\\), column \\(.+\\): \\(.+\\)\\. \\(.+\\)" "\\4:\\1:\\2 \\3"
+  !emacro
+
 !endif
 
 

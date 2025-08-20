@@ -20,7 +20,7 @@ function quadratic2(a::Float64, b::Float64, c::Float64)
     return r1, r2
 end
 
-vol = phere_vol(3)
+vol = sphere_vol(3)
 # @printf allows number formatting but does not automatically append the \n to statements, see below
 using Printf
 @printf "volume = %0.3f\n" vol
@@ -29,5 +29,10 @@ using Printf
 quad1, quad2 = quadratic2(2.0, -2.0, -12.0)
 println("result 1: ", quad1)
 
+macro sayhello(name)
+    return :( println("Hello ", $name,"!") )
+end
+
+@sayhello("MicroEmacs")
 # hello fffffffffffffffffffffffffffffffff                                 #
 # ffffffffffffffffffffffffffffffffffff fffffff fff fgggggggggggg            #
