@@ -20,7 +20,7 @@ function quadratic2(a::Float64, b::Float64, c::Float64)
     return r1, r2
 end
 
-vol = sphere_vol(3)
+vol = phere_vol(3)
 # @printf allows number formatting but does not automatically append the \n to statements, see below
 using Printf
 @printf "volume = %0.3f\n" vol
