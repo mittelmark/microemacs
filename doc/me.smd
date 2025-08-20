@@ -66608,11 +66608,24 @@ $a
 !! me-id: m9typ058
 ! 9 jl
 ! 9 julia
+! 5 %fhook-julia-exec
+! 5 %fhook-julia-format
+! 5 %fhook-julia-lint
+
 ## SYNOPSIS
 
 
   jl - Julia programming language
 
+## NAME
+
+|%fhook-julia-exec
+  %fhook-julia-exec - command to execute Julia files
+|%fhook-julia-format
+  %fhook-julia-format - formatting command for Julia files
+|%fhook-julia-lint
+  %fhook-julia-lint - linting command for Julia files
+$a
 
 ## FILES
 
@@ -66625,6 +66638,10 @@ $a
 
 
   __.jl__ - Julia file
+  __%fhook-julia-exec__  
+  __%fhook-julia-format__  
+  __%fhook-julia-lint__  
+
 
 
 ## DESCRIPTION
@@ -66690,16 +66707,35 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
+  __Executing, Formatting and Linting__
+
+  > __%fhook-julia-exec__ - The command to execute the current Julia file, default
+       is set to _"julia %f"_ where _%f_ represents the file name 
+  > __%fhook-julia-format__ - The command to format current Julia file, default  
+       is set to _"runic -i fmt %f"_ where %f represents the file name. Installation of this formatter is
+       described at: _https://github.com/fredrikekre/Runic.jl_
+  > __%fhook-julia-lint__ - The command to check/lint the current Julia file, 
+       default is set to _"julia %f 2>&1"_ 
+  
+  > The  setting  assume  that  the  Julia  executable  is  available  via the  _PATH_
+    environment  variable.  On Windows you must insert here either the  complete
+    _PATH_ to the _`julia`_  executable  or add the  folder  where this file is to the
+    _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myjulia.emf_ file. 
+
 ## NOTES
 
 
-  The hilighting is typically extended using a file __myjl.emf__. 
+  The hilighting of Julia files and additional other features are typically extended using a file __myjl.emf__. 
     
 ## SEE ALSO
 
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [file-exec(3)], [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), 
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ059
 ! 9 m
@@ -66941,7 +66977,7 @@ $a
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
-!! me-id: m9typ060
+!! me-id: m9typ061
 ! 9 lua
 ! 5 %fhook-lua-exec
 ! 5 %fhook-lua-format

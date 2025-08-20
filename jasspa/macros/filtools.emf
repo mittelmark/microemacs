@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250819.1849>
+;  Last Modified : <250820.1532>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -238,6 +238,15 @@ add-file-hook "*file-exec*" fhook-file-exec
     set-variable %fhook-java-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
   !endif
 !endif
+
+!if &not &seq &which "julia" "ERROR"
+  set-variable %fhook-julia-lint "julia \"%f\" 2>&1"
+  set-variable %fhook-julia-exec "julia \"%f\""
+  !if &not &seq &which "runic" "ERROR"
+    set-variable %fhook-julia-format "runic -i \"%f\"" 
+  !endif
+!endif
+
 
 ; Lua
 !if &not &seq &which "lua" "ERROR"

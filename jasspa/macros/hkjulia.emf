@@ -38,7 +38,7 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
   !endif
   0 hilight .hilight.julia 0                     $global-scheme
   hilight   .hilight.julia 2 "#"                 .scheme.comment
-  hilight   .hilight.julia 4 "#=" "=#" ""        .scheme.comment  
+  hilight   .hilight.julia 4 "#=" "=#" ""        .scheme.comment
   hilight   .hilight.julia 2 "^#!"               .scheme.header
   hilight   .hilight.julia 4 "\"" "\"" "\\"      .scheme.string
   hilight   .hilight.julia 0 "\\["               .scheme.string
@@ -49,7 +49,7 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
   ;hilight   .hilight.julia 1 "\\.real"           .scheme.variable
   hilight .hilight.julia 4  "\\$" "\\}\\W" ""    .scheme.variable
   hilight .hilight.julia 4  "@"   "\\}\\s" ""    .scheme.operator
-  
+
   ; packages
   hilight   .hilight.julia 2 "^using"         .scheme.prepro
   hilight   .hilight.julia 2 "^module"        .scheme.prepro
@@ -89,15 +89,15 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
   hilight    .hilight.julia 1 "Float64"       .scheme.type
   hilight    .hilight.julia 1 "Bool"          .scheme.type
   hilight    .hilight.julia 1 "Char"          .scheme.type
-  hilight    .hilight.julia 1 "Dict"          .scheme.type  
+  hilight    .hilight.julia 1 "Dict"          .scheme.type
   hilight    .hilight.julia 1 "Int8"          .scheme.type
   hilight    .hilight.julia 1 "Int16"         .scheme.type
   hilight    .hilight.julia 1 "Int32"         .scheme.type
   hilight    .hilight.julia 1 "Int64"         .scheme.type
-  hilight    .hilight.julia 1 "Int128"        .scheme.type  
+  hilight    .hilight.julia 1 "Int128"        .scheme.type
   hilight    .hilight.julia 1 "NamedTuple"    .scheme.type
-  hilight    .hilight.julia 1 "Set"           .scheme.type  
-  hilight    .hilight.julia 1 "SortedDict"    .scheme.type  
+  hilight    .hilight.julia 1 "Set"           .scheme.type
+  hilight    .hilight.julia 1 "SortedDict"    .scheme.type
   hilight    .hilight.julia 1 "UInt8"         .scheme.type
   hilight    .hilight.julia 1 "UInt16"        .scheme.type
   hilight    .hilight.julia 1 "UInt32"        .scheme.type
@@ -108,17 +108,17 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
 !if &sin "d" .fhook-julia.setup
   0 indent .hilight.julia 1 10
   indent .hilight.julia    N "function"        t
-  indent .hilight.julia    N "macro"           t  
+  indent .hilight.julia    N "macro"           t
   indent .hilight.julia    O "end"            -t
   indent .hilight.julia    N "if"              t
   indent .hilight.julia    S "else"           -t
   indent .hilight.julia    S "elseif"         -t
-  indent .hilight.julia    N "for"             t  
-  indent .hilight.julia    N "while"           t    
-  indent .hilight.julia    N "try"             t      
-  indent .hilight.julia    S "catch"          -t        
-  indent .hilight.julia    N "do"              t          
-  indent .hilight.julia    N "begin"           t            
+  indent .hilight.julia    N "for"             t
+  indent .hilight.julia    N "while"           t
+  indent .hilight.julia    N "try"             t
+  indent .hilight.julia    S "catch"          -t
+  indent .hilight.julia    N "do"              t
+  indent .hilight.julia    N "begin"           t
 !endif
 
 buffer-init-fhook "julia"
