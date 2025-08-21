@@ -66903,6 +66903,7 @@ $a
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+  [file-exec(3)](file-exec(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),   
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ060
 ! 9 ex
