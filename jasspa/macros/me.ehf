@@ -65793,10 +65793,23 @@ $a
 ! 9 m
 ! 9 octave
 ! 9 matlab
+! 5 %fhook-octave-exec
+! 5 %fhook-octave-format
+! 5 %fhook-octave-lint
 cEcESYNOPSIS cEcA
 
 
     m - GNU Octave / Matlab programming language
+
+cENAME cA
+
+|%fhook-octave-exec
+    %fhook-octave-exec - command to execute octave files
+|%fhook-octave-format
+    %fhook-octave-format - formatting command for octave files
+|%fhook-octave-lint
+    %fhook-octave-lint - linting command for octave files
+$a
 
 
 cEFILES cA
@@ -65810,6 +65823,9 @@ $a
 
 
     cD.mcA - GNU Octave / Matlab file
+    cD%fhook-octave-execcA  
+    cD%fhook-octave-formatcA  
+    cD%fhook-octave-lintcA  
 
 
 cEDESCRIPTION cA
@@ -65875,10 +65891,42 @@ $a
        cDf6cA - Display the item list.
        cDesc f6cA - Hide the item list.
 
+
+    cDExecuting, Formatting and LintingcA
+
+      cD%fhook-octave-execcA - The command to execute the current Octave file, default
+         is set to cC"octave -W %f"cA where cC%fcA represents the file name 
+      cD%fhook-octave-formatcA - The command to format current Octave file, default  
+         is set to cC"matlab-formatter %f --inplace=true"cA where cC%fcA represents the file name.
+         Installation of this formatter is described below.
+      cD%fhook-octave-lintcA - The command to check/lint the current Octave file (Octave has no 
+         real linter available), default is set to cC"octave -W %f"cA on a Unix system and
+         cC"octave -W \"%f\" > NULL 2>&1"cA on  a Windows system.
+    
+      The  setting  assume  that  the  Octave interpreter  is  available  via the  cCPATHcA
+      environment  variable.  On Windows you must insert here either the  complete
+      cCPATHcA to the cCcGoctavecAcA  executable  or add the  folder  where this file is to the
+      cCPATHcA variable.
+ 
+     > The cCmatlab-formattercA tool can be installed as follows:
+
+sA              ### Download the script into ~/.local/bin
+              curl -fsSL -o ~/.local/bin/matlab-formatter \
+                  https://raw.githubusercontent.com/mittelmark/matlab-formatter-vscode/refs/heads/master/formatter/matlab_formatter.py
+              ### Make the script executable
+              chmod +x ~/.local/bin/matlab-formatter
+              #### Verify the installation
+              matlab-formatter
+sA
+      These global variables for executing, formatting and linting Octave code should be changed if necessary 
+      usually within your cCUSERNAME.emfcA  or the cCmyoctave.emfcA file. 
+
+
 cENOTES cA
 
 
-    The hilighting is typically extended using a file cDmym.emfcA. 
+    The hilighting and adding additional features is typically done using a file cDmym.emfcA in the users
+    configuration folder. 
       
 cESEE ALSO cA
 

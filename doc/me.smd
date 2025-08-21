@@ -66761,10 +66761,23 @@ $a
 ! 9 m
 ! 9 octave
 ! 9 matlab
+! 5 %fhook-octave-exec
+! 5 %fhook-octave-format
+! 5 %fhook-octave-lint
 ## SYNOPSIS
 
 
   m - GNU Octave / Matlab programming language
+
+## NAME
+
+|%fhook-octave-exec
+  %fhook-octave-exec - command to execute octave files
+|%fhook-octave-format
+  %fhook-octave-format - formatting command for octave files
+|%fhook-octave-lint
+  %fhook-octave-lint - linting command for octave files
+$a
 
 
 ## FILES
@@ -66778,6 +66791,9 @@ $a
 
 
   __.m__ - GNU Octave / Matlab file
+  __%fhook-octave-exec__  
+  __%fhook-octave-format__  
+  __%fhook-octave-lint__  
 
 
 ## DESCRIPTION
@@ -66843,10 +66859,44 @@ $a
      __f6__ - Display the item list.
      __esc f6__ - Hide the item list.
 
+
+  __Executing, Formatting and Linting__
+
+  > __%fhook-octave-exec__ - The command to execute the current Octave file, default
+       is set to _"octave -W %f"_ where _%f_ represents the file name 
+  > __%fhook-octave-format__ - The command to format current Octave file, default  
+       is set to _"matlab-formatter %f --inplace=true"_ where _%f_ represents the file name.
+       Installation of this formatter is described below.
+  > __%fhook-octave-lint__ - The command to check/lint the current Octave file (Octave has no 
+       real linter available), default is set to _"octave -W %f"_ on a Unix system and
+       _"octave -W \"%f\" > NULL 2>&1"_ on  a Windows system.
+  
+  > The  setting  assume  that  the  Octave interpreter  is  available  via the  _PATH_
+    environment  variable.  On Windows you must insert here either the  complete
+    _PATH_ to the _`octave`_  executable  or add the  folder  where this file is to the
+    _PATH_ variable.
+ 
+   > The _matlab-formatter_ tool can be installed as follows:
+
+```   
+            ### Download the script into ~/.local/bin
+            curl -fsSL -o ~/.local/bin/matlab-formatter \
+                https://raw.githubusercontent.com/mittelmark/matlab-formatter-vscode/refs/heads/master/formatter/matlab_formatter.py
+            ### Make the script executable
+            chmod +x ~/.local/bin/matlab-formatter
+            #### Verify the installation
+            matlab-formatter
+```
+
+  > These global variables for executing, formatting and linting Octave code should be changed if necessary 
+    usually within your _USERNAME.emf_  or the _myoctave.emf_ file. 
+
+
 ## NOTES
 
 
-  The hilighting is typically extended using a file __mym.emf__. 
+  The hilighting and adding additional features is typically done using a file __mym.emf__ in the users
+  configuration folder. 
     
 ## SEE ALSO
 

@@ -41,7 +41,7 @@ set-variable .fhook-octave.item-list-r3 "Func \ecB\\1\ecA"
   hilight   .hilight.octave 2 "#"                 .scheme.comment  
   hilight   .hilight.octave 4 "#{" "#}" ""        .scheme.comment  
   hilight   .hilight.octave 4 "%{" "%}" ""        .scheme.comment    
-  ;hilight   .hilight.octave 4 "\"" "\"" "\\"      .scheme.string
+  hilight   .hilight.octave 4 "\"" "\"" "\\"      .scheme.string
   ; Quote
   hilight   .hilight.octave 4 "'" "'" "\\"        .scheme.string
   ; Variables
@@ -148,7 +148,7 @@ set-variable .fhook-octave.item-list-r3 "Func \ecB\\1\ecA"
   indent .hilight.octave    N "switch"          t
   indent .hilight.octave    S "case"           -t
   indent .hilight.octave    S "otherwise"      -t     
-  
 !endif
 
 buffer-init-fhook "octave"
+
