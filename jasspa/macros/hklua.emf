@@ -39,102 +39,102 @@ set-variable .fhook-lua.collapse-mnext  "-1"
     set-variable .hilight.luaS &pinc .hilight.next 1
 !endif
 !if &and &sin "h" .fhook-lua.setup &band .hilight.flags 0x02
-    ; define our highlighting scheme
-    0 hilight .hilight.lua 1                    $global-scheme
-    
-    hilight .hilight.lua 2 "--"                     .scheme.comment
-    hilight .hilight.lua 4 "--\\[\\[" "\\]\\]" ""   .scheme.comment
-    hilight .hilight.lua 4 "\\[\\[" "\\]\\]" "" .scheme.string
-    hilight .hilight.lua 4 "--\\[=\\[" "\\]=\\]" "" .scheme.comment
-    hilight .hilight.lua 0x804 "\"" "\"" "\\"   .scheme.string
-    hilight .hilight.lua 0x804 "'" "'" "\\"     .scheme.string
-    hilight .hilight.lua 0x80 "\\[" .hilight.luaS .scheme.string
-    hilight .hilight.lua 0 "\\w\\["             $global-scheme
-    hilight .hilight.lua    0 "::\\w+::"        .scheme.link ; label
-    
-    hilight .hilight.lua    2 "^#!/"         .scheme.header
-    hilight .hilight.lua    2 "require "     .scheme.prepro
-
-    hilight .hilight.lua 1 "break"              .scheme.keyword
-    hilight .hilight.lua 1 "do"                 .scheme.keyword
-    hilight .hilight.lua 1 "else"               .scheme.keyword
-    hilight .hilight.lua 1 "elseif"             .scheme.keyword
-    hilight .hilight.lua 1 "end"                .scheme.keyword
-    hilight .hilight.lua 1 "for"                .scheme.keyword
-    hilight .hilight.lua 1 "function"           .scheme.keyword
-    hilight .hilight.lua 1 "goto"               .scheme.keyword    
-    hilight .hilight.lua 1 "if"                 .scheme.keyword
-    hilight .hilight.lua 1 "in"                 .scheme.keyword
-    hilight .hilight.lua 1 "local"              .scheme.keyword
-    hilight .hilight.lua 1 "repeat"             .scheme.keyword
-    hilight .hilight.lua 1 "return"             .scheme.keyword
-    hilight .hilight.lua 1 "then"               .scheme.keyword
-    hilight .hilight.lua 1 "until"              .scheme.keyword
-    hilight .hilight.lua 1 "while"              .scheme.keyword
-    
-    !if &band .hilight.flags 0x04
-        hilight .hilight.lua 0 "^\\s*\\{function\\s+\\w+" .scheme.function
-        hilight .hilight.lua 1 "\\w+\\} *= *function" .scheme.function
-    !endif
-    
-    hilight .hilight.lua 1 "false"              .scheme.prepro
-    hilight .hilight.lua 1 "true"               .scheme.prepro
-    hilight .hilight.lua 1 "nil"                .scheme.prepro
-    
-    hilight .hilight.lua 1 "and"                .scheme.operator
-    hilight .hilight.lua 1 "not"                .scheme.operator
-    hilight .hilight.lua 1 "or"                 .scheme.operator
-    
-    hilight .hilight.lua 0 "\\+"                .scheme.operator
-    hilight .hilight.lua 0 "-"                  .scheme.operator
-    hilight .hilight.lua 0 "\\*"                .scheme.operator
-    hilight .hilight.lua 0 "/"                  .scheme.operator
-    hilight .hilight.lua 0 "\\^"                .scheme.operator
-    hilight .hilight.lua 0 "~="                 .scheme.operator
-    hilight .hilight.lua 0 "<="                 .scheme.operator
-    hilight .hilight.lua 0 ">="                 .scheme.operator
-    hilight .hilight.lua 0 "<"                  .scheme.operator
-    hilight .hilight.lua 0 ">"                  .scheme.operator
-    hilight .hilight.lua 0 "=="                 .scheme.operator
-    hilight .hilight.lua 0 ";"                  .scheme.operator
-    hilight .hilight.lua 0 ":"                  .scheme.operator
-    hilight .hilight.lua 0 "\\."                .scheme.operator
-    hilight .hilight.lua 0 "\\.\\."             .scheme.operator
-    hilight .hilight.lua 0 "\\.\\.\\."          .scheme.operator
-    
-    ; String hilighting
-    0 hilight .hilight.luaS 0                     .scheme.string
-    hilight .hilight.luaS 0    "\\\\."            .scheme.string
-    hilight .hilight.luaS 0   "\\[\\["            .scheme.string
-    hilight .hilight.luaS 0   "\\]\\]"            .scheme.string
-    hilight .hilight.luaS 0x80 "\\]" .hilight.lua .scheme.string
-    ; let html based files use the lua hilight for any LUA Scripts
-    set-variable .hilight.luascript .hilight.lua
+  ; define our highlighting scheme
+  0 hilight .hilight.lua 1                    $global-scheme
+  
+  hilight .hilight.lua 2 "--"                     .scheme.comment
+  hilight .hilight.lua 4 "--\\[\\[" "\\]\\]" ""   .scheme.comment
+  hilight .hilight.lua 4 "\\[\\[" "\\]\\]" "" .scheme.string
+  hilight .hilight.lua 4 "--\\[=\\[" "\\]=\\]" "" .scheme.comment
+  hilight .hilight.lua 0x804 "\"" "\"" "\\"   .scheme.string
+  hilight .hilight.lua 0x804 "'" "'" "\\"     .scheme.string
+  hilight .hilight.lua 0x80 "\\[" .hilight.luaS .scheme.string
+  hilight .hilight.lua 0 "\\w\\["             $global-scheme
+  hilight .hilight.lua    0 "::\\w+::"        .scheme.link ; label
+  
+  hilight .hilight.lua    2 "^#!/"         .scheme.header
+  hilight .hilight.lua    2 "require "     .scheme.prepro
+  
+  hilight .hilight.lua 1 "break"              .scheme.keyword
+  hilight .hilight.lua 1 "do"                 .scheme.keyword
+  hilight .hilight.lua 1 "else"               .scheme.keyword
+  hilight .hilight.lua 1 "elseif"             .scheme.keyword
+  hilight .hilight.lua 1 "end"                .scheme.keyword
+  hilight .hilight.lua 1 "for"                .scheme.keyword
+  hilight .hilight.lua 1 "function"           .scheme.keyword
+  hilight .hilight.lua 1 "goto"               .scheme.keyword    
+  hilight .hilight.lua 1 "if"                 .scheme.keyword
+  hilight .hilight.lua 1 "in"                 .scheme.keyword
+  hilight .hilight.lua 1 "local"              .scheme.keyword
+  hilight .hilight.lua 1 "repeat"             .scheme.keyword
+  hilight .hilight.lua 1 "return"             .scheme.keyword
+  hilight .hilight.lua 1 "then"               .scheme.keyword
+  hilight .hilight.lua 1 "until"              .scheme.keyword
+  hilight .hilight.lua 1 "while"              .scheme.keyword
+  
+  !if &band .hilight.flags 0x04
+    hilight .hilight.lua 0 "^\\s*\\{function\\s+\\w+" .scheme.function
+    hilight .hilight.lua 1 "\\w+\\} *= *function" .scheme.function
+  !endif
+  
+  hilight .hilight.lua 1 "false"              .scheme.prepro
+  hilight .hilight.lua 1 "true"               .scheme.prepro
+  hilight .hilight.lua 1 "nil"                .scheme.prepro
+  
+  hilight .hilight.lua 1 "and"                .scheme.operator
+  hilight .hilight.lua 1 "not"                .scheme.operator
+  hilight .hilight.lua 1 "or"                 .scheme.operator
+  
+  hilight .hilight.lua 0 "\\+"                .scheme.operator
+  hilight .hilight.lua 0 "-"                  .scheme.operator
+  hilight .hilight.lua 0 "\\*"                .scheme.operator
+  hilight .hilight.lua 0 "/"                  .scheme.operator
+  hilight .hilight.lua 0 "\\^"                .scheme.operator
+  hilight .hilight.lua 0 "~="                 .scheme.operator
+  hilight .hilight.lua 0 "<="                 .scheme.operator
+  hilight .hilight.lua 0 ">="                 .scheme.operator
+  hilight .hilight.lua 0 "<"                  .scheme.operator
+  hilight .hilight.lua 0 ">"                  .scheme.operator
+  hilight .hilight.lua 0 "=="                 .scheme.operator
+  hilight .hilight.lua 0 ";"                  .scheme.operator
+  hilight .hilight.lua 0 ":"                  .scheme.operator
+  hilight .hilight.lua 0 "\\."                .scheme.operator
+  hilight .hilight.lua 0 "\\.\\."             .scheme.operator
+  hilight .hilight.lua 0 "\\.\\.\\."          .scheme.operator
+  
+  ; String hilighting
+  0 hilight .hilight.luaS 0                     .scheme.string
+  hilight .hilight.luaS 0    "\\\\."            .scheme.string
+  hilight .hilight.luaS 0   "\\[\\["            .scheme.string
+  hilight .hilight.luaS 0   "\\]\\]"            .scheme.string
+  hilight .hilight.luaS 0x80 "\\]" .hilight.lua .scheme.string
+  ; let html based files use the lua hilight for any LUA Scripts
+  set-variable .hilight.luascript .hilight.lua
 !endif
 
 !if &sin "d" .fhook-lua.setup
-    ; define indentation scheme
-    0 indent .hilight.lua 1 10
-    
-    indent .hilight.lua N "function" t
-    indent .hilight.lua N "repeat"   t
-    indent .hilight.lua O "until"   -t
-    indent .hilight.lua N "do"       t
-    indent .hilight.lua N "if"       t
-    indent .hilight.lua S "else"    -t
-    indent .hilight.lua S "else\\s*if" -t
-    indent .hilight.lua O "end"     -t
-    indent .hilight.lua n "{"        t
-    indent .hilight.lua o "}"       -t
-;    indent .hilight.lua c "[ \t]and[ \t]*\n" 6
-;    indent .hilight.lua c "[ \t]or[ \t]*\n"  6
-    indent .hilight.lua b "(" ")"
-    indent .hilight.lua e "\"" "\"" "\\" 
-    indent .hilight.lua e "'" "'" "\\" 
-    indent .hilight.lua e "\\[" "\\]" "" 
-    indent .hilight.lua i "--"
-    ; let html based files use the lua indent for any LUA Scripts
-    set-variable .indent.luascript .hilight.lua
+  ; define indentation scheme
+  0 indent .hilight.lua 1 10
+  
+  indent .hilight.lua N "function" t
+  indent .hilight.lua N "repeat"   t
+  indent .hilight.lua O "until"   -t
+  indent .hilight.lua N "do"       t
+  indent .hilight.lua N "if"       t
+  indent .hilight.lua S "else"    -t
+  indent .hilight.lua S "else\\s*if" -t
+  indent .hilight.lua O "end"     -t
+  indent .hilight.lua n "{"        t
+  indent .hilight.lua o "}"       -t
+  ;    indent .hilight.lua c "[ \t]and[ \t]*\n" 6
+  ;    indent .hilight.lua c "[ \t]or[ \t]*\n"  6
+  indent .hilight.lua b "(" ")"
+  indent .hilight.lua e "\"" "\"" "\\" 
+  indent .hilight.lua e "'" "'" "\\" 
+  indent .hilight.lua e "\\[" "\\]" "" 
+  indent .hilight.lua i "--"
+  ; let html based files use the lua indent for any LUA Scripts
+  set-variable .indent.luascript .hilight.lua
 !endif
 
 buffer-init-fhook "lua"
