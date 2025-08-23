@@ -5097,6 +5097,57 @@
 
 
 ## Development History 
+
+  - [250820]
+    - improved Lua mode and adding documentation
+    - adding and documenting luatags
+    - docu fixes for tag tools
+    - julia support for file-xyz
+  - [250818]
+    - updating Euphoria mode and documentation
+  - [250812]
+    - octave and julia with indentation support
+  - [250801,250802]
+    - awk documentation added and awk mode improvements
+    - fortran: indentation and more abbreviations
+  - [250722,23,24,30]
+    - ada fixes
+    - php abbreviations, template
+    - jstags, hkjs, phptags and perltags documentation
+    - graphviz dot documentation
+    - initial support for Julia, Octave/matlab
+    - ada file-xyz support
+    
+  - [250718,19,20]
+    - vbtags documentation added
+    - docu fixes verilog, ruby, 
+    - folding and item-list for fortran
+    - fixing empty themes folder
+    - ada templates and abbreviations for abbrev-list
+  - [250717]
+    - VB and Python minor tweaks
+    - case insensitive file name file hooks
+  - [250715]
+    - adding support for file-xyz for cpp
+  - [250714]
+    - documentation updates
+  - [250713]
+    - impoving pascal, java, shell, sql modes and documentation
+  - [250705]
+    - c3 mode with abbreviations and inline-docu support
+    - small fixes for vlang, pascal, toml and latex
+  - [250704]
+    - small fixes for emf
+  - [250701]
+    - rust: adding module support
+  - [250621]
+    - file-xyz: support for Tcl, Python, R
+  - [250620]
+    - cpp: support for ctor and dtor (constructur, destructor) in 
+      item-list command, adding regex abbreviations
+    - improved freebasic support  
+  - [250618] 
+    - support for restyle-buffer for file-format
   - [250617]
     - support for Zig language
   - [250615]
