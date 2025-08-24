@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250615.2026>
+;  Last Modified : <250824.1351>
 ;
 ;  Description
 ;   V Language Template
@@ -144,8 +144,10 @@ set-variable .fhook-v.item-list-r5 "meth \ecB\\1.\\2\ecA"
   indent .hilight.v b "(" ")"
 !endif
 
-set-variable %fhook-v-lint "v vet %f"
-set-variable %fhook-v-exec "v crun %f"
-set-variable %fhook-v-format "v fmt -w %f"
+!if &not &seq &which "v" "ERROR"
+  set-variable %fhook-v-lint "v vet \"%f\""
+  set-variable %fhook-v-exec "v crun \"%f\""
+  set-variable %fhook-v-format "v fmt -w \"%f\""
+!endif
 
 buffer-init-fhook "v"

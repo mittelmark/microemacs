@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250621.1409>
+;  Last Modified : <250824.1355>
 ;
 ;  Description
 ;   Go Language Template
@@ -121,9 +121,10 @@ set-variable .fhook-go.item-list-r3 "type \ecB\\1\ecA"
   indent .hilight.go b "\\[" "]"
   indent .hilight.go b "(" ")"
 !endif
-
-set-variable %fhook-go-lint "go vet %f"
-set-variable %fhook-go-exec "go run %f"
-set-variable %fhook-go-format "go fmt %f"
+!if &not &seq &which "go" "ERROR"
+  set-variable %fhook-go-lint "go vet \"%f\""
+  set-variable %fhook-go-exec "go run \"%f\""
+  set-variable %fhook-go-format "go fmt \"%f\""
+!endif
 
 buffer-init-fhook "go"

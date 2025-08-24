@@ -61789,7 +61789,8 @@ $a
   > __%fhook-fortran-format__ - The command to format current Fortran file,
       default is set to _"fprettify %f"_ if the program is installed. 
       On a Unix system you might install it using the Python package manager
-       like this: _"pip3 install fprettify --user"_.
+      like this: _"pip3 install fprettify --user"_. If fprettify is not available
+      the command [restyle-buffer(3)](restyle-buffer(3)) will be used instead.
 
   > __%fhook-fortran-lint__ - The command to check/lint the current Fortran file, 
        default is set to _"gfortran -fsyntax-only %f"_ where _%f_ represents
@@ -61817,8 +61818,9 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types)
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
-  [item-list(3)](item-list(3)), [time(2m)](time(2m)).
-  
+  [file-exec(3)](file-exec(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [item-list(3)](item-list(3)), [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)),
+  [time(2m)](time(2m)).
 !! me-id: m9typ010
 ! 9 p
 ! 9 pas
@@ -62670,8 +62672,11 @@ $a
 
   [Supported File Types](MicroEmacs - Supported File Types),
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
-  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [find-tag(2)](find-tag(2)), [indent(2)](indent(2)),
-  [item-list(3)](item-list(3)], [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [tcltags(3f)](tcltags(3f)), [time(2m)](time(2m)).
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [file-exec(3)](file-exec(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [find-tag(2)](find-tag(2)), [indent(2)](indent(2)), [item-list(3)](item-list(3)], 
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)),
+  [tcltags(3f)](tcltags(3f)), [time(2m)](time(2m)).
 !! me-id: m9typ020
 ! 9 asn.1
 ## SYNOPSIS

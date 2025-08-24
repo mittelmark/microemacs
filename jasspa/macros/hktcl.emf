@@ -388,5 +388,19 @@ set-variable .fhook-tcl.item-list-r8 "Nmsp \ecB\\1\ecA"
     indent .hilight.tcl i ";\\s*#"
 !endif
 
+!if &not &seq &which "tclsh" "ERROR"
+  ; pip3 install tclint
+  !if &not &seq &which "tclint" "ERROR"
+    set-variable %fhook-tcl-lint "tclint \"%f\""
+  !endif
+  set-variable %fhook-tcl-exec "tclsh \"%f\""
+  !if &not &seq &which "tclfmt" "ERROR"
+    set-variable %fhook-tcl-format "tclfmt --in-place \"%f\""
+  !endif
+  0 define-macro fhook-tcl-replace
+    fhook-generic-replace " *(file \"\\(.+\\)\" line \\(.+\\))" "file \\1:\\2:0"
+  !emacro
+!endif
+
 buffer-init-fhook "tcl"
 

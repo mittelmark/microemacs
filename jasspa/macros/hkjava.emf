@@ -294,4 +294,12 @@ define-macro ehook-java
     set-variable .fhook-java.fill-ignore &rep .fhook-java.fill-ignore "@" ""
 !endif
 
+!if &not &seq &which "javac" "ERROR"
+  set-variable %fhook-java-lint "javac -Xlint \"%f\""
+  set-variable %fhook-java-exec "javac \"%f\" && java -cp . "
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-java-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
+  !endif
+!endif
+
 buffer-init-fhook "java"

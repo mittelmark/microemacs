@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250617.0706>
+;  Last Modified : <250824.1352>
 ;
 ;  Description
 ;   Zig Language Template
@@ -156,8 +156,10 @@ set-variable .fhook-zig.item-list-r7 "todo \ecB\\1\ecA"
   indent .hilight.zig b "(" ")"
 !endif
 
-set-variable %fhook-zig-lint    "zig ast-check %f"
-set-variable %fhook-zig-exec    "zig run %f"
-set-variable %fhook-zig-format  "zig fmt %f"
+!if &not &seq &which "zig" "ERROR"
+  set-variable %fhook-zig-lint    "zig ast-check \"%f\""
+  set-variable %fhook-zig-exec    "zig run \"%f\""
+  set-variable %fhook-zig-format  "zig fmt \"%f\""
+!endif
 
 buffer-init-fhook "zig"

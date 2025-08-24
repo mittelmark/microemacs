@@ -121,5 +121,18 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
   indent .hilight.julia    N "begin"           t
 !endif
 
+!if &not &seq &which "julia" "ERROR"
+  set-variable %fhook-julia-lint "julia -e 'import ReLint;ReLint.run_lint(\"%f\")'"
+  set-variable %fhook-julia-exec "julia \"%f\""
+  !if &not &seq &which "runic" "ERROR"
+    set-variable %fhook-julia-format "runic -i \"%f\"" 
+  !else
+    set-variable %fhook-julia-format "restyle-buffer" 
+  !endif
+  0 define-macro fhook-julia-replace
+    fhook-generic-replace "Line \\(.+\\), column \\(.+\\): \\(.+\\)\\. \\(.+\\)" "\\4:\\1:\\2 \\3"
+  !emacro
+!endif
+
 buffer-init-fhook "julia"
 

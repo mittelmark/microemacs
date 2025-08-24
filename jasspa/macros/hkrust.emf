@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250701.1402>
+;  Last Modified : <250824.1347>
 ;
 ;  Description:
 
@@ -136,8 +136,16 @@ set-variable .fhook-rust.item-list-r6 "modl \ecB\\1\ecA"
   indent .hilight.rust b "(" ")"
 !endif
 
-set-variable %fhook-rust-lint    "rustc %f"
-set-variable %fhook-rust-exec    "rustc %f -o %b && ./%b"
-set-variable %fhook-rust-format  "rustfmt %f"
+!if &not &seq &which "rustc" "ERROR"
+  set-variable %fhook-rust-lint    "rustc \"%f\""
+  !if &not &seq &which "rustc.exe" "ERROR"
+    set-variable %fhook-rust-exec    "rustc \"%f\" -o %b && .\\%b"
+  !else
+    set-variable %fhook-rust-exec    "rustc \"%f\" -o %b && ./%b"
+  !endif
+  !if &not &seq &which "rustfmt" "ERROR"
+    set-variable %fhook-rust-format  "rustfmt \"%f\""
+  !endif
+!endif
 
 buffer-init-fhook "rust"

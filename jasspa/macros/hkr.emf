@@ -212,4 +212,14 @@ set-variable .fhook-r.item-list-r2 "MDHE \ecB\\1\ecA"
   indent .hilight.r i "#"
 !endif
 
+!if &not &seq &which "Rscript" "ERROR"
+  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+  set-variable #l0 &xre #l0 "iso" "ISO-" #l0
+  set-variable #l0 &xre #l0 "cp" "CP" #l0    
+  set-variable #l0 &xre #l0 "microsoft-" "" #l0        
+  set-variable %fhook-r-format &spr "LANG=en_US Rscript  -e \"options('encoding'='%s');formatR::tidy_file('%%f')\"" #l0
+  set-variable %fhook-r-exec   &spr "LANG=en_US Rscript  --encoding=%s %%f" #l0
+  set-variable %fhook-r-lint   &spr "LANG=en_US Rscript  -e \"options('encoding'='%s');library(lintr);lintr::lint('%%f',linters = linters_with_defaults( indentation_linter = indentation_linter(indent = 4L) ))\"" #l0
+!endif
+
 buffer-init-fhook "r"

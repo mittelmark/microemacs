@@ -175,6 +175,24 @@ set-variable .fhook-f90.item-list-r4 "Prog \ecB\\1\ecA"
   indent .hilight.f90    O "end select"     -t
   indent .hilight.f90    i "!"
 !endif
+!if &not &seq &which "gfortran" "ERROR"
+  set-variable %fhook-f90-lint   "gfortran -Wall -fmax-errors=3 -fsyntax-only %f"
+  !if &not &seq &which "fprettify" "ERROR"
+    ; python program
+    ; sudo dnf install fprettify
+    ; pip3 install fprettify --user
+    set-variable %fhook-f90-format "fprettify -i 4 %f"
+  !else
+    set-variable %fhook-f90-format "restyle-buffer"
+  !endif
+  !if &not &seq &which "gfortran.exe" "ERROR"
+    ; windows
+    set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && .\\%b"
+  !else
+    ; unix
+    set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && ./%b"
+  !endif  
+!endif
 
 buffer-init-fhook "f90"
 

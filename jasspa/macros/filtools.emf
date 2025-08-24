@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250824.1331>
+;  Last Modified : <250824.1435>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -209,122 +209,20 @@ add-file-hook "*file-exec*" fhook-file-exec
 !endif
 
 
-; Fortran
-!if &not &seq &which "gfortran" "ERROR"
-  set-variable %fhook-f90-lint   "gfortran -Wall -fmax-errors=3 -fsyntax-only %f"
-  !if &not &seq &which "fprettify" "ERROR"
-    ; python program
-    ; sudo dnf install fprettify
-    ; pip3 install fprettify --user
-    set-variable %fhook-f90-format "fprettify -i 4 %f"
-  !endif
-  !if &not &seq &which "gfortran.exe" "ERROR"
-    ; windows
-    set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && .\\%b"
-  !else
-    ; unix
-    set-variable %fhook-f90-exec   "gfortran -Wall -fmax-errors=3 %f -o %b && ./%b"
-  !endif  
-!endif
-
-; Go
-!if &not &seq &which "go" "ERROR"
-  set-variable %fhook-go-lint "go vet %f"
-  set-variable %fhook-go-exec "go run %f"
-  set-variable %fhook-go-format "go fmt %f"
-!endif
-
-; Java
-!if &not &seq &which "javac" "ERROR"
-  set-variable %fhook-java-lint "javac -Xlint \"%f\""
-  set-variable %fhook-java-exec "javac \"%f\" && java -cp . "
-  !if &not &seq &which "astyle" "ERROR"
-    set-variable %fhook-java-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
-  !endif
-!endif
-
-!if &not &seq &which "julia" "ERROR"
-  set-variable %fhook-julia-lint "julia -e 'import ReLint;ReLint.run_lint(\"%f\")'"
-  set-variable %fhook-julia-exec "julia \"%f\""
-  !if &not &seq &which "runic" "ERROR"
-    set-variable %fhook-julia-format "runic -i \"%f\"" 
-  !endif
-  0 define-macro fhook-julia-replace
-    fhook-generic-replace "Line \\(.+\\), column \\(.+\\): \\(.+\\)\\. \\(.+\\)" "\\4:\\1:\\2 \\3"
-  !emacro
-
-!endif
-
-
-; Lua
-; moved to hklua.emf
-
-; Octave
-; moved to hkoctave.emf
-
-
-; Pascal
-; moved to hkpascal.emf
-
-; Perl
-; moved to hkperl.emf
-
-; Python
-; moved to hkpython.emf
-
-; R
-!if &not &seq &which "Rscript" "ERROR"
-  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
-  set-variable #l0 &xre #l0 "iso" "ISO-" #l0
-  set-variable #l0 &xre #l0 "cp" "CP" #l0    
-  set-variable #l0 &xre #l0 "microsoft-" "" #l0        
-  set-variable %fhook-r-format &spr "Rscript  -e \"options('encoding'='%s');formatR::tidy_file('%%f')\"" #l0
-  set-variable %fhook-r-exec   &spr "Rscript  --encoding=%s %%f" #l0
-  set-variable %fhook-r-lint   &spr "Rscript  -e \"options('encoding'='%s');library(lintr);lintr::lint('%%f',linters = linters_with_defaults( indentation_linter = indentation_linter(indent = 4L) ))\"" #l0
-!endif
-
-; Rust
-!if &not &seq &which "rustc" "ERROR"
-  set-variable %fhook-rust-lint    "rustc \"%f\""
-  !if &not &seq &which "rustc.exe" "ERROR"
-    set-variable %fhook-rust-exec    "rustc \"%f\" -o %b && ./%b"
-  !else
-    set-variable %fhook-rust-exec    "rustc \"%f\" -o %b && .\\%b"
-  !endif
-  !if &not &seq &which "rustfmt" "ERROR"
-    set-variable %fhook-rust-format  "rustfmt \"%f\""
-  !endif
-!endif
-;
-; Tcl
-!if &not &seq &which "tclsh" "ERROR"
-  ; pip3 install tclint
-  !if &not &seq &which "tclint" "ERROR"
-    set-variable %fhook-tcl-lint "tclint \"%f\""
-  !endif
-  set-variable %fhook-tcl-exec "tclsh \"%f\""
-  !if &not &seq &which "tclfmt" "ERROR"
-    set-variable %fhook-tcl-format "tclfmt --in-place \"%f\""
-  !endif
-  0 define-macro fhook-tcl-replace
-    fhook-generic-replace " *(file \"\\(.+\\)\" line \\(.+\\))" "file \\1:\\2:0"
-  !emacro
-!endif
-
-; V
-!if &not &seq &which "v" "ERROR"
-  set-variable %fhook-v-lint "v vet \"%f\""
-  set-variable %fhook-v-exec "v crun \"%f\""
-  set-variable %fhook-v-format "v fmt -w \"%f\""
-!endif
-
-; Zig
-!if &not &seq &which "zig" "ERROR"
-  set-variable %fhook-zig-lint    "zig ast-check \"%f\""
-  set-variable %fhook-zig-exec    "zig run \"%f\""
-  set-variable %fhook-zig-format  "zig fmt \"%f\""
-!endif
-
+; Fortran - hkf90.emf
+; Go - hkgo.emf
+; Java - hkjava.emf
+; julia - hkjula.emf
+; Lua - hklua.emf
+; Octave - hkoctave.emf
+; Pascal - hkpascal.emf
+; Perl - hkperl.emf
+; Python - hkpython.emf
+; R - hkr.emf
+; Rust - hkrust.emf
+; Tcl - hktcl.emf
+; V -  hkv.emf
+; Zig - hkzig.emf
 
 
 
