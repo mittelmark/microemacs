@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250824.1234>
+;  Last Modified : <250824.1257>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -259,24 +259,8 @@ add-file-hook "*file-exec*" fhook-file-exec
 ; Lua
 ; move to hklua.emf
 
-!if &not &seq &which "octave" "ERROR"
-  !if &not &seq &which "octave.exe" "ERROR"
-    set-variable %fhook-octave-lint "octave -W \"%f\" > NULL 2>&1"
-  !else
-    ; catching only stderr does not work
-    set-variable %fhook-octave-lint "octave -W \"%f\""
-  !endif
-  set-variable %fhook-octave-exec "octave -W \"%f\""
-  !if &not &seq &which "matlab-formatter" "ERROR"
-    set-variable %fhook-octave-format "matlab-formatter \"%f\" --inplace=true"
-  !else 
-    set-variable %fhook-octave-format "restyle-buffer"
-  !endif
-  0 define-macro fhook-octave-replace
-    fhook-generic-replace " at line \\(.+\\) column \\(.+\\)" ".m:\\1:\\2"
-  !emacro
-
-!endif
+; Octave
+; moved to hkoctave.emf
 
 ; Pascal
 !if &not &seq &which "fpc" "ERROR"

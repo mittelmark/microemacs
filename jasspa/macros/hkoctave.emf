@@ -150,5 +150,25 @@ set-variable .fhook-octave.item-list-r3 "Func \ecB\\1\ecA"
   indent .hilight.octave    S "otherwise"      -t     
 !endif
 
+!if &not &seq &which "octave" "ERROR"
+  !if &not &seq &which "octave.exe" "ERROR"
+    set-variable %fhook-octave-lint "octave -W \"%f\" > NULL 2>&1"
+  !else
+    ; catching only stderr does not work
+    set-variable %fhook-octave-lint "octave -W \"%f\""
+  !endif
+  set-variable %fhook-octave-exec "octave -W \"%f\""
+  !if &not &seq &which "matlab-formatter" "ERROR"
+    set-variable %fhook-octave-format "matlab-formatter \"%f\" --inplace=true"
+  !else 
+    set-variable %fhook-octave-format "restyle-buffer"
+  !endif
+  0 define-macro fhook-octave-replace
+    fhook-generic-replace " at line \\(.+\\) column \\(.+\\)" ".m:\\1:\\2"
+  !emacro
+
+!endif
+
+
 buffer-init-fhook "octave"
 
