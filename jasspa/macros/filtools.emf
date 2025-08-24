@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250824.1257>
+;  Last Modified : <250824.1331>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -257,61 +257,20 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 
 ; Lua
-; move to hklua.emf
+; moved to hklua.emf
 
 ; Octave
 ; moved to hkoctave.emf
 
+
 ; Pascal
-!if &not &seq &which "fpc" "ERROR"
-  set-variable %fhook-pascal-lint "fpc -Cn %f"
-  !if &not &seq &which "fpc.exe" "ERROR"
-    set-variable %fhook-pascal-exec "fpc \"%f\" && .\\%b"
-  !else
-    set-variable %fhook-pascal-exec "fpc \"%f\" && ./%b"
-  !endif
-  !if &not &seq &which "ptop" "ERROR"
-    set-variable %fhook-pascal-format "ptop \"%f\" \"%f\""
-  !endif
-!endif
+; moved to hkpascal.emf
 
 ; Perl
-!if &not &seq &which "perl" "ERROR"
-  !if &not &seq &which "perlcritic" "ERROR"
-    set-variable %fhook-perl-lint "perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f"
-  !else
-    set-variable %fhook-perl-lint "perl -cw \"%f\""
-  !endif
-  set-variable %fhook-perl-exec "perl -w \"%f\""
-  !if &not &seq &which "perltidy" "ERROR"
-    set-variable %fhook-perl-format "perltidy -b \"%f\""
-  !endif
-  ; need to fix the error line format
-  0 define-macro fhook-perl-replace
-    fhook-generic-replace "at \\(.+\\) line \\([0-9]+\\)" "at \n\\1:\\2:0"
-  !emacro
-!endif
+; moved to hkperl.emf
 
 ; Python
-!if &not &seq &which "python3" "ERROR"
-  !if &not &seq &which "ruff" "ERROR"
-    set-variable %fhook-python-format "ruff format \"%f\""
-    set-variable %fhook-python-lint   "ruff check \"%f\""
-  !else
-    !if &not &seq &which "yapf" "ERROR"
-      set-variable %fhook-python-format "yapf -i \"%f\""
-    !elif  &not &seq &which "black" "ERROR"
-      set-variable %fhook-python-format "black -q \"%f\""
-    !endif
-    !if &not &seq &which "pylint" "ERROR"
-      set-variable %fhook-python-lint "pylint \"%f\""
-    !endif
-  !endif
-  set-variable %fhook-python-exec   "python3 \"%f\""
-  0 define-macro fhook-python-replace
-    fhook-generic-replace " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
-  !emacro
-!endif
+; moved to hkpython.emf
 
 ; R
 !if &not &seq &which "Rscript" "ERROR"

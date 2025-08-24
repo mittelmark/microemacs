@@ -325,10 +325,20 @@ set-variable .fhook-perl.item-list-r1 "Sub  \ecB\\1\ecA"
 
 define-macro-file find return-get-next-line mouse-get-next-line
 
-define-macro perl-lint
-  add-next-line "*perl-lint*" "at %f line %l."
-  0x4088 file-tool-run "perl -cw %f" $buffer-fname "*perl-lint*"
-  set-variable :mouse-word-select "mouse-get-next-line"
-  buffer-bind-key return-get-next-line "return"
-!emacro
+!if &not &seq &which "perl" "ERROR"
+  !if &not &seq &which "perlcritic" "ERROR"
+    set-variable %fhook-perl-lint "perlcritic --nocolor --verbose \"%%f:%%l:%%c: %%m\\n\" %f"
+  !else
+    set-variable %fhook-perl-lint "perl -Mstrict -cw \"%f\""
+  !endif
+  set-variable %fhook-perl-exec "perl -w \"%f\""
+  !if &not &seq &which "perltidy" "ERROR"
+    set-variable %fhook-perl-format "perltidy -b \"%f\""
+  !endif
+  ; need to fix the error line format
+  0 define-macro fhook-perl-replace
+    fhook-generic-replace "at \\(.+\\) line \\([0-9]+\\)" "at \n\\1:\\2:0"
+  !emacro
+!endif
+
 buffer-init-fhook "perl"

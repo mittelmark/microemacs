@@ -129,15 +129,25 @@ set-variable #l0 &which "ruff"
     set-variable %fhook-python-lint   "ruff check %f"
 
 !endif
-set-variable %fhook-python-exec   "python3 %f"
 
-0 define-macro fhook-python-replace
-  -1 buffer-mode "view"
-  beginning-of-buffer
-  replace-string " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
-  beginning-of-buffer
-  -1 buffer-mode "edit"
-  1 buffer-mode "view"  
-!emacro
+!if &not &seq &which "python3" "ERROR"
+  !if &not &seq &which "ruff" "ERROR"
+    set-variable %fhook-python-format "ruff format \"%f\""
+    set-variable %fhook-python-lint   "ruff check \"%f\""
+  !else
+    !if &not &seq &which "yapf" "ERROR"
+      set-variable %fhook-python-format "yapf -i \"%f\""
+    !elif  &not &seq &which "black" "ERROR"
+      set-variable %fhook-python-format "black -q \"%f\""
+    !endif
+    !if &not &seq &which "pylint" "ERROR"
+      set-variable %fhook-python-lint "pylint \"%f\""
+    !endif
+  !endif
+  set-variable %fhook-python-exec   "python3 \"%f\""
+  0 define-macro fhook-python-replace
+    fhook-generic-replace " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
+  !emacro
+!endif
 
 buffer-init-fhook "python"

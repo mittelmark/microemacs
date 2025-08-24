@@ -136,4 +136,16 @@ set-variable .fhook-pascal.item-list-r6 "Clss \ecB\\1\ecA"
   1 buffer-mode "view"  
 !emacro
 
+!if &not &seq &which "fpc" "ERROR"
+  set-variable %fhook-pascal-lint "fpc -Cn %f"
+  !if &not &seq &which "fpc.exe" "ERROR"
+    set-variable %fhook-pascal-exec "fpc \"%f\" && .\\%b"
+  !else
+    set-variable %fhook-pascal-exec "fpc \"%f\" && ./%b"
+  !endif
+  !if &not &seq &which "ptop" "ERROR"
+    set-variable %fhook-pascal-format "ptop \"%f\" \"%f\""
+  !endif
+!endif
+
 buffer-init-fhook "pascal"
