@@ -226,4 +226,13 @@ set-variable .fhook-cobol.exact -1
     hilight .hilight.cobol 1 "pic"                        .scheme.type
 !endif
 
+!if &not &seq &which "cobc" "ERROR"
+  set-variable %fhook-cobol-lint "cobc --free -fsyntax-only %f"
+  !if &not &seq &which "cobc.exe" "ERROR"
+    set-variable %fhook-cobol-exec "cobc --free -x \"%f\" && .\\%b"
+  !else 
+    set-variable %fhook-cobol-exec "cobc --free -x \"%f\" && ./%b"
+  !endif
+!endif
+
 buffer-init-fhook "cobol"

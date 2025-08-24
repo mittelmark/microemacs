@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250824.1435>
+;  Last Modified : <250824.1824>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -158,57 +158,12 @@ add-file-hook "*file-exec*" fhook-file-exec
   -1 buffer-mode "edit"
   1 buffer-mode "view"  
 !emacro
-; awk
-!if &not &seq &which "gawk" "ERROR"
-  set-variable %fhook-awk-lint "gawk --lint -f %f"
-  set-variable %fhook-awk-exec "gawk -f %f"
-  !if &seq $platform "win32"
-    set-variable %fhook-awk-format "gawk -o%b.new -f %f && copy %b.new %f"
-  !else
-    set-variable %fhook-awk-format "gawk -o%b.new -f %f && cp %b.new %f"
-  !endif
-  !endif
-!endif
 
-
-; C3
-!if &not &seq &which "c3c" "ERROR"
-  0 define-macro fhook-c3-replace
-    fhook-generic-replace "^(\\(.+[0-9]\\))" "\\1"
-  !emacro
-  
-  !if &not &seq &which "astyle" "ERROR"
-    set-variable %fhook-c3-format "astyle --indent=spaces=2 \"%f\""
-  !endif
-  set-variable %fhook-c3-lint   "c3c compile %f -o %b"
-  set-variable %fhook-c3-exec   "c3c compile-run %f --"
-!endif
-
-; Cobol
-!if &not &seq &which "cobc" "ERROR"
-  set-variable %fhook-cobol-lint "cobc --free -fsyntax-only %f"
-  !if &not &seq &which "cobc.exe" "ERROR"
-    set-variable %fhook-cobol-exec "cobc --free -x \"%f\" && .\\%b"
-  !else 
-    set-variable %fhook-cobol-exec "cobc --free -x \"%f\" && ./%b"
-  !endif
-!endif
-
-; Dart
-!if &not &seq &which "dart" "ERROR"
-  set-variable %fhook-dart-lint   "dart analyze %f"
-  set-variable %fhook-dart-format "dart format %f"
-  set-variable %fhook-dart-exec   "dart run %f"
-!endif
-
-; Euphoria
-!if &not &seq &which "eui" "ERROR"
-  set-variable %fhook-euphor-lint   "eui -test %f"
-  set-variable %fhook-euphor-exec   "eui %f"  
-  set-variable %fhook-euphor-format "restyle-buffer"
-!endif
-
-
+; awk - hkawk.emf
+; C3 - hkc3.emf
+; Cobol - hkcobol.emf
+; Dart - hkdart.emf
+; Euphoria -hkeuphor.emf
 ; Fortran - hkf90.emf
 ; Go - hkgo.emf
 ; Java - hkjava.emf

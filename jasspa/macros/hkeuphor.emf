@@ -122,4 +122,11 @@ set-variable .fhook-euphor.item-list-r4 "Proc \ecB\\2\ecA"
     indent .hilight.euphor i "--"
 !endif
 
+!if &not &seq &which "eui" "ERROR"
+  set-variable %fhook-euphor-lint   "eui -test %f"
+  set-variable %fhook-euphor-exec   "eui %f"  
+  set-variable %fhook-euphor-format "restyle-buffer"
+!endif
+
+
 buffer-init-fhook "euphor"

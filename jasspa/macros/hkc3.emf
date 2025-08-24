@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250705.0822>
+;  Last Modified : <250824.1822>
 ;
 ;  Description
 ;   C3 Language Template
@@ -134,5 +134,18 @@ set-variable .fhook-c3.item-list-r1 "Func \ecB\\2\ecA"
   indent .hilight.c3 b "\\[" "]"
   indent .hilight.c3 b "(" ")"
 !endif
-; workaround for filenames in parenthesis like for the c3c compiler
+
+!if &not &seq &which "c3c" "ERROR"
+  ; workaround for filenames in parenthesis like for the c3c compiler
+  0 define-macro fhook-c3-replace
+    fhook-generic-replace "^(\\(.+[0-9]\\))" "\\1"
+  !emacro
+  
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-c3-format "astyle --indent=spaces=2 \"%f\""
+  !endif
+  set-variable %fhook-c3-lint   "c3c compile %f -o %b"
+  set-variable %fhook-c3-exec   "c3c compile-run %f --"
+!endif
+
 buffer-init-fhook "c3"
