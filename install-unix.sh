@@ -92,14 +92,14 @@ else
 fi
 
 function install-fonts {
-    if [ ! -d ~/.local/share/jasspa/fonts ]; then
+    if [ ! -d ~/.local/share/fonts ]; then
         mkdir -p ~/.local/share/jasspa/fonts
         curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip --output /tmp/ttf-files.zip 
-        unzip -j -q -d ~/.local/share/jasspa/fonts /tmp/ttf-files.zip
+        unzip -j -q -d ~/.local/share/fonts /tmp/ttf-files.zip
     fi  
-    FP=`xset q | grep -A1 'Font Path' | grep 'local/share/jasspa/fonts'`
+    FP=`xset q | grep -A1 'Font Path' | grep 'local/share/fonts'`
     if [ "$FP" = "" ]; then
-        xset +fp ~/.local/share/jasspa/fonts
+        xset +fp ~/.local/share/fonts
         xset fp rehash
     else   
         xset fp rehash

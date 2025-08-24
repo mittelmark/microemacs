@@ -839,7 +839,7 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
-    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exec(3)lmfile-exec(3)le execute the current file  
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
@@ -1649,7 +1649,7 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
-    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exec(3)lmfile-exec(3)le execute the current file  
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
@@ -5173,11 +5173,13 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
-    - [250820]
+    - [250820,21,24]
       - improved Lua mode and adding documentation
       - adding and documenting luatags
       - docu fixes for tag tools
       - julia support for file-xyz
+      - octave support for file-xyz
+      - preparing file-xyz for release
     - [250818]
       - updating Euphoria mode and documentation
     - [250812]
@@ -60878,7 +60880,8 @@ $a
       cD%fhook-fortran-formatcA - The command to format current Fortran file,
         default is set to cC"fprettify %f"cA if the program is installed. 
         On a Unix system you might install it using the Python package manager
-         like this: cC"pip3 install fprettify --user"cA.
+        like this: cC"pip3 install fprettify --user"cA. If fprettify is not available
+        the command lsrestyle-buffer(3)lmrestyle-buffer(3)le will be used instead.
 
       cD%fhook-fortran-lintcA - The command to check/lint the current Fortran file, 
          default is set to cC"gfortran -fsyntax-only %f"cA where cC%fcA represents
@@ -60906,8 +60909,9 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
     lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
-    lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
-    
+    lsfile-exec(3)lmfile-exec(3)le, lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
+    lsitem-list(3)lmitem-list(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le,
+    lstime(2m)lmtime(2m)le.
 ! 9 p
 ! 9 pas
 ! 5 %fhook-pascal-exec
@@ -61749,8 +61753,11 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
-    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lsfind-tag(2)lmfind-tag(2)le, lsindent(2)lmindent(2)le,
-    lsitem-list(3lmitem-list(3)le], lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstcltags(3f)lmtcltags(3f)le, lstime(2m)lmtime(2m)le.
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsfile-exec(3)lmfile-exec(3)le, lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
+    lsfind-tag(2)lmfind-tag(2)le, lsindent(2)lmindent(2)le, lsitem-list(3lmitem-list(3)le], 
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le,
+    lstcltags(3f)lmtcltags(3f)le, lstime(2m)lmtime(2m)le.
 ! 9 asn.1
 cEcESYNOPSIS cEcA
 

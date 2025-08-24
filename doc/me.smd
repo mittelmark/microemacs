@@ -739,7 +739,7 @@
   [file-browser(3)](file-browser(3)) (f10) Browse the file system  
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
-  [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exec(3)](file-exec(3)) execute the current file  
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-op(2)](file-op(2)) File system operations command  
@@ -1563,7 +1563,7 @@
   [file-browser(3)](file-browser(3)) (f10) Browse the file system  
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
-  [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exec(3)](file-exec(3)) execute the current file  
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-op(2)](file-op(2)) File system operations command  
@@ -5098,11 +5098,13 @@
 
 ## Development History 
 
-  - [250820]
+  - [250820,21,24]
     - improved Lua mode and adding documentation
     - adding and documenting luatags
     - docu fixes for tag tools
     - julia support for file-xyz
+    - octave support for file-xyz
+    - preparing file-xyz for release
   - [250818]
     - updating Euphoria mode and documentation
   - [250812]
