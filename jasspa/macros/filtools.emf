@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250821.0930>
+;  Last Modified : <250824.1234>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -257,16 +257,7 @@ add-file-hook "*file-exec*" fhook-file-exec
 
 
 ; Lua
-!if &not &seq &which "lua" "ERROR"
-  set-variable %fhook-lua-lint "luac -p %f"
-  set-variable %fhook-lua-exec "lua %f "
-  ; sudo npm install -g lua-fmt
-  !if &not &seq &which "luafmt" "ERROR"
-    set-variable %fhook-lua-format "luafmt --write-mode replace %f"
-  !else
-    set-variable %fhook-lua-format "restyle-buffer"
-  !endif
-!endif
+; move to hklua.emf
 
 !if &not &seq &which "octave" "ERROR"
   !if &not &seq &which "octave.exe" "ERROR"

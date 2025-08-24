@@ -5,13 +5,13 @@
 ;
 ; Created      Fri Jan 9 2004
 ; Synopsis:    Lua hook - invoked when a Lua file is loaded.
-; Authors:     Jeremy Cowgar & Steven Phillips
+; Authors:     Jeremy Cowgar, Steven Phillips & Detlef Groth
 ;
 
 define-macro fhook-lua
-    set-variable $buffer-mask "luh1"
-    @# buffer-init "lua"
-    buffer-init-hooks
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "lua"
+  buffer-init-hooks
 !emacro
 
 ; buffer-init variables
@@ -35,8 +35,8 @@ set-variable .fhook-lua.collapse-mclose "1"
 set-variable .fhook-lua.collapse-mnext  "-1"
 
 !if &not &exist .hilight.lua
-    set-variable .hilight.lua &pinc .hilight.next 1
-    set-variable .hilight.luaS &pinc .hilight.next 1
+  set-variable .hilight.lua &pinc .hilight.next 1
+  set-variable .hilight.luaS &pinc .hilight.next 1
 !endif
 !if &and &sin "h" .fhook-lua.setup &band .hilight.flags 0x02
   ; define our highlighting scheme
@@ -44,16 +44,18 @@ set-variable .fhook-lua.collapse-mnext  "-1"
   
   hilight .hilight.lua 2 "--"                     .scheme.comment
   hilight .hilight.lua 4 "--\\[\\[" "\\]\\]" ""   .scheme.comment
-  hilight .hilight.lua 4 "\\[\\[" "\\]\\]" "" .scheme.string
   hilight .hilight.lua 4 "--\\[=\\[" "\\]=\\]" "" .scheme.comment
-  hilight .hilight.lua 0x804 "\"" "\"" "\\"   .scheme.string
-  hilight .hilight.lua 0x804 "'" "'" "\\"     .scheme.string
+  
+  hilight .hilight.lua 4 "\\[\\[" "\\]\\]" ""     .scheme.string
+  hilight .hilight.lua 0x804 "\"" "\"" "\\"       .scheme.string
+  hilight .hilight.lua 0x804 "'" "'" "\\"         .scheme.string
+  
   hilight .hilight.lua 0x80 "\\[" .hilight.luaS .scheme.string
   hilight .hilight.lua 0 "\\w\\["             $global-scheme
   hilight .hilight.lua    0 "::\\w+::"        .scheme.link ; label
   
-  hilight .hilight.lua    2 "^#!/"         .scheme.header
-  hilight .hilight.lua    2 "require "     .scheme.prepro
+  hilight .hilight.lua 2 "^#!/"         .scheme.header
+  hilight .hilight.lua 2 "require "     .scheme.prepro
   
   hilight .hilight.lua 1 "break"              .scheme.keyword
   hilight .hilight.lua 1 "do"                 .scheme.keyword
@@ -62,7 +64,7 @@ set-variable .fhook-lua.collapse-mnext  "-1"
   hilight .hilight.lua 1 "end"                .scheme.keyword
   hilight .hilight.lua 1 "for"                .scheme.keyword
   hilight .hilight.lua 1 "function"           .scheme.keyword
-  hilight .hilight.lua 1 "goto"               .scheme.keyword    
+  hilight .hilight.lua 1 "goto"               .scheme.keyword
   hilight .hilight.lua 1 "if"                 .scheme.keyword
   hilight .hilight.lua 1 "in"                 .scheme.keyword
   hilight .hilight.lua 1 "local"              .scheme.keyword
@@ -136,5 +138,19 @@ set-variable .fhook-lua.collapse-mnext  "-1"
   ; let html based files use the lua indent for any LUA Scripts
   set-variable .indent.luascript .hilight.lua
 !endif
+
+!if &not &seq &which "lua" "ERROR"
+  set-variable %fhook-lua-lint "luac -p %f"
+  set-variable %fhook-lua-exec "lua %f "
+  ; sudo npm install -g lua-fmt
+  !if &not &seq &which "luafmt" "ERROR"
+    set-variable %fhook-lua-format "luafmt --write-mode replace %f"
+  !elif &not &seq &which "luafmt.lua" "ERROR"
+    set-variable %fhook-lua-format "luafmt.lua --f %f"
+  !else
+    set-variable %fhook-lua-format "restyle-buffer"
+  !endif
+!endif
+
 
 buffer-init-fhook "lua"
