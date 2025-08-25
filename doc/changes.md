@@ -1,7 +1,7 @@
 ---
 title: Changes between MicroEmacs Releases
 author: Detlef Groth, University of Potsdam
-date: 2025-08-24 19:54
+date: 2025-08-25 09:57
 ---
 
 ## Release v09.12.25 (2025-10-XX)
@@ -16,8 +16,8 @@ New in comparison to v09.12.25.beta1
 - improved language support: Ada, Awk C, C++, Euphoria, Fortran, Lua, Pascal, PHP, Python
 - new documentation: Graphviz, Markdown, Javascript, jstags, phtags, perltags, vbtags
 - new commands: 
-    - language generic file-exec, file-format and file-lint
-    - luatags
+    - generic file-exec, file-format and file-lint for many programming languages
+    - luatags for indexing lua functions
 - new themes: 4 Catpuccin themes
 - other changes: 
     - filename case insensitive mode matching
@@ -28,7 +28,7 @@ New in comparison to v09.12.25.beta1
 
 New in comparison to v09.12.24
 
-- new functions tcl-exec, tcl-lint, tcl-format, go-format, go-lint, go-exec
+- new functions tcl-exec, tcl-lint, tcl-format, gshirshak55/Rust-Book-In-PDF/releaseso-format, go-lint, go-exec
 - support for the Go programming language
 - improvements in editing R-code, Tcl, and Python code as well
   improved handling of Markdown documents

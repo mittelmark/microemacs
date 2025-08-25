@@ -3,7 +3,7 @@ OS=`uname | grep -Eo '^[A-Za-z]+'`
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
 BASEURL=`curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
 VERSION=`echo ${BASEURL} | sed -E 's/.+v//' | sed -E 's/\.//g' | sed -E 's/beta/b/'`
-EXE=""
+MACHINE=`uname -m`
 if [ "`which unzip 2>/dev/null`" = "" ]; then
     echo "Error: Please install unzip before installing MicroEmacs!"
     exit
@@ -70,7 +70,7 @@ elif [ "`uname -r | grep -E 'el[0-9]'`" != "" ]; then
         exit
     fi
 elif [ "`uname -r | grep -E 'MANJARO'`" != "" ]; then
-    ## AlmaLinux Or REdHat Enterprise Linux
+    ## Manjaro Linux
     if [ $KERNEL -eq 6 ]; then    
        MECB="linux-6-manjaro-0-microemacs-${VERSION}-mecb"
        MEWB="linux-6-manjaro-0-microemacs-${VERSION}-mewb"   
@@ -79,6 +79,7 @@ elif [ "`uname -r | grep -E 'MANJARO'`" != "" ]; then
         exit
     fi
 else
+    ## Debian derivatives
     if [ $KERNEL -eq 5 ]; then
         MECB="linux-5-ubuntu-20-microemacs-${VERSION}-mecb"
         MEWB="linux-5-ubuntu-20-microemacs-${VERSION}-mewb"
