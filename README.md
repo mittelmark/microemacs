@@ -281,6 +281,7 @@ already included so for the
 ```bash
 sudo pkg install gcc
 sudo pkg install xorg libX11
+### GhostBSD as well: sudo pkg install -g 'GhostBSD*-dev'
 ```
 
 Therafter  you  should be able to compile  the  application  using the
