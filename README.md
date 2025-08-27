@@ -153,7 +153,20 @@ Linux/FreeBSD system.
 You can then start  either the  terminal  version with the command `me arguments` or the
 X11/Windows version with `me -w arguments`.
 
-For Windows with the msys2 or the Cygwin system that should work:
+To get a colored terminal version you should activate TermCap colors in Tools-User Setup-Platform ad run the mecb version like this:
+
+```
+TERM=xterm mecb ...
+```
+
+To avoid typing this and for proper rendering of non ISO-8859-1 characters using the __luit__ tool on a Unix terminal it is usually done by performing an alias in your `.bashrc` or your `.zshrc` like this:
+
+```
+alias mec="TERM=xterm luit -encoding ISO8859-15 mecb"
+alias mew="mewb"
+```
+
+For Windows with the msys2 or the Cygwin system the following should work:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh)"
@@ -253,6 +266,34 @@ sudo dnf install xorg-x11-fonts* ## Lucidatypewriter, Adobe courier
 If you do not want to build these  executables  yourself you can just download
 pre-build executables (see below).
 
+### Arch Systems like Manjaro Linux
+
+Here the steps  required to compile the editor on Arch based systems like Manjaro.
+
+```bash
+### install make, unzip, gcc
+sudo pacman -S make gcc ncurses zlib luit xorg-xfontsel
+### fetch repo
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+### builds the bfs executable for making stand-alone mecb and mewb etc
+make -f linux32gcc.gmk bfs/bin
+### builds standalone mecb  executable (Terminal)
+make -f linux32gcc.gmk mecb
+### install X11 developer files seems not required on Manjaro
+### builds standalone mew executable (GUI)
+make -f linux32gcc.gmk mewb
+### builds combined standalone mecw executable (Terminal and GUI)
+make -f linux32gcc.gmk mecwb
+### for more fonts and better font selection
+sudo pacman -S install xorg-xfontsel ## xfontsel
+sudo dnf install ttf-fira-mono ## for Windows CP1252 encodings
+xset fp rehash ## update the fontpath settings to the current session
+```
+
+If you do not want to build these  executables  yourself you can just download
+pre-build executables (see below).
+
 ## Cross-compilation on Linux for Windows:
 
 You need the  Mingw32 GCC  compiler  and the Zip  library.  Here an install on
@@ -275,12 +316,12 @@ binaries for Windows on your Linux machine.
 
 ## FreeBSD
 
-If you  install  gcc on  FeeeBSD it comes with the  ncurses  libraries
+If you  install  gcc on  FreeBSD it comes with the  ncurses  libraries
 already included so for the 
 
 ```bash
 sudo pkg install gcc
-sudo pkg install xorg libX11
+sudo pkg install Xorg libX11
 ### GhostBSD as well: sudo pkg install -g 'GhostBSD*-dev'
 ```
 
