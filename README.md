@@ -272,7 +272,7 @@ Here the steps  required to compile the editor on Arch based systems like Manjar
 
 ```bash
 ### install make, unzip, gcc
-sudo pacman -S make gcc ncurses zlib luit xorg-xfontsel
+sudo pacman -S make gcc ncurses zlib luit xorg-xfontsel ttf-fira-mono
 ### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
@@ -286,8 +286,7 @@ make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
 make -f linux32gcc.gmk mecwb
 ### for more fonts and better font selection
-sudo pacman -S install xorg-xfontsel ## xfontsel
-sudo dnf install ttf-fira-mono ## for Windows CP1252 encodings
+sudo pacman -S xorg-xfontsel ttf-fira-mono ### xfontsel and CP1252 enabled font
 xset fp rehash ## update the fontpath settings to the current session
 ```
 
