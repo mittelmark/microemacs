@@ -19,6 +19,7 @@
     hilight .hilight.abbrev-item 0x44 "\ecB" "" "\ecA" "" "" .scheme.function
     hilight .hilight.abbrev-item 0x44 "\ecC" "" "\ecA" "" "" .scheme.keyword
     hilight .hilight.abbrev-item 0x44 "\ecD" "" "\ecA" "" "" .scheme.operator
+    hilight .hilight.abbrev-item 0x44 "\CCD" "" "\CCA" "" "" .scheme.variable
     hilight .hilight.abbrev-item 0x44 "\ecE" "" "\ecA" "" "" .scheme.variable
     hilight .hilight.abbrev-item 0x44 "\ecF" "" "\ecA" "" "" .scheme.string
 !endif
@@ -229,6 +230,15 @@ define-macro abbrev-list
         !abort
     !endif
     goto-position "\x81"
-    popup-window "*abbrev-list*"
-    goto-position "\x81"
+    delete-other-windows
+    !if &equ @# 2
+      split-window-vertically
+    !else
+      split-window-horizontally
+    !endif
+    find-buffer "*abbrev-list*"
+    3 next-window
+
+    ;popup-window "*abbrev-list*"
+    ;goto-position "\x81"
 !emacro
