@@ -17,6 +17,8 @@ if [ $OS = "MSYS" ]; then
     MEWB="windows-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "CYGWIN" ]; then
+    ## TODO: check version 3.3, 3.5, 3.6
+    VERSION=`cygcheck -cd cygwin`
     MECB="cygwin-3.5-microemacs-${VERSION}-mecb"
     MEWB="cygwin-3.5-microemacs-${VERSION}-mewb"
     EXE=".exe"
@@ -151,7 +153,7 @@ function install-me {
         echo "Installation complete."
     fi    
 }
-
+## install desktop file
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
 install-me
 if [ "`which mecb 2>/dev/null`" != "" ]; then
