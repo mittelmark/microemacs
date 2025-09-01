@@ -52,6 +52,10 @@
     hilight .hilight.list-item 0x40 "^[ 0-9][ 0-9][ 0-9][ 0-9][ 0-9][ 0-9] " "" $global-scheme
     hilight .hilight.list-item 0x44 "\ecB" "" "\ecA" "" "" .scheme.function
     hilight .hilight.list-item 0x44 "\ecC" "" "\ecA" "" "" .scheme.type
+    hilight .hilight.list-item 0x44 "\CCa" "" "\CCA" "" "" .scheme.prepro
+    hilight .hilight.list-item 0x44 "\CCb" "" "\CCA" "" "" .scheme.function
+    hilight .hilight.list-item 0x44 "\CCc" "" "\CCA" "" "" .scheme.keyword
+    hilight .hilight.list-item 0x44 "\CCd" "" "\CCA" "" "" .scheme.type
 !endif
 
 0 define-macro item-list-order
