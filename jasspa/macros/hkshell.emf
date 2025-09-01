@@ -33,9 +33,10 @@ define-macro fhook-shell
 
 ; buffer-init variables
 set-variable .fhook-shell.name "UNIX Shell"
-set-variable .fhook-shell.setup &reg "/history/fhook/shell" "bghiopx"
-set-variable .fhook-shell.setup-mask "abeghikmoptux"
+set-variable .fhook-shell.setup &reg "/history/fhook/shell" "bfghiopx"
+set-variable .fhook-shell.setup-mask "abfeghikmoptux"
 set-variable .fhook-shell.comment "|#||#|# | #|r|"
+
 set-variable .fhook-shell.collapse-open  "^function\\s* .+ {\\s*"
 set-variable .fhook-shell.collapse-close "^}"
 set-variable .fhook-shell.collapse-mclose "1"
@@ -179,6 +180,17 @@ set-variable .fhook-shell.item-list-r1 "Func \ecB\\1\ecA"
     hilight .hilight.shellV 4    "\"" "\"" ""      .scheme.string
     hilight .hilight.shellV 4    "\\${" "}" ""     .scheme.variable
     hilight .hilight.shellV 0x80 "}"  .hilight.shell    .scheme.variable
+!endif
+
+!if &sin "d" .fhook-shell.setup
+  0 indent .hilight.shell 1 10
+  indent .hilight.shell    N "function"        t
+  indent .hilight.shell    O "}"              -t
+  indent .hilight.shell    N "if"              t
+  indent .hilight.shell    S "else"           -t
+  indent .hilight.shell    S "elif"         -t
+  indent .hilight.shell    N "for"             t
+  indent .hilight.shell    N "while"           t
 !endif
 
 buffer-init-fhook "shell"
