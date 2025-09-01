@@ -88,11 +88,16 @@ function install-ubuntu-mono {
     wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ~/.local/share/fonts/ubuntu-license.txt
 }
 
-function install-courier-prime() {
+function install-courier-prime {
     echo "install courier-prime into ~/.local/share/fonts"
     wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Regular.ttf -O ~/.local/share/fonts/courier-prime-medium.ttf
     wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Bold.ttf -O ~/.local/share/fonts/courier-prime-bold.ttf
     wget https://github.com/quoteunquoteapps/CourierPrime/blob/master/OFL.txt -O ~/.local/share/fonts/courier-prime-license.txt
+}
+my_function () {
+  local var1='C'
+  var2='D'
+  echo "Inside function: var1: $var1, var2: $var2"
 }
 
 install-fonts
