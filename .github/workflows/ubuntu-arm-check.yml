@@ -1,4 +1,4 @@
-name: Binaries Ubuntu 22,24 (linux-gcc)
+name: Ubuntu 22,24 checks (linux-gcc)
 
 on:
   workflow_dispatch:
