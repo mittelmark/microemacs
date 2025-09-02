@@ -18,9 +18,10 @@ if [ $OS = "MSYS" ]; then
     EXE=".exe"
 elif [ $OS = "CYGWIN" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
-    VERSION=`cygcheck -cd cygwin`
-    MECB="cygwin-3.5-microemacs-${VERSION}-mecb"
-    MEWB="cygwin-3.5-microemacs-${VERSION}-mewb"
+    CYGVERSION=`cygcheck -cd cygwin | grep cygwin | grep -E 's/.+(3.[0-9]).+/\1/'`
+    echo "installing for cygwin version $VERSION ..."
+    MECB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mecb"
+    MEWB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
     if [ $KERNEL -eq 21 ]; then    
@@ -67,6 +68,9 @@ elif [ "`uname -r | grep -E 'el[0-9]'`" != "" ]; then
     elif [ $KERNEL -eq 5 ]; then    
        MECB="linux-5-almalinux-9-microemacs-${VERSION}-mecb"
        MEWB="linux-5-almalinux-9-microemacs-${VERSION}-mewb"   
+    elif [ $KERNEL -eq 6 ]; then    
+       MECB="linux-6-almalinux-9-microemacs-${VERSION}-mecb"
+       MEWB="linux-6-almalinux-9-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
