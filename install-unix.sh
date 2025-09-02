@@ -27,10 +27,7 @@ elif [ $OS = "CYGWIN" ]; then
     MEWB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
-    if [ $KERNEL -eq 21 ]; then    
-       MECB="macos-12-microemacs-${VERSION}-mecb"
-       MEWB="macos-12-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 22 ]; then    
+    if [ $KERNEL -eq 22 ]; then    
        MECB="macos-13-microemacs-${VERSION}-mecb"
        MEWB="macos-13-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 23 ]; then    
@@ -54,11 +51,11 @@ elif [ $OS = "FreeBSD" ]; then
 elif [ "`uname -r | grep -E 'fc[0-9]'`" != "" ]; then
     ## fedora
     if [ $KERNEL -eq 5 ]; then    
-       MECB="linux-5-fedora-30-microemacs-${VERSION}-mecb"
-       MEWB="linux-5-fedora-30-microemacs-${VERSION}-mewb"   
+       MECB="linux-${MACHINE}-5-fedora-30-microemacs-${VERSION}-mecb"
+       MEWB="linux-${MACHINE}-5-fedora-30-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 6 ]; then    
-       MECB="linux-6-fedora-40-microemacs-${VERSION}-mecb"
-       MEWB="linux-6-fedora-40-microemacs-${VERSION}-mewb"   
+       MECB="linux-${MACHINE}-6-fedora-41-microemacs-${VERSION}-mecb"
+       MEWB="linux-${MACHINE}-6-fedora-41-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
@@ -66,14 +63,14 @@ elif [ "`uname -r | grep -E 'fc[0-9]'`" != "" ]; then
 elif [ "`uname -r | grep -E 'el[0-9]'`" != "" ]; then
     ## AlmaLinux Or RedHat Enterprise Linux
     if [ $KERNEL -eq 4 ]; then    
-       MECB="linux-4-almalinux-8-microemacs-${VERSION}-mecb"
-       MEWB="linux-4-almalinux-8-microemacs-${VERSION}-mewb"   
+       MECB="linux-${MACHINE}-4-almalinux-8-microemacs-${VERSION}-mecb"
+       MEWB="linux-${MACHINE}-4-almalinux-8-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 5 ]; then    
-       MECB="linux-5-almalinux-9-microemacs-${VERSION}-mecb"
-       MEWB="linux-5-almalinux-9-microemacs-${VERSION}-mewb"   
+       MECB="linux-${MACHINE}-5-almalinux-9-microemacs-${VERSION}-mecb"
+       MEWB="linux-${MACHINE}-5-almalinux-9-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 6 ]; then    
-       MECB="linux-6-almalinux-9-microemacs-${VERSION}-mecb"
-       MEWB="linux-6-almalinux-9-microemacs-${VERSION}-mewb"   
+       MECB="linux-${MACHINE}-6-almalinux-10-microemacs-${VERSION}-mecb"
+       MEWB="linux-${MACHINE}-6-almalinux-10-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
@@ -81,8 +78,8 @@ elif [ "`uname -r | grep -E 'el[0-9]'`" != "" ]; then
 elif [ "`uname -r | grep -E 'MANJARO'`" != "" ]; then
     ## Manjaro Linux
     if [ $KERNEL -eq 6 ]; then    
-       MECB="linux-6-manjaro-0-microemacs-${VERSION}-mecb"
-       MEWB="linux-6-manjaro-0-microemacs-${VERSION}-mewb"   
+       MECB="linux-${MACHINE}-6-manjaro-0-microemacs-${VERSION}-mecb"
+       MEWB="linux-${MACHINE}-6-manjaro-0-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
@@ -90,11 +87,11 @@ elif [ "`uname -r | grep -E 'MANJARO'`" != "" ]; then
 else
     ## Debian derivatives
     if [ $KERNEL -eq 5 ]; then
-        MECB="linux-5-ubuntu-20-microemacs-${VERSION}-mecb"
-        MEWB="linux-5-ubuntu-20-microemacs-${VERSION}-mewb"
+        MECB="linux-${MACHINE}-${KERNEL}-ubuntu-20-microemacs-${VERSION}-mecb"
+        MEWB="linux-${MACHINE}-${KERNEL}-ubuntu-20-microemacs-${VERSION}-mewb"
     elif [ $KERNEL -eq 6 ]; then
-        MECB="linux-6-ubuntu-22-microemacs-${VERSION}-mecb"
-        MEWB="linux-6-ubuntu-22-microemacs-${VERSION}-mewb"
+        MECB="linux-${MACHINE}-${KERNEL}-ubuntu-22-microemacs-${VERSION}-mecb"
+        MEWB="linux-${MACHINE}-${KERNEL}-ubuntu-22-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit

@@ -36,33 +36,43 @@ function install-fonts {
 
 function update-font-path {
     ## check if the local folder is already in the fontpath
-    FP=`xset q | grep -A1 'Font Path' | grep '.local/share/fonts'`
-    ## current session
-    if [ "$FP" = "" ]; then
-        ## if not add it for the current X-session
-        xset +fp ~/.local/share/fonts
-        xset fp rehash
-        if [ -f ~/.desktop-session/config ]; then
-            ## AntiX-Linux
-            echo '(sleep 3 && xset +fp ~/.local/share/fonts && xset fp rehash) &' >> ~/.desktop-session/config
-        fi  
-        if [ -f ~/.config/autostart ];  then
-            ## other desktop managers Cinnamon
-            ## create X11-Font-Load desktop file in config/autostart 
-            ## create 
-            echo "#!/bin/sh" > ~/.local/bin/ttf-fonts.sh
-            echo '(sleep 3 && xset +fp ~/.local/share/fonts && xset fp rehash) &' >> ~/.local/bin/ttf-fonts.sh
-            echo "[Desktop Entry]" > ~/.config/autostart/ttf-fonts.desktop
-            echo "Type=Application" >> ~/.config/autostart/ttf-fonts.desktop
-            echo "Exec=sh ~/.local/bin/ttf-fonts.sh" >> ~/.config/autostart/ttf-fonts.desktop    
-            echo "Hidden=false" >> ~/.config/autostart/ttf-fonts-desktop 
-            echo "NoDisplay=true" >> ~/.config/autostart/ttf-fonts.desktop
-            echo "X-GNOME-Autostart-enabled=true" >> ~/.config/autostart/ttf-fonts.desktop
-            echo "Name=TTF-Fonts" >> ~/.config/autostart/ttf-fonts.desktop
-        fi
+    XSET=`which xset 2>/dev/null`
+    if [ "$XSET" = "" ]; then
+        echo "Xset is not installed! If you are on a system where "
+        echo "you can't install xset like Red Hat Enterprise 10,"
+        echo "you can try to install the fonts into your system with sudo like this:"
+        echo "sudo mkdir /etc/X11/fontpath.d/ttf-fonts"
+        echo "sudo cp $HOME/.local/share/fonts/* /etc/X11/fontpath.d/ttf-fonts/"
+        echo "and then restart your session."
+    else
+        FP=`xset q | grep -A1 'Font Path' | grep '.local/share/fonts'`
+        ## current session
+        if [ "$FP" = "" ]; then
+            ## if not add it for the current X-session
+            xset +fp ~/.local/share/fonts
+            xset fp rehash
+            if [ -f ~/.desktop-session/config ]; then
+                ## AntiX-Linux
+                echo '(sleep 3 && xset +fp ~/.local/share/fonts && xset fp rehash) &' >> ~/.desktop-session/config
+            fi  
+            if [ -f ~/.config/autostart ];  then
+                ## other desktop managers Cinnamon
+                ## create X11-Font-Load desktop file in config/autostart 
+                ## create 
+                echo "#!/bin/sh" > ~/.local/bin/ttf-fonts.sh
+                echo '(sleep 3 && xset +fp ~/.local/share/fonts && xset fp rehash) &' >> ~/.local/bin/ttf-fonts.sh
+                echo "[Desktop Entry]" > ~/.config/autostart/ttf-fonts.desktop
+                echo "Type=Application" >> ~/.config/autostart/ttf-fonts.desktop
+                echo "Exec=sh ~/.local/bin/ttf-fonts.sh" >> ~/.config/autostart/ttf-fonts.desktop    
+                echo "Hidden=false" >> ~/.config/autostart/ttf-fonts-desktop 
+                echo "NoDisplay=true" >> ~/.config/autostart/ttf-fonts.desktop
+                echo "X-GNOME-Autostart-enabled=true" >> ~/.config/autostart/ttf-fonts.desktop
+                echo "Name=TTF-Fonts" >> ~/.config/autostart/ttf-fonts.desktop
+            fi
 
-    else   
-        xset fp rehash
+        else   
+            xset fp rehash
+        fi
     fi
 }
 ## link into ~/.local/share/fonts
