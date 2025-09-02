@@ -19,6 +19,9 @@ if [ $OS = "MSYS" ]; then
 elif [ $OS = "CYGWIN" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
     CYGVERSION=`cygcheck -cd cygwin | grep cygwin | sed -E 's/.+(3.[0-9]).+/\1/'`
+    if [ "$CYGVERSION" = "3.4" ]; then
+        CYGVERSION="3.3"
+    fi
     echo "installing for cygwin version $CYGVERSION ..."
     MECB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mecb"
     MEWB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mewb"
