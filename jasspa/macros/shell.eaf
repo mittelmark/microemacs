@@ -22,5 +22,6 @@ bfoa "for \pvar in \"${arr[@]}\"; do\r    echo $var\r\B\B\B\Bdone\P" "  bfoa (fo
 bfok "for key in \"${!dict[@]}\"; do\r    \pecho \"$key = ${dict[$key]}\"\r\B\B\B\Bdone\P" "  bfok (foreach k,v)"
 barr "arr=(\pval1 val2)\P" "  barr(ay)"
 bdic "declare -A \pdict\rdict[\"key\"]=\"value\"\r\P" "  bdic(t)"
+ru   "read -n1 -r -p \"choose [y]es|[n]o: \"\r echo $REPLY\r" " \ecCr\ecAead \ecCu\ecAser"
  "" "" 
  "" "</FOLD>"
