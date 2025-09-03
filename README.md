@@ -313,6 +313,27 @@ sudo apt install desktop-file-utils
 Thereafter  you might  execute `make -f  win32mingw.gmk  mecb mewb` to get all
 binaries for Windows on your Linux machine.
 
+## Compilation on Cygwin Windows
+
+Here are the steps to compile on Cygwin Windows if using the apt-cyg / cyg package manager.
+
+For Windows I used [MobaXterm](https://mobaxterm.mobatek.net/) version 25.2 for the compilation.
+
+```
+apt install git gcc-core make unzip git libncurses-devel libxt-devel zlib-devel
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+## Or if git is not working or not installed (what was true for MobaXterm 25.2): 
+## wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
+## unzip master.zip && cd microemacs-master
+make -f cygwin.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
+make -f cygwin.gmk mecb    ## console version
+make -f cygwin.gmk mewb    ## X11 version
+make -f cygwin.gmk mecwb   ## X11 and console version
+## for better font support
+apt install xfontsel mkfontscale xset
+```
+
 ## FreeBSD
 
 If you  install  gcc on  FreeBSD it comes with the  ncurses  libraries
