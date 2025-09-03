@@ -23,8 +23,8 @@ elif [ $OS = "CYGWIN" ]; then
         CYGVERSION="3.3"
     fi
     echo "installing for cygwin version $CYGVERSION ..."
-    MECB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mecb"
-    MEWB="cygwin-${CYGVERSION}-microemacs-${VERSION}-mewb"
+    MECB="cygwin-${MACHINE}-${CYGVERSION}-microemacs-${VERSION}-mecb"
+    MEWB="cygwin-${MACHINE}-${CYGVERSION}-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
     if [ $KERNEL -eq 22 ]; then    
