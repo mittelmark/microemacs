@@ -169,7 +169,7 @@ if [ "`which mecb 2>/dev/null`" != "" ]; then
     echo "Installed:"
     mecb -V
 fi
-if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ]; then
+if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ] || [ "$OS" = "cygwin" ]]; then
     install-fonts
 fi
 
