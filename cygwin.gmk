@@ -3,7 +3,7 @@ OS=`uname -o | sed 's/Cygwin/cygwin/'`
 VERSION=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | perl -ane 'print $$F[0]'`
 OSV=`uname -r | grep -oE '^[0-9]\.[0-8]'`
 MACHINE=`uname -m`
-RELEASE=cygwin-$(OSV)-$(MACHINE)-microemacs$(VERSION)-
+RELEASE=cygwin-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
 
 app=mecb
 default:
