@@ -62,8 +62,8 @@ jobs:
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls
-        ls -l ./cygwin-x86_64-3.6-microemacs-${VERSION}-mecb.exe
-        echo `./cygwin-x86_64-3.6-microemacs-${VERSION}-mecb.exe -V`
+        ls -l ./cygwin-3.6-x86_64-microemacs-${VERSION}-mecb.exe
+        echo `./cygwin-3.6.x86_64-microemacs-${VERSION}-mecb.exe -V`
         
     - name: Cygwin Combined Release 
       run: |
@@ -74,6 +74,6 @@ jobs:
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-cygwin-x86_64-3.6-windows
+        name: Release-cygwin-3.6-x86_64-windows
         path: cygwin-*/
         
