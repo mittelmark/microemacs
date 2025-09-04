@@ -1,34 +1,5 @@
 ##-*- makefile -*-############################################################
 #
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
-#  Date          : $Date$
-#  Author        : $Author$
-#  Created By    : Detlef Groth
-#  Created       : Wed Jul 31 21:47:07 2024
-#  Last Modified : <241228.1140>
-#
-#  Description	
-#
-#  Notes
-#
-#  History
-#	
-#  $Log$
-#
-##############################################################################
-#
-#  Copyright (c) 2024 Detlef Groth.
-# 
-#  All Rights Reserved.
-# 
-#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
-#  readable form without prior written consent from Detlef Groth.
-#
-##############################################################################
 #version=091224b1
 #VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
 VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
@@ -37,7 +8,8 @@ MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
 KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/' | sed 's/24/15/' | sed 's/25/16/')
 OS=macos-$(KERNEL)
-RELEASE=macos-$(KERNEL)-microemacs-$(VERSION)
+ARCH=$(shell uname -m)
+RELEASE=macos-$(KERNEL)-$(ARCH)-microemacs-$(VERSION)
 app=mecb
 bfs/bin:
 	echo "VERSION: $(VERSION)"

@@ -10,7 +10,7 @@ KERNEL=$(shell uname -r | grep -oE '^[0-9]')
 DIST=$(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
 OSVERSION="$(DIST)$(OSV)"
 MACHINE=`uname -m`
-RELEASE=linux-$(MACHINE)-$(KERNEL)-$(DIST)-$(OSV)-microemacs-$(VERSION)
+RELEASE=linux-$(KERNEL)-$(MACHINE)-$(DIST)-$(OSV)-microemacs-$(VERSION)
 app=mecb
 default:
 	echo "Makefile for Linux systems"
