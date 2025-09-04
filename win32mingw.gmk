@@ -1,5 +1,5 @@
 VERSION=$(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $$3 }' | paste -sd '-' | sed 's/[-"]//g')
-RELEASE=windows-microemacs-$(VERSION)
+RELEASE=windows-10-intel-microemacs-$(VERSION)
 app=mecb
 bfs/exe:
 	cd bfs && make -f win32mingw.gmk clean	
