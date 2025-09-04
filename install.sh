@@ -108,12 +108,13 @@ function install-fonts {
         echo "and then restart your session."
         exit
     else
-    FP=`xset q | grep -A1 'Font Path' | grep 'local/share/fonts'`
-    if [ "$FP" = "" ]; then
-        xset +fp ~/.local/share/fonts
-        xset fp rehash
-    else   
-        xset fp rehash
+        FP=`xset q | grep -A1 'Font Path' | grep 'local/share/fonts'`
+        if [ "$FP" = "" ]; then
+            xset +fp ~/.local/share/fonts
+            xset fp rehash
+        else   
+            xset fp rehash
+        fi
     fi
 }
 
