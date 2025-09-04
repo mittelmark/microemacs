@@ -7,9 +7,18 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <250824.1927>
+>  Last Modified : <250904.2232>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
-
+  [250904] 
+    - version v0925beta2
+  [250902]
+    - improved shell support, indentation, abbreviations with expansion hints 
+    - vertical split of abbrev-list
+    
+  [250829]
+    - hilights  for  abbreviation  shortcuts to indicate  expansion  for a few
+      languages started
+    
   [250820,21,24]
     - improved Lua mode and adding documentation
     - adding and documenting luatags

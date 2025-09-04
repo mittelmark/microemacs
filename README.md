@@ -137,21 +137,21 @@ New important macro commands (see the internal help pages - version v09.12.24):
 <a name="installation"> </a>
 ## Installation
 
-For Linux, MacOS and FreeBSD systems the following lines might work:
+For Linux, MacOS, FreeBSD, Cygwin-Windows and Msys-Windows the following lines might work:
 
 ```
 ## remove old installaed mecb application if it is there
 [[ -f ~/.local/bin/mecb ]] && rm -rf ~/.local/bin/mecb
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-unix.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install.sh)"
 source ~/.bashrc ## for the current session
 mecb -V
 ```
 
 This  line  requires  the  tools  curl  and  unzip  to be  installed  on  your
-Linux/FreeBSD system.
+Linux, FreeBSD or Windows Cygwin/Msys system.
 
-You can then start  either the  terminal  version with the command `me arguments` or the
-X11/Windows version with `me -w arguments`.
+You can then start  either the  terminal  version with the command `mewb arguments` or the
+X11/Windows version with `mecb arguments`.
 
 To get a colored terminal version you should activate TermCap colors in Tools-User Setup-Platform ad run the mecb version like this:
 
@@ -166,17 +166,6 @@ alias mec="TERM=xterm luit -encoding ISO8859-15 mecb"
 alias mew="mewb"
 ```
 
-For Windows with the msys2 or the Cygwin system the following should work:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-msys2.sh)"
-source ~/.bashrc
-me -V
-me -w ## window version
-me # command line version
-````
-
-For Cygwin Windows (3.5) you replace install-msys2.sh with install-cygwin.sh.
 
 For a Windows installation you can do the following after opening a Powershell Terminal:
 
