@@ -119,48 +119,48 @@ function install-fonts {
 }
 
 function install-me {
-    if [ ! -f ~/.local/bin/mecb ]; then
-        if [ ! -d ~/.local/bin ]; then
-            mkdir -p ~/.local/bin
-        fi
+    if [ ! -d ~/.local/bin ]; then
+        mkdir -p ~/.local/bin
+    fi
+    if [ -f ~/.local/bin/me?b ]; then
+        rm ~/.local/bin/me?b
+    fi
+    if [ -f ~/.local/bin/mecu ]; then
+        rm ~/.local/bin/mecu
+    fi
+    
+    # Check if ~/bin is already in the PATH
+    if [ ":$PATH:" != *":$HOME/.local/bin:"* ]; then
+        # If it's not in the PATH, add it to ~/.bashrc
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+        # Update the PATH for the current session
+        export PATH="$HOME/.local/bin:$PATH"
+        echo "To update the current Bash session with the new PATH variable use: 'source ~/.bashrc'"
+    fi
 
-        # Check if ~/bin is already in the PATH
-        if [ ":$PATH:" != *":$HOME/.local/bin:"* ]; then
-            # If it's not in the PATH, add it to ~/.bashrc
-            echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-            # Update the PATH for the current session
-            export PATH="$HOME/.local/bin:$PATH"
-            echo "To update the current Bash session with the new PATH variable use: 'source ~/.bashrc'"
-        fi
+    # Download the dummy.sh script from the internet
+    URL=${BASEURL}/${MECB}
+    echo "fetching $URL"
+    if [ -f "/tmp/${MECB}.zip" ]; then
+        rm "/tmp/${MECB}.zip"
+    fi
+    curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
+    unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
+    URL=${BASEURL}/${MEWB}
+    if [ -f "/tmp/${MEWB}.zip" ]; then
+        rm "/tmp/${MEWB}.zip"
+    fi
+    curl -fsSL "${URL}.zip" --output /tmp/${MEWB}.zip 
+    unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
+    if [ "$EXE" = "" ]; then
+        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
+        chmod 755 ~/.local/bin/mecu
+        chmod 755 ~/.local/bin/mecb
+        chmod 755 ~/.local/bin/mewb
+    fi
 
-        # Download the dummy.sh script from the internet
-        URL=${BASEURL}/${MECB}
-        echo "fetching $URL"
-        if [ ! -f "/tmp/${MECB}.zip" ]; then
-            curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
-        fi
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
-        if [ "$EXE" = "" ]; then
-            unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
-            chmod 755 ~/.local/bin/mecu
-        fi
-        URL=${BASEURL}/${MEWB}
-        if [ ! -f "/tmp/${MEWB}.zip" ]; then
-            curl -fsSL "${URL}.zip" --output /tmp/${MEWB}.zip 
-        fi
-        unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
-        # Make the script executable
-        if [ "$OS" != "MSYS" ]; then
-            chmod 755 ~/.local/bin/me?b$EXE
-            if [ ! -f ~/.local/bin/me ]; then
-                if [ "$OS" != "CYGWIN" ]; then
-                    curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh --output ~/.local/bin/me 
-                    chmod 755 ~/.local/bin/me
-                fi
-            fi
-        fi
-        echo "Installation complete."
-    fi    
+    # Make the script executable
+    echo "Installation complete."
 }
 ## install desktop file
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
