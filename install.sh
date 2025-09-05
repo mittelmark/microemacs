@@ -140,13 +140,14 @@ function install-me {
 
     # Download the dummy.sh script from the internet
     URL=${BASEURL}/${MECB}
-    echo "fetching $URL"
+    echo "fetching ${URL}.zip into /tmp"
     if [ -f "/tmp/${MECB}.zip" ]; then
         rm "/tmp/${MECB}.zip"
     fi
     curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
     unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
     URL=${BASEURL}/${MEWB}
+    echo "fetching ${URL}.zip into /tmp"
     if [ -f "/tmp/${MEWB}.zip" ]; then
         rm "/tmp/${MEWB}.zip"
     fi
