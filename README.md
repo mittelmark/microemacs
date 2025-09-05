@@ -224,6 +224,8 @@ make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
 make -f linux32gcc.gmk mecwb
 sudo apt install x11-utils    # xfontsel, xlsfonts - better font selection
+sudo apt install xfonts-utils ## mkfontscale for using ttf fonts
+sudo apt install luit ## unicode support in the terminal
 ```
 
 ### Red Hat Systems
@@ -394,12 +396,53 @@ FreeBSD builds (yet).
 |             | Windows Cygwin 3.5-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecwb.zip) |
 |             | Windows Cygwin 3.6-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-x86_64-microemacs-091225b2-mecwb.zip) |
 
-For        the         Dictionaries         look         here         
-[Release Dictionaries](https://github.com/mittelmark/microemacs/releases/tag/v0.9.0)
+
+__Installation:__
+
+Installation  of these  executables  is easy.  Make  them  executable  on Unix
+platforms and move them to a folder  belonging to your PATH variable.  Windows
+users should just copy them as well to such a folder.
+
+Just  download an  executable  for your  platform  which matches as closely as
+possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
+On Unix systems you make the file  executable  (chmod 755 filename) and rename
+it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
+Therafter you can run the me executable.  The first thing you have to do is to
+select the right  keyboard  configuration  after  starting your first session.
+Choose the menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
+tab.
+
+[Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
+[Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
+Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
+compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
+[CentOS](https://www.centos.org)                                           and
+[RHEL](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
+compatible.  [Fedora](https://www.fedora.org) builds can be probably only used
+on Fedora without problems.
+
+Build  for  other   platforms   might  be  provided  if  requested  using  the
+[issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
+repository. 
+
+__Fonts:__
+
+Download more programmers fonts: [TTF-Files](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip) -  [see here on how to install them](README-standalone.md#Fonts):
+
+__Dictionaries:__
+
+The executables linked  above  come with an embedded American  dictionary.  To use other
+dictionaries  download the dictionary  files for your language from the relase
+page: 
+[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases/tag/v0.9.0):
+and place these files  in your  personal  user folder  `~/.jasspa` on Linux for
+instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
+dictionary.
 
 You  should  download  the  files  for you  language  and place  them into the
 ME config folder, usually _~/.jasspa_, in your home directory. On Windows check user-setup where the
 ME user folder is.
+
 
 ## Download Prebuild MicroEmacs Executables (v09.12.25.beta1)
 
@@ -435,41 +478,6 @@ New in comparison to v09.12.24
 |             | Windows Cygwin 3.5 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/cygwin-3.5-microemacs-091225b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/cygwin-3.5-microemacs-091225b1-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/cygwin-3.5-microemacs-091225b1-mecwb.zip) |
 |             | Windows Cygwin 3.6 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/cygwin-3.6-microemacs-091225b1-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/cygwin-3.6-microemacs-091225b1-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/cygwin-3.5-microemacs-091225b1-mecwb.zip) |
 
-Download more programmers fonts: [TTF-Files](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip) -  [see here on how to install them](README-standalone.md#Fonts):
-
-Installation  of these  executables  is easy.  Make  them  executable  on Unix
-platforms and move them to a folder  belonging to your PATH variable.  Windows
-users should just copy them as well to such a folder.
-
-Just  download an  executable  for your  platform  which matches as closely as
-possible your operatig system. For instance for Fedora 39, you download the binaries for Fedora 38.
-On Unix systems you make the file  executable  (chmod 755 filename) and rename
-it for  instance  to me, then  copy it to a  folder  belonging  to your  PATH.
-Therafter you can run the me executable.  The first thing you have to do is to
-select the right  keyboard  configuration  after  starting your first session.
-Choose the menu entry "Tools -> User Setup" and then  "Keyboard"  the Start-Up
-tab.
-
-The executables linked  above  come with an embedded American  dictionary.  To use other
-dictionaries  download the dictionary  files for your language from the relase
-page: 
-[https://github.com/mittelmark/microemacs/releases](https://github.com/mittelmark/microemacs/releases):
-and place tese files  in your  personal  user folder  `~/.jasspa` on Linux for
-instance.  Then use "Tools -> User Setup -> Language  settings"  to switch the
-dictionary.
-
-[Ubuntu](https://ubuntu.com/)      builds      should     be     usable     on
-[Debian](https://www.debian.org/)   and  derived   distros,   such  as  [Linux
-Mint](https://www.linuxmint.com)     or    [MX     Linux](https://mxlinux.org)
-compatible.     [AlmaLinux](https://almalinux.org)     builds     should    be
-[CentOS](https://www.centos.org)                                           and
-[RHEL](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
-compatible.  [Fedora](https://www.fedora.org) builds can be probably only used
-on Fedora without problems.
-
-Build  for  other   platforms   might  be  provided  if  requested  using  the
-[issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
-repository. 
 
 ## Download Prebuild MicroEmacs Executables (v09.12.24)
 
