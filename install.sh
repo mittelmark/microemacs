@@ -30,14 +30,17 @@ elif [ $OS = "cygwin" ]; then
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
     if [ $KERNEL -eq 22 ]; then    
-       MECB="macos-13-intel-microemacs-${VERSION}-mecb"
-       MEWB="macos-13-intel-microemacs-${VERSION}-mewb"   
+       MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 23 ]; then    
-       MECB="macos-14-apple-microemacs-${VERSION}-mecb"
-       MEWB="macos-14-apple-microemacs-${VERSION}-mewb"   
+       MECB="macos-14-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-14-arm64-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 24 ]; then    
-       MECB="macos-15-apple-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-apple-microemacs-${VERSION}-mewb"   
+       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
+    elif [ $KERNEL -eq 25 ]; then    
+       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit
