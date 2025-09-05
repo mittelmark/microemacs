@@ -81,11 +81,11 @@ elif [ "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)'`" != "" ]; then
 else
     ## Debian derivatives
     if [ $KERNEL -eq 5 ]; then
-        MECB="linux-${MACHINE}-${KERNEL}-ubuntu-20-microemacs-${VERSION}-mecb"
-        MEWB="linux-${MACHINE}-${KERNEL}-ubuntu-20-microemacs-${VERSION}-mewb"
+        MECB="linux-${KERNEL}-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mecb"
+        MEWB="linux--${KERNEL}-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mewb"
     elif [ $KERNEL -eq 6 ]; then
-        MECB="linux-${MACHINE}-${KERNEL}-ubuntu-22-microemacs-${VERSION}-mecb"
-        MEWB="linux-${MACHINE}-${KERNEL}-ubuntu-22-microemacs-${VERSION}-mewb"
+        MECB="linux-${KERNEL}-${MACHINE}-ubuntu-22-microemacs-${VERSION}-mecb"
+        MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-22-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit
