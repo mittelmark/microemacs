@@ -394,6 +394,13 @@ FreeBSD builds (yet).
 |             | Windows Cygwin 3.5-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecwb.zip) |
 |             | Windows Cygwin 3.6-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-x86_64-microemacs-091225b2-mecwb.zip) |
 
+For        the         Dictionaries         look         here         
+[Release Dictionaries](https://github.com/mittelmark/microemacs/releases/tag/v0.9.0)
+
+You  should  download  the  files  for you  language  and place  them into the
+ME config folder, usually _~/.jasspa_, in your home directory. On Windows check user-setup where the
+ME user folder is.
+
 ## Download Prebuild MicroEmacs Executables (v09.12.25.beta1)
 
 Release v09.12.25.beta1 (2025-04-11):
