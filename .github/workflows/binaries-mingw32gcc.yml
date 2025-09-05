@@ -129,8 +129,8 @@ jobs:
     - name: Upload Ubuntu Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-Windows
-        path: windows-*/
+        name: Release-windows-10-intel
+        path: windows-10-intel-*/
 
     - name: Upload Brew Package
       uses: actions/upload-artifact@v4
