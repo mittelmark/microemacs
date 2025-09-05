@@ -122,10 +122,10 @@ function install-me {
     if [ ! -d ~/.local/bin ]; then
         mkdir -p ~/.local/bin
     fi
-    if [ -f ~/.local/bin/me?b ]; then
+    if [ -f "${HOME}/.local/bin/mecb" ]; then
         rm ~/.local/bin/me?b
     fi
-    if [ -f ~/.local/bin/mecu ]; then
+    if [ -f "${HOME}/.local/bin/mecu" ]; then
         rm ~/.local/bin/mecu
     fi
     
