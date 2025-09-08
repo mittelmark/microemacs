@@ -55,6 +55,7 @@ elif [ $OS = "FreeBSD" ]; then
     fi
 elif [ "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
     ## Fedora or AlmaLinux or RedHat Enterprise Linux
+    ## 32bit support
     if [ $KERNEL -eq 5 -a $MACHINE = "i686" ]; then
        MECB="linux-5-${MACHINE}-fedora-28-microemacs-${VERSION}-mecb"
        MEWB="linux-5-${MACHINE}-fedora-28-microemacs-${VERSION}-mewb"   
