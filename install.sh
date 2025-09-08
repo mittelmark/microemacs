@@ -61,14 +61,13 @@ elif [ "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
     elif [ $MACHINE != "x86_64" ]; then 
         echo "Error: Architecture $MACHINE and Kernel $KERNEL for RedHat/Fedora distros not supported!" 
         exit
-    fi
-    if [ $KERNEL -eq 4 ]; then    
+    elif [ $KERNEL -eq 4 -a $MACHINE = "x86_64" ]; then    
        MECB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
        MEWB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 5 ]; then    
+    elif [ $KERNEL -eq 5 -a $MACHINE = "x86_64"  ]; then    
        MECB="linux-5-${MACHINE}-almalinux-9-microemacs-${VERSION}-mecb"
        MEWB="linux-5-${MACHINE}-almalinux-9-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 6 ]; then    
+    elif [ $KERNEL -eq 6 -a $MACHINE = "x86_64" ]; then    
        MECB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mecb"
        MEWB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mewb"   
     else
