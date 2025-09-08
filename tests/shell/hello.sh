@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function hello {
+function hello0 {
     echo "Hello"
     x=1
     if [ $x -gt 4 ] 
@@ -50,6 +50,28 @@ function hello {
 #        esac
 #    done
 }
+function hello1 {
+    echo "Hello One!"
+    x=2
+    if [ $x -lt 3 ] ; then
+        echo "x is small" ;
+    else
+        echo "x is larger than 2"
+    fi
+}   
+
+hello2 () {
+    echo "Hello Two!"
+}
+
+hello3 () 
+{
+    echo "Hello Three!"
+}
+
+hello0
+hello1
+hello2
+hello3
 
 
-hello
