@@ -1721,7 +1721,10 @@
   [php4(9)](php4(9)) PHP: Hypertext Preprocessor Language  
   [pl(9)](pl(9)) Practical Extraction and Report Language File  
   [pm(9)](pm(9)) Practical Extraction and Report Language File  
+  [PowerShell(9)](PowerShell(9)) PowerShell Language      
   [profile(9)](profile(9)) Shell user profile  
+  [ps1(9)](ps1(9)) PowerShell Language File  
+  [psm1(9)](psm1(9)) PowerShell Language Module File  
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
   [r(9)](r(9)) R language File  
@@ -3848,6 +3851,7 @@
   [pl(9)](pl(9)) Practical Extraction and Report Language File  
   [pm(9)](pm(9)) Practical Extraction and Report Language File  
   [popup-window(2)](popup-window(2)) Pop-up a window on the screen  
+  [PowerShell(9)](PowerShell(9)) PowerShell Language      
   [prefix(2)](prefix(2)) Key prefix command  
   [previous-window(2)](previous-window(2)) (C-x p) Move the cursor to the previous window  
   [print-buffer(2)](print-buffer(2)) Print buffer, with formatting  
@@ -3857,6 +3861,8 @@
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
   [printall(3f)](printall(3f)) Formatted print job  
   [profile(9)](profile(9)) Shell user profile  
+  [ps1(9)](ps1(9)) PowerShell Language File  
+  [psm1(9)](psm1(9)) PowerShell Language Module File  
   [py(9)](py(9)) Python Language File  
   [py-doc(3)](py-doc(3)) Display Python module manual pages    
   [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
@@ -5097,7 +5103,18 @@
 
 
 ## Development History 
-
+  - [250909] -
+    - version set to v0925beta3
+    - adding support for PowerShell
+  - [250907] - Bash indentation support
+  - [250904] - version v0925beta2 released
+  - [250902]
+    - improved shell support, indentation, abbreviations with expansion hints 
+    - vertical split of abbrev-list
+    
+  - [250829]
+    - hilights  for  abbreviation  shortcuts to indicate  expansion  for a few
+      languages started
   - [250820,21,24]
     - improved Lua mode and adding documentation
     - adding and documenting luatags
@@ -67232,6 +67249,137 @@ $a
 
   > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
     or the _mylua.emf_ file. 
+
+
+## BUGS
+
+
+  The File hook is not tested  extensively,  so there might be a few  problems
+  waiting for the user.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [find-tag(2)](find-tag(2)), [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
+  [item-list(3)](item-list(3)), [luatags(3f)](luatags(3f)), [time(2m)](time(2m)).
+!! me-id: m9typ062
+! 9 ps1
+! 9 psm1
+! 9 PowerShell
+! 5 %fhook-ps1-exec
+! 5 %fhook-ps1-format
+! 5 %fhook-ps1-lint
+## SYNOPSIS
+
+
+  ps1 - PowerShell files  
+  psm1 - PowerShell module files  
+
+
+## FILES
+
+
+  __hkps1.emf__ - PowerShell file hook definition  
+  __ps1.etf__ - PowerShell template file  
+  __ps1.eaf__ - PowerShell abbreviation file
+
+
+## EXTENSIONS
+
+
+  __.ps1__, __.psm1__ - PowerShell file  
+
+
+## MAGIC STRINGS
+
+
+
+  __-!- ps1 -!-__
+  
+  >  Recognized by MicroEmacs only, defines the file to be a PowerShell file.
+
+
+
+## DESCRIPTION
+
+
+  The __PowerShell__ file hook provides simple hilighting of PowerShell
+  files, folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, keywords, comments,
+     strings and characters of the language to be differentiated and
+     rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __PowerShell__ files. The folds occur about
+     __function__ definitions and their closing curly brace located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The PowerShell mode offers beside folding as well support for displaying
+     an outline of the functions definitions
+     of the PowerShell file for easy  navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for PowerShell
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"fu"_ (function) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c esc esc __- Command complete.  
+     __f2__ - (un)fold the current region  
+     __f3__ - (un)fold all regions  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+
+  > __%fhook-ps1-exec__ - The command to execute the current PowerShell file, 
+      default is set to _"powershell -File \"%f\""_ where _%f_ represents the file name,
+            
+  > __%fhook-ps1-format__ - The command to format current PowerShell file,
+      default is set to 
+      _"powershell.exe -Command \"Invoke-Formatter -ScriptDefinition (Get-Content '.\%f' -Raw)\""_. 
+
+  > __%fhook-ps1-lint__ - The command to check/lint the current PowerShell file, 
+       default is set to 
+       _"powershell.exe -Command \"Invoke-ScriptAnalyzer -Path '.\%f'\""_. 
+       the file name.
+  
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _myps1.emf_ file. 
 
 
 ## BUGS

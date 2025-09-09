@@ -22,7 +22,7 @@
 ; Authors:     Steven Phillips, Jon Green & Detlef Groth
 ;
 ; Is this macro release compatible with the binary?
-!if &les $version "20091223"
+!if &les $version "20091225"
     5000 ml-write "[Warning: The MicroEmacs executable is not compatible with this macro release]"
 !endif
 ; If <$user-name>.erf registry file isn't found then this is a new user
@@ -317,6 +317,7 @@ add-file-hook ".yml .yaml"                                    fhook-yaml
 add-file-hook ".zig"                                          fhook-zig
 add-file-hook ".jl"                                           fhook-julia
 add-file-hook ".m"                                            fhook-octave
+add-file-hook ".ps1 .psm1"                                    fhook-ps1 
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
@@ -362,6 +363,8 @@ add-file-hook ".m"                                            fhook-octave
 -1 add-file-hook "-!-[ \t]*msvb.*-!-"            fhook-vb     ; -!- msvb -!-
 -1 add-file-hook "-!-[ \t]*euphoria.*-!-"        fhook-euphor ; -!- euphoria -!-
 -1 add-file-hook "-!-[ \t]*lua.*-!-"             fhook-lua    ; -!- lua -!-
+-1 add-file-hook "-!-[ \t]*ps1.*-!-"             fhook-ps1    ; -!- ps1 -!-
+
 -1 add-file-hook "^diff "                        fhook-diff   ; diff -Naur file.c ...
 
 ; Initialize the top menu line

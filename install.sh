@@ -40,7 +40,7 @@ elif [ $OS = "Darwin" ]; then
        MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 25 ]; then    
        MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
+       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit

@@ -1805,7 +1805,10 @@ Miscellaneous Information
     lsphp4(9)lmphp4(9)le PHP: Hypertext Preprocessor Language  
     lspl(9)lmpl(9)le Practical Extraction and Report Language File  
     lspm(9)lmpm(9)le Practical Extraction and Report Language File  
+    lsPowerShell(9)lmPowerShell(9)le PowerShell Language      
     lsprofile(9)lmprofile(9)le Shell user profile  
+    lsps1(9)lmps1(9)le PowerShell Language File  
+    lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
     lsr(9)lmr(9)le R language File  
@@ -3927,6 +3930,7 @@ Miscellaneous Information
     lspl(9)lmpl(9)le Practical Extraction and Report Language File  
     lspm(9)lmpm(9)le Practical Extraction and Report Language File  
     lspopup-window(2)lmpopup-window(2)le Pop-up a window on the screen  
+    lsPowerShell(9)lmPowerShell(9)le PowerShell Language      
     lsprefix(2)lmprefix(2)le Key prefix command  
     lsprevious-window(2)lmprevious-window(2)le (C-x p) Move the cursor to the previous window  
     lsprint-buffer(2)lmprint-buffer(2)le Print buffer, with formatting  
@@ -3936,6 +3940,8 @@ Miscellaneous Information
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
     lsprintall(3f)lmprintall(3f)le Formatted print job  
     lsprofile(9)lmprofile(9)le Shell user profile  
+    lsps1(9)lmps1(9)le PowerShell Language File  
+    lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
     lspy(9)lmpy(9)le Python Language File  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages    
     lspy-exec(3)lmpy-exec(3)le Executes the current Python script with or without command line arguments  
@@ -5172,7 +5178,18 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
-
+    - [250909] -
+      - version set to v0925beta3
+      - adding support for PowerShell
+    - [250907] - Bash indentation support
+    - [250904] - version v0925beta2 released
+    - [250902]
+      - improved shell support, indentation, abbreviations with expansion hints 
+      - vertical split of abbrev-list
+      
+    - [250829]
+      - hilights  for  abbreviation  shortcuts to indicate  expansion  for a few
+        languages started
     - [250820,21,24]
       - improved Lua mode and adding documentation
       - adding and documenting luatags
@@ -66260,6 +66277,136 @@ $a
 
       These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
       or the cCmylua.emfcA file. 
+
+
+cEBUGS cA
+
+
+    The File hook is not tested  extensively,  so there might be a few  problems
+    waiting for the user.
+
+
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsfind-tag(2)lmfind-tag(2)le, lsrestyle-region(3)lmrestyle-region(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
+    lsitem-list(3)lmitem-list(3)le, lsluatags(3f)lmluatags(3f)le, lstime(2m)lmtime(2m)le.
+! 9 ps1
+! 9 psm1
+! 9 PowerShell
+! 5 %fhook-ps1-exec
+! 5 %fhook-ps1-format
+! 5 %fhook-ps1-lint
+cEcESYNOPSIS cEcA
+
+
+    ps1 - PowerShell files  
+    psm1 - PowerShell module files  
+
+
+cEFILES cA
+
+
+    cDhkps1.emfcA - PowerShell file hook definition  
+    cDps1.etfcA - PowerShell template file  
+    cDps1.eafcA - PowerShell abbreviation file
+
+
+cEEXTENSIONS cA
+
+
+    cD.ps1cA, cD.psm1cA - PowerShell file  
+
+
+cEMAGIC STRINGS cA
+
+
+
+    cD-!- ps1 -!-cA
+    
+       Recognized by MicroEmacs only, defines the file to be a PowerShell file.
+
+
+
+cEDESCRIPTION cA
+
+
+    The cDPowerShellcA file hook provides simple hilighting of PowerShell
+    files, folding, item listing, abbreviations and indentation support.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow functions, keywords, comments,
+       strings and characters of the language to be differentiated and
+       rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The lsindent(2)lmindentation mechanismle is enabled which performs performs automatic
+       layout of the text. lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are
+       available to reformat (re-layout) selected sections of the buffer, or
+       the whole buffer, respectively.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the cDPowerShellcA files. The folds occur about
+       cDfunctioncA definitions and their closing curly brace located on the left-hand margin.
+
+      - lscollapse-all(3)lmcollapse-all(3)le - (un)folds  all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The PowerShell mode offers beside folding as well support for displaying
+       an outline of the functions definitions
+       of the PowerShell file for easy  navigation using the lsitem-list(3)lmitem-list(3)le command.
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for PowerShell
+       file  editing  which  can  be  used  by  writing  short   abbreviations
+       like   cC"if"cA  cC"wh"cA (while), or cC"fu"cA (function) - and then pressing
+       the key-binding for the  lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.  
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c esc esc cA- Command complete.  
+       cDf2cA - (un)fold the current region  
+       cDf3cA - (un)fold all regions  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cDExecuting, Formatting and LintingcA
+
+      cD%fhook-ps1-execcA - The command to execute the current PowerShell file, 
+        default is set to cC"powershell -File \"%f\""cA where cC%fcA represents the file name,
+              
+      cD%fhook-ps1-formatcA - The command to format current PowerShell file,
+        default is set to 
+        cC"powershell.exe -Command \"Invoke-Formatter -ScriptDefinition (Get-Content '.\%f' -Raw)\""cA. 
+
+      cD%fhook-ps1-lintcA - The command to check/lint the current PowerShell file, 
+         default is set to 
+         cC"powershell.exe -Command \"Invoke-ScriptAnalyzer -Path '.\%f'\""cA. 
+         the file name.
+    
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmyps1.emfcA file. 
 
 
 cEBUGS cA

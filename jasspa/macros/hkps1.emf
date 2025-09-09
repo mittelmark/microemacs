@@ -1,0 +1,132 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth
+;  Created       : Tue Sep 9th, 2025
+;  Last Modified : <250909.0640>
+;
+;  Description
+;   Powershell Language Template
+;   https://learn.microsoft.com/en-us/powershell/
+;   https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_keywords?view=powershell-7.5
+;  Notes
+;
+;  History: 2025-09-09 first version
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+define-macro fhook-ps1
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "ps1"
+    set-variable $buffer-indent-width 4
+    buffer-init-hooks
+!emacro
+
+set-variable .fhook-ps1.setup &reg "/history/fhook/ps1" "bdfghinopTx"
+set-variable .fhook-ps1.setup-mask "abdefghikmnoptux"
+set-variable .fhook-ps1.comment "|<#| #>/|#| # | # |fr|"
+
+set-variable .fhook-ps1.collapse-open  "^\\(function\\|enum\\|class\\).+{"
+set-variable .fhook-ps1.collapse-close "^}"
+set-variable .fhook-ps1.collapse-mclose "1"
+set-variable .fhook-ps1.collapse-mnext "-1"
+
+set-variable .fhook-ps1.item-list-s1 "^function +\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-ps1.item-list-r1 "Func \ecB\\2\ecA"
+set-variable .fhook-ps1.item-list-s2 "^enum +\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-ps1.item-list-r2 "Enum \ecB\\2\ecA"
+set-variable .fhook-ps1.item-list-s3 "^class +\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-ps1.item-list-r3 "Clss \ecB\\2\ecA"
+
+!if &not &exist .hilight.ps1
+    set-variable .hilight.ps1  &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-ps1.setup &band .hilight.flags 0x02
+  0 hilight .hilight.ps1 0x00 $global-scheme
+  ; Comments
+  hilight .hilight.ps1 20 "<#" ">#" "" .scheme.comment
+  hilight .hilight.ps1  2 "#"           .scheme.comment
+  ; Comment TODO's
+  hilight .hilight.ps1 18 "# +[tT][oO][dD][oO]"           .scheme.error
+  
+  ; Strings
+  hilight .hilight.ps1  4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.ps1  4 "\'" "\'" "\\"  .scheme.string
+  
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.ps1 4    "\\$" "\\}\\W" ""  .scheme.variable
+  hilight .hilight.ps1 1   "begin"             .scheme.keyword
+  hilight .hilight.ps1 1   "break"             .scheme.keyword
+  hilight .hilight.ps1 1   "catch"             .scheme.keyword
+  hilight .hilight.ps1 1   "class"             .scheme.keyword
+  hilight .hilight.ps1 1   "clean"             .scheme.keyword
+  hilight .hilight.ps1 1   "continue"          .scheme.keyword
+  hilight .hilight.ps1 1   "data"              .scheme.keyword
+  hilight .hilight.ps1 1   "define"            .scheme.keyword
+  hilight .hilight.ps1 1   "dynamicparam"      .scheme.keyword
+  hilight .hilight.ps1 1   "else"              .scheme.keyword
+  hilight .hilight.ps1 1   "elseif"            .scheme.keyword
+  hilight .hilight.ps1 1   "end"               .scheme.keyword
+  hilight .hilight.ps1 1   "enum"              .scheme.keyword
+  hilight .hilight.ps1 1   "exit"              .scheme.keyword
+  hilight .hilight.ps1 1   "filter"            .scheme.keyword
+  hilight .hilight.ps1 1   "for"               .scheme.keyword
+  hilight .hilight.ps1 1   "foreach"           .scheme.keyword
+  hilight .hilight.ps1 1   "if"                .scheme.keyword
+  hilight .hilight.ps1 1   "in"                .scheme.keyword
+  hilight .hilight.ps1 1   "param"             .scheme.keyword
+  hilight .hilight.ps1 1   "process"           .scheme.keyword
+  hilight .hilight.ps1 1   "return"            .scheme.keyword
+  hilight .hilight.ps1 1   "static"            .scheme.keyword
+  hilight .hilight.ps1 1   "switch"            .scheme.keyword
+  hilight .hilight.ps1 1   "throw"             .scheme.keyword
+  hilight .hilight.ps1 1   "trap"              .scheme.keyword
+  hilight .hilight.ps1 1   "try"               .scheme.keyword
+  hilight .hilight.ps1 1   "until"             .scheme.keyword
+  hilight .hilight.ps1 1   "using"             .scheme.keyword
+  hilight .hilight.ps1 1   "var"               .scheme.keyword
+  hilight .hilight.ps1 1   "while"             .scheme.keyword
+  ; operators boolean
+  hilight .hilight.ps1 1 "-and"       .scheme.operator
+  hilight .hilight.ps1 1 "-or"        .scheme.operator  
+  hilight .hilight.ps1 1 "-xor"       .scheme.operator    
+  hilight .hilight.ps1 1 "-not"       .scheme.operator      
+  hilight .hilight.ps1 1 "!"          .scheme.operator        
+  ; operators compare
+  hilight .hilight.ps1 1 "-eq"        .scheme.operator
+  hilight .hilight.ps1 1 "-ne"        .scheme.operator
+  hilight .hilight.ps1 1 "-gt"        .scheme.operator
+  hilight .hilight.ps1 1 "-lt"        .scheme.operator  
+  hilight .hilight.ps1 1 "-le"        .scheme.operator  
+  hilight .hilight.ps1 1 "-ge"        .scheme.operator    
+  ; operator regex, glob, sets
+  hilight .hilight.ps1 1 "-match"       .scheme.operator  ; regex
+  hilight .hilight.ps1 1 "-nomatch"     .scheme.operator  ; regex  
+  hilight .hilight.ps1 1 "-like"        .scheme.operator  ; glob
+  hilight .hilight.ps1 1 "-nolike"      .scheme.operator  ; glob  
+  hilight .hilight.ps1 1 "-in"          .scheme.operator  ; set
+  hilight .hilight.ps1 1 "-notin"       .scheme.operator  ; set  
+  hilight .hilight.ps1 1 "-contains"    .scheme.operator  ; set
+  hilight .hilight.ps1 1 "-notcontains" .scheme.operator  ; set  
+  hilight .hilight.ps1 1 "-is"          .scheme.operator  ; type
+  hilight .hilight.ps1 1 "-isnot"       .scheme.operator  ; type  
+  hilight .hilight.ps1 1 "-as"          .scheme.operator  ; type    
+!endif
+
+!if &sin "d" .fhook-ps1.setup
+  0 indent  .hilight.ps1 0 10
+  indent .hilight.ps1 n "{"  t
+  indent .hilight.ps1 o "}" -t
+  indent .hilight.ps1 e "\"" "\"" "\\"
+  indent .hilight.ps1 b "\\[" "]"
+  indent .hilight.ps1 b "(" ")"
+!endif
+!if &not &seq &which "powershell" "ERROR"
+  set-variable %fhook-ps1-lint "powershell -Command \"Invoke-ScriptAnalyzer -Path '.\%f'\""
+  set-variable %fhook-ps1-exec "powershell -File \"%f\""
+  set-variable %fhook-ps1-format "powerhsell -Command Invoke-Formatter -ScriptDefinition (Get-Content .\%f -Raw) | Set-Content .\%f"
+!endif
+
+
+buffer-init-fhook "ps1"
