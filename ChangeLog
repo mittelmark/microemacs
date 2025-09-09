@@ -7,10 +7,16 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <250904.2232>
+>  Last Modified : <250909.0648>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
-  [250904] 
-    - version v0925beta2
+  [250909]
+    - version set to v0925beta3
+    - adding support for PowerShell
+
+  [250907] - Bash indentation support
+  
+  [250904] - version v0925beta2 released
+
   [250902]
     - improved shell support, indentation, abbreviations with expansion hints 
     - vertical split of abbrev-list
