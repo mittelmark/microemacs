@@ -33,9 +33,9 @@ Main features - Pros:
 
 - small!! and fast!!
 - same user interface in terminal and in GUI mode
-- Windows, Linux, macOS, FreeBSD versions
+- Windows, Windows Cygwin, Linux, macOS and FreeBSD versions
 - single file installs possible (2.5MB-4MB file size)
-- Emacs (default) or CUA key bindings available
+- Emacs like (default) or CUA key bindings available
 - menu entries for all main functions (Esc = in Terminal mode for menu)
 - extensible programming language
 - themes, customizations, templates, snippets menu or GUI accessible
@@ -43,7 +43,7 @@ Main features - Pros:
 
 Cons: 
 
-- No Unicode (but full ISO support)
+- No Unicode (but full ISO support) - you can type all the keys from your keyboard
 - No softwrap (but automatic wrap is available)
 
 This  is a fork  of  [Jasspa  MicroEmacs](http://www.jasspa.com)  forked  from
@@ -51,6 +51,11 @@ This  is a fork  of  [Jasspa  MicroEmacs](http://www.jasspa.com)  forked  from
 It is an extended  version of the  MicroEmacs  2009 release which was the last
 official release available at the website [http://www.jasspa.com](http://www.jasspa.com).
 
+## Star History ME09 and ME25
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mittelmark/microemacs,bjasspa/jasspa&type=Date)](https://www.star-history.com/#mittelmark/microemacs&bjasspa/jasspa&Date)
+
+## Schemes
 <a name="Schemes"> </a>
 
 <img src="images/ayu-light.png" width="390px"/>&nbsp;&nbsp;<img src="images/dracula.png" width="390px"/>
@@ -325,10 +330,10 @@ make -f cygwin.gmk mecwb   ## X11 and console version
 apt install xfontsel mkfontscale xset
 ```
 
-## FreeBSD
+## FreeBSD and GhostBSD
 
 If you  install  gcc on  FreeBSD it comes with the  ncurses  libraries
-already included so for the 
+already included so for the compilation you install the following tools:
 
 ```bash
 sudo pkg install gcc
