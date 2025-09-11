@@ -51,10 +51,6 @@ This  is a fork  of  [Jasspa  MicroEmacs](http://www.jasspa.com)  forked  from
 It is an extended  version of the  MicroEmacs  2009 release which was the last
 official release available at the website [http://www.jasspa.com](http://www.jasspa.com).
 
-## Star History ME09 and ME25
-
-[![Star History Chart](https://api.star-history.com/svg?repos=mittelmark/microemacs,bjasspa/jasspa&type=Date)](https://www.star-history.com/#mittelmark/microemacs&bjasspa/jasspa&Date)
-
 ## Schemes
 <a name="Schemes"> </a>
 
@@ -431,6 +427,30 @@ Build  for  other   platforms   might  be  provided  if  requested  using  the
 [issues](https://github.com/mittelmark/microemacs/issues)    link    on   this
 repository. 
 
+### Msys2 Windows Terminal
+
+I usually  recommend  the   [Msys2](https://www.msys2.org)   environment  for
+developers if they have to use the Windows  operating  system. As the provided
+Windows build is a native  Windows build, the console  version of Me09 must be
+started via the cmd  Terminal on Windows. You should use in this case a bas function
+like this code below which should be added to your _.bashrc_.
+
+```bash
+### add this to your .bashrc
+### we assume that you copied the windows executables
+### to the bin folder in your msys HOME
+function me {
+    if [ $1 == "-n" ]; then
+        ## running terminal version
+        shift 1
+        cmd //C `cygpath -wa ~/bin/mec-windows.exe` "${@}"
+        
+    else
+        `cygpath -wa ~/bin/mew-windows.exe` "${@}" &
+    fi
+}
+```
+
 __Fonts:__
 
 Download more programmers fonts: [TTF-Files](https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip) -  [see here on how to install them](README-standalone.md#Fonts):
@@ -624,6 +644,11 @@ their usable letters - [https://en.wikipedia.org/wiki/ISO/IEC_8859](https://en.w
     * No unicode! It is a MICRO-Emacs!
     * No softwrap! Use `Esc q` for paragraph wrapping! Or use the wrap buffer mode
 
+## Star History ME09 and ME25
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mittelmark/microemacs,bjasspa/jasspa&type=Date)](https://www.star-history.com/#mittelmark/microemacs&bjasspa/jasspa&Date)
+
+
 ## Links
 
 * [Original Jasspa homepage (outdated currently)](http://www.jasspa.com)
@@ -705,59 +730,6 @@ alias mec="TERM=xterm me -n"
 You  should  check  which of the two  aliases  works  best with your  terminal
 emulator  (lxterminal,  gnome-terminal,  etc) and  screen  mulitplexer  (tmux,
 gnu-screen, etc). 
-
-### Windows Terminal
-
-I usually  recommend  the   [Msys2](https://www.msys2.org)   environment  for
-developers if they have to use the Windows  operating  system. As the provided
-Windows build is a native  Windows build, the console  version of Me09 must be
-started via the cmd  Terminal on Windows. You should use in this case an alias
-like this in your .bashrc
-
-```bash
-### add this to your .bashrc
-### we assume that you copied the windows executables
-### to the bin folder in your msys HOME
-function me {
-    if [ $1 == "-n" ]; then
-        ## running terminal version
-        shift 1
-        cmd //C `cygpath -wa ~/bin/mec-windows.exe` "${@}"
-        
-    else
-        `cygpath -wa ~/bin/mew-windows.exe` "${@}" &
-    fi
-}
-```
-
-For cygwin like environments like MobaXterm the following did work:
-
-```bash
-### add this to your .bashrc
-function me {
-    if [ $1 == "-n" ]; then
-        shift 1
-        MPATH=`cygpath -wa ~/bin/mec-windows.exe`
-        MPATH=`echo $MPATH | sed 's.\\\./.g'`
-        # MobaXterm fix
-        if [ ! command -v conin &> /dev/null ]
-        then
-            # no conin try this
-            cmd //C $MPATH "${@}"
-        else
-            conin cmd /C $MPATH "${@}"
-        fi
-    else
-        ~/bin/mew-windows.exe "${@}" &
-    fi
-}
-```
-
-In case you are  interested  there might be a chance to create "native" Cygwin
-and          Msys          builds.          Please          create          an
-[issue](https://github.com/mittelmark/microemacs/issues) a the Github page.
-
-
 
 ## Original README
 
