@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Tue Sep 9th, 2025
-;  Last Modified : <250909.0640>
+;  Last Modified : <250909.0707>
 ;
 ;  Description
 ;   Powershell Language Template
@@ -31,12 +31,14 @@ set-variable .fhook-ps1.collapse-close "^}"
 set-variable .fhook-ps1.collapse-mclose "1"
 set-variable .fhook-ps1.collapse-mnext "-1"
 
-set-variable .fhook-ps1.item-list-s1 "^function +\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
-set-variable .fhook-ps1.item-list-r1 "Func \ecB\\2\ecA"
-set-variable .fhook-ps1.item-list-s2 "^enum +\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
-set-variable .fhook-ps1.item-list-r2 "Enum \ecB\\2\ecA"
-set-variable .fhook-ps1.item-list-s3 "^class +\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
-set-variable .fhook-ps1.item-list-r3 "Clss \ecB\\2\ecA"
+set-variable .fhook-ps1.item-list-s1 "^function +\\([-\\w]+\\)[ \t]*(.+)[ \t]*{"
+set-variable .fhook-ps1.item-list-r1 "Func \ecB\\1\ecA"
+set-variable .fhook-ps1.item-list-s2 "^enum +\\(\\w+\\)[ \t]*{"
+set-variable .fhook-ps1.item-list-r2 "Enum \ecB\\1\ecA"
+set-variable .fhook-ps1.item-list-s3 "^class +\\(\\w+\\)[ \t]*{"
+set-variable .fhook-ps1.item-list-r3 "Clss \ecB\\1\ecA"
+set-variable .fhook-ps1.item-list-s4 "^# +TODO: +\\(\\w+\\)"
+set-variable .fhook-ps1.item-list-r4 "TODO \ecB\\1\ecA"
 
 !if &not &exist .hilight.ps1
     set-variable .hilight.ps1  &pinc .hilight.next 1
@@ -45,7 +47,7 @@ set-variable .fhook-ps1.item-list-r3 "Clss \ecB\\2\ecA"
 !if &and &sin "h" .fhook-ps1.setup &band .hilight.flags 0x02
   0 hilight .hilight.ps1 0x00 $global-scheme
   ; Comments
-  hilight .hilight.ps1 20 "<#" ">#" "" .scheme.comment
+  hilight .hilight.ps1 20 "<#" "#>" "" .scheme.comment
   hilight .hilight.ps1  2 "#"           .scheme.comment
   ; Comment TODO's
   hilight .hilight.ps1 18 "# +[tT][oO][dD][oO]"           .scheme.error
@@ -73,6 +75,7 @@ set-variable .fhook-ps1.item-list-r3 "Clss \ecB\\2\ecA"
   hilight .hilight.ps1 1   "filter"            .scheme.keyword
   hilight .hilight.ps1 1   "for"               .scheme.keyword
   hilight .hilight.ps1 1   "foreach"           .scheme.keyword
+  hilight .hilight.ps1 1   "function"          .scheme.keyword  
   hilight .hilight.ps1 1   "if"                .scheme.keyword
   hilight .hilight.ps1 1   "in"                .scheme.keyword
   hilight .hilight.ps1 1   "param"             .scheme.keyword
@@ -87,6 +90,7 @@ set-variable .fhook-ps1.item-list-r3 "Clss \ecB\\2\ecA"
   hilight .hilight.ps1 1   "using"             .scheme.keyword
   hilight .hilight.ps1 1   "var"               .scheme.keyword
   hilight .hilight.ps1 1   "while"             .scheme.keyword
+  hilight .hilight.ps1 1  "[A-Z][a-z]+-[A-Z][a-z]+" .scheme.function
   ; operators boolean
   hilight .hilight.ps1 1 "-and"       .scheme.operator
   hilight .hilight.ps1 1 "-or"        .scheme.operator  
