@@ -1,0 +1,174 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;  Created By    : Detlef Groth
+;  Created       : Fri Mar 6th, 2025
+;  Last Modified : <250912.1603>
+;
+;  Description
+;   Go Language Template
+;   https://go.dev/
+;
+;  Notes
+;
+;  History: 2025-03-07 first version
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+define-macro fhook-vala
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "vala"
+    set-variable $buffer-indent-width 2
+    buffer-init-hooks
+!emacro
+
+set-variable .fhook-vala.setup &reg "/history/fhook/vala" "bdfghinopTx"
+set-variable .fhook-vala.setup-mask "abdefghikmnoptux"
+set-variable .fhook-vala.comment "|/*| */|*| * | * |fr|"
+
+set-variable .fhook-vala.collapse-open  "^\\w.+{"
+set-variable .fhook-vala.collapse-close "^}"
+set-variable .fhook-vala.collapse-mclose "1"
+set-variable .fhook-vala.collapse-mnext "-1"
+
+set-variable .fhook-vala.item-list-s1 "^\\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-vala.item-list-r1 "Func \ecB\\2\ecA"
+set-variable .fhook-vala.item-list-s2 "^    \\(\\w+[ \t]+\\)\\(\\w+\\)[ \t]*("
+set-variable .fhook-vala.item-list-r2 "  Func \ecB\\2\ecA"
+set-variable .fhook-vala.item-list-s3 "^[ \t]*\\(public[ \t]\\)?class +\\(\\w+\\)"
+set-variable .fhook-vala.item-list-r3 "Clss \ecB\\2\ecA"
+set-variable .fhook-vala.item-list-s4 "^[ \t]*struct[ \t]+\\(\\w+\\)[ \t]+{"
+set-variable .fhook-vala.item-list-r4 "Strc \ecB\\1\ecA"
+set-variable .fhook-vala.item-list-s4 "^[ \t]*enum[ \t]+\\(\\w+\\)[ \t]+{"
+set-variable .fhook-vala.item-list-r4 "Enum \ecB\\1\ecA"
+
+!if &not &exist .hilight.vala
+    set-variable .hilight.vala  &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-vala.setup &band .hilight.flags 0x02
+  0 hilight .hilight.vala 0x00 $global-scheme
+  ; Comments
+  hilight .hilight.vala 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.vala  2 "//"           .scheme.comment
+  ; Comment TODO's
+  hilight .hilight.vala 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+  hilight .hilight.vala 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  hilight .hilight.vala 2 "#!/usr/bin/env vala"         .scheme.header
+  ; Strings
+  hilight .hilight.vala  4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.vala  4 "\'" "\'" "\\"  .scheme.string
+  hilight .hilight.vala  4 "\"\"\"" "\"\"\"" "\\"  .scheme.quote
+  ; go string literal /.foo[0-9]\s*bar/ hiligh gets confused with simple division.
+  ;hilight .hilight.vala  4 "/" "/" "" .scheme.quote
+  
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.vala 1    "[A-Z_]+"        .scheme.constant
+  ; package keywords
+  ;hilight .hilight.vala 0x12 "^\\s*package"   .scheme.prepro
+  ; keywords
+  hilight .hilight.vala 1    "abstract"       .scheme.keyword
+  hilight .hilight.vala 1    "async"          .scheme.keyword
+  hilight .hilight.vala 1    "base"           .scheme.keyword
+  hilight .hilight.vala 1    "break"          .scheme.keyword
+  hilight .hilight.vala 1    "case"           .scheme.keyword
+  hilight .hilight.vala 1    "catch"          .scheme.keyword
+  hilight .hilight.vala 1    "class"          .scheme.keyword
+  hilight .hilight.vala 1    "clock"          .scheme.keyword
+  hilight .hilight.vala 1    "const"          .scheme.keyword
+  hilight .hilight.vala 1    "construct"      .scheme.keyword
+  hilight .hilight.vala 1    "continue"       .scheme.keyword
+  hilight .hilight.vala 1    "default"        .scheme.keyword
+  hilight .hilight.vala 1    "default"        .scheme.keyword
+  hilight .hilight.vala 1    "delegate"       .scheme.keyword
+  hilight .hilight.vala 1    "do"             .scheme.keyword
+  hilight .hilight.vala 1    "dynamic"        .scheme.keyword
+  hilight .hilight.vala 1    "dynamic"        .scheme.keyword
+  hilight .hilight.vala 1    "else"           .scheme.keyword
+  hilight .hilight.vala 1    "ensures"        .scheme.keyword
+  hilight .hilight.vala 1    "enum"           .scheme.type
+  hilight .hilight.vala 1    "errordomain"    .scheme.keyword
+  hilight .hilight.vala 1    "extern"         .scheme.keyword
+  hilight .hilight.vala 1    "false"          .scheme.constant
+  hilight .hilight.vala 1    "finally"        .scheme.keyword
+  hilight .hilight.vala 1    "for"            .scheme.keyword
+  hilight .hilight.vala 1    "foreach"        .scheme.keyword
+  hilight .hilight.vala 1    "get"            .scheme.keyword
+  hilight .hilight.vala 1    "if"             .scheme.keyword
+  hilight .hilight.vala 1    "in"             .scheme.keyword
+  hilight .hilight.vala 1    "inline"         .scheme.type
+  hilight .hilight.vala 1    "interface"      .scheme.keyword
+  hilight .hilight.vala 1    "internal"       .scheme.keyword
+  hilight .hilight.vala 1    "new"            .scheme.keyword
+  hilight .hilight.vala 1    "namespace"      .scheme.keyword
+  hilight .hilight.vala 1    "null"           .scheme.constant
+  hilight .hilight.vala 1    "out"            .scheme.keyword
+  hilight .hilight.vala 1    "override"       .scheme.keyword
+  hilight .hilight.vala 1    "private"        .scheme.keyword
+  hilight .hilight.vala 1    "protected"      .scheme.keyword
+  hilight .hilight.vala 1    "public"         .scheme.keyword
+  hilight .hilight.vala 1    "ref"            .scheme.keyword
+  hilight .hilight.vala 1    "requires"       .scheme.keyword
+  hilight .hilight.vala 1    "return"         .scheme.keyword
+  hilight .hilight.vala 1    "set"            .scheme.keyword
+  hilight .hilight.vala 1    "signal"         .scheme.keyword
+  hilight .hilight.vala 1    "static"         .scheme.type
+  hilight .hilight.vala 1    "struct"         .scheme.type
+  hilight .hilight.vala 1    "switch"         .scheme.keyword
+  hilight .hilight.vala 1    "this"           .scheme.type
+  hilight .hilight.vala 1    "throw"          .scheme.keyword
+  hilight .hilight.vala 1    "throws"         .scheme.keyword
+  hilight .hilight.vala 1    "true"           .scheme.constant
+  hilight .hilight.vala 1    "try"            .scheme.keyword
+  hilight .hilight.vala 1    "unowned"        .scheme.keyword
+  hilight .hilight.vala 1    "using"          .scheme.keyword
+  hilight .hilight.vala 1    "value"          .scheme.keyword
+  hilight .hilight.vala 1    "virtual"        .scheme.type
+  hilight .hilight.vala 1    "weak"           .scheme.keyword
+  hilight .hilight.vala 1    "while"          .scheme.keyword
+
+  ; types
+  hilight .hilight.vala 1    "bool"     .scheme.type
+  hilight .hilight.vala 1    "char"     .scheme.type
+  hilight .hilight.vala 1    "double"   .scheme.type
+  hilight .hilight.vala 1    "float"    .scheme.type
+  hilight .hilight.vala 1    "int"      .scheme.type
+  hilight .hilight.vala 1    "int16"    .scheme.type
+  hilight .hilight.vala 1    "int32"    .scheme.type
+  hilight .hilight.vala 1    "int64"    .scheme.type
+  hilight .hilight.vala 1    "int8"     .scheme.type
+  hilight .hilight.vala 1    "long"     .scheme.type
+  hilight .hilight.vala 1    "short"    .scheme.type
+  hilight .hilight.vala 1    "string"   .scheme.type
+  hilight .hilight.vala 1    "uint"     .scheme.type
+  hilight .hilight.vala 1    "uint16"   .scheme.type
+  hilight .hilight.vala 1    "uint32"   .scheme.type
+  hilight .hilight.vala 1    "uint64"   .scheme.type
+  hilight .hilight.vala 1    "uint8"    .scheme.type
+  hilight .hilight.vala 1    "unichar"  .scheme.type
+  hilight .hilight.vala 1    "ushort"   .scheme.type
+  hilight .hilight.vala 1    "var"      .scheme.type
+  hilight .hilight.vala 1    "void"      .scheme.type  
+!endif
+
+!if &sin "d" .fhook-vala.setup
+  0 indent  .hilight.vala 0 10
+  indent .hilight.vala n "{"  t
+  indent .hilight.vala o "}" -t
+  indent .hilight.vala e "\"" "\"" "\\"
+  indent .hilight.vala b "\\[" "]"
+  indent .hilight.vala b "(" ")"
+!endif
+!if &not &seq &which "vala" "ERROR"
+  set-variable %fhook-vala-lint   "valac --pkg=gtk4 \"%f\""
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-vala-format "astyle \"%f\""
+  !else
+    set-variable %fhook-vala-format "restyle-buffer"
+  !endif
+  set-variable %fhook-vala-exec   "vala --pkg=gtk4 \"%f\""
+!endif
+
+
+
+buffer-init-fhook "vala"

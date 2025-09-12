@@ -318,6 +318,7 @@ add-file-hook ".zig"                                          fhook-zig
 add-file-hook ".jl"                                           fhook-julia
 add-file-hook ".m"                                            fhook-octave
 add-file-hook ".ps1 .psm1"                                    fhook-ps1 
+add-file-hook ".vala"                                         fhook-vala 
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
@@ -329,6 +330,7 @@ add-file-hook ".ps1 .psm1"                                    fhook-ps1
  1 add-file-hook "^#![ \t]*/.*make"              fhook-make   ; Make script
  1 add-file-hook "^#![ \t]*/.*eui"               fhook-euphor ; UNIX Euphoria script
  1 add-file-hook "^#![ \t]*/.*lua"               fhook-lua    ; UNIX Lua script 
+ 1 add-file-hook "^#![ \t]*/.*vala"              fhook-vala   ; UNIX Vala script  
  4 add-file-hook "^[ \t]*exec[ \t]*\\(wish\\|tclsh\\)" fhook-tcl ; TCL shell script
  1 add-file-hook "^#VRML"                        fhook-vrml   ; VRML or wrl files
  1 add-file-hook "^#Inventor"                    fhook-vrml   ; Use the VRML hook for iv files

@@ -1129,5 +1129,8 @@ m9typ060.html	exu(9)
 m9typ060.html	exw(9)
 m9typ060.html	euphoria(9)
 m9typ061.html	lua(9)
+m9typ062.html	ps1(9)
+m9typ062.html	powershell(9)
+m9typ063.html	vala(9)
 home.html	home
 home.html	MicroEmacs
