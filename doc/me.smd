@@ -5103,7 +5103,7 @@
 
 
 ## Development History 
-  - [250909] -
+  - [250909]
     - version set to v0925beta3
     - adding support for PowerShell
   - [250907] - Bash indentation support
