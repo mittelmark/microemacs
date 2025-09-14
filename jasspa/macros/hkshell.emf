@@ -202,6 +202,9 @@ set-variable .fhook-shell.item-list-r2 "Func \ecB\\1\ecA"
   indent .hilight.shell    n "while"           t
   indent .hilight.shell    s "do"             -t
   indent .hilight.shell    o "done"           -t
+  indent .hilight.shell    i "#"              
+  indent .hilight.shell    e "\"" "\"" "\\"
+
 !endif
 
 buffer-init-fhook "shell"
