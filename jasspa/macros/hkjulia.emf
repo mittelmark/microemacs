@@ -119,6 +119,8 @@ set-variable .fhook-julia.item-list-r3 "Strc \ecB\\1\ecA"
   indent .hilight.julia    S "catch"          -t
   indent .hilight.julia    N "do"              t
   indent .hilight.julia    N "begin"           t
+  indent .hilight.julia    i "#"              
+  indent .hilight.julia    e "\"" "\"" "\\"
 !endif
 
 !if &not &seq &which "julia" "ERROR"

@@ -154,6 +154,9 @@ set-variable .fhook-octave.item-list-r3 "Func \ecB\\1\ecA"
   indent .hilight.octave    N "switch"          t
   indent .hilight.octave    S "case"           -t
   indent .hilight.octave    S "otherwise"      -t
+  indent .hilight.octave    i "#"              
+  indent .hilight.octave    e "\"" "\"" "\\"
+  
 !endif
 
 !if &not &seq &which "octave" "ERROR"
