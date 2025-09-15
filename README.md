@@ -168,17 +168,18 @@ alias mew="mewb"
 ```
 
 
-For a Windows installation you can do the following after opening a Powershell Terminal:
+For a Windows installation you can do the following after opening a Powershell Terminal and executing the following four lines of code:
 
 ```
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/blob/master/install-windows.sh | Invoke-Expression
-mewb 
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-windows.ps1 | Invoke-Expression
+mewb -V
+mecb -V
 ```
 
-The  executable  mewb is then in the PATH and you can run it from any terminal
+The  executable  mewb is then in the PATH ($env:LOCALAPPDATA) and you can run it from any terminal
 window or after pressing the Win-r combination and then typing mewb in the run
-command line..
+command line.
 
 
 ## Compilation
