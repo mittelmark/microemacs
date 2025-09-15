@@ -37,6 +37,16 @@ function Install-Me ($me) {
     }
 }
 
+function Install-MeShortCut () {
+    $WshShell = New-Object -ComObject WScript.Shell
+    $exePath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\mewb.exe"  # Adjust path
+    $shortcutPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\MicroEmacs09.lnk"
+    $shortcut = $WshShell.CreateShortcut($shortcutPath)
+    $shortcut.TargetPath = $exePath
+    $shortcut.Save()
+}
 Install-Me "mewb"
 
 Install-Me "mecb"
+
+Install-MeShortCut
