@@ -1839,6 +1839,8 @@ Miscellaneous Information
     lstoml(9)lmtoml(9)le Toml configuration file  
     lstroff(9)lmtroff(9)le UNIX troff file  
     lstxt(9)lmtxt(9)le ASCII plain text file  
+    lstyp(9)lmtyp(9)le Typst markup file   
+    lstypst(9)lmtypst(9)le Typst markup file  
     lsv(9)lmv(9)le Verilog hardware description language  
     lsvb(9)lmvb(9)le Visual Basic  
     lsverilog(9)lmverilog(9)le Verilog hardware description language  
@@ -4083,6 +4085,8 @@ Miscellaneous Information
     lstranspose-lines(2)lmtranspose-lines(2)le (C-x C-t) Exchange (swap) adjacent lines  
     lstroff(9)lmtroff(9)le UNIX troff file  
     lstxt(9)lmtxt(9)le ASCII plain text file  
+    lstyp(9)lmtyp(9)le Typst markup file   
+    lstypst(9)lmtypst(9)le Typst markup file  
     lsUserProfiles(2)lmUserProfiles(2)le Defining a user profile  
     lsuncomment-line(3)lmuncomment-line(3)le Uncomment current line  
     lsundo(2)lmundo(2)le (C-x u) Undo the last edit  
@@ -5178,7 +5182,7 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
-    - [250909] -
+    - [250909]
       - version set to v0925beta3
       - adding support for PowerShell
     - [250907] - Bash indentation support
@@ -66545,3 +66549,75 @@ $a
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
     lsfind-tag(2)lmfind-tag(2)le, lsrestyle-region(3)lmrestyle-region(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
     lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
+! 9 typ
+! 9 typst
+! 9 Typst
+cEcESYNOPSIS cEcA
+
+
+    typ, typst - Typst plain text Markup
+
+
+cEFILES cA
+
+
+    cDhktypst.emfcA - Typst text hook definition  
+    cDtypst.eafcA - Typst abbreviation file  
+    cDtypst.etfcA - Typst template file
+
+
+cEEXTENSIONS cA
+
+
+    cD.typcA, cD.typstcA - Typstn markup files  
+
+
+cEDESCRIPTION cA
+
+
+    The cDtypstcA file type template handles the hilighting and text formating of a
+    Typst formatted text file. It supports as well folding by header sections,
+    item listening of header sections, abbreviations and template insertion.
+      
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-scA - Start Comment  
+       cDC-c C-ccA - Comment Out Line  
+       cDC-c C-dcA - Delete Comment  
+       cDC-c C-ecA - Comment to End of Line  
+       cDC-c C-ocA - Restyle Current Comment  
+          
+       __f2__      - Open/Close Current Collapse  
+       __C-f2__    - Open/Close All Collapses         
+          
+       __S-f7__    - Enable/Disable Auto-Spell  
+       __C-f7__    - Auto-Spell Context Menu  
+          
+       __f6__      - List Items (Headers)  
+       __C-f6__    - Close List Items  
+          
+cENOTES cA
+
+    This mode allows as well embedding of Python, R, Tcl code with syntax highlighting.
+      
+              ## Python code chunk example
+              
+              ```{py}
+              import sys
+              print(os.sys.getenv('HOME')
+              ```
+              
+              ## R code chunk example
+              
+              ```{r}
+              library(lattice)
+              with(iris,bwplot(Sepal.Height~Species))
+              ```
+       
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, 
+    lsbuffer-setup(3)lmbuffer-setup(3)le, lsspell-buffer(3)lmspell-buffer(3)le.

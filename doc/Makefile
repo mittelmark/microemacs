@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : groth
 #  Created       : Sat Nov 18 16:50:59 2023
-#  Last Modified : <250310.0933>
+#  Last Modified : <250919.0818>
 #
 #  Description	
 #
@@ -46,6 +46,6 @@ html-all:
 	bash ../bin/me-tools.sh me2html me.smd html m4fil 0 37
 	bash ../bin/me-tools.sh me2html me.smd html m5var 0 12
 	bash ../bin/me-tools.sh me2html me.smd html m5var 19 93
-	bash ../bin/me-tools.sh me2html me.smd html m9typ 0 50	
+	bash ../bin/me-tools.sh me2html me.smd html m9typ 0 64
 ehf:
 	bash ../bin/me-tools.sh smd2ehf header.txt me.smd > me.ehf

@@ -1755,6 +1755,8 @@
   [toml(9)](toml(9)) Toml configuration file  
   [troff(9)](troff(9)) UNIX troff file  
   [txt(9)](txt(9)) ASCII plain text file  
+  [typ(9)](typ(9)) Typst markup file   
+  [typst(9)](typst(9)) Typst markup file  
   [v(9)](v(9)) Verilog hardware description language  
   [vb(9)](vb(9)) Visual Basic  
   [verilog(9)](verilog(9)) Verilog hardware description language  
@@ -4004,6 +4006,8 @@
   [transpose-lines(2)](transpose-lines(2)) (C-x C-t) Exchange (swap) adjacent lines  
   [troff(9)](troff(9)) UNIX troff file  
   [txt(9)](txt(9)) ASCII plain text file  
+  [typ(9)](typ(9)) Typst markup file   
+  [typst(9)](typst(9)) Typst markup file  
   [UserProfiles(2)](UserProfiles(2)) Defining a user profile  
   [uncomment-line(3)](uncomment-line(3)) Uncomment current line  
   [undo(2)](undo(2)) (C-x u) Undo the last edit  
@@ -67519,4 +67523,77 @@ $a
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
   [find-tag(2)](find-tag(2)), [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
+!! me-id: m9typ064
+! 9 typ
+! 9 typst
+! 9 Typst
+## SYNOPSIS
+
+
+  typ, typst - Typst plain text Markup
+
+
+## FILES
+
+
+  __hktypst.emf__ - Typst text hook definition  
+  __typst.eaf__ - Typst abbreviation file  
+  __typst.etf__ - Typst template file
+
+
+## EXTENSIONS
+
+
+  __.typ__, __.typst__ - Typstn markup files  
+
+
+## DESCRIPTION
+
+
+  The __typst__ file type template handles the hilighting and text formating of a
+  Typst formatted text file. It supports as well folding by header sections,
+  item listening of header sections, abbreviations and template insertion.
+    
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-s__ - Start Comment  
+     __C-c C-c__ - Comment Out Line  
+     __C-c C-d__ - Delete Comment  
+     __C-c C-e__ - Comment to End of Line  
+     __C-c C-o__ - Restyle Current Comment  
+        
+     __f2__      - Open/Close Current Collapse  
+     __C-f2__    - Open/Close All Collapses         
+        
+     __S-f7__    - Enable/Disable Auto-Spell  
+     __C-f7__    - Auto-Spell Context Menu  
+        
+     __f6__      - List Items (Headers)  
+     __C-f6__    - Close List Items  
+        
+## NOTES
+
+  This mode allows as well embedding of Python, R, Tcl code with syntax highlighting.
+    
+            ## Python code chunk example
+            
+            ```{py}
+            import sys
+            print(os.sys.getenv('HOME')
+            ```
+            
+            ## R code chunk example
+            
+            ```{r}
+            library(lattice)
+            with(iris,bwplot(Sepal.Height~Species))
+            ```
+     
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types), 
+  [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)).
 !! me-id: meende

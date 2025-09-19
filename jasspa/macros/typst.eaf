@@ -1,0 +1,3 @@
+bib "#bibliography(\"\p\")\r\P" "  \CCDbib\CCAliography"
+fig "#figure(\rimage(\"\p\", width: 100%),\rcaption: [ *title* description. ]\r) <label>\r\P" "  \CCDfig\CCAure"
+img "#image(\"\p\", width: 100%)\r\P" "  \CCDim\CCAa\CCDg\CCAe"

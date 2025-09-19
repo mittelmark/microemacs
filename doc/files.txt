@@ -1132,5 +1132,7 @@ m9typ061.html	lua(9)
 m9typ062.html	ps1(9)
 m9typ062.html	powershell(9)
 m9typ063.html	vala(9)
+m9typ064.html	typst(9)
+m9typ064.html	typ(9)
 home.html	home
 home.html	MicroEmacs
