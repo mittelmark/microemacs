@@ -1,16 +1,11 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; -!- emf -!-
+; Copyright (C) $YEAR$ $COMPANY_REF$.
 ;
-;  Author        : $Author$
-;  Created By    : $USER_NAME$
-;  Created       : $ASCII_TIME$
-;  Last Modified : <090829.1747>
+; $COMPANY_LICENSE:75$
 ;
-;  Description
+; Last Modified : <250919.0926>
 ;
-;  Notes
-;
-;  History
-;
-;  Copyright (c) $YEAR$ $COMPANY_NAME$.
+; Synopsis:    $CURSOR$
+; Authors:     $USER_NAME$
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
