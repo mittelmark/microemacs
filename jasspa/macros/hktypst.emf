@@ -10,7 +10,6 @@
 define-macro fhook-typst
   @# buffer-init "typst"
   buffer-init-hooks
-  set-variable $buffer-indent-width 4
 !emacro
 
 ; buffer-init variables
@@ -41,18 +40,18 @@ set-variable .fhook-typst.item-list-r3 "H2 \ecB\\1\ecA"
   hilight .hilight.typst 20 "/\\*" "*/" "" .scheme.comment
   hilight .hilight.typst 2 "//"           .scheme.comment
 
-  hilight .hilight.typst 2 "^= "            .scheme.header
-  hilight .hilight.typst 2 "^== "           .scheme.header  
-  hilight .hilight.typst 2 "^=== "           .scheme.bold
-  hilight .hilight.typst 2 "^```"          .scheme.string
-  hilight .hilight.typst 4 "\"" "\"" "\\"  .scheme.string
-  hilight .hilight.typst 4 "\\$" "\\$" "\\"  .scheme.string  
-  hilight .hilight.typst 1 "\*[^\*]+\*"     .scheme.bold
-  hilight .hilight.typst 1 "_[^_]+_"       .scheme.italic
-  hilight .hilight.typst 1 "`[^`]+`"       .scheme.quote
-  hilight .hilight.typst 4  "#"   "\\}\\W" ""           .scheme.keyword
-  hilight .hilight.typst 4  "@"   "\\}\\W" ""           .scheme.link
-  hilight .hilight.typst 4  "<"   ">\\}\\W" ">"           .scheme.link  
+  hilight .hilight.typst 2 "^= "              .scheme.header
+  hilight .hilight.typst 2 "^== "             .scheme.header  
+  hilight .hilight.typst 2 "^=== "            .scheme.bold
+  hilight .hilight.typst 2 "^```"             .scheme.string
+  hilight .hilight.typst 4 "\"" "\"" ""       .scheme.string
+  hilight .hilight.typst 4 "\\$" "\\$" "\\"   .scheme.string  
+  hilight .hilight.typst 4 "\\*\\w+" "\\*" "" .scheme.bold
+  hilight .hilight.typst 1 "_[^_]+_"          .scheme.italic
+  hilight .hilight.typst 1 "`[^`]+`"          .scheme.quote
+  hilight .hilight.typst 4  "#" "\\}\\W" ""   .scheme.keyword
+  hilight .hilight.typst 4  "@" "\\}\\W" ""   .scheme.link
+  hilight .hilight.typst 4  "<" ">\\}\\W" ">" .scheme.link  
   hilight .hilight.typst 0x300 "```{"
   hilight .hilight.typst 0x300 "```{\\."
   
@@ -110,10 +109,11 @@ set-variable .fhook-typst.item-list-r3 "H2 \ecB\\1\ecA"
     0 indent  .hilight.typst 0 10
     indent .hilight.typst n "{"  t
     indent .hilight.typst o "}" -t
-    indent .hilight.typst e "\"" "\"" "\\"
-    indent .hilight.typst b "\\[" "]" 
-    indent .hilight.typst b "(" ")" 
-    indent .hilight.typst c "\\\\\\s*$" 3/2t
+    indent .hilight.typst n "("  t
+    indent .hilight.typst o ")" -t
+    indent .hilight.typst n "\\["  t
+    indent .hilight.typst o "]" -t
+    indent .hilight.typst e "\"" "\"" ""
     indent .hilight.typst i "^\\s*//"
 !endif
 buffer-init-fhook "typst" 

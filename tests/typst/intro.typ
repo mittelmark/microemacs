@@ -31,12 +31,12 @@ of these natural structures.
 As an example for a *glacier* see Figure @glaciers. 
 
 #figure(
-        image("glacier.png",width: 70%),
-        caption: [
-                  _Glaciers_ form an important part of the earth's climate
-                  system.
-                  ]
-        ) <glaciers> 
+    image("glacier.png",width: 70%),
+    caption: [
+        _Glaciers_ form an important part of the earth's climate
+        system.
+    ]
+) <glaciers> 
 
 
 = Methods
@@ -50,7 +50,9 @@ Typst as well supports comments:
  * 
  * This is a multiline comment
  */
-
+ 
+// some more comment
+ 
 = Math
 
 The equation $Q = rho A v + C$
@@ -58,8 +60,7 @@ defines the glacial flow rate.
 
 Which we can write even more $ x = 3 $.
 
-The flow rate of a glacier is given
-by the following equation:
+The flow rate of a glacier is given by the following equation:
 
 $ Q = rho A v + "time offset" $
 
