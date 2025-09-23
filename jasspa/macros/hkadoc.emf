@@ -16,7 +16,7 @@ define-macro fhook-adoc
 set-variable .fhook-adoc.name "adoc"
 set-variable .fhook-adoc.setup &reg "/history/fhook/adoc" "bfghijnopswx"
 set-variable .fhook-adoc.setup-mask "abefghijkmnopstuwx"
-set-variable .fhook-adoc.comment "|////| /////|*|* |* ||"
+set-variable .fhook-adoc.comment "|////|////|*|* |* ||"
 
 set-variable .fhook-adoc.command-flag  "|bo|"
 set-variable .fhook-adoc.command-name  "|about|"
@@ -51,6 +51,7 @@ set-variable .fhook-adoc.item-list-r3 "\ecCTD\ecA \ecB\\1\ecA"
   hilight .hilight.adoc 2 "//"               .scheme.comment
   hilight .hilight.adoc 2 "^include"         .scheme.prepro
   hilight .hilight.adoc 2 "^[A-Z]+:"         .scheme.link
+  hilight .hilight.adoc 2 "^\\..+"           .scheme.prepro
   hilight .hilight.adoc 2 "<<.+>>"           .scheme.link  
   hilight .hilight.adoc 2 "^= "              .scheme.header
   hilight .hilight.adoc 2 "^== "             .scheme.header  

@@ -1,6 +1,9 @@
 = Simple Paper Template
-Max Musterman - University of Potsdam - Germany
-v0.0.1 2025-09-23
+:Author: Max Musterman - University of Potsdam - Germany
+:Date: 2025-09-23
+:Email: <musterman@mustercity.com>
+:Revision: v0.0.1
+:ME: Jasspa's MicroEmacs
 :icons: font
 :toc:
 
@@ -8,7 +11,13 @@ v0.0.1 2025-09-23
 
 NOTE: Remember the milk.
 
-This is an abstract. See <<References>> for more.
+This is an abstract.  See  <<References>>  for more. This  document was written
+with {ME}.
+
+.Optional Title
+[NOTE]
+This is an example
+single-paragraph note.
 
 == Introduction
 
@@ -31,6 +40,27 @@ sudo dnf install rubygem-asciidoctor-pdf rubygem-asciidoctor
 
 TODO: This is something we must do now!
 
+.Sidebar Example
+****
+This is a note for a *sidebar*.
+
+****
+
+////
+Comment Block which will be not shown in the output.
+Can split over several lines.
+////
+
+forced +
+linebreak.
+
+No line
+break.
+
+[[anchor]]
+
+Let's jump to <<anchor,the anchor>>!
+
 == Data and Methods
 
 Here comes a data section where we describe how to say hello.
@@ -41,6 +71,17 @@ include::hello.tcl[]
 ----
 
 Tcl:: Tool Command Language - general purpose scripting language
+
+== Tables
+
+.CSV data, 15% each column
+[format="csv",width="60%",cols="4"]
+[frame="topbot",grid="none"]
+|======
+1,2,3,4
+a,b,c,d
+A,B,C,D
+|======
 
 == Results
 
