@@ -66594,14 +66594,14 @@ $a
        cDC-c C-ecA - Comment to End of Line  
        cDC-c C-ocA - Restyle Current Comment  
           
-       __f2__      - Open/Close Current Collapse  
-       __C-f2__    - Open/Close All Collapses         
+       cDf2cA      - Open/Close Current Collapse  
+       cDC-f2cA    - Open/Close All Collapses         
           
-       __S-f7__    - Enable/Disable Auto-Spell  
-       __C-f7__    - Auto-Spell Context Menu  
+       cDS-f7cA    - Enable/Disable Auto-Spell  
+       cDC-f7cA    - Auto-Spell Context Menu  
           
-       __f6__      - List Items (Headers)  
-       __C-f6__    - Close List Items  
+       cDf6cA      - List Items (Headers)  
+       cDC-f6cA    - Close List Items  
           
 cENOTES cA
 
@@ -66623,9 +66623,8 @@ $a
        
 cESEE ALSO cA
 
-    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
-    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
-    lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le,
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lscollapse-all(3)lmcollapse-all(3)le, 
+    lscollapse-current(3)lmcollapse-current(3)le, lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le,
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 adoc
 ! 9 asciidoc
@@ -66666,18 +66665,17 @@ $a
        cDC-c C-ecA - Comment to End of Line  
        cDC-c C-ocA - Restyle Current Comment  
           
-       __f2__      - Open/Close Current Collapse  
-       __C-f2__    - Open/Close All Collapses         
+       cDf2cA      - Open/Close Current Collapse  
+       cDC-f2cA    - Open/Close All Collapses         
           
-       __S-f7__    - Enable/Disable Auto-Spell  
-       __C-f7__    - Auto-Spell Context Menu  
+       cDS-f7cA    - Enable/Disable Auto-Spell  
+       cDC-f7cA    - Auto-Spell Context Menu  
           
-       __f6__      - List Items (Headers)  
-       __C-f6__    - Close List Items  
+       cDf6cA      - List Items (Headers)  
+       cDC-f6cA    - Close List Items  
           
 cESEE ALSO cA
 
-    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le 
-    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
-    lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lscollapse-all(3)lmcollapse-all(3)le, 
+    lscollapse-current(3)lmcollapse-current(3)le, lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.

@@ -67569,13 +67569,13 @@ $a
      __C-c C-e__ - Comment to End of Line  
      __C-c C-o__ - Restyle Current Comment  
         
-     __f2__      - Open/Close Current Collapse  
+  >  __f2__      - Open/Close Current Collapse  
      __C-f2__    - Open/Close All Collapses         
         
-     __S-f7__    - Enable/Disable Auto-Spell  
+  >  __S-f7__    - Enable/Disable Auto-Spell  
      __C-f7__    - Auto-Spell Context Menu  
         
-     __f6__      - List Items (Headers)  
+  >  __f6__      - List Items (Headers)  
      __C-f6__    - Close List Items  
         
 ## NOTES
@@ -67598,9 +67598,8 @@ $a
      
 ## SEE ALSO
 
-  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
-  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
-  [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)),
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [collapse-all(3)](collapse-all(3)), 
+  [collapse-current(3)](collapse-current(3)), [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)),
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ065
 ! 9 adoc
@@ -67642,19 +67641,18 @@ $a
      __C-c C-e__ - Comment to End of Line  
      __C-c C-o__ - Restyle Current Comment  
         
-     __f2__      - Open/Close Current Collapse  
+  >  __f2__      - Open/Close Current Collapse  
      __C-f2__    - Open/Close All Collapses         
         
-     __S-f7__    - Enable/Disable Auto-Spell  
+  >  __S-f7__    - Enable/Disable Auto-Spell  
      __C-f7__    - Auto-Spell Context Menu  
         
-     __f6__      - List Items (Headers)  
+  >  __f6__      - List Items (Headers)  
      __C-f6__    - Close List Items  
         
 ## SEE ALSO
 
-  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
-  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
-  [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)).
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [collapse-all(3)](collapse-all(3)), 
+  [collapse-current(3)](collapse-current(3)), [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)).
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: meende
