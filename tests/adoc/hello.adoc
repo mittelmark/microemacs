@@ -14,6 +14,21 @@ This is an abstract. See <<References>> for more.
 
 This is the introduction.
 
+You can  create  HTML and PDF  versions  of this  article  with the  following
+commands:
+
+----
+asciidoctor hello.adoc
+asciidoctor-pdf hello.ado
+----
+
+The tools can be installed on a Fedora system like this:
+
+----
+sudo dnf install rubygem-asciidoctor-pdf rubygem-asciidoctor
+----
+
+
 TODO: This is something we must do now!
 
 == Data and Methods
@@ -51,8 +66,19 @@ Basic formatting is *bold*, _italics_ and I think as well `typewriter` like.
 
 We can as well create *_bold italic_*.
 
+== Literature 
+
+References are more or less free form. Here an example:
+
+_The Pragmatic Programmer_ <<pp>> should be required reading for all developers.
+To learn all about design patterns, refer to the book by the "`Gang of Four`" <<gof>>.
+
+[bibliography]
 == References
 
-Here could be a reference list. But not yet now!
+* [[[pp]]] Andy Hunt & Dave Thomas. _The Pragmatic Programmer: From Journeyman
+to Master._  Addison-Wesley. 1999.
+* [[[gof,gang]]] Erich Gamma, Richard Helm, Ralph Johnson & John Vlissides.
+_Design Patterns: Elements of Reusable Object-Oriented Software._ Addison-Wesley. 1994.
 
 So let's go back to the <<Introduction>>.
