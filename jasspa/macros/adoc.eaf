@@ -1,0 +1,3 @@
+img "image::\p[name,200,100]\P" "  \CCDim\CCAa\CCDg\CCAe"
+co ".Title\r----\r\p\r----\r\P" "  \CCDco\CCAde chunk"
+ex ".Title\r====\r\p\r====\r\P" "  \CCDex\CCAample"

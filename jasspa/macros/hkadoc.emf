@@ -1,0 +1,78 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Created:    Tue Sep 23 2025
+; Authors:    Detlef Groth
+; Synopsis:   Asciidoc file hook (https://asciidoc.org/)
+;
+define-macro fhook-adoc
+  @# buffer-init "adoc"
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-adoc.name "adoc"
+set-variable .fhook-adoc.setup &reg "/history/fhook/adoc" "bfghijnopswx"
+set-variable .fhook-adoc.setup-mask "abefghijkmnopstuwx"
+set-variable .fhook-adoc.comment "|////| /////|*|* |* ||"
+
+set-variable .fhook-adoc.command-flag  "|bo|"
+set-variable .fhook-adoc.command-name  "|about|"
+set-variable .fhook-adoc.command-nbind "||"
+set-variable .fhook-adoc.command-kbind "|esc q|"
+set-variable .fhook-adoc.command-desc  "||"
+
+; setup item-list
+set-variable .fhook-adoc.item-list-s1 "^= \\(\.+\\)"
+set-variable .fhook-adoc.item-list-r1 "Ti \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-s2 "^== \\(.+\\)"
+set-variable .fhook-adoc.item-list-r2 "H1 \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-s3 "^=== \\(.+\\)"
+set-variable .fhook-adoc.item-list-r3 "H2 \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-s3 "^TODO: \\(.+\\)"
+set-variable .fhook-adoc.item-list-r3 "\ecCTD\ecA \ecB\\1\ecA"
+
+!if &sin "f" .fhook-adoc.setup
+  ; setup emf collapsing
+  set-variable .fhook-adoc.collapse-open  "^\\(= \\|== \\)"
+  set-variable .fhook-adoc.collapse-close "^\\(= \\|== \\|\\'\\)"
+  set-variable .fhook-adoc.collapse-mnext "-1"
+!endif
+
+!if &not &exist .hilight.adoc
+    set-variable .hilight.adoc &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-adoc.setup &band .hilight.flags 0x02
+  0 hilight .hilight.adoc 1                  $global-scheme
+  hilight .hilight.adoc 20 "////" "////" ""  .scheme.comment
+  hilight .hilight.adoc 2 "//"               .scheme.comment
+  hilight .hilight.adoc 2 "^include"         .scheme.prepro
+  hilight .hilight.adoc 2 "^[A-Z]+:"         .scheme.link
+  hilight .hilight.adoc 2 "<<.+>>"           .scheme.link  
+  hilight .hilight.adoc 2 "^= "              .scheme.header
+  hilight .hilight.adoc 2 "^== "             .scheme.header  
+  hilight .hilight.adoc 2 "^=== "            .scheme.bold
+  hilight .hilight.adoc 2 "^----"             .scheme.string
+  hilight .hilight.adoc 4 "\"" "\"" ""       .scheme.string
+  hilight .hilight.adoc 4 "\\*\\w+" "\\*" "" .scheme.bold
+  hilight .hilight.adoc 1 "_[^_]+_"          .scheme.italic
+  hilight .hilight.adoc 1 "`[^`]+`"          .scheme.quote
+  
+!endif
+
+!if &sin "x" .fhook-adoc.setup
+  ; only define the b & e hooks if time stamping is enabled
+  0 define-macro bhook-adoc
+    set-variable .timestamp $timestamp
+    set-variable $timestamp "%Y-%M-%D"
+  !emacro
+  0 define-macro ehook-adoc
+    set-variable $timestamp .bhook-adoc.timestamp
+  !emacro
+!endif
+
+buffer-init-fhook "adoc" 
+

@@ -1,0 +1,19 @@
+= Simple Paper Template
+Firstname Secondname - University of Mustercity
+v0.0.1 2025-09-23
+:icons: font
+:toc:
+
+== Abstract
+
+NOTE: Remember the milk.
+
+This is an abstract. See <<References>> for more.
+
+== Introduction
+
+Some introductory text.
+
+== References
+
+* list of references

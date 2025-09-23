@@ -1637,6 +1637,7 @@
   [0-9(9)](0-9(9)) UNIX t/nroff file  
   [ada(9)](ada(9)) Ada programming language  
   [adb(9)](adb(9)) Ada programming language  
+  [adoc(9)](adoc(9)) AsciiDoc markup language  
   [ads(9)](ads(9)) Ada programming language  
   [apache(9)](apache(9)) Apache httpd.conf configuration file  
   [asm(9)](asm(9)) Assembler File  
@@ -3361,6 +3362,7 @@
   [add-mode(3)](add-mode(3)) Set a local buffer mode  
   [add-next-line(2)](add-next-line(2)) Define the searching behavior of command output  
   [add-spell-rule(2)](add-spell-rule(2)) Add a new spelling rule to the dictionary  
+  [adoc(9)](adoc(9)) AsciiDoc markup language  
   [ads(9)](ads(9)) Ada programming language  
   [alarm(3)](alarm(3)) Set an alarm  
   [alias-path-setup(3)](alias-path-setup(3)) Define alternative path alias  
@@ -5107,6 +5109,10 @@
 
 
 ## Development History 
+
+  - [250923] - AsciiDoc support
+  - [250919] - Typst support
+  - [250912] - Vala support
   - [250909]
     - version set to v0925beta3
     - adding support for PowerShell
@@ -67524,13 +67530,12 @@ $a
   [find-tag(2)](find-tag(2)), [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
 !! me-id: m9typ064
-! 9 typ
 ! 9 typst
-! 9 Typst
+! 9 typ
 ## SYNOPSIS
 
 
-  typ, typst - Typst plain text Markup
+  typst - Typst plain text Markup
 
 
 ## FILES
@@ -67544,7 +67549,7 @@ $a
 ## EXTENSIONS
 
 
-  __.typ__, __.typst__ - Typstn markup files  
+  __.typ__, __.typst__ - Typst markup files  
 
 
 ## DESCRIPTION
@@ -67593,7 +67598,63 @@ $a
      
 ## SEE ALSO
 
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)),
+  [Supported File Types](MicroEmacs - Supported File Types).
+!! me-id: m9typ065
+! 9 adoc
+! 9 asciidoc
+## SYNOPSIS
 
-  [Supported File Types](MicroEmacs - Supported File Types), 
-  [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)).
+
+  adoc - AsciiDoc plain text Markup
+
+
+## FILES
+
+
+  __hkadoc.emf__ - AsciiDoc text hook definition  
+  __adoc.eaf__ - AsciiDoc abbreviation file  
+  __adoc.etf__ - AsciiDoc template file
+
+
+## EXTENSIONS
+
+
+  __.adoc__ - AsciiDoc markup files  
+
+
+## DESCRIPTION
+
+
+  The __adoc__ file type template handles the hilighting and text formating of a
+  AsciiDoc formatted text file. It supports as well folding by header sections,
+  item listening of header sections, abbreviations and template insertion.
+    
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-s__ - Start Comment  
+     __C-c C-c__ - Comment Out Line  
+     __C-c C-d__ - Delete Comment  
+     __C-c C-e__ - Comment to End of Line  
+     __C-c C-o__ - Restyle Current Comment  
+        
+     __f2__      - Open/Close Current Collapse  
+     __C-f2__    - Open/Close All Collapses         
+        
+     __S-f7__    - Enable/Disable Auto-Spell  
+     __C-f7__    - Auto-Spell Context Menu  
+        
+     __f6__      - List Items (Headers)  
+     __C-f6__    - Close List Items  
+        
+## SEE ALSO
+
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)).
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: meende

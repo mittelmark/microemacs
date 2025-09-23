@@ -1134,5 +1134,6 @@ m9typ062.html	powershell(9)
 m9typ063.html	vala(9)
 m9typ064.html	typst(9)
 m9typ064.html	typ(9)
+m9typ065.html	adoc(9)
 home.html	home
 home.html	MicroEmacs

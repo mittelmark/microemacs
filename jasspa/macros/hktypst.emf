@@ -18,6 +18,12 @@ set-variable .fhook-typst.setup &reg "/history/fhook/typst" "bdfghijnopswx"
 set-variable .fhook-typst.setup-mask "abdefghijkmnopstuwx"
 set-variable .fhook-typst.comment "|/*| */|*| * | * ||"
 
+set-variable .fhook-typst.command-flag  "|bo|"
+set-variable .fhook-typst.command-name  "|about|"
+set-variable .fhook-typst.command-nbind "||"
+set-variable .fhook-typst.command-kbind "|esc q|"
+set-variable .fhook-typst.command-desc  "||"
+
 ; setup item-list
 set-variable .fhook-typst.item-list-s1 "^= \\(\.+\\)"
 set-variable .fhook-typst.item-list-r1 "H1 \ecB\\1\ecA"

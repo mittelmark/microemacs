@@ -1,0 +1,58 @@
+= Simple Paper Template
+Max Musterman - University of Potsdam - Germany
+v0.0.1 2025-09-23
+:icons: font
+:toc:
+
+== Abstract
+
+NOTE: Remember the milk.
+
+This is an abstract. See <<References>> for more.
+
+== Introduction
+
+This is the introduction.
+
+TODO: This is something we must do now!
+
+== Data and Methods
+
+Here comes a data section where we describe how to say hello.
+
+[,tcl]
+----
+include::hello.tcl[]
+----
+
+Tcl:: Tool Command Language - general purpose scripting language
+
+== Results
+
+=== Videos
+
+video::EhXpJo3YbKg[youtube,width=640,height=480]
+
+== Discussion
+
+WARNING: Do not embed long examples!!
+
+====
+This is an example of an example block.
+
+Where we can write more in one line.
+====
+
+But now we are back in paragraph mode.
+
+== Formatting
+
+Basic formatting is *bold*, _italics_ and I think as well `typewriter` like.
+
+We can as well create *_bold italic_*.
+
+== References
+
+Here could be a reference list. But not yet now!
+
+So let's go back to the <<Introduction>>.
