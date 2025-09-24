@@ -26,13 +26,13 @@ set-variable .fhook-adoc.command-desc  "||"
 
 ; setup item-list
 set-variable .fhook-adoc.item-list-s1 "^= \\(\.+\\)"
-set-variable .fhook-adoc.item-list-r1 "Ti \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-r1 "Ti \CCb\\1\CCA"
 set-variable .fhook-adoc.item-list-s2 "^== \\(.+\\)"
-set-variable .fhook-adoc.item-list-r2 "H1 \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-r2 "H1 \CCb\\1\CCA"
 set-variable .fhook-adoc.item-list-s3 "^=== \\(.+\\)"
-set-variable .fhook-adoc.item-list-r3 "H2 \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-r3 "H2 \CCb\\1\CCA"
 set-variable .fhook-adoc.item-list-s3 "^TODO: \\(.+\\)"
-set-variable .fhook-adoc.item-list-r3 "\ecCTD\ecA \ecB\\1\ecA"
+set-variable .fhook-adoc.item-list-r3 "\CCcTD \\1\CCA"
 
 !if &sin "f" .fhook-adoc.setup
   ; setup emf collapsing

@@ -1,6 +1,7 @@
 = Simple Paper Template
-Firstname Secondname - University of Mustercity
-v0.0.1 2025-09-23
+:Author: Firstname Secondname - University of Mustercity
+:Date: 2025-09-23
+:Revision: v0.0.1
 :icons: font
 :toc:
 
@@ -17,3 +18,7 @@ Some introductory text.
 == References
 
 * list of references
+
+////
+Multiline comment
+////
