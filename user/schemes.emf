@@ -1,0 +1,65 @@
+; -!- emf -!-
+; Copyright (C) 2025 $COMPANY_REF$.
+;
+; $COMPANY_LICENSE:75$
+;
+; Last Modified : <250924.0843>
+;
+; Synopsis:    
+; Authors:     Detlef Groth
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; place this code below into your ~/.jasspa/USERNAME.emf
+define-macro scheme-tokyo-night
+    execute-file "schemead"
+    add-color &set .col1 1 21 22 30 ; Ansi_0
+    add-color &set .col2 2 247 118 142 ; Ansi_1
+    add-color &set .col3 3 158 206 106 ; Ansi_2
+    add-color &set .col4 4 224 175 104 ; Ansi_3
+    add-color &set .col5 5 122 162 247 ; Ansi_4
+    add-color &set .col6 6 187 154 247 ; Ansi_5
+    add-color &set .col7 7 125 207 255 ; Ansi_6
+    add-color &set .col8 8 169 177 214 ; Ansi_7
+    add-color &set .col9 9 65 72 104 ; Ansi_8
+    add-color &set .col10 10 247 118 142 ; Ansi_9
+    add-color &set .col11 11 158 206 106 ; Ansi_10
+    add-color &set .col12 12 224 175 104 ; Ansi_11
+    add-color &set .col13 13 122 162 247 ; Ansi_12
+    add-color &set .col14 14 187 154 247 ; Ansi_13
+    add-color &set .col15 15 125 207 255 ; Ansi_14
+    add-color &set .col16 16 192 202 245 ; Ansi_15
+    add-color &set .col17 17 26 27 38 ; Background
+    add-color &set .col18 18 192 202 245 ; Foreground
+    add-color &set .col19 19 192 202 245 ; Cursor
+    add-color &set .col20 20 51 70 124 ; Selection Background
+    add-color &set .col21 21 192 202 245 ; Selection Foreground
+    screen-update
+!emacro
+
+; scheme = 'adwaita' ; file = '/home/dgroth/Downloads/Adwaita.xrdb' 
+; place this code below into your ~/.jasspa/USERNAME.emf
+define-macro scheme-adwaita
+    execute-file "schemeal"
+    add-color &set .col1 1 36 31 49 ; Ansi_0
+    add-color &set .col2 2 192 28 40 ; Ansi_1
+    add-color &set .col3 3 46 194 126 ; Ansi_2
+    add-color &set .col4 4 245 194 17 ; Ansi_3
+    add-color &set .col5 5 30 120 228 ; Ansi_4
+    add-color &set .col6 6 152 65 187 ; Ansi_5
+    add-color &set .col7 7 10 185 220 ; Ansi_6
+    add-color &set .col8 8 192 191 188 ; Ansi_7
+    add-color &set .col9 9 94 92 100 ; Ansi_8
+    add-color &set .col10 10 237 51 59 ; Ansi_9
+    add-color &set .col11 11 87 227 137 ; Ansi_10
+    add-color &set .col12 12 248 228 92 ; Ansi_11
+    add-color &set .col13 13 81 161 255 ; Ansi_12
+    add-color &set .col14 14 192 97 203 ; Ansi_13
+    add-color &set .col15 15 79 210 253 ; Ansi_14
+    add-color &set .col16 16 246 245 244 ; Ansi_15
+    add-color &set .col17 17 255 255 255 ; Background
+    add-color &set .col18 18 0 0 0 ; Foreground
+    add-color &set .col19 19 0 0 0 ; Cursor
+    add-color &set .col20 20 192 191 188 ; Selection Background
+    add-color &set .col21 21 0 0 0 ; Selection Foreground
+    screen-update
+!emacro
