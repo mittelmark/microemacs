@@ -66593,6 +66593,7 @@ $a
        cDC-c C-dcA - Delete Comment  
        cDC-c C-ecA - Comment to End of Line  
        cDC-c C-ocA - Restyle Current Comment  
+       cDesc qcA   - Fills Paragraph
           
        cDf2cA      - Open/Close Current Collapse  
        cDC-f2cA    - Open/Close All Collapses         
@@ -66647,6 +66648,13 @@ $a
 
     cD.adoccA - AsciiDoc markup files  
 
+cEMAGIC STRINGS cA
+
+
+    cD-!- asciidoc -!-cA
+    
+       Recognized by MicroEmacs only, defines the file to be a AsciiDoc file
+       regardless of the file extension.
 
 cEDESCRIPTION cA
 
@@ -66664,6 +66672,7 @@ $a
        cDC-c C-dcA - Delete Comment  
        cDC-c C-ecA - Comment to End of Line  
        cDC-c C-ocA - Restyle Current Comment  
+       cDesc qcA   - Fills Paragraph
           
        cDf2cA      - Open/Close Current Collapse  
        cDC-f2cA    - Open/Close All Collapses         

@@ -312,7 +312,7 @@ add-file-hook ".go"                                           fhook-go
 add-file-hook ".rs"                                           fhook-rust
 add-file-hook ".dart .drt"                                    fhook-dart
 add-file-hook ".c2 .c3"                                       fhook-c3
-add-file-hook ".md .rmd .Rmd .tmd .Tmd"                       fhook-md
+add-file-hook ".md .rmd .Rmd .tmd .Tmd .smd"                  fhook-md
 add-file-hook ".yml .yaml"                                    fhook-yaml
 add-file-hook ".zig"                                          fhook-zig
 add-file-hook ".jl"                                           fhook-julia
@@ -320,7 +320,7 @@ add-file-hook ".m"                                            fhook-octave
 add-file-hook ".ps1 .psm1"                                    fhook-ps1 
 add-file-hook ".vala"                                         fhook-vala 
 add-file-hook ".typst .typ"                                   fhook-typst
-add-file-hook ".adoc"                                         fhook-adoc
+add-file-hook ".adoc .asciidoc"                               fhook-adoc
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
@@ -352,7 +352,7 @@ add-file-hook ".adoc"                                         fhook-adoc
 -1 add-file-hook "-[*!]-[ \t]*ruby.*-[*!]-"      fhook-ruby   ; -*- ruby -*-
 -1 add-file-hook "-!-[ \t]*mhg.*-!-"             fhook-mhg    ; -!- mhg -!-
 -1 add-file-hook "-!-[ \t]*msdos.*-!-"           fhook-dos    ; -!- msdos -!-
--1 add-file-hook "-!-[ \t]*v-lang.*-!-"          fhook-v     ; -!- v-lang -!-
+-1 add-file-hook "-!-[ \t]*v-lang.*-!-"          fhook-v      ; -!- v-lang -!-
 -1 add-file-hook "-!-[ \t]*imakefile.*-!-"       fhook-imake  ; -!- imakefile -!-
 -1 add-file-hook "-!-[ \t]*document.*-!-"        fhook-doc    ; -!- document -!-
 -1 add-file-hook "-!-[ \t]*jst.*-!-"             fhook-jst    ; -!- jst -!-
@@ -368,6 +368,7 @@ add-file-hook ".adoc"                                         fhook-adoc
 -1 add-file-hook "-!-[ \t]*euphoria.*-!-"        fhook-euphor ; -!- euphoria -!-
 -1 add-file-hook "-!-[ \t]*lua.*-!-"             fhook-lua    ; -!- lua -!-
 -1 add-file-hook "-!-[ \t]*ps1.*-!-"             fhook-ps1    ; -!- ps1 -!-
+-1 add-file-hook "-!-[ \t]*asciidoc.*-!-"        fhook-adoc   ; -!- asciidoc -!-
 
 -1 add-file-hook "^diff "                        fhook-diff   ; diff -Naur file.c ...
 

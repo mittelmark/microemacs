@@ -67568,6 +67568,7 @@ $a
      __C-c C-d__ - Delete Comment  
      __C-c C-e__ - Comment to End of Line  
      __C-c C-o__ - Restyle Current Comment  
+     __esc q__   - Fills Paragraph
         
   >  __f2__      - Open/Close Current Collapse  
      __C-f2__    - Open/Close All Collapses         
@@ -67623,6 +67624,13 @@ $a
 
   __.adoc__ - AsciiDoc markup files  
 
+## MAGIC STRINGS
+
+
+  __-!- asciidoc -!-__
+  
+  >  Recognized by MicroEmacs only, defines the file to be a AsciiDoc file
+     regardless of the file extension.
 
 ## DESCRIPTION
 
@@ -67640,6 +67648,7 @@ $a
      __C-c C-d__ - Delete Comment  
      __C-c C-e__ - Comment to End of Line  
      __C-c C-o__ - Restyle Current Comment  
+     __esc q__   - Fills Paragraph
         
   >  __f2__      - Open/Close Current Collapse  
      __C-f2__    - Open/Close All Collapses         
