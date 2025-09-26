@@ -44113,9 +44113,9 @@ $a
        wget -O  ~/.jasspa/themes/material-light.xrdb \
          https://github.com/mbadolato/iTerm2-Color-Schemes/raw/master/xrdb/Material.xrdb
        wget -O  ~/.jasspa/themes/material-dark.xrdb \
-         https://github.com/mbadolato/iTerm2-Color-Schemes/raw/master/xrdb/MaterialDark.xrdb
+         https://github.com/mbadolato/iTerm2-Color-Schemes/raw/master/xrdb/Material%20Dark.xrdb
   
-  After you executed these commands you should be able to see the downloaded
+  After you executed these commands you should be able to use the downloaded
   themes after executing: `Esc x` and `xrdb-scheme` and then pressing two
   times the TAB key.
    
