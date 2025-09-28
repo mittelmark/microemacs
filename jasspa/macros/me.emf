@@ -246,7 +246,7 @@ add-file-hook ".bib"                                          fhook-bibtex
 add-file-hook ".n .1 .2 .3 .4 .5 .6 .7 .8 .9 .so .tni .sm"    fhook-nroff
 add-file-hook ".sgm .sgml"                                    fhook-sgml
 add-file-hook ".c .h .def .i"                                 fhook-c
-add-file-hook ".cc .cpp .hpp .rc .cs"                         fhook-cpp
+add-file-hook ".cc .cpp .hpp .rc"                             fhook-cpp
 add-file-hook ".l .y"                                         fhook-yacc
 add-file-hook "Makefile makefile .mak .mk .gmk"               fhook-make
 add-file-hook "Imakefile imakefile"                           fhook-imake
@@ -322,6 +322,7 @@ add-file-hook ".vala"                                         fhook-vala
 add-file-hook ".typst .typ"                                   fhook-typst
 add-file-hook ".adoc .asciidoc"                               fhook-adoc
 add-file-hook ".kt .kts .ktm"                                 fhook-kotlin
+add-file-hook ".cs"                                           fhook-cs
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
