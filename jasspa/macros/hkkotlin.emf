@@ -1,0 +1,255 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1999-2025 JASSPA (www.jasspa.com), Detlef Groth
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Kotlin mode hook
+; Authors:     Jon Green, Detlef Groth
+;
+; Contributions and Acknowledgements:
+;
+; October 2006 - Bryan Schofield
+; Major mode hilighting and indentation suggestions.
+;
+define-macro fhook-kotlin
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "kotlin"
+    !if &equ $buffer-indent .indent.kotlin
+        set-variable $buffer-indent &add $buffer-indent 1
+    !endif
+    buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-kotlin.setup &reg "/history/fhook/kotlin" "bdfghnopx"
+set-variable .fhook-kotlin.setup-mask "abdefghikmnoptuxlrv"
+set-variable .fhook-kotlin.comment "|/*| */|*| * | * |fr|"
+
+; kotlindoc comment - /** ... detailed text ...
+;                    *  ... detailed text ... */
+set-variable .fhook-kotlin.comment-1 "|/**| */|*| * | * |f|"
+
+; Set up the collapse of functions
+set-variable .fhook-kotlin.collapse-open   "^[a-zA-Z].*{$"
+set-variable .fhook-kotlin.collapse-close  "^}"
+set-variable .fhook-kotlin.collapse-mclose "1"
+set-variable .fhook-kotlin.collapse-mnext  "-1"
+; Set up menu items for kotlin mode.
+set-variable .fhook-kotlin.setup-flags   "|r|v|l|"
+set-variable .fhook-kotlin.setup-labels  "|Brace highlighting|Enable bracket alignment|Alternative indent mode|"
+; setup item-list
+set-variable .fhook-kotlin.item-list-s1 "^[ \t]*fun[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*([:<>a-zA-Z0-9_, \t]*)[:A-Za-z0-9 \t]*{"
+set-variable .fhook-kotlin.item-list-r1 "Func \CCb\\1\CCA"
+set-variable .fhook-kotlin.item-list-s2 "^[ \t]*\\(public[ \t]+\\|private[ \t]+\\)?class[ \t]\\(\\w+\\)"
+set-variable .fhook-kotlin.item-list-r2 "Clss \CCb\\2\CCA"
+
+!if &not &exist .hilight.kotlin
+    set-variable .hilight.kotlin &pinc .hilight.next 2
+!endif
+!if &and &sin "h" .fhook-kotlin.setup &band .hilight.flags 0x02
+    ; High-light kotlin Mode
+    0 hilight .hilight.kotlin 2 50            $global-scheme
+    hilight .hilight.kotlin 2  "//"           .scheme.comment
+    hilight .hilight.kotlin 20 "/\\*" "*/" "" .scheme.comment
+    hilight .hilight.kotlin 4 "\"" "\"" "\\"  .scheme.string
+    hilight .hilight.kotlin 0 "'.'"           .scheme.quote
+    hilight .hilight.kotlin 0 "'\\\\.'"       .scheme.quote
+    hilight .hilight.kotlin 0 "'\\\\'"        .scheme.error
+    hilight .hilight.kotlin 0 "'\\\\''"       .scheme.quote
+    ; Hilight TODO in a comment - Examples
+    ; i.e. /* TODO I need to do this */
+    hilight .hilight.kotlin   20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+    hilight .hilight.kotlin   18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+    ; annotations
+    hilight .hilight.kotlin 4 "@" "\\}\\W" ""       .scheme.prepro
+    ; constants: A_CONSTANT_VARAIBLE
+    hilight .hilight.kotlin 1    "[A-Z_]+"          .scheme.constant
+    ; class names: AkotlinClassName
+    hilight .hilight.kotlin 1    "[A-Z]+[a-z]+\\w*" .scheme.type
+    ; kotlin keywords
+    ; The following conventions are used:
+    ; .scheme.type      primitive types
+    ; .scheme.operator  flow control keywords
+    ; .scheme.prepro    package declaration and imports
+    ; .scheme.error     reserved keywords that have not been implemented
+    ; .scheme.keyword   other kotlin keywords that are not covered above
+    hilight .hilight.kotlin 4    "\\$" "\\}\\W" "" .scheme.variable ; variable
+    hilight .hilight.kotlin 4    "@" "\\}\\W" ""   .scheme.link ; annotation
+    hilight .hilight.kotlin 1    "abstract"     .scheme.keyword    ;
+    hilight .hilight.kotlin 1    "actual"       .scheme.keyword    ;    
+    hilight .hilight.kotlin 1    "as"           .scheme.keyword ;
+    hilight .hilight.kotlin 1    "as?"          .scheme.keyword ;
+    hilight .hilight.kotlin 1    "annotation"   .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "Boolean"      .scheme.type    ;
+    hilight .hilight.kotlin 1    "break"        .scheme.operator ;
+    hilight .hilight.kotlin 1    "Byte"         .scheme.type     ;
+    hilight .hilight.kotlin 1    "by"           .scheme.operator ;    
+    hilight .hilight.kotlin 1    "catch"        .scheme.operator ;
+    hilight .hilight.kotlin 1    "Char"         .scheme.type   ;
+    hilight .hilight.kotlin 1    "class"        .scheme.keyword ;
+    hilight .hilight.kotlin 1    "companion"    .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "const"        .scheme.keyword ;
+    hilight .hilight.kotlin 1    "continue"     .scheme.operator ;
+    hilight .hilight.kotlin 1    "crossline"    .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "data"         .scheme.keyword ;        
+    ;hilight .hilight.kotlin 1    "default"      .scheme.operator
+    hilight .hilight.kotlin 1    "delegate"     .scheme.operator ;
+    hilight .hilight.kotlin 1    "do"           .scheme.operator ;
+    hilight .hilight.kotlin 1    "Double"       .scheme.type     ;
+    hilight .hilight.kotlin 1    "dynamic"      .scheme.type     ;    
+    hilight .hilight.kotlin 1    "else"         .scheme.operator ;
+    hilight .hilight.kotlin 1    "enum"         .scheme.keyword ;
+    hilight .hilight.kotlin 1    "expect"       .scheme.keyword ;
+    hilight .hilight.kotlin 1    "external"     .scheme.keyword ;
+    hilight .hilight.kotlin 1    "false"        .scheme.constant ;
+    hilight .hilight.kotlin 1    "field"        .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "file"         .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "final"        .scheme.keyword ;
+    hilight .hilight.kotlin 1    "finally"      .scheme.operator ;
+    hilight .hilight.kotlin 1    "Float"        .scheme.type  ;
+    hilight .hilight.kotlin 1    "for"          .scheme.operator ;
+    hilight .hilight.kotlin 1    "fun"          .scheme.keyword ;
+    hilight .hilight.kotlin 1    "get"          .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "goto"         .scheme.error ; reserved but not implemented
+    hilight .hilight.kotlin 1    "if"           .scheme.operator ;
+    hilight .hilight.kotlin 1    "in"           .scheme.operator ;
+    hilight .hilight.kotlin 1    "!in"          .scheme.operator ;    
+    hilight .hilight.kotlin 0x12 "^\\s*import"  .scheme.prepro  ;
+    hilight .hilight.kotlin 1    "infix"        .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "init"         .scheme.operator ;    
+    hilight .hilight.kotlin 1    "inline"       .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "inner"        .scheme.keyword ;            
+    hilight .hilight.kotlin 1    "Int"          .scheme.type    ;
+    hilight .hilight.kotlin 1    "interface"    .scheme.keyword ;
+    hilight .hilight.kotlin 1    "internal"     .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "is"           .scheme.operator ;
+    hilight .hilight.kotlin 1    "!is"          .scheme.operator ;   
+    hilight .hilight.kotlin 1    "it"           .scheme.keyword ;       
+    hilight .hilight.kotlin 1    "lateinit"     .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "Long"         .scheme.type    ;
+    hilight .hilight.kotlin 1    "noinline"     .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "null"         .scheme.constant ;
+    hilight .hilight.kotlin 1    "object"       .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "open"         .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "operator"     .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "out"          .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "override"     .scheme.keyword ;        
+    hilight .hilight.kotlin 0x12 "^\\s*package" .scheme.prepro  ;
+    hilight .hilight.kotlin 1    "param"        .scheme.keyword  ;    
+    hilight .hilight.kotlin 1    "property"     .scheme.keyword  ;        
+    hilight .hilight.kotlin 1    "private"      .scheme.keyword ;
+    hilight .hilight.kotlin 1    "protected"    .scheme.keyword ;
+    hilight .hilight.kotlin 1    "public"       .scheme.keyword ;
+    hilight .hilight.kotlin 1    "reified"      .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "return"       .scheme.keyword ;
+    hilight .hilight.kotlin 1    "sealed"       .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "set"          .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "setparam"     .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "Short"        .scheme.type    ;
+    hilight .hilight.kotlin 1    "String"       .scheme.type    ;
+    hilight .hilight.kotlin 1    "super"        .scheme.keyword ;
+    hilight .hilight.kotlin 1    "suspend"      .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "tailrec"      .scheme.keyword ;        
+    hilight .hilight.kotlin 1    "this"         .scheme.keyword ;
+    hilight .hilight.kotlin 1    "throw"        .scheme.keyword ;
+    hilight .hilight.kotlin 1    "true"         .scheme.constant ;
+    hilight .hilight.kotlin 1    "try"          .scheme.operator ;
+    hilight .hilight.kotlin 1    "typealias"    .scheme.type ;    
+    hilight .hilight.kotlin 1    "typeof"       .scheme.type ;     reserved
+    hilight .hilight.kotlin 1    "UByte"        .scheme.type     ;
+    hilight .hilight.kotlin 1    "UInt"         .scheme.type     ;    
+    hilight .hilight.kotlin 1    "ULong"        .scheme.type     ;    
+    hilight .hilight.kotlin 1    "UShort"       .scheme.type     ;
+    hilight .hilight.kotlin 1    "Unit"         .scheme.type  ;
+    hilight .hilight.kotlin 1    "val"          .scheme.type ;
+    hilight .hilight.kotlin 1    "value"        .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "var"          .scheme.type ;    
+    hilight .hilight.kotlin 1    "vararg"       .scheme.keyword ;    
+    hilight .hilight.kotlin 1    "while"        .scheme.operator ;
+    hilight .hilight.kotlin 1    "when"         .scheme.operator  ; 
+    hilight .hilight.kotlin 1    "where"        .scheme.operator  ;     
+    ; Hilight curly braces
+    !if &sin "r" .fhook-kotlin.setup
+        hilight .hilight.kotlin 1 "{"        .scheme.keyword
+        hilight .hilight.kotlin 1 "}"        .scheme.keyword
+    !endif
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ; kotlindoc - should support as well JavaDoc                            ; 
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    !if &not &exi .hilight.kotlindoc
+        set-variable .hilight.kotlindoc &pinc .hilight.next 1
+        set-variable .hilight.pkotlindoc &pinc .hilight.next 1
+    !endif
+    ; Add a hook into the normal kotlin hilighing. We jump into
+    ; kotlindoc when we see an opening "/**" .
+    hilight .hilight.kotlin 0x80 "/\\*\\*" .hilight.kotlindoc .scheme.comment
+    ; kotlindoc hilighting starts here
+    0 hilight .hilight.kotlindoc  2 50                      .scheme.comment
+    ; &nbsp; etc.
+    hilight .hilight.kotlindoc    0 "&\\w\\w;"              .scheme.variable
+    hilight .hilight.kotlindoc    0 "&\\w\\w\\w;"           .scheme.variable
+    hilight .hilight.kotlindoc    0 "&\\w\\w\\w\\w;"        .scheme.variable
+    hilight .hilight.kotlindoc    0 "&\\w\\w\\w\\w\\w;"     .scheme.variable
+    hilight .hilight.kotlindoc    0 "&\\w\\w\\w\\w\\w;"     .scheme.variable
+    hilight .hilight.kotlindoc    0 "&\\w\\w\\w\\w\\w\\w;"  .scheme.variable
+    ; "<pre> ... </pre>"
+    hilight .hilight.kotlindoc    4 "<pre>" "</pre>" ""     .scheme.variable
+    ; <anyWord>
+    hilight .hilight.kotlindoc    4 "</?\\w+" ">" ""        .scheme.variable
+    ; {@link URL}
+    hilight .hilight.kotlindoc    4 "{@link" "}" ""         .scheme.link
+    ; "@anyWord" - Use branch token and close when not a word!
+    hilight .hilight.kotlindoc    4 "@" "\\}\\W" ""         .scheme.keyword
+    ; We must return to kotlin when we see the close of comment "*/"
+    hilight .hilight.kotlindoc 0x80 "\\*/" .hilight.kotlin    .scheme.comment
+    ;
+    ; Special hilighting for a kotlinDoc parameter - branch from the kotlinDoc
+    ; space into scheme for the parameter. Note that @param is defined after
+    ; the generic '@' definitions.
+    ; 
+    ; Special for @param, @throws, @exception and @see 
+    hilight .hilight.kotlindoc 0x80 "@param"     .hilight.pkotlindoc .scheme.keyword
+    hilight .hilight.kotlindoc 0x80 "@throws"    .hilight.pkotlindoc .scheme.keyword
+    hilight .hilight.kotlindoc 0x80 "@exception" .hilight.pkotlindoc .scheme.keyword
+    hilight .hilight.kotlindoc 0x80 "@see"       .hilight.pkotlindoc .scheme.keyword
+    ; kotlinDoc parameter hilighting space.
+    0 hilight .hilight.pkotlindoc 2 50 .scheme.error
+    ; Hilight the next word and finish.
+    hilight .hilight.pkotlindoc 0x80 "[#a-zA-Z][\\.#a-zA-Z0-9(),]*" .hilight.kotlindoc .scheme.prepro
+    ; We must return to kotlin when we see the close of comment "*/"
+    hilight .hilight.pkotlindoc 0x80 "\\*/" .hilight.kotlin .scheme.error
+!endif
+!if &sin "d" .fhook-kotlin.setup
+  0 indent  .hilight.kotlin 0 10
+  indent .hilight.kotlin n "{"  t
+  indent .hilight.kotlin o "}" -t
+  indent .hilight.kotlin e "\"" "\"" "\\"
+  indent .hilight.kotlin b "\\[" "]"
+  indent .hilight.kotlin b "(" ")"
+
+!endif
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Begin hook - entering the buffer - save the current fill-ignore characters
+define-macro bhook-kotlin
+    !if &exi .fhook-kotlin.fill-ignore
+        set-variable .fhook-kotlin.ofill-ignore $fill-ignore
+        set-variable $fill-ignore .fhook-kotlin.fill-ignore
+    !endif
+!emacro
+
+; End hook - leaving the buffer - restore the fill-ignore characters
+define-macro ehook-kotlin
+    !if &exi .fhook-kotlin.fill-ignore
+        set-variable $fill-ignore .fhook-kotlin.ofill-ignore
+    !endif
+!emacro
+
+; Fix up the $fill-mode so that we wrap kotlin
+; doc parameters. Do this by removing the "@"
+; from the $fill-ignore variable.
+!if &sin "@" $fill-ignore
+    set-variable .fhook-kotlin.fill-ignore $fill-ignore
+    set-variable .fhook-kotlin.fill-ignore &rep .fhook-kotlin.fill-ignore "@" ""
+!endif
+
+buffer-init-fhook "kotlin"

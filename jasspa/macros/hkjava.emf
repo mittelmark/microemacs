@@ -128,7 +128,7 @@ set-variable .fhook-java.item-list-r2 "Clss \ecB\\2\ecA"
     hilight .hilight.java 1    "try"          .scheme.operator
     hilight .hilight.java 1    "void"         .scheme.keyword
     hilight .hilight.java 1    "volatile"     .scheme.keyword
-    hilight .hilight.java 1    "while "       .scheme.operator
+    hilight .hilight.java 1    "while"        .scheme.operator
     ; Hilight curly braces
     !if &sin "r" .fhook-java.setup
         hilight .hilight.java 1 "{"        .scheme.keyword

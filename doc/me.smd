@@ -1696,6 +1696,10 @@
   [js(9)](js(9)) Javascript programming language  
   [jst(9)](jst(9)) JASSPA Structured Text  
   [julia(9)](julia(9)) Julia programming language   
+  [kotlin(9)](kotlin(9)) Kotlin programming language  
+  [kt(9)](kt(9)) Kotlin programming language  
+  [ktm(9)](kt(9)) Kotlin programming language    
+  [kts(9)](kt(9)) Kotlin programming language  
   [ksh(9)](ksh(9)) Korn shell file  
   [l(9)](l(9)) LEX programming language  
   [latex(9)](latex(9)) TeX Documentation  
@@ -3731,7 +3735,11 @@
   [kill-paragraph(2)](kill-paragraph(2)) Delete a paragraph  
   [kill-rectangle(2)](kill-rectangle(2)) (esc C-w) Delete a column of text  
   [kill-region(2)](kill-region(2)) (C-w) Delete all characters in the marked region  
+  [kotlin(9)](kotlin(9)) Kotlin programming language  
   [ksh(9)](ksh(9)) Korn shell file  
+  [kt(9)](kt(9)) Kotlin programming language  
+  [ktm(9)](ktm(9)) Kotlin programming language    
+  [kts(9)](kts(9)) Kotlin programming language      
   [l(9)](l(9)) LEX programming language  
   [languageTemplates(2)](languageTemplates(2)) File Language Templates  
   [latex(9)](latex(9)) TeX Documentation  
@@ -5110,6 +5118,8 @@
 
 ## Development History 
 
+  - [250928] - Kotlin support
+  - [250926] - New themes Adwaita Light/Dark and Tokyo Night
   - [250923] - AsciiDoc support
   - [250919] - Typst support
   - [250912] - Vala support
@@ -67664,4 +67674,94 @@ $a
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [collapse-all(3)](collapse-all(3)), 
   [collapse-current(3)](collapse-current(3)), [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)).
   [Supported File Types](MicroEmacs - Supported File Types).
+!! me-id: m9typ066
+! 9 kt
+! 9 kts
+! 9 ktx
+! 9 kotlin
+## SYNOPSIS
+
+
+  kotlin - Kotlin files
+
+
+## FILES
+
+
+  __hkkotlin.emf__ - Kotlin file hook definition  
+  __kotlin.etf__ - Kotlin template file  
+  __kotlin.eaf__ - Kotlin abbreviation file
+
+
+## EXTENSIONS
+
+
+  __.kt__, __.ktm__, __.kts__ - Kotlin file  
+
+
+## DESCRIPTION
+
+
+  The __kotlin__ file hook provides simple hilighting of Kotlin
+  files, folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, classes, enums,
+     logicals, comments, strings, characters of the language to be 
+     differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively based on the curly braces.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __kotlin__ files. The folds occur about
+     folding structures with curly braces starting with a letter at the first line
+     and ending with a curly brace at the same line and ending with a closing curly
+     brace located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Kotlin mode offers beside folding as well support for displaying
+     an outline of the functions and classes of the Kotlin file for easy  
+     navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Kotlin
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"cl"_ (class) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+## BUGS
+
+
+  The File hook is not tested  extensively,  so there might be a few  problems
+  waiting for the user.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [find-tag(2)](find-tag(2)), [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
+  [item-list(3)](item-list(3)), [java(9)](java(9)), [time(2m)](time(2m)).
 !! me-id: meende

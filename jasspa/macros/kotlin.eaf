@@ -1,0 +1,13 @@
+cl "public class \p {\r\r};\r\P" "  \CCDcl\CCAass"
+ei "else if (\p)\r{\r\r}\r\P" "  \CCDe\CCAlse \CCDi\CCAf"
+el "else\r{\r\p\r}\r\P" "  \CCDel\CCAse" 
+fe "for ( \p : ... ) {\r\r}\r\P" "  \CCDf\CCAor\CCDe\CCDe\CCAch" 
+fo "for (int i = \p ; i < ... ; i++) {\r\r}\r\P" "  \CCDfo\CCAr" 
+fu "public \pvoid _ () {\r\r};\r\P" "  \CCDfu\CCAnction"
+if "if (\p)\r{\r\r}\r\P" "  \CCDif\CCA"
+im "import \p;\P"  "  \CCDim\CCAport"
+ma "fun main (args: Array<String>) {\r\pprintln("Hello World!");\r}\r\P" "  \CCDma\CCAin"
+pa "package \p;\P" "  \CCDpa\CCAckage"
+wh "while (\p)\r{\r\r}\r\P" "  \CCDwh\CCAile"
+
+
