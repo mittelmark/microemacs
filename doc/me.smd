@@ -1659,6 +1659,9 @@
   [cls(9)](cls(9)) Visual Basic  
   [cpp(9)](cpp(9)) C++ programming language  
   [csh(9)](csh(9)) C-Shell file  
+  [c#(9)](c#(9)) C# programming language (C sharp)
+  [cs(9)](cs(9)) C# programming language (C sharp)  
+  [csharp(9)](csharp(9)) C# programming language (C sharp)    
   [dart(9)](dart(9)) Dart Language File  
   [def(9)](def(9)) C or C++ definition file  
   [doc(9)](doc(9)) ASCII plain text document file  
@@ -3492,6 +3495,9 @@
   [create-frame(2)](create-frame(2)) (C-x 5 1, C-x 5 2) Create a new frame  
   [crypt(2m)](crypt(2m)) Encrypted file mode  
   [csh(9)](csh(9)) C-Shell file  
+  [c#(9)](c#(9)) C# programming language (C sharp)
+  [cs(9)](cs(9)) C# programming language (C sharp)  
+  [csharp(9)](csharp(9)) C# programming language (C sharp)    
   [ctags(3f)](ctags(3f)) Generate a C tags file  
   [ctrlz(2m)](ctrlz(2m)) File's termination style  
   [cvs(3)](cvs(3)) MicroEmacs CVS interface  
@@ -5118,7 +5124,7 @@
 
 ## Development History 
 
-  - [250928] - Kotlin support
+  - [250928] - Kotlin and C# support
   - [250926] - New themes Adwaita Light/Dark and Tokyo Night
   - [250923] - AsciiDoc support
   - [250919] - Typst support
@@ -67762,6 +67768,95 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types)
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
-  [find-tag(2)](find-tag(2)), [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
+  [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
   [item-list(3)](item-list(3)), [java(9)](java(9)), [time(2m)](time(2m)).
+!! me-id: m9typ067
+! 9 cs
+! 9 c#
+! 9 csharp
+## SYNOPSIS
+
+
+  cs - C# files, C sharp files
+
+
+## FILES
+
+
+  __hkcs.emf__ - C# file hook definition  
+  __cs.etf__ - C# template file  
+  __cs.eaf__ - C# abbreviation file
+
+
+## EXTENSIONS
+
+
+  __.cs__ - cs file  
+
+
+## DESCRIPTION
+
+
+  The __cs__ file hook provides simple hilighting of C# (C sharp)
+  files, folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, classes, structs, enums,
+     logicals, comments, strings, characters of the language to be 
+     differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively based on the curly braces.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __cs__ files. The folds occur about
+     folding structures with curly braces starting with a letter at the first line
+     and ending with a curly brace at the same line and ending with a closing curly
+     brace located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The C# mode offers beside folding as well support for displaying
+     an outline of the functions and classes
+     of the cs file for easy  navigation using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for cs
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"cl"_ (class) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+## BUGS
+
+
+  The File hook is not tested  extensively,  so there might be a few  problems
+  waiting for the user.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
+  [item-list(3)](item-list(3)), [time(2m)](time(2m)).
 !! me-id: meende

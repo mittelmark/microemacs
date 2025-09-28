@@ -1135,5 +1135,11 @@ m9typ063.html	vala(9)
 m9typ064.html	typst(9)
 m9typ064.html	typ(9)
 m9typ065.html	adoc(9)
+m9typ066.html	kotlin(9)
+m9typ066.html	kt(9)
+m9typ066.html	ktm(9)
+m9typ066.html	kts(9)
+m9typ067.html	cs(9)
+m9typ067.html	csharp(9)
 home.html	home
 home.html	MicroEmacs

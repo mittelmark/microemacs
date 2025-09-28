@@ -1,0 +1,158 @@
+; -!- emf -!-
+;
+; Copyright (C) 1999-2020 JASSPA (www.jasspa.com)
+;
+; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
+; Synopsis:    C# mode hook
+; Authors:     Steven Phillips
+;
+define-macro fhook-cs
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "cs"
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-cs.setup &reg "/history/fhook/cs" "bdfghnopx"
+set-variable .fhook-cs.setup-mask "abdefghikmnoptuxrv"
+set-variable .fhook-cs.tags "ctags"
+set-variable .fhook-cs.comment "|/*| */|*| * | * |fr|"
+set-variable .fhook-cs.comment-1 "|/**| */|*| * | * |f|"
+; Set up the collapse of functions
+set-variable .fhook-cs.collapse-open   "^[a-zA-Z].*{$"
+set-variable .fhook-cs.collapse-close  "^}"
+set-variable .fhook-cs.collapse-mclose "1"
+set-variable .fhook-cs.collapse-mnext  "-1"
+; Set up menu items for C# mode.
+set-variable .fhook-cs.setup-flags   "|r|v|"
+set-variable .fhook-cs.setup-labels  "|Brace highlighting|Limit '(' continuation indent to 5 indent widths|"
+; setup item-list
+set-variable .fhook-cs.item-list-s1 "^[ \t]*\\([a-zA-Z0-9_ \t]*[ \t]\\)?\\([a-zA-Z0-9_]+\\)[ \t]*([a-zA-Z0-9_,\\[\\] \t]*)[ \t]*{"
+set-variable .fhook-cs.item-list-r1 "Func \ecB\\2\ecA"
+set-variable .fhook-cs.item-list-s2 "^[ \t]*\\(public[ \t]+\\|private[ \t]+\\)?class[ \t]\\(\\w+\\)"
+set-variable .fhook-cs.item-list-r2 "Clss \CCb\\2\CCA"
+
+!if &not &exist .hilight.cs
+  ; hilighting uses 3 schemes (.cs, .csdoc & .pcsdoc), normal indent uses 1 scheme & alt indent uses 3 (.cs, .cs-comm & .csT) so reserve 3 hilighting/indent schemes upfront
+  set-variable .hilight.cs &pinc .hilight.next 3
+!endif
+!if &and &sin "h" .fhook-cs.setup &band .hilight.flags 0x02
+  ; High-light C# Mode
+  0 hilight .hilight.cs 2 50            $global-scheme
+  hilight .hilight.cs 2  "//"           .scheme.comment
+  hilight .hilight.cs 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.cs 4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.cs 0 "'.'"           .scheme.quote
+  hilight .hilight.cs 0 "'\\\\.'"       .scheme.quote
+  hilight .hilight.cs 0 "'\\\\'"        .scheme.error
+  hilight .hilight.cs 0 "'\\\\''"       .scheme.quote
+  ; Comment TODO's, i.e. /* TODO I need to do this */
+  hilight .hilight.cs 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+  hilight .hilight.cs 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.cs 1    "[A-Z_]+"          .scheme.constant
+  ; C# keywords
+  ; The following conventions are used:
+  ; .scheme.type      primitive types
+  ; .scheme.operator  flow control keywords
+  ; .scheme.prepro    package declaration and imports
+  ; .scheme.error     reserved keywords that have not been implemented
+  ; .scheme.keyword   other cs keywords that are not covered above
+  hilight .hilight.cs 1    "abstract"     .scheme.keyword
+  hilight .hilight.cs 1    "as"           .scheme.keyword
+  hilight .hilight.cs 1    "assert"       .scheme.keyword
+  hilight .hilight.cs 1    "base"         .scheme.operator
+  hilight .hilight.cs 1    "bool"         .scheme.type
+  hilight .hilight.cs 1    "break"        .scheme.keyword
+  hilight .hilight.cs 1    "byte"         .scheme.type
+  hilight .hilight.cs 1    "case"         .scheme.keyword
+  hilight .hilight.cs 1    "catch"        .scheme.keyword
+  hilight .hilight.cs 1    "char"         .scheme.type
+  hilight .hilight.cs 1    "checked"      .scheme.operator
+  hilight .hilight.cs 1    "class"        .scheme.keyword
+  hilight .hilight.cs 1    "const"        .scheme.type
+  hilight .hilight.cs 1    "continue"     .scheme.keyword
+  hilight .hilight.cs 1    "decimal"      .scheme.type
+  hilight .hilight.cs 1    "default"      .scheme.keyword
+  hilight .hilight.cs 1    "delegate"     .scheme.type
+  hilight .hilight.cs 1    "do"           .scheme.keyword
+  hilight .hilight.cs 1    "double"       .scheme.type
+  hilight .hilight.cs 1    "else"         .scheme.keyword
+  hilight .hilight.cs 1    "enum"         .scheme.type
+  hilight .hilight.cs 1    "event"        .scheme.type
+  hilight .hilight.cs 1    "explicit"     .scheme.type
+  hilight .hilight.cs 1    "extern"       .scheme.type
+  hilight .hilight.cs 1    "false"        .scheme.constant
+  hilight .hilight.cs 1    "finally"      .scheme.keyword
+  hilight .hilight.cs 1    "fixed"        .scheme.operator
+  hilight .hilight.cs 1    "float"        .scheme.type
+  hilight .hilight.cs 1    "for"          .scheme.keyword
+  hilight .hilight.cs 1    "foreach"      .scheme.keyword
+  hilight .hilight.cs 1    "goto"         .scheme.keyword
+  hilight .hilight.cs 1    "if"           .scheme.keyword
+  hilight .hilight.cs 1    "implicit"     .scheme.type
+  hilight .hilight.cs 1    "in"           .scheme.keyword
+  hilight .hilight.cs 1    "int"          .scheme.type
+  hilight .hilight.cs 1    "interface"    .scheme.keyword
+  hilight .hilight.cs 1    "internal"     .scheme.operator
+  hilight .hilight.cs 1    "is"           .scheme.operator
+  hilight .hilight.cs 1    "lock"         .scheme.operator
+  hilight .hilight.cs 1    "long"         .scheme.type
+  hilight .hilight.cs 1    "namespace"    .scheme.type
+  hilight .hilight.cs 1    "new"          .scheme.keyword
+  hilight .hilight.cs 1    "null"         .scheme.constant
+  hilight .hilight.cs 1    "object"       .scheme.type
+  hilight .hilight.cs 1    "operator"     .scheme.keyword
+  hilight .hilight.cs 1    "out"          .scheme.operator
+  hilight .hilight.cs 1    "override"     .scheme.operator
+  hilight .hilight.cs 1    "params"       .scheme.keyword
+  hilight .hilight.cs 1    "partial"      .scheme.operator
+  hilight .hilight.cs 1    "private"      .scheme.operator
+  hilight .hilight.cs 1    "protected"    .scheme.operator
+  hilight .hilight.cs 1    "public"       .scheme.operator
+  hilight .hilight.cs 1    "ref"          .scheme.operator
+  hilight .hilight.cs 1    "readonly"     .scheme.operator
+  hilight .hilight.cs 1    "return"       .scheme.keyword
+  hilight .hilight.cs 1    "sbyte"        .scheme.type
+  hilight .hilight.cs 1    "sealed"       .scheme.operator
+  hilight .hilight.cs 1    "short"        .scheme.type
+  hilight .hilight.cs 1    "sizeof"       .scheme.keyword
+  hilight .hilight.cs 1    "stackalloc"   .scheme.keyword
+  hilight .hilight.cs 1    "static"       .scheme.operator
+  hilight .hilight.cs 1    "string"       .scheme.type
+  hilight .hilight.cs 1    "struct"       .scheme.keyword
+  hilight .hilight.cs 1    "switch"       .scheme.keyword
+  hilight .hilight.cs 1    "this"         .scheme.operator
+  hilight .hilight.cs 1    "throw"        .scheme.keyword
+  hilight .hilight.cs 1    "true"         .scheme.constant
+  hilight .hilight.cs 1    "try"          .scheme.keyword
+  hilight .hilight.cs 1    "typeof"       .scheme.keyword
+  hilight .hilight.cs 1    "uint"         .scheme.type
+  hilight .hilight.cs 1    "ulong"        .scheme.type
+  hilight .hilight.cs 1    "unchecked"    .scheme.operator
+  hilight .hilight.cs 1    "unsafe"       .scheme.operator
+  hilight .hilight.cs 1    "ushort"       .scheme.type
+  hilight .hilight.cs 0x12 "^\\s*using"   .scheme.prepro
+  hilight .hilight.cs 1    "virtual"      .scheme.operator
+  hilight .hilight.cs 1    "void"         .scheme.type
+  hilight .hilight.cs 1    "volatile"     .scheme.operator
+  hilight .hilight.cs 1    "while"        .scheme.keyword
+  ; Hilight curly braces
+  !if &sin "r" .fhook-cs.setup
+    hilight .hilight.cs 1 "{"        .scheme.keyword
+    hilight .hilight.cs 1 "}"        .scheme.keyword
+  !endif
+!endif
+!if &sin "d" .fhook-cs.setup
+  ; Use the 'C' indentation framework.
+  0 indent .hilight.cs 12
+  indent .hilight.cs "u" " * "
+  !if &sin "v" .fhook-cs.setup
+    ; limit continuation indentation
+    indent .hilight.cs "x" 5t
+  !endif
+!endif
+
+buffer-init-fhook "cs"
