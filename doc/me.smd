@@ -1694,7 +1694,7 @@
   [jav(9)](jav(9)) Java programming language  
   [java(9)](java(9)) Java programming language  
   [javascript(9)](javascipt(9)) Javascript programming language   
-  [jl(9)](jl(9)) Julia programming language    
+  [jl(9)](jl(9)) Julia programming language   
   [jscript(9)](jscipt(9)) Javascript programming language    
   [js(9)](js(9)) Javascript programming language  
   [jst(9)](jst(9)) JASSPA Structured Text  
@@ -1719,6 +1719,7 @@
   [mf(9)](mf(9)) MetaFont File  
   [mp(9)](mp(9)) MetaPost File  
   [nawk(9)](nawk(9)) New AWK File  
+  [nim(9)](nim(9)) Nim programming language  
   [nroff(9)](nroff(9)) UNIX nroff file  
   [octave(9)](octave(9)) GNU Octave / Matlab programming language  
   [p(9)](p(9)) Pascal File  
@@ -3811,6 +3812,7 @@
   [next-window(2)](next-window(2)) (C-x o) Move the cursor to the next window  
   [next-window-find-buffer(2)](next-window-find-buffer(2)) [] Split the current window and show new buffer  
   [next-window-find-file(2)](next-window-find-file(2)) (C-x 4) Split the current window and find file  
+  [nim(9)](nim(9)) Nim programming language  
   [normal-tab(3)](normal-tab(3)) Insert a normal tab  
   [notes(3)](notes(3)) Tagged hierarchical database of notes  
   [notes-close(3)](notes-close(3)) Close the notes window  
@@ -67859,4 +67861,126 @@ $a
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
   [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
+!! me-id: m9typ068
+! 9 nim
+! 5 %fhook-nim-exec
+! 5 %fhook-nim-format
+! 5 %fhook-nim-lint
+
+## NAME
+
+|%fhook-nim-exec
+  %fhook-nim-exec - command to execute Nim files
+|%fhook-nim-format
+  %fhook-nim-format - formatting command for Nim files
+|%fhook-nim-lint
+  %fhook-nim-lint - linting command for Nim files
+$a
+
+## SYNOPSIS
+
+
+  nim - Nim programming language file hook
+  __%fhook-nim-exec__  
+  __%fhook-nim-format__  
+  __%fhook-nim-lint__  
+
+
+## FILES
+
+
+  __hknim.emf__ - Nim programming language hook definition  
+  __nim.etf__ - Nim programming language template file
+  __nim.eaf__ - Nim programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.nim__ - Nim file
+
+
+## DESCRIPTION
+
+
+  The __nim__ file hook provides simple hilighting of Nim files,
+  folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logical,
+     preprocessor definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Nim files. The folds occur
+     about the __proc__ keyword and an following empty line.
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Nim mode offers beside folding as well support for displaying an outline
+     of the functions and types of the Nim file for easy navigation using the 
+     [item-list(3)](item-list(3)) command. 
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Nim file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_ei_" (elif), or "_pr_" (proc) - and then 
+     pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+
+  >  __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+
+  >  __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-nim-exec__ - The command to execute the current Nim file, default
+       is set to _"nim r --verbosity:0 \"%f\""_ where %f represents the file name  
+  > __%fhook-nim-format__ - The command to format current Nim file, default  
+       is set to _"nph %f"_ where %f represents the file name  
+  > __%fhook-nim-lint__ - The command to check/lint the current Nim file, 
+       default is set to _"nim c --verbosity:0 \"%f\""_ 
+  
+  > The setting assume that the _Nim_ compiler and the _nph_ formatter are available via the _PATH_
+    environment variable. On Windows you must insert here either the complete 
+    _PATH_ to the  _`nim`_ executable or add the folder where this file is to the
+    _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or the _mynim.emf_ file. 
+
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [abbrev-list(3)](abbrev-list(3)), [collapse-all(3)](collapse-all(3)), 
+  [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)), [file-exec(3)](file-exec(3)), 
+  [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)).
 !! me-id: meende

@@ -1778,7 +1778,7 @@ Miscellaneous Information
     lsjav(9)lmjav(9)le Java programming language  
     lsjava(9)lmjava(9)le Java programming language  
     lsjavascipt(9)lmjavascript(9)le Javascript programming language   
-    lsjl(9)lmjl(9)le Julia programming language    
+    lsjl(9)lmjl(9)le Julia programming language   
     lsjscipt(9)lmjscript(9)le Javascript programming language    
     lsjs(9)lmjs(9)le Javascript programming language  
     lsjst(9)lmjst(9)le JASSPA Structured Text  
@@ -1803,6 +1803,7 @@ Miscellaneous Information
     lsmf(9)lmmf(9)le MetaFont File  
     lsmp(9)lmmp(9)le MetaPost File  
     lsnawk(9)lmnawk(9)le New AWK File  
+    lsnim(9)lmnim(9)le Nim programming language  
     lsnroff(9)lmnroff(9)le UNIX nroff file  
     lsoctave(9)lmoctave(9)le GNU Octave / Matlab programming language  
     lsp(9)lmp(9)le Pascal File  
@@ -3890,6 +3891,7 @@ Miscellaneous Information
     lsnext-window(2)lmnext-window(2)le (C-x o) Move the cursor to the next window  
     lsnext-window-find-buffer(2)lmnext-window-find-buffer(2)le [] Split the current window and show new buffer  
     lsnext-window-find-file(2)lmnext-window-find-file(2)le (C-x 4) Split the current window and find file  
+    lsnim(9)lmnim(9)le Nim programming language  
     lsnormal-tab(3)lmnormal-tab(3)le Insert a normal tab  
     lsnotes(3)lmnotes(3)le Tagged hierarchical database of notes  
     lsnotes-close(3)lmnotes-close(3)le Close the notes window  
@@ -66881,3 +66883,124 @@ $a
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
     lsrestyle-region(3)lmrestyle-region(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
     lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
+! 9 nim
+! 5 %fhook-nim-exec
+! 5 %fhook-nim-format
+! 5 %fhook-nim-lint
+
+cEcENAME cEcA
+
+|%fhook-nim-exec
+    %fhook-nim-exec - command to execute Nim files
+|%fhook-nim-format
+    %fhook-nim-format - formatting command for Nim files
+|%fhook-nim-lint
+    %fhook-nim-lint - linting command for Nim files
+$a
+
+cESYNOPSIS cA
+
+
+    nim - Nim programming language file hook
+    cD%fhook-nim-execcA  
+    cD%fhook-nim-formatcA  
+    cD%fhook-nim-lintcA  
+
+
+cEFILES cA
+
+
+    cDhknim.emfcA - Nim programming language hook definition  
+    cDnim.etfcA - Nim programming language template file
+    cDnim.eafcA - Nim programming language abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.nimcA - Nim file
+
+
+cEDESCRIPTION cA
+
+
+    The cDnimcA file hook provides simple hilighting of Nim files,
+    folding, item listing, abbreviations and indentation support.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Nim files. The folds occur
+       about the cDproccA keyword and an following empty line.
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Nim mode offers beside folding as well support for displaying an outline
+       of the functions and types of the Nim file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command. 
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Nim file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCfocA" (for), "cCifcA", "cCeicA" (elif), or "cCprcA" (proc) - and then 
+       pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-nim-execcA - The command to execute the current Nim file, default
+         is set to cC"nim r --verbosity:0 \"%f\""cA where %f represents the file name  
+      cD%fhook-nim-formatcA - The command to format current Nim file, default  
+         is set to cC"nph %f"cA where %f represents the file name  
+      cD%fhook-nim-lintcA - The command to check/lint the current Nim file, 
+         default is set to cC"nim c --verbosity:0 \"%f\""cA 
+    
+      The setting assume that the cCNimcA compiler and the cCnphcA formatter are available via the cCPATHcA
+      environment variable. On Windows you must insert here either the complete 
+      cCPATHcA to the  cCcGnimcAcA executable or add the folder where this file is to the
+      cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or the cCmynim.emfcA file. 
+
+      
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lsabbrev-list(3)lmabbrev-list(3)le, lscollapse-all(3)lmcollapse-all(3)le, 
+    lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le, lsfile-exec(3)lmfile-exec(3)le, 
+    lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le, lstime(2m)lmtime(2m)le.
