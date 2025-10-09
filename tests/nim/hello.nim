@@ -14,4 +14,12 @@ if x > 3:
   echo "x is large"
 else:
   echo "x is small"
-echo y
+#echo y
+proc hello*(h: string): string =
+  "Hello " & h & "!"
+
+echo hello("Max")
+#echo "What is you name? "
+#var name: string = readLine(stdin)
+
+#echo name
