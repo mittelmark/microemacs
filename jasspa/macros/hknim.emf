@@ -14,7 +14,7 @@ define-macro fhook-nim
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-nim.setup &reg "/history/fhook/nim" "bfghiopx"
+set-variable .fhook-nim.setup &reg "/history/fhook/nim" "bfghinopx"
 set-variable .fhook-nim.setup-mask "aefghikmnoptux"
 set-variable .fhook-nim.comment "|#||#|# | #|r|"
 
@@ -27,7 +27,7 @@ set-variable .fhook-nim.collapse-mnext "-1"
 ; setup item-list
 set-variable .fhook-nim.item-list-s1 "^[ \t]*proc[ \t]+\\(\\w+\\)"
 set-variable .fhook-nim.item-list-r1 "Proc \ecB\\1\ecA"
-set-variable .fhook-nim.item-list-s2 "^[ \t]*type*[ \t]+\\(\\w+\\)"
+set-variable .fhook-nim.item-list-s2 "^[ \t]*\\(\\w+\\).+=.+[ \t]*object"
 set-variable .fhook-nim.item-list-r2 "Type \ecB\\1\ecA"
 
 !if &and &sin "h" .fhook-nim.setup &band .hilight.flags 0x02
@@ -42,6 +42,7 @@ set-variable .fhook-nim.item-list-r2 "Type \ecB\\1\ecA"
     ; Quote
     hilight   .hilight.nim 4 "'" "'" "\\"        .scheme.quote
     ; Variables
+    hilight .hilight.nim 1 "isMainModule"       .scheme.variable
     ; Keywords
     hilight .hilight.nim 1 "addr"       .scheme.keyword
     hilight .hilight.nim 1 "and"        .scheme.keyword
