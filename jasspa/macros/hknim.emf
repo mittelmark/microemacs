@@ -4,12 +4,16 @@
 ; See the file me.emf for copying and conditions.
 ;
 ; Created:     2025-10-08
-; Synopsis:    Nim Language hook
-; Authors:     Detlef Groth
+; Synopsis:    Nim Language hook - https://nim-lang.org/
+;              curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+;              nimble install nph  ## source code formatter
+;              nimble install classes ## Python like OO
+; Author:     Detlef Groth, University of Potsdam
 ;
 define-macro fhook-nim
     set-variable $buffer-mask "luh1"
     @# buffer-init "nim"
+    set-variable $buffer-indent-width 2
     buffer-init-hooks
 !emacro
 
@@ -26,23 +30,29 @@ set-variable .fhook-nim.collapse-mnext "-1"
 
 ; setup item-list
 set-variable .fhook-nim.item-list-s1 "^[ \t]*proc[ \t]+\\(\\w+\\)"
-set-variable .fhook-nim.item-list-r1 "Proc \ecB\\1\ecA"
+set-variable .fhook-nim.item-list-r1 "Proc \CCb\\1\CCA"
 set-variable .fhook-nim.item-list-s2 "^[ \t]*\\(\\w+\\).+=.+[ \t]*object"
-set-variable .fhook-nim.item-list-r2 "Type \ecB\\1\ecA"
+set-variable .fhook-nim.item-list-r2 "Type \CCb\\1\CCA"
+set-variable .fhook-nim.item-list-s3 "^class[ \t]+\\(\\w+\\).*:"
+set-variable .fhook-nim.item-list-r3 "Clss \CCb\\1\CCA"
+set-variable .fhook-nim.item-list-s4 "^[ \t]+method[ \t]+\\(\\w+\\).+:"
+set-variable .fhook-nim.item-list-r4 "Meth \CCb\\1\CCA"
+set-variable .fhook-nim.item-list-s5 "^[ \t]*macro[ \t]+\\(\\w+\\)"
+set-variable .fhook-nim.item-list-r5 "Macr \CCb\\1\CCA"
 
 !if &and &sin "h" .fhook-nim.setup &band .hilight.flags 0x02
     !if &not &exist .hilight.nim
         set-variable .hilight.nim &pinc .hilight.next 1
     !endif
-    0 hilight .hilight.nim 0                     $global-scheme
-    hilight   .hilight.nim 2 "#"                 .scheme.comment
-    hilight   .hilight.nim 4 "#\\[" "\\]#" ""    .scheme.comment
-    hilight   .hilight.nim 2 "^#!"               .scheme.header
-    hilight   .hilight.nim 4 "\"" "\"" "\\"      .scheme.string
+    0 hilight .hilight.nim 0                 $global-scheme
+    hilight .hilight.nim 2 "#"               .scheme.comment
+    hilight .hilight.nim 4 "#\\[" "\\]#" ""  .scheme.comment
+    hilight .hilight.nim 2 "^#!"             .scheme.header
+    hilight .hilight.nim 4 "\"" "\"" "\\"    .scheme.string
     ; Quote
-    hilight   .hilight.nim 4 "'" "'" "\\"        .scheme.quote
+    hilight .hilight.nim 4 "'" "'" "\\"      .scheme.quote
     ; Variables
-    hilight .hilight.nim 1 "isMainModule"       .scheme.variable
+    hilight .hilight.nim 1 "isMainModule"    .scheme.variable
     ; Keywords
     hilight .hilight.nim 1 "addr"       .scheme.keyword
     hilight .hilight.nim 1 "and"        .scheme.keyword
@@ -53,6 +63,7 @@ set-variable .fhook-nim.item-list-r2 "Type \ecB\\1\ecA"
     hilight .hilight.nim 1 "break"      .scheme.keyword
     hilight .hilight.nim 1 "case"       .scheme.keyword
     hilight .hilight.nim 1 "cast"       .scheme.keyword
+    hilight .hilight.nim 1 "class"      .scheme.keyword ; https://github.com/jjv360/nim-classes
     hilight .hilight.nim 1 "concept"    .scheme.keyword
     hilight .hilight.nim 1 "const"      .scheme.keyword
     hilight .hilight.nim 1 "continue"   .scheme.keyword
@@ -73,7 +84,7 @@ set-variable .fhook-nim.item-list-r2 "Type \ecB\\1\ecA"
     hilight .hilight.nim 1 "from"       .scheme.keyword
     hilight .hilight.nim 1 "func"       .scheme.keyword
     hilight .hilight.nim 1 "if"         .scheme.keyword
-    hilight .hilight.nim 1 "import"     .scheme.keyword
+    hilight .hilight.nim 2 "^import"    .scheme.prepro
     hilight .hilight.nim 1 "in"         .scheme.keyword
     hilight .hilight.nim 1 "include"    .scheme.keyword
     hilight .hilight.nim 1 "interface"  .scheme.keyword
@@ -111,38 +122,37 @@ set-variable .fhook-nim.item-list-r2 "Type \ecB\\1\ecA"
     hilight .hilight.nim 1 "xor"        .scheme.keyword
     hilight .hilight.nim 1 "yield"      .scheme.keyword
     ; types
-    hilight .hilight.nim 1 "float"          .scheme.type    
-    hilight .hilight.nim 1 "float32"          .scheme.type        
-    hilight .hilight.nim 1 "float64"          .scheme.type            
-    hilight .hilight.nim 1 "int"             .scheme.type
-    hilight .hilight.nim 1 "int8"              .scheme.type    
-    hilight .hilight.nim 1 "int16"              .scheme.type        
-    hilight .hilight.nim 1 "int32"              .scheme.type            
-    hilight .hilight.nim 1 "int64"              .scheme.type                
-    hilight .hilight.nim 1 "uint"               .scheme.type
-    hilight .hilight.nim 1 "uint8"              .scheme.type    
-    hilight .hilight.nim 1 "uint16"              .scheme.type        
-    hilight .hilight.nim 1 "uint32"              .scheme.type            
-    hilight .hilight.nim 1 "uint64"              .scheme.type                
-    hilight .hilight.nim 1 "false"          .scheme.type        
-    hilight .hilight.nim 1 "true"          .scheme.type            
-    hilight .hilight.nim 1 "char"          .scheme.type            
-    hilight .hilight.nim 1 "string"          .scheme.type            
-    hilight .hilight.nim 1 "cstring"          .scheme.type                
-    hilight .hilight.nim 1 "array"          .scheme.type                    
-    hilight .hilight.nim 1 "openarray"          .scheme.type                        
-    hilight .hilight.nim 1 "seq"          .scheme.type                        
-    hilight .hilight.nim 1 "varargs"          .scheme.type                            
-    hilight .hilight.nim 1 "File"          .scheme.type                                
-    hilight .hilight.nim  1 "stdin"               .scheme.prepro
-    hilight .hilight.nim 1 "stdout"              .scheme.prepro
-    hilight .hilight.nim 1 "stderr"              .scheme.prepro
-    
+    hilight .hilight.nim 1 "float"      .scheme.type
+    hilight .hilight.nim 1 "float32"    .scheme.type
+    hilight .hilight.nim 1 "float64"    .scheme.type
+    hilight .hilight.nim 1 "int"        .scheme.type
+    hilight .hilight.nim 1 "int8"       .scheme.type
+    hilight .hilight.nim 1 "int16"      .scheme.type
+    hilight .hilight.nim 1 "int32"      .scheme.type
+    hilight .hilight.nim 1 "int64"      .scheme.type
+    hilight .hilight.nim 1 "uint"       .scheme.type
+    hilight .hilight.nim 1 "uint8"      .scheme.type
+    hilight .hilight.nim 1 "uint16"     .scheme.type
+    hilight .hilight.nim 1 "uint32"     .scheme.type
+    hilight .hilight.nim 1 "uint64"     .scheme.type
+    hilight .hilight.nim 1 "false"      .scheme.type
+    hilight .hilight.nim 1 "true"       .scheme.type
+    hilight .hilight.nim 1 "char"       .scheme.type
+    hilight .hilight.nim 1 "string"     .scheme.type
+    hilight .hilight.nim 1 "cstring"    .scheme.type
+    hilight .hilight.nim 1 "array"      .scheme.type
+    hilight .hilight.nim 1 "openarray"  .scheme.type
+    hilight .hilight.nim 1 "seq"        .scheme.type
+    hilight .hilight.nim 1 "varargs"    .scheme.type
+    hilight .hilight.nim 1 "File"       .scheme.type
+    hilight .hilight.nim 1 "stdin"      .scheme.prepro
+    hilight .hilight.nim 1 "stdout"     .scheme.prepro
+    hilight .hilight.nim 1 "stderr"     .scheme.prepro
 !endif
 
 !if &not &seq &which "nim" "ERROR"
-  set-variable %fhook-nim-lint   "nim c --verbosity:0 \"%f\""
-  set-variable %fhook-nim-exec    "nim r --verbosity:0 \"%f\""  
+  set-variable %fhook-nim-lint  "nim c --verbosity:0 \"%f\""
+  set-variable %fhook-nim-exec  "nim r --verbosity:0 \"%f\""
   !if &not &seq &which "nph" "ERROR"
     set-variable %fhook-nim-format "nph \"%f\""
   !endif
