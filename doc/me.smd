@@ -1754,6 +1754,7 @@
   [so(9)](so(9)) UNIX t/nroff include file  
   [sql(9)](sql(9)) SQL File  
   [sty(9)](sty(9)) TeX Style File  
+  [swift(9)](swift(9)) Swift programming language  
   [tcl(9)](tcl(9)) TCL programming language  
   [tcshrc(9)](tcshrc(9)) T-Shell start up file  
   [tex(9)](tex(9)) TeX Documentation  
@@ -3994,6 +3995,7 @@
   [stop-mail-check(3)](stop-mail-check(3)) Disable the check for new email  
   [string-rectangle(3)](string-rectangle(3)) Add a string vertically  
   [sty(9)](sty(9)) TeX Style File  
+  [swift(9)](swift(9)) Swift programming language  
   [suspend-emacs(2)](suspend-emacs(2)) Suspend editor and place in background  
   [Triangle(3)](Triangle(3)) MicroEmacs 2009 version of Triangle patience game  
   [tab(2)](tab(2)) (tab) Handle the tab key  
@@ -67983,4 +67985,74 @@ $a
   [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [abbrev-list(3)](abbrev-list(3)), [collapse-all(3)](collapse-all(3)), 
   [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), [find-tag(2)](find-tag(2)), [file-exec(3)](file-exec(3)), 
   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)).
+!! me-id: m9typ069
+! 9 swift
+
+## SYNOPSIS
+
+
+  swift - Swift programming language file hook
+
+## FILES
+
+
+  __hkswift.emf__ - Swift programming language hook definition  
+
+## EXTENSIONS
+
+
+  __.swift__ - Swift file
+
+
+## DESCRIPTION
+
+
+  The __swift__ file hook provides simple hilighting of Nim files,
+  folding, item listing and indentation support.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logical,
+     preprocessor definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Nim files. The folds occur
+     about the __proc__ keyword and an following empty line.
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Nim mode offers beside folding as well support for displaying an outline
+     of the functions and types of the Nim file for easy navigation using the 
+     [item-list(3)](item-list(3)) command. 
+
+  __Working Environment__
+  
+  >  [compile(3)](compile(3)) may be invoked to rebuild the source, the user is prompted
+     to save any files.
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+
+  >  __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+
+  >  __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+   
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
+  [find-tag(2)](find-tag(2)), [time(2m)](time(2m)).
 !! me-id: meende

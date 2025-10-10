@@ -1838,6 +1838,7 @@ Miscellaneous Information
     lsso(9)lmso(9)le UNIX t/nroff include file  
     lssql(9)lmsql(9)le SQL File  
     lssty(9)lmsty(9)le TeX Style File  
+    lsswift(9)lmswift(9)le Swift programming language  
     lstcl(9)lmtcl(9)le TCL programming language  
     lstcshrc(9)lmtcshrc(9)le T-Shell start up file  
     lstex(9)lmtex(9)le TeX Documentation  
@@ -4073,6 +4074,7 @@ Miscellaneous Information
     lsstop-mail-check(3)lmstop-mail-check(3)le Disable the check for new email  
     lsstring-rectangle(3)lmstring-rectangle(3)le Add a string vertically  
     lssty(9)lmsty(9)le TeX Style File  
+    lsswift(9)lmswift(9)le Swift programming language  
     lssuspend-emacs(2)lmsuspend-emacs(2)le Suspend editor and place in background  
     lsTriangle(3)lmTriangle(3)le MicroEmacs 2009 version of Triangle patience game  
     lstab(2)lmtab(2)le (tab) Handle the tab key  
@@ -67004,3 +67006,72 @@ $a
     lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lsabbrev-list(3)lmabbrev-list(3)le, lscollapse-all(3)lmcollapse-all(3)le, 
     lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, lsfind-tag(2)lmfind-tag(2)le, lsfile-exec(3)lmfile-exec(3)le, 
     lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le, lstime(2m)lmtime(2m)le.
+! 9 swift
+
+cEcESYNOPSIS cEcA
+
+
+    swift - Swift programming language file hook
+
+cEFILES cA
+
+
+    cDhkswift.emfcA - Swift programming language hook definition  
+
+cEEXTENSIONS cA
+
+
+    cD.swiftcA - Swift file
+
+
+cEDESCRIPTION cA
+
+
+    The cDswiftcA file hook provides simple hilighting of Nim files,
+    folding, item listing and indentation support.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Nim files. The folds occur
+       about the cDproccA keyword and an following empty line.
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Nim mode offers beside folding as well support for displaying an outline
+       of the functions and types of the Nim file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command. 
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+     
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, 
+    lsfind-tag(2)lmfind-tag(2)le, lstime(2m)lmtime(2m)le.
