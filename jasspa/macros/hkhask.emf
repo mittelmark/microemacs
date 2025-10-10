@@ -1,0 +1,88 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2004-2025 JASSPA (www.jasspa.com),
+;                         Detlef Groth, University of Potsdam
+; See the file me.emf for copying and conditions.
+;
+; Created      Fri Oct 10 2025
+; Synopsis:    hask hook - invoked when a Lua file is loaded.
+; Authors:     Jeremy Cowgar, Steven Phillips & Detlef Groth
+;
+
+define-macro fhook-hask
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "hask"
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-hask.setup &reg "/history/fhook/hask" "bfghinopx"
+set-variable .fhook-hask.setup-mask "abdefghikmnoptux"
+set-variable .fhook-hask.comment "|--|--|--| -- | -- |f|"
+set-variable .fhook-hask.exact -1
+
+; setup item-list
+set-variable .fhook-hask.item-list-s1 "^\\(\\w+\\)[ \t]+.*=[ \t]*do[ \t]*$"
+set-variable .fhook-hask.item-list-r1 "Func \CCb\\1\CCA"
+
+set-variable .fhook-hask.collapse-open   "^.+=[ \t]*do[ \t]*$"
+set-variable .fhook-hask.collapse-close "^[a-z]\\|\\'"
+set-variable .fhook-hask.collapse-mclose "0"
+set-variable .fhook-hask.collapse-mnext  "-1"
+
+!if &not &exist .hilight.hask
+  set-variable .hilight.hask &pinc .hilight.next 1
+  set-variable .hilight.haskS &pinc .hilight.next 1
+!endif
+!if &and &sin "h" .fhook-hask.setup &band .hilight.flags 0x02
+  ; define our highlighting scheme
+  0 hilight .hilight.hask 1                    $global-scheme
+  
+  hilight .hilight.hask 2 "--"              .scheme.comment
+  hilight .hilight.hask 4 "{-" "-}" "" .scheme.comment
+  
+  hilight .hilight.hask 0x804 "\"" "\"" "\\"       .scheme.string
+  hilight .hilight.hask 0x804 "'" "'" "\\"         .scheme.string
+  
+  hilight .hilight.hask 2 "^import"     .scheme.prepro
+  hilight .hilight.hask 2 "^module"     .scheme.prepro  
+  
+  hilight .hilight.hask 1 "case"        .scheme.keyword
+  hilight .hilight.hask 1 "class"       .scheme.keyword
+  hilight .hilight.hask 1 "data"        .scheme.keyword
+  hilight .hilight.hask 1 "deriving"    .scheme.keyword
+  hilight .hilight.hask 1 "do"          .scheme.keyword
+  hilight .hilight.hask 1 "else"        .scheme.keyword
+  hilight .hilight.hask 1 "if"          .scheme.keyword
+  hilight .hilight.hask 1 "in"          .scheme.keyword
+  hilight .hilight.hask 1 "infix"       .scheme.keyword
+  hilight .hilight.hask 1 "infix1"      .scheme.keyword  
+  hilight .hilight.hask 1 "infixr"      .scheme.keyword
+  hilight .hilight.hask 1 "instance"    .scheme.keyword
+  hilight .hilight.hask 1 "let"         .scheme.keyword
+  hilight .hilight.hask 1 "of"          .scheme.keyword
+  hilight .hilight.hask 1 "newtype"     .scheme.keyword
+  hilight .hilight.hask 1 "then"        .scheme.keyword  
+  hilight .hilight.hask 1 "type"        .scheme.keyword    
+  hilight .hilight.hask 1 "where"       .scheme.keyword      
+  
+  hilight .hilight.hask 1 "False"              .scheme.prepro
+  hilight .hilight.hask 1 "True"               .scheme.prepro
+!endif
+
+
+!if &not &seq &which "hask" "ERROR"
+  set-variable %fhook-hask-lint "haskc -p %f"
+  set-variable %fhook-hask-exec "hask %f "
+  ; sudo npm install -g hask-fmt
+  !if &not &seq &which "haskfmt" "ERROR"
+    set-variable %fhook-hask-format "haskfmt --write-mode replace %f"
+  !elif &not &seq &which "haskfmt.hask" "ERROR"
+    set-variable %fhook-hask-format "haskfmt.hask --f %f"
+  !else
+    set-variable %fhook-hask-format "restyle-buffer"
+  !endif
+!endif
+
+
+buffer-init-fhook "hask"

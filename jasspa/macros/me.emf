@@ -325,6 +325,7 @@ add-file-hook ".kt .kts .ktm"                                 fhook-kotlin
 add-file-hook ".cs"                                           fhook-cs
 add-file-hook ".nim"                                          fhook-nim
 add-file-hook ".swift"                                        fhook-swift
+add-file-hook ".hs"                                           fhook-hask
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
