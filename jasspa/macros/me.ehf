@@ -1767,7 +1767,9 @@ Miscellaneous Information
     lsgo(9)lmgo(9)le Go programming language  
     lsgraphviz(9)lmgraphviz(9)le Graphviz dot diagram file   
     lsh(9)lmh(9)le C programming language header  
+    lshaskell(9)lmhaskell(9)le Haskell programming language    
     lshpj(9)lmhpj(9)le MS-Windows Help Project File  
+    lshs(9)lmhs(9)le Haskell programming language  
     lshtm(9)lmhtm(9)le HyperText Markup Language File  
     lshtml(9)lmhtml(9)le HyperText Markup Language File  
     lshttpd.conf(9)lmhttpd.conf(9)le Apache configuration file  
@@ -3755,6 +3757,7 @@ Miscellaneous Information
     lsgrow-window-vertically(2)lmgrow-window-vertically(2)le Enlarge the current window (relative change)  
     lsHistoryGroupVariables(4)lmHistoryGroupVariables(4)le Last history values  
     lsh(9)lmh(9)le C programming language header  
+    lshaskell(9)lmhaskell(9)le Haskell programming language    
     lshelp(2)lmhelp(2)le (esc ?) Help; high level introduction to help  
     lshelp-command(2)lmhelp-command(2)le (C-h C-c) Help; command information  
     lshelp-item(2)lmhelp-item(2)le (C-h C-i) Help; item information  
@@ -3762,6 +3765,7 @@ Miscellaneous Information
     lshide(2m)lmhide(2m)le Hide buffer  
     lshilight(2)lmhilight(2)le Manage the buffer hilighting schemes  
     lshpj(9)lmhpj(9)le MS-Windows Help Project File  
+    lshs(9)lmhs(9)le Haskell programming language      
     lshtm(9)lmhtm(9)le HyperText Markup Language File  
     lshtml(9)lmhtml(9)le HyperText Markup Language File  
     lshttpd.conf(9)lmhttpd.conf(9)le Apache configuration file  
@@ -67027,7 +67031,7 @@ $a
 cEDESCRIPTION cA
 
 
-    The cDswiftcA file hook provides simple hilighting of Nim files,
+    The cDswiftcA file hook provides simple hilighting of Swift files,
     folding, item listing and indentation support.
 
     cDHilightingcA
@@ -67038,7 +67042,7 @@ $a
 
     cDFolding and Information HidingcA
     
-       Generic folding is enabled within the Nim files. The folds occur
+       Generic folding is enabled within the Swift files. The folds occur
        about the cDproccA keyword and an following empty line.
 
       - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
@@ -67046,8 +67050,8 @@ $a
 
     cDNavigation via Item ListcA
 
-       The Nim mode offers beside folding as well support for displaying an outline
-       of the functions and types of the Nim file for easy navigation using the 
+       The Swift mode offers beside folding as well support for displaying an outline
+       of the functions and types of the Swift file for easy navigation using the 
        lsitem-list(3)lmitem-list(3)le command. 
 
     cDWorking EnvironmentcA
@@ -67075,3 +67079,74 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, 
     lsfind-tag(2)lmfind-tag(2)le, lstime(2m)lmtime(2m)le.
+! 9 hs
+! 9 haskell
+
+cEcESYNOPSIS cEcA
+
+
+    Haskell - Haskell programming language file hook
+
+cEFILES cA
+
+
+    cDhkhask.emfcA - Haskell programming language hook definition  
+
+cEEXTENSIONS cA
+
+
+    cD.hscA - Haskell file
+
+
+cEDESCRIPTION cA
+
+
+    The cDHaskellcA file hook provides simple hilighting of Haskell files,
+    folding, item-list and indentation support.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logical,
+       preprocessor definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Haskell files. The folds occur
+       about and ending cDdocA keyword and word character on a line start afterwards.
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Haskell mode offers beside folding as well support for displaying an outline
+       of the functions of the Haskell file for easy navigation using the 
+       lsitem-list(3)lmitem-list(3)le command. It is required that the function definition 
+       line ends with the do keyword.
+
+    cDWorking EnvironmentcA
+    
+       lscompile(3)lmcompile(3)le may be invoked to rebuild the source, the user is prompted
+       to save any files.
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+     
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lscompile(3)lmcompile(3)le, lstime(2m)lmtime(2m)le.
