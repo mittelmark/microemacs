@@ -1,0 +1,27 @@
+.docname {test project}
+.doctype {plain}
+.doclang {English}
+.theme {paperwhite} layout:{latex}
+
+.docauthors
+  - Maxi Musterwoman
+  - Max Musterman
+.var {mm} {Max Musterman}
+
+.tableofcontents
+
+# test project
+
+Welcome to [Quarkdown](https://github.com/iamgio/quarkdown)! This is the starting point of your document.
+
+- To compile this document, please `cd` to this file's parent directory and run:  
+  `quarkdown c test.qd`
+
+- To enable live preview, run:  
+  `quarkdown c test.qd -p -w`
+
+For further information and guides, please check out the [official wiki](https://github.com/iamgio/quarkdown/wiki).
+	
+## Author
+
+This document was written by .mm.
