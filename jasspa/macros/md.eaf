@@ -18,7 +18,7 @@ ri "```{r label=\p,eval=TRUE}\rpng('xxx.png',width=900,height=600,pointsize=14)\
 rt "```{r label=\p,eval=TRUE,results=\"asis\"}\rpantcl4r::df2md(xxx)\r```\r\r\P" "  rt(ab)"
 rk "```{r label=\p,eval=TRUE,results=\"asis\"}\rknitr::kable(xxx)\r```\r\r\P" "  rk(able)"
  "" "</FOLD><FOLD+> \ecCQuarkdown:\ecA "" 
-fu ".function {\p}\r    arg:\r\r\P" " \CCDfu\CCAnction"
+fu ".function {\p}\r    arg:\r\r\P" "  \CCDfu\CCAnction"
 toc ".tableofcontents" "  \CCDtoc\CCA"
  "" ""
  "" "</FOLD>"
