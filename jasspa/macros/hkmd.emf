@@ -15,6 +15,11 @@ define-macro fhook-md
     @# buffer-init "md" "rmd"
   !elif #l1
     @# buffer-init "md" "qd"
+    hilight .hilight.md 2 "^\\.doc" .scheme.prepro
+    hilight .hilight.md 2 "^\\.theme" .scheme.prepro
+    hilight .hilight.md 2 "^\\.var" .scheme.prepro    
+    hilight .hilight.md 2 "^\\.tableofcontents" .scheme.prepro        
+    hilight .hilight.md 2 "^\\.function"  .scheme.keyword
   !else
     @# buffer-init "md" "md"
   !endif
@@ -66,15 +71,6 @@ set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
   ;hilight .hilight.md 0x44 "\\[" "\\](" "" ""   .scheme.link  
   hilight .hilight.md 0x300 "```{"
   hilight .hilight.md 0x300 "```{\\."
-  set-variable #l1 &isin ".qd" $buffer-bname "qd" "md"  
-  1000 ml-write #l1
-  !if #l1
-    hilight .hilight.md 2 "^\\.doc" .scheme.prepro
-    hilight .hilight.md 2 "^\\.theme" .scheme.prepro
-    hilight .hilight.md 2 "^\\.var" .scheme.prepro    
-    hilight .hilight.md 2 "^\\.tableofcontents" .scheme.prepro        
-    hilight .hilight.md 2 "^\\.function"  .scheme.keyword
-  !endif
   ; Allow inserts into the markdown mode. You may add to the inserts in your mymd.emf file
   0 define-macro md-add-file-support
     set-variable #l0 @1
