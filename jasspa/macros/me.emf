@@ -312,7 +312,7 @@ add-file-hook ".go"                                           fhook-go
 add-file-hook ".rs"                                           fhook-rust
 add-file-hook ".dart .drt"                                    fhook-dart
 add-file-hook ".c2 .c3"                                       fhook-c3
-add-file-hook ".md .rmd .Rmd .tmd .Tmd .smd"                  fhook-md
+add-file-hook ".md .rmd .Rmd .tmd .Tmd .smd .qd"              fhook-md
 add-file-hook ".yml .yaml"                                    fhook-yaml
 add-file-hook ".zig"                                          fhook-zig
 add-file-hook ".jl"                                           fhook-julia
