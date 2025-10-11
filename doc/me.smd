@@ -1738,10 +1738,14 @@
   [psm1(9)](psm1(9)) PowerShell Language Module File  
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
+  [qd(9)](qd(9)) Quarkdown Markup File   
+  [quarkdown(9)](quarkdow(9)) Quarkdown Markup File  
   [r(9)](r(9)) R language File  
   [rb(9)](rb(9)) Ruby programming language  
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [reg(9)](reg(9)) Registry file  
+  [rmd(9)](qd(9)) R-Markdown Markup File   
+  [rmarkdown(9)](rmarkdow(9)) R-Markdown Markup File  
   [rgy(9)](rgy(9)) Registry file  
   [rust(9)](rust(9)) Rust programming language  
   [ruby(9)](ruby(9)) Ruby programming language  
@@ -3894,6 +3898,8 @@
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
   [py-lint(3)](py-lint(3)) Check a Python script file for possible problems  
   [python(9)](python(9)) Python Language File  
+  [qd(9)](qd(9)) Quarkdown Markup File  
+  [quarkdown(9)](quarkdow(9)) Quarkdown Markup File 
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings across files  
@@ -3907,6 +3913,8 @@
   [rc(9)](rc(9)) Microsoft Developer resource file  
   [rcs-file(2)](rcs-file(2)) (C-x C-q) Handle Revision Control System (RCS) files  
   [rdiff(3)](rdiff(3)) Recursively compare files or directories  
+  [rmd(9)](qd(9)) R-Markdown Markup File   
+  [rmarkdown(9)](rmarkdow(9)) R-Markdown Markup File  
   [rs(9)](rs(9)) Rust programming language file    
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
   [r-exec(3)](r-exec(3)) Run the currently edited R script file using R-script   
@@ -63887,31 +63895,41 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types)
 !! me-id: m9typ048
 ! 9 md
+! 9 qd
+! 9 rmd
 ! 9 Markdown
+! 9 Quarkdown
+! 9 R-Markdown
 ## SYNOPSIS
 
 
-  md, Rmd - Markdown and R-markdown plain text Markup
+  md, qd, rmd - Markdown, Quarkdown and R-markdown plain text Markup
 
 
 ## FILES
 
 
   __hkmd.emf__ - Markdown text hook definition
+  __md.etf__ - Markdown template file  
+  __qd.etf__ - Quarkdown template file  
+  __rm.etf__ - R-Markdown template file  
+  __md.eaf__ - Markdown/Quarkdown abbreviation file
 
 
 ## EXTENSIONS
 
 
   __.md__ - Markdown markup files  
-  __.Rmd__ - Markdown markup files with embedd R code
+  __.qd__ - Quarkdown markup files  
+  __.rmd__ - Markdown markup files with embedded R code
+  __.tmd__ - Markdown markdup file with embedded Tcl code
 
 
 ## DESCRIPTION
 
 
   The __md__ file type template handles the hilighting and text formating of a
-  Markdown formatted text file.
+  Markdown, R-Markdown or Quarkdown formatted text file.
     
   __Short Cuts__
   
@@ -63923,13 +63941,13 @@ $a
      __C-c C-e__ - Comment to End of Line  
      __C-c C-o__ - Restyle Current Comment  
         
-     __f2__      - Open/Close Current Collapse  
+  >  __f2__      - Open/Close Current Collapse  
      __C-f2__    - Open/Close All Collapses         
         
-     __S-f7__    - Enable/Disable Auto-Spell  
+  >  __S-f7__    - Enable/Disable Auto-Spell  
      __C-f7__    - Auto-Spell Context Menu  
         
-     __f6__      - List Items (Headers)  
+  >  __f6__      - List Items (Headers)  
      __C-f6__    - Close List Items  
         
 ## NOTES
@@ -63953,7 +63971,11 @@ $a
 ## SEE ALSO
 
 
-  [Supported File Types](MicroEmacs - Supported File Types), [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)).
+  [Supported File Types](MicroEmacs - Supported File Types), 
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
+  [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [item-list(3)](item-list(3)).
 !! me-id: m9typ035
 ! 9 MetaFont
 ! 9 mp
@@ -64594,7 +64616,7 @@ $a
 
 ## SEE ALSO
 
-  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
   [file-exec(3)](file-exec(3)),   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
   [item-list(3))](item-list(3)),

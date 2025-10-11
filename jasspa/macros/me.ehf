@@ -1822,10 +1822,14 @@ Miscellaneous Information
     lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
+    lsqd(9)lmqd(9)le Quarkdown Markup File   
+    lsquarkdow(9)lmquarkdown(9)le Quarkdown Markup File  
     lsr(9)lmr(9)le R language File  
     lsrb(9)lmrb(9)le Ruby programming language  
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsreg(9)lmreg(9)le Registry file  
+    lsqd(9)lmrmd(9)le R-Markdown Markup File   
+    lsrmarkdow(9)lmrmarkdown(9)le R-Markdown Markup File  
     lsrgy(9)lmrgy(9)le Registry file  
     lsrust(9)lmrust(9)le Rust programming language  
     lsruby(9)lmruby(9)le Ruby programming language  
@@ -3973,6 +3977,8 @@ Miscellaneous Information
     lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf    
     lspy-lint(3)lmpy-lint(3)le Check a Python script file for possible problems  
     lspython(9)lmpython(9)le Python Language File  
+    lsqd(9)lmqd(9)le Quarkdown Markup File  
+    lsquarkdow(9)lmquarkdown(9)le Quarkdown Markup File 
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings across files  
@@ -3986,6 +3992,8 @@ Miscellaneous Information
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
     lsrcs-file(2)lmrcs-file(2)le (C-x C-q) Handle Revision Control System (RCS) files  
     lsrdiff(3)lmrdiff(3)le Recursively compare files or directories  
+    lsqd(9)lmrmd(9)le R-Markdown Markup File   
+    lsrmarkdow(9)lmrmarkdown(9)le R-Markdown Markup File  
     lsrs(9)lmrs(9)le Rust programming language file    
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
     lsr-exec(3)lmr-exec(3)le Run the currently edited R script file using R-script   
@@ -62948,31 +62956,41 @@ $a
 
     lsMicroEmacs - Supported File TypeslmSupported File Typesle
 ! 9 md
+! 9 qd
+! 9 rmd
 ! 9 Markdown
+! 9 Quarkdown
+! 9 R-Markdown
 cEcESYNOPSIS cEcA
 
 
-    md, Rmd - Markdown and R-markdown plain text Markup
+    md, qd, rmd - Markdown, Quarkdown and R-markdown plain text Markup
 
 
 cEFILES cA
 
 
     cDhkmd.emfcA - Markdown text hook definition
+    cDmd.etfcA - Markdown template file  
+    cDqd.etfcA - Quarkdown template file  
+    cDrm.etfcA - R-Markdown template file  
+    cDmd.eafcA - Markdown/Quarkdown abbreviation file
 
 
 cEEXTENSIONS cA
 
 
     cD.mdcA - Markdown markup files  
-    cD.RmdcA - Markdown markup files with embedd R code
+    cD.qdcA - Quarkdown markup files  
+    cD.rmdcA - Markdown markup files with embedded R code
+    cD.tmdcA - Markdown markdup file with embedded Tcl code
 
 
 cEDESCRIPTION cA
 
 
     The cDmdcA file type template handles the hilighting and text formating of a
-    Markdown formatted text file.
+    Markdown, R-Markdown or Quarkdown formatted text file.
       
     cDShort CutscA
     
@@ -62984,14 +63002,14 @@ $a
        cDC-c C-ecA - Comment to End of Line  
        cDC-c C-ocA - Restyle Current Comment  
           
-       __f2__      - Open/Close Current Collapse  
-       __C-f2__    - Open/Close All Collapses         
+       cDf2cA      - Open/Close Current Collapse  
+       cDC-f2cA    - Open/Close All Collapses         
           
-       __S-f7__    - Enable/Disable Auto-Spell  
-       __C-f7__    - Auto-Spell Context Menu  
+       cDS-f7cA    - Enable/Disable Auto-Spell  
+       cDC-f7cA    - Auto-Spell Context Menu  
           
-       __f6__      - List Items (Headers)  
-       __C-f6__    - Close List Items  
+       cDf6cA      - List Items (Headers)  
+       cDC-f6cA    - Close List Items  
           
 cENOTES cA
 
@@ -63014,7 +63032,11 @@ $a
 cESEE ALSO cA
 
 
-    lsMicroEmacs - Supported File TypeslmSupported File Typesle, lsbuffer-setup(3)lmbuffer-setup(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle, 
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, 
+    lsbuffer-setup(3)lmbuffer-setup(3)le, lsspell-buffer(3)lmspell-buffer(3)le,
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
+    lsitem-list(3)lmitem-list(3)le.
 ! 9 MetaFont
 ! 9 mp
 ! 9 mf
@@ -63646,7 +63668,7 @@ $a
 
 cESEE ALSO cA
 
-    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, 
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, 
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
     lsfile-exec(3)lmfile-exec(3)le,   lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le,
     lsitem-list(3)lmitem-list(3))le,
