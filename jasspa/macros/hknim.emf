@@ -155,6 +155,8 @@ set-variable .fhook-nim.item-list-r5 "Macr \CCb\\1\CCA"
   set-variable %fhook-nim-exec  "nim r --verbosity:0 \"%f\""
   !if &not &seq &which "nph" "ERROR"
     set-variable %fhook-nim-format "nph \"%f\""
+  !elif &not &seq &which "nimpretty" "ERROR"
+    set-variable %fhook-nim-format "nimpretty \"%f\""
   !endif
   0 define-macro fhook-nim-replace
       fhook-generic-replace "nim(\\(\\d+\\), \\(\\d+\\))" "nim:\\1:\\2"

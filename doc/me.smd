@@ -5140,6 +5140,8 @@
 
 ## Development History 
 
+  - [251011] - Extending Markdown with Quarkdown support
+  - [251010] - Nim, Swift and Haskell support
   - [250928] - Kotlin and C# support
   - [250926] - New themes Adwaita Light/Dark and Tokyo Night
   - [250923] - AsciiDoc support

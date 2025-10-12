@@ -1,14 +1,23 @@
 > -!- document; fill-mode:both; fill-column:78 -!-
 >
 >  Copyright 1998-2009 JASSPA (www.jasspa.com).
->            2021-2024 Detlef Groth (https://github.com/mittelmark/microemacs)
+>            2021-2025 Detlef Groth (https://github.com/mittelmark/microemacs)
 > 
 >  License:  GPL (see the file COPYING) 
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <250909.0648>
+>  Last Modified : <251012.1005>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+  [251011] - Extending Markdown with Quarkdown support
+  [251010] - Nim, Swift and Haskell support
+  [250928] - Kotlin and C# support
+  [250926] - New themes Adwaita Light/Dark and Tokyo Night
+  [250923] - AsciiDoc support
+  [250919] - Typst support
+  [250912] - Vala support
+
   [250909]
     - version set to v0925beta3
     - adding support for PowerShell
