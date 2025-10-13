@@ -1,0 +1,6 @@
+fu "\p arg =\r  \P" "  \CCDfu\CCAnction"
+cl "class \p arg where\r   \P" "  \CCDcl\CCAass"
+if "if \p\r  then ...\P" "  \CCDif\CCA"
+ei "else if \p then ...\P" "  \CCDe\CCAlse \CCDi\CCAf"
+el "else " "  \CCDel\CCAse"
+
