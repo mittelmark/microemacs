@@ -5,8 +5,8 @@
 ; See the file me.emf for copying and conditions.
 ;
 ; Created      Fri Oct 10 2025
-; Synopsis:    hask hook - invoked when a Lua file is loaded.
-; Authors:     Jeremy Cowgar, Steven Phillips & Detlef Groth
+; Synopsis:    haskell hook - invoked when a Haskell file is loaded.
+; Authors:     Detlef Groth
 ;
 
 define-macro fhook-hask
@@ -36,13 +36,13 @@ set-variable .fhook-hask.collapse-mnext  "-1"
 !endif
 !if &and &sin "h" .fhook-hask.setup &band .hilight.flags 0x02
   ; define our highlighting scheme
-  0 hilight .hilight.hask 1                    $global-scheme
+  0 hilight .hilight.hask 1            $global-scheme
   
-  hilight .hilight.hask 2 "--"              .scheme.comment
+  hilight .hilight.hask 2 "--"         .scheme.comment
   hilight .hilight.hask 4 "{-" "-}" "" .scheme.comment
   
-  hilight .hilight.hask 0x804 "\"" "\"" "\\"       .scheme.string
-  hilight .hilight.hask 0x804 "'" "'" "\\"         .scheme.string
+  hilight .hilight.hask 0x804 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.hask 0x804 "'" "'" "\\"    .scheme.string
   
   hilight .hilight.hask 2 "^import"     .scheme.prepro
   hilight .hilight.hask 2 "^module"     .scheme.prepro  
@@ -66,21 +66,26 @@ set-variable .fhook-hask.collapse-mnext  "-1"
   hilight .hilight.hask 1 "type"        .scheme.keyword    
   hilight .hilight.hask 1 "where"       .scheme.keyword      
   
-  hilight .hilight.hask 1 "False"              .scheme.prepro
-  hilight .hilight.hask 1 "True"               .scheme.prepro
+  hilight .hilight.hask 1 "False"       .scheme.prepro
+  hilight .hilight.hask 1 "True"        .scheme.prepro
 !endif
 
-
-!if &not &seq &which "hask" "ERROR"
-  set-variable %fhook-hask-lint "haskc -p %f"
-  set-variable %fhook-hask-exec "hask %f "
-  ; sudo npm install -g hask-fmt
-  !if &not &seq &which "haskfmt" "ERROR"
-    set-variable %fhook-hask-format "haskfmt --write-mode replace %f"
-  !elif &not &seq &which "haskfmt.hask" "ERROR"
-    set-variable %fhook-hask-format "haskfmt.hask --f %f"
+; TODO: fix haskell compiler setup
+; sudo apt install ghc hlint ormolu
+!if &not &seq &which "ghc" "ERROR"
+  !if &not &seq &which "ghc.exe" "ERROR"
+    set-variable %fhook-hask-exec "ghc %b&& .\\%b"
   !else
-    set-variable %fhook-hask-format "restyle-buffer"
+    set-variable %fhook-hask-exec "ghc %b&& ./%b"
+  !endif
+  !if &not &seq &which "hlint" "ERROR"
+    set-variable %fhook-hask-lint "hlint %f"
+  !else
+    set-variable %fhook-hask-lint "ghc %b"
+  !endif
+  ; sudo apt install ormolu
+  !if &not &seq &which "ormolu" "ERROR"
+    set-variable %fhook-hask-format "ormolu -i \"%f\""
   !endif
 !endif
 
