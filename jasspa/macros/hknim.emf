@@ -23,8 +23,8 @@ set-variable .fhook-nim.setup-mask "aefghikmnoptux"
 set-variable .fhook-nim.comment "|#||#|# | #|r|"
 
 ; Set up collapse for nim
-set-variable .fhook-nim.collapse-open  "^\\(type \\|proc \\)"
-set-variable .fhook-nim.collapse-close "^[a-z]\\|\\'"
+set-variable .fhook-nim.collapse-open  "^\\(type \\|proc \\|func \\|class \\)"
+set-variable .fhook-nim.collapse-close "^[a-z#]\\|\\'"
 set-variable .fhook-nim.collapse-mclose "0"
 set-variable .fhook-nim.collapse-mnext "-1"
 
