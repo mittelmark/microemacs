@@ -29,7 +29,7 @@ set-variable .fhook-nim.collapse-mclose "0"
 set-variable .fhook-nim.collapse-mnext "-1"
 
 ; setup item-list
-set-variable .fhook-nim.item-list-s1 "^[ \t]*proc[ \t]+\\(\\w+\\)"
+set-variable .fhook-nim.item-list-s1 "^[ \t]*proc[ \t]+\\(\\w+\\*?\\)"
 set-variable .fhook-nim.item-list-r1 "Proc \CCb\\1\CCA"
 set-variable .fhook-nim.item-list-s2 "^[ \t]*\\(\\w+\\).+=.+[ \t]*object"
 set-variable .fhook-nim.item-list-r2 "Type \CCb\\1\CCA"
@@ -39,6 +39,8 @@ set-variable .fhook-nim.item-list-s4 "^[ \t]+method[ \t]+\\(\\w+\\).+:"
 set-variable .fhook-nim.item-list-r4 "Meth \CCb\\1\CCA"
 set-variable .fhook-nim.item-list-s5 "^[ \t]*macro[ \t]+\\(\\w+\\)"
 set-variable .fhook-nim.item-list-r5 "Macr \CCb\\1\CCA"
+set-variable .fhook-nim.item-list-s6 "^[ \t]*func[ \t]+\\(\\w+\\*?\\)"
+set-variable .fhook-nim.item-list-r6 "Func \CCb\\1\CCA"
 
 !if &and &sin "h" .fhook-nim.setup &band .hilight.flags 0x02
     !if &not &exist .hilight.nim

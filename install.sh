@@ -136,12 +136,13 @@ function install-me {
     fi
     
     # Check if ~/bin is already in the PATH
-    if [ ":$PATH:" != *":$HOME/.local/bin:"* ]; then
+    if [ "`echo $PATH | grep .local/bin`" == "" ]; then
         # If it's not in the PATH, add it to ~/.bashrc
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+        echo 'echo $PATH | grep .local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
         # Update the PATH for the current session
         export PATH="$HOME/.local/bin:$PATH"
-        echo "To update the current Bash session with the new PATH variable use: 'source ~/.bashrc'"
+        echo "PATH variable was updated in your .bashrc"
+        echo "If using an other shell than .bashrc add ~/.local/bin manually to your PATH variable!"
     fi
 
     # Download the dummy.sh script from the internet
