@@ -320,7 +320,7 @@ add-file-hook ".m"                                            fhook-octave
 add-file-hook ".ps1 .psm1"                                    fhook-ps1 
 add-file-hook ".vala"                                         fhook-vala 
 add-file-hook ".typst .typ"                                   fhook-typst
-add-file-hook ".adoc .asciidoc"                               fhook-adoc
+add-file-hook ".adoc .asciidoc .tdoc"                         fhook-adoc
 add-file-hook ".kt .kts .ktm"                                 fhook-kotlin
 add-file-hook ".cs"                                           fhook-cs
 add-file-hook ".nim"                                          fhook-nim

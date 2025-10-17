@@ -1763,10 +1763,12 @@
   [swift(9)](swift(9)) Swift programming language  
   [tcl(9)](tcl(9)) TCL programming language  
   [tcshrc(9)](tcshrc(9)) T-Shell start up file  
+  [tdoc(9)](tdoc(9)) AsciiDoc markup language with Tmdoc code  
   [tex(9)](tex(9)) TeX Documentation  
   [texi(9)](texi(9)) GNU Texinfo documentation file  
   [texinfo(9)](texinfo(9)) GNU Texinfo documentation file  
   [tk(9)](tk(9)) TK programming language  
+  [tmd(9)](tmd(9)) Markdown markup language with Tmdoc code   
   [tni(9)](tni(9)) UNIX t/nroff include file  
   [toml(9)](toml(9)) Toml configuration file  
   [troff(9)](troff(9)) UNIX troff file  
@@ -4019,6 +4021,7 @@
   [tcl-format(3)](tcl-format(3)) Format Tcl source code using the Python program tclfmt  
   [tcl-lint(3)](tcl-lint(3)) Check a Tcl script file for possible problems using the Python program tclint
   [tcshrc(9)](tcshrc(9)) T-Shell start up file  
+  [tdoc(9)](tdoc(9)) AsciiDoc markup language with Tmdoc code   
   [tex(9)](tex(9)) TeX Documentation  
   [tex2nr(3)](tex2nr(3)) Convert a Latex file into nroff  
   [texi(9)](texi(9)) GNU Texinfo documentation file  
@@ -4027,6 +4030,7 @@
   [time(2m)](time(2m)) File time stamping  
   [time(3)](time(3)) Command time evaluator  
   [tk(9)](tk(9)) TK programming language  
+  [tmd(9)](tmd(9)) Markdown markup language with Tmdoc code  
   [tni(9)](tni(9)) UNIX t/nroff include file  
   [toml(9)](toml(9)) Toml configuration file    
   [toolbar(3)](toolbar(3)) Toggle tool bar visibility  
@@ -63899,6 +63903,7 @@ $a
 ! 9 md
 ! 9 qd
 ! 9 rmd
+! 9 tmd
 ! 9 Markdown
 ! 9 Quarkdown
 ! 9 R-Markdown
@@ -67652,6 +67657,7 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ065
 ! 9 adoc
+! 9 tdoc
 ! 9 asciidoc
 ## SYNOPSIS
 
@@ -67671,6 +67677,8 @@ $a
 
 
   __.adoc__ - AsciiDoc markup files  
+  __.asciidoc__ - AsciiDoc markup files    
+  __.tdoc__ - AsciiDoc markup with embedded tmdoc code  
 
 ## MAGIC STRINGS
 

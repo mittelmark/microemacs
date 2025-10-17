@@ -1847,10 +1847,12 @@ Miscellaneous Information
     lsswift(9)lmswift(9)le Swift programming language  
     lstcl(9)lmtcl(9)le TCL programming language  
     lstcshrc(9)lmtcshrc(9)le T-Shell start up file  
+    lstdoc(9)lmtdoc(9)le AsciiDoc markup language with Tmdoc code  
     lstex(9)lmtex(9)le TeX Documentation  
     lstexi(9)lmtexi(9)le GNU Texinfo documentation file  
     lstexinfo(9)lmtexinfo(9)le GNU Texinfo documentation file  
     lstk(9)lmtk(9)le TK programming language  
+    lstmd(9)lmtmd(9)le Markdown markup language with Tmdoc code   
     lstni(9)lmtni(9)le UNIX t/nroff include file  
     lstoml(9)lmtoml(9)le Toml configuration file  
     lstroff(9)lmtroff(9)le UNIX troff file  
@@ -4098,6 +4100,7 @@ Miscellaneous Information
     lstcl-format(3)lmtcl-format(3)le Format Tcl source code using the Python program tclfmt  
     lstcl-lint(3)lmtcl-lint(3)le Check a Tcl script file for possible problems using the Python program tclint
     lstcshrc(9)lmtcshrc(9)le T-Shell start up file  
+    lstdoc(9)lmtdoc(9)le AsciiDoc markup language with Tmdoc code   
     lstex(9)lmtex(9)le TeX Documentation  
     lstex2nr(3)lmtex2nr(3)le Convert a Latex file into nroff  
     lstexi(9)lmtexi(9)le GNU Texinfo documentation file  
@@ -4106,6 +4109,7 @@ Miscellaneous Information
     lstime(2m)lmtime(2m)le File time stamping  
     lstime(3)lmtime(3)le Command time evaluator  
     lstk(9)lmtk(9)le TK programming language  
+    lstmd(9)lmtmd(9)le Markdown markup language with Tmdoc code  
     lstni(9)lmtni(9)le UNIX t/nroff include file  
     lstoml(9)lmtoml(9)le Toml configuration file    
     lstoolbar(3)lmtoolbar(3)le Toggle tool bar visibility  
@@ -5215,6 +5219,8 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [251011] - Extending Markdown with Quarkdown support
+    - [251010] - Nim, Swift and Haskell support
     - [250928] - Kotlin and C# support
     - [250926] - New themes Adwaita Light/Dark and Tokyo Night
     - [250923] - AsciiDoc support
@@ -62958,6 +62964,7 @@ $a
 ! 9 md
 ! 9 qd
 ! 9 rmd
+! 9 tmd
 ! 9 Markdown
 ! 9 Quarkdown
 ! 9 R-Markdown
@@ -66674,6 +66681,7 @@ $a
     lscollapse-current(3)lmcollapse-current(3)le, lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le,
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
 ! 9 adoc
+! 9 tdoc
 ! 9 asciidoc
 cEcESYNOPSIS cEcA
 
@@ -66693,6 +66701,8 @@ $a
 
 
     cD.adoccA - AsciiDoc markup files  
+    cD.asciidoccA - AsciiDoc markup files    
+    cD.tdoccA - AsciiDoc markup with embedded tmdoc code  
 
 cEMAGIC STRINGS cA
 
