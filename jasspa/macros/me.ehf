@@ -66627,7 +66627,7 @@ $a
 cEEXTENSIONS cA
 
 
-    cD.typcA, cD.typstcA - Typst markup files  
+    cD.typcA, cD.typstcA, cD.ttypcA, cD.ttypstcA - Typst markup files  
 
 
 cEDESCRIPTION cA
@@ -66635,7 +66635,11 @@ $a
 
     The cDtypstcA file type template handles the hilighting and text formating of a
     Typst formatted text file. It supports as well folding by header sections,
-    item listening of header sections, abbreviations and template insertion.
+    item listening of header sections, abbreviations and template insertion. 
+    The cC.ttypcA and  cC.ttypstcA file extensions indicate  there are non-typst  
+    based  extensions for instance to embed code of other  programming  languages
+    like R or Tcl within the file which needs to be processed with tools like 
+    cCtmdoccA before the document can be compiled with the  cCtypstcA compiler.
       
     cDShort CutscA
     
@@ -66718,6 +66722,11 @@ $a
     The cDadoccA file type template handles the hilighting and text formating of a
     AsciiDoc formatted text file. It supports as well folding by header sections,
     item listening of header sections, abbreviations and template insertion.
+    The cC.tdoccA file extension indicate  there are non AsciiDoc based  extensions
+    for instance to embed code of other  programming  languages like R or Tcl 
+    within the file which needs to be processed with tools like 
+    cCtmdoccA before the document can be compiled with the  cCasciidoctorcA compiler.
+
       
     cDShort CutscA
     

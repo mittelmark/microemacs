@@ -67602,7 +67602,7 @@ $a
 ## EXTENSIONS
 
 
-  __.typ__, __.typst__ - Typst markup files  
+  __.typ__, __.typst__, __.ttyp__, __.ttypst__ - Typst markup files  
 
 
 ## DESCRIPTION
@@ -67610,7 +67610,11 @@ $a
 
   The __typst__ file type template handles the hilighting and text formating of a
   Typst formatted text file. It supports as well folding by header sections,
-  item listening of header sections, abbreviations and template insertion.
+  item listening of header sections, abbreviations and template insertion. 
+  The _.ttyp_ and  _.ttypst_ file extensions indicate  there are non-typst  
+  based  extensions for instance to embed code of other  programming  languages
+  like R or Tcl within the file which needs to be processed with tools like 
+  _tmdoc_ before the document can be compiled with the  _typst_ compiler.
     
   __Short Cuts__
   
@@ -67694,6 +67698,11 @@ $a
   The __adoc__ file type template handles the hilighting and text formating of a
   AsciiDoc formatted text file. It supports as well folding by header sections,
   item listening of header sections, abbreviations and template insertion.
+  The _.tdoc_ file extension indicate  there are non AsciiDoc based  extensions
+  for instance to embed code of other  programming  languages like R or Tcl 
+  within the file which needs to be processed with tools like 
+  _tmdoc_ before the document can be compiled with the  _asciidoctor_ compiler.
+
     
   __Short Cuts__
   
