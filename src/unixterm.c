@@ -1900,6 +1900,12 @@ meXEventHandler(void)
 #ifdef XK_dead_diaeresis
                 case XK_dead_diaeresis: ii = 0xa8; goto done_key;
 #endif
+#ifdef XK_dead_acute
+                case XK_dead_acute: ii = 0xb4; goto done_key;
+#endif
+#ifdef XK_dead_grave
+                case XK_dead_grave: ii = 0x60; goto done_key;
+#endif
 
                     /* Auxilliary Functions; note the duplicate definitions
                      * for left and right function keys; Sun keyboards and a
