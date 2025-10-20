@@ -10,10 +10,11 @@
 define-macro fhook-md
   set-variable #l0 &isin ".rmd" $buffer-bname "rmd" "md"
   set-variable #l1 &isin ".qd" $buffer-bname "qd" "md"  
+  set-variable #l1 &isin ".tqd" $buffer-bname "tqd" "md"    
   ;ml-write #l0
   !if #l0
     @# buffer-init "md" "rmd"
-  !elif #l1
+  !elif &or #l1 #l2
     @# buffer-init "md" "qd"
     hilight .hilight.md 2 "^\\.doc" .scheme.prepro
     hilight .hilight.md 2 "^\\.theme" .scheme.prepro
