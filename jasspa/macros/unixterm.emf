@@ -25,265 +25,275 @@ set-variable .change-font.xfontsel 0
 
 ;set-variable .change-font.sz-fonts "|courier-medium|courier-bold|lucidatypewriter-medium|lucidatypewriter-bold|"
 !if &band $system 0x01
-    ; Not using X
-    !if &not &band $system 0x02
-        ; no color - change the window chars so osd is more usable
-        set-variable $window-chars &spr "%s=x*[>]<%s" &lef $window-chars 47 &rig $window-chars 54
-    !endif
-    ; suspend only on Terminal without questioning
-    global-unbind-key "C-z"
-    0 global-bind-key suspend-emacs "C-z"
-    0 global-bind-key suspend-emacs "C-c z" ; me25 compatible
+  ; Not using X
+  !if &not &band $system 0x02
+    ; no color - change the window chars so osd is more usable
+    set-variable $window-chars &spr "%s=x*[>]<%s" &lef $window-chars 47 &rig $window-chars 54
+  !endif
+  ; suspend only on Terminal without questioning
+  global-unbind-key "C-z"
+  0 global-bind-key suspend-emacs "C-z"
+  0 global-bind-key suspend-emacs "C-c z" ; me25 compatible
 !else
-    ; TODO: fix if the font was deleted!
-    ; try xset fp default
-    !if &not &seq &set #l0 &reg &spr "/history/%s/font" $platform "" ""
-        ; ignore errors with font in registry
-        ; should fallback to default font
-        ; seems to work
-        !force !force change-font #l0
-        !if &xse #l0 "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
-            set-variable .change-font.sz-font &spr "%s*-*-%%d-*-*%s*%s" @s1 @s3 @s4
-            !if &seq @s2 "*"
-                !if &not &exi .change-font.sz-size
-                    set-variable .change-font.sz-size 17
-                !endif
-            !else
-                set-variable .change-font.sz-size @s2
-            !endif
-        !else
-            set-variable .change-font.sz-font "-*-fixed-bold-r-*-*-%d-*-*-*-*-*-iso8859-1"
+  ; TODO: fix if the font was deleted!
+  ; try xset fp default
+  !if &not &seq &set #l0 &reg &spr "/history/%s/font" $platform "" ""
+    ; ignore errors with font in registry
+    ; should fallback to default font
+    ; seems to work
+    !force !force change-font #l0
+    !if &xse #l0 "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
+      set-variable .change-font.sz-font &spr "%s*-*-%%d-*-*%s*%s" @s1 @s3 @s4
+      !if &seq @s2 "*"
+        !if &not &exi .change-font.sz-size
+          set-variable .change-font.sz-size 17
         !endif
+      !else
+        set-variable .change-font.sz-size @s2
+      !endif
+    !else
+      set-variable .change-font.sz-font "-*-fixed-bold-r-*-*-%d-*-*-*-*-*-iso8859-1"
     !endif
-    ; might be called like this:
-    define-macro change-font-size
-        set-variable #l0 1
+  !endif
+  set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+  !if &seq #l0 "iso8859-15"
+    translate-key "\x80" "\xa4"
+  !endif
+  
+  ; might be called like this:
+  define-macro change-font-size
+    set-variable #l0 1
+    set-variable .new-size .change-font.sz-size
+    set-variable .old-size .change-font.sz-size
+    ; TODO: alter variable sz-size at the end only if success
+    !if &equal @# 0
+      set-variable .change-font.sz-size &add .change-font.sz-size -1
+    !elif &equal @# -1
+      set-variable #l0 -1 
+    !endif
+    set-variable #l2 0
+    !while &less #l2 10
+      ; maximal eight size steps
+      set-variable #l2 &add #l2 1
+      set-variable .change-font.sz-size &add .change-font.sz-size #l0
+      set-variable #l1 &spr .change-font.sz-font .change-font.sz-size
+      !force change-font #l1
+      !if $status
+        500 ml-write &cat "current font: " #l1
+        set-registry &spr "/history/%s/font" %platform #l1
+        save-registry "/history" ""
         set-variable .new-size .change-font.sz-size
-        set-variable .old-size .change-font.sz-size
-        ; TODO: alter variable sz-size at the end only if success
-        !if &equal @# 0
-            set-variable .change-font.sz-size &add .change-font.sz-size -1
-        !elif &equal @# -1
-            set-variable #l0 -1 
+        set-variable #l2 10
+        !if &sin "microsoft" #l1
+          translate-key "\x80" "\x80"
+        !elif &sin "iso8859-15" #l1
+          translate-key "\x80" "\xa4"
         !endif
-        set-variable #l2 0
-        !while &less #l2 10
-            ; maximal eight size steps
-            set-variable #l2 &add #l2 1
-            set-variable .change-font.sz-size &add .change-font.sz-size #l0
-            set-variable #l1 &spr .change-font.sz-font .change-font.sz-size
-            !force change-font #l1
+      !elif &gre .change-font.sz-size 36
+        set-variable #l2 10 ; break
+      !elif &less .change-font.sz-size 8
+        set-variable #l2 10 ; break
+      !endif
+    !done
+    !if &equal .new-size .old-size
+      ml-write "Font was not changed"
+      set-variable .change-font.sz-size .old-size
+    !endif
+  !emacro
+  0 define-macro change-font-encoding-select
+    set-variable .ofont @1
+    ;set-variable .ofont &reg &spr "/history/%s/font" %platform "" 
+    ;set-variable .font "-*-chivo mono-*-r-*-*-22-*-*-*-*-*-*-*"
+    set-variable .font @1
+    set-variable #l0 1
+    set-variable #l1 "||"
+    set-variable #l2 "||"
+    set-variable .ok 0
+    !while &not &seq &lget .change-font.encodings #l0 ""
+      change-font-encoding-test .font &lget .change-font.encodings #l0
+      !if &equal .ok 1
+        !if &equal &lfind #l1 &lget .change-font.encodings #l0 0
+          set-variable #l1 &linsert #l1 -1 &lget .change-font.encodings #l0
+          set-variable #l2 &linsert #l2 -1 &lget .change-font.charsets #l0
+        !endif
+      !endif
+      set-variable #l0 &add #l0 1
+    !done    
+    set-variable #l1 &ldel #l1 1
+    set-variable #l2 &ldel #l2 1    
+    set-variable .encoding @ml19 "Select encoding:: " &lget .change-font.charsets 1 .change-font.charsets
+    set-variable #l3 &lfind .change-font.charsets .encoding
+    500 ml-write &cat "selected: " #l3
+    set-variable .encoding &lget .change-font.encodings #l3
+    set-variable .rfont &xrep .font "-[^-]+-[^-]+$" "-" ; remove encoding part
+    set-variable .tfont &cat .rfont .encoding
+    !force change-font .tfont
+    !if $status
+      ml-write &cat "current font: " .tfont
+      set-registry &spr "/history/%s/font" %platform .tfont
+      save-registry "/history" ""
+    !endif
+  !emacro
+  0 define-macro change-font-encoding-test
+    set-variable .font @1
+    set-variable .encoding @2
+    set-variable .rfont &xrep .font "-[^-]+-[^-]+$" "-" ; remove encoding part
+    set-variable .tfont &cat .rfont .encoding
+    !force change-font .tfont
+    !if $status 
+      !if &not &seq @p ""
+        set-variable .test-encodings.ok 1
+      !endif
+    !else
+      !if &not &seq @p ""
+        set-variable .test-encodings.ok 0
+      !endif
+    !endif
+  !emacro
+  
+  define-macro change-font-type
+    !force set-variable .font @1
+    !if &not $status
+      set-variable .font @ml19 "Select font (for new fonts spaces as underlines): " &lget .change-font.sz-fonts 1 .change-font.sz-fonts
+      set-variable .font &rep .font "_" " "
+    !endif
+    !force set-variable .size @3
+    !if &not $status
+      !force set-variable .size @2
+    !endif
+    !if &not $status
+      !force set-variable .size .change-font.sz-size
+    !endif
+    !if &not $status
+      !force set-variable .size 17
+    !endif
+    !if &sin "bold" .change-font.sz-font
+      set-variable .fontname &cat .font "-bold"
+    !else
+      set-variable .fontname &cat .font "-medium"
+    !endif
+    set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-*-*" .fontname .size
+    !force change-font #l0
+    !if $status
+      set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-*-*" .fontname
+      set-variable .change-font.sz-size .size
+      !if &not &lfind .change-font.sz-fonts .font
+        set-variable .change-font.sz-fonts &linsert .change-font.sz-fonts -1 .font
+      !endif
+      ml-write &cat "current font: " #l0
+      change-font-encoding-select #l0
+    !else
+      ml-write &spr "font is not available: %s" #l0
+    !endif
+  !emacro
+  define-macro change-font-xfontsel
+    set-variable #l0 &reg &spr "/history/%s/font" %platform "-*-fixed-*-*-*-*-*-*-*-*-*-*-iso8859-1"
+    set-variable #l1 &reg &spr "/history/%s/char-set" %platform  "iso8859-1"
+    set-variable #l1 &cat "-*-*-*-r-*-*-*-*-*-m-*-" #l1
+    ;!if &xse #l0 ".+\\(-[^-]+-[^-]+\\)"
+    ;    ; encoding
+    ;    set-variable #l1 &cat "-*-*-*-*-*-*-*-*-*-*-*" @s1
+    ;!else
+    ;    set-variable #l1  "-*-*-*-*-*-*-*-*-*-*-*--*-*"
+    ;!endif
+    2 pipe-shell-command &spr "xfontsel -print -pattern '%s' -scaled" #l1 "*fontsel*"
+    !if $result
+      1000 ml-write "Error: xfontsel could not be executed! Please install xfontsel for better font selection!"
+      !abort
+    !endif
+    set-position "\x90"
+    find-buffer "*fontsel*"
+    beginning-of-buffer
+    search-buffer "me" "^-"
+    !if $status
+      set-variable .change-font.xfontsel-font @wl
+      !if &equ &sin "-*-*" .change-font.xfontsel-font 1
+        1000 ml-write "No font selected!"
+        !return
+      !endif
+      !if &xse .change-font.xfontsel-font "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
+        set-variable .change-font.sz-font &spr "%s*-*-%%d-*-*%s*%s" @s1 @s3 @s4
+        !if &seq @s2 "*"
+          !if &not &exi .change-font.sz-size
+            set-variable .change-font.sz-size 17
+          !endif
+        !else
+          set-variable .change-font.sz-size @s2
+        !endif
+        !force change-font &spr .change-font.sz-font  .change-font.sz-size
+        !if &not $status
+          ; failed try other sizes 14, 18 or 24 for bitmap fonts!
+          set-variable #l1 &sub .change-font.sz-size 3
+          set-variable #l2 &add .change-font.sz-size 4
+          !repeat
+            !force change-font &spr .change-font.sz-font #l1
             !if $status
-                500 ml-write &cat "current font: " #l1
-                set-registry &spr "/history/%s/font" %platform #l1
-                save-registry "/history" ""
-                set-variable .new-size .change-font.sz-size
-                set-variable #l2 10
-            !elif &gre .change-font.sz-size 36
-                set-variable #l2 10 ; break
-            !elif &less .change-font.sz-size 8
-                set-variable #l2 10 ; break
+              set-variable .change-font.sz-size #l1
             !endif
-        !done
-        !if &equal .new-size .old-size
-            ml-write "Font was not changed"
-            set-variable .change-font.sz-size .old-size
+            set-variable #l1 &add #l1 1
+          !until &less #l1 #l2
         !endif
-    !emacro
-    0 define-macro change-font-encoding-select
-        set-variable .ofont @1
-        ;set-variable .ofont &reg &spr "/history/%s/font" %platform "" 
-        ;set-variable .font "-*-chivo mono-*-r-*-*-22-*-*-*-*-*-*-*"
-        set-variable .font @1
-        set-variable #l0 1
-        set-variable #l1 "||"
-        set-variable #l2 "||"
-        set-variable .ok 0
-        !while &not &seq &lget .change-font.encodings #l0 ""
-            change-font-encoding-test .font &lget .change-font.encodings #l0
-            !if &equal .ok 1
-                !if &equal &lfind #l1 &lget .change-font.encodings #l0 0
-                    set-variable #l1 &linsert #l1 -1 &lget .change-font.encodings #l0
-                    set-variable #l2 &linsert #l2 -1 &lget .change-font.charsets #l0
-                !endif
-            !endif
-            set-variable #l0 &add #l0 1
-        !done    
-        set-variable #l1 &ldel #l1 1
-        set-variable #l2 &ldel #l2 1    
-        set-variable .encoding @ml19 "Select encoding:: " &lget .change-font.charsets 1 .change-font.charsets
-        set-variable #l3 &lfind .change-font.charsets .encoding
-        500 ml-write &cat "selected: " #l3
-        set-variable .encoding &lget .change-font.encodings #l3
-        set-variable .rfont &xrep .font "-[^-]+-[^-]+$" "-" ; remove encoding part
-        set-variable .tfont &cat .rfont .encoding
-        !force change-font .tfont
         !if $status
-            ml-write &cat "current font: " .tfont
-            set-registry &spr "/history/%s/font" %platform .tfont
-            save-registry "/history" ""
-        !endif
-    !emacro
-    0 define-macro change-font-encoding-test
-        set-variable .font @1
-        set-variable .encoding @2
-        set-variable .rfont &xrep .font "-[^-]+-[^-]+$" "-" ; remove encoding part
-        set-variable .tfont &cat .rfont .encoding
-        !force change-font .tfont
-        !if $status 
-            !if &not &seq @p ""
-                set-variable .test-encodings.ok 1
-            !endif
+          500 ml-write &cat "font: " &spr .change-font.sz-font  .change-font.sz-size
+          set-registry &spr "/history/%s/font" %platform &spr .change-font.sz-font  .change-font.sz-size
+          save-registry "/history" ""
         !else
-            !if &not &seq @p ""
-                set-variable .test-encodings.ok 0
-            !endif
+          1000 ml-write &cat "font not found: " &spr .change-font.sz-font  .change-font.sz-size
         !endif
-    !emacro
-
-    define-macro change-font-type
-        !force set-variable .font @1
-        !if &not $status
-            set-variable .font @ml19 "Select font (for new fonts spaces as underlines): " &lget .change-font.sz-fonts 1 .change-font.sz-fonts
-            set-variable .font &rep .font "_" " "
-        !endif
-        !force set-variable .size @3
-        !if &not $status
-            !force set-variable .size @2
-        !endif
-        !if &not $status
-            !force set-variable .size .change-font.sz-size
-        !endif
-        !if &not $status
-            !force set-variable .size 17
-        !endif
-        !if &sin "bold" .change-font.sz-font
-            set-variable .fontname &cat .font "-bold"
-        !else
-            set-variable .fontname &cat .font "-medium"
-        !endif
-        set-variable #l0 &spr "-*-%s-r-*-*-%d-*-*-*-*-*-*-*" .fontname .size
-        !force change-font #l0
-        !if $status
-            set-variable .change-font.sz-font &spr "-*-%s-r-*-*-%%d-*-*-*-*-*-*-*" .fontname
-            set-variable .change-font.sz-size .size
-            !if &not &lfind .change-font.sz-fonts .font
-                set-variable .change-font.sz-fonts &linsert .change-font.sz-fonts -1 .font
-            !endif
-            ml-write &cat "current font: " #l0
-            change-font-encoding-select #l0
-        !else
-            ml-write &spr "font is not available: %s" #l0
-        !endif
-    !emacro
-    define-macro change-font-xfontsel
-        set-variable #l0 &reg &spr "/history/%s/font" %platform "-*-fixed-*-*-*-*-*-*-*-*-*-*-iso8859-1"
-        set-variable #l1 &reg &spr "/history/%s/char-set" %platform  "iso8859-1"
-        set-variable #l1 &cat "-*-*-*-r-*-*-*-*-*-m-*-" #l1
-        ;!if &xse #l0 ".+\\(-[^-]+-[^-]+\\)"
-        ;    ; encoding
-        ;    set-variable #l1 &cat "-*-*-*-*-*-*-*-*-*-*-*" @s1
-        ;!else
-        ;    set-variable #l1  "-*-*-*-*-*-*-*-*-*-*-*--*-*"
-        ;!endif
-        2 pipe-shell-command &spr "xfontsel -print -pattern '%s' -scaled" #l1 "*fontsel*"
-        !if $result
-            1000 ml-write "Error: xfontsel could not be executed! Please install xfontsel for better font selection!"
-            !abort
-        !endif
-        set-position "\x90"
-        find-buffer "*fontsel*"
-        beginning-of-buffer
-        search-buffer "me" "^-"
-        !if $status
-            set-variable .change-font.xfontsel-font @wl
-            !if &equ &sin "-*-*" .change-font.xfontsel-font 1
-                1000 ml-write "No font selected!"
-                !return
-            !endif
-            !if &xse .change-font.xfontsel-font "\\(-[^-]*-[^-]*-[^-]*-[^-]*-\\)[^-]*-[^-]*-\\([^-]*\\)-[^-]*-[^-]*\\(-[^-]*-\\)[^-]*\\(-.*\\)"
-                set-variable .change-font.sz-font &spr "%s*-*-%%d-*-*%s*%s" @s1 @s3 @s4
-                !if &seq @s2 "*"
-                    !if &not &exi .change-font.sz-size
-                        set-variable .change-font.sz-size 17
-                    !endif
-                !else
-                    set-variable .change-font.sz-size @s2
-                !endif
-                !force change-font &spr .change-font.sz-font  .change-font.sz-size
-                !if &not $status
-                    ; failed try other sizes 14, 18 or 24 for bitmap fonts!
-                    set-variable #l1 &sub .change-font.sz-size 3
-                    set-variable #l2 &add .change-font.sz-size 4
-                    !repeat
-                        !force change-font &spr .change-font.sz-font #l1
-                        !if $status
-                            set-variable .change-font.sz-size #l1
-                        !endif
-                        set-variable #l1 &add #l1 1
-                    !until &less #l1 #l2
-                !endif
-                !if $status
-                    500 ml-write &cat "font: " &spr .change-font.sz-font  .change-font.sz-size
-                    set-registry &spr "/history/%s/font" %platform &spr .change-font.sz-font  .change-font.sz-size
-                    save-registry "/history" ""
-                !else
-                    1000 ml-write &cat "font not found: " &spr .change-font.sz-font  .change-font.sz-size
-                !endif
-            !else
-                ; should be not reached
-                change-font .change.font.xfontsel-font
-                set-variable .change-font.sz-font ""
-            !endif
-        !else
-            1000 ml-write "Error: Failed to find font name - did you click on Selt and Quit?"
-        !endif
-        delete-buffer "*fontsel*"
-        goto-position "\x90"
-    !emacro
-    0 define-macro change-font-check-xfontsel
-        !force set-variable #l0 &which "xfontsel"
-        !if &not &seq #l0 "ERROR"
-            set-variable .change-font.xfontsel 1
-        !else
-            set-variable .change-font.xfontsel 0
-        !endif
-    !emacro
-    define-macro change-font-courier
-        ; check if current font is medium
-        !if &sin "medium" .change-font.sz-font
-            set-variable #l2 1
-        !endif
-        set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-iso8859-*"
-        !if #l2
-            set-variable #l0 &rep .change-font.sz-font "bold" "medium"
-        !endif
-        0 change-font-size #l0
-    !emacro
-    define-macro change-font-lucida
-        ; check if current font is medium
-        !if &sin "medium" .change-font.sz-font
-            set-variable #l2 1
-        !endif
-        set-variable .change-font.sz-font "-*-lucidatypewriter-bold-r-*-*-%d-*-*-*-*-iso8859-*"
-        !if #l2
-            set-variable #l0 &rep .change-font.sz-font "bold" "medium"
-        !endif
-        0 change-font-size #l0
-    !emacro
-    define-macro change-font-bold
-        !if &sin "medium" .change-font.sz-font
-            set-variable .change-font.sz-font &rep .change-font.sz-font "medium" "bold"
-        !else
-            set-variable .change-font.sz-font &rep .change-font.sz-font "bold" "medium"
-        !endif
-        0 change-font-size
-        200 ml-write &spr "Current font %s" &spr .change-font.sz-font .change-font.size
-    !emacro
-    1 global-bind-key change-font-size "C-+"
-    0 global-bind-key change-font-size "C-="
-    -1 global-bind-key change-font-size "C--"
-    change-font-check-xfontsel
+      !else
+        ; should be not reached
+        change-font .change.font.xfontsel-font
+        set-variable .change-font.sz-font ""
+      !endif
+    !else
+      1000 ml-write "Error: Failed to find font name - did you click on Selt and Quit?"
+    !endif
+    delete-buffer "*fontsel*"
+    goto-position "\x90"
+  !emacro
+  0 define-macro change-font-check-xfontsel
+    !force set-variable #l0 &which "xfontsel"
+    !if &not &seq #l0 "ERROR"
+      set-variable .change-font.xfontsel 1
+    !else
+      set-variable .change-font.xfontsel 0
+    !endif
+  !emacro
+  define-macro change-font-courier
+    ; check if current font is medium
+    !if &sin "medium" .change-font.sz-font
+      set-variable #l2 1
+    !endif
+    set-variable .change-font.sz-font "-*-courier-bold-r-*-*-%d-*-*-*-*-iso8859-*"
+    !if #l2
+      set-variable #l0 &rep .change-font.sz-font "bold" "medium"
+    !endif
+    0 change-font-size #l0
+  !emacro
+  define-macro change-font-lucida
+    ; check if current font is medium
+    !if &sin "medium" .change-font.sz-font
+      set-variable #l2 1
+    !endif
+    set-variable .change-font.sz-font "-*-lucidatypewriter-bold-r-*-*-%d-*-*-*-*-iso8859-*"
+    !if #l2
+      set-variable #l0 &rep .change-font.sz-font "bold" "medium"
+    !endif
+    0 change-font-size #l0
+  !emacro
+  define-macro change-font-bold
+    !if &sin "medium" .change-font.sz-font
+      set-variable .change-font.sz-font &rep .change-font.sz-font "medium" "bold"
+    !else
+      set-variable .change-font.sz-font &rep .change-font.sz-font "bold" "medium"
+    !endif
+    0 change-font-size
+    200 ml-write &spr "Current font %s" &spr .change-font.sz-font .change-font.size
+  !emacro
+  1 global-bind-key change-font-size "C-+"
+  0 global-bind-key change-font-size "C-="
+  -1 global-bind-key change-font-size "C--"
+  change-font-check-xfontsel
 !endif
 ;
 ; setup the next-error stuff including grep and compiling
@@ -301,3 +311,8 @@ set-variable $rcs-ci-com   "ci -u -m\"%m\" %f"
 ;set-variable $rcs-cif-com  "ci -u -m\"%m\" %f"
 ; Declare the .dir file found in X11 font directory, this is not an info file.
 add-file-hook ".dir"                                          fhook-txt
+
+set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
+!if &seq #l0 "iso8859-15"
+  translate-key "\x80" "\xa4"
+!endif

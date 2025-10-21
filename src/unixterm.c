@@ -1906,6 +1906,9 @@ meXEventHandler(void)
 #ifdef XK_dead_grave
                 case XK_dead_grave: ii = 0x60; goto done_key;
 #endif
+#ifdef XK_EuroSign
+                case XK_EuroSign: ii = 0x80; goto done_key;
+#endif
 
                     /* Auxilliary Functions; note the duplicate definitions
                      * for left and right function keys; Sun keyboards and a
