@@ -18,8 +18,8 @@
     ;set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
     ;set-variable %charset-names  "|ISO-8859|ISO-8859 with box chars|Windows ANSI (cp1252)|Windows OEM|Windows Greek|Windows Turkish|Windows Central Europe (cp1250)|Windows Cyrillic (cp1251)|DOS LatinUS CP437|DOS Latin1 CP850|DOS Cyrillic CP866|Cyrillic koi8-r|Plain Text|"
     ;set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
-    set-variable %charset-names  "|ISO-W-EUR  (ISO 8859-1)|ISO-C-EUR  (ISO 8859-2)|ISO-S-EUR  (ISO 8859-3)|ISO-N-EUR  (ISO 8859-4)|ISO-CYR    (ISO 8859-5)|ISO-GREEK  (ISO 8859-7)|ISO-TURK   (ISO 8859-9)|ISO-NORTH  (ISO 8859-10)|ISO-BALT   (ISO 8859-13)|ISO-W-EURO (ISO 8859-15)|WIN-ANSI   (cp1252)|CYRILLIC   (koi8-r)|plain-text (ASCII-0)|"
-    set-variable %charset-value "|iso8859-1|iso8859-2|iso8859-3|iso8859-4|iso8859-5|iso8859-7|iso-8859-9|iso-8859-10|is8859-13|iso8859-15|microsoft-cp1252|koi8-r|ascii-0|"
+    set-variable %charset-names  "|ISO-W-EUR  (ISO 8859-1)|ISO-C-EUR  (ISO 8859-2)|ISO-S-EUR  (ISO 8859-3)|ISO-N-EUR  (ISO 8859-4)|ISO-CYR    (ISO 8859-5)|ISO-GREEK  (ISO 8859-7)|ISO-TURK   (ISO 8859-9)|ISO-NORTH  (ISO 8859-10)|ISO-BALT   (ISO 8859-13)|ISO-W-EURO (ISO 8859-15)|ISO-SO-EURO (ISO 8859-16)|WIN CP1250 (C-EUR)|WIN CP1251 (CYR) |WIN CP1252 (WEST)|CYRILLIC   (koi8-r)|plain-text (ASCII-0)|"
+    set-variable %charset-value "|iso8859-1|iso8859-2|iso8859-3|iso8859-4|iso8859-5|iso8859-7|iso-8859-9|iso-8859-10|is8859-13|iso8859-15|iso8859-16|microsoft-cp1250|microsoft-cp1251|microsoft-cp1252|koi8-r|ascii-0|"
     set-variable %charset-types "||||||||||0|||"
     ; the windows font type
     ;set-variable %charset-types  "|||0|255|161|162|238|204|||||"
@@ -30,19 +30,19 @@ set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
 set-variable #l1 1
 set-variable .change-font.type 0
 !if &seq #l0 ""
-    set-char-mask "M" ""
+  set-char-mask "M" ""
 !elif &seq #l0 "ISO-box"
-    set-char-mask "M" ""
-    set-char-mask "dp" "\CY\CM\CL\CN\CK\CX\CU\CO\CV\CW\CR\CP\CQ\C^\C_"
-    set-char-mask "p"  "\CI\CJ"
-    set-variable $box-chars "\CY\CM\CL\CN\CK\CX\CU\CO\CV\CW\CR"
-    set-variable $window-chars "=-#*%=^   v*==^^      vv**|<   >*||<<      >>** x* > <>\\.$$\\"
-    set-variable $system &band $system &bnot 0x10000
-    set-variable #l1 0
-  !elif &seq #l0 "microsoft-cp1252"
-    set-char-mask "M" ""
-    set-char-mask "dp" "ÄÇÉÑÖÜáàâäãåéëíìîïñóòôöõúûü"
-    ;set-char-mask "M" ""
+  set-char-mask "M" ""
+  set-char-mask "dp" "\CY\CM\CL\CN\CK\CX\CU\CO\CV\CW\CR\CP\CQ\C^\C_"
+  set-char-mask "p"  "\CI\CJ"
+  set-variable $box-chars "\CY\CM\CL\CN\CK\CX\CU\CO\CV\CW\CR"
+  set-variable $window-chars "=-#*%=^   v*==^^      vv**|<   >*||<<      >>** x* > <>\\.$$\\"
+  set-variable $system &band $system &bnot 0x10000
+  set-variable #l1 0
+!elif &seq #l0 "microsoft-cp1252"
+  set-char-mask "M" ""
+  set-char-mask "dp" "ÄÇÉÑÖÜáàâäãåéëíìîïñóòôöõúûü"
+  ;set-char-mask "M" ""
 !elif &seq #l0 "Win-OEM"
     set-char-mask "M" "£ú™¶´Æ¨™Æ©∞ß±Ò≤˝≥¸¥ÓµÊ∂ı∑˙∏˝π˚ªØº¨Ω´æÛø®¿∑¡ê¬ä√≤ƒé∆í«Ä»‘…ê “À—ÃﬁÕ÷Œ◊œÿ–——•“„”‡‘‚’Â÷ô◊ûÿùŸÎ⁄È€Í‹ö›ÏﬁÁﬂˇ‡Ö·†‚É‰ÑÂÜÊëÁáËäÈÇÍàÎâÏçÌ°ÓåÔãÒ§ÚïÛ¢Ùìı‰ˆî˜ˆ¯õ˘ó˙£˚ñ¸Å˝Ï˛Ëˇò"
     set-variable $box-chars "≥⁄ø¿Ÿ¬√≈¥¡ƒ"
@@ -50,19 +50,18 @@ set-variable .change-font.type 0
     set-variable $system &band $system &bnot 0x10000
     set-variable .change-font.type 255
     set-variable #l1 0
-
 !elif &seq #l0 "iso8859-7" ; ISO-7 WIN-Greek
     set-char-mask "M" ""
     set-variable .change-font.type 161
 !elif &seq #l0 "iso8859-3" ; ISO-3
     set-char-mask "M" ""
     set-variable .change-font.type 162
-!elif &seq #l0 "Win-CENTEUR"
+!elif &seq #l0 "microsoft-cp1250"
     ; map iso8859-2 -> win32 cp1250 
     set-char-mask "dp" "ÄÇÉÑÖÜáàâäãåçéëíìîïñóòôöõúùûü"
     ;set-char-mask "M" "\xA1\xA5\xA5\xBC\xA6\x8C\xA9\x8A\xAB\x8D\xAC\x8F\xAE\x8E\xB1\xB9\xB5\xBE\xB6\x9C\xB7\xA1\xB9\x9A\xBB\x9D\xBC\x9F\xBE\x9E"
     set-variable .change-font.type 238
-!elif &seq #l0 "Win-CYR"
+!elif &seq #l0 "microsoft-cp1251"
     ; map ISO8859-5 -> win32 cp1251
     set-char-mask "M" ""
     set-char-mask "dp" "ÄÉÇÉÑÖÜáàâäãåçéèëíìîïñóòôöõúùûü"
