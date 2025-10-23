@@ -18,8 +18,8 @@
     ;set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
     ;set-variable %charset-names  "|ISO-8859|ISO-8859 with box chars|Windows ANSI (cp1252)|Windows OEM|Windows Greek|Windows Turkish|Windows Central Europe (cp1250)|Windows Cyrillic (cp1251)|DOS LatinUS CP437|DOS Latin1 CP850|DOS Cyrillic CP866|Cyrillic koi8-r|Plain Text|"
     ;set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
-    set-variable %charset-names  "|ISO-W-EUR  (ISO 8859-1)|ISO-C-EUR  (ISO 8859-2)|ISO-S-EUR  (ISO 8859-3)|ISO-N-EUR  (ISO 8859-4)|ISO-CYR    (ISO 8859-5)|ISO-GREEK  (ISO 8859-7)|ISO-TURK   (ISO 8859-9)|ISO-NORTH  (ISO 8859-10)|ISO-BALT   (ISO 8859-13)|ISO-W-EURO (ISO 8859-15)|ISO-SO-EURO (ISO 8859-16)|WIN CP1250 (C-EUR)|WIN CP1251 (CYR) |WIN CP1252 (WEST)|CYRILLIC   (koi8-r)|plain-text (ASCII-0)|"
-    set-variable %charset-value "|iso8859-1|iso8859-2|iso8859-3|iso8859-4|iso8859-5|iso8859-7|iso-8859-9|iso-8859-10|is8859-13|iso8859-15|iso8859-16|microsoft-cp1250|microsoft-cp1251|microsoft-cp1252|koi8-r|ascii-0|"
+    set-variable %charset-names  "|ISO-W-EUR  (ISO 8859-1)|ISO-C-EUR  (ISO 8859-2)|ISO-S-EUR  (ISO 8859-3)|ISO-N-EUR  (ISO 8859-4)|ISO-CYR    (ISO 8859-5)|ISO-GREEK  (ISO 8859-7)|ISO-TURK   (ISO 8859-9)|ISO-NORTH  (ISO 8859-10)|ISO-BALT   (ISO 8859-13)|ISO-W-EURO (ISO 8859-15)|ISO-SO-EURO(ISO 8859-16)|WIN CP1250 (C-EUR)|WIN CP1251 (CYR) |WIN CP1252 (WEST)|WIN CP1253 (GREEK)|WIN CP1254 (TURK)|CYRILLIC   (koi8-r)|plain-text (ASCII-0)|"
+    set-variable %charset-value "|iso8859-1|iso8859-2|iso8859-3|iso8859-4|iso8859-5|iso8859-7|iso-8859-9|iso-8859-10|is8859-13|iso8859-15|iso8859-16|microsoft-cp1250|microsoft-cp1251|microsoft-cp1252|microsoft-cp1253|microsoft-cp1254|koi8-r|ascii-0|"
     set-variable %charset-types "||||||||||0|||"
     ; the windows font type
     ;set-variable %charset-types  "|||0|255|161|162|238|204|||||"
@@ -64,9 +64,18 @@ set-variable .change-font.type 0
 !elif &seq #l0 "microsoft-cp1251"
     ; map ISO8859-5 -> win32 cp1251
     set-char-mask "M" ""
-    set-char-mask "dp" "€ƒ‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ"
+    set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ"
     ;set-char-mask "M" "°À±Á²Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ÏÀĞÁÑÂÒÃÓÄÔÅÕÆÖÇ×ÈØÉÙÊÚËÛÌÜÍİÎŞÏß¡¨ĞàÑáÒâÓãÔäÕåÖæ×çØèÙéÚêÛëÜìİíŞîßïàğáñâòãóäôåõæöç÷èøéùêúëûìüíıîşïÿñ¸"
     set-variable .change-font.type 204
+!elif &seq #l0 "microsoft-cp1253"
+    ; map ISO8859-5 -> win32 cp1251
+    set-char-mask "M" ""
+    set-char-mask "dp" "€‚ƒ„…†‡‰‹’“”•–—™›"
+    ;set-char-mask "M" "°À±Á²Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ÏÀĞÁÑÂÒÃÓÄÔÅÕÆÖÇ×ÈØÉÙÊÚËÛÌÜÍİÎŞÏß¡¨ĞàÑáÒâÓãÔäÕåÖæ×çØèÙéÚêÛëÜìİíŞîßïàğáñâòãóäôåõæöç÷èøéùêúëûìüíıîşïÿñ¸"
+    set-variable .change-font.type 204
+!elif &seq #l0 "microsoft-cp1254"
+  set-char-mask "M" ""
+  set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ"
 !elif &seq #l0 "PC-437"
     set-char-mask "M" "£œª¦«®¬ª°ø±ñ²ıµæ·ú»¯¼¬½«¿¨ÀAÁAÂAÃAÄÅÆ’AAÇ€ÈEÉÊEËEEEÌIÍIÎIÏIIIÑ¥ÒOÓOÔOÕOÖ™OOÙUÚUÛUÜšUUİYßáà…á âƒãaä„åaæ‘aaç‡èŠé‚êˆë‰ìí¡îŒï‹ñ¤ò•ó¢ô“õoö”÷öøoooù—ú£û–üuuıyÿ˜yy"
     set-variable $box-chars "³Ú¿ÀÙÂÃÅ´ÁÄ"

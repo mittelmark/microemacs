@@ -7,10 +7,10 @@ if  ! test -e chivo-mono-license.txt ; then
     wget https://github.com/Omnibus-Type/Chivo/raw/master/OFL.txt -O chivo-mono-license.txt
 fi
 ## no support for c1251 (Russian)
-for cp in cp1250 cp1252
+for cp in cp1250 cp1252 cp1253 cp1254 
 do
     for w in light regular medium semibold bold 
     do
-        bash ../ttf2bdf.sh "chivo mono" chivo-mono-${w}.ttf "chivo-mono-${w}-${cp}" -m ../${cp}.txt -f misc -w ${w}
+        bash ../../bin/ttf2bdf.sh "chivo mono" chivo-mono-${w}.ttf "chivo-mono-${w}-${cp}" -m ../${cp}.txt -f misc -w ${w}
     done
 done
