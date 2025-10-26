@@ -103,6 +103,7 @@ function install-fonts {
         mkdir -p ~/.local/share/jasspa/fonts
         curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip --output /tmp/ttf-files.zip 
         unzip -j -q -d ~/.local/share/fonts /tmp/ttf-files.zip
+        rm /tmp/ttf-files.zip
     fi  
     XSET=`which xset 2>/dev/null`
     if [ "$XSET" = "" ]; then
@@ -166,7 +167,9 @@ function install-me {
         chmod 755 ~/.local/bin/mecb
         chmod 755 ~/.local/bin/mewb
     fi
-
+    # cleanup
+    rm "/tmp/${MECB}.zip"
+    rm "/tmp/${MEWB}.zip"           
     # Make the script executable
     echo "Installation complete."
 }
