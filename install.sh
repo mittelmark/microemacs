@@ -143,7 +143,8 @@ function install-me {
         # Update the PATH for the current session
         export PATH="$HOME/.local/bin:$PATH"
         echo "PATH variable was updated in your .bashrc"
-        echo "If using an other shell than .bashrc add ~/.local/bin manually to your PATH variable!"
+        echo "use 'source ~/.bashrc' to update the PATH variable in your current terminal session"
+        echo "If using an other shell than Bash then add the folder '~/.local/bin' manually to your PATH variable!"
     fi
 
     # Download the dummy.sh script from the internet
