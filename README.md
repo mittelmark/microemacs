@@ -25,6 +25,7 @@ MicroEmacs 09, so the binaries for this project here which you find below.
 - [Installation](#installation)
     - [Linux/MacOS](#unix)
     - [X11 Fonts](#x11fonts)
+    - [Spelling Dictionaries](#spelling)    
     - [Windows](#windows)
 - [Compilation](#Compilation)
 - [Binaries Downloads](#Downloads)
@@ -216,12 +217,15 @@ Unfortunately  some system like Red Hat  Enterprise 10 or Alma Linux 10 do not a
 install  these old X11 tools like `xset` you have in this case  install  the fonts
 with sudo privileges in the existing font directories.
 
+<a name="spelling"> </a>
 ### Install Spelling Dictionaries
 
 The spelling dictionaries for several languages can be downloaded manually and placed into the MicroEmacs `$user-path` folder from the release page of [v0.9.0](https://github.com/mittelmark/microemacs/releases/v0.9.0)
-or by using a bash install script like this:
+or by for Unix systems or Microsoft Cygwin using a bash install script like this:
 
+```
 bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install-dict.sh)"
+```
 
 <a name="windows"> </a>
 ### Windows 10/11
