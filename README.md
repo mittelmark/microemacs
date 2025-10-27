@@ -216,6 +216,13 @@ Unfortunately  some system like Red Hat  Enterprise 10 or Alma Linux 10 do not a
 install  these old X11 tools like `xset` you have in this case  install  the fonts
 with sudo privileges in the existing font directories.
 
+### Install Spelling Dictionaries
+
+The spelling dictionaries for several languages can be downloaded manually and placed into the MicroEmacs `$user-path` folder from the release page of [v0.9.0](https://github.com/mittelmark/microemacs/releases/v0.9.0)
+or by using a bash install script like this:
+
+bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install-dict.sh)"
+
 <a name="windows"> </a>
 ### Windows 10/11
 
