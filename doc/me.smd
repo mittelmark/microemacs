@@ -5144,6 +5144,13 @@
 
 ## Development History 
 
+  - [251026] - fixing a few install issues with PATH updates and 
+       if two users install ME on the same machine
+  - [251022] - adding ISO-8859-16 and CP1250, CP1251, CP1253 and CP1254
+       encodings
+  - [251021] - EuroSign and DeadAcute fixes for some keyboards
+  - [251020] - adding more file extensions for literate programming
+  - [251014] - extending Nim ad Haskell support
   - [251011] - Extending Markdown with Quarkdown support
   - [251010] - Nim, Swift and Haskell support
   - [250928] - Kotlin and C# support
