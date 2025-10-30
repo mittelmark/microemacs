@@ -59,6 +59,7 @@ set-variable .change-font.xfontsel 0
   !if &or &seq #l0 "iso8859-15" &seq #l0 "iso8859-16"
     translate-key "\x80" "\xa4"
     translate-key "" ""
+    translate-key "´" "'"
   !endif
   
   ; might be called like this:
