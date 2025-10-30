@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo ${x}
+
 function hello0 {
     echo "Hello"
     x=1
@@ -38,9 +40,7 @@ function hello0 {
     else
         echo "You need more bash programming"
     fi
-
-
-    #    while true; do
+     #    while true; do
     #        read -p "Do you want to proceed? (yes/no): " yn
     #        case $yn 
     #        in
