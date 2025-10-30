@@ -40,15 +40,15 @@ function hello0 {
     fi
 
 
-#    while true; do
-#        read -p "Do you want to proceed? (yes/no): " yn
-#        case $yn 
-#        in
-#            [Yy]* ) echo "Proceeding..."; break;;
-#            [Nn]* ) echo "Stopping."; exit;;
-#            * ) echo "Please answer yes or no.";;
-#        esac
-#    done
+    #    while true; do
+    #        read -p "Do you want to proceed? (yes/no): " yn
+    #        case $yn 
+    #        in
+    #            [Yy]* ) echo "Proceeding..."; break;;
+    #            [Nn]* ) echo "Stopping."; exit;;
+    #            * ) echo "Please answer yes or no.";;
+    #        esac
+    #    done
 }
 function hello1 {
     echo "Hello One!"
@@ -58,7 +58,7 @@ function hello1 {
     else
         echo "x is larger than 2"
     fi
-}   
+}
 
 hello2 () {
     echo "Hello Two!"

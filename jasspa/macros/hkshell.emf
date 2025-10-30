@@ -187,7 +187,6 @@ set-variable .fhook-shell.item-list-r2 "Func \ecB\\1\ecA"
 
 !if &sin "d" .fhook-shell.setup
   0 indent .hilight.shell 1 10
-  indent .hilight.shell    n "function"        t
   indent .hilight.shell    n "{\s*$"           t  
   indent .hilight.shell    o "^\\s*}"         -t
   indent .hilight.shell    n "if"              t
