@@ -56,8 +56,9 @@ set-variable .change-font.xfontsel 0
     !endif
   !endif
   set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
-  !if &seq #l0 "iso8859-15"
+  !if &or &seq #l0 "iso8859-15" &seq #l0 "iso8859-16"
     translate-key "\x80" "\xa4"
+    translate-key "" ""
   !endif
   
   ; might be called like this:
