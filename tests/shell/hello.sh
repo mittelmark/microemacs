@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo ${x}
-
 function hello0 {
     echo "Hello"
     x=1
