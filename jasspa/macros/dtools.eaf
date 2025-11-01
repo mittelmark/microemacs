@@ -1,0 +1,13 @@
+ar "[arg \p]\P" "  \CCDar\CCAg"
+ca "[call [cmd \pcmdname] [arg argument] [opt --optional] [option --option]]\r\rdescription\r\r\P" "  \CCDca\CCAll"
+de "[def [const \pterm]] description\r\P" "  \CCDde\CCAfinition"
+dl "[list_begin definitions]\r\r\p\r[def [const \pterm]] description\r\r[list_end]\r\P" "  \CCDd\CCAef-\CCDl\CCAist"
+ex "[example {\r\p\r}]\r\P" "  \CCDex\CCAample"
+il "[list_begin itemized]\r\r[item] \p\r\r[list_end]\r\P" "  \CCDi\CCAtem-\CCDl\CCAist"
+it "[item] " "  \CCDit\CCAem"
+li "[list_begin]\r\r\p\r\r[list_end]\r\P" "  \CCDli\CCAst"
+pa "[para] " "  \CCDpa\CCAra"
+pk "[package \p]\P" "  \CCDp\CCAac\CCDk\CCAage"
+se "[section {\p}]\r\P" "  \CCDse\CCAction"
+ur "[uri https://\p]\P" "  \CCDur\CCAi"
+

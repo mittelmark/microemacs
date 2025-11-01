@@ -1749,7 +1749,9 @@ Miscellaneous Information
     lsdart(9)lmdart(9)le Dart Language File  
     lsdef(9)lmdef(9)le C or C++ definition file  
     lsdoc(9)lmdoc(9)le ASCII plain text document file  
+    lsdoctools(9)lmdoctools(9)le Tcl doctools manual page    
     lsdot(9)lmdot(9)le Graphviz dot diagram file   
+    lsdtools(9)lmdtools(9)le Tcl doctools manual page      
     lse(9)lme(9)le Euphoria programming language file    
     lsehf(9)lmehf(9)le MicroEmacs 2009 help file  
     lsemf(9)lmemf(9)le MicroEmacs 2009 Macro File  
@@ -1852,6 +1854,7 @@ Miscellaneous Information
     lstexi(9)lmtexi(9)le GNU Texinfo documentation file  
     lstexinfo(9)lmtexinfo(9)le GNU Texinfo documentation file  
     lstk(9)lmtk(9)le TK programming language  
+    lstman(9)lmtman(9)le Tcl doctools manual page  
     lstmd(9)lmtmd(9)le Markdown markup language with Tmdoc code   
     lstni(9)lmtni(9)le UNIX t/nroff include file  
     lstoml(9)lmtoml(9)le Toml configuration file  
@@ -3606,6 +3609,7 @@ Miscellaneous Information
     lscygwin(3)lmcygwin(3)le Open a Cygwin BASH window  
     lsdart(9)lmdart(9)le Dart programming language  
     lsdbx(3)lmdbx(3)le UNIX Debugger  
+    lsdtools(9)lmdtools(9)le Tcl doctools manual page  
     lsdef(9)lmdef(9)le C or C++ definition file  
     lsdefine-help(2)lmdefine-help(2)le Define help information  
     lsdefine-macro(2)lmdefine-macro(2)le Define a new macro  
@@ -3635,6 +3639,7 @@ Miscellaneous Information
     lsdisplay-white-chars(3)lmdisplay-white-chars(3)le Toggle the displaying of white characters  
     lsdisplay-whitespaces(3)lmdisplay-whitespaces(3)le Toggle the displaying of white characters  
     lsdoc(9)lmdoc(9)le ASCII plain text document file  
+    lsdoctools(9)lmdoctools(9)le Tcl doctools manual page  
     lsdos2unix(3f)lmdos2unix(3f)le Convert DOS format files to UNIX format files  
     lsdot(9)lmdot(9)le Graphviz dot diagram file     
     lsdraw(3)lmdraw(3)le Simple line drawing utility  
@@ -4109,6 +4114,7 @@ Miscellaneous Information
     lstime(2m)lmtime(2m)le File time stamping  
     lstime(3)lmtime(3)le Command time evaluator  
     lstk(9)lmtk(9)le TK programming language  
+    lstman(9)lmtman(9)le Tcl doctools manual page  
     lstmd(9)lmtmd(9)le Markdown markup language with Tmdoc code  
     lstni(9)lmtni(9)le UNIX t/nroff include file  
     lstoml(9)lmtoml(9)le Toml configuration file    
@@ -4185,13 +4191,13 @@ Miscellaneous Information
     last decade, roughly in the order of participation. This list represents
     the main developers:-
 
-       Dave Conroy (Original Author)  
-       Daniel M. Lawrence (Original Maintainer)  
+       Dave Conroy (Original Author, 1985-1986)  
+       Daniel M. Lawrence (Original Maintainer, 1986-1988)  
        Martin House  
-       cDJon GreencA - cCMaintainer (from around 1988 to 2010)cA  
+       cDJon GreencA - cCMaintainer (since 1988)cA  
        Callen McNally  
        cDSteven PhillipscA - cCCurrent Maintainer (since 1988)cA  
-       cDDetlef GrothcA - cCMaintainer (since 2020)cA       
+       cDDetlef GrothcA - cCCurrent Maintainer (since 2020)cA       
 
     Additional contributions have been made as follows, in chrononlogical
     order:-
@@ -5219,6 +5225,9 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [251101] - adding support for Tcl doctools man pages
+    - [251030] - fixing Bash indentation and issues with backticks and Euro in 
+                 with dead keys keyboard layouts
     - [251026] - fixing a few install issues with PATH updates and 
          if two users install ME on the same machine
     - [251022] - adding ISO-8859-16 and CP1250, CP1251, CP1253 and CP1254
@@ -67198,3 +67207,66 @@ $a
     lsMicroEmacs - Supported File TypeslmSupported File Typesle,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
     lscompile(3)lmcompile(3)le, lstime(2m)lmtime(2m)le.
+! 9 tman
+! 9 doctools
+! 9 dtools
+cEcESYNOPSIS cEcA
+
+
+    tman - Tcl doctools manual pages
+
+
+cEFILES cA
+
+
+    cDhkdtools.emfcA - Tcl doctools text hook definition  
+    cDdtools.eafcA - Tcl doctools abbreviation file  
+    cDdtools.etfcA - Tcl doctools template file
+
+
+cEEXTENSIONS cA
+
+
+    cD.tmancA - Tcl doctools markup files  
+
+cEMAGIC STRINGS cA
+
+
+    cD-*- doctools manpagecA
+    
+       Recognized by MicroEmacs only, defines the file to be a Tcl doctools file
+       regardless of the file extension.
+
+cEDESCRIPTION cA
+
+
+    The cDtmancA file type template handles the hilighting and text formating of a
+    Tcl doctools man formatted text file. It supports as well folding by header sections,
+    item listening of header sections, abbreviations and template insertion.
+
+      
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-scA - Start Comment  
+       cDC-c C-ccA - Comment Out Line  
+       cDC-c C-dcA - Delete Comment  
+       cDC-c C-ecA - Comment to End of Line  
+       cDC-c C-ocA - Restyle Current Comment  
+       cDesc qcA   - Fills Paragraph
+          
+       cDf2cA      - Open/Close Current Collapse  
+       cDC-f2cA    - Open/Close All Collapses         
+          
+       cDS-f7cA    - Enable/Disable Auto-Spell  
+       cDC-f7cA    - Auto-Spell Context Menu  
+          
+       cDf6cA      - List Items (Headers)  
+       cDC-f6cA    - Close List Items  
+          
+cESEE ALSO cA
+
+    lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lscollapse-all(3)lmcollapse-all(3)le, 
+    lscollapse-current(3)lmcollapse-current(3)le, lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle.

@@ -1665,7 +1665,9 @@
   [dart(9)](dart(9)) Dart Language File  
   [def(9)](def(9)) C or C++ definition file  
   [doc(9)](doc(9)) ASCII plain text document file  
+  [doctools(9)](doctools(9)) Tcl doctools manual page    
   [dot(9)](dot(9)) Graphviz dot diagram file   
+  [dtools(9)](dtools(9)) Tcl doctools manual page      
   [e(9)](e(9)) Euphoria programming language file    
   [ehf(9)](ehf(9)) MicroEmacs 2009 help file  
   [emf(9)](emf(9)) MicroEmacs 2009 Macro File  
@@ -1768,6 +1770,7 @@
   [texi(9)](texi(9)) GNU Texinfo documentation file  
   [texinfo(9)](texinfo(9)) GNU Texinfo documentation file  
   [tk(9)](tk(9)) TK programming language  
+  [tman(9)](tman(9)) Tcl doctools manual page  
   [tmd(9)](tmd(9)) Markdown markup language with Tmdoc code   
   [tni(9)](tni(9)) UNIX t/nroff include file  
   [toml(9)](toml(9)) Toml configuration file  
@@ -3527,6 +3530,7 @@
   [cygwin(3)](cygwin(3)) Open a Cygwin BASH window  
   [dart(9)](dart(9)) Dart programming language  
   [dbx(3)](dbx(3)) UNIX Debugger  
+  [dtools(9)](dtools(9)) Tcl doctools manual page  
   [def(9)](def(9)) C or C++ definition file  
   [define-help(2)](define-help(2)) Define help information  
   [define-macro(2)](define-macro(2)) Define a new macro  
@@ -3556,6 +3560,7 @@
   [display-white-chars(3)](display-white-chars(3)) Toggle the displaying of white characters  
   [display-whitespaces(3)](display-whitespaces(3)) Toggle the displaying of white characters  
   [doc(9)](doc(9)) ASCII plain text document file  
+  [doctools(9)](doctools(9)) Tcl doctools manual page  
   [dos2unix(3f)](dos2unix(3f)) Convert DOS format files to UNIX format files  
   [dot(9)](dot(9)) Graphviz dot diagram file     
   [draw(3)](draw(3)) Simple line drawing utility  
@@ -4030,6 +4035,7 @@
   [time(2m)](time(2m)) File time stamping  
   [time(3)](time(3)) Command time evaluator  
   [tk(9)](tk(9)) TK programming language  
+  [tman(9)](tman(9)) Tcl doctools manual page  
   [tmd(9)](tmd(9)) Markdown markup language with Tmdoc code  
   [tni(9)](tni(9)) UNIX t/nroff include file  
   [toml(9)](toml(9)) Toml configuration file    
@@ -5144,6 +5150,9 @@
 
 ## Development History 
 
+  - [251101] - adding support for Tcl doctools man pages
+  - [251030] - fixing Bash indentation and issues with backticks and Euro in 
+               with dead keys keyboard layouts
   - [251026] - fixing a few install issues with PATH updates and 
        if two users install ME on the same machine
   - [251022] - adding ISO-8859-16 and CP1250, CP1251, CP1253 and CP1254
@@ -68179,4 +68188,68 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
   [compile(3)](compile(3)), [time(2m)](time(2m)).
+!! me-id: m9typ071
+! 9 tman
+! 9 doctools
+! 9 dtools
+## SYNOPSIS
+
+
+  tman - Tcl doctools manual pages
+
+
+## FILES
+
+
+  __hkdtools.emf__ - Tcl doctools text hook definition  
+  __dtools.eaf__ - Tcl doctools abbreviation file  
+  __dtools.etf__ - Tcl doctools template file
+
+
+## EXTENSIONS
+
+
+  __.tman__ - Tcl doctools markup files  
+
+## MAGIC STRINGS
+
+
+  __-*- doctools manpage__
+  
+  >  Recognized by MicroEmacs only, defines the file to be a Tcl doctools file
+     regardless of the file extension.
+
+## DESCRIPTION
+
+
+  The __tman__ file type template handles the hilighting and text formating of a
+  Tcl doctools man formatted text file. It supports as well folding by header sections,
+  item listening of header sections, abbreviations and template insertion.
+
+    
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-s__ - Start Comment  
+     __C-c C-c__ - Comment Out Line  
+     __C-c C-d__ - Delete Comment  
+     __C-c C-e__ - Comment to End of Line  
+     __C-c C-o__ - Restyle Current Comment  
+     __esc q__   - Fills Paragraph
+        
+  >  __f2__      - Open/Close Current Collapse  
+     __C-f2__    - Open/Close All Collapses         
+        
+  >  __S-f7__    - Enable/Disable Auto-Spell  
+     __C-f7__    - Auto-Spell Context Menu  
+        
+  >  __f6__      - List Items (Headers)  
+     __C-f6__    - Close List Items  
+        
+## SEE ALSO
+
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [collapse-all(3)](collapse-all(3)), 
+  [collapse-current(3)](collapse-current(3)), [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)).
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: meende

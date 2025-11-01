@@ -1145,5 +1145,7 @@ m9typ068.html	nim(9)
 m9typ069.html	swift(9)
 m9typ070.html	hs(9)
 m9typ070.html	haskell(9)
+m9typ071.html	tman(9)
+m9typ071.html	doctools(9)
 home.html	home
 home.html	MicroEmacs

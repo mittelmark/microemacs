@@ -1,0 +1,76 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)
+; Copyright (C) 1999-2025 Detlef Groth
+; See the file me.emf for copying and conditions.
+;
+; Created:    Sun Nov 1 2025
+; Authors:    Detlef Groth
+; Synopsis:   Tcl Doctools file hook (https://wiki.tcl-lang.org/page/doctools)
+;
+define-macro fhook-dtools
+  @# buffer-init "dtools"
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-dtools.name "dtools"
+set-variable .fhook-dtools.setup &reg "/history/fhook/dtools" "bdfghijnopswx"
+set-variable .fhook-dtools.setup-mask "abdefghijkmnopstuwx"
+set-variable .fhook-dtools.comment "|[comment {|}]|||||"
+
+set-variable .fhook-dtools.command-flag  "|boh|"
+set-variable .fhook-dtools.command-name  "|fill-paragraph|"
+set-variable .fhook-dtools.command-nbind "||"
+set-variable .fhook-dtools.command-kbind "|esc q|"
+set-variable .fhook-dtools.command-desc  "|Fill Paragraph|"
+
+; setup item-list
+set-variable .fhook-dtools.item-list-s1 "^\\[section +[\"{]?\\([\\w\\s]+\\)[\"}]?"
+set-variable .fhook-dtools.item-list-r1 "Sect \ecB\\1\ecA"
+
+!if &sin "f" .fhook-dtools.setup
+  ; setup emf collapsing
+  set-variable .fhook-dtools.collapse-open  "^\\[section "
+  set-variable .fhook-dtools.collapse-close "^\\(\\[section\\|\\'\\)"
+  set-variable .fhook-dtools.collapse-mnext "-1"
+!endif
+
+!if &not &exist .hilight.dtools
+    set-variable .hilight.dtools &pinc .hilight.next 1
+!endif
+
+!if &and &sin "h" .fhook-dtools.setup &band .hilight.flags 0x02
+  0 hilight .hilight.dtools 1               $global-scheme
+
+  hilight .hilight.dtools 2 "^\\[section "      .scheme.header
+  hilight .hilight.dtools 4 "^\\[comment {" "}\\]" ""   .scheme.comment
+  hilight .hilight.dtools 4 "^\\[example {" "}\\]" ""   .scheme.comment  
+  hilight .hilight.dtools 4 "\"" "\"" ""        .scheme.string
+  hilight .hilight.dtools 0 "\\[[a-z_]+"    .scheme.keyword
+  hilight .hilight.dtools 0 "\\]" .scheme.keyword              
+!endif  
+!if &sin "x" .fhook-dtools.setup
+  ; only define the b & e hooks if time stamping is enabled
+  0 define-macro bhook-dtools
+    set-variable .timestamp $timestamp
+    set-variable $timestamp "%Y-%M-%D %h:%m"
+  !emacro
+  0 define-macro ehook-dtools
+    set-variable $timestamp .bhook-dtools.timestamp
+  !emacro
+!endif
+
+!if &sin "d" .fhook-dtools.setup
+    0 indent  .hilight.dtools 0 10
+    indent .hilight.dtools n "{"  t
+    indent .hilight.dtools o "}" -t
+    indent .hilight.dtools n "("  t
+    indent .hilight.dtools o ")" -t
+    indent .hilight.dtools n "\\["  t
+    indent .hilight.dtools o "]" -t
+    indent .hilight.dtools e "\"" "\"" ""
+    indent .hilight.dtools i "^\\s*//"
+!endif
+buffer-init-fhook "dtools" 
+

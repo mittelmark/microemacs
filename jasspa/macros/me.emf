@@ -326,6 +326,7 @@ add-file-hook ".cs"                                           fhook-cs
 add-file-hook ".nim"                                          fhook-nim
 add-file-hook ".swift"                                        fhook-swift
 add-file-hook ".hs"                                           fhook-hask
+add-file-hook ".tman"                                         fhook-dtools
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script
@@ -374,7 +375,7 @@ add-file-hook ".hs"                                           fhook-hask
 -1 add-file-hook "-!-[ \t]*lua.*-!-"             fhook-lua    ; -!- lua -!-
 -1 add-file-hook "-!-[ \t]*ps1.*-!-"             fhook-ps1    ; -!- ps1 -!-
 -1 add-file-hook "-!-[ \t]*asciidoc.*-!-"        fhook-adoc   ; -!- asciidoc -!-
-
+-1 add-file-hook "-[*!]-[ \t]*doctools manpage"  fhook-dtools ; -!- doctools manpage (Tcl)
 -1 add-file-hook "^diff "                        fhook-diff   ; diff -Naur file.c ...
 
 ; Initialize the top menu line

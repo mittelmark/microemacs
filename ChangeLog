@@ -7,9 +7,12 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <251027.0845>
+>  Last Modified : <251101.1303>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
+  [251101] - adding support for Tcl doctools man pages
+  [251030] - fixing Bash indentation and issues with backticks and Euro in 
+             with dead keys keyboard layouts
   [251026] - fixing a few install issues with PATH updates and 
              if two users install ME on the same machine
   [251022] - adding ISO-8859-16 and CP1250, CP1251, CP1253 and CP1254
