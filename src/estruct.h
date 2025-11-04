@@ -448,8 +448,8 @@ typedef struct  meWindow {
     meUShort           depth;                   /* Window number text rows      */
     meUShort           textDepth;               /* # of rows of text in window  */
     meUShort           textWidth;               /* Video number of columns      */
-    meUShort           horzScroll;              /* cur horizontal scroll column */
-    meUShort           horzScrollRest;          /* the horizontal scroll column */
+    meInt              horzScroll;              /* cur horizontal scroll column */
+    meInt              horzScrollRest;          /* the horizontal scroll column */
     meUShort           marginWidth;             /* The margin for the window    */
 #if MEOPT_EXTENDED
     meUShort           flags;                   /* $window-flags                */
@@ -647,23 +647,23 @@ typedef struct meAnchor {
 /* A position, stores the current window, buffer, line etc which can
  * be restore later, used by push-position and pop-position */
 typedef struct mePosition {
-    struct mePosition *next ;                   /* pointer to previous position (stack)      */
-    meWindow          *window ;                 /* Current window                            */
-    struct meBuffer   *buffer ;                 /* windows buffer                            */
-    meInt              anchor ;                 /* Anchor name                               */
-    meInt              vertScroll ;             /* windows top line number                   */
-    meInt              dotLineNo ;              /* current line number                       */
-    meInt              markLineNo;              /* current mark line number                  */
-    meUShort           winMinRow ;              /* Which window - store the co-ordinate      */
-    meUShort           winMinCol ;              /* so we can restore to the best matching    */
-    meUShort           winMaxRow ;              /* window on a goto - this greatly improves  */
-    meUShort           winMaxCol ;              /* its use.                                  */
-    meUShort           horzScroll ;             /* cur horizontal scroll column              */
-    meUShort           horzScrollRest ;         /* the horizontal scroll column              */
-    meUShort           dotOffset ;              /* Byte offset for "."                       */
-    meUShort           markOffset ;             /* Byte offset for "mark"       */
-    meUShort           flags ;                  /* Whats stored bit mask                     */
-    meUShort           name ;                   /* position name, (letter associated with it)*/
+    struct mePosition *next;                   /* pointer to previous position (stack)      */
+    meWindow          *window;                 /* Current window                            */
+    struct meBuffer   *buffer;                 /* windows buffer                            */
+    meInt              anchor;                 /* Anchor name                               */
+    meInt              vertScroll;             /* windows top line number                   */
+    meInt              dotLineNo;              /* current line number                       */
+    meInt              markLineNo;             /* current mark line number                  */
+    meUShort           winMinRow;              /* Which window - store the co-ordinate      */
+    meUShort           winMinCol;              /* so we can restore to the best matching    */
+    meUShort           winMaxRow;              /* window on a goto - this greatly improves  */
+    meUShort           winMaxCol;              /* its use.                                  */
+    meInt              horzScroll;             /* cur horizontal scroll column              */
+    meInt              horzScrollRest;         /* the horizontal scroll column              */
+    meUShort           dotOffset;              /* Byte offset for "."                       */
+    meUShort           markOffset;             /* Byte offset for "mark"       */
+    meUShort           flags;                  /* Whats stored bit mask                     */
+    meUShort           name;                   /* position name, (letter associated with it)*/
 } mePosition;
 #define mePOS_WINDOW    0x001
 #define mePOS_WINXSCRL  0x002
@@ -1017,7 +1017,7 @@ typedef struct meHilight {
  * (front and back color + font) and the column on which the style ends.
  */
 typedef struct {
-    meUShort           column;                  /* change column */
+    meInt              column;                  /* change column */
     meScheme           scheme;                  /* style index */
 } meSchemeSet;    
 

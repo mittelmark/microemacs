@@ -2395,12 +2395,18 @@ indentLookBack(meLine *lp, meUByte lindent, meUShort offset)
     meVideoLine vps[2] ;
     meUShort noColChng ;
     
-    meAssert(hilights == indents) ;
+    /*    meAssert(hilights == indents) ;
     vps[0].hilno = lindent ;
     vps[0].wind = frameCur->windowCur ;
     vps[0].line = lp ;
     vps[0].flag = 0 ;
-    vps[0].bracket = NULL ;
+    vps[0].bracket = NULL ;*/
+    meAssert(hilights == indents);
+    vps[0].wind = frameCur->windowCur;
+    vps[0].line = lp;
+    vps[0].flag = 0;
+    vps[1].hilno = vps[0].hilno = lindent;
+    vps[1].bracket = vps[0].bracket = NULL;    
     noColChng = hilightLine(vps,0) ;
     while(noColChng > 0)
     {
