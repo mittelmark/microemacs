@@ -22,11 +22,12 @@ set-variable .fhook-hask.comment "|--|--|--| -- | -- |f|"
 set-variable .fhook-hask.exact -1
 
 ; setup item-list
-set-variable .fhook-hask.item-list-s1 "^\\(\\w+\\)[ \t]+.*=[ \t]*do[ \t]*$"
+; setup item-list
+set-variable .fhook-hask.item-list-s1 "^\\(\\w+\\)[ \t]+::"
 set-variable .fhook-hask.item-list-r1 "Func \CCb\\1\CCA"
 
-set-variable .fhook-hask.collapse-open   "^.+=[ \t]*do[ \t]*$"
-set-variable .fhook-hask.collapse-close "^[a-z]\\|\\'"
+set-variable .fhook-hask.collapse-open   "^\\w+[ \t]*::"
+set-variable .fhook-hask.collapse-close "^$\\|\\'"
 set-variable .fhook-hask.collapse-mclose "0"
 set-variable .fhook-hask.collapse-mnext  "-1"
 
