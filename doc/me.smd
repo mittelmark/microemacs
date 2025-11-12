@@ -5150,6 +5150,9 @@
 
 ## Development History 
 
+  - [251112] - Release set to v09.25
+  - [251109] - fixing function folding and item list for Haskell
+  - [251104] - crash for very long lines to hiligth fix (Js in HTML for example)
   - [251101] - adding support for Tcl doctools man pages
   - [251030] - fixing Bash indentation and issues with backticks and Euro in 
                with dead keys keyboard layouts
@@ -68151,7 +68154,8 @@ $a
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the Haskell files. The folds occur
-     about and ending __do__ keyword and word character on a line start afterwards.
+     about function definitions on line with the __::__ operator and an empty
+     line with no whitepace characters on it.
 
   > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
     - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
@@ -68161,7 +68165,7 @@ $a
   >  The Haskell mode offers beside folding as well support for displaying an outline
      of the functions of the Haskell file for easy navigation using the 
      [item-list(3)](item-list(3)) command. It is required that the function definition 
-     line ends with the do keyword.
+     containst the __::__ operator.
 
   __Working Environment__
   

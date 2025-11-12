@@ -67170,7 +67170,8 @@ $a
     cDFolding and Information HidingcA
     
        Generic folding is enabled within the Haskell files. The folds occur
-       about and ending cDdocA keyword and word character on a line start afterwards.
+       about function definitions on line with the cD::cA operator and an empty
+       line with no whitepace characters on it.
 
       - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
       - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
@@ -67180,7 +67181,7 @@ $a
        The Haskell mode offers beside folding as well support for displaying an outline
        of the functions of the Haskell file for easy navigation using the 
        lsitem-list(3)lmitem-list(3)le command. It is required that the function definition 
-       line ends with the do keyword.
+       containst the cD::cA operator.
 
     cDWorking EnvironmentcA
     
