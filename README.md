@@ -160,6 +160,9 @@ Linux, FreeBSD or Windows Cygwin/Msys system.
 You can then start  either the  terminal  version with the command `mecb arguments` or the
 X11/Windows version with `mewb arguments`.
 
+On Cygwin Windows you might as well need to install `libxt6` for instance on MobaXterm you write `apt install libxt6` to
+run the `mewb` executable.
+
 To get the colored  terminal  version you should  activate  TermCap  colors in
 Tools-User Setup-Platform and run the mecb version like this:
 
