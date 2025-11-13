@@ -216,9 +216,13 @@ To add the  fontpath  at every time you start your  system  automatically  you
 might  need  to  add  these  two  lines  as  an   autostart   entry  for  your
 desktop/window manager.
 
-Unfortunately  some system like Red Hat  Enterprise 10 or Alma Linux 10 do not allow anymore to
-install  these old X11 tools like `xset` you have in this case  install  the fonts
-with sudo privileges in the existing font directories.
+> [!TIP]
+> Unfortunately  some recent Linux systems like Red Hat  Enterprise 10 or Alma Linux 10 do not
+> allow anymore to install these old X11 tools like `xset`. Workaround: you have in this case
+> install the fonts with sudo privileges in the existing X11 font directories. On a
+> Alma  Linux 10 system  for  instance I  copied  as sudo the  indexed  fonts  (using
+> mkfontscale) into the directory /etc/X11/fontpath.d/fonts and they are then available as well
+> for other older X11 applications.
 
 <a name="spelling"> </a>
 ### Install Spelling Dictionaries
