@@ -376,7 +376,7 @@ Here are the steps to compile on Cygwin Windows if using the apt-cyg / cyg packa
 For Windows I used [MobaXterm](https://mobaxterm.mobatek.net/) version 25.2 for the compilation.
 
 ```
-apt install git gcc-core make unzip git libncurses-devel libxt-devel zlib-devel
+apt install git gcc-core make unzip git libncurses-devel libXt-devel zlib-devel
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ## Or if git is not working or not installed (what was true for MobaXterm 25.2): 
