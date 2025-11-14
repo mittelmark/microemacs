@@ -82,7 +82,7 @@ set-variable .fhook-python.item-list-r2 "Class \ecB\\1\ecA"
     ; true/false boolean constant
     hilight   .hilight.python 1 "False"             .scheme.constant
     hilight   .hilight.python 1 "True"              .scheme.constant
-    
+    hilight   .hilight.python 1 "None"              .scheme.constant    
     ; Operators
     hilight   .hilight.python 0 "("                 .scheme.operator
     hilight   .hilight.python 0 ")"                 .scheme.operator
