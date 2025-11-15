@@ -216,6 +216,12 @@ To add the  fontpath  at every time you start your  system  automatically  you
 might  need  to  add  these  two  lines  as  an   autostart   entry  for  your
 desktop/window manager.
 
+Here an example on what you can add to your .bashrc to add that font path after you logged in:
+
+```
+xset q | grep -A 2 Font | grep -q /.local/share/fonts || xset +fp ~/.local/share/fonts && xset fp rehash
+```
+
 > [!TIP]
 > Unfortunately  some recent Linux systems like Red Hat  Enterprise 10 or Alma Linux 10 do not
 > allow anymore to install these old X11 tools like `xset`. Workaround: you have in this case
