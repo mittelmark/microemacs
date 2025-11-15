@@ -22,6 +22,7 @@ jobs:
         run: |
            echo `uname -a`
            uname -r
+           echo "shell=${SHELL}"
            brew install xquartz
            brew install make
            brew install coreutils
