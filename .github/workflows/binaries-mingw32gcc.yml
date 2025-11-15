@@ -73,9 +73,9 @@ jobs:
         cp COPYING MicroEmacs09-${VRS}-Windows/
         cp README-standalone.md MicroEmacs09-${VRS}-Windows/
         cd jasspa 
-        zip macros.zip macros/*
-        cd ..
-        cp jasspa/macros.zip MicroEmacs09-${VRS}-Windows/
+        #zip macros.zip macros/*
+        #cd ..
+        #cp jasspa/macros.zip MicroEmacs09-${VRS}-Windows/
 
     - name: Make mecb release
       run: |
