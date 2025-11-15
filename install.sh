@@ -144,12 +144,18 @@ function install-me {
     # Check if ~/bin is already in the PATH
     if [ "`echo $PATH | grep /.local/bin`" == "" ]; then
         # If it's not in the PATH, add it to ~/.bashrc
-        echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-        # Update the PATH for the current session
-        export PATH="$HOME/.local/bin:$PATH"
-        echo "PATH variable was updated in your .bashrc"
-        echo "use 'source ~/.bashrc' to update the PATH variable in your current terminal session"
-        echo "If using an other shell than Bash then add the folder '~/.local/bin' manually to your PATH variable!"
+        if [ "$SHELL" == "/bin/bash" ]; then 
+            echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+            # Update the PATH for the current session
+            echo "PATH variable was updated in your .bashrc"
+            echo "use 'source ~/.bashrc' to update the PATH variable in your current terminal session"
+            echo "If using an other shell than Bash or Zsh then add the folder '~/.local/bin' manually to your PATH variable!"
+        elif [ "$SHELL" == "/bin/zsh" ]; then 
+            echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+            echo "PATH variable was eventually updated in your .zshrc"
+            echo "use 'source ~/.zshrc' to update the PATH variable in your current terminal session"
+            echo "If using an other shell than Bash or Zsh then add the folder '~/.local/bin' manually to your PATH variable!"
+        fi
     fi
 
     # Download the dummy.sh script from the internet
