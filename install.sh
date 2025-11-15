@@ -87,7 +87,7 @@ elif [ "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)'`" != "" ]; then
 else
     ## Debian derivatives
     if [ $KERNEL -eq 5 ]; then
-        if [ ${MACHINE} == "i686" ];
+        if [ ${MACHINE} == "i686" ]; then
             MECB="linux-${KERNEL}-${MACHINE}-ubuntu-18-microemacs-${VERSION}-mecb"
             MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-18-microemacs-${VERSION}-mewb"
         else
