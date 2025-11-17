@@ -7,9 +7,15 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <251112.0920>
+>  Last Modified : <251117.1822>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
+
+  [251117] - improved font-path handling in installer
+           - fixing issues in Python and R abbreviation files
+  [251115] - reducing build size for Windows builds
+  [251113] - cygwin.gmk now does not need perl, more hints on Python build
+  [251112] - Adding MacOS15-intel build
   [251112] - Release set to v09.25
   [251109] - fixing function folding and item list for Haskell
   [251104] - crash  for  very  long  lines  to  hiligth  fix (Js in HTML  for
