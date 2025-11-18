@@ -246,9 +246,10 @@ bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/d
 
 > [!CAUTION]
 > You can't run MicroEmacs 09 or MicroEmacs 25 currently easily on the same machine. If you installed ME 25 and it works fine,
-> stick with it. MicroEmacs 09 is just thought as a fallback option when ME 25 does not work as expected.  In this case pelase fill
-> an issue item. The cygwin  binaries can however be used in parallel to ME 25 Windows builds. 
-> Cygwin installations are installed as described above using the Bash script.
+> stick with it. MicroEmacs 09 is just thought as a fallback option when ME 25 does not work as expected.  In this case please fill
+> an issue item on the [ME 25 project page](https://github.com/bjasspa/jasspa). 
+> The Windows Cygwin  binaries can however be used in parallel to ME 25 Windows builds. 
+> Cygwin binaries are installed as described above using the Bash install.sh script.
 
 
 For a Windows installation you can do the following after opening a Powershell
