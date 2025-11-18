@@ -155,7 +155,7 @@ function install-me {
         mkdir -p ~/.local/bin
     fi
     if [ -f "${HOME}/.local/bin/mecb" ]; then
-        rm ${HOME}/.local/bin/me?b
+        rm ${HOME}/.local/bin/me?b*
     fi
     if [ -f "${HOME}/.local/bin/mecu" ]; then
         rm ${HOME}/.local/bin/mecu
@@ -211,6 +211,13 @@ function install-me {
 install-me
 if [ "`which mecb 2>/dev/null`" != "" ]; then
     echo "Installed and checking: ~/.local/bin/mecb"
+    if [ ! -x ~/.local/bin/mecb ]; then
+        chmod 755 ~/.local/bin/mecb
+    fi
+    if [ ! -x ~/.local/bin/mewb ]; then
+        chmod 755 ~/.local/bin/mewb
+    fi
+    
     ~/.local/bin/mecb -V
     echo "Installed and checking: ~/.local/bin/mewb"
     ~/.local/bin/mewb -V
