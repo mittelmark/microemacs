@@ -14,7 +14,7 @@
 
 > [!NOTE]
 > New users should consider using [MicroEmacs 2025](https://github.com/bjasspa/jasspa) 
-> which has better support for Unicode in terminals, more modern font support and as well adds
+> which has better support for Unicode in terminals, more modern font support on X11 and as well adds
 > SSL (https) support. New development will take place mainly in the MicroEmacs 25  project. 
 > Here we will add  smaller improvements and bugfixes.  
 > Currently FreeBSD, Linux 32 bit, Linux kernel 4 builds and Windows Cygwin builds are only  available  for
