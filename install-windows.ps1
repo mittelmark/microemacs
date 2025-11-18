@@ -2,8 +2,8 @@
 function Install-Me ($me) {
     # Set the URL of the ZIP file and the name of the file to extract
     
-    $zipUrl = "https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/windows-10-intel-microemacs-091225b2-"+$me+".zip"
-    $fileToExtract = "windows-10-intel-microemacs-091225b2-"+$me+"/bin/"+$me+".exe"
+    $zipUrl = "https://github.com/mittelmark/microemacs/releases/download/v09.12.25/windows-10-intel-microemacs-091225-"+$me+".zip"
+    $fileToExtract = "windows-10-intel-microemacs-091225-"+$me+"/bin/"+$me+".exe"
     
     # Set the destination folder (Microsoft\WindowsApps in the user's profile)
     $destFolder = Join-Path $env:LOCALAPPDATA "Microsoft\WindowsApps"
