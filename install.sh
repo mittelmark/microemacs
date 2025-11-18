@@ -107,7 +107,7 @@ elif [ "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)'`" != "" ]; then
 else
     ## Debian derivatives
     if [ $KERNEL -eq 5 ]; then
-        if [ ${MACHINE} == "i686" ]; then
+        if [ ${MACHINE} = "i686" ]; then
             MECB="linux-${KERNEL}-${MACHINE}-ubuntu-18-microemacs-${VERSION}-mecb"
             MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-18-microemacs-${VERSION}-mewb"
         else
@@ -155,14 +155,14 @@ function install-me {
         mkdir -p ~/.local/bin
     fi
     if [ -f "${HOME}/.local/bin/mecb" ]; then
-        rm ~/.local/bin/me?b
+        rm ${HOME}/.local/bin/me?b
     fi
     if [ -f "${HOME}/.local/bin/mecu" ]; then
-        rm ~/.local/bin/mecu
+        rm ${HOME}/.local/bin/mecu
     fi
     
     # Check if ~/bin is already in the PATH
-    if [ "`echo $PATH | grep /.local/bin`" == "" ]; then
+    if [ "`echo $PATH | grep /.local/bin`" = "" ]; then
         # If it's not in the PATH, add it to ~/.bashrc
         if [ "$SHELL" = "/bin/bash" ] || "$SHELL" = "/bin/bash.exe" ]; then 
             ## bash.exe on Cygwin or Msys
@@ -211,9 +211,9 @@ function install-me {
 install-me
 if [ "`which mecb 2>/dev/null`" != "" ]; then
     echo "Installed and checking: ~/.local/bin/mecb"
-    mecb -V
+    ~/.local/bin/mecb -V
     echo "Installed and checking: ~/.local/bin/mewb"
-    mewb -V
+    ~/.local/bin/mewb -V
 fi
 if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ] || [ "$OS" = "cygwin" ]; then
     install-fonts
