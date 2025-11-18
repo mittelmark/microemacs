@@ -4,7 +4,8 @@ VERSION=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-
 OSV=`grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/'`
 KERNEL=`uname -r | grep -oE '^[0-9]'`
 OSVERSION="$(DIST)$(OSV)"
-RELEASE=freebsd-$(OSV)-microemacs-$(VERSION)
+MACHINE=`uname -m`
+RELEASE=freebsd-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
 app=mecb
 default:
 	echo "Makefile for FreeBSD systems"
