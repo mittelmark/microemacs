@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 OS=`uname -o`
 MACHINE=`uname -m`
+OSNAME=`uname -s`
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
-if [ "$MACHINE" = "cygwin" ] ; then
+if [ "`uname -s | grep -o CYGWIN`" = "CYGWIN" ] ; then
     KERNEL=`uname -r | grep -Eo '^[1-9].[0-9]'`
 fi
 BASEURL=`curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
