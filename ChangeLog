@@ -7,10 +7,10 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <251117.1822>
+>  Last Modified : <251118.0902>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
-
+  [251118] - Release v091225
   [251117] - improved font-path handling in installer
            - fixing issues in Python and R abbreviation files
   [251115] - reducing build size for Windows builds

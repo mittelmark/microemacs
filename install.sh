@@ -21,8 +21,8 @@ if [ $OS = "Msys" ]; then
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
-    if [ "$KERNEL" = "3.4" ]; then
-        KERNEL="3.3"
+    if [ "$KERNEL" = "3.5" ]; then
+        KERNEL="3.4"
     fi
     echo "installing for cygwin version $CYGVERSION ..."
     MECB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mecb"
@@ -32,17 +32,35 @@ elif [ $OS = "Darwin" ]; then
     if [ $KERNEL -eq 22 ]; then    
        MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
        MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 23 ]; then    
+    elif [ $KERNEL -eq 23 -a $MACHINE = "x86_64" ]; then    
+       MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
+    elif [ $KERNEL -eq 23 -a $MACHINE = "arm64" ]; then    
        MECB="macos-14-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-14-arm64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 24 ]; then    
+    elif [ $KERNEL -eq 24 -a $MACHINE = "x86_64" ]; then    
+       MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
+    elif [ $KERNEL -eq 24 -a $MACHINE = "arm64" ]; then    
        MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 25 ]; then    
+    elif [ $KERNEL -eq 25 -a $MACHINE = "arm64" ]; then    
+       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
+    elif [ $KERNEL -eq 25 -a $MACHINE = "x86_64" ]; then    
+       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"
+    elif [ $KERNEL -eq 25 -a $MACHINE = "arm64" ]; then    
+       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
+    elif [ $KERNEL -eq 26 -a $MACHINE = "x86_64" ]; then    
+       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"
+    elif [ $KERNEL -eq 26 -a $MACHINE = "arm64" ]; then    
        MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
     else
-        echo "Error: Kernel $KERNEL on $OS not supported!"    
+        echo "Error: Kernel $KERNEL on $MACHINE for $OS not supported!"    
         exit
     fi
 elif [ $OS = "FreeBSD" ]; then

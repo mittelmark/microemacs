@@ -12,12 +12,13 @@
 ![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
 ![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin/badge.svg)
 
-__Hint:__ New users should consider using [MicroEmacs 2025](https://github.com/bjasspa/jasspa) - which has better support for
-Unicode in terminals and as well adds SSL (https) support. New development will
-take place mainly in the MicroEmacs 25  project.  Here we will add  bugfixes  and just
-small scale  improvements.  Currently FreeBSD, Linux 32 bit and Windows Cygwin 
-builds are only  available  for
-MicroEmacs 09, so the binaries for this project here which you find below.
+> [!HINT]
+> New users should consider using [MicroEmacs 2025](https://github.com/bjasspa/jasspa) 
+> which has better support for Unicode in terminals, more modern font support and as well adds
+> SSL (https) support. New development will take place mainly in the MicroEmacs 25  project. 
+> Here we will add  smaller improvements and bugfixes.  
+> Currently FreeBSD, Linux 32 bit, Linux kernel 4 builds and Windows Cygwin builds are only  available  for
+> MicroEmacs 09, so the binaries for this project here which you find below.
 
 - [Executable Types](#Types)
 - [New Features](#Features)
@@ -36,8 +37,8 @@ file  executable  for Windows,  Linux, MacOS and FreeBSD.
 Main features - Pros:
 
 - small!! and fast!!
-- same user interface in terminal and in GUI mode
-- Windows, Windows Cygwin, Linux, macOS and FreeBSD versions
+- character based user interface in terminal and in GUI mode working the same way
+- Windows, Windows Cygwin, Linux, macOS and FreeBSD versions all working the same file
 - single file installs possible (2.5MB-4MB file size)
 - Emacs like (default) or CUA key bindings available
 - menu entries for all main functions (Esc = in Terminal mode for menu)
@@ -47,7 +48,7 @@ Main features - Pros:
 
 Cons: 
 
-- No Unicode (but full ISO support) - you can type all the keys from your keyboard
+- No Unicode (but full ISO and Windows encoding support) - you can type usually all the keys from your keyboard
 - No softwrap (but automatic wrap is available)
 
 This  is a fork  of  [Jasspa  MicroEmacs](http://www.jasspa.com)  forked  from
@@ -430,51 +431,51 @@ utility from FreeBSD and does not need the gnu-make version `gmake`.
 
 <a name="Downloads"> </a>
 
-## Download Prebuild MicroEmacs Executables (v09.12.25.beta2)
+## Download Prebuild MicroEmacs Executables (v09.12.25)
 
-This is an updated  release  providing a new  architecture:  Aarch64 for Linux
-as well as a lot of new programming  languages, extended support for existing  languages and
-documentation  extensions. The main new features and changes in comparison to the
-2025 beta1 Release are:
+This release provides the following new features:
 
-- support for Linux-Aarch64
-- support for Cygwin-3.3 32bit and Cygwin 3.5 and 3.6 64bit 
-- support for editing  C3, Dart, Octave, Julia, Rust, V, Zig files
-- improved support and documentation for C/C++. Fortran, Ada, Euphoria, Shell,
-  Python, R and others 
-- new command file-exec, file-format and file-lint
-- starting shortcut hilights in abbreviations to simplify use of snippets
-- 
-__Please   note  that  new   developments   take  place  in  the   [MicroEmacs
-25](https://github.com/bjasspa/jasspa)  branch.  So new  users  might try this
-release first.__ This branch should contain most of the things described above
-but as well  provided  https  support and mouse  support in the  terminal  but
-currently does not provide Cygwin build, older Linux 64 bit,  Linux 32 bit and
-FreeBSD builds (yet).
+> [!NOTE] 
+> Please   note  that  new   developments   take  place mainly in  the
+> [MicroEmacs 25](https://github.com/bjasspa/jasspa)  branch.  So new  users  might try this
+> release first. This ME25 branch should contain most of the things described above
+> but as well  provided  more modern fonts support (TTF and OTF) using the libxft library,
+> https  support and mouse  support in the  terminal  but
+> currently does not provide Cygwin build, older Linux 64 bit,  Linux 32 bit and
+> FreeBSD builds (yet).
+
+
+- new programming languages supported: Vala, Kotlin, C#, Nim, Swift, Haskell
+- new markup languages supported: AsciiDoc, Typst, Quarkdown, Tcl manual pages
+- new encodings: ISO-8859-16 - Southeast Europe, CP1250, CP1251, CP1253, CP1254
+- new platform: MacOS-15 intel
+- improvements for Bash, Python, R, installer and font-path handling in installer
+- fix: Crash on very, very long lines (thanks to Steven Phillips)
+- fix: For for keys on dead key keyboard layouts
 
 | OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
 |:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
-| Linux i686  | Ubuntu 18 / Antix 23 (32bit) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-ubuntu-18-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-ubuntu-18-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-ubuntu-18-microemacs-091225b2-mecwb.zip) |
-|             | Fedora 28 (32bit) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-fedora-28-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-fedora-28-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-fedora-28-microemacs-091225b2-mecwb.zip) |
-| Linux x86_64 | RHEL 8 / AlmaLinux 8 / Fedora 22-29 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-4-x86_64-almalinux-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-x86_64-almalinux-8-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-4-x86_64-almalinux-microemacs-091225b2-mecwb.zip) |
-|             | RHEL 9 / AlmaLinux 9 / Fedora 30-36  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-almalinux-9-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-almalinux-9-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-almalinux-9-microemacs-091225b2-mecwb.zip) |
-|             | RHEL 10 / AlmaLinux 10 / Fedora 27-42 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-almalinux-10-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-almalinux-10-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-almalinux-10-microemacs-091225b2-mecwb.zip) |
-|             | Arch / Manjaro Linux     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-manjaro-0-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-manjaro-0-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-manjaro-0-microemacs-091225b2-mecwb.zip) |
-|             | Ubuntu 18         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-18-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-x86_64-ubuntu-18-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-18-microemacs-091225b2-mecwb.zip) |
-|             | Ubuntu 20         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-20-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-20-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-20-microemacs-091225b2-mecwb.zip) |
-|             | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-22-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-22-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-22-microemacs-091225b2-mecwb.zip) |
-|             | Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-24-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-24-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-24-microemacs-091225b2-mecwb.zip) |
-| Linux aarch64 | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-22-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-22-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-22-microemacs-091225b2-mecwb.zip) |
-|             |   Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-24-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-24-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-24-microemacs-091225b2-mecwb.zip) |
-| MacOS       | MacOS 13 (intel64)  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-13-intel-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-13-intel-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-13-intel-microemacs-091225b2-mecwb.zip) |
-|             | MacOS 14 (arm64)    | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-14-apple-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-14-apple-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-14-apple-microemacs-091225b2-mecwb.zip) |
-|             | MacOS 15 (arm64)    | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-15-apple-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-15-apple-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-15-apple-microemacs-091225b2-mecwb.zip) |
-| FreeBSD     | FreeBSD 14 (x86_x64) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/freebsd-14-amd64-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/freebsd-14-amd64-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/freebsd-14-amd64-microemacs-091225b2-mecwb.zip) |
-| Windows     | Windows 10/11     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/windows-10-intel-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/windows-10-intel-microemacs-091225b2-mewb.zip) | - |
-|             | Windows Cygwin 3.3-i686 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.3-i686-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.3-i686-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.3-i686-microemacs-091225b2-mecwb.zip) |
-|             | Windows Cygwin 3.5-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecwb.zip) |
-|             | Windows Cygwin 3.6-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-x86_64-microemacs-091225b2-mecwb.zip) |
-
+| Linux i686  | Ubuntu 18 / Antix 23 (32bit) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-i686-ubuntu-18-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-i686-ubuntu-18-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-i686-ubuntu-18-microemacs-091225-mecwb.zip) |
+|             | Fedora 28 (32bit) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-i686-fedora-28-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-i686-fedora-28-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-i686-fedora-28-microemacs-091225-mecwb.zip) |
+| Linux x86_64 | RHEL 8 / AlmaLinux 8 / Fedora 22-29 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-4-x86_64-almalinux-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-x86_64-almalinux-8-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-4-x86_64-almalinux-microemacs-091225-mecwb.zip) |
+|             | RHEL 9 / AlmaLinux 9 / Fedora 30-36  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-almalinux-9-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-almalinux-9-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-almalinux-9-microemacs-091225-mecwb.zip) |
+|             | RHEL 10 / AlmaLinux 10 / Fedora 27-42 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-almalinux-10-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-almalinux-10-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-almalinux-10-microemacs-091225-mecwb.zip) |
+|             | Arch / Manjaro Linux     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-manjaro-0-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-manjaro-0-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-manjaro-0-microemacs-091225-mecwb.zip) |
+|             | Ubuntu 18         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-ubuntu-18-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-x86_64-ubuntu-18-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-ubuntu-18-microemacs-091225-mecwb.zip) |
+|             | Ubuntu 20         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-ubuntu-20-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-ubuntu-20-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-5-x86_64-ubuntu-20-microemacs-091225-mecwb.zip) |
+|             | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-ubuntu-22-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-ubuntu-22-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-ubuntu-22-microemacs-091225-mecwb.zip) |
+|             | Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-ubuntu-24-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-ubuntu-24-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-x86_64-ubuntu-24-microemacs-091225-mecwb.zip) |
+| Linux aarch64 | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-aarch64-ubuntu-22-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-aarch64-ubuntu-22-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-aarch64-ubuntu-22-microemacs-091225-mecwb.zip) |
+|             |   Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-aarch64-ubuntu-24-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-aarch64-ubuntu-24-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/linux-6-aarch64-ubuntu-24-microemacs-091225-mecwb.zip) |
+| MacOS       | MacOS 13 (intel64)  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-13-intel-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-13-intel-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-13-intel-microemacs-091225-mecwb.zip) |
+|             | MacOS 15 (intel64)  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-15-intel-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-15-intel-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-15-intel-microemacs-091225-mecwb.zip) |
+|             | MacOS 14 (arm64)    | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-14-apple-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-14-apple-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-14-apple-microemacs-091225-mecwb.zip) |
+|             | MacOS 15 (arm64)    | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-15-apple-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-15-apple-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/macos-15-apple-microemacs-091225-mecwb.zip) |
+| FreeBSD     | FreeBSD 14 (x86_x64) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/freebsd-14-amd64-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/freebsd-14-amd64-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/freebsd-14-amd64-microemacs-091225-mecwb.zip) |
+| Windows     | Windows 10/11     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/windows-10-intel-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/windows-10-intel-microemacs-091225-mewb.zip) | - |
+|             | Windows Cygwin 3.3-i686 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.3-i686-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.3-i686-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.3-i686-microemacs-091225-mecwb.zip) |
+|             | Windows Cygwin 3.4-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.4-x86_64-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.4-x86_64-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.4-x86_64-microemacs-091225-mecwb.zip) |
+|             | Windows Cygwin 3.6-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.6-microemacs-091225-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.6-microemacs-091225-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25/cygwin-3.6-x86_64-microemacs-091225-mecwb.zip) |
 
 __Installation:__
 
@@ -545,6 +546,45 @@ dictionary.
 You  should  download  the  files  for you  language  and place  them into the
 ME config folder, usually _~/.jasspa_, in your home directory. On Windows check user-setup where the
 ME user folder is.
+
+
+## Download Prebuild MicroEmacs Executables (v09.12.25.beta2)
+
+This is an updated  release  providing a new  architecture:  Aarch64 for Linux
+as well as a lot of new programming  languages, extended support for existing  languages and
+documentation  extensions. The main new features and changes in comparison to the
+2025 beta1 Release are:
+
+- support for Linux-Aarch64
+- support for Cygwin-3.3 32bit and Cygwin 3.5 and 3.6 64bit 
+- support for editing  C3, Dart, Octave, Julia, Rust, V, Zig files
+- improved support and documentation for C/C++. Fortran, Ada, Euphoria, Shell,
+  Python, R and others 
+- new command file-exec, file-format and file-lint
+- starting shortcut hilights in abbreviations to simplify use of snippets
+- 
+| OS          | Platform          | mecb (terminal) | mewb (GUI)    | mecwb (terminal+GUI)       |
+|:-----------:|:-----------------:|:---------------:|:-------------:|:--------------------------:|
+| Linux i686  | Ubuntu 18 / Antix 23 (32bit) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-ubuntu-18-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-ubuntu-18-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-ubuntu-18-microemacs-091225b2-mecwb.zip) |
+|             | Fedora 28 (32bit) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-fedora-28-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-fedora-28-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-i686-fedora-28-microemacs-091225b2-mecwb.zip) |
+| Linux x86_64 | RHEL 8 / AlmaLinux 8 / Fedora 22-29 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-4-x86_64-almalinux-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-x86_64-almalinux-8-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-4-x86_64-almalinux-microemacs-091225b2-mecwb.zip) |
+|             | RHEL 9 / AlmaLinux 9 / Fedora 30-36  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-almalinux-9-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-almalinux-9-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-almalinux-9-microemacs-091225b2-mecwb.zip) |
+|             | RHEL 10 / AlmaLinux 10 / Fedora 27-42 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-almalinux-10-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-almalinux-10-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-almalinux-10-microemacs-091225b2-mecwb.zip) |
+|             | Arch / Manjaro Linux     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-manjaro-0-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-manjaro-0-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-manjaro-0-microemacs-091225b2-mecwb.zip) |
+|             | Ubuntu 18         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-18-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-x86_64-ubuntu-18-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-18-microemacs-091225b2-mecwb.zip) |
+|             | Ubuntu 20         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-20-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-20-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-5-x86_64-ubuntu-20-microemacs-091225b2-mecwb.zip) |
+|             | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-22-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-22-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-22-microemacs-091225b2-mecwb.zip) |
+|             | Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-24-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-24-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-x86_64-ubuntu-24-microemacs-091225b2-mecwb.zip) |
+| Linux aarch64 | Ubuntu 22         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-22-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-22-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-22-microemacs-091225b2-mecwb.zip) |
+|             |   Ubuntu 24         | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-24-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-24-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/linux-6-aarch64-ubuntu-24-microemacs-091225b2-mecwb.zip) |
+| MacOS       | MacOS 13 (intel64)  | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-13-intel-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-13-intel-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-13-intel-microemacs-091225b2-mecwb.zip) |
+|             | MacOS 14 (arm64)    | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-14-apple-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-14-apple-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-14-apple-microemacs-091225b2-mecwb.zip) |
+|             | MacOS 15 (arm64)    | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-15-apple-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-15-apple-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/macos-15-apple-microemacs-091225b2-mecwb.zip) |
+| FreeBSD     | FreeBSD 14 (x86_x64) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/freebsd-14-amd64-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/freebsd-14-amd64-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/freebsd-14-amd64-microemacs-091225b2-mecwb.zip) |
+| Windows     | Windows 10/11     | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/windows-10-intel-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/windows-10-intel-microemacs-091225b2-mewb.zip) | - |
+|             | Windows Cygwin 3.3-i686 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.3-i686-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.3-i686-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.3-i686-microemacs-091225b2-mecwb.zip) |
+|             | Windows Cygwin 3.5-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.5-x86_64-microemacs-091225b2-mecwb.zip) |
+|             | Windows Cygwin 3.6-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-microemacs-091225b2-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta2/cygwin-3.6-x86_64-microemacs-091225b2-mecwb.zip) |
 
 
 ## Download Prebuild MicroEmacs Executables (v09.12.25.beta1)
