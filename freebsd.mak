@@ -1,7 +1,7 @@
 ##version=091224b1
 OS=`uname -o | sed 's/FreeBSD/freebsd/'`
 VERSION=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | perl -ane 'print $$F[0]'`
-OSV=`grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/' | sed -e 's/25/14'`
+OSV=`grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/' | sed -e 's/25/14/'`
 KERNEL=`uname -r | grep -oE '^[0-9]'`
 OSVERSION="$(DIST)$(OSV)"
 MACHINE=`uname -m`
