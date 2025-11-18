@@ -164,7 +164,7 @@ function install-me {
     # Check if ~/bin is already in the PATH
     if [ "`echo $PATH | grep /.local/bin`" = "" ]; then
         # If it's not in the PATH, add it to ~/.bashrc
-        if [ "$SHELL" = "/bin/bash" ] || "$SHELL" = "/bin/bash.exe" ]; then 
+        if [ "$SHELL" = "/bin/bash" -o "$SHELL" = "/bin/bash.exe" ]; then 
             ## bash.exe on Cygwin or Msys
             echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
             # Update the PATH for the current session
