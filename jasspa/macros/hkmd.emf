@@ -34,17 +34,17 @@ set-variable .fhook-md.setup-mask "abefghijkmnopstux"
 set-variable .fhook-md.comment "|<!---|-->|-|  -- | --||"
 
 ; setup item-list
-set-variable .fhook-md.item-list-s1 "^# \\(\.+\\)"
+set-variable .fhook-md.item-list-s1 "^# \\(\\w\.+\\)"
 set-variable .fhook-md.item-list-r1 "H1 \ecB\\1\ecA"
 set-variable .fhook-md.item-list-s2 "^## <a \.+>\\(\.+\\)</a>"
 set-variable .fhook-md.item-list-r2 "H2 \ecB\\1\ecA"
-set-variable .fhook-md.item-list-s3 "^## \\(\[^<\]\.+\\)"
+set-variable .fhook-md.item-list-s3 "^## \\(\\w\.+\\)"
 set-variable .fhook-md.item-list-r3 "H2 \ecB\\1\ecA"
 
 !if &sin "f" .fhook-md.setup
   ; setup emf collapsing
-  set-variable .fhook-md.collapse-open  "^\\(# \\|## \\|---\\)"
-  set-variable .fhook-md.collapse-close "^\\(# \\|## \\|---\\|\\'\\)"
+  set-variable .fhook-md.collapse-open  "^\\(# [<\\w]\\|## [<\\w]\\|---\\)"
+  set-variable .fhook-md.collapse-close "^\\(# [<\\w]\\|## [<\\w]\\|---\\|\\'\\)"
   set-variable .fhook-md.collapse-mnext "-1"
 !endif
 

@@ -176,6 +176,10 @@ function install-me {
             echo "PATH variable was eventually updated in your .zshrc"
             echo "use 'source ~/.zshrc' to update the PATH variable in your current terminal session"
             echo "If using an other shell than Bash or Zsh then add the folder '~/.local/bin' manually to your PATH variable!"
+        else
+            echo "It seems that you use neither Bash nor Zsh!"
+            echo "Please update your PATH settings so that the"
+            echo "folder ~/.local/bin is in your PATH variable!"
         fi
     fi
 

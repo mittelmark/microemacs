@@ -17,26 +17,13 @@ include-before: |
     #abstract {
         margin: 2.5em;
         font-size: 90%;
+        padding: 25px;
+        background: #eee;
     }
     h1, p.date, p.author { text-align: center }
     </style>
 ---
 
-This document can be processed to HTML like this:
-
-```
-echo "library(knitr);knitr::knit('filename.Rmd',output='filename.md')" | Rscript -
-pandoc -o filename.html filename.md -s
-```
-
-```{r include=FALSE}
-knitr::opts_chunk$set(comment = "###")
-```
-
-```{r label=loading,results="hide",echo=TRUE}
-### load required packages:
-library(knitr)
-```
 **Abstract**
 
 <div id="abstract">
@@ -84,8 +71,14 @@ summary(iris)
 
 Table example:
 
-```{r label=table,results="asis"}
+```{r label=table,results="asis",eval=FALSE}
+library(knitr)
 knitr::kable(head(iris))
+```
+
+```{r label=table,results="asis",eval=FALSE}
+### if using tmdoc4r
+df2md(head(iris))
 ```
 
 Figure example:
