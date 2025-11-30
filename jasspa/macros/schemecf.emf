@@ -36,7 +36,7 @@ add-color-scheme $ml-scheme .col18 .col17 .col16 .col1 .col8 .col9 .col16 .col9 
 add-color-scheme $mode-line-scheme .col18 .col2 .col10 .col1 .col0 .col2 .col8 .col10 8 0 8 0 0 8 0 8
 add-color-scheme $scroll-bar-scheme .col9 .col18 .col9 .col8 .col9 .col0 .col9 .col8 8 0 8 0 0 8 0 8
 add-color-scheme $trunc-scheme .col4 .col17 .col12 .col1 .col4 .col9 .col12 .col9 0 8 0 8 0 8 0 8
-add-color-scheme .scheme.dmf .col18 .col9 .col8 .col9 .col8 .col10 .col9 .col16 0 8 0 8 0 8 0 8
+add-color-scheme .scheme.dmf .col11 .col9 .col8 .col9 .col8 .col10 .col9 .col16 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.no1 .col7 .col17 .col15 .col1 .col7 .col9 .col15 .col9 0 8 0 8 0 8 0 8
 add-color-scheme .scheme.no2 .col3 .col17 .col11 .col1 .col3 .col9 .col11 .col9 0 8 0 8 0 8 0 8
 ; OSD

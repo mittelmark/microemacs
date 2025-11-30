@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth
 ;  Created       : Fri Mar 6th, 2025
-;  Last Modified : <250824.1351>
+;  Last Modified : <251129.0827>
 ;
 ;  Description
 ;   V Language Template
@@ -24,8 +24,9 @@ define-macro fhook-v
 ; buffer-init variables
 ; TODO: disable Tab mode
 set-variable .fhook-v.setup &reg "/history/fhook/v" "bdfghinopTx"
-set-variable .fhook-v.setup-mask "abdefghikmnopux"
+set-variable .fhook-v.setup-mask "abdefghikmnoptux"
 set-variable .fhook-v.comment "|/*| */|*| * | * |fr|"
+set-variable .fhook-v.tab-width 4
 
 set-variable .fhook-v.collapse-open  "^\\(fn\\|pub fn\\)"
 set-variable .fhook-v.collapse-close "^}"
