@@ -1807,6 +1807,9 @@ findFileSingle(meUByte *fname, int bflag, meInt lineno, meUShort colno)
             meModeClear(bp->mode,MDBINARY) ;
             meModeClear(bp->mode,MDRBIN) ;
         }
+        /* if global modes has VIEW set then enable it for this buffer as its associated with a file S.P:*/ 
+        if(meModeTest(globMode,MDVIEW))
+            meModeSet(bp->mode,MDVIEW);
         bp->dotLineNo = lineno ;
         bp->dotOffset = colno ;
     }

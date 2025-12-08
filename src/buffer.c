@@ -1611,23 +1611,25 @@ bfind(register meUByte *bname, int cflag)
 		    if(cflag & BFND_CRYPT)
 			meModeSet(bp->mode,MDCRYPT) ;
 		}
-		return bp ;
+		return bp;
 	    }
 	    if(ii>0)
 		break ;
 	    bp = bp->next;
 	}
 	if(!cflag)
-	    return NULL ;
+	    return NULL;
 	bnm = bname ;
     }
-    meModeCopy(sglobMode,globMode) ;
+    meModeCopy(sglobMode,globMode);
     if(cflag & BFND_BINARY)
-	meModeSet(globMode,MDBINARY) ;
+	meModeSet(globMode,MDBINARY);
     else if(cflag & BFND_RBIN)
-	meModeSet(globMode,MDRBIN) ;
+	meModeSet(globMode,MDRBIN);
     if(cflag & BFND_CRYPT)
-	meModeSet(globMode,MDCRYPT) ;
+	meModeSet(globMode,MDCRYPT);
+    /* don't create a view only buffer, global view mode only applies to files, see findFileSingle S.P.*/
+    meModeClear(globMode,MDVIEW);    
     bp = createBuffer(bnm) ;
     bp->intFlag |= intFlag ;
     if(cflag & BFND_NOHOOK)
