@@ -5225,6 +5225,7 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [251118] - Release v091225
     - [251117] - improved font-path handling in installer, 
                  fixing issues in Python and R abbreviation files
     - [251115] - reducing build size for Windows builds
@@ -65665,7 +65666,7 @@ $a
     cDFolding and Information HidingcA
     
        Generic folding is enabled within the Javascript files. The folds occur
-       about the cDfunctionncA keyword and a closing curly brace, both at the
+       about the cDfunctioncA keyword and a closing curly brace, both at the
        beginning of a line. 
 
       - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
@@ -65679,7 +65680,7 @@ $a
 
     cDAbbreviationscA
 
-       The  installation  comes with a default  abbreviation  file for V file
+       The  installation  comes with a default  abbreviation  file for Javascript file
        editing which  can  be  used  by  writing  short   abbreviations like
        "cCforcA", "cCifcA", "cCelifcA", "cCfunccA"   or "cCclasscA" - and then 
        pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
@@ -65688,7 +65689,7 @@ $a
 
     cDTagscA
     
-       A C-tags file may be generated within the editor using the cDToolscA ->
+       A Javascript-tags file may be generated within the editor using the cDToolscA ->
        cDJavascript-ToolscA -> cDGenerate Tag FilecA. lsfind-tag(2)lmfind-tag(2)le takes the user to the file
        using the tag information.
 
@@ -67279,3 +67280,140 @@ $a
     lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le, lscollapse-all(3)lmcollapse-all(3)le, 
     lscollapse-current(3)lmcollapse-current(3)le, lsitem-list(3)lmitem-list(3)le, lsspell-buffer(3)lmspell-buffer(3)le.
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+! 9 ts
+! 5 %fhook-ts-exec
+! 5 %fhook-ts-format
+! 5 %fhook-ts-lint
+
+cEcENAME cEcA
+
+|%fhook-ts-exec
+    %fhook-ts-exec - command to execute Typescript files
+|%fhook-ts-format
+    %fhook-ts-format - formatting command for Typescript files
+|%fhook-ts-lint
+    %fhook-ts-lint - linting command for Typescript files
+$a
+
+cESYNOPSIS cA
+
+
+    ts - Typescript programming language
+    cD%fhook-ts-execcA  
+    cD%fhook-ts-formatcA  
+    cD%fhook-ts-lintcA  
+
+
+cEFILES cA
+
+
+    cDhkts.emfcA - Typescript programming language hook definition  
+    cDts.etfcA - Typescript programming language template file
+    cDts.eafcA - Typescript programming language abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.tscA - Typescript file
+
+
+cEDESCRIPTION cA
+
+
+    The cDtscA file type templates share much with the lsc(9)lmc(9)le template definitions,
+    utilising the electric 'C' features for automatic layout of text.
+
+    cDGeneral EditingcA
+    
+       On creating a new file, a new header is automatically included into
+       the file. lstime(2m)lmtime(2m)le is by default enabled, allowing the modification
+       time-stamp to be maintained in the header.
+
+    cDHilightingcA
+    
+       The hilighting features allow commands, variables, logicals,
+       function or class definitions, comments, strings and characters of the
+       language to be differentiated and rendered in different colors.
+
+    cDAuto LayoutcA
+    
+       The C-Mode lsindent(2)lmindent(2)le performs automatic layout of the text.
+
+       lsrestyle-region(3)lmrestyle-region(3)le and lsrestyle-buffer(3)lmrestyle-buffer(3)le are available to reformat
+       (re-layout) selected sections of the buffer, or the whole buffer,
+       respectively.
+
+       Comments may be formatted using `esc o`, which reformats the comments
+       according to the current fill paragraph. If a comment commences with
+       cG/***...cA then the comment is automatically formatted to a box.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the Typescript files. The folds occur
+       about cDfunctioncA, cDclasscA, cDtypecA or cDenumcA keywords and a closing curly brace, 
+       both at the beginning of a line. 
+
+      - lscollapse-all(3)lmcollapse-all(3)le (un)folds all regions in the file, 
+      - lscollapse-current(3)lmcollapse-current(3)le (un)folds the current region. 
+
+    cDNavigation via Item ListcA
+
+       The Typescript mode offers beside folding as well support for displaying an outline
+       of the functions, enums, types, interfaces and classes of the Typescript file for 
+       easy navigation using the lsitem-list(3)lmitem-list(3)le command. 
+
+    cDAbbreviationscA
+
+       The  installation  comes with a default  abbreviation  file for Typescript file
+       editing which  can  be  used  by  writing  short   abbreviations like
+       "cCfocA" (for), "cCifcA", "cCeicA" (else if) , "cCfucA" (function)   or "cCclcA" (class)- and then 
+       pressing the key-binding  for the lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+       The  list  of  abbreviations  can be used  interactively  in the GUI version of
+       MicroEmacs using the lsabbrev-list(3)lmabbrev-list(3)le command.
+
+
+    cDShort CutscA
+    
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA - Restyle the current region.  
+       cDesc qcA - Format a comment.  
+       cDesc ocA - Format a comment.  
+       cDf2cA - (Un)fold the current region.  
+       cDf3cA - (Un)fold all regions.  
+       cDf6cA - Display the item list.
+       cDesc f6cA - Hide the item list.
+
+    cDExecuting, Formatting and LintingcA
+    
+      cD%fhook-ts-execcA - The command to execute the current Typescript file, default
+         is set to cC"tsc \"%f\" && node \"%b.js\""cA where %f represents the file name  
+         and %b the basename without the ts file extension
+      cD%fhook-ts-formatcA - The command to format current Typescript file, default  
+         is set to cC"astyle --indent-spaces=2 \"%f\""cA where %f represents the file name  
+      cD%fhook-ts-lintcA - The command to check/lint the current Nim file, 
+         default is set to cC"tsc \"%f\""cA 
+    
+      The setting assume that the cCtsccA compiler the cCnodecA javascript runner 
+      and the cCastylecA formatter are available via the cCPATHcA environment variable. 
+      On Windows you must insert here either the complete cCPATHcA to the  cCcGtsccAcA 
+      executable or add the folder where this file is to the cCPATHcA variable.
+
+      These global variables should be changed if necessary usually within your cCUSERNAME.emfcA 
+      or with the cCmyts.emfcA file.
+
+cENOTES cA
+
+
+    The hilighting is typically extended using a file cDmyts.emfcA. 
+      
+cESEE ALSO cA
+
+
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle,
+    lsc(9)lmc(9)le, lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, lscompile(3)lmcompile(3)le, 
+    lsfile-format(3)lmfile-format(3)le, lsfile-lint(3)lmfile-lint(3)le, lstime(2m)lmtime(2m)le,
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le, lsrestyle-region(3)lmrestyle-region(3)le, lstime(2m)lmtime(2m)le.

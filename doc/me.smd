@@ -66627,7 +66627,7 @@ $a
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the Javascript files. The folds occur
-     about the __functionn__ keyword and a closing curly brace, both at the
+     about the __function__ keyword and a closing curly brace, both at the
      beginning of a line. 
 
   > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
@@ -66641,7 +66641,7 @@ $a
 
   __Abbreviations__
 
-  >  The  installation  comes with a default  abbreviation  file for V file
+  >  The  installation  comes with a default  abbreviation  file for Javascript file
      editing which  can  be  used  by  writing  short   abbreviations like
      "_for_", "_if_", "_elif_", "_func_"   or "_class_" - and then 
      pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
@@ -66650,7 +66650,7 @@ $a
 
   __Tags__
   
-  >  A C-tags file may be generated within the editor using the __Tools__ ->
+  >  A Javascript-tags file may be generated within the editor using the __Tools__ ->
      __Javascript-Tools__ -> __Generate Tag File__. [find-tag(2)](find-tag(2)) takes the user to the file
      using the tag information.
 
@@ -68262,4 +68262,142 @@ $a
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)), [collapse-all(3)](collapse-all(3)), 
   [collapse-current(3)](collapse-current(3)), [item-list(3)](item-list(3)), [spell-buffer(3)](spell-buffer(3)).
   [Supported File Types](MicroEmacs - Supported File Types).
+!! me-id: m9typ072
+! 9 ts
+! 5 %fhook-ts-exec
+! 5 %fhook-ts-format
+! 5 %fhook-ts-lint
+
+## NAME
+
+|%fhook-ts-exec
+  %fhook-ts-exec - command to execute Typescript files
+|%fhook-ts-format
+  %fhook-ts-format - formatting command for Typescript files
+|%fhook-ts-lint
+  %fhook-ts-lint - linting command for Typescript files
+$a
+
+## SYNOPSIS
+
+
+  ts - Typescript programming language
+  __%fhook-ts-exec__  
+  __%fhook-ts-format__  
+  __%fhook-ts-lint__  
+
+
+## FILES
+
+
+  __hkts.emf__ - Typescript programming language hook definition  
+  __ts.etf__ - Typescript programming language template file
+  __ts.eaf__ - Typescript programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.ts__ - Typescript file
+
+
+## DESCRIPTION
+
+
+  The __ts__ file type templates share much with the [c(9)](c(9)) template definitions,
+  utilising the electric 'C' features for automatic layout of text.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logicals,
+     function or class definitions, comments, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
+
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments may be formatted using `esc o`, which reformats the comments
+     according to the current fill paragraph. If a comment commences with
+     `/***...` then the comment is automatically formatted to a box.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Typescript files. The folds occur
+     about __function__, __class__, __type__ or __enum__ keywords and a closing curly brace, 
+     both at the beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Typescript mode offers beside folding as well support for displaying an outline
+     of the functions, enums, types, interfaces and classes of the Typescript file for 
+     easy navigation using the [item-list(3)](item-list(3)) command. 
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Typescript file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_ei_" (else if) , "_fu_" (function)   or "_cl_" (class)- and then 
+     pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-ts-exec__ - The command to execute the current Typescript file, default
+       is set to _"tsc \"%f\" && node \"%b.js\""_ where %f represents the file name  
+       and %b the basename without the ts file extension
+  > __%fhook-ts-format__ - The command to format current Typescript file, default  
+       is set to _"astyle --indent-spaces=2 \"%f\""_ where %f represents the file name  
+  > __%fhook-ts-lint__ - The command to check/lint the current Nim file, 
+       default is set to _"tsc \"%f\""_ 
+  
+  > The setting assume that the _tsc_ compiler the _node_ javascript runner 
+    and the _astyle_ formatter are available via the _PATH_ environment variable. 
+    On Windows you must insert here either the complete _PATH_ to the  _`tsc`_ 
+    executable or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or with the _myts.emf_ file.
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __myts.emf__. 
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
+  [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: meende
