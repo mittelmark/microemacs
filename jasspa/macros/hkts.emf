@@ -1,0 +1,310 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2003-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    typescript
+; Authors:     Gabriel Tabares-Barreiro, Steven Phillips & Detlef Groth
+;
+define-macro fhook-ts
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "ts"
+    buffer-init-hooks
+    set-variable $buffer-indent-width 2
+!emacro
+
+; buffer-init variables
+set-variable .fhook-ts.name "typescript"
+set-variable .fhook-ts.setup &reg "/history/fhook/ts" "bdfghnopx"
+set-variable .fhook-ts.setup-mask "abdefghikmnoptux"
+set-variable .fhook-ts.comment "|/*|*/|*| * | * |fr|"
+
+; Set up the folding of functions
+set-variable .fhook-ts.collapse-open   "^[ \t]*\\(function\\|class\\|abstract class\\|enum\\|const\\|type\\|interface\\)[ \t]+.+{[ \t]*$"
+set-variable .fhook-ts.collapse-close  "^}"
+set-variable .fhook-ts.collapse-mclose "1"
+set-variable .fhook-ts.collapse-mnext  "-1"
+
+; setup item-list
+set-variable .fhook-ts.item-list-s1 "^[ \t]*function[ \t]+\\([^A-Z][a-zA-Z0-9_]+\\)[ \t]*("
+set-variable .fhook-ts.item-list-r1 "Func \ecB\\1\ecA"
+set-variable .fhook-ts.item-list-s2 "^[ \t]*class[ \t]+\\([A-Z][a-zA-Z0-9_<>]+\\)[ \t]*"
+set-variable .fhook-ts.item-list-r2 "Clss \ecB\\1\ecA"
+set-variable .fhook-ts.item-list-s3 "^  \\([a-zA-Z0-9_]+[ a-zA-Z0-9_]+\\).+: ?[a-z]+[ ]*{"
+set-variable .fhook-ts.item-list-r3 "Meth   \ecB\\1\ecA"
+set-variable .fhook-ts.item-list-s4 "^[ \t]*enum[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*{"
+set-variable .fhook-ts.item-list-r4 "Enum \ecB\\1\ecA"
+set-variable .fhook-ts.item-list-s5 "^[ \t]*abstract +class[ \t]+\\([A-Z][a-zA-Z0-9_]+\\)[ \t]*"
+set-variable .fhook-ts.item-list-r5 "ACls \ecB\\1\ecA"
+set-variable .fhook-ts.item-list-s6 "^[ \t]*type[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*{"
+set-variable .fhook-ts.item-list-r6 "Type \ecB\\1\ecA"
+set-variable .fhook-ts.item-list-s7 "^[ \t]*interface[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*{"
+set-variable .fhook-ts.item-list-r7 "Intf \ecB\\1\ecA"
+
+!if &not &exist .hilight.ts
+    set-variable .hilight.ts &pinc .hilight.next 1
+!endif
+!if &and &sin "h" .fhook-ts.setup &band .hilight.flags 0x02 
+    ; High-light ts Mode
+    0 hilight .hilight.ts 2 50             $global-scheme
+    hilight .hilight.ts 2  "//"            .scheme.comment
+    hilight .hilight.ts 20 "/\\*" "*/" ""  .scheme.comment
+    hilight .hilight.ts 4 "\"" "\"" "\\"   .scheme.string
+    hilight .hilight.ts 0x804 "\\W\\{'" "'" "\\" .scheme.quote
+    ;
+    hilight .hilight.ts 1 "abstract"       .scheme.keyword
+    hilight .hilight.ts 1 "asserts"        .scheme.keyword
+    hilight .hilight.ts 1 "async"          .scheme.keyword
+    hilight .hilight.ts 1 "await"          .scheme.keyword
+    hilight .hilight.ts 1 "break"          .scheme.keyword
+    hilight .hilight.ts 1 "case"           .scheme.keyword
+    hilight .hilight.ts 1 "catch"          .scheme.keyword
+    hilight .hilight.ts 1 "class"          .scheme.keyword
+    hilight .hilight.ts 1 "constructor"    .scheme.keyword
+    hilight .hilight.ts 1 "continue"       .scheme.keyword
+    hilight .hilight.ts 1 "declare"        .scheme.keyword
+    hilight .hilight.ts 1 "default"        .scheme.keyword
+    hilight .hilight.ts 1 "do"             .scheme.keyword
+    hilight .hilight.ts 1 "else"           .scheme.keyword
+    hilight .hilight.ts 1 "extends"        .scheme.keyword
+    hilight .hilight.ts 1 "for"            .scheme.keyword
+    hilight .hilight.ts 1 "from"           .scheme.keyword
+    hilight .hilight.ts 1 "get"            .scheme.keyword
+    hilight .hilight.ts 1 "goto"           .scheme.keyword
+    hilight .hilight.ts 1 "if"             .scheme.keyword
+    hilight .hilight.ts 1 "implements"     .scheme.keyword
+    hilight .hilight.ts 1 "infer"          .scheme.keyword
+    hilight .hilight.ts 1 "interface"      .scheme.keyword
+    hilight .hilight.ts 1 "is"             .scheme.keyword
+    hilight .hilight.ts 1 "keyof"          .scheme.keyword
+    hilight .hilight.ts 1 "module"         .scheme.keyword
+    hilight .hilight.ts 1 "namespace"      .scheme.keyword
+    hilight .hilight.ts 1 "new"            .scheme.keyword
+    hilight .hilight.ts 1 "of"             .scheme.keyword
+    hilight .hilight.ts 1 "override"       .scheme.keyword    
+    hilight .hilight.ts 1 "public"         .scheme.keyword
+    hilight .hilight.ts 1 "private"        .scheme.keyword
+    hilight .hilight.ts 1 "protected"      .scheme.keyword
+    hilight .hilight.ts 1 "readonly"       .scheme.keyword
+    hilight .hilight.ts 1 "require"        .scheme.keyword
+    hilight .hilight.ts 1 "return"         .scheme.keyword
+    hilight .hilight.ts 1 "set"            .scheme.keyword
+    hilight .hilight.ts 1 "super"          .scheme.keyword
+    hilight .hilight.ts 1 "switch"         .scheme.keyword
+    hilight .hilight.ts 1 "throw"          .scheme.keyword
+    hilight .hilight.ts 1 "try"            .scheme.keyword
+    hilight .hilight.ts 1 "type"           .scheme.keyword
+    hilight .hilight.ts 1 "while"          .scheme.keyword
+
+    hilight .hilight.ts 1 "let"            .scheme.variable
+    hilight .hilight.ts 1 "virtual"        .scheme.type
+    hilight .hilight.ts 1 "var"            .scheme.variable
+    hilight .hilight.ts 1 "this"           .scheme.variable
+    hilight .hilight.ts 1 "null"           .scheme.prepro
+    hilight .hilight.ts 1 "true"           .scheme.prepro
+    hilight .hilight.ts 1 "false"          .scheme.prepro
+    hilight .hilight.ts 1 "not"            .scheme.operator
+
+    ;DOM elements hilights 0x12
+    hilight .hilight.ts 1 "anchors"        .scheme.prepro
+    hilight .hilight.ts 1 "button"         .scheme.prepro
+    hilight .hilight.ts 1 "checkbox"       .scheme.prepro
+    hilight .hilight.ts 1 "Date"           .scheme.prepro
+    hilight .hilight.ts 1 "document"       .scheme.prepro
+    hilight .hilight.ts 1 "elements"       .scheme.prepro
+    hilight .hilight.ts 1 "forms"          .scheme.prepro
+    hilight .hilight.ts 1 "frames"         .scheme.prepro
+    hilight .hilight.ts 1 "hidden"         .scheme.prepro
+    hilight .hilight.ts 1 "history"        .scheme.prepro
+    hilight .hilight.ts 1 "links"          .scheme.prepro
+    hilight .hilight.ts 1 "location"       .scheme.prepro
+    hilight .hilight.ts 1 "Math"           .scheme.prepro
+    hilight .hilight.ts 1 "options"        .scheme.prepro
+    hilight .hilight.ts 1 "password"       .scheme.prepro
+    hilight .hilight.ts 1 "reset"          .scheme.prepro
+    hilight .hilight.ts 1 "select"         .scheme.prepro
+    hilight .hilight.ts 1 "submit"         .scheme.prepro
+    hilight .hilight.ts 1 "text"           .scheme.prepro
+    hilight .hilight.ts 1 "textarea"       .scheme.prepro
+    hilight .hilight.ts 1 "window"         .scheme.prepro
+    ;DOM properties
+    hilight .hilight.ts 1 "action"         .scheme.prepro
+    hilight .hilight.ts 1 "alinkColor"     .scheme.prepro
+    hilight .hilight.ts 1 "appCodeName"    .scheme.prepro
+    hilight .hilight.ts 1 "appName"        .scheme.prepro
+    hilight .hilight.ts 1 "appVersion"     .scheme.prepro
+    hilight .hilight.ts 1 "bgColor"        .scheme.prepro
+    hilight .hilight.ts 1 "checked"        .scheme.prepro
+    hilight .hilight.ts 1 "cookie"         .scheme.prepro
+    hilight .hilight.ts 1 "defaultChecked" .scheme.prepro
+    hilight .hilight.ts 1 "defaultSelected" .scheme.prepro
+    hilight .hilight.ts 1 "defaultStatus"  .scheme.prepro
+    hilight .hilight.ts 1 "defaultValue"   .scheme.prepro
+    hilight .hilight.ts 1 "E"              .scheme.prepro
+    hilight .hilight.ts 1 "encoding"       .scheme.prepro
+    hilight .hilight.ts 1 "fgColor"        .scheme.prepro
+    hilight .hilight.ts 1 "hash"           .scheme.prepro
+    hilight .hilight.ts 1 "host"           .scheme.prepro
+    hilight .hilight.ts 1 "hostname"       .scheme.prepro
+    hilight .hilight.ts 1 "href"           .scheme.prepro
+    hilight .hilight.ts 1 "index"          .scheme.prepro
+    hilight .hilight.ts 1 "lastModified"   .scheme.prepro
+    hilight .hilight.ts 1 "length"         .scheme.prepro
+    hilight .hilight.ts 1 "linkColor"      .scheme.prepro
+    hilight .hilight.ts 1 "LN2"            .scheme.prepro
+    hilight .hilight.ts 1 "location"       .scheme.prepro
+    hilight .hilight.ts 1 "LOG2E"          .scheme.prepro
+    hilight .hilight.ts 1 "LOG10E"         .scheme.prepro
+    hilight .hilight.ts 1 "method"         .scheme.prepro
+    hilight .hilight.ts 1 "name"           .scheme.prepro
+    hilight .hilight.ts 1 "opener"         .scheme.prepro
+    hilight .hilight.ts 1 "parent"         .scheme.prepro
+    hilight .hilight.ts 1 "pathname"       .scheme.prepro
+    hilight .hilight.ts 1 "PI"             .scheme.prepro
+    hilight .hilight.ts 1 "port"           .scheme.prepro
+    hilight .hilight.ts 1 "protocol"       .scheme.prepro
+    hilight .hilight.ts 1 "referrer"       .scheme.prepro
+    hilight .hilight.ts 1 "search"         .scheme.prepro
+    hilight .hilight.ts 1 "selected"       .scheme.prepro
+    hilight .hilight.ts 1 "selectedIndex"  .scheme.prepro
+    hilight .hilight.ts 1 "self"           .scheme.prepro
+    hilight .hilight.ts 1 "SQRT1_2"        .scheme.prepro
+    hilight .hilight.ts 1 "status"         .scheme.prepro
+    hilight .hilight.ts 1 "target"         .scheme.prepro
+    hilight .hilight.ts 1 "text"           .scheme.prepro
+    hilight .hilight.ts 1 "title"          .scheme.prepro
+    hilight .hilight.ts 1 "top"            .scheme.prepro
+    hilight .hilight.ts 1 "userAgent"      .scheme.prepro
+    hilight .hilight.ts 1 "value"          .scheme.prepro
+    hilight .hilight.ts 1 "vlinkColor"     .scheme.prepro
+    ;Keywords and methods
+    hilight .hilight.ts 1 "abs"            .scheme.keyword
+    hilight .hilight.ts 1 "acos"           .scheme.keyword
+    hilight .hilight.ts 1 "alert"          .scheme.keyword
+    hilight .hilight.ts 1 "asin"           .scheme.keyword
+    hilight .hilight.ts 1 "atan"           .scheme.keyword
+    hilight .hilight.ts 1 "back"           .scheme.keyword
+    hilight .hilight.ts 1 "big"            .scheme.keyword
+    hilight .hilight.ts 1 "blink"          .scheme.keyword
+    hilight .hilight.ts 1 "blur"           .scheme.keyword
+    hilight .hilight.ts 1 "bold"           .scheme.keyword
+    hilight .hilight.ts 1 "ceil"           .scheme.keyword
+    hilight .hilight.ts 1 "chaAt"          .scheme.keyword
+    hilight .hilight.ts 1 "clear"          .scheme.keyword
+    hilight .hilight.ts 1 "clearTimeout"   .scheme.keyword
+    hilight .hilight.ts 1 "click"          .scheme.keyword
+    hilight .hilight.ts 1 "close"          .scheme.keyword
+    hilight .hilight.ts 1 "confirm"        .scheme.keyword
+    hilight .hilight.ts 1 "cos"            .scheme.keyword
+    hilight .hilight.ts 1 "escape"         .scheme.keyword
+    hilight .hilight.ts 1 "eval"           .scheme.keyword
+    hilight .hilight.ts 1 "exp"            .scheme.keyword
+    hilight .hilight.ts 1 "floor"          .scheme.keyword
+    hilight .hilight.ts 1 "focus"          .scheme.keyword
+    hilight .hilight.ts 1 "fontcolor"      .scheme.keyword
+    hilight .hilight.ts 1 "fontsize"       .scheme.keyword
+    hilight .hilight.ts 1 "forward"        .scheme.keyword
+    hilight .hilight.ts 1 "getDate"        .scheme.keyword
+    hilight .hilight.ts 1 "getDay"         .scheme.keyword
+    hilight .hilight.ts 1 "getHours"       .scheme.keyword
+    hilight .hilight.ts 1 "getMinutes"     .scheme.keyword
+    hilight .hilight.ts 1 "getMonth"       .scheme.keyword
+    hilight .hilight.ts 1 "getSeconds"     .scheme.keyword
+    hilight .hilight.ts 1 "getTime"        .scheme.keyword
+    hilight .hilight.ts 1 "getTimezoneOffset" .scheme.keyword
+    hilight .hilight.ts 1 "getYear"        .scheme.keyword
+    hilight .hilight.ts 1 "indexOf"        .scheme.keyword
+    hilight .hilight.ts 1 "isNaN"          .scheme.keyword
+    hilight .hilight.ts 1 "italics"        .scheme.keyword
+    hilight .hilight.ts 1 "lastIndexOf"    .scheme.keyword
+    hilight .hilight.ts 1 "link"           .scheme.keyword
+    hilight .hilight.ts 1 "log"            .scheme.keyword
+    hilight .hilight.ts 1 "max"            .scheme.keyword
+    hilight .hilight.ts 1 "min"            .scheme.keyword
+    hilight .hilight.ts 1 "open"           .scheme.keyword
+    hilight .hilight.ts 1 "parse"          .scheme.keyword
+    hilight .hilight.ts 1 "parseFloat"     .scheme.keyword
+    hilight .hilight.ts 1 "parseInt"       .scheme.keyword
+    hilight .hilight.ts 1 "pow"            .scheme.keyword
+    hilight .hilight.ts 1 "prompt"         .scheme.keyword
+    hilight .hilight.ts 1 "random"         .scheme.keyword
+    hilight .hilight.ts 1 "round"          .scheme.keyword
+    hilight .hilight.ts 1 "select"         .scheme.keyword
+    hilight .hilight.ts 1 "setDate"        .scheme.keyword
+    hilight .hilight.ts 1 "setHours"       .scheme.keyword
+    hilight .hilight.ts 1 "setMinutes"     .scheme.keyword
+    hilight .hilight.ts 1 "setMonth"       .scheme.keyword
+    hilight .hilight.ts 1 "setSeconds"     .scheme.keyword
+    hilight .hilight.ts 1 "setTime"        .scheme.keyword
+    hilight .hilight.ts 1 "setTimeout"     .scheme.keyword
+    hilight .hilight.ts 1 "setYear"        .scheme.keyword
+    hilight .hilight.ts 1 "sin"            .scheme.keyword
+    hilight .hilight.ts 1 "small"          .scheme.keyword
+    hilight .hilight.ts 1 "sqrt"           .scheme.keyword
+    hilight .hilight.ts 1 "strike"         .scheme.keyword
+    hilight .hilight.ts 1 "sub"            .scheme.keyword
+    hilight .hilight.ts 1 "submit"         .scheme.keyword
+    hilight .hilight.ts 1 "substring"      .scheme.keyword
+    hilight .hilight.ts 1 "sup"            .scheme.keyword
+    hilight .hilight.ts 1 "tan"            .scheme.keyword
+    hilight .hilight.ts 1 "toGMTString"    .scheme.keyword
+    hilight .hilight.ts 1 "toLocaleString" .scheme.keyword
+    hilight .hilight.ts 1 "toLowerCase"    .scheme.keyword
+    hilight .hilight.ts 1 "toString"       .scheme.keyword
+    hilight .hilight.ts 1 "toUpperCase"    .scheme.keyword
+    hilight .hilight.ts 1 "unEscape"       .scheme.keyword
+    hilight .hilight.ts 1 "UTC"            .scheme.keyword
+    hilight .hilight.ts 1 "write"          .scheme.keyword
+    hilight .hilight.ts 1 "writeln"        .scheme.keyword
+
+    hilight .hilight.ts 1 "any"            .scheme.type
+    hilight .hilight.ts 1 "bigint"         .scheme.type
+    hilight .hilight.ts 1 "boolean"        .scheme.type
+    hilight .hilight.ts 1 "const"          .scheme.type
+    hilight .hilight.ts 1 "enum"           .scheme.type
+    hilight .hilight.ts 1 "never"          .scheme.type
+    hilight .hilight.ts 1 "null"           .scheme.type    
+    hilight .hilight.ts 1 "number"         .scheme.type
+    hilight .hilight.ts 1 "object"         .scheme.type
+    hilight .hilight.ts 1 "string"         .scheme.type
+    hilight .hilight.ts 1 "symbol"         .scheme.type
+    hilight .hilight.ts 1 "undefined"      .scheme.type
+    hilight .hilight.ts 1 "unknown"        .scheme.type
+    hilight .hilight.ts 1 "void"           .scheme.type
+    ;
+    !if &band .hilight.flags 0x04
+        ; function definitions
+        hilight .hilight.ts 0 "\\s\\{function\\s+\\w+\\s?\\}(" .scheme.function
+    !endif
+    ; let html based files use the java hilight for any typescripts
+    set-variable .hilight.typescript .hilight.ts
+!endif
+!if &sin "d" .fhook-ts.setup
+    ; create a simple indentation rule for typescript - real java files use the built in C indentation
+    0 indent .hilight.ts 1 20
+    indent .hilight.ts n "{"  t
+    indent .hilight.ts o "}" -t
+    indent .hilight.ts e "\"" "\"" "\\"
+    indent .hilight.ts e "\'" "\'" "\\"
+    indent .hilight.ts b "\\[" "]"
+    indent .hilight.ts b "(" ")"
+    indent .hilight.ts b "/\\*" "\\*/"
+    indent .hilight.ts i "//"
+    set-variable .indent.typescript .hilight.ts
+!endif
+
+!if &not &seq &which "tsc" "ERROR"
+  set-variable %fhook-ts-lint  "tsc --strict \"%f\""
+  !if &not &seq &which "node" "ERROR"
+    set-variable %fhook-ts-exec  "tsc --strict \"%f\" && node \"%b\".js"
+  !endif
+  !if &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-ts-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
+  !endif
+  0 define-macro fhook-ts-replace
+    fhook-generic-replace "ts(\\(\\d+\\),\\(\\d+\\)):" "ts:\\1:\\2"
+  !emacro
+!endif
+
+buffer-init-fhook "ts"
+

@@ -263,6 +263,7 @@ add-file-hook ".go"                                           fhook-go
 add-file-hook ".java .jav"                                    fhook-java
 add-file-hook ".jsp"                                          fhook-jsp
 add-file-hook ".js"                                           fhook-js
+add-file-hook ".ts"                                           fhook-ts
 add-file-hook ".pl .pm"                                       fhook-perl
 add-file-hook ".php .inc .php3 .php4 .phtml"                  fhook-php
 add-file-hook ".phps"                                         fhook-phps
