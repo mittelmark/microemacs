@@ -37,6 +37,7 @@ set-variable .fhook-python.item-list-r2 "Class \ecB\\1\ecA"
     0 hilight .hilight.python 0                     $global-scheme
     hilight   .hilight.python 2 "#"                 .scheme.comment
     hilight   .hilight.python 2 "^#!"               .scheme.header
+    hilight   .hilight.python 4 "\"\"\"" "\"\"\"" "\\" .scheme.string
     hilight   .hilight.python 4 "\"" "\"" "\\"      .scheme.string
     hilight   .hilight.python 0 "\\["               .scheme.string
     hilight   .hilight.python 0 "\\]"               .scheme.string
