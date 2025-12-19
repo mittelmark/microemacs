@@ -142,6 +142,8 @@ set-variable #l0 &which "ruff"
   !else
     !if &not &seq &which "yapf" "ERROR"
       set-variable %fhook-python-format "yapf -i \"%f\""
+    !elif &not &seq &which "yapf3" "ERROR"
+      set-variable %fhook-python-format "yapf3 -i \"%f\""
     !elif  &not &seq &which "black" "ERROR"
       set-variable %fhook-python-format "black -q \"%f\""
     !endif
