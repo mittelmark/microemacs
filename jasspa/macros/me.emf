@@ -328,6 +328,7 @@ add-file-hook ".nim"                                          fhook-nim
 add-file-hook ".swift"                                        fhook-swift
 add-file-hook ".hs"                                           fhook-hask
 add-file-hook ".tman"                                         fhook-dtools
+add-file-hook ".sc .scala"                                    fhook-scala
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script

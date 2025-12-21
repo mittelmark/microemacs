@@ -1,0 +1,148 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2003-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    typescript
+; Authors:     Gabriel Tabares-Barreiro, Steven Phillips & Detlef Groth
+;
+define-macro fhook-scala
+    set-variable $buffer-mask "luh1"
+    @# buffer-init "scala"
+    buffer-init-hooks
+    set-variable $buffer-indent-width 2
+!emacro
+
+; buffer-init variables
+set-variable .fhook-scala.name "scala"
+set-variable .fhook-scala.setup &reg "/history/fhook/scala" "bdfghnopx"
+set-variable .fhook-scala.setup-mask "abdefghikmnoptux"
+set-variable .fhook-scala.comment "|/*|*/|*| * | * |fr|"
+
+; Set up the folding of functions
+set-variable .fhook-scala.collapse-open   "^[a-zA-Z].+{[ ]*$"
+set-variable .fhook-scala.collapse-close  "^}"
+set-variable .fhook-scala.collapse-mclose "1"
+set-variable .fhook-scala.collapse-mnext  "-1"
+
+; setup item-list
+set-variable .fhook-scala.item-list-s1 "^[ \t]*\\(private \\|protected \\|override \\)?def[ \t]+\\([^A-Z][a-zA-Z0-9_]+\\)[ \t]*("
+set-variable .fhook-scala.item-list-r1 "Func \CCb\\2\CCA"
+set-variable .fhook-scala.item-list-s2 "^\\(abstract \\|sealed \\|final \\|case \\)?class[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*"
+set-variable .fhook-scala.item-list-r2 "Clss \CCb\\2\CCA"
+set-variable .fhook-scala.item-list-s3 "^trait[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*"
+set-variable .fhook-scala.item-list-r3 "Trt  \CCb\\1\CCA"
+set-variable .fhook-scala.item-list-s4 "^object[ \t]+\\([a-zA-Z0-9_]+\\)[ \t]*"
+set-variable .fhook-scala.item-list-r4 "Obj  \CCb\\1\CCA"
+
+!if &not &exist .hilight.scala
+    set-variable .hilight.scala &pinc .hilight.next 1
+!endif
+!if &and &sin "h" .fhook-scala.setup &band .hilight.flags 0x02 
+    0 hilight .hilight.scala 2 50             $global-scheme
+    hilight .hilight.scala 2  "//"            .scheme.comment
+    hilight .hilight.scala 20 "/\\*" "*/" ""  .scheme.comment
+    hilight .hilight.scala 4 "\\$" "\\}\\W" ""   .scheme.variable
+    hilight .hilight.scala 4 "\"\"\"" "\"\"\"" "\\" .scheme.string
+    hilight .hilight.scala 4 "\"" "\"" "\\"   .scheme.string    
+    hilight .hilight.scala 0x804 "\\W\\{'" "'" "\\" .scheme.quote
+    ;
+    hilight .hilight.scala 1 "abstract"  .scheme.keyword
+    hilight .hilight.scala 1 "case"      .scheme.keyword
+    hilight .hilight.scala 1 "catcht"    .scheme.keyword
+    hilight .hilight.scala 1 "class"     .scheme.keyword
+    hilight .hilight.scala 1 "def"       .scheme.keyword
+    hilight .hilight.scala 1 "do"        .scheme.keyword
+    hilight .hilight.scala 1 "else"      .scheme.keyword
+    hilight .hilight.scala 1 "extends"   .scheme.keyword
+    hilight .hilight.scala 1 "final"     .scheme.keyword
+    hilight .hilight.scala 1 "finally"   .scheme.keyword
+    hilight .hilight.scala 1 "for"       .scheme.keyword
+    hilight .hilight.scala 1 "forSome"   .scheme.keyword
+    hilight .hilight.scala 1 "if"        .scheme.keyword
+    hilight .hilight.scala 1 "implicit"  .scheme.keyword
+    hilight .hilight.scala 1 "import"    .scheme.keyword
+    hilight .hilight.scala 1 "lazy"      .scheme.keyword
+    hilight .hilight.scala 1 "macro"     .scheme.keyword
+    hilight .hilight.scala 1 "match"     .scheme.keyword
+    hilight .hilight.scala 1 "new"       .scheme.keyword
+    hilight .hilight.scala 1 "object"    .scheme.keyword
+    hilight .hilight.scala 1 "override"  .scheme.keyword
+    hilight .hilight.scala 1 "package"   .scheme.keyword
+    hilight .hilight.scala 1 "private"   .scheme.keyword
+    hilight .hilight.scala 1 "protected" .scheme.keyword
+    hilight .hilight.scala 1 "return"    .scheme.keyword
+    hilight .hilight.scala 1 "sealed"    .scheme.keyword
+    hilight .hilight.scala 1 "super"     .scheme.keyword
+    hilight .hilight.scala 1 "this"      .scheme.keyword
+    hilight .hilight.scala 1 "throw"     .scheme.keyword
+    hilight .hilight.scala 1 "trait"     .scheme.keyword
+    hilight .hilight.scala 1 "try"       .scheme.keyword
+    hilight .hilight.scala 1 "type"      .scheme.keyword
+    hilight .hilight.scala 1 "val"       .scheme.constant
+    hilight .hilight.scala 1 "var"       .scheme.keyword
+    hilight .hilight.scala 1 "while"     .scheme.keyword
+    hilight .hilight.scala 1 "with"      .scheme.keyword
+    hilight .hilight.scala 1 "yield"     .scheme.keyword
+    ; types
+    hilight .hilight.scala 1 "Array"       .scheme.type
+    hilight .hilight.scala 1 "ArrayBuffer" .scheme.type
+    hilight .hilight.scala 1 "BigDecimal"  .scheme.type        
+    hilight .hilight.scala 1 "BigInt"      .scheme.type    
+    hilight .hilight.scala 1 "Boolean"     .scheme.type
+    hilight .hilight.scala 1 "Byte"        .scheme.type
+    hilight .hilight.scala 1 "Char"        .scheme.type
+    hilight .hilight.scala 1 "Double"      .scheme.type
+    hilight .hilight.scala 1 "Float"       .scheme.type
+    hilight .hilight.scala 1 "Int"         .scheme.type
+    hilight .hilight.scala 1 "List"        .scheme.type
+    hilight .hilight.scala 1 "ListBuffer"  .scheme.type
+    hilight .hilight.scala 1 "Long"        .scheme.type
+    hilight .hilight.scala 1 "Map"         .scheme.type
+    hilight .hilight.scala 1 "MutMap"      .scheme.type
+    hilight .hilight.scala 1 "Nil"         .scheme.type    
+    hilight .hilight.scala 1 "Seq"         .scheme.type
+    hilight .hilight.scala 1 "Set"         .scheme.type
+    hilight .hilight.scala 1 "Short"       .scheme.type
+    hilight .hilight.scala 1 "String"      .scheme.type
+    hilight .hilight.scala 1 "Unit"        .scheme.type
+    hilight .hilight.scala 1 "Vector"      .scheme.type
+    ; constants
+    hilight .hilight.scala 1 "false"     .scheme.constant
+    hilight .hilight.scala 1 "true"      .scheme.constant
+    hilight .hilight.scala 1 "null"      .scheme.constant
+    !if &band .hilight.flags 0x04
+        ; function definitions
+        hilight .hilight.scala 0 "\\s\\{function\\s+\\w+\\s?\\}(" .scheme.function
+    !endif
+!endif
+!if &sin "d" .fhook-scala.setup
+    ; create a simple indentation rule for scala
+    0 indent .hilight.scala 1 20
+    indent .hilight.scala n "{"  t
+    indent .hilight.scala o "}" -t
+    indent .hilight.scala e "\"" "\"" "\\"
+    indent .hilight.scala e "\'" "\'" "\\"
+    indent .hilight.scala b "\\[" "]"
+    indent .hilight.scala b "(" ")"
+    indent .hilight.scala b "/\\*" "\\*/"
+    indent .hilight.scala i "//"
+!endif
+
+!if &not &seq &which "scalac" "ERROR"
+  set-variable %fhook-scala-lint  "scalac \"%f\""
+  !if &not &seq &which "scala" "ERROR"
+    set-variable %fhook-scala-exec  "scalac \"%f\" 2>&1 && scala \"%b\""
+  !endif
+  !if &not &seq &which "scalafmt" "ERROR"
+    set-variable %fhook-scala-format "scalafmt \"%f\""
+  !elif &not &seq &which "astyle" "ERROR"
+    set-variable %fhook-scala-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
+  !endif
+  0 define-macro fhook-scala-replace
+    fhook-generic-replace "sc(\\(\\d+\\),\\(\\d+\\)):" "sc:\\1:\\2"
+  !emacro
+!endif
+
+buffer-init-fhook "scala"
+

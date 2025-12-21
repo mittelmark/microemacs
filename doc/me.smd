@@ -1754,6 +1754,8 @@
   [rul(9)](rul(9)) Install Shield Rules  
   [s(9)](s(9)) Assembler File  
   [samba(9)](samba(9)) Samba smb.conf configuration file  
+  [sc(9)](sc(9)) Scala programming language  
+  [scala(9)](scala(9)) Scala programming language  
   [sch(9)](sch(9)) Scheme File  
   [scheme(9)](scheme(9)) Scheme File  
   [scm(9)](scm(9)) Scheme File  
@@ -1775,8 +1777,10 @@
   [tni(9)](tni(9)) UNIX t/nroff include file  
   [toml(9)](toml(9)) Toml configuration file  
   [troff(9)](troff(9)) UNIX troff file  
+  [ts(9)](ts(9)) Typescript programming language   
   [txt(9)](txt(9)) ASCII plain text file  
   [typ(9)](typ(9)) Typst markup file   
+  [typscript(9)](typescript(9)) Typescript programming language   
   [typst(9)](typst(9)) Typst markup file  
   [v(9)](v(9)) Verilog hardware description language  
   [vb(9)](vb(9)) Visual Basic  
@@ -3962,6 +3966,8 @@
   [save-registry(2)](save-registry(2)) Write a registry definition file  
   [save-session(3)](save-session(3)) Write session information to session file  
   [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with query)  
+  [sc(9)](sc(9)) Scala programming language  
+  [scala(9)](scala(9)) Scala programming language  
   [sch(9)](sch(9)) Scheme File  
   [scheme(9)](scheme(9)) Scheme File  
   [scheme-editor(3)](scheme-editor(3)) Color Scheme Editor  
@@ -4047,8 +4053,10 @@
   [transpose-chars(2)](transpose-chars(2)) (C-t) Exchange (swap) adjacent characters  
   [transpose-lines(2)](transpose-lines(2)) (C-x C-t) Exchange (swap) adjacent lines  
   [troff(9)](troff(9)) UNIX troff file  
+  [ts(9)](ts(9)) Typescript programming language   
   [txt(9)](txt(9)) ASCII plain text file  
   [typ(9)](typ(9)) Typst markup file   
+  [typescript(9)](typescript(9)) Typescript programming language     
   [typst(9)](typst(9)) Typst markup file  
   [UserProfiles(2)](UserProfiles(2)) Defining a user profile  
   [uncomment-line(3)](uncomment-line(3)) Uncomment current line  
@@ -68264,6 +68272,7 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: m9typ072
 ! 9 ts
+! 9 typescript
 ! 5 %fhook-ts-exec
 ! 5 %fhook-ts-format
 ! 5 %fhook-ts-lint
@@ -68377,7 +68386,7 @@ $a
        and %b the basename without the ts file extension
   > __%fhook-ts-format__ - The command to format current Typescript file, default  
        is set to _"astyle --indent-spaces=2 \"%f\""_ where %f represents the file name  
-  > __%fhook-ts-lint__ - The command to check/lint the current Nim file, 
+  > __%fhook-ts-lint__ - The command to check/lint the current Tyepescript file, 
        default is set to _"tsc \"%f\""_ 
   
   > The setting assume that the _tsc_ compiler the _node_ javascript runner 
@@ -68399,5 +68408,144 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types),
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
   [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)),
+  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+!! me-id: m9typ073
+! 9 sc
+! 9 scala
+! 5 %fhook-scala-exec
+! 5 %fhook-scala-format
+! 5 %fhook-scala-lint
+
+## NAME
+
+|%fhook-scala-exec
+  %fhook-scala-exec - command to execute Scala files
+|%fhook-scala-format
+  %fhook-scala-format - formatting command for Scala files
+|%fhook-scala-lint
+  %fhook-scala-lint - linting command for Scala files
+$a
+
+## SYNOPSIS
+
+
+  scala - Scala programming language
+  __%fhook-scala-exec__  
+  __%fhook-scala-format__  
+  __%fhook-scala-lint__  
+
+
+## FILES
+
+
+  __hkscala.emf__ - Scala programming language hook definition  
+  __scala.etf__ - Scala programming language template file
+  __scala.eaf__ - Scala programming language abbreviation file
+
+## EXTENSIONS
+
+
+  __.scala__, __.sc__ - Scala file
+
+
+## DESCRIPTION
+
+
+  The __scala__ file type templates share much with the [c(9)](c(9)) template definitions,
+  utilising the electric 'C' features for automatic layout of text.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow commands, variables, logicals,
+     function or class definitions, commenscala, strings and characters of the
+     language to be differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The C-Mode [indent(2)](indent(2)) performs automatic layout of the text.
+
+  >  [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are available to reformat
+     (re-layout) selected sections of the buffer, or the whole buffer,
+     respectively.
+
+  >  Comments in scala may be formatted using `esc o`, which reformats the comments scala
+     according to the current fill paragraph. If a comment commences with
+     `/***...` then the comment is automatically formatted to a box.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the Scala files. The folds occur
+     about __function__, __class__ or __trait__ keywords and closing curly braces, 
+     both at the beginning of a line. 
+
+  > - [collapse-all(3)](collapse-all(3)) (un)folds all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Scala mode offers beside folding as well support for displaying an outline
+     of the functions, classes and trait sof the Scala file for 
+     easy navigation using the [item-list(3)](item-list(3)) command. 
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Scala file
+     editing which  can  be  used  by  writing  short   abbreviations like
+     "_fo_" (for), "_if_", "_ei_" (else if) , "_de_" (function)   or "_cl_" (class) - and then 
+     pressing the key-binding  for the [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+
+  __Short Cuts__
+  
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__ - Restyle the current region.  
+     __esc q__ - Format a comment.  
+     __esc o__ - Format a comment.  
+     __f2__ - (Un)fold the current region.  
+     __f3__ - (Un)fold all regions.  
+     __f6__ - Display the item list.
+     __esc f6__ - Hide the item list.
+
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-scala-exec__ - The command to execute the current Scala file, default
+       is set to _"scalac \"%f\" && scala \"%b\""_ where %f represenscala the file name  
+       and %b the basename without the scala file extension
+  > __%fhook-scala-format__ - The command to format current Scala file, default  
+       is set to _"scalafmt \"%f\""_ or_"astyle --indent-spaces=2 \"%f\""_ where %f represenscala the file name  
+  > __%fhook-scala-lint__ - The command to check/lint the current Scala file, 
+       default is set to _"scalac \"%f\""_ 
+  
+  > The setting assume that the _scalac_ compiler the _scala_  runner 
+    and the _astyle_ formatter are available via the _PATH_ environment variable. 
+    On Windows you must insert here either the complete _PATH_ to the  _`scalac`_ 
+    executable or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or with the _myscala.emf_ file.
+
+## NOTES
+
+
+  The hilighting is typically extended using a file __myscala.emf__. 
+    
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
+  [file-exec(3)](file-exex(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)),
   [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: meende
