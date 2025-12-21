@@ -9,8 +9,8 @@
 define-macro fhook-scala
     set-variable $buffer-mask "luh1"
     @# buffer-init "scala"
-    buffer-init-hooks
     set-variable $buffer-indent-width 2
+    buffer-init-hooks
 !emacro
 
 ; buffer-init variables
@@ -111,10 +111,6 @@ set-variable .fhook-scala.item-list-r4 "Obj  \CCb\\1\CCA"
     hilight .hilight.scala 1 "false"     .scheme.constant
     hilight .hilight.scala 1 "true"      .scheme.constant
     hilight .hilight.scala 1 "null"      .scheme.constant
-    !if &band .hilight.flags 0x04
-        ; function definitions
-        hilight .hilight.scala 0 "\\s\\{function\\s+\\w+\\s?\\}(" .scheme.function
-    !endif
 !endif
 !if &sin "d" .fhook-scala.setup
     ; create a simple indentation rule for scala
@@ -137,6 +133,7 @@ set-variable .fhook-scala.item-list-r4 "Obj  \CCb\\1\CCA"
   !if &not &seq &which "scalafmt" "ERROR"
     set-variable %fhook-scala-format "scalafmt \"%f\""
   !elif &not &seq &which "astyle" "ERROR"
+    set-variable $buffer-indent-width 2
     set-variable %fhook-scala-format &spr "astyle --indent=spaces=%d \"%%f\"" $buffer-indent-width
   !endif
   0 define-macro fhook-scala-replace

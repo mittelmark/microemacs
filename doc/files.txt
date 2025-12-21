@@ -1147,5 +1147,9 @@ m9typ070.html	hs(9)
 m9typ070.html	haskell(9)
 m9typ071.html	tman(9)
 m9typ071.html	doctools(9)
+m9typ072.html	ts(9)
+m9typ072.html	typescript(9)
+m9typ073.html	scala(9)
+m9typ073.html	scala(9)
 home.html	home
 home.html	MicroEmacs

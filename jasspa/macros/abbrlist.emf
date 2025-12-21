@@ -20,6 +20,7 @@
     hilight .hilight.abbrev-item 0x44 "\CCc" "" "\CCA" "" "" .scheme.function
     hilight .hilight.abbrev-item 0x44 "\ecC" "" "\ecA" "" "" .scheme.keyword
     hilight .hilight.abbrev-item 0x44 "\ecD" "" "\ecA" "" "" .scheme.operator
+    hilight .hilight.abbrev-item 0x44 "\CCC" "" "\CCA" "" "" .scheme.keyword  
     hilight .hilight.abbrev-item 0x44 "\CCD" "" "\CCA" "" "" .scheme.variable
     hilight .hilight.abbrev-item 0x44 "\ecE" "" "\ecA" "" "" .scheme.variable
     hilight .hilight.abbrev-item 0x44 "\ecF" "" "\ecA" "" "" .scheme.string

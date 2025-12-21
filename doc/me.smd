@@ -68406,9 +68406,11 @@ $a
 
 
   [Supported File Types](MicroEmacs - Supported File Types),
+  [abbrev-list(3)](abbrev-list(3))
   [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
-  [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)),
-  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+  [file-exec(3)](file-exex(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),
+  [item-list(3)](item-list(3)), [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), 
+  [time(2m)](time(2m)).
 !! me-id: m9typ073
 ! 9 sc
 ! 9 scala
@@ -68545,7 +68547,9 @@ $a
 
 
   [Supported File Types](MicroEmacs - Supported File Types),
-  [c(9)](c(9)), [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
-  [file-exec(3)](file-exex(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), [time(2m)](time(2m)),
-  [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
+  [abbrev-list(3)](abbrev-list(3)), [c(9)](c(9)), 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), [compile(3)](compile(3)), 
+  [file-exec(3)](file-exex(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), 
+  [item-list(3)](item-list(3)), [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), 
+  [time(2m)](time(2m)).
 !! me-id: meende
