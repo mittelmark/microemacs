@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Bryan Schofield
 ;  Created       : Mon Apr 2 09:38:19 2007
-;  Last Modified : <251222.1309>
+;  Last Modified : <251227.1114>
 ;
 ;  Description
 ;   Groovy Language Template
@@ -32,10 +32,12 @@ set-variable .fhook-groovy.collapse-close "^}"
 set-variable .fhook-groovy.collapse-mclose "1"
 set-variable .fhook-groovy.collapse-mnext "-1"
 
-set-variable .fhook-groovy.item-list-s1 "^[\t ]*class[\t ]+\\(\\w[1-9A-Za-z_]*\\)[\t ]*<?<?[\t ]*[A-Za-z0-9_]*"
-set-variable .fhook-groovy.item-list-r1 "class \ecB\\1\ecA"
-set-variable .fhook-groovy.item-list-s2 "^[\t ]*def[\t ]+\\(\\w[1-9A-Za-z_.]*\\)[\t ]*.*$"
-set-variable .fhook-groovy.item-list-r2 "def \ecB\\1\ecA"
+set-variable .fhook-groovy.item-list-s1 "^[ \t]*\\([A-za-z0-9_]+[ \t]+\\)?\\([A-za-z0-9_]+\\)[ \t]+\\(.*\\)[ \t]*(.+).*{"
+set-variable .fhook-groovy.item-list-r1 "Func \CCb\\3\CCA"
+set-variable .fhook-groovy.item-list-s2 "^[\t ]*class[\t ]+\\(\\w[1-9A-Za-z_]*\\)[\t ]*<?<?[\t ]*[A-Za-z0-9_]*"
+set-variable .fhook-groovy.item-list-r2 "Clss \CCb\\1\CCA"
+set-variable .fhook-groovy.item-list-s3 "^[\t ]*def[\t ]+\\(\\w[1-9A-Za-z_.]*\\)[\t ]*.*$"
+set-variable .fhook-groovy.item-list-r3 "Def  \CCb\\1\CCA"
 
 !if &not &exist .hilight.groovy
   set-variable .hilight.groovy  &pinc .hilight.next 1
@@ -68,31 +70,35 @@ set-variable .fhook-groovy.item-list-r2 "def \ecB\\1\ecA"
   hilight .hilight.groovy 1    "abstract"     .scheme.keyword
   hilight .hilight.groovy 1    "as"           .scheme.keyword
   hilight .hilight.groovy 1    "assert"       .scheme.keyword
+  hilight .hilight.groovy 1    "BigInteger"   .scheme.type
+  hilight .hilight.groovy 1    "BigDecimal"   .scheme.type  
   hilight .hilight.groovy 1    "boolean"      .scheme.type
   hilight .hilight.groovy 1    "break"        .scheme.operator
   hilight .hilight.groovy 1    "byte"         .scheme.type
-  hilight .hilight.groovy 1    "case"         .scheme.operator
-  hilight .hilight.groovy 1    "catch"        .scheme.operator
+  hilight .hilight.groovy 1    "case"         .scheme.keyword
+  hilight .hilight.groovy 1    "catch"        .scheme.keyword
   hilight .hilight.groovy 1    "char"         .scheme.type
   hilight .hilight.groovy 1    "class"        .scheme.keyword
-  hilight .hilight.groovy 1    "continue"     .scheme.operator
+  hilight .hilight.groovy 1    "const"        .scheme.type  
+  hilight .hilight.groovy 1    "continue"     .scheme.keyword
   hilight .hilight.groovy 1    "def"          .scheme.keyword
   hilight .hilight.groovy 1    "default"      .scheme.operator
-  hilight .hilight.groovy 1    "do"           .scheme.operator
+  hilight .hilight.groovy 1    "do"           .scheme.keyword
   hilight .hilight.groovy 1    "double"       .scheme.type
-  hilight .hilight.groovy 1    "else"         .scheme.operator
+  hilight .hilight.groovy 1    "else"         .scheme.keyword
   hilight .hilight.groovy 1    "enum"         .scheme.keyword
   hilight .hilight.groovy 1    "extends"      .scheme.keyword
   hilight .hilight.groovy 1    "false"        .scheme.constant
-  hilight .hilight.groovy 1    "final"        .scheme.keyword
-  hilight .hilight.groovy 1    "finally"      .scheme.operator
+  hilight .hilight.groovy 1    "final"        .scheme.type
+  hilight .hilight.groovy 1    "finally"      .scheme.keyword
   hilight .hilight.groovy 1    "float"        .scheme.type
-  hilight .hilight.groovy 1    "for"          .scheme.operator
-  hilight .hilight.groovy 1    "if"           .scheme.operator
+  hilight .hilight.groovy 1    "for"          .scheme.keyword
+  hilight .hilight.groovy 1    "goto"         .scheme.keyword
+  hilight .hilight.groovy 1    "if"           .scheme.keyword
   hilight .hilight.groovy 1    "implements"   .scheme.keyword
   hilight .hilight.groovy 1    "import"       .scheme.keyword
   hilight .hilight.groovy 1    "in"           .scheme.operator
-  hilight .hilight.groovy 1    "instanceof"   .scheme.keyword
+  hilight .hilight.groovy 1    "instanceof"   .scheme.type
   hilight .hilight.groovy 1    "int"          .scheme.type
   hilight .hilight.groovy 1    "interface"    .scheme.keyword
   hilight .hilight.groovy 1    "long"         .scheme.type
@@ -106,24 +112,27 @@ set-variable .fhook-groovy.item-list-r2 "def \ecB\\1\ecA"
   hilight .hilight.groovy 1    "property"     .scheme.keyword
   hilight .hilight.groovy 1    "protected"    .scheme.keyword
   hilight .hilight.groovy 1    "public"       .scheme.keyword
-  hilight .hilight.groovy 1    "return"       .scheme.operator
+  hilight .hilight.groovy 1    "pull"         .scheme.keyword  
+  hilight .hilight.groovy 1    "return"       .scheme.keyword
   hilight .hilight.groovy 1    "short"        .scheme.type
   hilight .hilight.groovy 1    "static"       .scheme.keyword
   hilight .hilight.groovy 1    "strictfp"     .scheme.keyword
   hilight .hilight.groovy 1    "super"        .scheme.keyword
-  hilight .hilight.groovy 1    "switch"       .scheme.operator
+  hilight .hilight.groovy 1    "switch"       .scheme.keyword
+  hilight .hilight.groovy 1    "String"       .scheme.keyword  
   hilight .hilight.groovy 1    "synchronized" .scheme.keyword
   hilight .hilight.groovy 1    "this"         .scheme.keyword
-  hilight .hilight.groovy 1    "throw"        .scheme.operator
+  hilight .hilight.groovy 1    "throw"        .scheme.keyword
   hilight .hilight.groovy 1    "throws"       .scheme.keyword
+  hilight .hilight.groovy 1    "trait"        .scheme.keyword
   hilight .hilight.groovy 1    "transient"    .scheme.keyword
   hilight .hilight.groovy 1    "true"         .scheme.constant
-  hilight .hilight.groovy 1    "try"          .scheme.operator
+  hilight .hilight.groovy 1    "try"          .scheme.keyword
   hilight .hilight.groovy 1    "void"         .scheme.keyword
   hilight .hilight.groovy 1    "volatile"     .scheme.keyword
-  hilight .hilight.groovy 1    "while"        .scheme.operator
+  hilight .hilight.groovy 1    "while"        .scheme.keyword
   
-  hilight .hilight.groovy 1    "; *$"       .scheme.error
+  hilight .hilight.groovy 1    "; +$"       .scheme.error
 
 !endif
 
