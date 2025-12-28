@@ -740,6 +740,7 @@
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
   [file-exec(3)](file-exec(3)) execute the current file  
+  [file-exists(3)](file-exists(3)) checks if the given file exists  
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-op(2)](file-op(2)) File system operations command  
@@ -1564,6 +1565,7 @@
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
   [file-exec(3)](file-exec(3)) execute the current file  
+  [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-op(2)](file-op(2)) File system operations command  
@@ -1971,6 +1973,7 @@
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
   [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-op(2)](file-op(2)) File system operations command  
@@ -2607,6 +2610,7 @@
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
   [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-tool-setup(3)](file-tool-setup(3)) Define file browser tools  
@@ -3618,6 +3622,7 @@
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
   [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
   [file-op(2)](file-op(2)) File system operations command  
@@ -44686,6 +44691,43 @@ $a
 ## SEE ALSO
 
   [file-tool-setup(3)](file-tool-setup(3)), [restyle-buffer(3)](restyle-buffer(3)). 
+!! me-id: m3mac104
+! 3 file-exists
+## NAME
+
+|file-exists
+  file-exists - check if the gven file exists
+$a
+  
+## SYNOPSIS
+
+  __file-exists__ _PATH_  
+
+   
+## DESCRIPTION
+
+  Check if the given file exists on the file system. Sets the variable   
+  [$result(5)]($result(5)) to 1 if the file exists and to 0 if the given file does
+  not exists.
+
+## EXAMPLE
+       
+```{.emf}
+    file-exists "/usr/share/info/dir"
+    !if &equ $result 1
+        ml-write "File does exists!"
+    !else
+       ml-write "File does not exists!"
+    !endif
+```
+      
+## NOTES
+
+  The macro __file-exists__ is implemented in the file `filtools.emf`.
+  
+## SEE ALSO
+
+  [$result(5)]($result(5))
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

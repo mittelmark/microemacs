@@ -41,6 +41,11 @@ set-variable .fhook-info.exact -1
     hilight .hilight.info 5 "Next:"  "\\}[,\n]" "" .scheme.link
     hilight .hilight.info 5 "Prev:"  "\\}[,\n]" "" .scheme.link
     hilight .hilight.info 5 "Up:"    "\\}[,\n]" "" .scheme.link
+    ; fix for German language displays
+    hilight .hilight.info 64 "‘"    "'"          .scheme.text
+    hilight .hilight.info 64 "’"    "'"          .scheme.text
+    hilight .hilight.info 64 "©"     "@"          .scheme.text
+    hilight .hilight.info 64 "• "   "- "         .scheme.text
     ; Menus, appear at the start of the line and extend to
     ; a colon or double colon character. *Menu is a special case
     hilight .hilight.info 1 "^* Menu:"             .scheme.header
@@ -98,92 +103,97 @@ set-variable .fhook-info.exact -1
 !emacro
 
 0 define-macro info-load-file
-    !force set-variable #l0 @1
-    !if &not &exi .info.path
-        !if &band $system 0x100
-            set-variable .info.path "c:/info"
-            set-variable #l1 ";"
-        !else
-            set-variable .info.path "/usr/local/info"
-            set-variable #l1 ":"
-        !endif
-        !if &not &seq $INFOPATH "ERROR"
-            set-variable .info.path &spr "%s%s%s" $INFOPATH #l1 .info.path
-        !endif
-    !endif
-    set-variable #l2 $search-path
-    set-variable #l3 ""
-    set-variable $search-path .info.path
-    !force set-variable #l1 &find #l0 ""
-    !if &seq #l1 "ERROR"
-        !force set-variable #l1 &find #l0 ".info"
-         ; Search for .gz equivelents of the files.
-         !if &seq #l1 "ERROR"
-             !force set-variable #l1 &find #l0 ".gz"
-             !if &seq #l1 "ERROR"
-                 !force set-variable #l1 &find &cat #l0 ".info" ".gz"
-             !endif
-             ; Save the .gz name in #l3, set #l1 to the non.gz name
-             !if &not &seq #l1 "ERROR"
-                 set-variable #l3 #l1
-                 set-variable #l1 &lef #l1 &sub &len #l1 3
-             !endif
-         !endif
-    !endif
-    set-variable $search-path #l2
-    !if &seq #l1 "ERROR"
-        ml-write &spr "[Failed to find info on %s]" #l0
-        !abort
-    !endif
-    ml-write &spr "[found info in %s]" #l1
-    set-variable #l0 &rig #l1 &rsin "/" #l1
-    set-variable #l2 &cat "*info " #l0
-    !force 0 find-buffer #l2
-    !if $status
-        !force narrow-buffer
-        beginning-of-buffer
-        !return
-    !endif
-    find-buffer #l2
-    -1 buffer-mode "exact"
-    -1 buffer-mode "undo"
-    1 buffer-mode "magic"
-    set-variable $buffer-fname &lef #l1 &rsin "/" #l1
-    ; Read in the file.
-    !if &seq #l3 "" 
-        insert-file #l1
+  !force set-variable #l0 @1
+  !if &not &exi .info.path
+    !if &band $system 0x100
+      set-variable .info.path "c:/info"
+      set-variable #l1 ";"
     !else
-        ; Pipe the gzip file into the buffer 
-        0x02 pipe-shell-command &cat "gunzip -c " #l3 #l2
-        -1 buffer-mode "view"
-        beginning-of-buffer
-        ; Kill off the 1st 3 lines
-        set-mark
-        3 forward-line
-        kill-region
+      file-exists "/usr/share/info/dir"
+      !if &equ $result 1
+        set-variable .info.path "/usr/share/info"
+      !else
+        set-variable .info.path "/usr/local/info"
+      !endif
+      set-variable #l1 ":"
     !endif
+    !if &not &seq $INFOPATH "ERROR"
+      set-variable .info.path &spr "%s%s%s" $INFOPATH #l1 .info.path
+    !endif
+  !endif
+  set-variable #l2 $search-path
+  set-variable #l3 ""
+  set-variable $search-path .info.path
+  !force set-variable #l1 &find #l0 ""
+  !if &seq #l1 "ERROR"
+    !force set-variable #l1 &find #l0 ".info"
+    ; Search for .gz equivelents of the files.
+    !if &seq #l1 "ERROR"
+      !force set-variable #l1 &find #l0 ".gz"
+      !if &seq #l1 "ERROR"
+        !force set-variable #l1 &find &cat #l0 ".info" ".gz"
+      !endif
+      ; Save the .gz name in #l3, set #l1 to the non.gz name
+      !if &not &seq #l1 "ERROR"
+        set-variable #l3 #l1
+        set-variable #l1 &lef #l1 &sub &len #l1 3
+      !endif
+    !endif
+  !endif
+  set-variable $search-path #l2
+  !if &seq #l1 "ERROR"
+    ml-write &spr "[Failed to find info on %s]" #l0
+    !abort
+  !endif
+  ml-write &spr "[found info in %s]" #l1
+  set-variable #l0 &rig #l1 &rsin "/" #l1
+  set-variable #l2 &cat "*info " #l0
+  !force 0 find-buffer #l2
+  !if $status
+    !force narrow-buffer
     beginning-of-buffer
+    !return
+  !endif
+  find-buffer #l2
+  -1 buffer-mode "exact"
+  -1 buffer-mode "undo"
+  1 buffer-mode "magic"
+  set-variable $buffer-fname &lef #l1 &rsin "/" #l1
+  ; Read in the file.
+  !if &seq #l3 "" 
+    insert-file #l1
+  !else
+    ; Pipe the gzip file into the buffer 
+    0x02 pipe-shell-command &cat "gunzip -c " #l3 #l2
+    -1 buffer-mode "view"
+    beginning-of-buffer
+    ; Kill off the 1st 3 lines
     set-mark
-    !force search-forward "\C_\n"
-    !if &not $status
-        !force 0 delete-buffer #l2
-        ml-write &spr "[%s does not appear to be an info file]" #l1
-        !abort
-    !endif
+    3 forward-line
+    kill-region
+  !endif
+  beginning-of-buffer
+  set-mark
+  !force search-forward "\C_\n"
+  !if &not $status
+    !force 0 delete-buffer #l2
+    ml-write &spr "[%s does not appear to be an info file]" #l1
+    !abort
+  !endif
+  -1 kill-region
+  !if &seq &lef @wl 9 "Indirect:"
+    set-mark
+    forward-line
     -1 kill-region
-    !if &seq &lef @wl 9 "Indirect:"
-        set-mark
-        forward-line
-        -1 kill-region
-        !while &not &seq @wc "\C_"
-            info-load-indirect-file
-        !done
-    !endif
-    -1 buffer-mode "edit"
-    1 buffer-mode "view"
-    beginning-of-buffer
-    set-variable $buffer-fhook "fhook-info"
-    fhook-info
+    !while &not &seq @wc "\C_"
+      info-load-indirect-file
+    !done
+  !endif
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"
+  beginning-of-buffer
+  set-variable $buffer-fhook "fhook-info"
+  fhook-info
 !emacro
 
 0 define-macro info-jump-link

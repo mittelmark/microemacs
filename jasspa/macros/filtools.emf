@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Detlef Groth, University of Potsdam, Germany
 ;  Created       : Mon Mar 24 11:14:06 2025
-;  Last Modified : <250824.1824>
+;  Last Modified : <251228.1535>
 ;
 ;  Description   : Support for editing language files with generic
 ;                  macros file-exec, file-format and file-lint using the 
@@ -157,6 +157,22 @@ add-file-hook "*file-exec*" fhook-file-exec
   beginning-of-buffer
   -1 buffer-mode "edit"
   1 buffer-mode "view"  
+!emacro
+
+; checs for the existance of file and 
+; sets the $ return variable to 1 if it exists
+; and to 0 if it dees not exists
+
+define-macro file-exists
+  set-variable #l1 @1
+  set-variable $file-names #l1
+  set-variable #l0 &spr "%s" $file-names
+  1000 ml-write "hello"
+  !if &and &not &seq #l0 "" &sin #l0 #l1
+    set-variable $result 1
+  !else
+    set-variable $result 0
+  !endif
 !emacro
 
 ; awk - hkawk.emf

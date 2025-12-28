@@ -1,0 +1,24 @@
+; -!- emf -!-
+; Copyright (C) 2025 MicroEmacs User.
+;
+; All rights reserved.
+;
+; Synopsis:    
+; Authors:     MicroEmacs User
+;
+define-macro start-up
+  execute-file "me"
+  delete-other-windows
+  set-variable #l0 0
+  
+  !while &not &seq $buffer-bname "*scratch*"
+    file-exists $buffer-bname
+    !if &equ $result 0
+      info-on $buffer-bname
+      set-variable #l0 1
+    !endif
+  !done
+  !if &equ #l0 0
+    info
+  !endif
+!emacro

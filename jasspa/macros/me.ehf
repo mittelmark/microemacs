@@ -840,6 +840,7 @@ Miscellaneous Information
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
     lsfile-exec(3)lmfile-exec(3)le execute the current file  
+    lsfile-exists(3)lmfile-exists(3)le checks if the given file exists  
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
@@ -1650,6 +1651,7 @@ Miscellaneous Information
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
     lsfile-exec(3)lmfile-exec(3)le execute the current file  
+    lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
@@ -2054,6 +2056,7 @@ Miscellaneous Information
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
     lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
@@ -2689,6 +2692,7 @@ Miscellaneous Information
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
     lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
@@ -3697,6 +3701,7 @@ Miscellaneous Information
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
     lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
     lsfile-op(2)lmfile-op(2)le File system operations command  
@@ -44091,6 +44096,41 @@ $a
 cESEE ALSO cA
 
     lsfile-tool-setup(3)lmfile-tool-setup(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le. 
+! 3 file-exists
+cEcENAME cEcA
+
+|file-exists
+    file-exists - check if the gven file exists
+$a
+    
+cESYNOPSIS cA
+
+    cDfile-existscA cCPATHcA  
+
+     
+cEDESCRIPTION cA
+
+    Check if the given file exists on the file system. Sets the variable   
+    ls$result(5)lm$result(5)le to 1 if the file exists and to 0 if the given file does
+    not exists.
+
+cEEXAMPLE cA
+         
+sB
+      file-exists "/usr/share/info/dir"
+      !if &equ $result 1
+          ml-write "File does exists!"
+      !else
+         ml-write "File does not exists!"
+      !endif
+sA        
+cENOTES cA
+
+    The macro cDfile-existscA is implemented in the file cGfiltools.emfcA.
+    
+cESEE ALSO cA
+
+    ls$result(5)lm$result(5)le
 ! 3 user-setup
 cEcENAME cEcA
 
