@@ -2,7 +2,7 @@
 ;
 ;  Created By    : Bryan Schofield
 ;  Created       : Mon Apr 2 09:38:19 2007
-;  Last Modified : <251227.1334>
+;  Last Modified : <251229.2005>
 ;
 ;  Description
 ;   Groovy Language Template
@@ -27,8 +27,8 @@ set-variable .fhook-groovy.setup-mask "abdefghikmnoptux"
 set-variable .fhook-groovy.comment "|/*| */|*| * | * |fr|"
 set-variable .fhook-groovy.comment-1 "|/**| */|*| * | * |f|"
 
-set-variable .fhook-groovy.collapse-open  "^class"
-set-variable .fhook-groovy.collapse-close "^}"
+set-variable .fhook-groovy.collapse-open  "^\\([A-z]\\|/\\*\\)"
+set-variable .fhook-groovy.collapse-close "^\\(}\\|\\*/\\)"
 set-variable .fhook-groovy.collapse-mclose "1"
 set-variable .fhook-groovy.collapse-mnext "-1"
 

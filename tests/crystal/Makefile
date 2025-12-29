@@ -19,5 +19,11 @@ ARGS=
 tasks:  ## list all tasks
 	@grep -Eo '^[a-z0-9]+:.+' $(CURRENT_MAKEFILE) | sed -E 's/:\s+##/\t- /g'
 
-compile:
-	crystal buid --release hello.cr
+compile-release:
+	crystal build --release hello.cr
+
+run:
+	crystal run hello.cr
+	
+format: 
+	crystal tool format hello.cr
