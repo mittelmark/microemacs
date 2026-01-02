@@ -139,12 +139,14 @@ set-variable .fhook-tcl.item-list-r8 "Nmsp \ecB\\1\ecA"
   hilight .hilight.tcl 1 "else"                .scheme.keyword
   hilight .hilight.tcl 1 "elseif"              .scheme.keyword
   hilight .hilight.tcl 1 "encoding"            .scheme.keyword
+  hilight .hilight.tcl 1 "ensemble"            .scheme.keyword  
   hilight .hilight.tcl 1 "entry"               .scheme.keyword
   hilight .hilight.tcl 1 "eof"                 .scheme.keyword
   hilight .hilight.tcl 1 "error"               .scheme.keyword
   hilight .hilight.tcl 1 "eval"                .scheme.keyword
   hilight .hilight.tcl 1 "exec"                .scheme.keyword
   hilight .hilight.tcl 1 "exit"                .scheme.keyword
+  hilight .hilight.tcl 1 "export"              .scheme.keyword  
   hilight .hilight.tcl 1 "expr"                .scheme.keyword
   hilight .hilight.tcl 1 "fconfigure"          .scheme.keyword
   hilight .hilight.tcl 1 "fcopy"               .scheme.keyword
