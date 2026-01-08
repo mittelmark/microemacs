@@ -8,7 +8,7 @@
 ![Commits](https://img.shields.io/github/commits-since/mittelmark/microemacs/latest)
 
 ![Ubuntu](https://github.com/mittelmark/microemacs/workflows/Binaries%20Ubuntu%2022,24%20(linux-gcc)/badge.svg)
-![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS-13,14,15%20(macos-gcc)/badge.svg)
+![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS-14,15%20(macos-gcc)/badge.svg)
 ![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
 ![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin/badge.svg)
 
