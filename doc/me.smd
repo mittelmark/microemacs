@@ -1681,6 +1681,8 @@
   [f(9)](f(9)) Fortran File  
   [f77(9)](f77(9)) Fortran 77 File  
   [f90(9)](f90(9)) Fortran 90 File  
+  [fu(9)](fu(9)) Fusion transpiler file  
+  [fusion(9)](fusion(9)) Fusion transpiler file  
   [fvwm(9)](fvwm(9)) FVWM configuration file  
   [fvwmrc(9)](fvwmrc(9)) FVWM configuration file  
   [gawk(9)](gawk(9)) GNU AWK File  
@@ -3657,6 +3659,8 @@
   [forward-paragraph(2)](forward-paragraph(2)) (esc n) Move the cursor to the next paragraph  
   [forward-word(2)](forward-word(2)) (esc f) Move the cursor to the next word  
   [ftp(3)](ftp(3)) Initiate an FTP connection  
+  [fu(9)](fu(9)) Fusion transpiler file  
+  [fusion(9)](fusion(9)) Fusion transpiler file  
   [fvwm(9)](fvwm(9)) FVWM configuration file  
   [fvwmrc(9)](fvwmrc(9)) FVWM configuration file  
   [gawk(9)](gawk(9)) GNU AWK File  
@@ -5163,6 +5167,11 @@
 
 ## Development History 
 
+  - [260109] - Support for Fusion transpiler files
+  - [251224] - Groovy programming language support
+  - [251221] - Scala programming language support
+  - [251216] - Fixing Python triple quote issues, yapf3 support
+  - [251215] - Support for Typescript files
   - [251118] - Release v091225
   - [251117] - improved font-path handling in installer, 
                fixing issues in Python and R abbreviation files
@@ -68594,4 +68603,92 @@ $a
   [file-exec(3)](file-exex(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)), 
   [item-list(3)](item-list(3)), [restyle-buffer(3)](restyle-buffer(3)), [restyle-region(3)](restyle-region(3)), 
   [time(2m)](time(2m)).
+!! me-id: m9typ074
+! 9 fu
+! 9 fusion
+## SYNOPSIS
+
+
+  fu - Fusion transpiler files
+
+
+## FILES
+
+
+  __hkfusion.emf__ - Fusion file hook definition  
+  __fusion.etf__ - Fusion template file  
+  __fusion.eaf__ - Fusion abbreviation file
+
+
+## EXTENSIONS
+
+
+  __.fu__ - Fusion file  
+
+
+## DESCRIPTION
+
+
+  The __fusion__ file hook provides simple hilighting of Fusion
+  files, folding, item listing, abbreviations and indentation support.
+
+  __General Editing__
+  
+  >  On creating a new file, a new header is automatically included into
+     the file. [time(2m)](time(2m)) is by default enabled, allowing the modification
+     time-stamp to be maintained in the header.
+
+  __Hilighting__
+  
+  >  The hilighting features allow functions, classes, enums,
+     logicals, comments, strings, characters of the language to be 
+     differentiated and rendered in different colors.
+
+  __Auto Layout__
+  
+  >  The [indentation mechanism](indent(2)) is enabled which performs performs automatic
+     layout of the text. [restyle-region(3)](restyle-region(3)) and [restyle-buffer(3)](restyle-buffer(3)) are
+     available to reformat (re-layout) selected sections of the buffer, or
+     the whole buffer, respectively based on the curly braces.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the __fu__ files. The folds occur about
+     folding structures with curly braces starting with a letter at the first line
+     and ending with a curly brace at the same line and ending with a closing curly
+     brace located on the left-hand margin.
+
+  > - [collapse-all(3)](collapse-all(3)) - (un)folds  all regions in the file, 
+    - [collapse-current(3)](collapse-current(3)) - (un)folds the current region. 
+
+  __Navigation via Item List__
+
+  >  The Fusion mode offers beside folding as well support for displaying
+     an outline of the functions and classes of the Fusion file for easy  navigation
+     using the [item-list(3)](item-list(3)) command.
+
+  __Abbreviations__
+
+  >  The  installation  comes with a default  abbreviation  file for Fusion
+     file  editing  which  can  be  used  by  writing  short   abbreviations
+     like   _"if"_  _"wh"_ (while), or _"cl"_ (class) - and then pressing
+     the key-binding for the  [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.  
+     The  list  of  abbreviations  can be used  interactively  in the GUI version of
+     MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
+
+## BUGS
+
+
+  The File hook is not tested  extensively,  so there might be a few  problems
+  waiting for the user.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types)
+  [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
+  [item-list(3)](item-list(3)), [time(2m)](time(2m)).
 !! me-id: meende

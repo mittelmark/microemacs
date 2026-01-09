@@ -1,0 +1,13 @@
+cl "class \p () {\r\r}\r\P" "  \CCDcl\CCAass"
+do "do\r{\r\r} while (\p)\r\P" "  \CCDdo\CCA"
+ei "else if (\p)\r{\r\r}\r\P" "  \CCDe\CCAlse \CCDi\CCAf"
+el "else\r{\r\p\r}\r\P" "  \CCDel\CCAse" 
+fe "for (\p in ...) {\r\r}\r\P" "  \CCDf\CCAor\CCDe\CCAch" 
+fo "for (int i = \p; i < ...; i++) {\r\r}\r\P" "  \CCDfo\CCAr" 
+fu "public void \p () {\r\r};\r\P" "  \CCDfu\CCAnction"
+if "if (\p)\r{\r\r}\r\P" "  \CCDif\CCA"
+ma "static void Main () {\r\pConsole.WriteLine("Hello World!")\r}\r\P" "  \CCDma\CCAin"
+sw "switch (\p)\r{\rcase ...:\rdefault:\r\r}\r\P "  \CCDsw\CCAitch"
+wh "while (\p) {\r\r}\r\P" "  \CCDwh\CCAile"
+
+

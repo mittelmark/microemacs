@@ -7,8 +7,19 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <251118.0902>
+>  Last Modified : <260109.1422>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
+
+## 2026
+
+  [260109] - Support for Fusion transpiler files
+
+## 2025
+
+  [251224] - Groovy programming language support
+  [251221] - Scala programming language support
+  [251216] - Fixing Python triple quote issues, yapf3 support
+  [251215] - Support for Typescript files
 
   [251118] - Release v091225
   [251117] - improved font-path handling in installer
@@ -194,6 +205,8 @@
  [250101]
 
     - bumping dev version to v09.12.25b1
+
+## 2024
 
  [241230]
   

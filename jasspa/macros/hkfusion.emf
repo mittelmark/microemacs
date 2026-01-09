@@ -1,0 +1,154 @@
+; -!- emf -!-
+;
+; Copyright (C) 2025 Detlef Groth
+;
+; This is part of JASSPA's 09 MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
+; Synopsis:    Fusion mode hook - https://github.com/fusionlanguage/fut
+; Authors:     Steven Phillips, Detlef Groth
+;
+define-macro fhook-fusion
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "fusion"
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-fusion.setup &reg "/history/fhook/fusio" "bdfghnopx"
+set-variable .fhook-fusion.setup-mask "abdefghikmnoptuxrv"
+set-variable .fhook-fusion.comment "|/*| */|*| * | * |fr|"
+set-variable .fhook-fusion.comment-1 "|/**| */|*| * | * |f|"
+; Set up the collapse of functions
+set-variable .fhook-fusion.collapse-open   "^[a-zA-Z].*{$"
+set-variable .fhook-fusion.collapse-close  "^}"
+set-variable .fhook-fusion.collapse-mclose "1"
+set-variable .fhook-fusion.collapse-mnext  "-1"
+; Set up menu items for C# mode.
+set-variable .fhook-fusion.setup-flags   "|r|v|"
+set-variable .fhook-fusion.setup-labels  "|Brace highlighting|Limit '(' continuation indent to 5 indent widths|"
+; setup item-list
+set-variable .fhook-fusion.item-list-s1 "^[ \t]*\\([a-zA-Z0-9_ \t]*[ \t]\\)?\\([a-zA-Z0-9_]+\\)[ \t]*([a-zA-Z0-9_,\\[\\] \t]*)[ \t]*{"
+set-variable .fhook-fusion.item-list-r1 "Func \ecB\\2\ecA"
+set-variable .fhook-fusion.item-list-s2 "^[ \t]*\\(public[ \t]+\\|private[ \t]+\\)?\\(static \\)?class[ \t]\\(\\w+\\)"
+set-variable .fhook-fusion.item-list-r2 "Clss \CCb\\3\CCA"
+set-variable .fhook-fusion.item-list-s3 "^enum[ \t]+\\(\\w+\\)"
+set-variable .fhook-fusion.item-list-r3 "Enum \CCb\\1\CCA"
+
+!if &not &exist .hilight.fusion
+  ; hilighting uses 3 schemes (.fusion, .fusiondoc & .pcsdoc), normal indent uses 1 scheme & alt indent uses 3 (.fusion, .fusion-comm & .fusionT) so reserve 3 hilighting/indent schemes upfront
+  set-variable .hilight.fusion &pinc .hilight.next 3
+!endif
+!if &and &sin "h" .fhook-fusion.setup &band .hilight.flags 0x02
+  ; High-light C# Mode
+  0 hilight .hilight.fusion 2 50            $global-scheme
+  hilight .hilight.fusion 2  "//"           .scheme.comment
+  hilight .hilight.fusion 20 "/\\*" "*/" "" .scheme.comment
+  hilight .hilight.fusion 4 "\"" "\"" "\\"  .scheme.string
+  hilight .hilight.fusion 0 "'.'"           .scheme.quote
+  hilight .hilight.fusion 0 "'\\\\.'"       .scheme.quote
+  hilight .hilight.fusion 0 "'\\\\'"        .scheme.error
+  hilight .hilight.fusion 0 "'\\\\''"       .scheme.quote
+  ; Comment TODO's, i.e. /* TODO I need to do this */
+  hilight .hilight.fusion 20 "/\\*\\s+[Tt][Oo][Dd][Oo]" "*/" "" .scheme.error
+  hilight .hilight.fusion 18 "//\\s*[tT][oO][dD][oO]"           .scheme.error
+  ; constants: A_CONSTANT_VARAIBLE
+  hilight .hilight.fusion 1    "[A-Z_]+"          .scheme.constant
+  ; C# keywords
+  ; The following conventions are used:
+  ; .scheme.type      primitive types
+  ; .scheme.operator  flow control keywords
+  ; .scheme.prepro    package declaration and imports
+  ; .scheme.error     reserved keywords that have not been implemented
+  ; .scheme.keyword   other cs keywords that are not covered above
+  hilight .hilight.fusion 1    "abstract"     .scheme.keyword
+  hilight .hilight.fusion 1    "assert"       .scheme.keyword
+  hilight .hilight.fusion 1    "base"         .scheme.operator
+  hilight .hilight.fusion 1    "bool"         .scheme.type
+  hilight .hilight.fusion 1    "break"        .scheme.keyword
+  hilight .hilight.fusion 1    "byte"         .scheme.type
+  hilight .hilight.fusion 1    "case"         .scheme.operator
+  hilight .hilight.fusion 1    "class"        .scheme.keyword
+  hilight .hilight.fusion 1    "const"        .scheme.type
+  hilight .hilight.fusion 1    "continue"     .scheme.keyword
+  hilight .hilight.fusion 1    "default"      .scheme.keyword
+  hilight .hilight.fusion 1    "do"           .scheme.operator
+  hilight .hilight.fusion 1    "double"       .scheme.type
+  hilight .hilight.fusion 1    "else"         .scheme.operator
+  hilight .hilight.fusion 1    "enum"         .scheme.type
+  hilight .hilight.fusion 1    "false"        .scheme.constant
+  hilight .hilight.fusion 1    "float"        .scheme.type
+  hilight .hilight.fusion 1    "for"          .scheme.operator
+  hilight .hilight.fusion 1    "foreach"      .scheme.operator
+  hilight .hilight.fusion 1    "if"           .scheme.operator
+  hilight .hilight.fusion 1    "in"           .scheme.operator
+  hilight .hilight.fusion 1    "int"          .scheme.type
+  hilight .hilight.fusion 1    "internal"     .scheme.operator
+  hilight .hilight.fusion 1    "is"           .scheme.operator
+  hilight .hilight.fusion 1    "lock"         .scheme.operator
+  hilight .hilight.fusion 1    "long"         .scheme.type
+  hilight .hilight.fusion 1    "native"       .scheme.type
+  hilight .hilight.fusion 1    "new"          .scheme.keyword
+  hilight .hilight.fusion 1    "nint"         .scheme.keyword  
+  hilight .hilight.fusion 1    "null"         .scheme.constant
+  hilight .hilight.fusion 1    "override"     .scheme.operator
+  hilight .hilight.fusion 1    "protected"    .scheme.operator
+  hilight .hilight.fusion 1    "public"       .scheme.operator
+  hilight .hilight.fusion 1    "resource"     .scheme.operator
+  hilight .hilight.fusion 1    "return"       .scheme.operator
+  hilight .hilight.fusion 1    "sealed"       .scheme.operator
+  hilight .hilight.fusion 1    "short"        .scheme.type
+  hilight .hilight.fusion 1    "static"       .scheme.type
+  hilight .hilight.fusion 1    "string"       .scheme.type
+  hilight .hilight.fusion 1    "switch"       .scheme.operator
+  hilight .hilight.fusion 1    "this"         .scheme.keyword
+  hilight .hilight.fusion 1    "throw"        .scheme.keyword
+  hilight .hilight.fusion 1    "throws"       .scheme.keyword
+  hilight .hilight.fusion 1    "true"         .scheme.constant
+  hilight .hilight.fusion 1    "uint"         .scheme.type
+  hilight .hilight.fusion 1    "ushort"       .scheme.type
+  hilight .hilight.fusion 1    "virtual"      .scheme.keyword
+  hilight .hilight.fusion 1    "void"         .scheme.type
+  hilight .hilight.fusion 1    "when"         .scheme.operator
+  hilight .hilight.fusion 1    "while"        .scheme.operator
+  
+  hilight .hilight.fusion 1    "Console"           .scheme.keyword
+  hilight .hilight.fusion 1    "Convert"           .scheme.keyword
+  hilight .hilight.fusion 1    "Dictionary"        .scheme.keyword
+  hilight .hilight.fusion 1    "Encoding"          .scheme.keyword
+  hilight .hilight.fusion 1    "Environment"       .scheme.keyword
+  hilight .hilight.fusion 1    "Exception"         .scheme.keyword
+  hilight .hilight.fusion 1    "HashSet"           .scheme.keyword
+  hilight .hilight.fusion 1    "JsonElement"       .scheme.keyword
+  hilight .hilight.fusion 1    "List"              .scheme.keyword
+  hilight .hilight.fusion 1    "Lock"              .scheme.keyword
+  hilight .hilight.fusion 1    "Match"             .scheme.keyword
+  hilight .hilight.fusion 1    "Math"              .scheme.keyword
+  hilight .hilight.fusion 1    "OrderedDictionary" .scheme.keyword
+  hilight .hilight.fusion 1    "PriorityQueue"     .scheme.keyword
+  hilight .hilight.fusion 1    "Queue"             .scheme.keyword
+  hilight .hilight.fusion 1    "Regex"             .scheme.keyword
+  hilight .hilight.fusion 1    "RegexOptions"      .scheme.keyword
+  hilight .hilight.fusion 1    "SortedDictionary"  .scheme.keyword
+  hilight .hilight.fusion 1    "SortedSet"         .scheme.keyword
+  hilight .hilight.fusion 1    "Stack"             .scheme.keyword
+  hilight .hilight.fusion 1    "StringWriter"      .scheme.keyword
+  hilight .hilight.fusion 1    "TextWriter"        .scheme.keyword
+  
+  ; Hilight curly braces
+  !if &sin "r" .fhook-fusion.setup
+    hilight .hilight.fusion 1 "{"        .scheme.keyword
+    hilight .hilight.fusion 1 "}"        .scheme.keyword
+  !endif
+!endif
+!if &sin "d" .fhook-fusion.setup
+  ; Use the 'C' indentation framework.
+  0 indent .hilight.fusion 12
+  indent .hilight.fusion "u" " * "
+  !if &sin "v" .fhook-fusion.setup
+    ; limit continuation indentation
+    indent .hilight.fusion "x" 5t
+  !endif
+!endif
+
+buffer-init-fhook "cs"
