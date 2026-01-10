@@ -1,7 +1,7 @@
 // File: Fibo.hx
 
 class Fibo {
-    static function main() {
+    static function main():Void {
         var args = Sys.args();
 
         // Check that exactly one argument was provided

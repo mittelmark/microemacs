@@ -1,0 +1,14 @@
+cl "class \p () {\r\r}\r\P" "  \CCDcl\CCAass"
+do "do\r{\r\r} while (\p)\r\P" "  \CCDdo\CCA"
+ei "else if (\p)\r{\r\r}\r\P" "  \CCDe\CCAlse \CCDi\CCAf"
+el "else\r{\r\p\r}\r\P" "  \CCDel\CCAse" 
+fe "for (\p in ...) {\r\r}\r\P" "  \CCDf\CCAor\CCDe\CCAch" 
+fo "for (int i = \p; i < ...; i++) {\r\r}\r\P" "  \CCDfo\CCAr" 
+fu "function \p():Void {\r\r};\r\P" "  \CCDfu\CCAnction"
+if "if (\p)\r{\r\r}\r\P" "  \CCDif\CCA"
+ma "static function Main ():Void {\r\pvar args = Sys.args();\rif (args.length < 1) {\rtrace(\"Usage: app ARG1\");\r}\rtrace(\"Hello World!\")\r}\r\P" "  \CCDma\CCAin"
+sw "switch (\p)\r{\rcase ...:\rdefault:\r\r}\r\P "  \CCDsw\CCAitch"
+tr "try {\r\p\r} catch (e:Dynamic) {\rtrace("Some error happened!");\rreturn;\r}\r\P" "  try"
+wh "while (\p) {\r\r}\r\P" "  \CCDwh\CCAile"
+
+

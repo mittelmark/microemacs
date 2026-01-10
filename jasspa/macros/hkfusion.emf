@@ -29,7 +29,7 @@ set-variable .fhook-fusion.setup-flags   "|r|v|"
 set-variable .fhook-fusion.setup-labels  "|Brace highlighting|Limit '(' continuation indent to 5 indent widths|"
 ; setup item-list
 set-variable .fhook-fusion.item-list-s1 "^[ \t]*\\([a-zA-Z0-9_ \t]*[ \t]\\)?\\([a-zA-Z0-9_]+\\)[ \t]*([a-zA-Z0-9_,\\[\\] \t]*)[ \t]*{"
-set-variable .fhook-fusion.item-list-r1 "Func \CCb\\2\ecA"
+set-variable .fhook-fusion.item-list-r1 "Func \CCb\\2\CCA"
 set-variable .fhook-fusion.item-list-s2 "^[ \t]*\\(public[ \t]+\\|private[ \t]+\\)?\\(static \\)?class[ \t]\\(\\w+\\)"
 set-variable .fhook-fusion.item-list-r2 "Clss \CCb\\3\CCA"
 set-variable .fhook-fusion.item-list-s3 "^enum[ \t]+\\(\\w+\\)"
