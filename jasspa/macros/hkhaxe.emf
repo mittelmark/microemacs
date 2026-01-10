@@ -126,9 +126,10 @@ set-variable .fhook-haxe.item-list-r4 "Tdef \CCb\\1\CCA"
   hilight .hilight.haxe 1    "GenericStack" .scheme.keyword
   hilight .hilight.haxe 1    "Map"          .scheme.keyword
   hilight .hilight.haxe 1    "Option"       .scheme.keyword
-  hilight .hilight.haxe 1    "Math"              .scheme.keyword
-  hilight .hilight.haxe 1    "Serializer"              .scheme.keyword  
-  hilight .hilight.haxe 1    "Type"              .scheme.keyword  
+  hilight .hilight.haxe 1    "Math"         .scheme.keyword
+  hilight .hilight.haxe 1    "Serializer"   .scheme.keyword  
+  hilight .hilight.haxe 1    "Std"          .scheme.keyword  
+  hilight .hilight.haxe 1    "Type"         .scheme.keyword  
   
   ; Hilight curly braces
   !if &sin "r" .fhook-haxe.setup
