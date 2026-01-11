@@ -1,4 +1,5 @@
 // https://www.perplexity.ai/search/how-can-i-create-random-data-w-_10jU2EBT3CGK_wtX.kI3w
+// https://www.perplexity.ai/search/how-can-i-create-random-data-w-_10jU2EBT3CGK_wtX.kI3w
 class NormalRandom {
     static public function normal(mean:Float = 0, stdDev:Float = 1):Float {
         // Generate two uniform random numbers
