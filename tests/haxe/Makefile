@@ -65,3 +65,8 @@ mono:
 	mono cs/bin/$(MAIN).exe $(ARGS) | head -n 5
 all:
 	make lua python neko haxe MAIN=$(MAIN) ARGS=$(ARGS)
+
+person:
+	haxe --run Person
+	haxe --python person.py --main Person
+	python3 person.py
