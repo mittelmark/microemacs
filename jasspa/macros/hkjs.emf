@@ -48,12 +48,15 @@ set-variable .fhook-js.item-list-r3 "Meth \ecB\\1\ecA"
     hilight .hilight.js 1 "case"           .scheme.keyword
     hilight .hilight.js 1 "catch"          .scheme.keyword
     hilight .hilight.js 1 "continue"       .scheme.keyword
+    hilight .hilight.js 1 "class"          .scheme.keyword    
     hilight .hilight.js 1 "default"        .scheme.keyword
     hilight .hilight.js 1 "do"             .scheme.keyword
     hilight .hilight.js 1 "else"           .scheme.keyword
     hilight .hilight.js 1 "for"            .scheme.keyword
     hilight .hilight.js 1 "goto"           .scheme.keyword
     hilight .hilight.js 1 "if"             .scheme.keyword
+    hilight .hilight.js 1 "let"            .scheme.keyword    
+    hilight .hilight.js 1 "new"            .scheme.keyword        
     hilight .hilight.js 1 "return"         .scheme.keyword
     hilight .hilight.js 1 "super"          .scheme.keyword
     hilight .hilight.js 1 "switch"         .scheme.keyword
