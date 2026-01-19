@@ -15,10 +15,11 @@ define-macro fhook-fusion
 !emacro
 
 ; buffer-init variables
-set-variable .fhook-fusion.setup &reg "/history/fhook/fusion" "bdfghnopx"
+set-variable .fhook-fusion.setup &reg "/history/fhook/fusion" "bdfghnopTx"
 set-variable .fhook-fusion.setup-mask "abdefghikmnoptuxrv"
 set-variable .fhook-fusion.comment "|/*| */|*| * | * |fr|"
-set-variable .fhook-fusion.comment-1 "|/**| */|*| * | * |f|"
+set-variable .fhook-fusion.comment-1 "|///|///|/| /// | ///|fr|"
+set-variable .fhook-fusion.tab-width 4
 ; Set up the collapse of functions
 set-variable .fhook-fusion.collapse-open   "^[a-zA-Z].*{$"
 set-variable .fhook-fusion.collapse-close  "^}"
