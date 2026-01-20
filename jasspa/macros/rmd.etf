@@ -83,7 +83,7 @@ df2md(head(iris))
 
 Figure example:
 
-```{r label=fig1,fig.width=9,fig.height=6,out.width=800}
+```{r label=fig1,fig=TRUE,fig.width=9,fig.height=6,out.width=800}
 with(iris,boxplot(Sepal.Length ~ Species,col=2:4))
 ```
 
