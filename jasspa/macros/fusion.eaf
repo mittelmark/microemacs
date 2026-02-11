@@ -8,7 +8,7 @@ fo "for (int i = \p; i < ...; i++) {\r\r}\r\P" "  \CCDfo\CCAr"
 fu "public void \p () {\r\r};\r\P" "  \CCDfu\CCAnction"
 sfu "public static void \p () {\r\r};\r\P" "  \CCDsfu\CCAnction"
 if "if (\p)\r{\r\r}\r\P" "  \CCDif\CCA"
-ma "/// Main application entry point.\rstatic void Main () {\r\pConsole.WriteLine("Hello World!")\r}\r\P" "  \CCDma\CCAin"
+ma "/// Main application entry point.\rstatic void Main () {\r\pConsole.WriteLine(\"Hello World!\")\r}\r\P" "  \CCDma\CCAin"
 sw "switch (\p)\r{\rcase ...:\rdefault:\r\r}\r\P "  \CCDsw\CCAitch"
 wh "while (\p) {\r\r}\r\P" "  \CCDwh\CCAile"
 
