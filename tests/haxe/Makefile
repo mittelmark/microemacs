@@ -1,11 +1,6 @@
 ##-*- makefile -*-############################################################
 #
-# Copyright (C) 2026 MicroEmacs User.
-#
-# All rights reserved.
-#
-# Synopsis:    
-# Authors:     MicroEmacs User
+# Authors:     Detlef Groth, University of Potsdam
 #
 ##############################################################################
 
@@ -28,10 +23,12 @@ lua:    ## execute Lua samples like make lua Fibo 12
 	# sudo luarocks install luautf8
 	# sudo luarocks install luv
 	@echo "task: @lua"
+	if [[ ! -d bin ]]; then mkdir bin ; fi
 	haxe --lua bin/$(main).lua -m $(MAIN) $(MAIN).hx
 	lua bin/$(main).lua $(ARGS) | head -n 5
 neko:
 	# sudo apt install neko
+	if [[ ! -d bin ]]; then mkdir bin ; fi
 	haxe --neko bin/$(main).n -m $(MAIN) $(MAIN).hx
 	neko bin/$(main).n $(ARGS) | head -n 5
 haxe:
@@ -40,21 +37,25 @@ cpp:
 	# sudo apt install haxelib
 	# sudo haxelib setup
 	# sudo haxelib install hxcpp
+	if [[ ! -d cpp-code ]]; then mkdir cpp-code ; fi
 	haxe --main $(MAIN) --cpp cpp-code
 	./cpp-code/$(MAIN) $(ARGS) | head -n 5
 
 java:
+	if [[ ! -d bin ]]; then mkdir bin ; fi
 	haxe --java bin --main $(MAIN)
 	java -jar bin/$(MAIN).jar $(ARGS) | head -n 5
 jvm:
 	# sudo haxelib install hxjava
 	# wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.deb
 	# wget sudo dpkg -i sudo dpkg 
+	if [[ ! -d bin ]]; then mkdir bin ; fi
 	haxe --jvm bin/$(MAIN).jar --main $(MAIN)
 	java -jar bin/$(MAIN).jar $(ARGS) | head -n 5
 	
 python:
 	@echo "task: $@"
+	if [[ ! -d bin ]]; then mkdir bin ; fi
 	haxe --main $(MAIN) --python bin/$(main).py
 	python3 bin/$(main).py $(ARGS) | head -n 5
 

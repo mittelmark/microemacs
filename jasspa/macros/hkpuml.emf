@@ -1,0 +1,90 @@
+; -!- emf -!-
+;
+; Copyright (C) 2005-2026 JASSPA (www.jasspa.com), Detlef Groth
+;
+; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
+; Synopsis:   PlantUML - invoked when a .puml or .pml file is loaded (www.plantuml.com).
+; Author:     Detlef Groth, University of Potsdam
+;
+set-char-mask "3" "-$."
+
+define-macro fhook-puml
+  set-variable $buffer-mask "luh13"
+  @# buffer-init
+  buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-puml.setup &reg "/history/fhook/puml" "bdfghnopx"
+set-variable .fhook-puml.setup-mask "abdefghikmnoptux"
+set-variable .fhook-puml.comment "|/'| '/|'| ' | ' |fr|"
+
+set-variable .fhook-puml.collapse-open  "<style>"
+set-variable .fhook-puml.collapse-close "</style>"
+set-variable .fhook-puml.collapse-mclose "1"
+set-variable .fhook-puml.collapse-mnext "-1"
+
+
+!if &not &exist .hilight.puml
+  set-variable .hilight.puml &pinc .hilight.next 1
+!endif
+!if &and &sin "h" .fhook-puml.setup &band .hilight.flags 0x02
+  0 hilight .hilight.puml 0                 $global-scheme
+  hilight .hilight.puml 20 "/'" "'/" ""            .scheme.comment
+  hilight .hilight.puml 20 "<style>" "</style>" "" .scheme.quote
+  hilight .hilight.puml 2  "'"             .scheme.comment
+  hilight .hilight.puml 4 "\"" "\"" "\\"   .scheme.string
+  hilight .hilight.puml 2 "@start"         .scheme.prepro
+  hilight .hilight.puml 2 "@end"           .scheme.prepro
+  hilight .hilight.puml 2 "!include"       .scheme.prepro
+  hilight .hilight.puml 2 "!define"        .scheme.prepro
+  hilight .hilight.puml 2 "!pragma"        .scheme.prepro
+  hilight .hilight.puml 2 "!theme"         .scheme.prepro
+  hilight .hilight.puml 2 "!option"        .scheme.prepro  
+  hilight .hilight.puml 2 "skinparam"      .scheme.prepro
+  hilight .hilight.puml 4 "\\$" "\\}\\W" "" .scheme.variable
+  hilight .hilight.puml 4 "#" "\\}\\W" ""  .scheme.variable
+  hilight .hilight.puml 4 "#" "\\}\\W" ""  .scheme.variable
+  hilight .hilight.puml 1 "abstract"       .scheme.keyword
+  hilight .hilight.puml 1 "actor"          .scheme.keyword
+  hilight .hilight.puml 1 "as"             .scheme.operator
+  hilight .hilight.puml 1 "boundary"       .scheme.keyword
+  hilight .hilight.puml 1 "class"          .scheme.keyword
+  hilight .hilight.puml 1 "cloud"          .scheme.keyword
+  hilight .hilight.puml 1 "collections"    .scheme.keyword
+  hilight .hilight.puml 1 "control"        .scheme.keyword
+  hilight .hilight.puml 1 "database"       .scheme.keyword
+  hilight .hilight.puml 1 "else"           .scheme.operator
+  hilight .hilight.puml 1 "elseif"         .scheme.operator
+  hilight .hilight.puml 1 "endif"          .scheme.operator
+  hilight .hilight.puml 1 "enum"           .scheme.keyword
+  hilight .hilight.puml 1 "entity"         .scheme.keyword
+  hilight .hilight.puml 1 "if"             .scheme.operator
+  hilight .hilight.puml 1 "interface"      .scheme.keyword
+  hilight .hilight.puml 1 "node"           .scheme.keyword
+  hilight .hilight.puml 1 "package"        .scheme.keyword
+  hilight .hilight.puml 1 "partipicant"    .scheme.keyword
+  hilight .hilight.puml 1 "queue"          .scheme.keyword
+  hilight .hilight.puml 1 "rectangle"      .scheme.keyword
+  hilight .hilight.puml 1 "repeat"         .scheme.operator
+  hilight .hilight.puml 1 "struct"         .scheme.keyword
+  hilight .hilight.puml 1 "while"          .scheme.operator
+  hilight .hilight.puml 1 "is"             .scheme.operator
+  hilight .hilight.puml 1 "not"            .scheme.operator
+  hilight .hilight.puml 1 "sprite"         .scheme.keyword
+  hilight .hilight.puml 1 "start"          .scheme.keyword
+  hilight .hilight.puml 1 "stop"           .scheme.keyword
+  hilight .hilight.puml 1 "then"           .scheme.operator
+!endif
+!if &sin "d" .fhook-puml.setup
+  0 indent  .hilight.puml 0 10
+  indent .hilight.puml n "{"  t
+  indent .hilight.puml o "}" -t
+  indent .hilight.puml c "\\\\\\s " 3/2t
+  indent .hilight.puml b "\\[" "]"
+  indent .hilight.puml i "//"
+  indent .hilight.puml b "/\\*" "\\*/"
+!endif
+buffer-init-fhook "puml"

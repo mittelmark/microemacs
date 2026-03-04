@@ -332,6 +332,7 @@ add-file-hook ".sc .scala"                                    fhook-scala
 add-file-hook ".groovy .gvy .gy .gsh"                         fhook-groovy
 add-file-hook ".fu"                                           fhook-fusion
 add-file-hook ".hx"                                           fhook-haxe
+add-file-hook ".pml .puml"                                    fhook-puml
 ; Add magic hooks
  1 add-file-hook "^#![ \t]*/.*sh"                fhook-shell  ; UNIX shell files
  1 add-file-hook "^#![ \t]*/.*perl"              fhook-perl   ; UNIX perl script

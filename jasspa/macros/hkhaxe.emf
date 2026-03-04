@@ -5,8 +5,8 @@
 ; This is part of JASSPA's 09 MicroEmacs, see the LICENSE file for licensing and
 ; copying information.
 ;
-; Synopsis:    Fusion mode hook - https://github.com/haxelanguage/fut
-; Authors:     Steven Phillips, Detlef Groth
+; Synopsis:    Haxe mode hook - https://haxe.org
+; Authors:     Detlef Groth
 ;
 define-macro fhook-haxe
   set-variable $buffer-mask "luh1"
@@ -48,7 +48,6 @@ set-variable .fhook-haxe.item-list-r6 "Tdef \CCb\\1\CCA"
 !if &and &sin "h" .fhook-haxe.setup &band .hilight.flags 0x02
   ; High-light Haxe Mode
   0 hilight .hilight.haxe 2 50            $global-scheme
-  hilight .hilight.haxe 2  "///"           .scheme.string
   hilight .hilight.haxe 2  "//"           .scheme.comment
   hilight .hilight.haxe 20 "/\\*" "*/" "" .scheme.comment
   hilight .hilight.haxe 4 "\"" "\"" "\\"  .scheme.string

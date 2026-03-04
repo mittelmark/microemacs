@@ -1822,10 +1822,12 @@ Miscellaneous Information
     lsphp4(9)lmphp4(9)le PHP: Hypertext Preprocessor Language  
     lspl(9)lmpl(9)le Practical Extraction and Report Language File  
     lspm(9)lmpm(9)le Practical Extraction and Report Language File  
+    lspml(9)lmpml(9)le PlantUML diagram file  
     lsPowerShell(9)lmPowerShell(9)le PowerShell Language      
     lsprofile(9)lmprofile(9)le Shell user profile  
     lsps1(9)lmps1(9)le PowerShell Language File  
     lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
+    lspuml(9)lmpuml(9)le PlantUML diagram file    
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
     lsqd(9)lmqd(9)le Quarkdown Markup File   
@@ -3978,6 +3980,7 @@ Miscellaneous Information
     lspipe-shell-command(2)lmpipe-shell-command(2)le (esc @) Execute a single operating system command  
     lspl(9)lmpl(9)le Practical Extraction and Report Language File  
     lspm(9)lmpm(9)le Practical Extraction and Report Language File  
+    lspml(9)lmpml(9)le PlantUML diagram file  
     lspopup-window(2)lmpopup-window(2)le Pop-up a window on the screen  
     lsPowerShell(9)lmPowerShell(9)le PowerShell Language      
     lsprefix(2)lmprefix(2)le Key prefix command  
@@ -3991,6 +3994,7 @@ Miscellaneous Information
     lsprofile(9)lmprofile(9)le Shell user profile  
     lsps1(9)lmps1(9)le PowerShell Language File  
     lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
+    lspuml(9)lmpuml(9)le PlantUML diagram file    
     lspy(9)lmpy(9)le Python Language File  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages    
     lspy-exec(3)lmpy-exec(3)le Executes the current Python script with or without command line arguments  
@@ -67704,3 +67708,77 @@ $a
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
     lsrestyle-region(3)lmrestyle-region(3)le, lsrestyle-buffer(3)lmrestyle-buffer(3)le,
     lsitem-list(3)lmitem-list(3)le, lstime(2m)lmtime(2m)le.
+! 9 pml
+! 9 puml
+! 9 plantuml
+cEcESYNOPSIS cEcA
+
+
+    pml - plantuml diagram language
+
+
+cEFILES cA
+
+
+    cDhkpml.emfcA - plantuml pml language file hook definition  
+    cDpml.etfcA   - plantuml pml template file  
+    cDpml.eafcA   - plantuml pml abbreviation file
+
+cEEXTENSIONS cA
+
+
+    cD.pml, .pumlcA - PlantUML file  
+
+
+cEDESCRIPTION cA
+
+
+    The PlantUML cDpmlcA file type macro file provides simple hilighting of PlantUML files,
+    abbreviations to fastly insert specific text snippetss and item-list and folding 
+    for style sections.
+
+    File recognition is performed using the standard file extension cD.pmlcA or cD.pumlcA.
+
+
+    cDAbbreviationscA
+
+       The installation comes with a default abbreviation file for PlantUML file editing
+       which can be used by writing short abbreviations like cC"mm"cA (mindmap) , cC"um"cA 
+       (startuml/enduml section) or cC"st"cA (style section). 
+       The short strings  are then replaced by pressing the key-binding for the 
+       lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le command.
+       The list of abbreviations can be used as well interactively in the GUI version 
+       of MicroEmacs using the  lsabbrev-list(3)lmabbrev-list(3)le command.
+
+    cDFolding and Information HidingcA
+    
+       Generic folding is enabled within the PlantUML files. The folds occur about the
+       style opening and closing tags.
+       
+       lscollapse-all(3)lmcollapse-all(3)le     - (un)folds all regions in the file,  
+       lscollapse-current(3)lmcollapse-current(3)le - (un)folds the current region.
+
+    cDShort CutscA
+          
+       The short cut keys used within the buffer are:-
+
+       cDC-c C-ccA - Comment out the current line.  
+       cDC-c C-dcA - Uncomment the current line.  
+       cDC-c C-ecA - Comment to the end of the line with stars (*).  
+       cDA-C-icA   - Restyle the current region.  
+       cDesc qcA   - Format a comment.  
+       cDesc ocA   - Format a comment.  
+       cDf2cA      - (un)fold the current region  
+       cDf3cA      - (un)fold all regions
+
+cEBUGS cA
+
+    None known, so far.
+
+
+cESEE ALSO cA
+
+    lsabbrev-list(3lmabbrev-list(3)le], lsexpand-abbrev-handle(3)lmexpand-abbrev-handle(3)le,
+    lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
+      
+    lsMicroEmacs - Supported File TypeslmSupported File Typesle.

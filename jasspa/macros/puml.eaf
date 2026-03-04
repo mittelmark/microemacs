@@ -1,0 +1,4 @@
+mm "@startmindmap\r<style>\r  node {\r  BackgroundColor: cornsilk\r  MinimumWidth: 100\r  HorizontalAlignment: center\r}\r</style>\r+  item 1\r++ subitem\r+++[#ccddee] subsubitem\r* item 2\r@endmindmap\r" "  \CCDmm\CCA - mindmap"
+um "@startuml\r\p\r@enduml\r\P" "  \CCDum\CCA - startuml"
+ac "@startuml\r\pstart\r:Read request;\rif (Valid request?) then (yes)\r  :Process request;\relse (no)\r  stop\rendif\r:result;\r\P" "  \CCDac\CCA - activity"
+st "<style>\r\p\r</style>\r\P" "  \CCDst\CCA - style"

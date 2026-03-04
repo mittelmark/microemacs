@@ -1738,10 +1738,12 @@
   [php4(9)](php4(9)) PHP: Hypertext Preprocessor Language  
   [pl(9)](pl(9)) Practical Extraction and Report Language File  
   [pm(9)](pm(9)) Practical Extraction and Report Language File  
+  [pml(9)](pml(9)) PlantUML diagram file  
   [PowerShell(9)](PowerShell(9)) PowerShell Language      
   [profile(9)](profile(9)) Shell user profile  
   [ps1(9)](ps1(9)) PowerShell Language File  
   [psm1(9)](psm1(9)) PowerShell Language Module File  
+  [puml(9)](puml(9)) PlantUML diagram file    
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
   [qd(9)](qd(9)) Quarkdown Markup File   
@@ -3899,6 +3901,7 @@
   [pipe-shell-command(2)](pipe-shell-command(2)) (esc @) Execute a single operating system command  
   [pl(9)](pl(9)) Practical Extraction and Report Language File  
   [pm(9)](pm(9)) Practical Extraction and Report Language File  
+  [pml(9)](pml(9)) PlantUML diagram file  
   [popup-window(2)](popup-window(2)) Pop-up a window on the screen  
   [PowerShell(9)](PowerShell(9)) PowerShell Language      
   [prefix(2)](prefix(2)) Key prefix command  
@@ -3912,6 +3915,7 @@
   [profile(9)](profile(9)) Shell user profile  
   [ps1(9)](ps1(9)) PowerShell Language File  
   [psm1(9)](psm1(9)) PowerShell Language Module File  
+  [puml(9)](puml(9)) PlantUML diagram file    
   [py(9)](py(9)) Python Language File  
   [py-doc(3)](py-doc(3)) Display Python module manual pages    
   [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
@@ -68691,4 +68695,79 @@ $a
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
   [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
+!! me-id: m9typ075
+! 9 pml
+! 9 puml
+! 9 plantuml
+## SYNOPSIS
+
+
+  pml - plantuml diagram language
+
+
+## FILES
+
+
+  __hkpml.emf__ - plantuml pml language file hook definition  
+  __pml.etf__   - plantuml pml template file  
+  __pml.eaf__   - plantuml pml abbreviation file
+
+## EXTENSIONS
+
+
+  __.pml, .puml__ - PlantUML file  
+
+
+## DESCRIPTION
+
+
+  The PlantUML __pml__ file type macro file provides simple hilighting of PlantUML files,
+  abbreviations to fastly insert specific text snippetss and item-list and folding 
+  for style sections.
+
+  File recognition is performed using the standard file extension __.pml__ or __.puml__.
+
+
+  __Abbreviations__
+
+  >  The installation comes with a default abbreviation file for PlantUML file editing
+     which can be used by writing short abbreviations like _"mm"_ (mindmap) , _"um"_ 
+     (startuml/enduml section) or _"st"_ (style section). 
+     The short strings  are then replaced by pressing the key-binding for the 
+     [expand-abbrev-handle(3)](expand-abbrev-handle(3)) command.
+     The list of abbreviations can be used as well interactively in the GUI version 
+     of MicroEmacs using the  [abbrev-list(3)](abbrev-list(3)) command.
+
+  __Folding and Information Hiding__
+  
+  >  Generic folding is enabled within the PlantUML files. The folds occur about the
+     style opening and closing tags.
+     
+  >  [collapse-all(3)](collapse-all(3))     - (un)folds all regions in the file,  
+     [collapse-current(3)](collapse-current(3)) - (un)folds the current region.
+
+  __Short Cuts__
+        
+  >  The short cut keys used within the buffer are:-
+
+  >  __C-c C-c__ - Comment out the current line.  
+     __C-c C-d__ - Uncomment the current line.  
+     __C-c C-e__ - Comment to the end of the line with stars (*).  
+     __A-C-i__   - Restyle the current region.  
+     __esc q__   - Format a comment.  
+     __esc o__   - Format a comment.  
+     __f2__      - (un)fold the current region  
+     __f3__      - (un)fold all regions
+
+## BUGS
+
+  None known, so far.
+
+
+## SEE ALSO
+
+  [abbrev-list(3)](abbrev-list(3)], [expand-abbrev-handle(3)](expand-abbrev-handle(3)),
+  [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)),
+    
+  [Supported File Types](MicroEmacs - Supported File Types).
 !! me-id: meende
