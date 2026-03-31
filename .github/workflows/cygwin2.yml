@@ -80,6 +80,9 @@ jobs:
         
     - name: Cygwin Combined Release 
       run: |
+        pwd
+        ls
+        cd workspace/microemacs
         make -f cygwin.gmk release app=mecb
         make -f cygwin.gmk release app=mewb        
         make -f cygwin.gmk release app=mecwb                
