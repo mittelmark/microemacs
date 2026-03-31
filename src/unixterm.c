@@ -2417,6 +2417,19 @@ TCAPstart(void)
         }
     } while(--ii >= 0);
     
+#if MEOPT_COLOR
+    if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
+    {
+        meSystemCfg |= meSYSTEM_ANSICOLOR;
+    }
+    else if ((strncmp(tv_stype, "xterm", 5) == 0) ||
+             (strncmp(tv_stype, "screen", 6) == 0) ||
+             (strncmp(tv_stype, "tmux", 4) == 0))
+    {
+        meSystemCfg |= meSYSTEM_ANSICOLOR;
+    }
+#endif
+    
     /* Make sure that there was sufficient buffer space to process the strings */
     if (p >= &tcapbuf[TCAPSLEN])
     {
