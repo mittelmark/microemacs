@@ -634,7 +634,7 @@
   - Meta key binding (e.g. __A-space__ -> __esc space__ -> [set-mark](set-mark(2)))
 
   If the  `ALT`  key is to be used  strictly  as the  Emacs  Meta key then the
-  bindings for the menu should be  over-ridden  by _Direct Key Bindings_  from
+  bindings for the menu should be  overridden  by _Direct Key Bindings_  from
   the user configuration file i.e. to re-map the default MicroEmacs Alt key to
   equivalent `esc` keys then the following keys should be re-bound.
 
@@ -1701,9 +1701,9 @@
   [ini(9)](ini(9)) MS-Windows Initialization File  
   [jav(9)](jav(9)) Java programming language  
   [java(9)](java(9)) Java programming language  
-  [javascript(9)](javascipt(9)) Javascript programming language   
-  [jl(9)](jl(9)) Julia programming language   
-  [jscript(9)](jscipt(9)) Javascript programming language    
+  [javascript(9)](javascript(9)) Javascript programming language   
+   [jl(9)](jl(9)) Julia programming language   
+   [jscript(9)](jscript(9)) JavaScript programming language
   [js(9)](js(9)) Javascript programming language  
   [jst(9)](jst(9)) JASSPA Structured Text  
   [julia(9)](julia(9)) Julia programming language   
@@ -1747,7 +1747,7 @@
   [py(9)](py(9)) Python Language File  
   [python(9)](python(9)) Python Language File  
   [qd(9)](qd(9)) Quarkdown Markup File   
-  [quarkdown(9)](quarkdow(9)) Quarkdown Markup File  
+  [quarkdown(9)](quarkdown(9)) Quarkdown Markup File
   [r(9)](r(9)) R language File  
   [rb(9)](rb(9)) Ruby programming language  
   [rc(9)](rc(9)) Microsoft Developer resource file  
@@ -1893,10 +1893,10 @@
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
   [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character
      set  
-  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)] Convert current character set to UTF-8 encodings  
+  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)) Convert current character set to UTF-8 encodings  
   [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character
      set  
-  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)] Convert from UTF-8 to current character set  
+  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)) Convert from UTF-8 to current character set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [collapse-all(3)](collapse-all(3)) (f3) (Un)Fold all regions in the current buffer  
@@ -1976,7 +1976,7 @@
   [file-browser(3)](file-browser(3)) (f10) Browse the file system  
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
-  [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exec(3)](file-exec(3)) execute the current file  
   [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
@@ -2567,9 +2567,9 @@
   [change-scheme(3)](change-scheme(3)) Change the current highlight scheme  
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
   [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character set
-  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)] Convert current character set to UTF-8 encodings  
+  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)) Convert current character set to UTF-8 encodings  
   [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character set
-  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)] Convert from UTF-8 to current character set  
+  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)) Convert from UTF-8 to current character set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [collapse-all(3)](collapse-all(3)) (f3) (Un)Fold all regions in the current buffer  
@@ -2613,7 +2613,7 @@
   [file-browser(3)](file-browser(3)) (f10) Browse the file system  
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
-  [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exec(3)](file-exec(3)) execute the current file  
   [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
@@ -3492,9 +3492,9 @@
   [change-window-width(2)](change-window-width(2)) Change the width of the current window  
   [charset-change(3)](charset-change(3)) Convert buffer between two character sets  
   [charset-iso-to-user(3)](charset-iso-to-user(3)) Convert buffer from ISO standard to user character set  
-  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)] Convert current character set to UTF-8 encodings  
+  [charset-iso-to-utf8(3)](charset-iso-to-utf8(3)) Convert current character set to UTF-8 encodings  
   [charset-user-to-iso(3)](charset-user-to-iso(3)) Convert buffer from user to ISO standard character set
-  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)] Convert from UTF-8 to current character set  
+  [charset-utf8-to-iso(3)](charset-utf8-to-iso(3)) Convert from UTF-8 to current character set  
   [check-line-length(3)](check-line-length(3)) Check the length of text lines are valid  
   [clean(3)](clean(3)) Remove redundant white spaces from the current buffer  
   [cls(9)](cls(9)) Visual Basic  
@@ -3625,7 +3625,7 @@
   [file-browser(3)](file-browser(3)) (f10) Browse the file system  
   [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
   [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
-  [file-exec(3)](file-exec(3))] execute the current file  
+  [file-exec(3)](file-exec(3)) execute the current file  
   [file-exists(3)](file-exists(3)) checks if the given file exists    
   [file-format(3)](file-format(3)) format the buffer using a formatting tool  
   [file-lint(3)](file-lint(3)) use a linting tool for the current file  
@@ -3755,7 +3755,7 @@
   [item-list-find(3)](item-list-find(3)) Find the selected item in the item list  
   [jav(9)](jav(9)) Java programming language  
   [java(9)](java(9)) Java programming language  
-  [javascript(9)](javascipt(9)) Javascript programming language   
+  [javascript(9)](javascript(9)) Javascript programming language   
   [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
   [jl(9)](jl(9)) Julia programming language       
   [jscript(9)](jscipt(9)) Javascript programming language    
@@ -3764,7 +3764,7 @@
   [jeany-osd(3)](jeany-osd(3))  Update  OSD for  jeany-bindings  with  the C-j prefix  
   [jeany-osd-undo(3)](jeany-osd-undo(3))  Change  back to normal OSD  shortcut entries  
   [jst(9)](jst(9)) JASSPA Structured Text  
-  [jstags(3f)](jstags(3f)) Generate a Javascript tags file    
+  [jstags(3f)](jstags(3f)) Generate a JavaScript tags file
   [julia(9)](julia(9)) Julia programming language     
   [justify(2m)](justify(2m)) Justification Mode  
   [kbd-macro-query(2)](kbd-macro-query(2)) (C-x q) Query termination of keyboard macro  
@@ -3923,7 +3923,7 @@
   [py-lint(3)](py-lint(3)) Check a Python script file for possible problems  
   [python(9)](python(9)) Python Language File  
   [qd(9)](qd(9)) Quarkdown Markup File  
-  [quarkdown(9)](quarkdow(9)) Quarkdown Markup File 
+  [quarkdown(9)](quarkdown(9)) Quarkdown Markup File 
   [query-replace-all-string(3)](query-replace-all-string(3)) Query replace string in a list of files  
   [query-replace-string(2)](query-replace-string(2)) (esc C-r) Search and replace a string - with query  
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings across files  
@@ -27090,7 +27090,7 @@ $a
   - Meta key binding (e.g. __A-space__ -> __esc space__ -> [set-mark](set-mark(2)))
 
   If the `ALT` key is to be used strictly as the Emacs Meta key then the
-  bindings for the menu should be over-ridden by _Direct Key Bindings_ from
+  bindings for the menu should be  overridden  by _Direct Key Bindings_  from
   the user configuration file i.e. to re-map the default MicroEmacs Alt key
   to equivalent `esc` keys then the following keys should be re-bound.
 

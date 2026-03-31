@@ -738,7 +738,7 @@ Miscellaneous Information
     - Meta key binding (e.g. cDA-spacecA -> cDesc spacecA -> lsset-mark(2)lmset-markle)
 
     If the  cGALTcA  key is to be used  strictly  as the  Emacs  Meta key then the
-    bindings for the menu should be  over-ridden  by cCDirect Key BindingscA  from
+    bindings for the menu should be  overridden  by cCDirect Key BindingscA  from
     the user configuration file i.e. to re-map the default MicroEmacs Alt key to
     equivalent cGesccA keys then the following keys should be re-bound.
 
@@ -1785,9 +1785,9 @@ Miscellaneous Information
     lsini(9)lmini(9)le MS-Windows Initialization File  
     lsjav(9)lmjav(9)le Java programming language  
     lsjava(9)lmjava(9)le Java programming language  
-    lsjavascipt(9)lmjavascript(9)le Javascript programming language   
-    lsjl(9)lmjl(9)le Julia programming language   
-    lsjscipt(9)lmjscript(9)le Javascript programming language    
+    lsjavascript(9)lmjavascript(9)le Javascript programming language   
+     lsjl(9)lmjl(9)le Julia programming language   
+     lsjscript(9)lmjscript(9)le JavaScript programming language
     lsjs(9)lmjs(9)le Javascript programming language  
     lsjst(9)lmjst(9)le JASSPA Structured Text  
     lsjulia(9)lmjulia(9)le Julia programming language   
@@ -1831,7 +1831,7 @@ Miscellaneous Information
     lspy(9)lmpy(9)le Python Language File  
     lspython(9)lmpython(9)le Python Language File  
     lsqd(9)lmqd(9)le Quarkdown Markup File   
-    lsquarkdow(9)lmquarkdown(9)le Quarkdown Markup File  
+    lsquarkdown(9)lmquarkdown(9)le Quarkdown Markup File
     lsr(9)lmr(9)le R language File  
     lsrb(9)lmrb(9)le Ruby programming language  
     lsrc(9)lmrc(9)le Microsoft Developer resource file  
@@ -1976,10 +1976,10 @@ Miscellaneous Information
     lscharset-change(3)lmcharset-change(3)le Convert buffer between two character sets  
     lscharset-iso-to-user(3)lmcharset-iso-to-user(3)le Convert buffer from ISO standard to user character
        set  
-    lscharset-iso-to-utf8(3lmcharset-iso-to-utf8(3)le] Convert current character set to UTF-8 encodings  
+    lscharset-iso-to-utf8(3)lmcharset-iso-to-utf8(3)le Convert current character set to UTF-8 encodings  
     lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character
        set  
-    lscharset-utf8-to-iso(3lmcharset-utf8-to-iso(3)le] Convert from UTF-8 to current character set  
+    lscharset-utf8-to-iso(3)lmcharset-utf8-to-iso(3)le Convert from UTF-8 to current character set  
     lscheck-line-length(3)lmcheck-line-length(3)le Check the length of text lines are valid  
     lsclean(3)lmclean(3)le Remove redundant white spaces from the current buffer  
     lscollapse-all(3)lmcollapse-all(3)le (f3) (Un)Fold all regions in the current buffer  
@@ -2059,7 +2059,7 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
-    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exec(3)lmfile-exec(3)le execute the current file  
     lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
@@ -2649,9 +2649,9 @@ Miscellaneous Information
     lschange-scheme(3)lmchange-scheme(3)le Change the current highlight scheme  
     lscharset-change(3)lmcharset-change(3)le Convert buffer between two character sets  
     lscharset-iso-to-user(3)lmcharset-iso-to-user(3)le Convert buffer from ISO standard to user character set
-    lscharset-iso-to-utf8(3lmcharset-iso-to-utf8(3)le] Convert current character set to UTF-8 encodings  
+    lscharset-iso-to-utf8(3)lmcharset-iso-to-utf8(3)le Convert current character set to UTF-8 encodings  
     lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character set
-    lscharset-utf8-to-iso(3lmcharset-utf8-to-iso(3)le] Convert from UTF-8 to current character set  
+    lscharset-utf8-to-iso(3)lmcharset-utf8-to-iso(3)le Convert from UTF-8 to current character set  
     lscheck-line-length(3)lmcheck-line-length(3)le Check the length of text lines are valid  
     lsclean(3)lmclean(3)le Remove redundant white spaces from the current buffer  
     lscollapse-all(3)lmcollapse-all(3)le (f3) (Un)Fold all regions in the current buffer  
@@ -2695,7 +2695,7 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
-    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exec(3)lmfile-exec(3)le execute the current file  
     lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
@@ -3571,9 +3571,9 @@ Miscellaneous Information
     lschange-window-width(2)lmchange-window-width(2)le Change the width of the current window  
     lscharset-change(3)lmcharset-change(3)le Convert buffer between two character sets  
     lscharset-iso-to-user(3)lmcharset-iso-to-user(3)le Convert buffer from ISO standard to user character set  
-    lscharset-iso-to-utf8(3lmcharset-iso-to-utf8(3)le] Convert current character set to UTF-8 encodings  
+    lscharset-iso-to-utf8(3)lmcharset-iso-to-utf8(3)le Convert current character set to UTF-8 encodings  
     lscharset-user-to-iso(3)lmcharset-user-to-iso(3)le Convert buffer from user to ISO standard character set
-    lscharset-utf8-to-iso(3lmcharset-utf8-to-iso(3)le] Convert from UTF-8 to current character set  
+    lscharset-utf8-to-iso(3)lmcharset-utf8-to-iso(3)le Convert from UTF-8 to current character set  
     lscheck-line-length(3)lmcheck-line-length(3)le Check the length of text lines are valid  
     lsclean(3)lmclean(3)le Remove redundant white spaces from the current buffer  
     lscls(9)lmcls(9)le Visual Basic  
@@ -3704,7 +3704,7 @@ Miscellaneous Information
     lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
     lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
     lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
-    lsfile-exec(3)lmfile-exec(3)le] execute the current file  
+    lsfile-exec(3)lmfile-exec(3)le execute the current file  
     lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
     lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
     lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
@@ -3834,7 +3834,7 @@ Miscellaneous Information
     lsitem-list-find(3)lmitem-list-find(3)le Find the selected item in the item list  
     lsjav(9)lmjav(9)le Java programming language  
     lsjava(9)lmjava(9)le Java programming language  
-    lsjavascipt(9)lmjavascript(9)le Javascript programming language   
+    lsjavascript(9)lmjavascript(9)le Javascript programming language   
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
     lsjl(9)lmjl(9)le Julia programming language       
     lsjscipt(9)lmjscript(9)le Javascript programming language    
@@ -3843,7 +3843,7 @@ Miscellaneous Information
     lsjeany-osd(3)lmjeany-osd(3)le  Update  OSD for  jeany-bindings  with  the C-j prefix  
     lsjeany-osd-undo(3)lmjeany-osd-undo(3)le  Change  back to normal OSD  shortcut entries  
     lsjst(9)lmjst(9)le JASSPA Structured Text  
-    lsjstags(3f)lmjstags(3f)le Generate a Javascript tags file    
+    lsjstags(3f)lmjstags(3f)le Generate a JavaScript tags file
     lsjulia(9)lmjulia(9)le Julia programming language     
     lsjustify(2m)lmjustify(2m)le Justification Mode  
     lskbd-macro-query(2)lmkbd-macro-query(2)le (C-x q) Query termination of keyboard macro  
@@ -4002,7 +4002,7 @@ Miscellaneous Information
     lspy-lint(3)lmpy-lint(3)le Check a Python script file for possible problems  
     lspython(9)lmpython(9)le Python Language File  
     lsqd(9)lmqd(9)le Quarkdown Markup File  
-    lsquarkdow(9)lmquarkdown(9)le Quarkdown Markup File 
+    lsquarkdown(9)lmquarkdown(9)le Quarkdown Markup File 
     lsquery-replace-all-string(3)lmquery-replace-all-string(3)le Query replace string in a list of files  
     lsquery-replace-string(2)lmquery-replace-string(2)le (esc C-r) Search and replace a string - with query  
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings across files  
@@ -26786,7 +26786,7 @@ $a
     - Meta key binding (e.g. cDA-spacecA -> cDesc spacecA -> lsset-mark(2)lmset-markle)
 
     If the cGALTcA key is to be used strictly as the Emacs Meta key then the
-    bindings for the menu should be over-ridden by cCDirect Key BindingscA from
+    bindings for the menu should be  overridden  by cCDirect Key BindingscA  from
     the user configuration file i.e. to re-map the default MicroEmacs Alt key
     to equivalent cGesccA keys then the following keys should be re-bound.
 
