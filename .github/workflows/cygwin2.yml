@@ -81,10 +81,8 @@ jobs:
         make -f cygwin.gmk release app=mecb
         
     - name: Cygwin Combined Release 
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'    
       run: |
-        pwd
-        ls
-        cd workspace/microemacs
         make -f cygwin.gmk release app=mecb
         make -f cygwin.gmk release app=mewb        
         make -f cygwin.gmk release app=mecwb                
