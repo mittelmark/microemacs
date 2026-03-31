@@ -113,6 +113,7 @@ static char meHelpPage[]=
 "  -P      : Piped with debugging (see -p)\n"
 "  -p      : Piped mode, no user interactivity\n"
 #endif
+"  -C      : Enable 16 color mode (default on Linux/xterm)\n"
 "  -R      : Reverse the default color scheme\n"
 "  -r      : Read-only, all buffers will be in view mode\n"
 "  -s <s>  : Search for string <s> in the next given file\n"
@@ -1445,6 +1446,11 @@ missing_arg:
             case 'r':
                 meModeToggle(globMode,MDVIEW) ;
                 break ;
+
+            /* -C: Enable 16 color mode */
+            case 'C':
+                meSystemCfg |= meSYSTEM_XANSICOLOR;
+                break;
 
             /* Reverse the video, simply exchange the forward and reverse
              * schemes with each other. Note that this affects the internal

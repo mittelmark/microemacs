@@ -41,6 +41,9 @@ TCAP_DIGIT(TCAPcols, 'c','o','\0')
 /* lines/lines/li/Number of lines on a screen or a page */
 TCAP_DIGIT(TCAPlines, 'l','i','\0')
 
+/* colors/Co/co/Maximum number of colors on the screen */
+TCAP_DIGIT(TCAPcolors, 'C','o','\0')
+
 /* move_standout_mode/msgr/ms/Safe to move in standout modes */
 TCAP_BOOLN(TCAPmsgr, 'm','s','\0')
 
