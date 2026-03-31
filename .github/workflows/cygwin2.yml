@@ -77,6 +77,8 @@ jobs:
         ls
         ls -l ./cygwin-3.6-x86_64-microemacs-${VRS}-mecb.exe
         echo `./cygwin-3.6-x86_64-microemacs-${VRS}-mecb.exe -V`
+        pwd
+        make -f cygwin.gmk release app=mecb
         
     - name: Cygwin Combined Release 
       run: |
