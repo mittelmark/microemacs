@@ -92,5 +92,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
         name: Release-cygwin-3.6-x86_64-windows
-        path: cygwin-*/
+        path: c:\cygwin\home\runneradmin\workspace\microemacs\cygwin-*
         
