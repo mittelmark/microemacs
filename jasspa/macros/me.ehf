@@ -5246,6 +5246,14 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260331] - adding support for 16 colors in the terminal and 
+                 getting rid of TERM=xterm  setting  required for color support in
+                 the terminal
+    - [260304] - adding support for PlantUML files
+    - [2602XX] - improvements in Python and Fusion modes and abbreviations 
+    - [260114] - adding more modern JavaScript keywords
+    - [260110] - Adding support for Haxe transpiler programming language
+    - [260109] - Support for Fusion transpiler files
     - [260109] - Support for Fusion transpiler files
     - [251224] - Groovy programming language support
     - [251221] - Scala programming language support
