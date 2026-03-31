@@ -96,7 +96,7 @@ endif
 # Preference now is to use "ncurses" rather than "termcap", figure out if ncurses is avaiable or if we must fall back to termcap.
 #
 CONSOLE_LIBS  = -lncurses
-CONSOLE_DEFS  = -D_USE_NCURSES
+CONSOLE_DEFS  = -D_USE_NCURSES -D_USETPARM
 
 ifeq "$(BTYP)" "c"
 BTYP_CDF = $(CONSOLE_DEFS) -D_ME_CONSOLE
