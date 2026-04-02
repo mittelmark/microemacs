@@ -1,0 +1,25 @@
+Test UTF-8 with Latin-1 Characters
+===================================
+
+This file contains Latin-1 characters (German umlauts) encoded as UTF-8.
+It should be loaded and displayed correctly in MicroEmacs.
+
+German Umlauts:
+äöü ÄÖÜ ß
+
+Words:
+Grüß Gott
+Frühstück
+Mädchen
+Straße
+Österreich
+Überblick
+
+Mixed content:
+The weather today is wunderbar. Das Wetter heute ist wunderbar.
+Grüß und willkommen! Hello and welcome!
+
+Special chars in sentences:
+Das Mädchen hat ein Frühstück gemacht.
+Die Straße ist sehr lang.
+In Österreich gibt es viele Berge.

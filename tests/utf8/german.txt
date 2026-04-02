@@ -1,0 +1,34 @@
+German UTF-8 Test File
+========================
+
+Grüß Gott! Wie geht es Ihnen?
+Das Wetter heute ist wunderbar.
+
+Sonderzeichen:
+ä ö ü Ä Ö Ü ß
+Straße, Grün, Süden, Mädchen
+Frühstück, Rückkehr, Küssen
+
+Umlaute: Ägypten, Österreich, Überblick
+ß-Laut: Maßstab, Stoß, groß,ußig
+
+Beispieltext:
+-------------
+Die Idee kam mir beim Lesen eines interessanten Artikels über die
+Entwicklung der deutschen Sprache. Der Autor beschrieb die Schwierigkeiten
+bei der Verwendung von Sonderzeichen in verschiedenen Textverarbeitungs-
+programmen. Besonders interessant waren seine Bemerkungen über die
+Verwendung von ß und den Umlauten in älteren Dokumenten.
+
+Zahlen und Wörter:
+------------------
+1. Grüß
+2. Frühstück
+3. Mädchen
+4. Süden
+5. Straße
+6. Österreich
+7. Rückkehr
+8. Küssen
+9. Maßstab
+10. Überblick
