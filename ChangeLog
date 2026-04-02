@@ -7,11 +7,13 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260331.1205>
+>  Last Modified : <260403.0930>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
 
+  [260403] - automatic 256-color terminal detection and color mode selection
+             for the terminal version
   [260331] - adding support for 16 colors in the terminal and 
              getting rid of TERM=xterm  setting  required for color support in
              the terminal

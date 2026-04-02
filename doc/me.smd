@@ -5175,6 +5175,8 @@
 
 ## Development History 
 
+  - [260403] - automatic 256-color terminal detection and color mode selection
+               for the terminal version
   - [260331] - adding support for 16 colors in the terminal and 
                getting rid of TERM=xterm  setting  required for color support in
                the terminal
@@ -5182,7 +5184,6 @@
   - [2602XX] - improvements in Python and Fusion modes and abbreviations 
   - [260114] - adding more modern JavaScript keywords
   - [260110] - Adding support for Haxe transpiler programming language
-  - [260109] - Support for Fusion transpiler files
   - [260109] - Support for Fusion transpiler files
   - [251224] - Groovy programming language support
   - [251221] - Scala programming language support
