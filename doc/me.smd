@@ -1255,6 +1255,8 @@
   [%diff-com(5)](%diff-com(5)) Diff command line  
   [%gdiff-com(5)](%gdiff-com(5)) Gdiff command line  
   [%man-com(5)](%man-com(5)) Man Command line  
+  [%unixterm-auto-color(5)](%unixterm-auto-color(5)) Auto-enable termcap colors flag  
+  [%unixterm-color-count(5)](%unixterm-color-count(5)) Number of colors supported by terminal 
   [%xdiff-com(5)](%xdiff-com(5)) xdiff command line  
   [%xfind-com(5)](%xfind-com(5)) Find command line  
   [%xgrep-com(5)](%xgrep-com(5)) Grep command line  
@@ -2925,6 +2927,8 @@
   [%tag-file(5)](%tag-file(5)) Tag file name  
   [%tag-option(5)](%tag-option(5)) Tag file search option  
   [%tag-template(5)](%tag-template(5)) Tag file search string  
+  [%unixterm-auto-color(5)](%unixterm-auto-color(5)) Auto-enable termcap colors flag  
+  [%unixterm-color-count(5)](%unixterm-color-count(5)) Number of colors supported by terminal 
   [%xdiff-com(5)](%xdiff-com(5)) xdiff command line  
   [%xgrep-com(5)](%xgrep-com(5)) Grep command line  
   [.calc.result(5)](.calc.result(5)) Last calc calculation result  
@@ -5171,6 +5175,14 @@
 
 ## Development History 
 
+  - [260331] - adding support for 16 colors in the terminal and 
+               getting rid of TERM=xterm  setting  required for color support in
+               the terminal
+  - [260304] - adding support for PlantUML files
+  - [2602XX] - improvements in Python and Fusion modes and abbreviations 
+  - [260114] - adding more modern JavaScript keywords
+  - [260110] - Adding support for Haxe transpiler programming language
+  - [260109] - Support for Fusion transpiler files
   - [260109] - Support for Fusion transpiler files
   - [251224] - Groovy programming language support
   - [251221] - Scala programming language support
@@ -37353,6 +37365,106 @@ $a
 
   [ipipe-shell-command(2)](ipipe-shell-command(2)), [ishell(3)](ishell(3)).
   Cygwin home site __www.cygwin.com__
+|%unixterm-color-count
+  %unixterm-color-count - Number of colors supported by terminal
+$a
+
+
+
+## PLATFORM
+
+
+  Unix - All variants.
+
+
+## SYNOPSIS
+
+
+  __unixterm__  
+
+  __%unixterm-auto-color__ [`0`|`1`]  
+  __%unixterm-color-count__ _integer_  
+
+
+## DESCRIPTION
+
+
+  __unixterm__ is automatically loaded on Unix-like platforms (Linux, Cygwin,
+  macOS, etc.) to configure the terminal environment. It sets up keyboard
+  bindings, display characters, and terminal-specific settings.
+
+  __%unixterm-auto-color__ is a global flag that indicates whether colors
+  should be automatically enabled for the current terminal. When set to `1`,
+  MicroEmacs will automatically enable termcap colors on startup. This
+  variable is automatically detected based on the terminal capabilities.
+
+  __%unixterm-color-count__ contains the number of colors supported by the
+  current terminal, inferred from the `$TERM` environment variable. Common values are:
+  
+  - `0` - No color support detected
+  - `8` - Basic 8 ANSI colors (for xterm, rxvt, screen)
+  - `256` - 256 color support (for terminals with "256color" in $TERM)
+  
+  The automatic color detection works by pattern matching on `$TERM`:
+  
+  1. Checks if `$TERM` equals `256color` or `256-colour`
+  2. Checks if `$TERM` ends with `screen-256color` or `tmux-256color`
+  3. Checks if `$TERM` contains `256color` substring
+  4. For Cygwin/Unix platforms, also enables colors for `xterm`, `rxvt`, and `screen`
+  
+  When colors are auto-detected, the appropriate bits are set in
+  [$system(5)]($system(5)):
+  
+  - Bit `0x004` (meSYSTEM_ANSICOLOR) is set for 8+ colors
+  - Bit `0x008` (meSYSTEM_XANSICOLOR) is set for 16+ colors (256 colors)
+  
+  Users can still disable colors via [user-setup(3)](user-setup(3)) if desired.
+
+
+## EXAMPLES
+
+
+  Check the detected color count:
+
+```{.emf}
+        !if &exi %unixterm-color-count
+            0 ml-write &spr "Terminal supports %d colors" %unixterm-color-count
+        !endif
+```
+
+  Force disable automatic colors:
+
+```{.emf}
+        set-variable %unixterm-auto-color 0
+```
+
+  Check if colors were auto-enabled:
+
+```{.emf}
+        !if %unixterm-auto-color
+            0 ml-write "Colors auto-enabled for this terminal"
+        !else
+            0 ml-write "Colors not auto-enabled"
+        !endif
+```
+
+
+## NOTES
+
+
+  The automatic color detection is performed by the
+  `unixterm-colors-auto-enable` macro in `unixterm.emf`. This macro is
+  executed automatically when the terminal setup file is loaded.
+
+  If you experience issues with colors, you can check the value of
+  `%unixterm-auto-color` and `%unixterm-color-count` using the
+  [list-variables(2)](list-variables(2)) command.
+
+
+## SEE ALSO
+
+
+  [user-setup(3)](user-setup(3)), [$system(5)]($system(5)), [add-color-scheme(2)](add-color-scheme(2)).
 !! me-id: m3mac034
 ! 3 ishell
 ! 5 $ME_ISHELL
@@ -44740,7 +44852,117 @@ $a
   
 ## SEE ALSO
 
-  [$result(5)]($result(5))
+!! me-id: m3mac105
+! 3 unixterm
+! 5 %unixterm-auto-color
+! 5 %unixterm-color-count
+## NAME
+
+
+|unixterm
+  unixterm - Unix terminal setup
+|%unixterm-auto-color
+  %unixterm-auto-color - Auto-enable termcap colors flag
+|%unixterm-color-count
+  %unixterm-color-count - Number of colors supported by terminal
+$a
+
+
+
+## PLATFORM
+
+
+  Unix - All variants.
+
+
+## SYNOPSIS
+
+
+  __unixterm__  
+
+  __%unixterm-auto-color__ [`0`|`1`]  
+  __%unixterm-color-count__ _integer_  
+
+
+## DESCRIPTION
+
+
+  __unixterm__ is automatically loaded on Unix-like platforms (Linux, Cygwin,
+  macOS, etc.) to configure the terminal environment. It sets up keyboard
+  bindings, display characters, and terminal-specific settings.
+
+  __%unixterm-auto-color__ is a global flag that indicates whether colors
+  should be automatically enabled for the current terminal. When set to `1`,
+  MicroEmacs will automatically enable termcap colors on startup. This
+  variable is automatically detected based on the terminal capabilities.
+
+  __%unixterm-color-count__ contains the number of colors supported by the
+  current terminal, inferred from the `$TERM` environment variable. Common values are:
+  
+  - `0` - No color support detected
+  - `8` - Basic 8 ANSI colors (for xterm, rxvt, screen)
+  - `256` - 256 color support (for terminals with "256color" in $TERM)
+  
+  The automatic color detection works by pattern matching on `$TERM`:
+  
+  1. Checks if `$TERM` equals `256color` or `256-colour`
+  2. Checks if `$TERM` ends with `screen-256color` or `tmux-256color`
+  3. Checks if `$TERM` contains `256color` substring
+  4. For Cygwin/Unix platforms, also enables colors for `xterm`, `rxvt`, and `screen`
+  
+  When colors are auto-detected, the appropriate bits are set in
+  [$system(5)]($system(5)):
+  
+  - Bit `0x004` (meSYSTEM_ANSICOLOR) is set for 8+ colors
+  - Bit `0x008` (meSYSTEM_XANSICOLOR) is set for 16+ colors (256 colors)
+  
+  Users can still disable colors via [user-setup(3)](user-setup(3)) if desired.
+
+
+## EXAMPLES
+
+
+  Check the detected color count:
+
+```{.emf}
+        !if &exi %unixterm-color-count
+            0 ml-write &spr "Terminal supports %d colors" %unixterm-color-count
+        !endif
+```
+
+  Force disable automatic colors:
+
+```{.emf}
+        set-variable %unixterm-auto-color 0
+```
+
+  Check if colors were auto-enabled:
+
+```{.emf}
+        !if %unixterm-auto-color
+            0 ml-write "Colors auto-enabled for this terminal"
+        !else
+            0 ml-write "Colors not auto-enabled"
+        !endif
+```
+
+
+## NOTES
+
+
+  The automatic color detection is performed by the
+  `unixterm-colors-auto-enable` macro in `unixterm.emf`. This macro is
+  executed automatically when the terminal setup file is loaded.
+
+  If you experience issues with colors, you can check the value of
+  `%unixterm-auto-color` and `%unixterm-color-count` using the
+  [list-variables(2)](list-variables(2)) command.
+
+
+## SEE ALSO
+
+
+  [user-setup(3)](user-setup(3)), [$system(5)]($system(5)), [add-color-scheme(2)](add-color-scheme(2)).
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

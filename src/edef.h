@@ -629,7 +629,7 @@ meUInt    meSystemCfg=                  /* ME system config variable    */
 ) ;
 #endif
 #ifdef _UNIX
-(meSYSTEM_RGBCOLOR|meSYSTEM_FONTS|meSYSTEM_OSDCURSOR|meSYSTEM_UNIXSYSTEM|meSYSTEM_IPIPES|meSYSTEM_TABINDANY|meSYSTEM_ALTMENU|meSYSTEM_ALTPRFX1) ;
+(meSYSTEM_RGBCOLOR|meSYSTEM_FONTS|meSYSTEM_OSDCURSOR|meSYSTEM_UNIXSYSTEM|meSYSTEM_IPIPES|meSYSTEM_TABINDANY|meSYSTEM_ALTMENU|meSYSTEM_ALTPRFX1|meSYSTEM_XANSICOLOR) ;
 #endif
 #ifdef _WIN32
 meUInt    meSYSTEM_MASK=                /* ME system mask - dependant on win32 flavour */

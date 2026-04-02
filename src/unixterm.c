@@ -177,7 +177,7 @@ static    char   tcapbuf[TCAPSLEN];
 * Special termcal color definitions                                       *
 **************************************************************************/
 #if MEOPT_COLOR
-#define tcapNumColors 8
+#define tcapNumColors 16
 static meUByte tcapColors[tcapNumColors*3] =
 {
     0,    0,  0,                        /* Black */
@@ -188,6 +188,14 @@ static meUByte tcapColors[tcapNumColors*3] =
     200,  0,200,                        /* Magenta */
     0,  200,200,                        /* Cyan */
     200,200,200,                        /* White */
+    128,128,128,                        /* Bright Black (Gray) */
+    255,  0,  0,                        /* Bright Red */
+    0,  255,  0,                        /* Bright Green */
+    255,255,  0,                        /* Bright Yellow */
+    0,    0,255,                        /* Bright Blue */
+    255,  0,255,                        /* Bright Magenta */
+    0,  255,255,                        /* Bright Cyan */
+    255,255,255,                        /* Bright White */
 } ;
 
 /* Set up the default ANSI colors. Many Termcap entries omit these when they
@@ -196,12 +204,6 @@ static meUByte tcapColors[tcapNumColors*3] =
 /* exit_attribute_mode/srg0/me/Turn off all attributes */
 static char RCOLSTR[] =
 { 27, 91, 48,     109, 0 } ;   /* me - ESC[0m */
-/* set_a_foreground/setaf/AF/Set foreground color using ANSI escape */
-static char FCOLSTR[] =
-{ 27, 91, 51, 65, 109, 0 } ;   /* AF - ESC[3Am */
-/* set_a_background/setab/AB/Set background color using ANSI escape */
-static char BCOLSTR[] =
-{ 27, 91, 52, 65, 109, 0 } ;   /* AB - ESC[4Am */
 #endif /* MEOPT_COLOR */
 
 #define	DEFSKEY(s,i,d,t) i,
@@ -2420,13 +2422,21 @@ TCAPstart(void)
 #if MEOPT_COLOR
     if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
     {
-        meSystemCfg |= meSYSTEM_ANSICOLOR;
+        meSystemCfg |= meSYSTEM_ANSICOLOR ;
+        
+        if ((strstr(tv_stype, "256color") != NULL) ||
+            (strstr(tv_stype, "256-colour") != NULL) ||
+            (strncmp(tv_stype, "alacritty", 9) == 0) ||
+            (strncmp(tv_stype, "linux", 5) == 0))
+        {
+            meSystemCfg |= meSYSTEM_XANSICOLOR ;
+        }
     }
     else if ((strncmp(tv_stype, "xterm", 5) == 0) ||
              (strncmp(tv_stype, "screen", 6) == 0) ||
              (strncmp(tv_stype, "tmux", 4) == 0))
     {
-        meSystemCfg |= meSYSTEM_ANSICOLOR;
+        meSystemCfg |= meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR;
     }
 #endif
     
@@ -2734,28 +2744,57 @@ int
 TCAPaddColor(meUByte index, meUByte r, meUByte g, meUByte b)
 {
     meUByte *ss ;
-    int ii, jj, idif, jdif ;
+    int ii ;
+    meUInt bestScore ;
+    int bestIndex ;
 
-    jdif = 256*256*3 ;                  /* Smallest least squares. */
+    bestScore = 0xffffffff ;
+    bestIndex = 0 ;
     ss = tcapColors ;
 
-    /* To find the nearest color then use a least squares method. This
-     * produces a better approximation than a straight forward color
-     * differencing algorithm as it takes into account the variance. */
+    /* Find the nearest color using a weighted Euclidean distance.
+     * Weight green more heavily as human eyes are most sensitive to it.
+     * When meSYSTEM_XANSICOLOR is enabled and input is bright, also
+     * consider the bright version of each standard color. */
     for(ii=0 ; ii<tcapNumColors ; ii++)
     {
-        int delta;
+        int dr, dg, db ;
+        meUInt score ;
 
-        delta = r - *ss++;
-        idif  = (delta * delta) ;
-        delta = g - *ss++;
-        idif += (delta * delta) ;
-        delta = b - *ss++ ;
-        idif += (delta * delta) ;
-        if(idif < jdif)
+        dr = r - *ss++ ;
+        dg = g - *ss++ ;
+        db = b - *ss++ ;
+        
+        /* Weighted Euclidean distance - green weighted 2x for better
+         * perceptual color matching as human eyes are most sensitive to green */
+        score = dr*dr + 2*dg*dg + db*db ;
+        
+        if(score < bestScore)
         {
-            jdif = idif ;
-            jj = ii ;
+            bestScore = score ;
+            bestIndex = ii ;
+        }
+        
+        /* When 16-color mode is enabled, for standard colors (0-7),
+         * also check if the bright version (8-15) would be a better match.
+         * This requires comparing the standard and bright versions directly. */
+        if((meSystemCfg & meSYSTEM_XANSICOLOR) && (ii < 8))
+        {
+            int drb, dgb, dbb ;
+            meUInt brightScore ;
+            
+            drb = r - tcapColors[(ii+8)*3] ;
+            dgb = g - tcapColors[(ii+8)*3+1] ;
+            dbb = b - tcapColors[(ii+8)*3+2] ;
+            brightScore = drb*drb + 2*dgb*dgb + dbb*dbb ;
+            
+            /* Always compare the standard color's score (stored in 'score')
+             * with its bright version's score. Pick the better one. */
+            if(brightScore < score)
+            {
+                bestScore = brightScore ;
+                bestIndex = ii + 8 ;
+            }
         }
     }
 
@@ -2765,7 +2804,7 @@ TCAPaddColor(meUByte index, meUByte r, meUByte g, meUByte b)
         memset(colTable+noColors,0, (index-noColors+1)*sizeof(meUInt)) ;
         noColors = index+1 ;
     }
-    colTable[index] = jj ;
+    colTable[index] = bestIndex ;
 
     return meTRUE ;
 }
@@ -2842,16 +2881,21 @@ TCAPschemeSet(meScheme scheme)
         col = colTable[meStyleGetFColor(nstyle)] ;
         if(oschemeFcol != col)
         {
-            if (tcaptab[TCAPsetaf].code.str != NULL)
+            if ((meSystemCfg & meSYSTEM_XANSICOLOR) && (col >= 8))
             {
-                /* Have a termcap entry for color ?? */
+                printf("\033[9%cm", (col - 8) + '0');
+            }
+            else if ((meSystemCfg & meSYSTEM_XANSICOLOR) && (col < 8))
+            {
+                printf("\033[3%cm", (col & 0x07) + '0');
+            }
+            else if (tcaptab[TCAPsetaf].code.str != NULL)
+            {
                 putpad (meTCAPParm(tcaptab[TCAPsetaf].code.str, col));
             }
             else
             {
-                /* Try our ANSI color */
-                FCOLSTR[3]= (col & 0x07) + 48;
-                putpad (FCOLSTR);
+                printf("\033[3%cm", (col & 0x07) + '0');
             }
             oschemeFcol = col ;
         }
@@ -2860,15 +2904,21 @@ TCAPschemeSet(meScheme scheme)
         col = colTable[meStyleGetBColor(nstyle)] ;
         if(oschemeBcol != col)
         {
-            if (tcaptab[TCAPsetab].code.str != NULL)
+            if ((meSystemCfg & meSYSTEM_XANSICOLOR) && (col >= 8))
             {
-                /* Have a termcap entry for color ?? */
+                printf("\033[10%cm", (col - 8) + '0');
+            }
+            else if ((meSystemCfg & meSYSTEM_XANSICOLOR) && (col < 8))
+            {
+                printf("\033[4%cm", (col & 0x07) + '0');
+            }
+            else if (tcaptab[TCAPsetab].code.str != NULL)
+            {
                 putpad(meTCAPParm(tcaptab[TCAPsetab].code.str, col));
             }
             else
             {
-                BCOLSTR[3]=(col & 0x07) + 48 ;
-                putpad (BCOLSTR);
+                printf("\033[4%cm", (col & 0x07) + '0');
             }
             oschemeBcol = col ;
         }

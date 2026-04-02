@@ -47,9 +47,9 @@
  *        be called ME 2009 and stick with the year 2009  as the version.
  */
 #define meCENTURY       "20"          /* Current century. Y2 complient :-) */
-#define meYEAR          "09"          /* Current year */
-#define meMONTH         "12"          /* Current month */
-#define meDAY           "26b1"        /* Day of the month */
+#define meYEAR          "09"          /* Current Version MicroEmacs 09 */
+#define meMONTH         "12"          /* Current Month-Placeholder */
+#define meDAY           "26b1"        /* Current Year (Beta) */
 #define meGITHUB        "github.com/mittelmark/microemacs"
 #define meAUTHOR        "D.Groth"
 #define meRELEASE       "26b1"

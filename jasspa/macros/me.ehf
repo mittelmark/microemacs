@@ -1347,6 +1347,8 @@ Miscellaneous Information
     ls%diff-com(5)lm%diff-com(5)le Diff command line  
     ls%gdiff-com(5)lm%gdiff-com(5)le Gdiff command line  
     ls%man-com(5)lm%man-com(5)le Man Command line  
+    ls%unixterm-auto-color(5)lm%unixterm-auto-color(5)le Auto-enable termcap colors flag  
+    ls%unixterm-color-count(5)lm%unixterm-color-count(5)le Number of colors supported by terminal 
     ls%xdiff-com(5)lm%xdiff-com(5)le xdiff command line  
     ls%xfind-com(5)lm%xfind-com(5)le Find command line  
     ls%xgrep-com(5)lm%xgrep-com(5)le Grep command line  
@@ -3006,6 +3008,8 @@ Miscellaneous Information
     ls%tag-file(5)lm%tag-file(5)le Tag file name  
     ls%tag-option(5)lm%tag-option(5)le Tag file search option  
     ls%tag-template(5)lm%tag-template(5)le Tag file search string  
+    ls%unixterm-auto-color(5)lm%unixterm-auto-color(5)le Auto-enable termcap colors flag  
+    ls%unixterm-color-count(5)lm%unixterm-color-count(5)le Number of colors supported by terminal 
     ls%xdiff-com(5)lm%xdiff-com(5)le xdiff command line  
     ls%xgrep-com(5)lm%xgrep-com(5)le Grep command line  
     ls.calc.result(5)lm.calc.result(5)le Last calc calculation result  
@@ -5246,6 +5250,14 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260331] - adding support for 16 colors in the terminal and 
+                 getting rid of TERM=xterm  setting  required for color support in
+                 the terminal
+    - [260304] - adding support for PlantUML files
+    - [2602XX] - improvements in Python and Fusion modes and abbreviations 
+    - [260114] - adding more modern JavaScript keywords
+    - [260110] - Adding support for Haxe transpiler programming language
+    - [260109] - Support for Fusion transpiler files
     - [260109] - Support for Fusion transpiler files
     - [251224] - Groovy programming language support
     - [251221] - Scala programming language support
@@ -36875,6 +36887,103 @@ $a
 
     lsipipe-shell-command(2)lmipipe-shell-command(2)le, lsishell(3)lmishell(3)le.
     Cygwin home site cDwww.cygwin.comcA
+|%unixterm-color-count
+    %unixterm-color-count - Number of colors supported by terminal
+$a
+
+
+
+cEPLATFORM cA
+
+
+    Unix - All variants.
+
+
+cESYNOPSIS cA
+
+
+    cDunixtermcA  
+
+    cD%unixterm-auto-colorcA [cG0cA|cG1cA]  
+    cD%unixterm-color-countcA cCintegercA  
+
+
+cEDESCRIPTION cA
+
+
+    cDunixtermcA is automatically loaded on Unix-like platforms (Linux, Cygwin,
+    macOS, etc.) to configure the terminal environment. It sets up keyboard
+    bindings, display characters, and terminal-specific settings.
+
+    cD%unixterm-auto-colorcA is a global flag that indicates whether colors
+    should be automatically enabled for the current terminal. When set to cG1cA,
+    MicroEmacs will automatically enable termcap colors on startup. This
+    variable is automatically detected based on the terminal capabilities.
+
+    cD%unixterm-color-countcA contains the number of colors supported by the
+    current terminal, inferred from the cG$TERMcA environment variable. Common values are:
+    
+    - cG0cA - No color support detected
+    - cG8cA - Basic 8 ANSI colors (for xterm, rxvt, screen)
+    - cG256cA - 256 color support (for terminals with "256color" in $TERM)
+    
+    The automatic color detection works by pattern matching on cG$TERMcA:
+    
+    1. Checks if cG$TERMcA equals cG256colorcA or cG256-colourcA
+    2. Checks if cG$TERMcA ends with cGscreen-256colorcA or cGtmux-256colorcA
+    3. Checks if cG$TERMcA contains cG256colorcA substring
+    4. For Cygwin/Unix platforms, also enables colors for cGxtermcA, cGrxvtcA, and cGscreencA
+    
+    When colors are auto-detected, the appropriate bits are set in
+    ls$system(5)lm$system(5)le:
+    
+    - Bit cG0x004cA (meSYSTEM_ANSICOLOR) is set for 8+ colors
+    - Bit cG0x008cA (meSYSTEM_XANSICOLOR) is set for 16+ colors (256 colors)
+    
+    Users can still disable colors via lsuser-setup(3)lmuser-setup(3)le if desired.
+
+
+cEEXAMPLES cA
+
+
+    Check the detected color count:
+
+sB
+          !if &exi %unixterm-color-count
+              0 ml-write &spr "Terminal supports %d colors" %unixterm-color-count
+          !endif
+sA
+    Force disable automatic colors:
+
+sB
+          set-variable %unixterm-auto-color 0
+sA
+    Check if colors were auto-enabled:
+
+sB
+          !if %unixterm-auto-color
+              0 ml-write "Colors auto-enabled for this terminal"
+          !else
+              0 ml-write "Colors not auto-enabled"
+          !endif
+sA
+
+cENOTES cA
+
+
+    The automatic color detection is performed by the
+    cGunixterm-colors-auto-enablecA macro in cGunixterm.emfcA. This macro is
+    executed automatically when the terminal setup file is loaded.
+
+    If you experience issues with colors, you can check the value of
+    cG%unixterm-auto-colorcA and cG%unixterm-color-countcA using the
+    lslist-variables(2)lmlist-variables(2)le command.
+
+
+cESEE ALSO cA
+
+
+    lsuser-setup(3)lmuser-setup(3)le, ls$system(5)lm$system(5)le, lsadd-color-scheme(2)lmadd-color-scheme(2)le.
 ! 3 ishell
 ! 5 $ME_ISHELL
 cEcENAME cEcA
@@ -44143,7 +44252,113 @@ $a
     
 cESEE ALSO cA
 
-    ls$result(5)lm$result(5)le
+! 3 unixterm
+! 5 %unixterm-auto-color
+! 5 %unixterm-color-count
+cEcENAME cEcA
+
+
+|unixterm
+    unixterm - Unix terminal setup
+|%unixterm-auto-color
+    %unixterm-auto-color - Auto-enable termcap colors flag
+|%unixterm-color-count
+    %unixterm-color-count - Number of colors supported by terminal
+$a
+
+
+
+cEPLATFORM cA
+
+
+    Unix - All variants.
+
+
+cESYNOPSIS cA
+
+
+    cDunixtermcA  
+
+    cD%unixterm-auto-colorcA [cG0cA|cG1cA]  
+    cD%unixterm-color-countcA cCintegercA  
+
+
+cEDESCRIPTION cA
+
+
+    cDunixtermcA is automatically loaded on Unix-like platforms (Linux, Cygwin,
+    macOS, etc.) to configure the terminal environment. It sets up keyboard
+    bindings, display characters, and terminal-specific settings.
+
+    cD%unixterm-auto-colorcA is a global flag that indicates whether colors
+    should be automatically enabled for the current terminal. When set to cG1cA,
+    MicroEmacs will automatically enable termcap colors on startup. This
+    variable is automatically detected based on the terminal capabilities.
+
+    cD%unixterm-color-countcA contains the number of colors supported by the
+    current terminal, inferred from the cG$TERMcA environment variable. Common values are:
+    
+    - cG0cA - No color support detected
+    - cG8cA - Basic 8 ANSI colors (for xterm, rxvt, screen)
+    - cG256cA - 256 color support (for terminals with "256color" in $TERM)
+    
+    The automatic color detection works by pattern matching on cG$TERMcA:
+    
+    1. Checks if cG$TERMcA equals cG256colorcA or cG256-colourcA
+    2. Checks if cG$TERMcA ends with cGscreen-256colorcA or cGtmux-256colorcA
+    3. Checks if cG$TERMcA contains cG256colorcA substring
+    4. For Cygwin/Unix platforms, also enables colors for cGxtermcA, cGrxvtcA, and cGscreencA
+    
+    When colors are auto-detected, the appropriate bits are set in
+    ls$system(5)lm$system(5)le:
+    
+    - Bit cG0x004cA (meSYSTEM_ANSICOLOR) is set for 8+ colors
+    - Bit cG0x008cA (meSYSTEM_XANSICOLOR) is set for 16+ colors (256 colors)
+    
+    Users can still disable colors via lsuser-setup(3)lmuser-setup(3)le if desired.
+
+
+cEEXAMPLES cA
+
+
+    Check the detected color count:
+
+sB
+          !if &exi %unixterm-color-count
+              0 ml-write &spr "Terminal supports %d colors" %unixterm-color-count
+          !endif
+sA
+    Force disable automatic colors:
+
+sB
+          set-variable %unixterm-auto-color 0
+sA
+    Check if colors were auto-enabled:
+
+sB
+          !if %unixterm-auto-color
+              0 ml-write "Colors auto-enabled for this terminal"
+          !else
+              0 ml-write "Colors not auto-enabled"
+          !endif
+sA
+
+cENOTES cA
+
+
+    The automatic color detection is performed by the
+    cGunixterm-colors-auto-enablecA macro in cGunixterm.emfcA. This macro is
+    executed automatically when the terminal setup file is loaded.
+
+    If you experience issues with colors, you can check the value of
+    cG%unixterm-auto-colorcA and cG%unixterm-color-countcA using the
+    lslist-variables(2)lmlist-variables(2)le command.
+
+
+cESEE ALSO cA
+
+
+    lsuser-setup(3)lmuser-setup(3)le, ls$system(5)lm$system(5)le, lsadd-color-scheme(2)lmadd-color-scheme(2)le.
 ! 3 user-setup
 cEcENAME cEcA
 
