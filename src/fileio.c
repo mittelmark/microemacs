@@ -1975,49 +1975,44 @@ ffgetline(meLine **line)
 
                 if(newl)
                 {
+#if MEOPT_UTF8
                     int out_len = 0;
                     meUByte *src = endp;
                     meUByte *src_end = endp + newl;
-                    while (src < src_end) src++;
-                    out_len = src - endp;
-#if MEOPT_UTF8
+                    while (src < src_end)
                     {
-                        meUByte *src = endp;
-                        meUByte *src_end = endp + newl;
-                        out_len = 0;
-                        while (src < src_end)
+                        meUByte c = *src;
+                        if ((c >= 0x80) && (c <= 0xFF))
                         {
-                            meUByte c = *src;
-                            if ((c >= 0x80) && (c <= 0xFF))
-                            {
-                                if ((c >= 0x80) && (c <= 0xBF))
-                                {
-                                    out_len++;
-                                    src++;
-                                }
-                                else if (c >= 0xF8)
-                                {
-                                    out_len++;
-                                    src++;
-                                }
-                                else
-                                {
-                                    int rlen;
-                                    meUInt cp = utf8_decode_codepoint(src, &rlen);
-                                    if (cp > 0xFF)
-                                        out_len += 6;
-                                    else
-                                        out_len += rlen;
-                                    src += rlen;
-                                }
-                            }
-                            else
+                            if ((c >= 0x80) && (c <= 0xBF))
                             {
                                 out_len++;
                                 src++;
                             }
+                            else if (c >= 0xF8)
+                            {
+                                out_len++;
+                                src++;
+                            }
+                            else
+                            {
+                                int rlen;
+                                meUInt cp = utf8_decode_codepoint(src, &rlen);
+                                if (cp > 0xFF)
+                                    out_len += 6;
+                                else
+                                    out_len += rlen;
+                                src += rlen;
+                            }
+                        }
+                        else
+                        {
+                            out_len++;
+                            src++;
                         }
                     }
+#else
+                    int out_len = newl;
 #endif
                     if(len == 0)
                     {
@@ -2078,8 +2073,6 @@ ffgetline(meLine **line)
                         }
                     }
 #endif
-                    if(ecc == '\r')
-                        ffcur[-1] = '\n' ;
                     *text = '\0' ;
                 }
                 else if((len == 0) && ((lp = (meLine *) meLineMalloc(0,0)) == NULL))
