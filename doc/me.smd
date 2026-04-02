@@ -1252,11 +1252,11 @@
   [%cygwin-hilight(5)](%cygwin-hilight(5)) Cygwin shell hilight enable flag  
   [%cygwin-path(5)](%cygwin-path(5)) Cygwin root directory  
   [%cygwin-prompt(5)](%cygwin-prompt(5)) Cygwin shell prompt  
-  [%unixterm-auto-color(5)](%unixterm-auto-color(5)) Auto-enable termcap colors flag  
-  [%unixterm-color-count(5)](%unixterm-color-count(5)) Number of colors supported by terminal  
   [%diff-com(5)](%diff-com(5)) Diff command line  
   [%gdiff-com(5)](%gdiff-com(5)) Gdiff command line  
   [%man-com(5)](%man-com(5)) Man Command line  
+  [%unixterm-auto-color(5)](%unixterm-auto-color(5)) Auto-enable termcap colors flag  
+  [%unixterm-color-count(5)](%unixterm-color-count(5)) Number of colors supported by terminal 
   [%xdiff-com(5)](%xdiff-com(5)) xdiff command line  
   [%xfind-com(5)](%xfind-com(5)) Find command line  
   [%xgrep-com(5)](%xgrep-com(5)) Grep command line  
@@ -2927,6 +2927,8 @@
   [%tag-file(5)](%tag-file(5)) Tag file name  
   [%tag-option(5)](%tag-option(5)) Tag file search option  
   [%tag-template(5)](%tag-template(5)) Tag file search string  
+  [%unixterm-auto-color(5)](%unixterm-auto-color(5)) Auto-enable termcap colors flag  
+  [%unixterm-color-count(5)](%unixterm-color-count(5)) Number of colors supported by terminal 
   [%xdiff-com(5)](%xdiff-com(5)) xdiff command line  
   [%xgrep-com(5)](%xgrep-com(5)) Grep command line  
   [.calc.result(5)](.calc.result(5)) Last calc calculation result  
