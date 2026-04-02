@@ -542,6 +542,80 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
     register meUByte *s2;
 
     s2 = disLineBuff + wid;
+#if MEOPT_UTF8
+    while(len > 0)
+    {
+        if (wid >= disLineSize)
+        {
+            disLineSize += 512 ;
+            disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
+            s2 = disLineBuff + wid ;
+        }
+        cc = *s1 ;
+        if ((cc >= 0x80) && (cc < 0xC0))
+        {
+            s1++;
+            len--;
+            continue;
+        }
+        else if (cc >= 0xC0)
+        {
+            int seqLen = (cc & 0xE0) == 0xC0 ? 2 : ((cc & 0xF0) == 0xE0 ? 3 : ((cc & 0xF8) == 0xF0 ? 4 : 1));
+            int charWidth = 1;
+            if (seqLen > 1)
+                charWidth = 1;
+            wid += charWidth;
+            while(seqLen > 0 && len > 0)
+            {
+                *s2++ = *s1++;
+                seqLen--;
+                len--;
+            }
+            continue;
+        }
+        if(isDisplayable(cc))
+        {
+            wid++ ;
+            if(cc == ' ')
+                *s2++ = displaySpace ;
+            else if(cc == meCHAR_TAB)
+                *s2++ = displayTab ;
+            else
+                *s2++ = cc ;
+            s1++;
+            len--;
+        }
+        else if(cc == meCHAR_TAB)
+        {
+            int ii=get_tab_pos(wid,bp->tabWidth) ;
+
+            wid += ii+1 ;
+            *s2++ = displayTab ;
+            while(--ii >= 0)
+                *s2++ = ' ' ;
+            s1++;
+            len--;
+        }
+        else if(cc < 0x20)
+        {
+            wid += 2 ;
+            *s2++ = '^' ;
+            *s2++ = cc ^ 0x40 ;
+            s1++;
+            len--;
+        }
+        else
+        {
+            wid += 4 ;
+            *s2++ = '\\' ;
+            *s2++ = 'x' ;
+            *s2++ = hexdigits[cc/0x10] ;
+            *s2++ = hexdigits[cc%0x10] ;
+            s1++;
+            len--;
+        }
+    }
+#else
     while(len-- > 0)
     {
         /* the largest character size is a tab which is user definable */
@@ -585,8 +659,11 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             *s2++ = 'x' ;
             *s2++ = hexdigits[cc/0x10] ;
             *s2++ = hexdigits[cc%0x10] ;
+            s1++;
+            len--;
         }
     }
+#endif
     return wid;
 }
 

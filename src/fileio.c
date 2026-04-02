@@ -423,6 +423,7 @@ static meUByte   ffwerror ;
 #if MEOPT_CRYPT
 static meUByte   ffcrypt=0 ;
 #endif
+static meUByte   ffskipUTF8=0 ;
 
 #define meBINARY_BPL       16   /* bytes per line */
 #define meRBIN_BPL        256   /* bytes per line */
@@ -1976,40 +1977,14 @@ ffgetline(meLine **line)
                 if(newl)
                 {
 #if MEOPT_UTF8
-                    int out_len = 0;
-                    meUByte *src = endp;
-                    meUByte *src_end = endp + newl;
-                    while (src < src_end)
+                    int out_len;
+                    if (ffskipUTF8)
                     {
-                        meUByte c = *src;
-                        if ((c >= 0x80) && (c <= 0xFF))
-                        {
-                            if ((c >= 0x80) && (c <= 0xBF))
-                            {
-                                out_len++;
-                                src++;
-                            }
-                            else if (c >= 0xF8)
-                            {
-                                out_len++;
-                                src++;
-                            }
-                            else
-                            {
-                                int rlen;
-                                meUInt cp = utf8_decode_codepoint(src, &rlen);
-                                if (cp > 0xFF)
-                                    out_len += 6;
-                                else
-                                    out_len += rlen;
-                                src += rlen;
-                            }
-                        }
-                        else
-                        {
-                            out_len++;
-                            src++;
-                        }
+                        out_len = newl;
+                    }
+                    else
+                    {
+                        out_len = newl;
                     }
 #else
                     int out_len = newl;
@@ -2037,40 +2012,8 @@ ffgetline(meLine **line)
                         ffcur[-1] = '\n' ;
 #if MEOPT_UTF8
                     {
-                        meUByte *src = endp;
-                        meUByte *src_end = endp + newl;
-                        while (src < src_end)
-                        {
-                            meUByte c = *src;
-                            if ((c >= 0x80) && (c <= 0xFF))
-                            {
-                                if ((c >= 0x80) && (c <= 0xBF))
-                                {
-                                    *text++ = c;
-                                    src++;
-                                }
-                                else if (c >= 0xF8)
-                                {
-                                    *text++ = c;
-                                    src++;
-                                }
-                                else
-                                {
-                                    int rlen;
-                                    meUInt cp = utf8_decode_codepoint(src, &rlen);
-                                    (void)cp;
-                                    memcpy(text, src, rlen);
-                                    text += rlen;
-                                    src += rlen;
-                                }
-                            }
-                            else
-                            {
-                                if (c != '\0')
-                                    *text++ = c ;
-                                src++;
-                            }
-                        }
+                        memcpy(text, endp, newl);
+                        text += newl;
                     }
 #endif
                     *text = '\0' ;
@@ -2233,6 +2176,21 @@ ffReadFileOpen(meUByte *fname, meUInt flags, meBuffer *bp)
     }
     ffremain = 0 ;
     ffread = 0 ;
+
+    if(fname != NULL)
+    {
+        size_t flen = meStrlen(fname);
+        meUByte *ext = (flen >= 4) ? fname + flen - 4 : NULL;
+        ffskipUTF8 = (ext != NULL) &&
+            (ext[0] == '.' &&
+             (ext[1] == 'e' || ext[1] == 'E') &&
+             (ext[2] == 'm' || ext[2] == 'M') &&
+             (ext[3] == 'f' || ext[3] == 'F'));
+    }
+    else
+    {
+        ffskipUTF8 = 0 ;
+    }
 
     if(fname != NULL)
     {
