@@ -318,3 +318,43 @@ set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
 !if &seq #l0 "iso8859-15"
   translate-key "\x80" "\xa4"
 !endif
+
+0 define-macro unixterm-colors-auto-enable
+    set-variable #l0 &cat "256" "color"
+    set-variable #l1 &cat "256" "-colour"
+    !if &or &seq $TERM #l0 &seq $TERM #l1
+        set-variable %unixterm-auto-color 1
+        set-variable %unixterm-color-count 256
+        !return
+    !endif
+    !if &or &seq &rig $TERM 9 "screen-256color" &seq &rig $TERM 9 "tmux-256color"
+        set-variable %unixterm-auto-color 1
+        set-variable %unixterm-color-count 256
+        !return
+    !endif
+    !if &sin "256color" $TERM
+        set-variable %unixterm-auto-color 1
+        set-variable %unixterm-color-count 256
+        !return
+    !endif
+    set-variable %unixterm-auto-color 0
+    set-variable %unixterm-color-count 0
+!emacro
+
+!force unixterm-colors-auto-enable
+
+!if &or &seq $platform "cygwin" &seq $platform "unix"
+    !if &not %unixterm-auto-color
+        !if &or &seq $TERM "xterm" &seq $TERM "rxvt" &seq $TERM "screen"
+            set-variable %unixterm-auto-color 1
+            set-variable %unixterm-color-count 8
+        !endif
+    !endif
+!endif
+
+!if &and %unixterm-auto-color &not &band $system 0x004
+    set-variable $system &bor $system 0x004
+!endif
+!if &and %unixterm-auto-color &gre %unixterm-color-count 16 &not &band $system 0x008
+    set-variable $system &bor $system 0x008
+!endif
