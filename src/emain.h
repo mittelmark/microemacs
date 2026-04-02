@@ -501,6 +501,11 @@
 #define MEOPT_MWFRAME   0
 #endif
 
+/* UTF-8 support: convert non-ASCII to \uNNNN escape sequences */
+#if !defined(MEOPT_UTF8)
+#define MEOPT_UTF8      1       /* Enable UTF-8 escape sequence support */
+#endif
+
 #ifdef _MOUSE
 #define MEOPT_MOUSE     0       /* do mouse pointer stuff                */
 #else
@@ -524,6 +529,10 @@
 #else
 /* DO NOT CHANGE THIS VALUE */
 #define MEOPT_SOCKET    0
+#endif
+
+#if !defined MEOPT_UTF8
+#define MEOPT_UTF8      1       /* Enable UTF-8 escape sequence support */
 #endif
 
 /* the name used on about etc */

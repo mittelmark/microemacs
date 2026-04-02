@@ -36,6 +36,10 @@
 #include "evers.h"
 #include "emain.h"
 
+#if MEOPT_UTF8
+#include <locale.h>
+#endif
+
 #define	maindef		/* Make main defintions - cannot define this at the top
                          * because all the main defs are needed to init edef's vars */
 
@@ -1256,6 +1260,11 @@ mesetup(int argc, char *argv[])
     assert(&(((meUndoNode *) NULL)->count) == &(((meUndoNarrow *) NULL)->count)) ;
     assert(&(((meUndoNode *) NULL)->type) == &(((meUndoNarrow *) NULL)->type)) ;
 #endif
+
+#if MEOPT_UTF8
+    setlocale(LC_ALL, "");
+#endif
+
 #ifdef _UNIX
     /* Get the usr id and group id for mode-line and file permissions */
     meXUmask = umask(0);

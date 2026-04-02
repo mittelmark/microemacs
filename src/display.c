@@ -40,6 +40,10 @@
 #include <stdarg.h>		/* Variable Arguments */
 #endif
 
+#if MEOPT_UTF8
+#include "utf8.h"
+#endif
+
 #if (defined _UNIX) || (defined _DOS) || (defined _WIN32)
 #include <sys/types.h>
 #include <time.h>

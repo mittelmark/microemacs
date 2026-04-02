@@ -47,6 +47,202 @@
 #include <utime.h>
 #endif
 
+#include <limits.h>
+
+#if MEOPT_UTF8
+
+static meUByte utf8_hexdigits[] = "0123456789ABCDEF";
+
+static int utf8_is_continuation_byte(meUByte c)
+{
+    return (c & 0xC0) == 0x80;
+}
+
+static int utf8_seq_length(meUByte c)
+{
+    if ((c & 0x80) == 0x00) return 1;
+    if ((c & 0xE0) == 0xC0) return 2;
+    if ((c & 0xF0) == 0xE0) return 3;
+    if ((c & 0xF8) == 0xF0) return 4;
+    return 1;
+}
+
+static meUInt utf8_decode_codepoint(const meUByte *buf, int *rlen)
+{
+    meUByte c = *buf;
+    meUInt cp;
+    int len;
+
+    if ((c & 0x80) == 0x00)
+    {
+        *rlen = 1;
+        return c;
+    }
+    if ((c & 0xE0) == 0xC0)
+    {
+        cp = c & 0x1F;
+        len = 2;
+    }
+    else if ((c & 0xF0) == 0xE0)
+    {
+        cp = c & 0x0F;
+        len = 3;
+    }
+    else if ((c & 0xF8) == 0xF0)
+    {
+        cp = c & 0x07;
+        len = 4;
+    }
+    else
+    {
+        *rlen = 1;
+        return c;
+    }
+
+    while (--len > 0)
+    {
+        buf++;
+        if (!utf8_is_continuation_byte(*buf))
+            break;
+        cp = (cp << 6) | (*buf & 0x3F);
+    }
+    *rlen = (c & 0xE0) == 0xC0 ? 2 : ((c & 0xF0) == 0xE0 ? 3 : ((c & 0xF8) == 0xF0 ? 4 : 1));
+    return cp;
+}
+
+static void utf8_encode_codepoint(meUInt cp, meUByte *out, int *rlen)
+{
+    if (cp < 0x80)
+    {
+        out[0] = (meUByte) cp;
+        *rlen = 1;
+    }
+    else if (cp < 0x800)
+    {
+        out[0] = (meUByte) (0xC0 | ((cp >> 6) & 0x1F));
+        out[1] = (meUByte) (0x80 | (cp & 0x3F));
+        *rlen = 2;
+    }
+    else if (cp < 0x10000)
+    {
+        out[0] = (meUByte) (0xE0 | ((cp >> 12) & 0x0F));
+        out[1] = (meUByte) (0x80 | ((cp >> 6) & 0x3F));
+        out[2] = (meUByte) (0x80 | (cp & 0x3F));
+        *rlen = 3;
+    }
+    else
+    {
+        out[0] = (meUByte) (0xF0 | ((cp >> 18) & 0x07));
+        out[1] = (meUByte) (0x80 | ((cp >> 12) & 0x3F));
+        out[2] = (meUByte) (0x80 | ((cp >> 6) & 0x3F));
+        out[3] = (meUByte) (0x80 | (cp & 0x3F));
+        *rlen = 4;
+    }
+}
+
+static int utf8_is_hex_digit(meUByte c)
+{
+    return ((c >= '0') && (c <= '9')) ||
+           ((c >= 'A') && (c <= 'F')) ||
+           ((c >= 'a') && (c <= 'f'));
+}
+
+static int utf8_hex_to_num(meUByte c)
+{
+    if ((c >= '0') && (c <= '9')) return c - '0';
+    if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
+    if ((c >= 'a') && (c <= 'f')) return c - 'a' + 10;
+    return 0;
+}
+
+int utf8_convert_from_escape(meUByte **inbuf, size_t *inlen, meUByte **outbuf, size_t *outlen)
+{
+    static meUByte conv_buf[65536];
+    meUByte *src = *inbuf;
+    size_t srclen = *inlen;
+    meUByte *dst = conv_buf;
+    meUByte *dst_end = conv_buf + sizeof(conv_buf) - 4;
+
+    while ((srclen > 0) && (dst < dst_end))
+    {
+        meUByte c = *src;
+        if ((c == '\\') && (srclen >= 2) && (src[1] == 'u'))
+        {
+            if ((srclen >= 6) &&
+                utf8_is_hex_digit(src[2]) &&
+                utf8_is_hex_digit(src[3]) &&
+                utf8_is_hex_digit(src[4]) &&
+                utf8_is_hex_digit(src[5]))
+            {
+                meUInt cp = (utf8_hex_to_num(src[2]) << 12) |
+                           (utf8_hex_to_num(src[3]) << 8) |
+                           (utf8_hex_to_num(src[4]) << 4) |
+                           utf8_hex_to_num(src[5]);
+                int len;
+                utf8_encode_codepoint(cp, dst, &len);
+                dst += len;
+                src += 6;
+                srclen -= 6;
+            }
+            else
+            {
+                *dst++ = c;
+                src++;
+                srclen--;
+            }
+        }
+        else
+        {
+            *dst++ = c;
+            src++;
+            srclen--;
+        }
+    }
+
+    *outbuf = conv_buf;
+    *outlen = dst - conv_buf;
+    return 1;
+}
+
+int utf8_convert_to_escape(meUByte **inbuf, size_t *inlen, meUByte **outbuf, size_t *outlen)
+{
+    static meUByte conv_buf[65536];
+    meUByte *src = *inbuf;
+    size_t srclen = *inlen;
+    meUByte *dst = conv_buf;
+    meUByte *dst_end = conv_buf + sizeof(conv_buf) - 8;
+
+    while ((srclen > 0) && (dst < dst_end))
+    {
+        meUByte c = *src;
+        if (c >= 0x80)
+        {
+            int rlen;
+            meUInt cp = utf8_decode_codepoint(src, &rlen);
+            dst[0] = '\\';
+            dst[1] = 'u';
+            dst[2] = utf8_hexdigits[(cp >> 12) & 0xF];
+            dst[3] = utf8_hexdigits[(cp >> 8) & 0xF];
+            dst[4] = utf8_hexdigits[(cp >> 4) & 0xF];
+            dst[5] = utf8_hexdigits[cp & 0xF];
+            dst += 6;
+            src += rlen;
+            srclen -= rlen;
+        }
+        else
+        {
+            *dst++ = c;
+            src++;
+            srclen--;
+        }
+    }
+
+    *outbuf = conv_buf;
+    *outlen = dst - conv_buf;
+    return 1;
+}
+#endif
+
 /*
  * char-mask lookup tables
  *
@@ -76,6 +272,27 @@
  *
  */
 
+#if MEOPT_UTF8
+meUByte charMaskTbl1[256] =
+{
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0xFA, 0x76, 0x79, 0x72, 0x74, 0x73, 0x75, 0x7A, 0x7A, 0x7A, 0x77, 0x7A, 0x7A, 0x78, 0x7C, 0x7A,
+    0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x7B, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x71, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
+    0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A
+};
+#else
 meUByte charMaskTbl1[256] =
 {
 #if (defined _DOS) || (defined _WIN32)
@@ -108,6 +325,7 @@ meUByte charMaskTbl1[256] =
     0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A,
     0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A, 0x7A
 };
+#endif
 
 #if MEOPT_EXTENDED
 meUByte charMaskTbl2[256] =
@@ -1757,9 +1975,53 @@ ffgetline(meLine **line)
 
                 if(newl)
                 {
+                    int out_len = 0;
+                    meUByte *src = endp;
+                    meUByte *src_end = endp + newl;
+                    while (src < src_end) src++;
+                    out_len = src - endp;
+#if MEOPT_UTF8
+                    {
+                        meUByte *src = endp;
+                        meUByte *src_end = endp + newl;
+                        out_len = 0;
+                        while (src < src_end)
+                        {
+                            meUByte c = *src;
+                            if ((c >= 0x80) && (c <= 0xFF))
+                            {
+                                if ((c >= 0x80) && (c <= 0xBF))
+                                {
+                                    out_len++;
+                                    src++;
+                                }
+                                else if (c >= 0xF8)
+                                {
+                                    out_len++;
+                                    src++;
+                                }
+                                else
+                                {
+                                    int rlen;
+                                    meUInt cp = utf8_decode_codepoint(src, &rlen);
+                                    if (cp > 0xFF)
+                                        out_len += 6;
+                                    else
+                                        out_len += rlen;
+                                    src += rlen;
+                                }
+                            }
+                            else
+                            {
+                                out_len++;
+                                src++;
+                            }
+                        }
+                    }
+#endif
                     if(len == 0)
                     {
-                        len = newl ;
+                        len = out_len ;
                         if((lp = (meLine *) meLineMalloc(len,0)) == NULL)
                             return meABORT ;
                         text = lp->text ;
@@ -1768,7 +2030,7 @@ ffgetline(meLine **line)
                     {
                         size_t ss ;
                         ii = len ;
-                        len += newl ;
+                        len += out_len ;
                         ss = meLineMallocSize(len) ;
                         if((lp = (meLine *) meRealloc(lp,ss)) == NULL)
                             return meABORT ;
@@ -1778,9 +2040,46 @@ ffgetline(meLine **line)
                     }
                     if(ecc == '\r')
                         ffcur[-1] = '\n' ;
-                    while((cc = *endp++) != '\n')
-                        if(cc != '\0')
-                            *text++ = cc ;
+#if MEOPT_UTF8
+                    {
+                        meUByte *src = endp;
+                        meUByte *src_end = endp + newl;
+                        while (src < src_end)
+                        {
+                            meUByte c = *src;
+                            if ((c >= 0x80) && (c <= 0xFF))
+                            {
+                                if ((c >= 0x80) && (c <= 0xBF))
+                                {
+                                    *text++ = c;
+                                    src++;
+                                }
+                                else if (c >= 0xF8)
+                                {
+                                    *text++ = c;
+                                    src++;
+                                }
+                                else
+                                {
+                                    int rlen;
+                                    meUInt cp = utf8_decode_codepoint(src, &rlen);
+                                    (void)cp;
+                                    memcpy(text, src, rlen);
+                                    text += rlen;
+                                    src += rlen;
+                                }
+                            }
+                            else
+                            {
+                                if (c != '\0')
+                                    *text++ = c ;
+                                src++;
+                            }
+                        }
+                    }
+#endif
+                    if(ecc == '\r')
+                        ffcur[-1] = '\n' ;
                     *text = '\0' ;
                 }
                 else if((len == 0) && ((lp = (meLine *) meLineMalloc(0,0)) == NULL))
