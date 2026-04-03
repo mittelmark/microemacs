@@ -2420,23 +2420,27 @@ TCAPstart(void)
     } while(--ii >= 0);
     
 #if MEOPT_COLOR
-    if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
     {
-        meSystemCfg |= meSYSTEM_ANSICOLOR ;
-        
-        if ((strstr(tv_stype, "256color") != NULL) ||
-            (strstr(tv_stype, "256-colour") != NULL) ||
-            (strncmp(tv_stype, "alacritty", 9) == 0) ||
-            (strncmp(tv_stype, "linux", 5) == 0))
+        const char *colorterm = meGetenv("COLORTERM");
+        if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
         {
-            meSystemCfg |= meSYSTEM_XANSICOLOR ;
+            meSystemCfg |= meSYSTEM_ANSICOLOR ;
+            
+            if ((strstr(tv_stype, "256color") != NULL) ||
+                (strstr(tv_stype, "256-colour") != NULL) ||
+                (strncmp(tv_stype, "alacritty", 9) == 0) ||
+                (strncmp(tv_stype, "linux", 5) == 0) ||
+                ((colorterm != NULL) && (colorterm[0] != '\0')))
+            {
+                meSystemCfg |= meSYSTEM_XANSICOLOR ;
+            }
         }
-    }
-    else if ((strncmp(tv_stype, "xterm", 5) == 0) ||
-             (strncmp(tv_stype, "screen", 6) == 0) ||
-             (strncmp(tv_stype, "tmux", 4) == 0))
-    {
-        meSystemCfg |= meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR;
+        else if ((strncmp(tv_stype, "xterm", 5) == 0) ||
+                 (strncmp(tv_stype, "screen", 6) == 0) ||
+                 (strncmp(tv_stype, "tmux", 4) == 0))
+        {
+            meSystemCfg |= meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR;
+        }
     }
 #endif
     
