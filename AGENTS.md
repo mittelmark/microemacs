@@ -337,3 +337,37 @@ Since the registry is loaded AFTER the X window is created, the clipboard select
 3. Add a flag to force re-evaluation of clipboard selection on first clipboard operation after startup
 
 **Current Workaround**: User must open user-setup, toggle the checkbox, and click Apply. This forces the correct value to be applied.
+
+### XWayland Clipboard Support
+
+**Problem**: When running under XWayland (X11 apps on Wayland), copy/paste between MicroEmacs and native Wayland apps (like Firefox, VS Code) doesn't work reliably. XWayland applications don't properly share clipboard with native Wayland apps.
+
+**Root Cause**: XWayland provides X11 selection support (`PRIMARY`, `CLIPBOARD`) but doesn't integrate well with Wayland's clipboard protocol. When copying in ME, the text goes to X11 selection, but Wayland apps may not see it.
+
+**Possible Solutions**:
+
+1. **Use PRIMARY selection for copy** - When `$XDG_SESSION_TYPE=wayland` or `$WAYLAND_DISPLAY` is set, copy to PRIMARY instead of CLIPBOARD. Some Wayland apps listen to PRIMARY. This is a fallback since PRIMARY is less reliable.
+
+2. **Use wl-copy/wl-paste for clipboard operations** - Implement support for external Wayland clipboard tools:
+   ```bash
+   # Copy: pipe selection to wl-copy
+   echo "text" | wl-copy
+   # Paste: get from wl-paste  
+   wl-paste
+   ```
+   - Add check in ME for presence of `wl-copy` and `wl-paste` binaries
+   - When copying: call `wl-copy` as external command
+   - When pasting: call `wl-paste` and insert result
+
+3. **Wayland-specific clipboard API** - Use wl_data_device (more complex, requires significant development)
+
+**Detection**: Check environment variables in ME:
+```me
+!if &seq $env("XDG_SESSION_TYPE") "wayland"
+    ; Running on Wayland - may need special handling
+!endif
+```
+
+**Current Workaround**: 
+- Use native X11 session instead of Wayland for reliable clipboard
+- Or manually copy/paste using middle-click (PRIMARY selection) or external tools
