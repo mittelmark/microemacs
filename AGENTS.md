@@ -311,3 +311,29 @@ meSystemCfg ^= meSYSTEM_ANSICOLOR;
     ; ANSICOLOR is set
 !endif
 ```
+
+## Known Issues
+
+### Clipboard Checkbox Not Applied on Startup
+
+**Problem**: The "Use Clipboard" checkbox in user-setup (Platform tab) doesn't take effect on first run after enabling it in the registry. The checkbox value is correctly saved to registry, but the X11 clipboard selection uses PRIMARY instead of CLIPBOARD on startup.
+
+**Root Cause**: The order of initialization is incorrect:
+
+1. `main.c:148` - `TTstart()` -> `XTERMstart()` creates the X window
+2. `main.c:1702` - `execFile("me.emf")` loads me.emf which applies registry settings
+3. Later - First clipboard operation calls `TTsetClipboard()` which checks `meSystemCfg`
+
+Since the registry is loaded AFTER the X window is created, the clipboard selection is set with the default PRIMARY (because `meSystemCfg` doesn't have the CLIPBOARD bit set yet). The checkbox value in the registry is correct, but it's applied too late.
+
+**Affected Files**:
+- `src/unixterm.c` - `TTsetClipboard()`, `TTgetClipboard()` - these functions check `meSystemCfg` for CLIPBOARD bit
+- `src/main.c:148` - `TTstart()` called before macro loading
+- `jasspa/macros/me.emf:123` - registry loading sets `$system` variable
+
+**Possible Fixes**:
+1. Re-set the clipboard selection owner after registry is loaded (add a hook in me.emf after registry load)
+2. Move registry loading before `TTstart()` (complex - would require significant refactoring)
+3. Add a flag to force re-evaluation of clipboard selection on first clipboard operation after startup
+
+**Current Workaround**: User must open user-setup, toggle the checkbox, and click Apply. This forces the correct value to be applied.
