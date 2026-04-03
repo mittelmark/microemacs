@@ -1,106 +1,159 @@
-# MicroEmacs Project
+# MicroEmacs Project Agent Guidelines
 
 ## Overview
 
-MicroEmacs is an OS-independent text editor providing both terminal and GUI versions. Both work similarly, using a text-mode interface implemented in the ME macro language.
+MicroEmacs is an OS-independent text editor with terminal (mec) and GUI (mew) versions. The interface is implemented in ME macro language.
+
+## Build Commands
+
+### Linux/Unix Build
+
+```bash
+make mec-bin       # Build console (termcap) executable
+make mew-bin       # Build X11/Windows executable  
+make me-bin        # Build both versions
+```
+
+### Using the Build Script
+
+```bash
+cd src
+bash build -t c              # Console build
+bash build -t w              # X11 build
+bash build -t cw             # Both (default)
+bash build -C                # Clean build
+bash build -d                # Debug build
+bash build -D <define>       # With defines
+```
+
+### Build Output
+
+- Executable: `src/.linux32gcc-release-mec/mec` (console)
+- Executable: `src/.linux32gcc-release-mecw/mecw` (both)
+- Executable: `src/.linux32gcc-release-mew/mew` (X11)
+
+### Running
+
+```bash
+MEPATH=jasspa/macros TERM=xterm-256color ./src/.linux32gcc-release-mec/mec <file>
+```
+
+## C Code Style
+
+### File Header Template
+
+```c
+/* -*- c -*-
+ *
+ * JASSPA MicroEmacs - www.jasspa.com
+ * filename.c - Brief description.
+ *
+ * Copyright (C) YEAR Author Name
+ * Copyright (C) YEAR JASSPA (www.jasspa.com)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ */
+```
+
+### Naming Conventions
+
+- **Functions**: `lowercase_with_underscores` or `camelCase` depending on file
+- **Variables**: `lowercase_with_underscores`
+- **Constants/Defines**: `UPPERCASE_WITH_UNDERSCORES`
+- **Types**: `me` prefix + `CamelCase` (e.g., `meInt`, `meUByte`)
+- **Global variables**: `$` prefix in macros (e.g., `$system`, `$buffer-bname`)
+- **Macro variables**: `%` prefix (e.g., `%unixterm-auto-color`)
+
+### Braces and Indentation
+
+- 4 spaces indentation (no tabs)
+- Opening brace on same line for functions, on new line for control structures
+- Always use braces for if/while/for statements
+
+```c
+int
+functionName(int arg)
+{
+    if (condition)
+    {
+        doSomething();
+    }
+    else
+    {
+        doSomethingElse();
+    }
+    
+    for (int i = 0; i < 10; i++)
+    {
+        process(i);
+    }
+    
+    return 0;
+}
+```
+
+### Comments
+
+```c
+/* This is a single-line comment */
+
+/*
+ * This is a multi-line comment
+ * Use this style for function descriptions
+ */
+
+/* Brief inline comment */
+```
+
+## ME Macro Style (.emf files)
+
+### Header Template
+
+```me
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) YEAR JASSPA (www.jasspa.com)
+; Copyright (C) YEAR Author Name (https://github.com/...)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Brief description
+; Authors:    Author Name
+```
+
+### Macro Definition
+
+```me
+0 define-macro my-macro
+    set-variable #l0 "value"
+    !if &seq #l0 "something"
+        do-action
+    !endif
+!emacro
+```
+
+### Variable References
+
+- `#l0-#l9` - Local register variables
+- `#l0 &cat "str1" "str2"` - Concatenate
+- `&band $system 0x004` - Bitwise AND
+- `&bor $system 0x004` - Bitwise OR
+- `!if &not &seq ...` - Negated string compare
+- `!force` - Ignore errors
 
 ## Key Directories
 
 - `src/` - C source code
+- `src/*.h` - Header files (edef.h, eterm.h, etc.)
+- `src/build` - Build script
 - `jasspa/macros/` - ME macro files (.emf)
-- `jasspa/spelling/` - Spell check dictionaries
-- `doc/` - Documentation
-- `user/` - User configuration files
+- `jasspa/macros/*.ehf` - Compiled help files
+- `doc/` - Documentation (me.smd → me.ehf)
+- `user/` - User configuration
 
-## Terminal Version
-
-### Key Files
-
-- `src/unixterm.c` - Unix terminal/termcap handling (5386 lines)
-- `src/etermcap.def` - Termcap capability definitions
-- `src/eterm.h` - Terminal interface definitions
-- `src/termio.c` - Terminal I/O operations
-- `jasspa/macros/unixterm.emf` - Unix terminal setup macros
-
-### Build Targets
-
-- `make mec-bin` - Build console (termcap) executable
-- `make mew-bin` - Build X11/Windows executable
-- `make me-bin` - Build both versions
-
-Executables: `mec` (console), `mew` (X11/Windows), `mecw` (both)
-
-### Termcap Color Handling
-
-#### C Code Color Detection (`src/unixterm.c` lines 2422-2441)
-
-Color detection in `TCAPstart()`:
-```c
-if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
-{
-    meSystemCfg |= meSYSTEM_ANSICOLOR ;
-    
-    if ((strstr(tv_stype, "256color") != NULL) ||
-        (strstr(tv_stype, "256-colour") != NULL) ||
-        (strncmp(tv_stype, "alacritty", 9) == 0) ||
-        (strncmp(tv_stype, "linux", 5) == 0))
-    {
-        meSystemCfg |= meSYSTEM_XANSICOLOR ;
-    }
-}
-else if ((strncmp(tv_stype, "xterm", 5) == 0) ||
-         (strncmp(tv_stype, "screen", 6) == 0) ||
-         (strncmp(tv_stype, "tmux", 4) == 0))
-{
-    meSystemCfg |= meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR;
-}
-```
-
-#### Macro-level Color Setup
-
-- `jasspa/macros/userstp.emf` - User startup configuration (color settings)
-- `jasspa/macros/unixterm.emf` - Unix terminal-specific settings
-- `jasspa/macros/cygwin.emf` - Cygwin-specific setup
-
-### User Startup (`userstp.emf`)
-
-Key macros:
-- `0 global-mode-strings` - Reset mode strings
-- `set-variable $terminal-cooked` - Terminal mode (0=raw, 1=cooked)
-- `set-variable $terminal-xterm` - Xterm feature flags
-- `set-variable $terminal-fkeys` - Function key mapping
-- `!if &seq $platform "unix"` - Platform-specific setup
-
-### Color Scheme Files
-
-- `jasspa/macros/schemes.emf` - Base color scheme definitions
-- `user/schemes.emf` - User custom color schemes
-
-## Platform Detection
-
-### Build-time Detection (`src/build`)
-
-```bash
-PLATFORM=`uname`
-if [ $PLATFORM = "CYGWIN" ] ; then
-    MAKEBAS=cygwin
-elif [ $PLATFORM = "Darwin" ] ; then
-    MAKEBAS=darwin
-# ...
-```
-
-### C Preprocessor Defines (`src/emain.h`)
-
-- `_CYGWIN` - Cygwin environment
-- `_LINUX` / `_LINUX26` - Linux
-- `_DARWIN` - macOS
-- `_FREEBSD` / `_OPENBSD` - BSD variants
-
-### Macro-level Platform Detection
-
-Variable `$platform` set to: "cygwin", "unix", "linux", "darwin", etc.
-
-## System Configuration Flags (`src/edef.h`)
+## Important System Flags (src/edef.h)
 
 ```c
 #define meSYSTEM_CONSOLE    0x000001    // Console version
@@ -111,54 +164,64 @@ Variable `$platform` set to: "cygwin", "unix", "linux", "darwin", etc.
 #define meSYSTEM_UNIXSYSTEM 0x000080    // Unix system
 ```
 
-## Cygwin-specific Notes
+## Platform Detection
 
-- Cygwin uses `cygwin.emf` for path translation (`%cygwin-path`)
-- Default TERM=xterm triggers Xterm-compatible behavior
-- Termcap/ncurses is used for console I/O
+### C Preprocessor
 
-## Build System
+- `_CYGWIN`, `_LINUX`, `_LINUX26`, `_DARWIN`, `_FREEBSD`, `_OPENBSD`
 
-### Platform Makefiles
+### Macro Level
 
-- `src/linux32gcc.gmk` - Linux build
-- `src/cygwin.gmk` - Cygwin build
-- `src/darwin.gmk` - macOS build
+- `$platform` variable: "cygwin", "unix", "linux", "darwin", etc.
 
-### Key Build Variables
+## Testing
 
-- `CCDEFS` - Compiler definitions
-- `CONSOLE_DEFS` - Console-specific defines (e.g., `-D_USE_NCURSES`)
-- `CONSOLE_LIBS` - Console libraries (e.g., `-lncurses`)
+No formal test suite exists. Manual testing:
+```bash
+### Test console build
+TERM=xterm-256color MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec
 
-## Command-line Flags
+### Test GUI build  
+MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
+```
 
-- `-C` - Enable 16-color mode (`meSYSTEM_XANSICOLOR`)
+## Documentation
 
-## Implementation Notes
+- Source: `doc/me.smd` (Markdown-like format)
+- EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
+- HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm`
+- Links section at top of me.smd for cross-references
 
-### Current Color Behavior
+## Common Patterns
 
-1. Terminal version defaults to NO colors
-2. Colors must be enabled via `userstp.emf` → user-setup → Termcap colors
-3. Xterm-256color and similar terminals get colors automatically via string matching
-4. Cygwin with xterm TERM gets colors via fallback check
+### Check if bit is set:
 
-### Desired Behavior (Termcap-colors branch)
+```c
+if (meSystemCfg & meSYSTEM_ANSICOLOR) { ... }
+```
 
-- Default to enable termcap colors if terminal has 256 colors capability
-- Implement detection in `unixterm.emf` or `userstp.emf`
-- Check `$TERM` for "256color" or detect via termcap `Co` capability
-- Platform-specific defaults for Cygwin (TERM=xterm by default)
+### Set bit:
 
-## Relevant Code Locations
+```c
+meSystemCfg |= meSYSTEM_ANSICOLOR;
+```
 
-| Purpose | File | Lines |
-|---------|------|-------|
-| Terminal initialization | `src/unixterm.c` | `TCAPstart()` ~2373 |
-| Color detection | `src/unixterm.c` | 2422-2441 |
-| Termcap definitions | `src/etermcap.def` | - |
-| System flags | `src/edef.h` | 112-137 |
-| User startup | `jasspa/macros/userstp.emf` | - |
-| Unix terminal setup | `jasspa/macros/unixterm.emf` | - |
-| Cygwin setup | `jasspa/macros/cygwin.emf` | - |
+### Clear bit:
+
+```c
+meSystemCfg &= ~meSYSTEM_ANSICOLOR;
+```
+
+### Toggle bit:
+
+```c
+meSystemCfg ^= meSYSTEM_ANSICOLOR;
+```
+
+### Macro equivalent:
+
+```me
+!if &band $system 0x004
+    ; ANSICOLOR is set
+!endif
+```
