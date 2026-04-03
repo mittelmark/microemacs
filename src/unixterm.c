@@ -2422,6 +2422,8 @@ TCAPstart(void)
 #if MEOPT_COLOR
     {
         const char *colorterm = meGetenv("COLORTERM");
+        int hasColorterm = (colorterm != NULL) && (colorterm[0] != '\0');
+        
         if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
         {
             meSystemCfg |= meSYSTEM_ANSICOLOR ;
@@ -2430,16 +2432,19 @@ TCAPstart(void)
                 (strstr(tv_stype, "256-colour") != NULL) ||
                 (strncmp(tv_stype, "alacritty", 9) == 0) ||
                 (strncmp(tv_stype, "linux", 5) == 0) ||
-                ((colorterm != NULL) && (colorterm[0] != '\0')))
+                hasColorterm)
             {
                 meSystemCfg |= meSYSTEM_XANSICOLOR ;
             }
         }
         else if ((strncmp(tv_stype, "xterm", 5) == 0) ||
+                 (strncmp(tv_stype, "rxvt", 4) == 0) ||
                  (strncmp(tv_stype, "screen", 6) == 0) ||
                  (strncmp(tv_stype, "tmux", 4) == 0))
         {
-            meSystemCfg |= meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR;
+            meSystemCfg |= meSYSTEM_ANSICOLOR ;
+            if (hasColorterm || (strstr(tv_stype, "256color") != NULL))
+                meSystemCfg |= meSYSTEM_XANSICOLOR ;
         }
     }
 #endif
