@@ -3901,50 +3901,59 @@ meFrameSetWindowTitle(meFrame *frame, meUByte *str)
 static Atom
 TTgetDefaultSelection(void)
 {
+    if(meSystemCfg & meSYSTEM_NOCLIPBRD)
+        return None ;
     if(meSystemCfg & meSYSTEM_CLIPBOARD)
-        return meAtoms[meATOM_XA_CLIPBOARD] ;
+    {
+        if(meAtoms[meATOM_XA_CLIPBOARD] != None)
+            return meAtoms[meATOM_XA_CLIPBOARD] ;
+    }
     return XA_PRIMARY ;
 }
 
 void
 TTsetClipboard(void)
 {
-    if(!(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD)) &&
-       !(clipState & (CLIP_RECEIVING|CLIP_DISABLED)) && (kbdmode != mePLAY))
+    if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
+        return ;
+    if(clipState & (CLIP_RECEIVING|CLIP_DISABLED))
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+    Atom sel = TTgetDefaultSelection() ;
+    if(sel == None)
+        return ;
+    XSetSelectionOwner(mecm.xdisplay,sel,meFrameGetXWindow(frameCur),CurrentTime) ;
+    if(XGetSelectionOwner(mecm.xdisplay,sel) == meFrameGetXWindow(frameCur))
     {
-        Atom sel = TTgetDefaultSelection() ;
-        XSetSelectionOwner(mecm.xdisplay,sel,meFrameGetXWindow(frameCur),CurrentTime) ;
-        if(XGetSelectionOwner(mecm.xdisplay,sel) == meFrameGetXWindow(frameCur))
-        {
-            if(sel == meAtoms[meATOM_XA_CLIPBOARD])
-                clipState |= CLIP_OWNER_CLIPBOARD ;
-            else
-                clipState |= CLIP_OWNER_PRIMARY ;
-        }
+        if(sel == meAtoms[meATOM_XA_CLIPBOARD])
+            clipState |= CLIP_OWNER_CLIPBOARD ;
+        else
+            clipState |= CLIP_OWNER_PRIMARY ;
     }
 }
 
 void
 TTgetClipboard(void)
 {
-    if(!(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD)) &&
-       !(clipState & CLIP_DISABLED) && (kbdmode != mePLAY))
-    {
-        Atom sel = TTgetDefaultSelection() ;
-        meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
-        if(clipState & ownClip)
-            clipState &= ~ownClip ;
-        clipState &= ~CLIP_RECEIVED ;
-        clipState |= CLIP_RECEIVING ;
-        XConvertSelection(mecm.xdisplay,sel,XA_STRING,meAtoms[meATOM_COPY_TEXT],
-                          meFrameGetXWindow(frameCur),CurrentTime) ;
-        XFlush(mecm.xdisplay) ;
-        while(!TTahead() && !(clipState & CLIP_RECEIVED))
-            waitForEvent(0) ;
-        clipState &= ~(CLIP_RECEIVING|CLIP_RECEIVED) ;
-        meClipSize=0 ;
-        TTsetClipboard() ;
-    }
+    Atom sel = TTgetDefaultSelection() ;
+    if((sel == None) ||
+       (meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD)) ||
+       (clipState & CLIP_DISABLED) || (kbdmode == mePLAY))
+        return ;
+    meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
+    if(clipState & ownClip)
+        clipState &= ~ownClip ;
+    clipState &= ~CLIP_RECEIVED ;
+    clipState |= CLIP_RECEIVING ;
+    XConvertSelection(mecm.xdisplay,sel,XA_STRING,meAtoms[meATOM_COPY_TEXT],
+                      meFrameGetXWindow(frameCur),CurrentTime) ;
+    XFlush(mecm.xdisplay) ;
+    while(!TTahead() && !(clipState & CLIP_RECEIVED))
+        waitForEvent(0) ;
+    clipState &= ~(CLIP_RECEIVING|CLIP_RECEIVED) ;
+    meClipSize=0 ;
+    TTsetClipboard() ;
 }
 #endif
 
