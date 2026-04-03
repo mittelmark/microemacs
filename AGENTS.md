@@ -223,6 +223,33 @@ Or in ME macro at runtime:
 - `src/unixterm.c:2047-2235` - X11 selection handling
 - `src/edef.h:243-249` - Clipboard state flags (CLIP_OWNER_PRIMARY, CLIP_OWNER_CLIPBOARD)
 
+## User-Setup GUI Development
+
+### Testing Changes
+To test changes to userstp.emf:
+1. Open userstp.emf in ME
+2. Execute the buffer with `M-x execute-buffer` (or load with `M-x load-library`)
+3. Reopen user-setup with `M-x user-setup`
+
+The GUI will reflect your changes immediately.
+
+### Debugging OSD Layout
+The user-setup Platform tab uses OSD (On-Screen Display) with position codes:
+- Position numbers (10, 50, 300, 330, 350, etc.) control vertical placement
+- The `fh` (fixed horizontal) elements add horizontal spacing
+- Use `osd .osd.user-plat <pos> "fh" "<spaces>"` to add horizontal space
+
+Example adjustment:
+```me
+osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\\} \\HExtend Char Set" 2 user-set-cpfcheckbox
+osd .osd.user-plat 335 "fh" "        "    ; 8 spaces horizontal offset
+osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\\} Use \\HFonts" 0x10 user-set-system
+```
+
+### Key Files
+- `jasspa/macros/userstp.emf` - User setup dialog definitions
+- Branch structure: `!if &band $system 0x01` (terminal) vs `!else` (GUI/X11)
+
 ## Platform Detection
 
 ### C Preprocessor
