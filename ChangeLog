@@ -7,11 +7,14 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260403.0930>
+>  Last Modified : <260403.1539>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
 
+  [260XXX] - Adding CLIPBOARD selection support for X-Windows version (mew)
+             allowing copy/paste to work with external applications using
+             Esc-w, C-y. Can be enabled via user-setup or $system variable.
   [260403] - automatic 256-color terminal detection and color mode selection
              for the terminal version
   [260331] - adding support for 16 colors in the terminal and 

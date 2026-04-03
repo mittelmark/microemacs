@@ -5175,6 +5175,7 @@
 
 ## Development History 
 
+  - [260403] - Adding Clipboard support on X11, via user-setup
   - [260403] - automatic 256-color terminal detection and color mode selection
                for the terminal version
   - [260331] - adding support for 16 colors in the terminal and 
@@ -8637,6 +8638,11 @@
 
 ## Release History 
 
+
+  __2026__
+     - Adding CLIPBOARD selection support for X-Windows version (mew) -
+       allows copy/paste to work with external applications using Ctrl+C/Ctrl+V.
+       Can be enabled via user-setup (Platform page) or $system variable (0x2000000).
 
   __September 2009__
      10th Major Release - MicroEmacs 2009.
@@ -56661,6 +56667,15 @@ $a
   >  When this bit is set the `-p` or `-P` option was used on the command line
      (see [me(1)](me(1))). This bit can be used by macros to determine how to
      function, see [filetype(3f)](filetype(3f)) for an example of its use.
+
+  __0x2000000__
+  
+  >  On X-Windows systems (mew), enables the use of the CLIPBOARD selection
+     instead of the PRIMARY selection for copy and paste operations. When set,
+     MicroEmacs will use the X11 CLIPBOARD selection which is compatible with
+     Ctrl+C/Ctrl+V in most applications. When clear (default), the PRIMARY
+     selection is used (mouse select/middle-click paste). This option can be
+     set via [user-setup(3)](user-setup(3)) on the Platform page.
 
 
 ## EXAMPLE
