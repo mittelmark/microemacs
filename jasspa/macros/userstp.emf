@@ -565,7 +565,6 @@ osd .osd.user-plat 310 "OtxmsfhHzR" .scheme.osd-entry 31 1 "" .osd.tmp user-setu
 osd .osd.user-plat 311 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 310
 osd .osd.user-plat 400 "fh" "    "
 osd .osd.user-plat 410 "Ctfxph" &cat .osd.checkbox-chars "\} Draw \HWhite Spaces" 0x80000 user-set-system
-osd .osd.user-plat 420 ""
 osd .osd.user-plat 499 ""
 osd .osd.user-plat 500 "fh" "    "
 osd .osd.user-plat 501 "Cftxph" &cat .osd.checkbox-chars "\} Enable Toolbar" 3 user-set-cpfcheckbox
@@ -623,7 +622,7 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
     !endif
 !else
     ; unix system
-    osd .osd.user-plat 509 "fh" "          "
+    osd .osd.user-plat 509 "fh" "         "
     osd .osd.user-plat 510 "Ctfxp" &cat .osd.checkbox-chars "\} Client Server" 0x20000 user-set-system
     osd .osd.user-plat 520 "fh" "    "
     osd .osd.user-plat 530 "Ctfxph" &cat .osd.checkbox-chars "\} DOS File Names" 0x400 user-set-system
@@ -632,7 +631,7 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         ; terminal
         osd .osd.user-plat 320 "fh" "    "
         osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\} Termca\Hp Color" 0x04 user-set-system
-        osd .osd.user-plat 340 "fh" "           "
+        osd .osd.user-plat 340 "fh" "          "
         osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
     !else
         !if .change-font.xfontsel
@@ -644,13 +643,12 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         osd .osd.user-plat 60  "EtxHf" .scheme.osd-entry "################################" 1 user-set-cpfentry
         osd .osd.user-plat 320 "fh" "    "
         osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\} \HExtend Char Set" 2 user-set-cpfcheckbox
-        osd .osd.user-plat 340 "fh" "         "
-        osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
-        osd .osd.user-plat 360 "fh" "         "
-        osd .osd.user-plat 450 "Ctfxp" &cat .osd.checkbox-chars "\} Use Clipbo\Hard" 0x2000000 user-set-system
-        ;osd .osd.user-plat 360 "fh"  "             "
-        ;osd .osd.user-plat 370 "BtfxHR" .scheme.osd-ebtt " Choose Font.. " f change-font-xfontsel
-        ;osd .osd.user-plat 380 "fh" "       "
+        osd .osd.user-plat 335 "fh" "        "
+        osd .osd.user-plat 359 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
+        osd .osd.user-plat 360 "fh" ""
+        osd .osd.user-plat 417 "fh" "      "
+
+        osd .osd.user-plat 420 "Ctfxp" &cat .osd.checkbox-chars "\} Use Clipbo\Hard" 0x2000000 user-set-system
 
     !endif
 !endif

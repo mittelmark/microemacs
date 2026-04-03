@@ -187,9 +187,12 @@ The X-Window version (mew) supports two X11 selections:
 - **PRIMARY** (`XA_PRIMARY`) - Default, used for mouse select/middle-click paste
 - **CLIPBOARD** (`XA_CLIPBOARD`) - Used by Ctrl+C/Ctrl+V in most apps
 
-### Default Behavior
-- By default, mew uses the **PRIMARY** selection (like mouse selection)
-- User can switch to CLIPBOARD for Ctrl+C/Ctrl+V compatibility via `$system` flag
+### Current Limitation
+By default, mew uses the **PRIMARY** selection which only works with:
+- Mouse selection within mew
+- Middle-click paste in X11 apps
+
+This means copy/paste with external apps like Firefox, VS Code, etc. (which use CLIPBOARD) won't work by default. Users must enable CLIPBOARD selection for full compatibility.
 
 ### Enabling CLIPBOARD Selection
 
