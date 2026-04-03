@@ -136,6 +136,7 @@ set-variable %user-misc-cmd  "|alias-path-setup|cc-setup|cvs-setup|mail-setup|fi
         !endif
         set-variable $system #l1
         set-registry #l2 #l0
+        set-variable $system #l0
         !if &equ &abs @# 0x400
             user-setup-backups
         !endif
@@ -628,6 +629,7 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
     osd .osd.user-plat 530 "Ctfxph" &cat .osd.checkbox-chars "\} DOS File Names" 0x400 user-set-system
     osd .osd.user-plat 540 "f" " "
     !if &band $system 0x01
+        ; terminal
         osd .osd.user-plat 320 "fh" "    "
         osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\} Termca\Hp Color" 0x04 user-set-system
         osd .osd.user-plat 340 "fh" "           "
@@ -644,6 +646,8 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\} \HExtend Char Set" 2 user-set-cpfcheckbox
         osd .osd.user-plat 340 "fh" "         "
         osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
+        osd .osd.user-plat 360 "fh" "         "
+        osd .osd.user-plat 450 "Ctfxp" &cat .osd.checkbox-chars "\} Use Clipbo\Hard" 0x2000000 user-set-system
         ;osd .osd.user-plat 360 "fh"  "             "
         ;osd .osd.user-plat 370 "BtfxHR" .scheme.osd-ebtt " Choose Font.. " f change-font-xfontsel
         ;osd .osd.user-plat 380 "fh" "       "

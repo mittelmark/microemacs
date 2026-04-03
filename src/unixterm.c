@@ -264,8 +264,10 @@ int meStdin ;
 #define meATOM_MULTIPLE         5
 #define meATOM_TARGETS          6
 #define meATOM_STRING           7
+#define meATOM_CLIPBOARD        8
+#define meATOM_XA_CLIPBOARD     9
 static int TTdefaultPosX, TTdefaultPosY ;
-static Atom meAtoms[8]={0};
+static Atom meAtoms[10]={0};
 char *meName=ME_FULLNAME ;
 char *meIconName=ME_FULLNAME ;
 
@@ -2045,9 +2047,13 @@ special_bound:
         }
 #ifdef _CLIPBRD
     case SelectionClear:
-        if((meXEventGetFrame(&event) != NULL) &&
-           (event.xselection.selection == XA_PRIMARY))
-            clipState &= ~CLIP_OWNER ;
+        if(meXEventGetFrame(&event) != NULL)
+        {
+            if(event.xselection.selection == XA_PRIMARY)
+                clipState &= ~CLIP_OWNER_PRIMARY ;
+            else if(event.xselection.selection == meAtoms[meATOM_XA_CLIPBOARD])
+                clipState &= ~CLIP_OWNER_CLIPBOARD ;
+        }
         break ;
 
     case SelectionRequest:
@@ -2067,7 +2073,8 @@ special_bound:
             reply.property = None ;
             reply.time = event.xselectionrequest.time ;
 
-            if(event.xselectionrequest.selection == XA_PRIMARY)
+            if((event.xselectionrequest.selection == XA_PRIMARY) ||
+               (event.xselectionrequest.selection == meAtoms[meATOM_XA_CLIPBOARD]))
             {
                 if((event.xselectionrequest.target == XA_STRING) && (klhead != NULL))
                 {
@@ -2130,10 +2137,11 @@ special_bound:
             Atom type ;
             int  fmt ;
 
-            if((event.xselection.selection == XA_PRIMARY) &&
+            if(((event.xselection.selection == XA_PRIMARY) ||
+                (event.xselection.selection == meAtoms[meATOM_XA_CLIPBOARD])) &&
                (event.xselection.property == meAtoms[meATOM_COPY_TEXT]) &&
                (XGetWindowProperty(mecm.xdisplay,meFrameGetXWindow(frame),meAtoms[meATOM_COPY_TEXT],0,0x1fffffffL,False,AnyPropertyType,
-                                   &type, &fmt, &nitems, &left, &buff) == Success))
+                                   &type, &fmt, &nitems, &left,&buff) == Success))
             {
                 if(type == meAtoms[meATOM_MULTIPLE])
 #ifndef NDEBUG
@@ -3403,19 +3411,21 @@ XTERMstart(void)
     /* Set up the  protocol  defaults  required. We must do this before we map
      * the window. */
     {
-        static char* meAtomNames[7] = {
+        static char* meAtomNames[8] = {
             "WM_DELETE_WINDOW",
             "WM_SAVE_YOURSELF",
             "WM_PROTOCOLS",
             "__COPY_TEXT",
             "INCR",
             "MULTIPLE",
-            "TARGETS"
+            "TARGETS",
+            "CLIPBOARD"
         } ;
         int ii ;
-        for(ii=0 ; ii<7 ; ii++)
+        for(ii=0 ; ii<8 ; ii++)
             meAtoms[ii] = XInternAtom(mecm.xdisplay,meAtomNames[ii], meFALSE);
         meAtoms[ii] = XA_STRING ;
+        meAtoms[meATOM_XA_CLIPBOARD] = XInternAtom(mecm.xdisplay,"CLIPBOARD", meFALSE);
     }
 
     /* Initialise XDND */
@@ -3888,15 +3898,29 @@ meFrameSetWindowTitle(meFrame *frame, meUByte *str)
 }
 
 #ifdef _CLIPBRD
+static Atom
+TTgetDefaultSelection(void)
+{
+    if(meSystemCfg & meSYSTEM_CLIPBOARD)
+        return meAtoms[meATOM_XA_CLIPBOARD] ;
+    return XA_PRIMARY ;
+}
+
 void
 TTsetClipboard(void)
 {
     if(!(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD)) &&
-       !(clipState & (CLIP_OWNER|CLIP_RECEIVING|CLIP_DISABLED)) && (kbdmode != mePLAY))
+       !(clipState & (CLIP_RECEIVING|CLIP_DISABLED)) && (kbdmode != mePLAY))
     {
-        XSetSelectionOwner(mecm.xdisplay,XA_PRIMARY,meFrameGetXWindow(frameCur),CurrentTime) ;
-        if(XGetSelectionOwner(mecm.xdisplay,XA_PRIMARY) == meFrameGetXWindow(frameCur))
-            clipState |= CLIP_OWNER ;
+        Atom sel = TTgetDefaultSelection() ;
+        XSetSelectionOwner(mecm.xdisplay,sel,meFrameGetXWindow(frameCur),CurrentTime) ;
+        if(XGetSelectionOwner(mecm.xdisplay,sel) == meFrameGetXWindow(frameCur))
+        {
+            if(sel == meAtoms[meATOM_XA_CLIPBOARD])
+                clipState |= CLIP_OWNER_CLIPBOARD ;
+            else
+                clipState |= CLIP_OWNER_PRIMARY ;
+        }
     }
 }
 
@@ -3904,26 +3928,20 @@ void
 TTgetClipboard(void)
 {
     if(!(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD)) &&
-       !(clipState & (CLIP_OWNER|CLIP_DISABLED)) && (kbdmode != mePLAY))
+       !(clipState & CLIP_DISABLED) && (kbdmode != mePLAY))
     {
-        /* Add the CLIP_RECEIVING flag. This is really important if increment
-         * copy texts are being used. If they are and this flag is set after receiving
-         * the initial size, the killSave then take ownership of the block and so we never
-         * get the copy text. Take ownership at the end */
+        Atom sel = TTgetDefaultSelection() ;
+        meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
+        if(clipState & ownClip)
+            clipState &= ~ownClip ;
         clipState &= ~CLIP_RECEIVED ;
         clipState |= CLIP_RECEIVING ;
-        /* Request for the current Primary string owner to send a
-         * SelectionNotify event to us giving the current string
-         */
-        XConvertSelection(mecm.xdisplay,XA_PRIMARY,XA_STRING,meAtoms[meATOM_COPY_TEXT],
+        XConvertSelection(mecm.xdisplay,sel,XA_STRING,meAtoms[meATOM_COPY_TEXT],
                           meFrameGetXWindow(frameCur),CurrentTime) ;
-        /* Must do a flush to ensure the request has gone */
         XFlush(mecm.xdisplay) ;
-        /* Wait for the returned value, alarmState bit will be set */
         while(!TTahead() && !(clipState & CLIP_RECEIVED))
             waitForEvent(0) ;
         clipState &= ~(CLIP_RECEIVING|CLIP_RECEIVED) ;
-        /* reset the increment clip size to zero (just incase there was an interuption) */
         meClipSize=0 ;
         TTsetClipboard() ;
     }

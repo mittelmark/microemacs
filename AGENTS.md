@@ -26,6 +26,18 @@ bash build -d                # Debug build
 bash build -D <define>       # With defines
 ```
 
+### Direct Make (Linux)
+
+The build script may fail on some systems. Use make directly:
+
+```bash
+cd src
+make -f linux32gcc.gmk       # Build both console and window version
+make -f linux32gcc.gmk clean # Clean build
+```
+
+Output: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
+
 ### Build Output
 
 - Executable: `src/.linux32gcc-release-mec/mec` (console)
@@ -152,6 +164,8 @@ functionName(int arg)
 - `jasspa/macros/*.ehf` - Compiled help files
 - `doc/` - Documentation (me.smd → me.ehf)
 - `user/` - User configuration
+- `~/.jasspa/USERNAME/` - User-specific configuration directory
+- `~/.jasspa/USERNAME/USERNAME.emf` - User startup macro file
 
 ## Important System Flags (src/edef.h)
 
@@ -162,7 +176,49 @@ functionName(int arg)
 #define meSYSTEM_XANSICOLOR 0x000008    // 16 extended ANSI colors
 #define meSYSTEM_FONTS      0x000010    // Termcap fonts
 #define meSYSTEM_UNIXSYSTEM 0x000080    // Unix system
+#define meSYSTEM_NOCLIPBRD  0x800000    // Disable system clipboard
+#define meSYSTEM_CLIPBOARD  0x2000000   // Use CLIPBOARD selection (not PRIMARY) by default
 ```
+
+## X-Windows Clipboard Support (mew)
+
+### Overview
+The X-Window version (mew) supports two X11 selections:
+- **PRIMARY** (`XA_PRIMARY`) - Default, used for mouse select/middle-click paste
+- **CLIPBOARD** (`XA_CLIPBOARD`) - Used by Ctrl+C/Ctrl+V in most apps
+
+### Default Behavior
+- By default, mew uses the **PRIMARY** selection (like mouse selection)
+- User can switch to CLIPBOARD for Ctrl+C/Ctrl+V compatibility via `$system` flag
+
+### Enabling CLIPBOARD Selection
+
+**Option 1: User Setup GUI (recommended)**
+- Run `M-x user-setup` in mew
+- In the Platform tab, check "Use Clipboard" below "Use Fonts"
+- Click OK to save
+
+**Option 2: Manual configuration**
+
+In user startup file (default: `~/.jasspa/USERNAME/USERNAME.emf`):
+```me
+set-variable $system &bor $system 0x2000000
+```
+
+Or in ME macro at runtime:
+```me
+!if &not &band $system 0x2000000
+    set-variable $system &bor $system 0x2000000
+!endif
+```
+
+### Key Bindings
+- **C-y** - Paste (yank) from clipboard
+- **M-w** (Esc then w) - Copy (kill-ring-save) to clipboard
+
+### Implementation Details
+- `src/unixterm.c:2047-2235` - X11 selection handling
+- `src/edef.h:243-249` - Clipboard state flags (CLIP_OWNER_PRIMARY, CLIP_OWNER_CLIPBOARD)
 
 ## Platform Detection
 

@@ -133,14 +133,15 @@ extern  meUInt  meSystemCfg;            /* ME system config variable    */
 #define meSYSTEM_TABINDFST  0x200000    /* Tab key indents first col pos*/
 #define meSYSTEM_NOEMPTYANK 0x400000    /* Don't allow empty yank (ext) */
 #define meSYSTEM_NOCLIPBRD  0x800000    /* Don't use the sys clip-board */
+#define meSYSTEM_CLIPBOARD  0x2000000   /* Use CLIPBOARD selection by default */
 #define meSYSTEM_PIPEDMODE  0x1000000   /* -p or -P piped mode          */
 #define meSYSTEM_NOALTSBUF  0x10000000  /* No Alternative screen buffer */
 
 #ifdef _UNIX
 #if MEOPT_CLIENTSERVER
-#define meSYSTEM_MASK (meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR|meSYSTEM_FONTS|meSYSTEM_OSDCURSOR|meSYSTEM_DOSFNAMES|meSYSTEM_IPIPES|meSYSTEM_TABINDANY|meSYSTEM_ALTMENU|meSYSTEM_ALTPRFX1|meSYSTEM_KEEPUNDO|meSYSTEM_FONTFIX|meSYSTEM_CLNTSRVR|meSYSTEM_SHOWWHITE|meSYSTEM_HIDEBCKUP|meSYSTEM_TABINDFST|meSYSTEM_NOEMPTYANK|meSYSTEM_NOCLIPBRD)
+#define meSYSTEM_MASK (meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR|meSYSTEM_FONTS|meSYSTEM_OSDCURSOR|meSYSTEM_DOSFNAMES|meSYSTEM_IPIPES|meSYSTEM_TABINDANY|meSYSTEM_ALTMENU|meSYSTEM_ALTPRFX1|meSYSTEM_KEEPUNDO|meSYSTEM_FONTFIX|meSYSTEM_CLNTSRVR|meSYSTEM_SHOWWHITE|meSYSTEM_HIDEBCKUP|meSYSTEM_TABINDFST|meSYSTEM_NOEMPTYANK|meSYSTEM_NOCLIPBRD|meSYSTEM_CLIPBOARD)
 #else
-#define meSYSTEM_MASK (meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR|meSYSTEM_FONTS|meSYSTEM_OSDCURSOR|meSYSTEM_DOSFNAMES|meSYSTEM_IPIPES|meSYSTEM_TABINDANY|meSYSTEM_ALTMENU|meSYSTEM_ALTPRFX1|meSYSTEM_KEEPUNDO|meSYSTEM_FONTFIX|meSYSTEM_SHOWWHITE|meSYSTEM_HIDEBCKUP|meSYSTEM_TABINDFST|meSYSTEM_NOEMPTYANK|meSYSTEM_NOCLIPBRD)
+#define meSYSTEM_MASK (meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR|meSYSTEM_FONTS|meSYSTEM_OSDCURSOR|meSYSTEM_DOSFNAMES|meSYSTEM_IPIPES|meSYSTEM_TABINDANY|meSYSTEM_ALTMENU|meSYSTEM_ALTPRFX1|meSYSTEM_KEEPUNDO|meSYSTEM_FONTFIX|meSYSTEM_SHOWWHITE|meSYSTEM_HIDEBCKUP|meSYSTEM_TABINDFST|meSYSTEM_NOEMPTYANK|meSYSTEM_NOCLIPBRD|meSYSTEM_CLIPBOARD)
 #endif
 #endif
 #ifdef _DOS
@@ -239,12 +240,14 @@ extern  meUShort  breakc;               /* current abort-command char*/
  * Nasty. Try and ensure these don't happen.
  */
 
-#define CLIP_OWNER      0x01            /* We are the owners of clipbrd */
-#define CLIP_STALE      0x02            /* Clipboard is stale           */
-#define CLIP_IGNORE_DC  0x04            /* Ignore the next DESTROYCLIP  */
-#define CLIP_RECEIVING  0x08            /* Currently receiving clipboard*/
-#define CLIP_RECEIVED   0x10            /* Clipboard has been obtained  */
-#define CLIP_DISABLED   0x20            /* Currently disabled Start&end */
+#define CLIP_OWNER      0x01            /* We are the owners of clipbrd (deprecated, use _PRIMARY/_CLIPBOARD) */
+#define CLIP_OWNER_PRIMARY   0x01    /* We own the PRIMARY selection */
+#define CLIP_OWNER_CLIPBOARD 0x02    /* We own the CLIPBOARD selection */
+#define CLIP_STALE      0x04            /* Clipboard is stale           */
+#define CLIP_IGNORE_DC  0x08            /* Ignore the next DESTROYCLIP  */
+#define CLIP_RECEIVING  0x10            /* Currently receiving clipboard*/
+#define CLIP_RECEIVED   0x20            /* Clipboard has been obtained  */
+#define CLIP_DISABLED   0x40            /* Currently disabled Start&end */
 extern  meUByte   clipState;            /* clipboard status flag        */
 #endif
 extern  meUInt    cursorBlink;          /* cursor-blink blink time      */
