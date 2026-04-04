@@ -332,11 +332,37 @@ Since the registry is loaded AFTER the X window is created, the clipboard select
 - `jasspa/macros/me.emf:123` - registry loading sets `$system` variable
 
 **Possible Fixes**:
-1. Re-set the clipboard selection owner after registry is loaded (add a hook in me.emf after registry load)
+1. Re-set the clipboard selection owner after registry is loaded - add `TTsetClipboard()` call in me.emf after line 124 where `$system` is set from registry
 2. Move registry loading before `TTstart()` (complex - would require significant refactoring)
 3. Add a flag to force re-evaluation of clipboard selection on first clipboard operation after startup
 
-**Current Workaround**: User must open user-setup, toggle the checkbox, and click Apply. This forces the correct value to be applied.
+**Proposed Fix** (Option 1):
+In `jasspa/macros/me.emf` after line 124 (registry loading), add:
+```me
+!if &not &band $system 0x01
+    set-variable #l0 &ttype &cond &band $system 0x2000000 "clipboard" "primary"
+    !if &seq #l0 "clipboard"
+        ; Re-apply clipboard selection after registry load
+        ; This fixes the issue where checkbox value is saved but not applied on startup
+        set-variable $system &bor $system 0x2000000
+    !endif
+!endif
+```
+
+Or simply call an internal function to re-initialize clipboard:
+```me
+; After $system is set from registry (line 124), re-initialize clipboard selection
+!if &band $system 0x2000000
+    ; Force clipboard selection when CLIPBOARD bit is set in registry
+!endif
+```
+
+**Current Workaround**: 
+- User must open user-setup, toggle the checkbox, and click Apply. This forces the correct value to be applied.
+- Or add to user startup file (`~/.jasspa/USERNAME/USERNAME.emf`):
+  ```me
+  set-variable $system &bor $system 0x2000000
+  ```
 
 ### XWayland Clipboard Support
 
