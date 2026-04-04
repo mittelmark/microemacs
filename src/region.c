@@ -495,6 +495,9 @@ killRectangle(int f, int n)
         frameCur->windowCur->dotOffset  = 0;
     }
     *kstr = '\0' ;
+#ifdef _CLIPBRD
+    TTsetClipboard() ;
+#endif
     if(dotPos)
         windowSwapDotAndMark(0,1) ;
     return meTRUE ;

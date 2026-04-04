@@ -3934,6 +3934,20 @@ TTsetClipboard(void)
 }
 
 void
+TTsetPrimary(void)
+{
+    if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
+        return ;
+    if(clipState & (CLIP_RECEIVING|CLIP_DISABLED))
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+    XSetSelectionOwner(mecm.xdisplay,XA_PRIMARY,meFrameGetXWindow(frameCur),CurrentTime) ;
+    if(XGetSelectionOwner(mecm.xdisplay,XA_PRIMARY) == meFrameGetXWindow(frameCur))
+        clipState |= CLIP_OWNER_PRIMARY ;
+}
+
+void
 TTgetClipboard(void)
 {
     Atom sel = TTgetDefaultSelection() ;

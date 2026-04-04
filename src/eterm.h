@@ -323,6 +323,7 @@ extern void meFrameRepositionWindow(meFrame *frame, int resize) ;
 #ifdef _CLIPBRD
 extern void TTgetClipboard(void);
 extern void TTsetClipboard(void);
+extern void TTsetPrimary(void);
 #endif
 
 #ifdef _ME_CONSOLE
@@ -499,6 +500,7 @@ extern void meFrameHideCursor(meFrame *frame) ;
 #ifdef _CLIPBRD
 extern void TTgetClipboard(void);
 extern void TTsetClipboard(void);
+extern void TTsetPrimary(void);
 #endif
 
 #if MEOPT_CLIENTSERVER

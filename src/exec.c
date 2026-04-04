@@ -1261,7 +1261,12 @@ execFunc(int index, int f, int n)
                                 selhilight.flags |= SELHIL_KEEP ;
                         }
                         if(isComSelStop(index))
+                        {
                             selhilight.flags &= ~SELHIL_ACTIVE ;
+#ifdef _CLIPBRD
+                            TTsetPrimary() ;
+#endif
+                        }
                         if(selhilight.flags & SELHIL_CHANGED)
                             meBufferAddModeToWindows(selhilight.bp, WFSELHIL);
                     }
