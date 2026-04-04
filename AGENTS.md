@@ -397,3 +397,45 @@ Or simply call an internal function to re-initialize clipboard:
 **Current Workaround**: 
 - Use native X11 session instead of Wayland for reliable clipboard
 - Or manually copy/paste using middle-click (PRIMARY selection) or external tools
+
+### Mouse Selection vs Clipboard Mode Implementation
+
+**Goal**: Implement separate behavior for mouse selection vs explicit copy commands:
+- Mouse selection → PRIMARY selection (for middle-click paste)
+- copy-region (M-w) → CLIPBOARD (for Ctrl+V if clipboard mode enabled)
+- kill-rectangle → CLIPBOARD (for Ctrl+V if clipboard mode enabled)
+
+**Implementation Trials**:
+
+1. **Using selection command flags (comSelStop/comSelSetFix)** - FAILED
+   - The command that fires on mouse drop is `compare-windows` (index 34), not copy-region
+   - This command is triggered repeatedly during mouse drag
+   - Even when we call `TTsetPrimary()` on `isComSelSetFix`, the selection doesn't work
+   - The issue may be timing - X11 selection needs to be set after text is available in kill buffer
+
+2. **Root Cause Analysis**:
+   - Mouse selection uses internal kill buffer, not the copy-region command
+   - The `compare-windows` command is bound to mouse-drop events
+   - Selection handling happens at a different level than explicit copy commands
+   - X11 requires the selection owner to be set AFTER text is in the kill buffer
+
+3. **What Works**:
+   - `copyRegion()` (M-w) calls `TTsetClipboard()` - works correctly
+   - `killRectangle()` calls `TTsetClipboard()` - works correctly
+   - Yanking (C-y) calls `TTgetClipboard()` - works correctly
+
+4. **What Doesn't Work**:
+   - Mouse selection → PRIMARY selection doesn't work
+   - The selection is being set but X11 apps can't retrieve the data
+   - May need to ensure kill buffer has data before setting selection
+
+**Alternative Approach (Not Yet Tried)**:
+1. In mouse drop handler (mouse-drop-type1 in mouse.emf), add explicit PRIMARY selection call after selection is fixed
+2. Check if kill buffer has content before setting PRIMARY selection
+3. Use a different hook - perhaps in the selection request handler (unixterm.c:2076) to detect when PRIMARY selection is requested and ensure data is available
+
+**Current State**:
+- Copy-region works → CLIPBOARD
+- Kill-rectangle works → CLIPBOARD  
+- Mouse selection → Not working (tried multiple approaches)
+- The clipboard initialization fix in me.emf works (registry bit is now loaded correctly)
