@@ -218,6 +218,10 @@ add_newline:
     thisflag = meCFKILL ;
     ret = meTRUE ;
 
+#ifdef _CLIPBRD
+    TTsetClipboard() ;
+#endif
+
 copy_region_exit:
 
 #if MEOPT_NARROW
