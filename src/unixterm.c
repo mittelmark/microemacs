@@ -1732,6 +1732,11 @@ meXEventHandler(void)
             mouseKeyState = ((ss & 0x01) << 8) | ((ss & 0x0C) << 7);
             ss = (ME_SPECIAL | (SKEY_mouse_drop_1+mouseKeys[bb]-1) | mouseKeyState) ;
             addKeyToBuffer(ss) ;
+
+#ifdef _CLIPBRD
+            if((meSystemCfg & meSYSTEM_CLIPBOARD) && (bb == 1))
+                clipState |= CLIP_MOUSE_PENDING ;
+#endif
         }
         break ;
 #endif
@@ -3920,7 +3925,16 @@ TTsetClipboard(void)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    Atom sel = TTgetDefaultSelection() ;
+    Atom sel ;
+    if(clipState & CLIP_MOUSE_PENDING)
+    {
+        sel = XA_PRIMARY ;
+        clipState &= ~(CLIP_MOUSE_PENDING | CLIP_OWNER_CLIPBOARD) ;
+    }
+    else
+    {
+        sel = TTgetDefaultSelection() ;
+    }
     if(sel == None)
         return ;
     XSetSelectionOwner(mecm.xdisplay,sel,meFrameGetXWindow(frameCur),CurrentTime) ;
@@ -3944,7 +3958,10 @@ TTsetPrimary(void)
         return ;
     XSetSelectionOwner(mecm.xdisplay,XA_PRIMARY,meFrameGetXWindow(frameCur),CurrentTime) ;
     if(XGetSelectionOwner(mecm.xdisplay,XA_PRIMARY) == meFrameGetXWindow(frameCur))
+    {
         clipState |= CLIP_OWNER_PRIMARY ;
+        clipState &= ~CLIP_OWNER_CLIPBOARD ;
+    }
 }
 
 void
@@ -3967,7 +3984,8 @@ TTgetClipboard(void)
         waitForEvent(0) ;
     clipState &= ~(CLIP_RECEIVING|CLIP_RECEIVED) ;
     meClipSize=0 ;
-    TTsetClipboard() ;
+    /* Don't call TTsetClipboard after yank - it overwrites PRIMARY selection
+     * that may have been set by a previous mouse selection */
 }
 #endif
 

@@ -1939,6 +1939,8 @@ WinKillToClipboard (void)
 void
 TTsetClipboard (void)
 {
+    if(clipState & CLIP_MOUSE_PENDING)
+        clipState &= ~CLIP_MOUSE_PENDING ;
     /* We aquire the clipboard and flush it under the following conditions;
      * "We do NOT own it" or "Clipboard is stale". The clipboard becomes stale
      * when we own it but another application has aquired our clipboard data.

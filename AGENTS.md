@@ -437,5 +437,64 @@ Or simply call an internal function to re-initialize clipboard:
 **Current State**:
 - Copy-region works → CLIPBOARD
 - Kill-rectangle works → CLIPBOARD  
-- Mouse selection → Not working (tried multiple approaches)
+- Mouse selection → Partially working (see below)
 - The clipboard initialization fix in me.emf works (registry bit is now loaded correctly)
+
+### Mouse Selection Implementation (Current)
+
+**Approach**: Use a flag `CLIP_MOUSE_PENDING` to track mouse selection events.
+
+**Implementation**:
+1. **New flag** in `src/edef.h:250`:
+   ```c
+   #define CLIP_MOUSE_PENDING 0x80  /* Mouse selection pending - use PRIMARY */
+   ```
+
+2. **ButtonRelease handler** in `src/unixterm.c:1736-1739`:
+   - Sets `CLIP_MOUSE_PENDING` flag when left mouse button released AND clipboard mode enabled
+   ```c
+   if((meSystemCfg & meSYSTEM_CLIPBOARD) && (bb == 1))
+       clipState |= CLIP_MOUSE_PENDING ;
+   ```
+
+3. **TTsetClipboard** in `src/unixterm.c:3929-3937`:
+   - Checks flag and uses PRIMARY if set
+   ```c
+   if(clipState & CLIP_MOUSE_PENDING)
+   {
+       sel = XA_PRIMARY ;
+       clipState &= ~(CLIP_MOUSE_PENDING | CLIP_OWNER_CLIPBOARD) ;
+   }
+   else
+   {
+       sel = TTgetDefaultSelection() ;
+   }
+   ```
+
+4. **copyRegion** in `src/region.c:221-223`:
+   - Calls TTsetClipboard() after copying region
+
+**Current Behavior**:
+- First mouse selection after startup → PRIMARY ✓
+- First copy-region (M-w) → CLIPBOARD ✓
+- Second mouse selection → should be PRIMARY, but still sets CLIPBOARD (BUG)
+
+**Debug Findings**:
+- After copy-region, `clipState` has both CLIP_OWNER_PRIMARY (0x01) and CLIP_OWNER_CLIPBOARD (0x02) set
+- The `CLIP_MOUSE_PENDING` flag IS being set correctly after mouse release
+- But `TTsetClipboard` is still using default (CLIPBOARD) instead of PRIMARY
+
+**Possible Cause**: Need to verify that `clipState & CLIP_MOUSE_PENDING` is actually true when TTsetClipboard is called. May need additional debugging.
+
+**Files Modified**:
+- `src/edef.h` - Added CLIP_MOUSE_PENDING flag
+- `src/unixterm.c` - Modified ButtonRelease and TTsetClipboard
+- `src/region.c` - Added TTsetClipboard call in copyRegion
+- `src/winterm.c` - Clear CLIP_MOUSE_PENDING flag for Windows
+- `jasspa/macros/me.emf` - Clipboard initialization fix
+
+**Testing Notes**:
+- Works correctly in Leafpad (tested)
+- Some terminal emulators (e.g., Roxterm) may handle selections differently
+- Some applications check both PRIMARY and CLIPBOARD and may prefer one over the other
+- This is application-specific behavior, not a bug in MicroEmacs

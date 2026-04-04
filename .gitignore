@@ -1,4 +1,7 @@
 /src/*.o
+/src/.*.o
 /src/me
+/src/mew
+/src/mec
 bfs/*.o
 *~
