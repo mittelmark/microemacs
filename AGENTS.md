@@ -493,8 +493,60 @@ Or simply call an internal function to re-initialize clipboard:
 - `src/winterm.c` - Clear CLIP_MOUSE_PENDING flag for Windows
 - `jasspa/macros/me.emf` - Clipboard initialization fix
 
-**Testing Notes**:
-- Works correctly in Leafpad (tested)
-- Some terminal emulators (e.g., Roxterm) may handle selections differently
-- Some applications check both PRIMARY and CLIPBOARD and may prefer one over the other
-- This is application-specific behavior, not a bug in MicroEmacs
+## Summary for Wayland Testing
+
+### Branch: clipboard-x11wayland
+
+### What's Implemented
+
+**Goal**: Separate PRIMARY selection (mouse select) from CLIPBOARD (explicit copy commands)
+
+| Action | Selection Used |
+|--------|----------------|
+| Mouse select (left click-drag) | PRIMARY (for middle-click paste) |
+| copy-region (M-w) | CLIPBOARD (for Ctrl+V) |
+| kill-rectangle (C-x C-r) | CLIPBOARD |
+| yank (C-y) | Retrieves from CLIPBOARD or PRIMARY |
+
+**Files Modified**:
+- `src/edef.h` - Added `CLIP_MOUSE_PENDING` flag (0x80)
+- `src/unixterm.c` - Mouse selection handling, TTsetClipboard logic
+- `src/region.c` - Added TTsetClipboard to copyRegion/killRectangle
+- `src/winterm.c` - Windows support
+- `jasspa/macros/me.emf` - Registry fix for clipboard checkbox
+
+### Testing on X11
+- Works correctly in Leafpad
+- Some terminal emulators (Roxterm) may check both selections - this is app behavior, not ME bug
+
+### Wayland Notes
+
+When running under XWayland or native Wayland:
+
+1. **XWayland**: Uses X11 selections (PRIMARY/CLIPBOARD) - should work as on X11
+2. **Native Wayland**: May not work properly - see "XWayland Clipboard Support" section
+
+If clipboard doesn't work on Wayland:
+- Use PRIMARY selection (middle-click) as workaround
+- Or use native X11 session instead of Wayland
+
+### To Continue Testing on New Machine
+
+```bash
+# Checkout branch
+git checkout clipboard-x11wayland
+git pull
+
+# Build
+cd src && make -f linux32gcc.gmk
+
+# Test GUI version
+MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
+
+# Enable clipboard in user-setup (M-x user-setup) -> Platform tab -> "Use Clipboard"
+```
+
+### Known Issues
+
+1. First-time clipboard checkbox may need toggle/apply to work (already fixed in me.emf)
+2. Some Wayland apps may not see X11 clipboard - this is a Wayland limitation
