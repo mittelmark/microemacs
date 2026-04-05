@@ -12,7 +12,12 @@
 
 ## 2026
 
-  [260XXX] - Adding CLIPBOARD selection support for X-Windows version (mew)
+  [260405] - Adding Wayland clipboard support using wl-copy/wl-paste for
+             native Wayland apps when running under XWayland or Wayland.
+             copy-region (M-w) now updates both X11 CLIPBOARD and Wayland
+             clipboard. yank (C-y) tries Wayland first, falls back to X11.
+             Mouse selection uses X11 PRIMARY only.
+  [260403] - Adding CLIPBOARD selection support for X-Windows version (mew)
              allowing copy/paste to work with external applications using
              Esc-w, C-y. Can be enabled via user-setup or $system variable.
   [260403] - automatic 256-color terminal detection and color mode selection

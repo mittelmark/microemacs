@@ -5175,6 +5175,11 @@
 
 ## Development History 
 
+  - [260405] - Adding Wayland clipboard support using wl-copy/wl-paste for
+               native Wayland apps when running under XWayland or Wayland.
+               copy-region (M-w) now updates both X11 CLIPBOARD and Wayland
+               clipboard. yank (C-y) tries Wayland first, falls back to X11.
+               Mouse selection uses X11 PRIMARY only.
   - [260403] - Adding Clipboard support on X11, via user-setup
   - [260403] - automatic 256-color terminal detection and color mode selection
                for the terminal version
@@ -13504,6 +13509,28 @@ $a
   systems kill buffer, the last MicroEmacs 2009 __copy-region__ entry is
   immediately available for a paste operation into another windowing
   application.
+
+  ### X11 and Wayland Clipboard Support
+
+  On X11/XWayland systems, MicroEmacs uses two X11 selections:
+  - __X11 PRIMARY__: Set by mouse text selection, used for middle-click paste
+  - __X11 CLIPBOARD__: Set by __copy-region__ (M-w), used for Ctrl+V paste
+
+  On Wayland systems (including XWayland), MicroEmacs also writes to the
+  Wayland clipboard via `wl-copy` when available:
+  - __copy-region__ (M-w) updates both X11 CLIPBOARD and Wayland clipboard
+  - Mouse selection only updates X11 PRIMARY (for middle-click compatibility)
+
+  The `yank` (C-y) command tries Wayland clipboard first on Wayland systems,
+  falling back to X11 CLIPBOARD if needed.
+
+  To enable clipboard support, use `M-x user-setup` and check "Use Clipboard"
+  in the Platform tab, or set the `$system` variable with the clipboard bit:
+  `set-variable $system &bor $system 0x2000000`
+
+  Requirements for Wayland clipboard support:
+  - `wl-clipboard` package installed (provides `wl-copy` and `wl-paste`)
+  - `$XDG_SESSION_TYPE=wayland` environment variable
 
   The numeric argument _n_ was introduced in the '04 release.
 
