@@ -2,7 +2,7 @@
 #
 #version=091224b1
 #VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
-VERSION=$(shell grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+VERSION=$(shell grep -E '^#define me\(YEAR\|MONTH\|DAY\)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
