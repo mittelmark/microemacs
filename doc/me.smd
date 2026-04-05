@@ -5187,7 +5187,7 @@
                getting rid of TERM=xterm  setting  required for color support in
                the terminal
   - [260304] - adding support for PlantUML files
-  - [2602XX] - improvements in Python and Fusion modes and abbreviations 
+  - [260228] - improvements in Python and Fusion modes and abbreviations 
   - [260114] - adding more modern JavaScript keywords
   - [260110] - Adding support for Haxe transpiler programming language
   - [260109] - Support for Fusion transpiler files
@@ -24735,6 +24735,13 @@ $a
   placed in the windowing kill buffer is available to MicroEmacs 2009, via
   __yank__, until a new item has been inserted into the kill buffer (the data
   may still be available via [reyank(2)](reyank(2))).
+
+  ### X11 and Wayland Clipboard Support
+
+  On Wayland systems (including XWayland), the __yank__ command tries the
+  Wayland clipboard first, falling back to the X11 CLIPBOARD selection if
+  needed. See the X11 and Wayland Clipboard Support notes in
+  [copy-region(2)](copy-region(2)) for more details.
 
 
 ## EXAMPLE
