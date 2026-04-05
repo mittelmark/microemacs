@@ -29,31 +29,31 @@ jobs:
            if [[ "${{ matrix.os }}" == "macos-13" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-15-intel" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-15" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-13-xlarge" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-12" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-14" ]]; then
               export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
               export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
-              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-14" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-15" ]]; then
               export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
               export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
-              export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-14" >> $GITHUB_ENV
            fi
