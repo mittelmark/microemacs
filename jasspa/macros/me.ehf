@@ -5250,14 +5250,21 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260405] - Adding Wayland clipboard support using wl-copy/wl-paste for
+                 native Wayland apps when running under XWayland or Wayland.
+                 copy-region (M-w) now updates both X11 CLIPBOARD and Wayland
+                 clipboard. yank (C-y) tries Wayland first, falls back to X11.
+                 Mouse selection uses X11 PRIMARY only.
+    - [260403] - Adding Clipboard support on X11, via user-setup
+    - [260403] - automatic 256-color terminal detection and color mode selection
+                 for the terminal version
     - [260331] - adding support for 16 colors in the terminal and 
                  getting rid of TERM=xterm  setting  required for color support in
                  the terminal
     - [260304] - adding support for PlantUML files
-    - [2602XX] - improvements in Python and Fusion modes and abbreviations 
+    - [260228] - improvements in Python and Fusion modes and abbreviations 
     - [260114] - adding more modern JavaScript keywords
     - [260110] - Adding support for Haxe transpiler programming language
-    - [260109] - Support for Fusion transpiler files
     - [260109] - Support for Fusion transpiler files
     - [251224] - Groovy programming language support
     - [251221] - Scala programming language support
@@ -8711,6 +8718,11 @@ Miscellaneous Information
 
 cERelease History  cA
 
+
+    cD2026cA
+       - Adding CLIPBOARD selection support for X-Windows version (mew) -
+         allows copy/paste to work with external applications using Ctrl+C/Ctrl+V.
+         Can be enabled via user-setup (Platform page) or $system variable (0x2000000).
 
     cDSeptember 2009cA
        10th Major Release - MicroEmacs 2009.
@@ -13460,6 +13472,28 @@ $a
     systems kill buffer, the last MicroEmacs 2009 cDcopy-regioncA entry is
     immediately available for a paste operation into another windowing
     application.
+
+    ### X11 and Wayland Clipboard Support
+
+    On X11/XWayland systems, MicroEmacs uses two X11 selections:
+    - cDX11 PRIMARYcA: Set by mouse text selection, used for middle-click paste
+    - cDX11 CLIPBOARDcA: Set by cDcopy-regioncA (M-w), used for Ctrl+V paste
+
+    On Wayland systems (including XWayland), MicroEmacs also writes to the
+    Wayland clipboard via cGwl-copycA when available:
+    - cDcopy-regioncA (M-w) updates both X11 CLIPBOARD and Wayland clipboard
+    - Mouse selection only updates X11 PRIMARY (for middle-click compatibility)
+
+    The cGyankcA (C-y) command tries Wayland clipboard first on Wayland systems,
+    falling back to X11 CLIPBOARD if needed.
+
+    To enable clipboard support, use cGM-x user-setupcA and check "Use Clipboard"
+    in the Platform tab, or set the cG$systemcA variable with the clipboard bit:
+    `set-variable $system &bor $system 0x2000000`
+
+    Requirements for Wayland clipboard support:
+    - cGwl-clipboardcA package installed (provides cGwl-copycA and cGwl-pastecA)
+    - cG$XDG_SESSION_TYPE=waylandcA environment variable
 
     The numeric argument cCncA was introduced in the '04 release.
 
@@ -24435,6 +24469,13 @@ $a
     placed in the windowing kill buffer is available to MicroEmacs 2009, via
     cDyankcA, until a new item has been inserted into the kill buffer (the data
     may still be available via lsreyank(2)lmreyank(2)le).
+
+    ### X11 and Wayland Clipboard Support
+
+    On Wayland systems (including XWayland), the cDyankcA command tries the
+    Wayland clipboard first, falling back to the X11 CLIPBOARD selection if
+    needed. See the X11 and Wayland Clipboard Support notes in
+    lscopy-region(2)lmcopy-region(2)le for more details.
 
 
 cEEXAMPLE cA
@@ -55842,6 +55883,15 @@ $a
        When this bit is set the cG-pcA or cG-PcA option was used on the command line
        (see lsme(1)lmme(1)le). This bit can be used by macros to determine how to
        function, see lsfiletype(3f)lmfiletype(3f)le for an example of its use.
+
+    cD0x2000000cA
+    
+       On X-Windows systems (mew), enables the use of the CLIPBOARD selection
+       instead of the PRIMARY selection for copy and paste operations. When set,
+       MicroEmacs will use the X11 CLIPBOARD selection which is compatible with
+       Ctrl+C/Ctrl+V in most applications. When clear (default), the PRIMARY
+       selection is used (mouse select/middle-click paste). This option can be
+       set via lsuser-setup(3)lmuser-setup(3)le on the Platform page.
 
 
 cEEXAMPLE cA
