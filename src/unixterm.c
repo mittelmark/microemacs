@@ -3916,6 +3916,144 @@ TTgetDefaultSelection(void)
     return XA_PRIMARY ;
 }
 
+static int wlCopyAvailable = -1;
+static int wlPasteAvailable = -1;
+
+static int
+TTcheckWaylandClipboard(void)
+{
+    if(wlCopyAvailable < 0)
+    {
+        wlCopyAvailable = (access("/usr/bin/wl-copy", X_OK) == 0) ? 1 : 0;
+        wlPasteAvailable = (access("/usr/bin/wl-paste", X_OK) == 0) ? 1 : 0;
+    }
+    return wlCopyAvailable && wlPasteAvailable;
+}
+
+static int
+TTisWaylandSession(void)
+{
+    meUByte *sessionType = meGetenv("XDG_SESSION_TYPE");
+    return (sessionType != NULL) && (meStrcmp(sessionType, "wayland") == 0);
+}
+
+static void
+TTsetWaylandClipboard(void)
+{
+    FILE *fp;
+    meKillNode *killp;
+    int total;
+    meUByte *data, *dd, cc;
+    
+    if((klhead == NULL) || (klhead->kill == NULL))
+        return;
+    
+    total = 0;
+    killp = klhead->kill;
+    while(killp != NULL)
+    {
+        total += meStrlen(killp->data);
+        killp = killp->next;
+    }
+    if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (total == 0))
+        total++;
+    
+    if((data = meMalloc(total + 1)) == NULL)
+        return;
+    
+    dd = data;
+    killp = klhead->kill;
+    while(killp != NULL)
+    {
+        meUByte *ss = killp->data;
+        while((cc = *ss++))
+            *dd++ = cc;
+        killp = killp->next;
+    }
+    if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (dd == data))
+        *dd++ = ' ';
+    *dd = '\0';
+    
+    fp = popen("wl-copy", "w");
+    if(fp != NULL)
+    {
+        fwrite(data, 1, total, fp);
+        pclose(fp);
+    }
+    
+    meFree(data);
+}
+
+static int
+TTgetWaylandClipboard(void)
+{
+    FILE *fp;
+    meUByte buff[1024];
+    meUByte *tmpbuf, *dd, *tp;
+    size_t nread, len;
+    int ll, ret = meFALSE;
+    
+    fp = popen("wl-paste", "r");
+    if(fp == NULL)
+        return meFALSE;
+    
+    len = 0;
+    while((nread = fread(buff, 1, sizeof(buff), fp)) > 0)
+        len += nread;
+    pclose(fp);
+    
+    if(len == 0)
+        return meFALSE;
+    
+    if((tmpbuf = meMalloc(len + 1)) == NULL)
+        return meFALSE;
+    
+    fp = popen("wl-paste", "r");
+    if(fp == NULL)
+    {
+        meFree(tmpbuf);
+        return meFALSE;
+    }
+    
+    tp = tmpbuf;
+    ll = 0;
+    while((nread = fread(buff, 1, sizeof(buff), fp)) > 0)
+    {
+        dd = buff;
+        while(nread--)
+        {
+            unsigned char cc = *dd++;
+            if(cc == '\n')
+                ll = 0;
+            else if(ll == 0xfff0)
+            {
+                *tp++ = '\n';
+                len++;
+                ll = 1;
+            }
+            else
+                ll++;
+            *tp++ = cc;
+        }
+    }
+    *tp = '\0';
+    pclose(fp);
+    
+    if((klhead == NULL) || (klhead->kill == NULL) ||
+       (klhead->kill->next != NULL) ||
+       meStrcmp(klhead->kill->data, tmpbuf))
+    {
+        killSave();
+        if((dd = killAddNode(len + 1)) != NULL)
+            memcpy(dd, tmpbuf, len + 1);
+        thisflag = meCFKILL;
+        ret = meTRUE;
+    }
+    
+    meFree(tmpbuf);
+    return ret;
+}
+
 void
 TTsetClipboard(void)
 {
@@ -3945,6 +4083,8 @@ TTsetClipboard(void)
         else
             clipState |= CLIP_OWNER_PRIMARY ;
     }
+    if(TTisWaylandSession() && TTcheckWaylandClipboard())
+        TTsetWaylandClipboard();
 }
 
 void
@@ -3967,10 +4107,22 @@ TTsetPrimary(void)
 void
 TTgetClipboard(void)
 {
+    if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
+        return ;
+    if(clipState & CLIP_DISABLED)
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+    
+    if(TTisWaylandSession() && TTcheckWaylandClipboard())
+    {
+        meClipSize = 0;
+        if(TTgetWaylandClipboard())
+            return ;
+    }
+    
     Atom sel = TTgetDefaultSelection() ;
-    if((sel == None) ||
-       (meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD)) ||
-       (clipState & CLIP_DISABLED) || (kbdmode == mePLAY))
+    if(sel == None)
         return ;
     meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
     if(clipState & ownClip)
@@ -3984,8 +4136,6 @@ TTgetClipboard(void)
         waitForEvent(0) ;
     clipState &= ~(CLIP_RECEIVING|CLIP_RECEIVED) ;
     meClipSize=0 ;
-    /* Don't call TTsetClipboard after yank - it overwrites PRIMARY selection
-     * that may have been set by a previous mouse selection */
 }
 #endif
 

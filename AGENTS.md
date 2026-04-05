@@ -364,39 +364,50 @@ Or simply call an internal function to re-initialize clipboard:
   set-variable $system &bor $system 0x2000000
   ```
 
-### XWayland Clipboard Support
+### Wayland Clipboard Support (IMPLEMENTED)
 
-**Problem**: When running under XWayland (X11 apps on Wayland), copy/paste between MicroEmacs and native Wayland apps (like Firefox, VS Code) doesn't work reliably. XWayland applications don't properly share clipboard with native Wayland apps.
+**Problem**: When running under XWayland or native Wayland, copy/paste between MicroEmacs and native Wayland apps (like Featherpad, some terminals) doesn't work.
 
-**Root Cause**: XWayland provides X11 selection support (`PRIMARY`, `CLIPBOARD`) but doesn't integrate well with Wayland's clipboard protocol. When copying in ME, the text goes to X11 selection, but Wayland apps may not see it.
+**Solution**: Implemented dual clipboard support - ME now writes to BOTH X11 and Wayland clipboards.
 
-**Possible Solutions**:
+**Implementation** (in `src/unixterm.c`):
 
-1. **Use PRIMARY selection for copy** - When `$XDG_SESSION_TYPE=wayland` or `$WAYLAND_DISPLAY` is set, copy to PRIMARY instead of CLIPBOARD. Some Wayland apps listen to PRIMARY. This is a fallback since PRIMARY is less reliable.
+1. **Detection**: Check for Wayland session via `$XDG_SESSION_TYPE` and `wl-copy`/`wl-paste` availability
+2. **Copy (TTsetClipboard)**: Always writes to X11 CLIPBOARD, also pipes to `wl-copy` when on Wayland
+3. **Paste (TTgetClipboard)**: Tries `wl-paste` first on Wayland, falls back to X11 CLIPBOARD
 
-2. **Use wl-copy/wl-paste for clipboard operations** - Implement support for external Wayland clipboard tools:
-   ```bash
-   # Copy: pipe selection to wl-copy
-   echo "text" | wl-copy
-   # Paste: get from wl-paste  
-   wl-paste
-   ```
-   - Add check in ME for presence of `wl-copy` and `wl-paste` binaries
-   - When copying: call `wl-copy` as external command
-   - When pasting: call `wl-paste` and insert result
+**Helper Functions**:
+- `TTisWaylandSession()` - Check if `$XDG_SESSION_TYPE=wayland`
+- `TTcheckWaylandClipboard()` - Check if `wl-copy` and `wl-paste` are available
+- `TTsetWaylandClipboard()` - Pipe kill buffer to `wl-copy`
+- `TTgetWaylandClipboard()` - Read from `wl-paste` into kill buffer
 
-3. **Wayland-specific clipboard API** - Use wl_data_device (more complex, requires significant development)
+**Requirements**:
+- `wl-clipboard` package installed (`wl-copy` and `wl-paste` commands)
+- On Wayland session (`XDG_SESSION_TYPE=wayland`)
 
-**Detection**: Check environment variables in ME:
-```me
-!if &seq $env("XDG_SESSION_TYPE") "wayland"
-    ; Running on Wayland - may need special handling
-!endif
+**Behavior Summary**:
+| Action | X11 CLIPBOARD | Wayland (wl-copy) |
+|--------|---------------|-------------------|
+| `M-w` (copy-region) | Updated ✓ | Updated ✓ |
+| Mouse selection | PRIMARY only | Not updated |
+
+| Action | Wayland (wl-paste) | X11 CLIPBOARD |
+|--------|-------------------|---------------|
+| `C-y` (yank) | Tried first ✓ | Fallback ✓ |
+
+**Testing on XWayland**:
+```bash
+# Build
+cd src && make -f linux32gcc.gmk
+
+# Test GUI version
+MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
+
+# Enable clipboard in user-setup (M-x user-setup) -> Platform tab -> "Use Clipboard"
+
+# Copy text in ME with M-w, paste in native Wayland app
 ```
-
-**Current Workaround**: 
-- Use native X11 session instead of Wayland for reliable clipboard
-- Or manually copy/paste using middle-click (PRIMARY selection) or external tools
 
 ### Mouse Selection vs Clipboard Mode Implementation
 
@@ -499,44 +510,39 @@ Or simply call an internal function to re-initialize clipboard:
 
 ### What's Implemented
 
-**Goal**: Separate PRIMARY selection (mouse select) from CLIPBOARD (explicit copy commands)
+**Goal**: Separate PRIMARY selection (mouse select) from CLIPBOARD (explicit copy commands), with Wayland clipboard support
 
 | Action | Selection Used |
 |--------|----------------|
 | Mouse select (left click-drag) | PRIMARY (for middle-click paste) |
-| copy-region (M-w) | CLIPBOARD (for Ctrl+V) |
-| kill-rectangle (C-x C-r) | CLIPBOARD |
-| yank (C-y) | Retrieves from CLIPBOARD or PRIMARY |
+| copy-region (M-w) | X11 CLIPBOARD + Wayland (wl-copy) |
+| kill-rectangle (C-x C-r) | X11 CLIPBOARD + Wayland (wl-copy) |
+| yank (C-y) | Wayland (wl-paste) first, then X11 CLIPBOARD |
 
 **Files Modified**:
 - `src/edef.h` - Added `CLIP_MOUSE_PENDING` flag (0x80)
-- `src/unixterm.c` - Mouse selection handling, TTsetClipboard logic
+- `src/unixterm.c` - Mouse selection handling, TTsetClipboard/TTgetClipboard logic, Wayland clipboard support
 - `src/region.c` - Added TTsetClipboard to copyRegion/killRectangle
 - `src/winterm.c` - Windows support
 - `jasspa/macros/me.emf` - Registry fix for clipboard checkbox
+
+### Wayland Clipboard Support
+
+When `$XDG_SESSION_TYPE=wayland` and `wl-copy`/`wl-paste` are available:
+- **Copy**: Writes to both X11 CLIPBOARD and Wayland clipboard
+- **Paste**: Tries Wayland first, falls back to X11
+
+**Requirements**:
+- `wl-clipboard` package installed
+- Wayland session (`XDG_SESSION_TYPE=wayland`)
 
 ### Testing on X11
 - Works correctly in Leafpad
 - Some terminal emulators (Roxterm) may check both selections - this is app behavior, not ME bug
 
-### Wayland Notes
-
-When running under XWayland or native Wayland:
-
-1. **XWayland**: Uses X11 selections (PRIMARY/CLIPBOARD) - should work as on X11
-2. **Native Wayland**: May not work properly - see "XWayland Clipboard Support" section
-
-If clipboard doesn't work on Wayland:
-- Use PRIMARY selection (middle-click) as workaround
-- Or use native X11 session instead of Wayland
-
-### To Continue Testing on New Machine
+### Testing on Wayland
 
 ```bash
-# Checkout branch
-git checkout clipboard-x11wayland
-git pull
-
 # Build
 cd src && make -f linux32gcc.gmk
 
@@ -545,6 +551,15 @@ MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
 
 # Enable clipboard in user-setup (M-x user-setup) -> Platform tab -> "Use Clipboard"
 ```
+
+**Test workflow:**
+1. Copy text in ME with `M-w`
+2. Paste in native Wayland app (Featherpad) with `Ctrl+V`
+3. Should work directly (no need for intermediate X11 app)
+
+### Known Issues
+
+1. First-time clipboard checkbox may need toggle/apply to work (already fixed in me.emf)
 
 ### Known Issues
 
