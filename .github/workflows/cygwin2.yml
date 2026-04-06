@@ -72,7 +72,7 @@ jobs:
         export VRS=`grep -E 'meYEAR|meMONTH|meDAY' src/evers.h | head -n 3 | awk '{ print $3 }' | paste -sd '-' | sed 's/[-"]//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
         echo "VRS=$VRS"        
-        make -f cygwin.gmk bfs/bib
+        make -f cygwin.gmk bfs/bin
         make -f cygwin.gmk mec  
         make -f cygwin.gmk mecb
         make -f cygwin.gmk mew  mewb        
