@@ -70,6 +70,9 @@ jobs:
         CYGWIN_VER=$(uname -r | grep -oE '^[0-9]\.[0-9]+')
         echo "CYGWIN_VER=$CYGWIN_VER" >> $GITHUB_ENV
         echo "Cygwin version: $CYGWIN_VER"
+        CYGWIN_MACHINE=$(uname -m)
+        echo "CYGWIN_MACHINE=$CYGWIN_MACHINE" >> $GITHUB_ENV
+        echo "Cygwin Machine: $CYGWIN_MACHINE"
 
     - name: Clone MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
@@ -87,8 +90,8 @@ jobs:
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls
-        ls -l ./cygwin-${CYGWIN_VER}-${{ matrix.arch }}-microemacs-${VRS}-mecb.exe
-        echo `./cygwin-${CYGWIN_VER}-${{ matrix.arch }}-microemacs-${VRS}-mecb.exe -V`
+        ls -l ./cygwin-${CYGWIN_VER}-${ CYGWIN_MACHINE }-microemacs-${VRS}-mecb.exe
+        echo `./cygwin-${CYGWIN_VER}-${ CYGWIN_MACHINE }-microemacs-${VRS}-mecb.exe -V`
         pwd
         make -f cygwin.gmk release app=mecb
         
@@ -103,6 +106,6 @@ jobs:
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ matrix.arch }} -windows
+        name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ env.CYGWIN_MACHINE }} -windows
         path: c:\cygwin\home\runneradmin\workspace\microemacs\cygwin-*
         
