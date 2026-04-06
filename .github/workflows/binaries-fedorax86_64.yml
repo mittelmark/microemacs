@@ -1,0 +1,143 @@
+name: Binaries Fedora (self-hosted)
+
+on:
+  workflow_dispatch:
+    branches: [ master, dev ]
+
+jobs:
+  build:
+    runs-on: fedora-x64  # Your self-hosted runner label
+    steps:
+    - uses: actions/checkout@v4
+     
+    - name: Install dependencies
+      run: |
+        sudo dnf install -y gcc gcc-c++ make zlib-devel ncurses-devel libXt-devel
+        export VRS=`grep '^#define me' src/evers.h | head -n 3 | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd ''`
+        echo "VRS=$VRS" >> $GITHUB_ENV
+
+    - name: Extract branch name
+      run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        
+    - name: make bfs binary
+      run:  make -f linux32gcc.gmk bfs/bin
+
+    - name: make mec binary       
+      run:  make -f linux32gcc.gmk mec
+
+    - name: make mew binary       
+      run:  make -f linux32gcc.gmk mew
+
+    - name: make mecw binary       
+      run:  make -f linux32gcc.gmk mecw
+
+    - name: make mecb binary
+      run:  make -f linux32gcc.gmk mecb
+    
+    - name: make mewb binary
+      run:  make -f linux32gcc.gmk mewb
+    
+    - name: make mecwb binary
+      run:  make -f linux32gcc.gmk mecwb
+
+    - name: make brew package
+      run:  |
+        make -f linux32gcc.gmk brew
+        rm -rf brew-*/
+    
+    - name: Make release
+      run: |
+        export MEPATH=fedora39-x86_64-MicroEmacs09-${VRS}-Linux
+        mkdir $MEPATH
+        mkdir $MEPATH/bin
+        mkdir -p $MEPATH/man/1   
+        mkdir -p $MEPATH/share/jasspa
+        mkdir $MEPATH/share/spelling
+        mkdir $MEPATH/share/company        
+        cp doc/me.1 $MEPATH/man/1/
+        cp bfs/bfs $MEPATH/bin/
+        cp src/.linux32gcc-release-mecw/mecw $MEPATH/bin/
+        cp src/.linux32gcc-release-mew/mew $MEPATH/bin/
+        cp src/.linux32gcc-release-mec/mec  $MEPATH/bin/
+        cp linux-*me*.bin $MEPATH/bin/
+        cp license.txt $MEPATH/share/jasspa/
+        cp COPYING $MEPATH/share/jasspa/
+        cp README-standalone.md $MEPATH/share/jasspa/
+        cp -r jasspa/macros $MEPATH/share/jasspa/
+        echo "Documentation is in share/jasspa" > ${MEPATH}/readme.txt
+
+    - name: Make mecb release
+      run: |
+        mkdir fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb
+        mkdir fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/bin
+        cp bfs/bfs fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/bin/
+        cp linux-*mecb.bin fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/bin/
+        cp bin/mecu fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/bin/
+        chmod 755 fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
+        cp license.txt fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/
+        cp COPYING fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/
+        cp README-standalone.md fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecb/
+
+    - name: Make mewb release
+      run: |
+        mkdir fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb
+        mkdir fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb/bin
+        cp bfs/bfs fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb/bin/
+        cp linux-*mewb.bin fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb/bin/
+        cp license.txt fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb/
+        cp COPYING fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb/
+        cp README-standalone.md fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mewb/
+
+    - name: Make mecwb release
+      run: |
+        mkdir fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb
+        mkdir fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/bin
+        cp bfs/bfs fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/bin/
+        cp linux-*mecwb.bin fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/bin/
+        cp bin/mecu fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/bin/
+        sed -i -E 's/mecb/mecwb -n/' fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/bin/mecu
+        cp license.txt fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/
+        cp COPYING fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/
+        cp README-standalone.md fedora39-x86_64-MicroEmacs09-${VRS}-Linux-mecwb/
+
+    - name: Upload Fedora Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-${{ env.BRANCH_NAME }}
+        path: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux
+    
+    - name: Upload Fedora mecb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-mecb-${{ env.BRANCH_NAME }}
+        path: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-mecb
+
+    - name: Upload Fedora mewb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-mewb-${{ env.BRANCH_NAME }}
+        path: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-mewb
+
+    - name: Upload Fedora mecwb Release files
+      uses: actions/upload-artifact@v4
+      with: 
+        name: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-mecwb-${{ env.BRANCH_NAME }}
+        path: fedora39-x86_64-MicroEmacs09-${{ env.VRS }}-Linux-mecwb
+
+    - name: Combined Release
+      run: |
+        make -f linux32gcc.gmk release app=mecb
+        make -f linux32gcc.gmk release app=mewb
+        make -f linux32gcc.gmk release app=mecwb
+
+    - name: Upload Fedora Combined Release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Release-fedora39-${{ env.BRANCH_NAME }}
+        path: linux-*/
+        
+    - name: Upload Brew Package
+      uses: actions/upload-artifact@v4
+      with: 
+        name: brew-fedora39
+        path: brew-*
