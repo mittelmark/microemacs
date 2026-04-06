@@ -90,8 +90,8 @@ jobs:
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls
-        ls -l ./cygwin-${CYGWIN_VER}-${ CYGWIN_MACHINE }-microemacs-${VRS}-mecb.exe
-        echo `./cygwin-${CYGWIN_VER}-${ CYGWIN_MACHINE }-microemacs-${VRS}-mecb.exe -V`
+        ls -l ./cygwin-${CYGWIN_VER}-${CYGWIN_MACHINE}-microemacs-${VRS}-mecb.exe
+        echo `./cygwin-${CYGWIN_VER}-${CYGWIN_MACHINE}-microemacs-${VRS}-mecb.exe -V`
         pwd
         make -f cygwin.gmk release app=mecb
         
