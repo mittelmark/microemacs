@@ -18,14 +18,12 @@ jobs:
         export KERNEL=$(uname -r | grep -oE '^[0-9]+')
         export MACHINE=$(uname -m)
         export VRS=$(grep '^#define me' src/evers.h | head -n 3 | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd '')
-        export RELEASE=${DIST}${OSV}-${MACHINE}-microemacs-${VRS}
         echo "DIST=$DIST" >> $GITHUB_ENV
         echo "OSV=$OSV" >> $GITHUB_ENV
         echo "KERNEL=$KERNEL" >> $GITHUB_ENV
         echo "MACHINE=$MACHINE" >> $GITHUB_ENV
         echo "VRS=$VRS" >> $GITHUB_ENV
-        echo "RELEASE=$RELEASE" >> $GITHUB_ENV
-        echo "linux-$KERNEL-$MACHINE-$RELEASE" >> $GITHUB_ENV
+        echo "RELEASE_PREFIX=linux-$KERNEL-$MACHINE-$DIST-$OSV" >> $GITHUB_ENV
         echo "System: linux-$KERNEL-$MACHINE-$DIST-$OSV, ME version: $VRS"
 
     - name: Install dependencies (Debian/Ubuntu)
