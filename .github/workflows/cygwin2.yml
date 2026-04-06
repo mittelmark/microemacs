@@ -101,11 +101,13 @@ jobs:
         cd workspace/microemacs
         make -f cygwin.gmk release app=mecb
         make -f cygwin.gmk release app=mewb        
-        make -f cygwin.gmk release app=mecwb                
+        make -f cygwin.gmk release app=mecwb
+        rm cygwin-*/*exe
+                        
 
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ env.CYGWIN_MACHINE }} -windows
+        name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ env.CYGWIN_MACHINE }}-windows
         path: c:\cygwin\home\runneradmin\workspace\microemacs\cygwin-*
         
