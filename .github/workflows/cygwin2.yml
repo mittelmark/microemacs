@@ -102,7 +102,7 @@ jobs:
         make -f cygwin.gmk release app=mecb
         make -f cygwin.gmk release app=mewb        
         make -f cygwin.gmk release app=mecwb
-        rm cygwin-*/*exe
+        find . -name "*.exe" | xargs rm
                         
 
     - name: Upload Cygwin Combined Release
