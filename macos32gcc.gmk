@@ -1,15 +1,14 @@
 ##-*- makefile -*-############################################################
 #
 #version=091224b1
-#VERSION=$(shell grep -e '^version=' macos32gcc.gmk | sed 's/version=//')
-VERSION=$(shell grep -E '^#define me\(YEAR\|MONTH\|DAY\)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+VERSION:=$(shell grep -E '^#define me\(YEAR\|MONTH\|DAY\)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
-KERNEL=$(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/' | sed 's/24/15/' | sed 's/25/16/')
-OS=macos-$(KERNEL)
-ARCH=$(shell uname -m)
-RELEASE=macos-$(KERNEL)-$(ARCH)-microemacs-$(VERSION)
+KERNEL := $(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/' | sed 's/24/15/' | sed 's/25/16/')
+OS := macos-$(KERNEL)
+ARCH := $(shell uname -m)
+RELEASE := "macos-$(KERNEL)-$(ARCH)-microemacs-$(VERSION)"
 app=mecb
 bfs/bin:
 	echo "VERSION: $(VERSION)"
