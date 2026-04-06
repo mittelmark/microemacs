@@ -1,7 +1,7 @@
 ##-*- makefile -*-############################################################
 #
 #version=091224b1
-VERSION:=$(shell grep -E '^#define me\(YEAR\|MONTH\|DAY\)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+VERSION := $(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | paste -sd '' | sed 's/0909/09/')
 CC=gcc-11
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
