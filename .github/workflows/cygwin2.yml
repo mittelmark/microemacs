@@ -71,8 +71,10 @@ jobs:
         cd microemacs
         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
-        echo $VRS
-        make -f cygwin.gmk mec  mecb
+        echo "VRS=$VRS"        
+        make -f cygwin.gmk bfs/bin
+        make -f cygwin.gmk mec  
+        make -f cygwin.gmk mecb
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls

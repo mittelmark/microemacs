@@ -1,14 +1,14 @@
-##version=091224b1
-OS=`uname -o | sed 's/Cygwin/cygwin/'`
-VERSION=`grep -E '^#define meYEAR |^#define meMONTH |^#define meDAY ' src/evers.h | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd ''`
-OSV=`uname -r | grep -oE '^[0-9]\.[0-8]'`
-MACHINE=`uname -m`
-RELEASE=cygwin-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
+OS := $(shell uname -o | sed 's/Cygwin/cygwin/')
+VERSION := $(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | paste -sd '' | sed 's/0909/09/')
+OSV := $(shell uname -r | grep -oE '^[0-9]\.[0-8]')
+MACHINE := $(shell uname -m)
+RELEASE := cygwin-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
 
 app=mecb
 default:
 	echo "Makefile for Cygwin systems"
 	echo "VERSION: '$(VERSION)' OS $(OS) OSVERSION $(OSV)"
+	echo "./bfs/bfs -a ./src/mec -o $(RELEASE)-mecb.exe ./jasspa"
 bfs/bin:
 	cd bfs && make
 mec:
@@ -21,13 +21,13 @@ mecw:
 	cd src && make -f cygwin.gmk mecw
 
 mecb: bfs/bin mec
-	./bfs/bfs -a ./src/mec -o $(RELEASE)-mecb.exe ./jasspa
+	./bfs/bfs -a ./src/mec -o "$(RELEASE)-mecb.exe" ./jasspa
 
 mewb: bfs/bin mew
-	./bfs/bfs -a ./src/mew -o $(RELEASE)-mewb.exe ./jasspa
+	./bfs/bfs -a ./src/mew -o "$(RELEASE)-mewb.exe" ./jasspa
 
 mecwb: bfs/bin mecw
-	./bfs/bfs -a ./src/mecw -o $(RELEASE)-mecwb.exe ./jasspa
+	./bfs/bfs -a ./src/mecw -o "$(RELEASE)-mecwb.exe" ./jasspa
 
 release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
+	make -f release.gmk app="$(app)" "RELEASE=$(RELEASE)" ext=exe
