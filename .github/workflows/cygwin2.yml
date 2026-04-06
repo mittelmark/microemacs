@@ -8,7 +8,9 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-    
+    strategy:
+      matrix:
+        arch: [x86_64, x86]    
     steps:
     - name: Install Cygwin
       uses: cygwin/cygwin-install-action@v6
@@ -28,7 +30,7 @@ jobs:
           zip 
           unzip
         install-dir: C:\cygwin
-
+        platform: ${{ matrix.arch }}
     - name: Modify PATH
       run: |
         echo "C:\cygwin\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
@@ -62,6 +64,13 @@ jobs:
         python3 --version
         which python3
 
+    - name: Capture Cygwin Version
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        CYGWIN_VER=$(uname -r | grep -oE '^[0-9]\.[0-9]+')
+        echo "CYGWIN_VER=$CYGWIN_VER" >> $GITHUB_ENV
+        echo "Cygwin version: $CYGWIN_VER"
+
     - name: Clone MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
@@ -78,8 +87,8 @@ jobs:
         make -f cygwin.gmk mew  mewb        
         make -f cygwin.gmk mecw mecwb                
         ls
-        ls -l ./cygwin-3.6-x86_64-microemacs-${VRS}-mecb.exe
-        echo `./cygwin-3.6-x86_64-microemacs-${VRS}-mecb.exe -V`
+        ls -l ./cygwin-${CYGWIN_VER}-${{ matrix.arch }}-microemacs-${VRS}-mecb.exe
+        echo `./cygwin-${CYGWIN_VER}-${{ matrix.arch }}-microemacs-${VRS}-mecb.exe -V`
         pwd
         make -f cygwin.gmk release app=mecb
         
@@ -94,6 +103,6 @@ jobs:
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v4
       with: 
-        name: Release-cygwin-3.6-x86_64-windows
+        name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ matrix.arch }} -windows
         path: c:\cygwin\home\runneradmin\workspace\microemacs\cygwin-*
         
