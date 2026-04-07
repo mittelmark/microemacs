@@ -17,7 +17,7 @@ jobs:
         export OSV=$(grep 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
         export KERNEL=$(uname -r | grep -oE '^[0-9]+')
         export MACHINE=$(uname -m)
-        export VRS=$(grep -E '^#define me' src/evers.h | head -n 3 | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd '')
+        export VRS=$(grep -E '^#define me[YMD]' src/evers.h | head -n 3 | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd '')
         echo "DIST=$DIST" >> $GITHUB_ENV
         echo "OSV=$OSV" >> $GITHUB_ENV
         echo "KERNEL=$KERNEL" >> $GITHUB_ENV
@@ -26,21 +26,21 @@ jobs:
         echo "RELEASE_PREFIX=linux-$KERNEL-$MACHINE-$DIST-$OSV" >> $GITHUB_ENV
         echo "System: linux-$KERNEL-$MACHINE-$DIST-$OSV, ME version: $VRS"
 
-    - name: Install dependencies (Debian/Ubuntu)
-      if: contains(env.DIST, 'ubuntu') || contains(env.DIST, 'debian')
-      run: |
-        sudo apt install -y build-essential libxt-dev
-        sudo apt install -y gcc gcc-c++ make zlib-devel ncurses-devel libXt-devel || true
+#    - name: Install dependencies (Debian/Ubuntu)
+#      if: contains(env.DIST, 'ubuntu') || contains(env.DIST, 'debian')
+#      run: |
+#        sudo apt install -y build-essential libxt-dev
+#       sudo apt install -y gcc gcc-c++ make zlib-devel ncurses-devel libXt-devel || true
 
-    - name: Install dependencies (Fedora/RHEL)
-      if: contains(env.DIST, 'fedora') || contains(env.DIST, 'rhel') || contains(env.DIST, 'centos') || contains(env.DIST, 'rocky') || contains(env.DIST, 'almalinux')
-      run: |
-        sudo dnf install -y gcc gcc-c++ make zlib-devel ncurses-devel libXt-devel
+#    - name: Install dependencies (Fedora/RHEL)
+#      if: contains(env.DIST, 'fedora') || contains(env.DIST, 'rhel') || contains(env.DIST, 'centos') || contains(env.DIST, 'rocky') || contains(env.DIST, 'almalinux')
+#      run: |
+#        sudo dnf install -y gcc gcc-c++ make zlib-devel ncurses-devel libXt-devel
 
-    - name: Install dependencies (Arch)
-      if: contains(env.DIST, 'arch')
-      run: |
-        sudo pacman -S --noconfirm base-devel zlib ncurses libxt
+#    - name: Install dependencies (Arch)
+#      if: contains(env.DIST, 'arch')
+#      run: |
+#        sudo pacman -S --noconfirm base-devel zlib ncurses libxt
 
     - name: Extract branch name
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
