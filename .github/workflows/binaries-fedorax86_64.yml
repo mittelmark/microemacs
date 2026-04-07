@@ -1,4 +1,4 @@
-name: Binaries Fedora Linux (self-hosted)
+name: Binaries Linux (self-hosted)
 
 on:
   workflow_dispatch:
