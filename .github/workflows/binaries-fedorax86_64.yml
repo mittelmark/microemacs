@@ -163,7 +163,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
         name: Release-linux-${{ env.KERNEL }}-${{ env.DIST }}-${{ env.BRANCH_NAME }}
-        path: linux-*/
+        path: linux-${{ env.KERNEL }}-${{ env.MACHINE }}-${{ env.DIST }}-${{ env.OSV }}-microemacs-${{ env.VRS }}/*
         
     - name: Upload Brew Package
       uses: actions/upload-artifact@v4
