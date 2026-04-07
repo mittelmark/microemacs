@@ -1,4 +1,4 @@
-name: Binaries Linux (self-hosted)
+name: Binaries Fedora Linux (self-hosted)
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
         export OSV=$(grep 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
         export KERNEL=$(uname -r | grep -oE '^[0-9]+')
         export MACHINE=$(uname -m)
-        export VRS=$(grep '^#define me' src/evers.h | head -n 3 | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd '')
+        export VRS=$(grep -E '^#define me' src/evers.h | head -n 3 | grep -Eo '"[0-9b]+"' | tr -d '"' | paste -sd '')
         echo "DIST=$DIST" >> $GITHUB_ENV
         echo "OSV=$OSV" >> $GITHUB_ENV
         echo "KERNEL=$KERNEL" >> $GITHUB_ENV
