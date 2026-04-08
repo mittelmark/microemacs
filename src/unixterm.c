@@ -1709,6 +1709,11 @@ meXEventHandler(void)
             mouseKeyState = ((ss & 0x01) << 8) | ((ss & 0x0C) << 7);
             ss = (ME_SPECIAL | (SKEY_mouse_pick_1+mouseKeys[bb]-1) | mouseKeyState) ;
             addKeyToBuffer(ss) ;
+
+#ifdef _CLIPBRD
+            if((meSystemCfg & meSYSTEM_CLIPBOARD) && (bb == 1))
+                clipState |= CLIP_MOUSE_PENDING ;
+#endif
         }
         break ;
     case ButtonRelease:
@@ -1732,11 +1737,6 @@ meXEventHandler(void)
             mouseKeyState = ((ss & 0x01) << 8) | ((ss & 0x0C) << 7);
             ss = (ME_SPECIAL | (SKEY_mouse_drop_1+mouseKeys[bb]-1) | mouseKeyState) ;
             addKeyToBuffer(ss) ;
-
-#ifdef _CLIPBRD
-            if((meSystemCfg & meSYSTEM_CLIPBOARD) && (bb == 1))
-                clipState |= CLIP_MOUSE_PENDING ;
-#endif
         }
         break ;
 #endif
@@ -3918,14 +3918,83 @@ TTgetDefaultSelection(void)
 
 static int wlCopyAvailable = -1;
 static int wlPasteAvailable = -1;
+static meUByte wlCopyPath[64] = {0};
+static meUByte wlPastePath[64] = {0};
+
+static meUByte *
+TTfindInPath(meUByte *name, meUByte *resultBuf, int resultBufSize)
+{
+    meUByte *path, *pathEnd;
+    static meUByte fullPathBuf[256];
+    int dlen;
+    
+    path = meGetenv("PATH");
+    if(path == NULL)
+        return NULL;
+    
+    while(*path != '\0')
+    {
+        pathEnd = meStrchr(path, ':');
+        if(pathEnd != NULL)
+            dlen = pathEnd - path;
+        else
+            dlen = meStrlen(path);
+        
+        if(dlen > 0)
+        {
+            if(dlen + meStrlen(name) + 2 > (int)sizeof(fullPathBuf))
+            {
+                if(pathEnd == NULL)
+                    break;
+                path = pathEnd + 1;
+                continue;
+            }
+            meStrncpy(fullPathBuf, path, dlen);
+            fullPathBuf[dlen] = '\0';
+            if(fullPathBuf[dlen-1] != '/')
+            {
+                fullPathBuf[dlen] = '/';
+                dlen++;
+            }
+            meStrcpy(fullPathBuf + dlen, name);
+            
+            if(access((char *)fullPathBuf, X_OK) == 0)
+            {
+                if(resultBuf != NULL && resultBufSize > 0)
+                {
+                    meStrncpy(resultBuf, fullPathBuf, resultBufSize - 1);
+                    resultBuf[resultBufSize - 1] = '\0';
+                    return resultBuf;
+                }
+                return fullPathBuf;
+            }
+        }
+        
+        if(pathEnd == NULL)
+            break;
+        path = pathEnd + 1;
+    }
+    return NULL;
+}
 
 static int
 TTcheckWaylandClipboard(void)
 {
+    meUByte *cp, *pp;
     if(wlCopyAvailable < 0)
     {
-        wlCopyAvailable = (access("/usr/bin/wl-copy", X_OK) == 0) ? 1 : 0;
-        wlPasteAvailable = (access("/usr/bin/wl-paste", X_OK) == 0) ? 1 : 0;
+        cp = TTfindInPath((meUByte *)"wl-copy", wlCopyPath, sizeof(wlCopyPath));
+        pp = TTfindInPath((meUByte *)"wl-paste", wlPastePath, sizeof(wlPastePath));
+        
+        if(cp != NULL)
+            wlCopyAvailable = 1;
+        else
+            wlCopyAvailable = 0;
+        
+        if(pp != NULL)
+            wlPasteAvailable = 1;
+        else
+            wlPasteAvailable = 0;
     }
     return wlCopyAvailable && wlPasteAvailable;
 }
@@ -3974,7 +4043,7 @@ TTsetWaylandClipboard(void)
         *dd++ = ' ';
     *dd = '\0';
     
-    fp = popen("wl-copy", "w");
+    fp = popen((char *)wlCopyPath, "w");
     if(fp != NULL)
     {
         fwrite(data, 1, total, fp);
@@ -3993,7 +4062,7 @@ TTgetWaylandClipboard(void)
     size_t nread, len;
     int ll, ret = meFALSE;
     
-    fp = popen("wl-paste", "r");
+    fp = popen((char *)wlPastePath, "r");
     if(fp == NULL)
         return meFALSE;
     
@@ -4008,7 +4077,7 @@ TTgetWaylandClipboard(void)
     if((tmpbuf = meMalloc(len + 1)) == NULL)
         return meFALSE;
     
-    fp = popen("wl-paste", "r");
+    fp = popen((char *)wlPastePath, "r");
     if(fp == NULL)
     {
         meFree(tmpbuf);
@@ -4059,7 +4128,7 @@ TTsetClipboard(void)
 {
     if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
         return ;
-    if(clipState & (CLIP_RECEIVING|CLIP_DISABLED))
+    if(clipState & CLIP_RECEIVING)
         return ;
     if(kbdmode == mePLAY)
         return ;
@@ -4083,7 +4152,7 @@ TTsetClipboard(void)
         else
             clipState |= CLIP_OWNER_PRIMARY ;
     }
-    if(TTisWaylandSession() && TTcheckWaylandClipboard())
+    if((sel == meAtoms[meATOM_XA_CLIPBOARD]) && TTisWaylandSession() && TTcheckWaylandClipboard())
         TTsetWaylandClipboard();
 }
 
