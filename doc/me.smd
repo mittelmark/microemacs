@@ -5175,6 +5175,16 @@
 
 ## Development History 
 
+  - [260409] - Fixed startup flickering with clipboard enabled. Added CLIP_DISABLED
+               check to TTsetClipboard to prevent clipboard operations during startup.
+               Changed Wayland clipboard detection to search $PATH for wl-copy/wl-paste
+               binaries instead of hardcoded paths. Copy to Wayland clipboard now uses
+               background fork to minimize flickering.
+  - [260408] - Fixed Wayland clipboard support: (1) now searches $PATH for
+               wl-copy/wl-paste binaries instead of hardcoded /usr/bin paths;
+               (2) mouse selection now only uses X11 PRIMARY selection, not
+               Wayland clipboard; (3) ESC-w (copy-region) updates both X11
+               CLIPBOARD and Wayland clipboard.
   - [260405] - Adding Wayland clipboard support using wl-copy/wl-paste for
                native Wayland apps when running under XWayland or Wayland.
                copy-region (M-w) now updates both X11 CLIPBOARD and Wayland

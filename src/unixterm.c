@@ -4009,7 +4009,6 @@ TTisWaylandSession(void)
 static void
 TTsetWaylandClipboard(void)
 {
-    FILE *fp;
     meKillNode *killp;
     int total;
     meUByte *data, *dd, cc;
@@ -4043,11 +4042,16 @@ TTsetWaylandClipboard(void)
         *dd++ = ' ';
     *dd = '\0';
     
-    fp = popen((char *)wlCopyPath, "w");
-    if(fp != NULL)
+    /* Run in background to avoid flickering */
+    if(meFork() == 0)
     {
-        fwrite(data, 1, total, fp);
-        pclose(fp);
+        FILE *fp = popen((char *)wlCopyPath, "w");
+        if(fp != NULL)
+        {
+            fwrite(data, 1, total, fp);
+            pclose(fp);
+        }
+        _exit(0);
     }
     
     meFree(data);
@@ -4128,7 +4132,7 @@ TTsetClipboard(void)
 {
     if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
         return ;
-    if(clipState & CLIP_RECEIVING)
+    if(clipState & (CLIP_RECEIVING|CLIP_DISABLED))
         return ;
     if(kbdmode == mePLAY)
         return ;

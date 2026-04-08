@@ -314,6 +314,38 @@ meSystemCfg ^= meSYSTEM_ANSICOLOR;
 
 ## Known Issues
 
+### Startup Flickering with Clipboard Enabled
+
+**Problem**: When "Use Clipboard" is enabled in user-setup, the GUI versions (mew/mecw) exhibit flickering during startup with many "default file hook loaded" messages.
+
+**Root Cause**: The clipboard initialization code in `TTsetClipboard` was being called during startup before `CLIP_DISABLED` was cleared. This caused X11 clipboard operations to be attempted before the X server was ready.
+
+**Fix** (in `src/unixterm.c`):
+```c
+void TTsetClipboard(void)
+{
+    if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
+        return ;
+    if(clipState & (CLIP_RECEIVING|CLIP_DISABLED))  // Added CLIP_DISABLED
+        return ;
+    ...
+}
+```
+
+**Files Modified**:
+- `src/unixterm.c:4131` - Added CLIP_DISABLED check
+- `jasspa/macros/me.emf` - Removed redundant clipboard re-application code
+
+### Wayland Clipboard Flickering
+
+**Problem**: Even with the startup fix, there is still minor flickering when using ESC-w (copy-region) or C-y (yank) when Wayland clipboard tools are invoked.
+
+**Current Status**: Minor flickering remains for Wayland operations. The copy (ESC-w) uses background fork to reduce impact, but paste (C-y) still runs synchronously as it needs to return data.
+
+**Potential Future Improvements**:
+- Run wl-paste in background and read from temp file (more complex)
+- Use async I/O for pipe operations
+
 ### Clipboard Checkbox Not Applied on Startup
 
 **Problem**: The "Use Clipboard" checkbox in user-setup (Platform tab) doesn't take effect on first run after enabling it in the registry. The checkbox value is correctly saved to registry, but the X11 clipboard selection uses PRIMARY instead of CLIPBOARD on startup.
@@ -378,8 +410,8 @@ Or simply call an internal function to re-initialize clipboard:
 
 **Helper Functions**:
 - `TTisWaylandSession()` - Check if `$XDG_SESSION_TYPE=wayland`
-- `TTcheckWaylandClipboard()` - Check if `wl-copy` and `wl-paste` are available
-- `TTsetWaylandClipboard()` - Pipe kill buffer to `wl-copy`
+- `TTcheckWaylandClipboard()` - Check if `wl-copy` and `wl-paste` are available (searches $PATH)
+- `TTsetWaylandClipboard()` - Pipe kill buffer to `wl-copy` (uses background fork)
 - `TTgetWaylandClipboard()` - Read from `wl-paste` into kill buffer
 
 **Requirements**:
@@ -560,8 +592,5 @@ MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
 ### Known Issues
 
 1. First-time clipboard checkbox may need toggle/apply to work (already fixed in me.emf)
-
-### Known Issues
-
-1. First-time clipboard checkbox may need toggle/apply to work (already fixed in me.emf)
 2. Some Wayland apps may not see X11 clipboard - this is a Wayland limitation
+3. Minor flickering still occurs on ESC-w and C-y when Wayland tools are used (copy uses background fork, paste is synchronous)

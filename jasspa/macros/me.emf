@@ -123,9 +123,6 @@ set-variable %platform &cat $platform &cond &band $system 0x01 "c" ""
 set-variable $system &bor &band $system &bnot 0x30f000 &band 0x30f000 &reg "/history/system" 0x007000
 set-variable $system &bor &band $system &bnot 0x2000010 &band 0x2000010 &reg &spr "/history/%s/system" %platform 0x040010
 !if &not &band $system 0x01
-!if &band $system 0x2000000
-  set-variable $system &bor $system 0x2000000
-!endif
 !endif
 set-variable $mouse &reg &spr "/history/%s/mouse" %platform $mouse
 set-variable $scroll &reg &spr "/history/%s/scroll" %platform $scroll
