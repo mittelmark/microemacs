@@ -594,3 +594,70 @@ MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
 1. First-time clipboard checkbox may need toggle/apply to work (already fixed in me.emf)
 2. Some Wayland apps may not see X11 clipboard - this is a Wayland limitation
 3. Minor flickering still occurs on ESC-w and C-y when Wayland tools are used (copy uses background fork, paste is synchronous)
+
+---
+
+## X11 Clipboard with xclip (Branch: `x11-clipboard-xclip`)
+
+### Problem
+
+On pure X11 (not Wayland), after explicit copy (`ESC-w` or `C-x C-r`), subsequent mouse selections incorrectly update both PRIMARY and CLIPBOARD.
+
+### Solution
+
+Hand CLIPBOARD ownership to xclip after explicit copy, so ME doesn't own it for mouse selections.
+
+### Implementation (`src/region.c:copy_region`)
+
+```c
+#ifdef _CLIPBRD
+    TTsetClipboard() ;
+    {
+        static int xclipChecked = 0;
+        static int xclipAvailable = 0;
+        meUByte *sessionType;
+        
+        /* After explicit copy, run xclip to take over clipboard on X11 */
+        sessionType = meGetenv("XDG_SESSION_TYPE");
+        if(!xclipChecked && sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+        {
+            xclipChecked = 1;
+            xclipAvailable = 0;
+        }
+        else if(!xclipChecked)
+        {
+            xclipChecked = 1;
+            xclipAvailable = (meGetenv("DISPLAY") != NULL) && (meGetenv("PATH") != NULL) &&
+                (system((char *)"which xclip >/dev/null 2>&1") == 0);
+        }
+        if(xclipAvailable)
+        {
+            if(meFork() == 0)
+            {
+                execlp("sh", "sh", "-c", "xclip -selection clipboard -o | xclip -selection clipboard -i", NULL);
+                _exit(1);
+            }
+        }
+    }
+#endif
+```
+
+### Logic
+
+1. **Wayland** → Skip xclip, Wayland clipboard handles it
+2. **X11 + xclip installed** → Run pipe to hand ownership to xclip
+3. **Console or no xclip** → Normal behavior (ME owns CLIPBOARD)
+
+### Requirements
+
+- `xclip` package (`sudo apt install xclip`)
+- Running on X11 (not Wayland)
+- `DISPLAY` environment variable set
+
+### Testing
+
+1. `echo "test" | xclip` - Set external clipboard
+2. Start ME, select text with mouse → PRIMARY updated, CLIPBOARD unchanged
+3. Press `ESC-w` → Both updated
+4. Select text with mouse → Only PRIMARY updated (xclip owns CLIPBOARD)
+5. Press `C-y` → Works normally
