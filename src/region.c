@@ -244,12 +244,14 @@ add_newline:
         }
         if(xclipAvailable)
         {
+#ifdef _UNIX
             /* Fork and pipe through xclip to hand ownership to xclip */
             if(meFork() == 0)
             {
                 execlp("sh", "sh", "-c", "xclip -selection clipboard -o | xclip -selection clipboard -i", NULL);
                 _exit(1);
             }
+#endif
         }
     }
 #endif
