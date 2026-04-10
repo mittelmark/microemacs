@@ -220,6 +220,38 @@ add_newline:
 
 #ifdef _CLIPBRD
     TTsetClipboard() ;
+    {
+        static int xclipChecked = 0;
+        static int xclipAvailable = 0;
+        meUByte *sessionType;
+        
+        /* After explicit copy, run xclip to take over clipboard.
+         * This pipes clipboard content through xclip, making xclip the owner
+         * instead of ME, so subsequent mouse selections don't affect clipboard.
+         * Only run on pure X11 (not Wayland, not console). */
+        sessionType = meGetenv("XDG_SESSION_TYPE");
+        if(!xclipChecked && sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+        {
+            /* On Wayland - let Wayland clipboard handle it */
+            xclipChecked = 1;
+            xclipAvailable = 0;
+        }
+        else if(!xclipChecked)
+        {
+            xclipChecked = 1;
+            xclipAvailable = (meGetenv("DISPLAY") != NULL) && (meGetenv("PATH") != NULL) &&
+                (system((char *)"which xclip >/dev/null 2>&1") == 0);
+        }
+        if(xclipAvailable)
+        {
+            /* Fork and pipe through xclip to hand ownership to xclip */
+            if(meFork() == 0)
+            {
+                execlp("sh", "sh", "-c", "xclip -selection clipboard -o | xclip -selection clipboard -i", NULL);
+                _exit(1);
+            }
+        }
+    }
 #endif
 
 copy_region_exit:

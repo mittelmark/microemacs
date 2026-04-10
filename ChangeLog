@@ -12,6 +12,12 @@
 
 ## 2026
 
+  [260410] - Fixed X11 clipboard issue: On X11 (not Wayland), when xclip
+              is installed and explicit copy (M-w or C-x C-r) is performed,
+              the clipboard is piped through xclip to hand ownership to xclip
+              instead of MicroEmacs. This prevents subsequent mouse
+              selections from accidentally updating the clipboard. Branch:
+              x11-clipboard-xclip.
   [260409] - Fixed startup flickering with clipboard enabled: Added CLIP_DISABLED
              check to TTsetClipboard to prevent clipboard operations during startup
              when CLIP_DISABLED flag is still set. Also fixed minor flickering on
