@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-15-intel, macos-14, macos-15]  # Specify the MacOS version
+        os: [macos-26-intel, macos-15-intel, macos-14, macos-15, macos-26]  # Specify the MacOS version
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -38,6 +38,12 @@ jobs:
               export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-15" >> $GITHUB_ENV
+           elif [[ "${{ matrix.os }}" == "macos-26-intel" ]]; then
+              export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
+              export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+              echo "VRS=$VRS" >> $GITHUB_ENV
+              echo "GCC=gcc-15" >> $GITHUB_ENV
            elif [[ "${{ matrix.os }}" == "macos-13-xlarge" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
@@ -56,6 +62,12 @@ jobs:
               export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-14" >> $GITHUB_ENV
+           elif [[ "${{ matrix.os }}" == "macos-26" ]]; then
+              export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
+              export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
+              export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+              echo "VRS=$VRS" >> $GITHUB_ENV
+              echo "GCC=gcc-15" >> $GITHUB_ENV
            fi
       - name: make bfs binary
         run: make -f macos32gcc.gmk bfs/bin CC=${GCC}
