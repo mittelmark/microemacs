@@ -248,7 +248,7 @@ add_newline:
             /* Fork and pipe through xclip to hand ownership to xclip */
             if(meFork() == 0)
             {
-                execlp("sh", "sh", "-c", "xclip -selection clipboard -o | xclip -selection clipboard -i", NULL);
+                execlp("sh", "sh", "-c", "xclip -selection clipboard -o 2>/dev/null | xclip -selection clipboard -i", NULL);
                 _exit(1);
             }
 #endif
