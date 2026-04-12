@@ -7,7 +7,7 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260403.1539>
+>  Last Modified : <260412.0847>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
@@ -42,7 +42,7 @@
              getting rid of TERM=xterm  setting  required for color support in
              the terminal
   [260304] - adding support for PlantUML files
-  [2602XX] - improvements in Python and Fusion modes and abbreviations 
+  [260228] - improvements in Python and Fusion modes and abbreviations 
   [260114] - adding more modern JavaScript keywords
   [260110] - Adding support for Haxe transpiler programming language
   [260109] - Support for Fusion transpiler files
