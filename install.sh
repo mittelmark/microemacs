@@ -56,11 +56,11 @@ elif [ $OS = "Darwin" ]; then
        MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
     elif [ $KERNEL -eq 26 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"
+       MECB="macos-16-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-16-x86_64-microemacs-${VERSION}-mewb"
     elif [ $KERNEL -eq 26 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
+       MECB="macos-16-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-16-arm64-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL on $MACHINE for $OS not supported!"    
         exit
