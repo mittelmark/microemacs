@@ -20,7 +20,7 @@ jobs:
         sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
         sudo apt install libz-mingw-w64 libz-mingw-w64-dev
         sudo apt install desktop-file-utils
-        export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+        export VRS=`grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
 
     - name: make bfs binary
