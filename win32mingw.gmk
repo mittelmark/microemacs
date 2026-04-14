@@ -1,6 +1,8 @@
-VERSION=$(shell grep -E '^#define me\(YEAR\|MONTH\|DAY\)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
 RELEASE=windows-10-intel-microemacs-$(VERSION)
 app=mecb
+default:
+	echo "$(VERSION)"
 bfs/exe:
 	cd bfs && make -f win32mingw.gmk clean	
 	cd bfs && make -f win32mingw.gmk
