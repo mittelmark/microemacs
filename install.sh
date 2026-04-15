@@ -75,6 +75,9 @@ elif [ $OS = "FreeBSD" ]; then
     if [ $KERNEL -eq 14 ]; then    
        MECB="freebsd-14-${MACHINE}-microemacs-${VERSION}-mecb"
        MEWB="freebsd-14-${MACHINE}-microemacs-${VERSION}-mewb"   
+    elif [ $KERNEL -eq 15 ]; then    
+       MECB="freebsd-15-${MACHINE}-microemacs-${VERSION}-mecb"
+       MEWB="freebsd-15-${MACHINE}-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit
