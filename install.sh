@@ -23,8 +23,15 @@ if [ $OS = "Msys" ]; then
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
+    if [ "$KERNEL" = "3.4" ]; then
+        echo "Error: Kernel 3.4 for Cygwin is not supported!"
+        echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
+        exit
+    fi
     if [ "$KERNEL" = "3.5" ]; then
-        KERNEL="3.4"
+        echo "Error: Kernel 3.5 for Cygwin is not supported!"
+        echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
+        exit
     fi
     echo "installing for cygwin version $CYGVERSION ..."
     MECB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mecb"
@@ -32,17 +39,19 @@ elif [ $OS = "cygwin" ]; then
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
     if [ $KERNEL -eq 22 ]; then    
-       MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
+        echo "Error: Installs of prebuild versions for MacOS 13 is not supported since 2026!"
+        echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
+        exit
     elif [ $KERNEL -eq 23 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
+       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"   
+        exit
     elif [ $KERNEL -eq 23 -a $MACHINE = "arm64" ]; then    
        MECB="macos-14-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-14-arm64-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 24 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-13-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-13-x86_64-microemacs-${VERSION}-mewb"   
+       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"   
     elif [ $KERNEL -eq 24 -a $MACHINE = "arm64" ]; then    
        MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
@@ -52,15 +61,12 @@ elif [ $OS = "Darwin" ]; then
     elif [ $KERNEL -eq 25 -a $MACHINE = "x86_64" ]; then    
        MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
        MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"
-    elif [ $KERNEL -eq 25 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
     elif [ $KERNEL -eq 26 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-16-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-16-x86_64-microemacs-${VERSION}-mewb"
+       MECB="macos-26-x86_64-microemacs-${VERSION}-mecb"
+       MEWB="macos-26-x86_64-microemacs-${VERSION}-mewb"
     elif [ $KERNEL -eq 26 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-16-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-16-arm64-microemacs-${VERSION}-mewb"
+       MECB="macos-26-arm64-microemacs-${VERSION}-mecb"
+       MEWB="macos-26-arm64-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL on $MACHINE for $OS not supported!"    
         exit
