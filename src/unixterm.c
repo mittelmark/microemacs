@@ -4111,7 +4111,12 @@ TTgetWaylandClipboard(void)
     }
     *tp = '\0';
     pclose(fp);
-    
+
+    /* Strip trailing newlines from Wayland clipboard paste */
+    while(tp > tmpbuf && (tp[-1] == '\n' || tp[-1] == '\r'))
+        tp--, len--;
+    *tp = '\0';
+
     if((klhead == NULL) || (klhead->kill == NULL) ||
        (klhead->kill->next != NULL) ||
        meStrcmp(klhead->kill->data, tmpbuf))
@@ -4156,7 +4161,7 @@ TTsetClipboard(void)
         else
             clipState |= CLIP_OWNER_PRIMARY ;
     }
-    if((sel == meAtoms[meATOM_XA_CLIPBOARD]) && TTisWaylandSession() && TTcheckWaylandClipboard())
+    if((meSystemCfg & meSYSTEM_CLIPBOARD) && TTisWaylandSession() && TTcheckWaylandClipboard())
         TTsetWaylandClipboard();
 }
 
@@ -4187,7 +4192,7 @@ TTgetClipboard(void)
     if(kbdmode == mePLAY)
         return ;
     
-    if(TTisWaylandSession() && TTcheckWaylandClipboard())
+    if((meSystemCfg & meSYSTEM_CLIPBOARD) && TTisWaylandSession() && TTcheckWaylandClipboard())
     {
         meClipSize = 0;
         if(TTgetWaylandClipboard())
