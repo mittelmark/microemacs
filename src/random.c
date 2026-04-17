@@ -1148,7 +1148,13 @@ killLine(int f, int n)
         }
     }
     
-    return ldelete(chunk,3) ;
+    {
+        int ret = ldelete(chunk,3) ;
+#ifdef _CLIPBRD
+        TTsetClipboard() ;
+#endif
+        return ret ;
+    }
 }
 
 

@@ -49,10 +49,10 @@
 #define meCENTURY       "20"          /* Current century. Y2 complient :-) */
 #define meYEAR          "09"          /* Current Version MicroEmacs 09 */
 #define meMONTH         "12"          /* Current Month-Placeholder */
-#define meDAY           "26b1"        /* Current Year (Beta) */
+#define meDAY           "26b2"        /* Current Year (Beta) */
 #define meGITHUB        "github.com/mittelmark/microemacs"
 #define meAUTHOR        "D.Groth"
-#define meRELEASE       "26b1"
+#define meRELEASE       "26b2"
 /* Version information - Date of build */
 #define	meDATE          meYEAR "/" meMONTH "/" meDAY 
 /* Version information - Major version number is the year of build */

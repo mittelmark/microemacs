@@ -104,6 +104,7 @@ int
 killRegion(int f, int n)
 {
     meRegion region;
+    int ret;
     
     if(n == 0)
         return meTRUE ;
@@ -115,7 +116,12 @@ killRegion(int f, int n)
     frameCur->windowCur->dotLineNo = region.lineNo ;
     frameCur->windowCur->dotOffset = region.offset ;   
     
-    return ldelete(region.size,(n > 0) ? 3:2);
+    ret = ldelete(region.size,(n > 0) ? 3:2);
+#ifdef _CLIPBRD
+    if(ret == meTRUE)
+        TTsetClipboard() ;
+#endif
+    return ret;
 }
 
 /*

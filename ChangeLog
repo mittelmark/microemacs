@@ -7,10 +7,18 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260412.0853>
+>  Last Modified : <260417.0914>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260417] - Fixing Cut issue not updating clipboard on X11
+  
+  [260415] - Release  v09.12.26.beta1, new Platform FreeBSD 15, Cygwin x86 3.3
+
+  [260412] - Fixing stderr messages with emtpy clipboard
+    
+  [260411] - Fixing Windows builds
 
   [260410] - Fixed X11 clipboard issue: On X11 (not Wayland), when xclip
              is installed and explicit copy (M-w or C-x C-r) is performed,
