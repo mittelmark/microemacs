@@ -297,7 +297,7 @@ add-file-hook ".texi"                                         fhook-texi
 add-file-hook ".idl"                                          fhook-idl
 add-file-hook ".info dir"                                     fhook-info
 add-file-hook ".diff .dif *diff*"                             fhook-diff
-add-file-hook ".xml .xsl .xul"                                fhook-xml
+add-file-hook ".svg .xml .xsl .xul"                           fhook-xml
 add-file-hook ".ex .exw .exu .e .ew .eu"                      fhook-euphor
 add-file-hook ".pls"                                          fhook-pls
 add-file-hook ".lua"                                          fhook-lua
