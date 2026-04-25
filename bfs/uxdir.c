@@ -116,11 +116,12 @@ create_dir (char *dirname)
 
     /* File system call to create a directory. There is a difference between
      * UNIX and other systems. Differentiate the systems based on the macro
-     * definitions. */
-#ifndef _WIN32
-    status = mkdir (dirname, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+     * definitions.
+     * Note: MSYS2/MinGW uses 2-arg mkdir like Unix. Only old Windows needs 1 arg. */
+#if defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32)
+    status = mkdir (dirname, 0755);
 #else
-    status = mkdir (dirname);    
+    status = mkdir (dirname, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 #endif
     return status;
 }
