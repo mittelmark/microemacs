@@ -39,11 +39,22 @@
 extern "C" {
 #endif
 
-/* File access constants for access() */
+/* File access constants for access() - only define if not already available */
+#ifndef F_OK
 #define F_OK    0x00
+#endif
+
+#ifndef R_OK
 #define R_OK    0x04
+#endif
+
+#ifndef W_OK
 #define W_OK    0x02
+#endif
+
+#ifndef X_OK
 #define X_OK    0x01
+#endif
 
 /* Stub functions for Windows */
 int access(const char *path, int mode);

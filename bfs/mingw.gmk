@@ -57,8 +57,7 @@ BFSSRC=	bfsutil.c \
 		ustrip.c \
 		utest.c \
 		uxdir.c \
-		uxfile.c \
-		win32/src/access.c
+		uxfile.c
 BFS=		$(OUTDIR)/bfs.exe
 #
 #############################################################################
@@ -67,8 +66,7 @@ BFS=		$(OUTDIR)/bfs.exe
 PRGHDRS  = bfs.h bfsutil.h
 
 PRGOBJS  = $(OUTDIR)/bfs.o $(OUTDIR)/bfsutil.o  $(OUTDIR)/uappend.o  $(OUTDIR)/ubuild.o  $(OUTDIR)/ucopy.o  $(OUTDIR)/ucreate.o \
-	   $(OUTDIR)/uinfo.o  $(OUTDIR)/ulist.o  $(OUTDIR)/ustrip.o  $(OUTDIR)/utest.o  $(OUTDIR)/uxdir.o  $(OUTDIR)/uxfile.o \
-	   $(OUTDIR)/access.o 
+	   $(OUTDIR)/uinfo.o  $(OUTDIR)/ulist.o  $(OUTDIR)/ustrip.o  $(OUTDIR)/utest.o  $(OUTDIR)/uxdir.o  $(OUTDIR)/uxfile.o 
 
 # Define the basic rules.
 #
@@ -89,9 +87,6 @@ $(PRGOBJS): $(PRGHDRS)
 
 $(OUTDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
-
-$(OUTDIR)/access.o : win32/src/access.c
-	$(CC) $(CFLAGS) -c -o $@ win32/src/access.c
 
 $(OUTDIR):
 	-mkdir $(OUTDIR)

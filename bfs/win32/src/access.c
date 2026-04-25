@@ -10,10 +10,25 @@
 
 #ifdef _WIN32
 
+/* Define access mode flags in case they're not in system headers */
+#ifndef F_OK
+#define F_OK    0x00
+#endif
+
+#ifndef R_OK
+#define R_OK    0x04
+#endif
+
+#ifndef W_OK
+#define W_OK    0x02
+#endif
+
+#ifndef X_OK
+#define X_OK    0x01
+#endif
+
 /*
  * Windows/MSVCRT provides _access() which we can wrap.
- * MinGW also provides access() in io.h, but we can just use _access
- * and map the mode flags.
  */
 
 int
