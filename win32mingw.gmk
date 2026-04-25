@@ -7,7 +7,8 @@ bfs/exe:
 	cd bfs && make -f win32mingw.gmk clean	
 	cd bfs && make -f win32mingw.gmk
 bfs/bin:
-	cd bfs && make
+	cd bfs && make 
+	cd bfs && cp .*/bfs.exe bfs.exe
 
 mec: 
 	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
