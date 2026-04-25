@@ -36,11 +36,8 @@ jobs:
       run:  |
         make -f win32mingw.gmk mecb
     
-    - name: make mecw binary
+    - name: make mewb binary
       run:  make -f win32mingw.gmk mewb
-    
-    - name: make mecw binary
-      run:  make -f win32mingw.gmk bfs/exe
     
     - name: make brew package
       run:  | 
