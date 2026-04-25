@@ -56,8 +56,14 @@ extern "C" {
 #define X_OK    0x01
 #endif
 
-/* Stub functions for Windows */
+#include <fcntl.h>
+#include <io.h>
+
+/* Stub functions for Windows - access declared here since MinGW might not have it */
+#ifndef _ACCESS_
+#define _ACCESS_
 int access(const char *path, int mode);
+#endif
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }
