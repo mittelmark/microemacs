@@ -80,7 +80,8 @@ extern "C" {
 
 /* Stub functions for Windows.
  * These declarations are needed by the bfs utility functions.
- * Use guards to avoid conflicts when system headers are available. */
+ * Skip them when cross-compiling with system headers (-DNO_BFS_UNISTD_STUBS). */
+#ifndef NO_BFS_UNISTD_STUBS
 #ifndef __bfs_access_declared
 #define __bfs_access_declared
 int access(const char *path, int mode);
@@ -105,6 +106,7 @@ int _chsize(int fd, long size);
 #define __bfs_mkdir_declared
 int mkdir(const char *path);
 #endif
+#endif /* NO_BFS_UNISTD_STUBS */
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }
