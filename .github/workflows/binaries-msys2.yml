@@ -48,11 +48,12 @@ jobs:
         uname -o
         uname -r
         ls -l
+        cd bfs
+        make -f mingw.gmk
+        ls -la
+        cd ..
         cd src
         make -f mingw.mak BTYP=c
-        ls -la
-        cd ../bfs
-        make -f mingw.gmk
         ls -la
         cd ..
         
