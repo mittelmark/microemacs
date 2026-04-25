@@ -38,6 +38,10 @@ jobs:
     - name: developer library installs
       run: |
         uname -a
+        uname -m
+        uname -s
+        uname -o
+        uname -r
         ls -l
         pwd
     
