@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <io.h>
+#include <direct.h>
 
 /* Define access mode flags in case they're not in system headers */
 #ifndef F_OK
@@ -49,6 +50,15 @@ access(const char *path, int mode)
         msvcmode |= 0;  /* _F_OK - just check existence */
 
     return _access(path, msvcmode);
+}
+
+/*
+ * mkdir - Windows version (no mode argument)
+ */
+int
+mkdir(const char *path)
+{
+    return _mkdir(path);
 }
 
 #endif /* _WIN32 */

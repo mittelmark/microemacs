@@ -83,6 +83,7 @@ int access(const char *path, int mode);
 int _open(const char *path, int oflags, int mode);
 int _close(int fd);
 int _chsize(int fd, long size);
+int mkdir(const char *path);
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }
