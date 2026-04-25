@@ -35,7 +35,7 @@ TOOLKIT=        win32mingw
 OUTDIR   =      .$(TOOLKIT)-release
 
 CC=		gcc
-CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include
+CFLAGS=		-g -O0 -D_WIN32 -Iwin32/include -I.
 LIBS=		-fstack-protector -lssp -lz #win32/lib/libz.a
 #
 # Some useful commands
