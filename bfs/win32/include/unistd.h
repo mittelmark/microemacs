@@ -39,7 +39,8 @@
 extern "C" {
 #endif
 
-/* File access constants - define if not from system headers */
+/* File access constants - define if not from system headers.
+ * These are standard POSIX values. */
 #ifndef F_OK
 #define F_OK    0x00
 #endif
@@ -78,10 +79,8 @@ extern "C" {
 #endif
 
 /* Stub functions for Windows.
- * Only declare these when NOT using system headers (cross-compile case).
- * With -D__BFS_USE_SYSTEM_HEADERS, system headers from /usr/share/mingw-w64/include are used
- * and these declarations are skipped to avoid conflicts. */
-#ifndef __BFS_USE_SYSTEM_HEADERS
+ * These declarations are needed by the bfs utility functions.
+ * Use guards to avoid conflicts when system headers are available. */
 #ifndef __bfs_access_declared
 #define __bfs_access_declared
 int access(const char *path, int mode);
@@ -106,7 +105,6 @@ int _chsize(int fd, long size);
 #define __bfs_mkdir_declared
 int mkdir(const char *path);
 #endif
-#endif /* __BFS_USE_SYSTEM_HEADERS */
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }
