@@ -39,7 +39,14 @@
 extern "C" {
 #endif
 
-/* Dummy file for Windows */
+/* File access constants for access() */
+#define F_OK    0x00
+#define R_OK    0x04
+#define W_OK    0x02
+#define X_OK    0x01
+
+/* Stub functions for Windows */
+int access(const char *path, int mode);
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }
