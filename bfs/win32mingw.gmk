@@ -35,7 +35,7 @@ TOOLKIT=        win32mingw
 OUTDIR   =      .$(TOOLKIT)-release
 
 CC=		i686-w64-mingw32-gcc
-CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include
+CFLAGS=		-g -O0 -D_WIN32 -D__BFS_USE_SYSTEM_HEADERS -I. -Iwin32/include
 LIBS=		-fstack-protector -lssp -lz #win32/lib/libz.a
 #
 # Some useful commands

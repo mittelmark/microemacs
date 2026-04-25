@@ -77,13 +77,36 @@ extern "C" {
 #define _S_IWRITE  0x0080
 #endif
 
-/* Stub functions for Windows when system headers don't have them.
- * Always provide these declarations - they are needed by ustrip.c */
+/* Stub functions for Windows.
+ * Only declare these when NOT using system headers (cross-compile case).
+ * With -D__BFS_USE_SYSTEM_HEADERS, system headers from /usr/share/mingw-w64/include are used
+ * and these declarations are skipped to avoid conflicts. */
+#ifndef __BFS_USE_SYSTEM_HEADERS
+#ifndef __bfs_access_declared
+#define __bfs_access_declared
 int access(const char *path, int mode);
+#endif
+
+#ifndef __bfs_open_declared
+#define __bfs_open_declared
 int _open(const char *path, int oflags, int mode);
+#endif
+
+#ifndef __bfs_close_declared
+#define __bfs_close_declared
 int _close(int fd);
+#endif
+
+#ifndef __bfs_chsize_declared
+#define __bfs_chsize_declared
 int _chsize(int fd, long size);
+#endif
+
+#ifndef __bfs_mkdir_declared
+#define __bfs_mkdir_declared
 int mkdir(const char *path);
+#endif
+#endif /* __BFS_USE_SYSTEM_HEADERS */
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }
