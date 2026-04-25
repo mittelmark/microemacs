@@ -37,8 +37,11 @@ jobs:
            make
            zlib
            gcc
+           ncurses
     - name: developer library installs
       run: |
+        find /usr -name "*gcc*exe"
+        gcc --version
         uname -a
         uname -m
         uname -s
@@ -46,10 +49,10 @@ jobs:
         uname -r
         ls -l
         cd src
-        CC=gcc make -f win32mingw.mak BTYP=c
+        make -f mingw.mak BTYP=c
         ls -la
         cd ../bfs
-        CC=gcc make -f win32mingw.gmk
+        make -f mingw.gmk
         ls -la
         cd ..
         
