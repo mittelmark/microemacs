@@ -15,8 +15,6 @@ jobs:
           - { sys: mingw32, runs-on: 'windows-latest' }
           - { sys: mingw64, runs-on: 'windows-latest' }
           - { sys: ucrt64, runs-on: 'windows-latest' }
-          - { sys: clang64, runs-on: 'windows-latest' }
-          - { sys: clangarm64, runs-on: 'windows-11-arm' }
     name: run ${{ matrix.sys }}
     defaults:
       run:
