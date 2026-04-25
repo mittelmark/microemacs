@@ -77,26 +77,18 @@ extern "C" {
 #define _S_IWRITE  0x0080
 #endif
 
-/* Stub functions for Windows when system doesn't have them */
-#ifndef _ACCESS_
-#define _ACCESS_
+/* Stub functions for Windows - only declare if not from system headers.
+ * The system headers are included via sys/stat.h in bfsutil.h, which brings in io.h.
+ * We use guards to avoid re-declaring if system already has them. */
+#ifndef __BFS_UNISTD_ACCESS_DECLARED
+#define __BFS_UNISTD_ACCESS_DECLARED
 int access(const char *path, int mode);
 #endif
 
-#ifndef _OPEN_
-#define _OPEN_
-int _open(const char *path, int oflags, int mode);
-#endif
-
-#ifndef _CLOSE_
-#define _CLOSE_
-int _close(int fd);
-#endif
-
-#ifndef _CHSIZE_
-#define _CHSIZE_
-int _chsize(int fd, long size);
-#endif
+/*
+ * Note: _open, _close, _chsize are declared in system io.h when available.
+ * We don't declare them here to avoid conflicts with MinGW's declarations.
+ */
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }

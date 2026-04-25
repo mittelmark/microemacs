@@ -6,11 +6,11 @@
  * under the terms of the GNU General Public License.
  */
 
+#ifdef _WIN32
+
 #include <errno.h>
 #include <fcntl.h>
 #include <io.h>
-
-#ifdef _WIN32
 
 /* Define access mode flags in case they're not in system headers */
 #ifndef F_OK
