@@ -35,6 +35,8 @@ jobs:
            curl
            git
            make
+           zlib
+           gcc
     - name: developer library installs
       run: |
         uname -a
@@ -44,10 +46,10 @@ jobs:
         uname -r
         ls -l
         cd src
-        make -f win32mingw.mak BTYP=c
+        CC=gcc make -f win32mingw.mak BTYP=c
         ls -la
         cd ../bfs
-        make -f win32mingw.gmk
+        CC=gcc make -f win32mingw.gmk
         ls -la
         cd ..
         
