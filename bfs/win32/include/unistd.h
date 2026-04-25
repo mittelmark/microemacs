@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-/* File access constants for access() - only define if not already available */
+/* File access constants - define if not from system headers */
 #ifndef F_OK
 #define F_OK    0x00
 #endif
@@ -56,13 +56,46 @@ extern "C" {
 #define X_OK    0x01
 #endif
 
-#include <fcntl.h>
-#include <io.h>
+/* File open constants - define if not from system headers */
+#ifndef _O_RDWR
+#define _O_RDWR    0x0002
+#endif
 
-/* Stub functions for Windows - access declared here since MinGW might not have it */
+#ifndef _O_CREAT
+#define _O_CREAT   0x0040
+#endif
+
+#ifndef _O_TRUNC
+#define _O_TRUNC   0x0200
+#endif
+
+#ifndef _S_IREAD
+#define _S_IREAD   0x0100
+#endif
+
+#ifndef _S_IWRITE
+#define _S_IWRITE  0x0080
+#endif
+
+/* Stub functions for Windows when system doesn't have them */
 #ifndef _ACCESS_
 #define _ACCESS_
 int access(const char *path, int mode);
+#endif
+
+#ifndef _OPEN_
+#define _OPEN_
+int _open(const char *path, int oflags, int mode);
+#endif
+
+#ifndef _CLOSE_
+#define _CLOSE_
+int _close(int fd);
+#endif
+
+#ifndef _CHSIZE_
+#define _CHSIZE_
+int _chsize(int fd, long size);
 #endif
 
 #if defined(__cplusplus) || defined(c_plusplus)

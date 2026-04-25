@@ -7,6 +7,8 @@
  */
 
 #include <errno.h>
+#include <fcntl.h>
+#include <io.h>
 
 #ifdef _WIN32
 
