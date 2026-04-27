@@ -64,7 +64,7 @@ endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 
-CCDEFS   = -D_WIN32 -Wall -isystem /mingw64/include -I../bfs/win32/include
+CCDEFS   = -D_WIN32 -Wall -I../bfs/win32/include -isystem /mingw64/include
 CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
