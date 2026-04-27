@@ -78,17 +78,17 @@ extern "C" {
 #define _S_IWRITE  0x0080
 #endif
 
-/* Stub functions for Windows.
- * These declarations are needed by the bfs utility functions.
- * Skip them when cross-compiling with system headers (-DNO_BFS_UNISTD_STUBS).
- * For native MinGW/MSYS2 builds, include system headers to get correct declarations. */
-#ifndef NO_BFS_UNISTD_STUBS
-/* Include system headers on native MinGW/MSYS2 to get access(), mkdir(), etc. */
+/* Include system headers on native MinGW/MSYS2 to get access(), mkdir(), etc.
+ * This must be done BEFORE the function declarations. */
 #if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
 
+/* Stub functions for Windows.
+ * These declarations are needed by the bfs utility functions.
+ * Skip them when cross-compiling with system headers (-DNO_BFS_UNISTD_STUBS). */
+#ifndef NO_BFS_UNISTD_STUBS
 #ifndef __bfs_access_declared
 #define __bfs_access_declared
 int access(const char *path, int mode);
