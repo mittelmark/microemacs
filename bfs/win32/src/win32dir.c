@@ -12,6 +12,17 @@
 #ifdef _WIN32
 
 #include <stdio.h>
+#include <sys/stat.h>
+
+/*
+ * _mkdir - Make directory (single-arg Windows style)
+ * POSIX mkdir takes mode as second arg.
+ */
+int
+_mkdir(const char *path)
+{
+    return mkdir(path, 0755);
+}
 
 /*
  * _chdrive - Change the current drive

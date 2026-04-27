@@ -28,9 +28,19 @@
 
 /*
  * _mkdir - Make directory
- * Use POSIX mkdir with mode 0755 as default for single-arg case.
+ * POSIX takes mode as second arg, Windows takes only path.
+ * We provide an implementation in the stub file.
  */
-#define _mkdir(path) mkdir(path, 0755)
+int _mkdir(const char *path);
+
+/*
+ * _access - Check file access permissions
+ * POSIX uses access(), Windows uses _access().
+ * Map to POSIX access() for MSYS2.
+ */
+#ifndef _access
+#define _access(path, mode) access(path, mode)
+#endif
 
 /*
  * _rmdir - Remove directory (POSIX uses rmdir directly)
