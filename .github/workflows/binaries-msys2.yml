@@ -36,7 +36,7 @@ jobs:
            zlib
            gcc
            ncurses
-- name: developer library installs
+    - name: developer library installs
       run: |
          find /usr -name "*gcc*exe"
          gcc --version
@@ -60,6 +60,4 @@ jobs:
          make -f mingw.mak BTYP=c
          ls -la
          cd ..
-         
-         pwd
     
