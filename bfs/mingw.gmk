@@ -36,7 +36,8 @@ OUTDIR   =      .$(TOOLKIT)-release
 
 CC=		gcc
 CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include -isystem /mingw64/include
-LIBS=		-fstack-protector -lssp -lz #win32/lib/libz.a
+# For native MSYS2 builds, use system zlib (not win32/lib/libz.a)
+LIBS=		-fstack-protector -lssp -lz
 #
 # Some useful commands
 #
@@ -80,7 +81,7 @@ spotless:	clean
 		$(RM) core
 		$(RM) tags
 $(BFS):		$(OUTDIR) $(PRGOBJS)
-		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) -fstack-protector -lssp -Lwin32/lib -lz
+		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) -fstack-protector -lssp -lz
 		cp $(BFS) .
 #
 $(PRGOBJS): $(PRGHDRS) 
