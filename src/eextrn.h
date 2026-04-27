@@ -1170,8 +1170,8 @@ extern int meTestExecutable(meUByte *fileName) ;
 #define meStatTestRead(st)  (((st).stmode & FILE_ATTRIBUTE_DIRECTORY) == 0)
 #define meStatTestWrite(st) (((st).stmode & (FILE_ATTRIBUTE_DIRECTORY|FILE_ATTRIBUTE_READONLY)) == 0)
 #define meStatTestSystem(st) (((st).stmode & FILE_ATTRIBUTE_SYSTEM) == 0)
-#define meFileGetAttributes GetFileAttributes
-#define meFileSetAttributes SetFileAttributes
+#define meFileGetAttributes(fn) GetFileAttributes((LPCSTR)(fn))
+#define meFileSetAttributes(fn,attr) SetFileAttributes((LPCSTR)(fn),(attr))
 extern void WinShutdown (void);
 #define meExit(status)      (WinShutdown(), ExitProcess(status))
 #endif
