@@ -34,8 +34,10 @@ jobs:
            git
            make
            zlib
+           zlib-devel
            gcc
            ncurses
+           ncurses-devel
     - name: developer library installs
       run: |
          find /usr -name "*gcc*exe"
