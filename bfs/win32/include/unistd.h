@@ -78,20 +78,18 @@ extern "C" {
 #define _S_IWRITE  0x0080
 #endif
 
-/* Include system headers on native MinGW/MSYS2 to get access(), mkdir(), etc.
- * This must be done BEFORE the function declarations. */
+/* Include system headers on native MinGW/MSYS2 to get mkdir(), etc.
+ * This must be done BEFORE the function declarations.
+ * Note: We only include <sys/stat.h> for mkdir(), NOT <unistd.h> to avoid
+ * circular includes and ensure our access() declaration is used. */
 #if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
 #include <sys/stat.h>
-#include <unistd.h>
-#define __bfs_has_system_headers
 #endif
 
 /* Stub functions for Windows.
  * These declarations are needed by the bfs utility functions.
- * Skip them when cross-compiling with system headers (-DNO_BFS_UNISTD_STUBS)
- * or when system headers have been included above. */
+ * Skip them when cross-compiling with system headers (-DNO_BFS_UNISTD_STUBS). */
 #ifndef NO_BFS_UNISTD_STUBS
-#ifndef __bfs_has_system_headers
 
 #ifndef __bfs_access_declared
 #define __bfs_access_declared
@@ -118,7 +116,6 @@ int _chsize(int fd, long size);
  * - MSYS2 system headers declare 2-arg mkdir(path, mode)
  * - Our code handles both with conditional compilation in uxdir.c */
 
-#endif /* __bfs_has_system_headers */
 #endif /* NO_BFS_UNISTD_STUBS */
 
 #if defined(__cplusplus) || defined(c_plusplus)
