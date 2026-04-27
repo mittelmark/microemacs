@@ -64,17 +64,17 @@ endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 
-CCDEFS   = -D_MINGW -Wall -I/usr/i686-w64-mingw32/sys-root/mingw/include -I../bfs/win32/include
-CCFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
+CCDEFS   = -D_WIN32 -Wall -isystem /mingw64/include -I../bfs/win32/include
+CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
-LDFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
 LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../bfs/win32/lib -lz
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs
-RCFLAGS  = --input-format rc --output-format coff -D_MINGW
+RCFLAGS  = --input-format rc --output-format coff -D_WIN32
 
 ifeq "$(BCFG)" "debug"
 BOUTDIR  = $(OUTDIRD)
