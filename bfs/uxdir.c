@@ -114,13 +114,16 @@ create_dir (char *dirname)
 {
     int status;
 
-/* File system call to create a directory. There is a difference between
-     * UNIX and other systems. Differentiate the systems based on the macro
-     * definitions.
-     * Note: MSYS2/MinGW uses 1-arg mkdir like classic Windows. */
-#if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
+/* File system call to create a directory.
+ * MinGW/MSYS2 have different mkdir signatures:
+ * - MinGW system headers: int mkdir(const char *path) [1-arg, Windows style]
+ * - MSYS2 system headers: int mkdir(const char *path, mode_t mode) [2-arg, POSIX style]
+ * We use conditional compilation to handle both. */
+#if defined(_WIN32) && !defined(__CYGWIN__)
+    /* Pure Windows MinGW: 1-arg mkdir */
     status = mkdir (dirname);
 #else
+    /* Unix-like systems and Cygwin/MSYS2: 2-arg mkdir */
     status = mkdir (dirname, 0755);
 #endif
     return status;
