@@ -29,6 +29,17 @@
  *     exeternally used functions have also been added.
  */
 
+/* Windows compatibility */
+#if defined(_WIN32) && !defined(__MINGW32__)
+#define stricmp _stricmp
+#define strnicmp _strnicmp
+#define mkdir(path, pmode) _mkdir(path)
+#define access _access
+#define unlink _unlink
+#define chmod _chmod
+#define rmdir _rmdir
+#endif
+
 /* abbrev.c externals */
 #if MEOPT_ABBREV
 extern	int	bufferAbbrev(int f, int n);
@@ -1145,7 +1156,7 @@ extern void gettimeofday (struct meTimeval *tp, struct meTimezone *tz);
 extern int chdir(const char *name) ;
 extern int _getdrive(void) ;
 #define meChdir(dir)        chdir(dir)
-#define meRename(src,dst)   (MoveFile(src,dst)==meFALSE)
+#define meRename(src,dst)   (MoveFile((LPCSTR)(src),(LPCSTR)(dst))==meFALSE)
 #define meUnlink(fn)        (DeleteFile(fn)==meFALSE)
 /* Doesn't exist if function returns -1 */
 #define meTestExist(fn)     (((int) GetFileAttributes(fn)) < 0)
