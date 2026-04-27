@@ -36,24 +36,30 @@ jobs:
            zlib
            gcc
            ncurses
-    - name: developer library installs
+- name: developer library installs
       run: |
-        find /usr -name "*gcc*exe"
-        gcc --version
-        uname -a
-        uname -m
-        uname -s
-        uname -o
-        uname -r
-        ls -l
-        cd bfs
-        make -f mingw.gmk
-        ls -la
-        cd ..
-        cd src
-        make -f mingw.mak BTYP=c
-        ls -la
-        cd ..
-        
-        pwd
+         find /usr -name "*gcc*exe"
+         gcc --version
+         uname -a
+         uname -m
+         uname -s
+         uname -o
+         uname -r
+         ls -l
+         echo "=== Searching for unistd.h ==="
+         find / -name "unistd.h" 2>/dev/null | head -10
+         echo "=== Searching for access in headers ==="
+         grep -r "access" /usr/include/*.h 2>/dev/null | head -5
+         echo "=== Searching in mingw64 ==="
+         find /mingw64 -name "*.h" 2>/dev/null | xargs grep -l "access" 2>/dev/null | head -5
+         cd bfs
+         make -f mingw.gmk
+         ls -la
+         cd ..
+         cd src
+         make -f mingw.mak BTYP=c
+         ls -la
+         cd ..
+         
+         pwd
     
