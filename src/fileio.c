@@ -33,6 +33,12 @@
  * while winsock2.h defines select with const TIMEVAL * - they conflict */
 #define _SYS_SELECT_H_
 #define _SELECT_H_
+#if (_MSC_VER != 900)
+#include <winsock2.h>
+#else
+#include <winsock.h>
+#endif
+#include <io.h>
 #endif
 
 #include "emain.h"
@@ -232,12 +238,7 @@ static meUByte   ffcrypt=0 ;
 #include <stdarg.h>
 
 #ifdef _WIN32
-#if (_MSC_VER != 900)
-#include <winsock2.h>
-#else
-#include <winsock.h>
-#endif
-#include <io.h>
+/* winsock2.h is already included before emain.h */
 typedef void (*meATEXIT)(void) ;
 
 #define SHUT_RDWR            SD_BOTH
