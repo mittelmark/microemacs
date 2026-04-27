@@ -29,7 +29,14 @@
 
 #ifdef _WIN32
 
-#include <unistd.h>  /* For POSIX file functions on MSYS2 */
+#if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
+/* On MSYS2/MinGW/Cygwin, we need declarations for ftruncate() and close().
+ * These come from system headers. Since our custom unistd.h is included via
+ * bfsutil.h, we need to manually declare these POSIX functions. */
+int ftruncate(int fd, off_t length);
+int close(int fd);
+int open(const char *path, int oflag, ...);
+#endif
 
 /**
  * Replacement of UNIX truncate()

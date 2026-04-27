@@ -78,12 +78,14 @@ extern "C" {
 #define _S_IWRITE  0x0080
 #endif
 
-/* Include system headers on native MinGW/MSYS2 to get mkdir(), etc.
+/* Include system headers on native MinGW/MSYS2 to get mkdir(), ftruncate(), etc.
  * This must be done BEFORE the function declarations.
- * Note: We only include <sys/stat.h> for mkdir(), NOT <unistd.h> to avoid
- * circular includes and ensure our access() declaration is used. */
+ * Note: On MSYS2, we include both <sys/stat.h> (for mkdir) and the system
+ * <unistd.h> (via -isystem flag) to get ftruncate, close, open, etc. */
 #if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
 #include <sys/stat.h>
+/* The system <unistd.h> is included via -isystem /mingw64/include,
+ * which provides ftruncate(), close(), open() declarations needed by ustrip.c */
 #endif
 
 /* Stub functions for Windows.
