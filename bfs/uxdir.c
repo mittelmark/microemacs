@@ -118,7 +118,7 @@ create_dir (char *dirname)
      * UNIX and other systems. Differentiate the systems based on the macro
      * definitions.
      * Note: MSYS2/MinGW uses 1-arg mkdir like classic Windows. */
-#if defined(__MINGW32__) || defined(__MINGW64__)
+#if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
     status = mkdir (dirname);
 #else
     status = mkdir (dirname, 0755);
