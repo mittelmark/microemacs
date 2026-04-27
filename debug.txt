@@ -1,6 +1,0 @@
-DEBUG TTsetClipboard: mouse selection - setting PRIMARY only, leaving CLIPBOARD alone
-DEBUG TTsetClipboard: after set - PRIMARY=33554434, CLIPBOARD=31457362 (unchanged)
-DEBUG TTsetClipboard: explicit copy - sel=CLIPBOARD, clipState=0x00
-DEBUG TTsetClipboard: after set - PRIMARY=33554434, CLIPBOARD=33554434
-DEBUG TTsetClipboard: mouse selection - setting PRIMARY only, leaving CLIPBOARD alone
-DEBUG TTsetClipboard: after set - PRIMARY=33554434, CLIPBOARD=33554434 (unchanged)

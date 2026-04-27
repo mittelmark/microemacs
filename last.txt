@@ -1,4 +1,0 @@
- Session   Unbind Ctrl-C in tui.json and reinstall binding g…
- Continue  opencode -s ses_28783d773ffem6wbEtuqbUJgPr
-   
-
