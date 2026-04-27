@@ -28,6 +28,9 @@
 #include "bfsutil.h"
 
 #ifdef _WIN32
+
+#include <unistd.h>  /* For POSIX file functions on MSYS2 */
+
 /**
  * Replacement of UNIX truncate()
  * 
@@ -42,6 +45,18 @@ truncate (char *filename, off_t offset)
     int status = 0;
     int fh;
     
+#if defined(__MINGW32__) || defined(__MINGW64__) || defined(__CYGWIN__)
+    /* On MSYS2/MinGW/Cygwin, use POSIX functions */
+    fh = open (filename, O_RDWR|O_CREAT, 0644);
+    if (fh >= 0)
+    {
+        status = ftruncate (fh, offset);
+        close (fh);
+    }
+    else
+        status = -1;
+#else
+    /* On pure Windows, use Windows API */
     fh = _open (filename, _O_RDWR|_O_CREAT, _S_IREAD|_S_IWRITE);
     if (fh > 0)
     {
@@ -50,6 +65,7 @@ truncate (char *filename, off_t offset)
     }
     else
         status = -1;
+#endif
 }
 #endif
 

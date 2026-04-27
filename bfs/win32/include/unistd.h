@@ -96,20 +96,10 @@ extern "C" {
 int access(const char *path, int mode);
 #endif
 
-#ifndef __bfs_open_declared
-#define __bfs_open_declared
-int _open(const char *path, int oflags, int mode);
-#endif
-
-#ifndef __bfs_close_declared
-#define __bfs_close_declared
-int _close(int fd);
-#endif
-
-#ifndef __bfs_chsize_declared
-#define __bfs_chsize_declared
-int _chsize(int fd, long size);
-#endif
+/* Note: _open, _close, _chsize stubs are NOT declared here because:
+ * - Pure Windows: Use _open, _chsize, _close from system headers
+ * - MSYS2/MinGW/Cygwin: Use POSIX open, close, ftruncate from system headers
+ * - Our code in ustrip.c handles both with conditional compilation */
 
 /* Note: mkdir stub is NOT declared here because:
  * - MinGW system headers declare 1-arg mkdir(path)
