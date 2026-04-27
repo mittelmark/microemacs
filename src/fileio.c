@@ -224,7 +224,11 @@ static meUByte   ffcrypt=0 ;
 #include <stdarg.h>
 
 #ifdef _WIN32
-/* winsock2.h must be included before */
+/* winsock2.h must be included before POSIX select.h to avoid conflicts */
+/* The POSIX sys/select.h defines select with struct timeval *
+ * while winsock2.h defines select with const TIMEVAL * - they conflict */
+#define _SYS_SELECT_H_
+#define _SELECT_H_
 #if (_MSC_VER != 900)
 #include <winsock2.h>
 #else

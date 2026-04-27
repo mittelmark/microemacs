@@ -1,0 +1,110 @@
+;-!- erf -!-
+"aix" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"cygwin" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"cygwinc" {
+ "scheme" = "schemetb"
+ "system" = "30869"
+}
+"darwin" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"dos" {
+ "blink" = "13107800"
+ "char-set" = "PC-437"
+ "file-ignore" = "~ ./"
+ "scroll-bar" = "0x1be"
+}
+"exact" = "0"
+"file-mask" = "\CH*.c,*.cc,*.cpp\CH*.h,*.hpp,*.def\CHImakefile,Makefile*\CH*.txt,*.doc,*.log\CH*.emf,*.eaf,*.erf,*.etf,*.ehf\CH*.bat,*.sys,*.sh,*.csh,*shrc,.login\CH*.tk,*.tcl\CH*.[0-9],*.tni\CH"
+"file-type" = "\CHC/C++ Source\CHC/C++ Header\CHMakefile\CHText file\CHEmacs File\CHShell Script\CHTK/TCL\CHNroff file\CH"
+"freebsd" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"hpux" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"irix" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"linux" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"linuxc" {
+ "scheme" = "schemed"
+}
+"mouse" {
+ "C-mouse-drop-1" = "mouse-osd-multi"
+ "C-mouse-pick-1"
+ "mouse-auto-1" = "1"
+ "mouse-drop-1" = "mouse-drop-type1"
+ "mouse-drop-2" = "mouse-move-yank"
+ "mouse-drop-3" = "mouse-osd-multi"
+ "mouse-pick-1" = "mouse-pick-type1"
+ "mouse-pick-2"
+ "mouse-pick-3"
+ "mouse-wdown" = "5 mouse-wdown-scroll"
+ "mouse-wup" = "5 mouse-wup-scroll"
+}
+"openbsd" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"osf1" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"sunos" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"win32" {
+ "blink" = "13107800"
+ "char-set" = "Win-ANSI"
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}
+"win32c" {
+ "blink" = "13107800"
+ "char-set" = "Win-OEM"
+ "file-ignore" = "~ ./"
+ "scroll-bar" = "0x1be"
+}
+"zaurus" {
+ "ext-char-set" = "1"
+ "file-ignore" = "~ ./"
+ "scheme" = "schemebc"
+ "scroll-bar" = "0x1be"
+}

@@ -1,0 +1,168 @@
+## $XTermId: Makefile.in,v 1.26 2019/01/06 20:21:18 tom Exp $
+##
+## Copyright 2006-2015,2019 by Thomas E. Dickey
+##
+##                         All Rights Reserved
+##
+## Permission to use, copy, modify, and distribute this software and its
+## documentation for any purpose and without fee is hereby granted,
+## provided that the above copyright notice appear in all copies and that
+## both that copyright notice and this permission notice appear in
+## supporting documentation, and that the name of the above listed
+## copyright holder(s) not be used in advertising or publicity pertaining
+## to distribution of the software without specific, written prior
+## permission.
+##
+## THE ABOVE LISTED COPYRIGHT HOLDER(S) DISCLAIM ALL WARRANTIES WITH REGARD
+## TO THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+## AND FITNESS, IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT HOLDER(S) BE
+## LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+## WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+## ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+## OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+SHELL		= /bin/sh
+
+#### Start of system configuration section. ####
+
+srcdir		= @srcdir@
+VPATH  		= @srcdir@
+
+x		= @EXEEXT@
+o		= .@OBJEXT@
+
+CC		= @CC@
+CPP		= @CPP@
+LINK		= $(CC) $(CFLAGS)
+
+RM              = rm -f
+LINT		= @LINT@
+
+CTAGS		= @CTAGS@
+ETAGS		= @ETAGS@
+
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_SCRIPT	= @INSTALL_SCRIPT@
+INSTALL_DATA	= @INSTALL_DATA@
+transform	= @program_transform_name@
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+datarootdir	= @datarootdir@
+
+manext		= 1
+bindir		= @bindir@
+libdir		= @libdir@
+mandir		= @mandir@/man$(manext)
+
+LOCALE_ALIAS	= @LOCALE_ALIAS_FILE@
+
+EXTRA_CFLAGS	= @EXTRA_CFLAGS@
+EXTRA_CPPFLAGS	= @EXTRA_CPPFLAGS@
+
+CPPFLAGS	= -I. -I$(srcdir) -DHAVE_CONFIG_H -DLOCALE_ALIAS_FILE=\"$(LOCALE_ALIAS)\" @CPPFLAGS@ $(EXTRA_CPPFLAGS)
+CFLAGS		= @X_CFLAGS@ @CFLAGS@ $(EXTRA_CFLAGS)
+LDFLAGS		= @EXTRA_LDFLAGS@ @LDFLAGS@
+LIBS		= @X_LIBS@ @LIBS@
+
+#### End of system configuration section. ####
+
+DESTDIR		=
+BINDIR		= $(DESTDIR)$(bindir)
+MANDIR		= $(DESTDIR)$(mandir)
+
+INSTALL_DIRS    = $(BINDIR) $(MANDIR)
+
+SRCS		= luit.c iso2022.c charset.c parser.c sys.c other.c fontenc.c @EXTRASRCS@
+OBJS		= luit$o iso2022$o charset$o parser$o sys$o other$o fontenc$o @EXTRAOBJS@
+HDRS		= charset.h config.h iso2022.h luit.h luitconv.h other.h parser.h sys.h
+
+       PROGRAMS = luit$x
+
+all :	$(PROGRAMS)
+################################################################################
+.SUFFIXES : .i .html .$(manext)
+
+.c$o :
+	@RULE_CC@
+	@ECHO_CC@$(CC) $(CPPFLAGS) $(CFLAGS) -c $(srcdir)/$*.c
+
+.c.i :
+	@RULE_CC@
+	@ECHO_CC@$(CPP) -C $(CPPFLAGS) $*.c >$@
+
+.man.$(manext) :
+	$(SHELL) $(srcdir)/minstall.sh "$(INSTALL_DATA)" $< $@ $(appsdir)
+################################################################################
+$(OBJS) : $(HDRS)
+
+luit$x : $(OBJS)
+	@ECHO_LD@$(SHELL) $(srcdir)/plink.sh $(LINK) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+
+actual_luit  = `echo luit|    sed '$(transform)'`
+binary_luit  = $(actual_luit)$x
+
+install \
+install-bin \
+install-full :: luit$x $(BINDIR)
+	$(INSTALL_PROGRAM) luit$x $(BINDIR)/$(binary_luit)
+
+install \
+install-man \
+install-full :: $(MANDIR)
+	$(SHELL) $(srcdir)/minstall.sh "$(INSTALL_DATA)" $(srcdir)/luit.man    $(MANDIR)/$(actual_luit).$(manext)  $(prefix) $(LOCALE_ALIAS)
+
+install ::
+	@echo 'Completed installation of executables and documentation.'
+
+installdirs : $(INSTALL_DIRS)
+
+uninstall \
+uninstall-bin \
+uninstall-full ::
+	-$(RM) $(BINDIR)/$(binary_luit)
+
+uninstall \
+uninstall-man \
+uninstall-full ::
+	-$(RM) $(MANDIR)/$(actual_luit).$(manext)
+
+mostlyclean ::
+	-$(RM) *$o *.[is] .pure core *~ *.bak *.BAK *.out *.tmp
+
+clean :: mostlyclean
+	-$(RM) $(PROGRAMS)
+
+distclean :: clean
+	-$(RM) Makefile config.status config.cache config.log config.h man2html.tmp
+	-$(RM) luit.html *.pdf *.ps *.txt *.$(manext)
+
+realclean :: distclean
+	-$(RM) tags TAGS
+
+maintainer-clean : realclean
+
+check :
+	@ echo "There are no batch-tests for this program"
+
+lint :
+	$(LINT) $(CPPFLAGS) $(SRCS)
+
+tags :
+	$(CTAGS) $(SRCS) $(HDRS)
+
+@MAKE_UPPER_TAGS@TAGS :
+@MAKE_UPPER_TAGS@	$(ETAGS) $(SRCS) $(HDRS)
+
+ALWAYS :
+
+depend : $(TABLES)
+	makedepend -- $(CPPFLAGS) -- $(SRCS)
+
+$(BINDIR) \
+$(MANDIR) :
+	mkdir -p $@
+################################################################################
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.

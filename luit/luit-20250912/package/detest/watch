@@ -1,0 +1,5 @@
+version=4
+
+opts=pgpsigurlmangle=s/.*/$0.asc/,\
+dversionmangle=s/^2\.0\+(\d+)/$1/ \
+ https://invisible-mirror.net/archives/luit/luit-(\d+)\.tgz

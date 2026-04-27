@@ -1,0 +1,26 @@
+#!/bin/sh
+# $XTermId: postinst,v 1.5 2024/09/10 22:54:57 tom Exp $
+set -e
+
+if [ "$1" = "configure" ] ; then
+	PRI=50
+	ALT=xterm-filter
+
+	# add this package, and related packages (which should "own" this)
+	# (cocot needs a wrapper script, too, for compatibility with luit).
+	for PKG in bluit luit cocot
+	do
+		if test -f /usr/bin/$PKG
+		then
+			update-alternatives \
+				--verbose \
+				--install /usr/bin/$ALT $ALT \
+				/usr/bin/$PKG $PRI \
+				--slave /usr/share/man/man1/$ALT.1.gz $ALT.1.gz \
+				/usr/share/man/man1/$PKG.1.gz
+			PRI=`expr $PRI - 10`
+		fi
+	done
+fi
+
+#DEBHELPER#

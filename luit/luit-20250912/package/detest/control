@@ -1,0 +1,28 @@
+Source: bluit
+Section: utils
+Priority: optional
+Standards-Version: 4.6.0.1
+Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
+Homepage: https://invisible-island.net/luit/
+Build-Depends: debhelper-compat (= 13),
+  libfontenc-dev,
+  pkg-config,
+  xutils-dev,
+  zlib1g
+
+Package: bluit
+Provides: luit
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: locale and ISO 2022 support for Unicode terminals
+ Luit is a filter that can be run between an arbitrary application and a
+ UTF-8 terminal emulator.  It will convert application output  from  the
+ locale's  encoding  into  UTF-8,  and convert terminal input from UTF-8
+ into the locale's encoding.
+ .
+ This package installs an alternative binary "bluit", and
+ adds it to the Debian alternatives via "xterm-filter".
+ .
+ This is version 2.0 of luit, which can use encoding information from
+ either the font-encoding library, or the standard locale support in
+ the C runtime library.

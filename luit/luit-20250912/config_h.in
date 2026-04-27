@@ -1,0 +1,14 @@
+/*
+ * vile:cmode
+ * config_h.in is a template file used by configure to produce config.h.
+ * config_h is then transformed (by config.status) into the header file
+ * config.h.
+ * $XTermId: config_h.in,v 1.3 2010/11/24 23:24:34 tom Exp $
+ */
+
+#ifndef CONFIG_H_incl
+#define CONFIG_H_incl 1
+
+@DEFS@
+
+#endif /* CONFIG_H_incl */

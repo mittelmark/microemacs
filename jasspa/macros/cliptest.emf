@@ -1,0 +1,48 @@
+; -!- emf -!-
+; Clipboard test macro
+; Usage: M-x test-clip
+
+0 define-macro test-clip
+    ; Run xclip commands and show in a buffer
+    !if &not &exi "*clip-test*"
+        find-file "*clip-test*"
+        erase-buffer
+        set-variable $buffer-kill nil
+    !endif
+    beginning-of-buffer
+    insert-string "=== Clipboard Test ===\n"
+    
+    ; Get PRIMARY selection using ipipe-shell-command (esc \)
+    insert-string "Getting PRIMARY...\n"
+    set-variable #l0 "xclip -selection primary -o"
+    0x80 ipipe-shell-command #l0 "*clip-primary*" clip-test-1
+!emacro
+
+0 define-macro clip-test-1
+    set-variable #l0 &cat "PRIMARY: " $buffer-fname
+    set-variable $message #l0
+    insert-string #l0
+    insert-string "\nGetting CLIPBOARD...\n"
+    set-variable #l1 "xclip -selection clipboard -o 2>&1"
+    0x80 ipipe-shell-command #l1 "*clip-board*" clip-test-2
+!emacro
+
+0 define-macro clip-test-2
+    set-variable #l1 &cat "CLIPBOARD: " $buffer-fname
+    set-variable $message #l1
+    insert-string #l1
+    insert-string "\n=== Done ===\n"
+!emacro
+
+; Simpler key binding to show status
+0 define-macro show-clip
+    set-variable $message "Checking clipboard..."
+    ; Use setq to execute commands in sequence
+    set-variable #l0 &cat "PRIMARY:" " `xclip -selection primary -o`"
+    set-variable #l0 &cat #l0 &cat " | CLIP:" " `xclip -selection clipboard -o 2>&1`"
+    set-variable #l0 &lef #l0 120
+    set-variable $message #l0
+!emacro
+
+; Bind to C-x C-y for quick testing
+global-set-key "C-x C-y" show-clip
