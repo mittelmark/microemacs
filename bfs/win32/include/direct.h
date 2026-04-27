@@ -38,6 +38,18 @@
 #define _rmdir(dir) rmdir(dir)
 
 /*
+ * _chdrive - Change current drive (Windows only)
+ * Not available in POSIX - this is a no-op stub.
+ */
+int _chdrive(int drive);
+
+/*
+ * _getdrive - Get current drive (Windows only)
+ * POSIX doesn't have this, so we default to C: (drive 3).
+ */
+int _getdrive(void);
+
+/*
  * _getdcwd - Get current directory for specific drive
  * POSIX doesn't have this, so we use getcwd on the root.
  */
