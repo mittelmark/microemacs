@@ -18,4 +18,4 @@ mewb: bfs/exe mew
 	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mew/mew32.exe -o mewb-$(VERSION)-msys.exe ./jasspa		
 
 release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe

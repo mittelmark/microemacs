@@ -76,8 +76,8 @@ jobs:
 
     - name: create Release executable
       run: |
-         make -f winmingwgcc.gmk release app=mecb ext=exe
-         make -f winmingwgcc.gmk release app=mewb ext=exe
+         make -f winmingwgcc.gmk release app=mecb
+         make -f winmingwgcc.gmk release app=mewb
          ls
     - name: Upload Msys Combined Release I
       uses: actions/upload-artifact@v6
