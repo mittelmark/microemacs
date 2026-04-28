@@ -74,7 +74,7 @@ LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../bfs/
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs
-RCFLAGS  = --input-format rc --output-format coff -D_WIN32
+RCFLAGS  = --input-format rc --output-format coff -D_WIN32 -D_MINGW
 
 ifeq "$(BCFG)" "debug"
 BOUTDIR  = $(OUTDIRD)
