@@ -81,13 +81,8 @@ jobs:
          make -f winmingwgcc.gmk release app=mecb
          make -f winmingwgcc.gmk release app=mewb
          ls
-    - name: Upload Msys Combined Release I
-      uses: actions/upload-artifact@v6
-      with: 
-        name: winmingwgcc-${{ matrix.sys }}-${{ env.VERSION }}-windows
-        path: me*b*exe
     
-    - name: Upload Msys Combined Release II
+    - name: Upload Msys Combined Release
       uses: actions/upload-artifact@v6
       with: 
         name: Release-winmingwgcc-${{ matrix.sys }}-${{ env.VERSION }}-windows
