@@ -4,18 +4,18 @@ app=mecb
 default:
 	echo "$(VERSION)"
 bfs/exe:
-	cd bfs && make -f win32mingw.gmk clean	
-	cd bfs && make -f win32mingw.gmk
+	cd bfs && make -f linuxmingwgcc.gmk clean	
+	cd bfs && make -f linuxmingwgcc.gmk
 bfs/bin:
 	cd bfs && make
-	cd bfs && make -f win32mingw.gmk clean
-	cd bfs && make -f win32mingw.gmk 
+	cd bfs && make -f linuxmingwgcc.gmk clean
+	cd bfs && make -f linuxmingwgcc.gmk 
 
 mec: 
-	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
+	cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
 
 mew: 
-	cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+	cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
 
 mecb: bfs/bin mec
 	./bfs/bfs -a ./src/.win32mingw-release-mec/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa

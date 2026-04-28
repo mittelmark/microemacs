@@ -941,8 +941,8 @@ I as well cross compile on my Linux systems for Windows. You can do the same ass
 have installed on your Linux system the mingw32 gcc compiler and the required tools. The you can do this:
 
 ```
-cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
-cd src && make -f win32mingw.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
+cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
 ```
 
 Which  then  produces  in the  folder  .win32mingw-release-mew  and -mec the  required

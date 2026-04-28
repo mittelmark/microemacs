@@ -55,12 +55,12 @@ jobs:
          #grep -r "access" /usr/include/*.h 2>/dev/null | head -5
          #echo "=== Searching in mingw64 ==="
          #find /mingw64 -name "*.h" 2>/dev/null | xargs grep -l "access" 2>/dev/null | head -5
-         cd bfs
-         make -f mingw.gmk
-         ls -la
-         cd ..
-         cd src
-         make -f mingw.mak BTYP=c
-         ls -la
-         cd ..
+          cd bfs
+          make -f winmingwgcc.gmk
+          ls -la
+          cd ..
+          cd src
+          make -f winmingwgcc.mak BTYP=c
+          ls -la
+          cd ..
     

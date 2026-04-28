@@ -348,7 +348,7 @@ meShellCommand(int f, int n)
 #ifdef _WIN32
 
 static BOOL CALLBACK
-ipipeFindChildWindow(HWND hwnd, long lipipe)
+ipipeFindChildWindow(HWND hwnd, LPARAM lipipe)
 {
     DWORD process ;
     meIPipe *ipipe = (meIPipe *)(lipipe);

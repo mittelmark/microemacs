@@ -9,13 +9,13 @@ when targeting Windows using MinGW.
 
 ### 1. Cross-Compile (Linux to Windows)
 
-**Makefile:** `bfs/win32mingw.gmk`
+**Makefile:** `bfs/linuxmingwgcc.gmk`
 
 **Compiler:** `i686-w64-mingw32-gcc` (MinGW cross-compiler on Linux)
 
 **Build command:**
 ```bash
-cd bfs && make -f win32mingw.gmk
+cd bfs && make -f linuxmingwgcc.gmk
 ```
 
 **Characteristics:**
@@ -25,13 +25,13 @@ cd bfs && make -f win32mingw.gmk
 
 ### 2. Native Build (Windows/MSYS2)
 
-**Makefile:** `bfs/mingw.gmk`
+**Makefile:** `bfs/winmingwgcc.gmk`
 
 **Compiler:** `gcc` (native MinGW/MSYS2 on Windows)
 
 **Build command:**
 ```bash
-cd bfs && make -f mingw.gmk
+cd bfs && make -f winmingwgcc.gmk
 ```
 
 **Characteristics:**
@@ -55,8 +55,8 @@ cross-compilation because:
 
 | Build Type | Status | Notes |
 |-----------|--------|-------|
-| Cross-compile (win32mingw.gmk) | WORKING | Uses system MinGW headers |
-| Native build (mingw.gmk) | BROKEN | `access()` not found |
+| Cross-compile (linuxmingwgcc.gmk) | WORKING | Uses system MinGW headers |
+| Native build (winmingwgcc.gmk) | BROKEN | `access()` not found |
 
 ## Issues
 
@@ -84,17 +84,17 @@ ucopy.c:52:14: error: implicit declaration of function 'access'
 
 - `bfs/win32/include/unistd.h` - Provides POSIX constants and stub declarations
 - `bfs/uxdir.c` - Fixed `mkdir()` call to handle 1-arg Windows vs 2-arg Unix
-- `bfs/mingw.gmk` - MinGW-specific compile flags
-- `bfs/win32mingw.gmk` - Cross-compile specific flags
+- `bfs/winmingwgcc.gmk` - MinGW-specific compile flags (native Windows build)
+- `bfs/linuxmingwgcc.gmk` - Cross-compile specific flags (Linux to Windows)
 
 ## Header Search Order
 
-Current order in mingw.gmk:
+Current order in winmingwgcc.gmk:
 ```
 -isystem /mingw64/include -I. -Iwin32/include
 ```
 
-Current order in win32mingw.gmk:
+Current order in linuxmingwgcc.gmk:
 ```
 -I. -Iwin32/include
 ```
