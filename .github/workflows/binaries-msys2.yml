@@ -38,30 +38,26 @@ jobs:
            gcc
            ncurses
            ncurses-devel
-    - name: developer library installs
+    - name: compile bfs executable
       run: |
-         find /usr -name "*gcc*exe"
          gcc --version
          uname -a
          uname -m
          uname -s
          uname -o
          uname -r
-         ls -l
-         # too slow for Gthub action
-         #echo "=== Searching for unistd.h ==="
-         #find / -name "unistd.h" 2>/dev/null | head -10
-         #echo "=== Searching for access in headers ==="
-         #grep -r "access" /usr/include/*.h 2>/dev/null | head -5
-         #echo "=== Searching in mingw64 ==="
-         #find /mingw64 -name "*.h" 2>/dev/null | xargs grep -l "access" 2>/dev/null | head -5
-          cd bfs
-          make -f winmingwgcc.gmk
-          ls -la
-          cd ..
-          cd src
-          make -f winmingwgcc.mak BTYP=c all
-          ls -la
-          make -f winmingwgcc.mak BTYP=w all
-          ls -la
-    
+         cd bfs
+         make -f winmingwgcc.gmk
+         ls -la
+         cd ..
+
+    - name: compile mec executable
+      run: |
+         cd src
+         make -f winmingwgcc.mak BTYP=c all
+         ls -la
+
+    - name: compile mew executable
+      run: |
+         make -f winmingwgcc.mak BTYP=w all
+         ls -la
