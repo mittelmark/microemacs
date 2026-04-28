@@ -73,4 +73,10 @@ jobs:
     - name: create mewb executable
       run: |
          make -f winmingwgcc.gmk mecb
+
+    - name: Upload Mysis Combined Release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: Release-winmingwgcc-${{ env.VERSION }}-windows
+        path: /d/a/microemacs/microemacs
     
