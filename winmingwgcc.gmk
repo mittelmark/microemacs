@@ -12,10 +12,10 @@ mew:
 	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=w
 
 mecb: bfs/exe mec
-	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mec/mec32.exe -o mecb-$(VERSION)-msys.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mec/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa
 
 mewb: bfs/exe mew
-	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mew/mew32.exe -o mewb-$(VERSION)-msys.exe ./jasspa		
+	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mew/mew32.exe -o $(RELEASE))-mewb.exe ./jasspa		
 
 release: $(app)
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
