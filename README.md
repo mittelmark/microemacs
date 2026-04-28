@@ -403,7 +403,7 @@ sudo apt install libz-mingw-w64 libz-mingw-w64-dev
 sudo apt install desktop-file-utils
 ```
 
-Thereafter  you might  execute `make -f  win32mingw.gmk  mecb mewb` to get all
+Thereafter  you might  execute `make -f  linuxmingwgcc.gmk mecb mewb` to get all
 binaries for Windows on your Linux machine.
 
 <a name="cygwin"> </a>

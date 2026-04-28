@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env: 
-    VERSION: "091224b2"
+    VERSION: "091226b2"
 
 jobs:
   build:
@@ -24,29 +24,29 @@ jobs:
         echo "VRS=$VRS" >> $GITHUB_ENV
 
     - name: make bfs binary
-      run:  make -f win32mingw.gmk bfs/bin
+      run:  make -f linuxmingwgcc.gmk bfs/bin
 
     - name: make mec binary       
-      run:  make -f win32mingw.gmk mec
+      run:  make -f linuxmingwgcc.gmk mec
 
     - name: make mew binary       
-      run:  make -f win32mingw.gmk mew
+      run:  make -f linuxmingwgcc.gmk mew
 
     - name: make mecb binary
       run:  |
-        make -f win32mingw.gmk mecb
+        make -f linuxmingwgcc.gmk mecb
     
     - name: make mewb binary
-      run:  make -f win32mingw.gmk mewb
+      run:  make -f linuxmingwgcc.gmk mewb
     
     - name: make brew package
       run:  | 
-        make -f win32mingw.gmk brew
+        make -f linuxmingwgcc.gmk brew
         rm -rf brew-*/
 
     - name: make scope package
       run: |
-        make -f win32mingw.gmk scoop
+        make -f linuxmingwgcc.gmk scoop
         rm -rf mecw-scoop-*/
         
     - name: Download zlib1.dll
@@ -63,8 +63,8 @@ jobs:
         #cp zlib1.dll MicroEmacs09-${VRS}-Windows/bin/
         #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows/bin/
         cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows/bin/
-        cp src/.win32mingw-release-mew/mew32.exe MicroEmacs09-${VRS}-Windows/bin/
-        cp src/.win32mingw-release-mec/mec32.exe  MicroEmacs09-${VRS}-Windows/bin/
+        cp src/.linuxmingwgcc-release-mew/mew32.exe MicroEmacs09-${VRS}-Windows/bin/
+        cp src/.linuxmingwgcc-release-mec/mec32.exe  MicroEmacs09-${VRS}-Windows/bin/
         cp windows-*me*.exe MicroEmacs09-${VRS}-Windows/bin/
         cp license.txt MicroEmacs09-${VRS}-Windows/
         cp COPYING MicroEmacs09-${VRS}-Windows/
@@ -119,8 +119,8 @@ jobs:
 
     - name: Combined Release
       run: |
-        make -f win32mingw.gmk release app=mecb
-        make -f win32mingw.gmk release app=mewb
+        make -f linuxmingwgcc.gmk release app=mecb
+        make -f linuxmingwgcc.gmk release app=mewb
         export DIR=`ls windows-*-mecb.exe | sed 's/-mecb.exe//'`
         echo $DIR
     - name: Upload Ubuntu Combined Release
