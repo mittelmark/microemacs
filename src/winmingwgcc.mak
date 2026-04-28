@@ -70,7 +70,7 @@ CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
 LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../bfs/win32/lib -lz
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs
@@ -131,13 +131,20 @@ PRGOBJS  = $(OUTDIR)/abbrev.o $(OUTDIR)/basic.o $(OUTDIR)/bfs.o $(OUTDIR)/bind.o
 	   $(OUTDIR)/input.o $(OUTDIR)/isearch.o $(OUTDIR)/key.o $(OUTDIR)/line.o $(OUTDIR)/macro.o $(OUTDIR)/main.o $(OUTDIR)/narrow.o $(OUTDIR)/next.o \
 	   $(OUTDIR)/osd.o $(OUTDIR)/print.o $(OUTDIR)/random.o $(OUTDIR)/regex.o $(OUTDIR)/region.o $(OUTDIR)/registry.o $(OUTDIR)/search.o $(OUTDIR)/spawn.o \
 	   $(OUTDIR)/spell.o $(OUTDIR)/tag.o $(OUTDIR)/termio.o $(OUTDIR)/time.o $(OUTDIR)/undo.o $(OUTDIR)/window.o $(OUTDIR)/word.o \
-	   $(OUTDIR)/winterm.o $(OUTDIR)/winprint.o $(OUTDIR)/$(BCOR).coff
+	   $(OUTDIR)/winterm.o $(OUTDIR)/winprint.o $(OUTDIR)/$(BCOR).coff \
+	   $(OUTDIR)/win32dir.o $(OUTDIR)/access.o
 #
 # Rules
 .SUFFIXES: .c .o .rc .coff
 
 $(OUTDIR)/%.o : %.c
 	$(CC) $(CCDEFS) $(CCPROF) $(BCOR_CDF) $(BTYP_CDF) $(CCFLAGS) -c -o $@ $<
+
+$(OUTDIR)/win32dir.o : ../bfs/win32/src/win32dir.c
+	$(CC) $(CCDEFS) $(CCPROF) $(CCFLAGS) -c -o $@ ../bfs/win32/src/win32dir.c
+
+$(OUTDIR)/access.o : ../bfs/win32/src/access.c
+	$(CC) $(CCDEFS) $(CCPROF) $(CCFLAGS) -c -o $@ ../bfs/win32/src/access.c
 
 $(OUTDIR)/%.coff : %.rc
 	$(RC) $(RCFLAGS) -o $@ -i $<
