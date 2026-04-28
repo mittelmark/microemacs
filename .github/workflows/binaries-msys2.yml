@@ -74,16 +74,26 @@ jobs:
       run: |
          make -f winmingwgcc.gmk mecb
 
-    - name: Upload Msys Combined Release
-      uses: actions/upload-artifact@v5
+    - name: create Release executable
+      run: |
+         make -f winmingwgcc.gmk release app=mecb
+         make -f winmingwgcc.gmk release app=mewb
+         ls
+    - name: Upload Msys Combined Release I
+      uses: actions/upload-artifact@v6
       with: 
-        name: Release-winmingwgcc-${{ env.VERSION }}-windows
+        name: winmingwgcc-${{ matrix.sys }}-${{ env.VERSION }}-windows
         path: me*b*exe
     
+    - name: Upload Msys Combined Release II
+      uses: actions/upload-artifact@v6
+      with: 
+        name: Release-winmingwgcc-${{ matrix.sys }}-${{ env.VERSION }}-windows
+        path: *
 
     - name: Upload Msys64
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with: 
-        name: Release-msys64
+        name: Release-${{ matrix.sys }}
         path: c:\msys64
     
