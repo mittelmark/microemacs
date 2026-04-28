@@ -34,8 +34,9 @@
 TOOLKIT=        winmingwgcc
 OUTDIR   =      .$(TOOLKIT)-release
 
+# On MSYS2, use the MinGW gcc that has Windows headers
 CC=		gcc
-CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include -isystem /mingw64/include
+CFLAGS=		-g -O0 -D_WIN32 -I. -Iwin32/include
 # For native MSYS2 builds, use system zlib (not win32/lib/libz.a)
 LIBS=		-fstack-protector -lssp -lz
 #

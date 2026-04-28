@@ -63,4 +63,6 @@ jobs:
          cd src
          make -f winmingwgcc.mak BTYP=w all
          ls -la
+         pwd
+         ls /c/*
          cd ..

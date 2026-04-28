@@ -11,17 +11,15 @@
 
 #ifdef _WIN32
 
+#include <windows.h>
 #include <stdio.h>
-#include <sys/stat.h>
 
-/*
- * _mkdir - Make directory (single-arg Windows style)
- * POSIX mkdir takes mode as second arg.
- */
+/* _mkdir - Make directory (Windows style, single argument) */
 int
 _mkdir(const char *path)
 {
-    return mkdir(path);
+    /* Use Windows API directly */
+    return (CreateDirectoryA(path, NULL) != 0) ? 0 : -1;
 }
 
 /*
