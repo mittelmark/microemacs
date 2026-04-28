@@ -56,6 +56,7 @@ jobs:
          cd src
          make -f winmingwgcc.mak BTYP=c all
          ls -la
+         ./.winmingwgcc-release-mec/mec32.exe -V
          cd ..
     - name: compile mew executable
       run: |
