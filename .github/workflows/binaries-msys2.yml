@@ -69,8 +69,8 @@ jobs:
          cygpath `pwd`
     - name: create mecb executable
       run: |
-         make -f winmingwgcc.mak mecb
+         make -f winmingwgcc.gmk mecb
     - name: create mewb executable
       run: |
-         make -f winmingwgcc.mak mecb
+         make -f winmingwgcc.gmk mecb
     
