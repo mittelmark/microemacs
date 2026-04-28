@@ -21,7 +21,7 @@ jobs:
         shell: msys2 {0}
     steps:
     - name: 'Checkout'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         persist-credentials: false    
@@ -66,3 +66,11 @@ jobs:
          pwd
          ls /c/*
          cd ..
+         cygpath `pwd`
+    - name: create mecb executable
+      run: |
+         make -f winmingwgcc.mak mecb
+    - name: create mewb executable
+      run: |
+         make -f winmingwgcc.mak mecb
+    
