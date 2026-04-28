@@ -3,6 +3,9 @@
 # JASSPA MicroEmacs - www.jasspa.com
 # winmingwgcc.mak - Make file for native Windows build using MinGW/MSYS2.
 #
+# This makefile is for NATIVE WINDOWS/MSYS2 builds.
+# For cross-compilation from Linux, see linuxmingwgcc.mak
+#
 # Copyright (C) 2007-2009 JASSPA (www.jasspa.com)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -22,19 +25,19 @@
 ##############################################################################
 #
 # Created:     Sat Jan 24 1998
-# Synopsis:    Make file for Windows using MinGW development kit.
+# Synopsis:    Make file for native Windows/MSYS2 build.
 # Notes:
 #     Run ./build.sh to compile, ./build.sh -h for more information.
 #
 #     To build from the command line using make & makefile. 
 #
-#	Run "mingw32-make -f winmingwgcc.mak"            for optimised build produces ./.win32mingw-release-mew/mew32.exe
-#	Run "mingw32-make -f winmingwgcc.mak BCFG=debug" for debug build produces     ./.win32mingw-debug-mew/mew32.exe
-#	Run "mingw32-make -f winmingwgcc.mak BTYP=c"     for console support          ./.win32mingw-release-mec/mec32.exe
-#	Run "mingw32-make -f winmingwgcc.mak BCOR=ne"    for ne build produces        ./.win32mingw-release-new/new32.exe
+#	Run "make -f winmingwgcc.mak"            for optimised build produces ./.winmingwgcc-release-mew/mew32.exe
+#	Run "make -f winmingwgcc.mak BCFG=debug" for debug build produces     ./.winmingwgcc-debug-mew/mew32.exe
+#	Run "make -f winmingwgcc.mak BTYP=c"     for console support          ./.winmingwgcc-release-mec/mec32.exe
+#	Run "make -f winmingwgcc.mak BCOR=ne"    for ne build produces        ./.winmingwgcc-release-new/new32.exe
 #
-#	Run "mingw32-make -f winmingwgcc.mak clean"      to clean source directory
-#	Run "mingw32-make -f winmingwgcc.mak spotless"   to clean source directory even more
+#	Run "make -f winmingwgcc.mak clean"      to clean source directory
+#	Run "make -f winmingwgcc.mak spotless"   to clean source directory even more
 #
 ##############################################################################
 #
@@ -64,11 +67,11 @@ endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 
-CCDEFS   = -D_WIN32 -Wall -I../bfs/win32/include -isystem /mingw64/include
-CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
+CCDEFS   = -D_WIN32 -D_MINGW -Wall -I../bfs/win32/include
+CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
-LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops
 LDFLAGSD = -g
 LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
 

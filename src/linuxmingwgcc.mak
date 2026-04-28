@@ -3,6 +3,9 @@
 # JASSPA MicroEmacs - www.jasspa.com
 # linuxmingwgcc.mak - Make file for cross-compiling to Windows using MinGW (Linux host).
 #
+# This makefile is for CROSS-COMPILATION from Linux to Windows.
+# For native Windows/MSYS2 builds, see winmingwgcc.mak
+#
 # Copyright (C) 2007-2009 JASSPA (www.jasspa.com)
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -22,16 +25,16 @@
 ##############################################################################
 #
 # Created:     Sat Jan 24 1998
-# Synopsis:    Make file for Windows using MinGW development kit.
+# Synopsis:    Make file for cross-compiling to Windows using MinGW (Linux host).
 # Notes:
 #     Run ./build.sh to compile, ./build.sh -h for more information.
 #
 #     To build from the command line using make & makefile. 
 #
-#	Run "make -f linuxmingwgcc.mak"            for optimised build produces ./.win32mingw-release-mew/mew32.exe
-#	Run "make -f linuxmingwgcc.mak BCFG=debug" for debug build produces     ./.win32mingw-debug-mew/mew32.exe
-#	Run "make -f linuxmingwgcc.mak BTYP=c"     for console support          ./.win32mingw-release-mec/mec32.exe
-#	Run "make -f linuxmingwgcc.mak BCOR=ne"    for ne build produces        ./.win32mingw-release-new/new32.exe
+#	Run "make -f linuxmingwgcc.mak"            for optimised build produces ./.linuxmingwgcc-release-mew/mew32.exe
+#	Run "make -f linuxmingwgcc.mak BCFG=debug" for debug build produces     ./.linuxmingwgcc-debug-mew/mew32.exe
+#	Run "make -f linuxmingwgcc.mak BTYP=c"     for console support          ./.linuxmingwgcc-release-mec/mec32.exe
+#	Run "make -f linuxmingwgcc.mak BCOR=ne"    for ne build produces        ./.linuxmingwgcc-release-new/new32.exe
 #
 #	Run "make -f linuxmingwgcc.mak clean"      to clean source directory
 #	Run "make -f linuxmingwgcc.mak spotless"   to clean source directory even more
@@ -46,12 +49,12 @@ INSTPROGFLAGS =
 A        = .a
 EXE      = .exe
 
-CC       = i686-w64-mingw32-gcc
-RC       = i686-w64-mingw32-windres
-MK       = mingw32-make
+CC       = x86_64-w64-mingw32-gcc
+RC       = x86_64-w64-mingw32-windres
+MK       = make
 LD       = $(CC)
-STRIP    = i686-w64-mingw32-strip
-AR       = i686-w64-mingw32-ar
+STRIP    = x86_64-w64-mingw32-strip
+AR       = x86_64-w64-mingw32-ar
 RM       = rm -f
 RMDIR    = rm -r -f
 
@@ -64,13 +67,13 @@ endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 
-CCDEFS   = -D_MINGW -Wall -I/usr/i686-w64-mingw32/sys-root/mingw/include -I../bfs/win32/include
-CCFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
+CCDEFS   = -D_WIN32 -Wall
+CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
-LDFLAGSR = -O3 -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -L../bfs/win32/lib -lz
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs

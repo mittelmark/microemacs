@@ -21,7 +21,7 @@
 int
 _mkdir(const char *path)
 {
-    return mkdir(path, 0755);
+    return mkdir(path);
 }
 
 /*
