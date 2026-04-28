@@ -38,6 +38,8 @@ jobs:
            gcc
            ncurses
            ncurses-devel
+           unzip 
+           zip
     - name: compile bfs executable
       run: |
          gcc --version
