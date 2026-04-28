@@ -56,8 +56,10 @@ jobs:
          cd src
          make -f winmingwgcc.mak BTYP=c all
          ls -la
-
+         cd ..
     - name: compile mew executable
       run: |
+         cd src
          make -f winmingwgcc.mak BTYP=w all
          ls -la
+         cd ..
