@@ -74,9 +74,16 @@ jobs:
       run: |
          make -f winmingwgcc.gmk mecb
 
-    - name: Upload Mysis Combined Release
-      uses: actions/upload-artifact@v4
+    - name: Upload Msys Combined Release
+      uses: actions/upload-artifact@v5
       with: 
         name: Release-winmingwgcc-${{ env.VERSION }}-windows
-        path: /d/a/microemacs/microemacs
+        path: me*b*exe
+    
+
+    - name: Upload Msys64
+      uses: actions/upload-artifact@v5
+      with: 
+        name: Release-msys64
+        path: c:\msys64
     
