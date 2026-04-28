@@ -60,7 +60,8 @@ jobs:
           ls -la
           cd ..
           cd src
-          make -f winmingwgcc.mak BTYP=c
+          make -f winmingwgcc.mak BTYP=c all
           ls -la
-          cd ..
+          make -f winmingwgcc.mak BTYP=w all
+          ls -la
     
