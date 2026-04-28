@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : Jon Green
 #  Created       : Wed Oct 21 15:58:59 2009
-#  Last Modified : <260425.0756>
+#  Last Modified : <260428.1913>
 #
 #  Description   : Unix/Linux only
 #
@@ -31,7 +31,7 @@
 #
 # Define the build definitions.
 #
-TOOLKIT=        win32mingw
+TOOLKIT=        winmingwgcc
 OUTDIR   =      .$(TOOLKIT)-release
 
 CC=		gcc
