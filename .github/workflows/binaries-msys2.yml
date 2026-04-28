@@ -89,7 +89,7 @@ jobs:
       uses: actions/upload-artifact@v6
       with: 
         name: Release-winmingwgcc-${{ matrix.sys }}-${{ env.VERSION }}-windows
-        path: *
+        path: windows-msys-microemacs*
 
     - name: Upload Msys64
       uses: actions/upload-artifact@v6
