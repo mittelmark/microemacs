@@ -106,7 +106,7 @@ jobs:
                         
 
     - name: Upload Cygwin Combined Release
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ env.CYGWIN_MACHINE }}-windows
         path: c:\cygwin\home\runneradmin\workspace\microemacs\cygwin-*
