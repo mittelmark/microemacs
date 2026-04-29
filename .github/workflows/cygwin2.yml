@@ -17,12 +17,9 @@ jobs:
       with:
         packages: |
           git
-          python3
-          python3-pip
           bash 
           make 
           gcc-core 
-          gcc-g++ 
           wget 
           zlib-devel 
           libncurses-devel 
