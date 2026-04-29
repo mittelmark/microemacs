@@ -13,7 +13,7 @@ jobs:
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
      
     - name: developer library installs
       run: |
@@ -99,20 +99,20 @@ jobs:
         cp README-standalone.md MicroEmacs09-${VRS}-Windows-mewb/
 
     - name: Upload Windows Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: MicroEmacs09-${{ env.VRS }}-Windows
         path: MicroEmacs09-${{ env.VRS }}-Windows
     
 
     - name: Upload Windows mecb Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: MicroEmacs09-${{ env.VRS }}-Windows-mecb
         path: MicroEmacs09-${{ env.VRS }}-Windows-mecb
     
     - name: Upload Windows mewb Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: MicroEmacs09-${{ env.VRS }}-Windows-mewb
         path: MicroEmacs09-${{ env.VRS }}-Windows-mewb
@@ -124,19 +124,19 @@ jobs:
         export DIR=`ls windows-*-mecb.exe | sed 's/-mecb.exe//'`
         echo $DIR
     - name: Upload Ubuntu Combined Release
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: Release-windows-10-intel
         path: windows-10-intel-*/
 
     - name: Upload Brew Package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: brew-windows
         path: brew-*
 
     - name: Upload Scoop Package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: scoop-windows
         path: scoop-*
