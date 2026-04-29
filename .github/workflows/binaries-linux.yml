@@ -13,7 +13,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
      
     - name: developer library installs
       run: |
@@ -109,25 +109,25 @@ jobs:
         cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
 
     - name: Upload Ubuntu Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-${{ env.BRANCH_NAME }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux
     
     - name: Upload Ubuntu mecb Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-mecb-${{ env.BRANCH_NAME }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-mecb
 
     - name: Upload Ubuntu mewb Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-mewb-${{ env.BRANCH_NAME }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-mewb
 
     - name: Upload Ubuntu mecwb Release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-mecwb-${{ env.BRANCH_NAME }}
         path: ${{ matrix.os }}-MicroEmacs09-${{ env.VRS }}-Linux-mecwb
@@ -140,13 +140,13 @@ jobs:
         export DIR=`ls linux-*-mecb.bin | sed 's/-mecb.bin//'`
         echo $DIR
     - name: Upload Ubuntu Combined Release
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: Release-${{ matrix.os }}-${{ env.BRANCH_NAME }}
         path: linux-*/
         
     - name: Upload Brew Package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: brew-${{ matrix.os }}
         path: brew-*
