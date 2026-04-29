@@ -17,7 +17,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install dependencies on MacOS and compile and produce BFS exes and standalone ME application 
         run: |
            echo `uname -a`
@@ -143,25 +143,25 @@ jobs:
           cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
 
       - name: Upload MacOS Release files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with: 
           name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}
           path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}
     
       - name: Upload MacOS mecb Release files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with: 
           name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecb
           path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecb
 
       - name: Upload MacOS mewb Release files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with: 
           name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mewb
           path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mewb
 
       - name: Upload MacOS mecwb Release files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with: 
           name: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
           path: MicroEmacs09-${{ env.VRS }}-${{ matrix.os }}-mecwb
@@ -173,14 +173,14 @@ jobs:
           make -f macos32gcc.gmk release app=mecwb VERSION=${VRS}
 
       - name: Upload Macos Combined Release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with: 
           name: Release-${{ matrix.os }}
           path: macos-*/
         
 
       - name: Upload Brew Package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with: 
           name: brew-${{ matrix.os }}
           path: brew-*
