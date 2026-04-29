@@ -12,7 +12,7 @@ jobs:
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: extract version from src/evers.h using powershell
       shell: pwsh
@@ -99,7 +99,7 @@ jobs:
         cp me*.exe MicroEmacs09-${env:VERSION}-Windows/
         
     - name: Upload Windows WinlibRelease files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Windows
         path: MicroEmacs09-${{ env.VERSION }}-Windows
@@ -117,7 +117,7 @@ jobs:
         cp README-standalone.md MicroEmacs09-${env:VERSION}-Windows-mecb/
 
     - name: Upload mecb release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Windows-mecb
         path: MicroEmacs09-${{ env.VERSION }}-Windows-mecb
@@ -134,7 +134,7 @@ jobs:
         cp README-standalone.md MicroEmacs09-${env:VERSION}-Windows-mewb/
 
     - name: Upload mewb release files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
         path: MicroEmacs09-${{ env.VERSION }}-Windows-mewb
