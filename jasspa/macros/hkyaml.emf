@@ -39,7 +39,9 @@ set-variable .fhook-yaml.collapse-mnext "-1"
   0 hilight .hilight.yaml 0                $global-scheme
   hilight .hilight.yaml  4 "\"" "\"" "\\"   .scheme.string
   hilight .hilight.yaml  4 "'" "'" "\\"     .scheme.string  
-  hilight .hilight.yaml 1 "\\w+:"          .scheme.keyword  
+  hilight .hilight.yaml 1 "^\\s*\\w+:"          .scheme.keyword  
+  hilight .hilight.yaml 1 "^\\s*\\w+-\\w+:"          .scheme.keyword    
+  hilight .hilight.yaml 1 "^\\s*- \\w+:"          .scheme.keyword    
   hilight .hilight.yaml 1 "\\d+"           .scheme.prepro
   hilight .hilight.yaml 0 "false"          .scheme.prepro
   hilight .hilight.yaml 0 "true"           .scheme.prepro

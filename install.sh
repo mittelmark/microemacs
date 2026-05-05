@@ -126,6 +126,9 @@ else
     elif [ $KERNEL -eq 6 ]; then
         MECB="linux-${KERNEL}-${MACHINE}-ubuntu-22-microemacs-${VERSION}-mecb"
         MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-22-microemacs-${VERSION}-mewb"
+    elif [ $KERNEL -eq 7 ]; then
+        MECB="linux-${KERNEL}-${MACHINE}-ubuntu-26-microemacs-${VERSION}-mecb"
+        MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-26-microemacs-${VERSION}-mewb"
     else
         echo "Error: Kernel $KERNEL not supported!"    
         exit

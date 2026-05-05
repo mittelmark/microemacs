@@ -5175,6 +5175,18 @@
 
 ## Development History 
 
+  - [260505] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel
+            
+  - [260417] - Fixing Cut issue not updating  clipboard on X11, fixing selection
+               of  primary on Wayland  and the  introduction  of  newlines  with
+               wl-paste use in MicroEmacs
+  
+  - [260415] - Release v09.12.26.beta1, new Platform FreeBSD 15, Cygwin x86 3.3
+
+  - [260412] - Fixing stderr messages with emtpy clipboard
+    
+  - [260411] - Fixing Windows builds
+
   - [260410] - Fixed X11 clipboard issue: On X11 (not Wayland), when xclip
                is installed and explicit copy (M-w or C-x C-r) is performed,
                the clipboard is piped through xclip to hand ownership to xclip
