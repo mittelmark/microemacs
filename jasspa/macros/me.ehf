@@ -67999,9 +67999,10 @@ $a
     
       cD%fhook-scala-execcA - The command to execute the current Scala file, default
          is set to cC"scalac \"%f\" && scala \"%b\""cA where %f represenscala the file name  
-         and %b the basename without the Ccala file extension
+         and %b the basename without the Scala file extension
       cD%fhook-scala-formatcA - The command to format current Scala file, default  
-         is set to cC"scalafmt \"%f\""cA orcC"astyle --indent-spaces=2 \"%f\""cA where %f represenscala the file name  
+         is set to cC"scalafmt \"%f\""cA orcC"astyle --indent-spaces=2 \"%f\""cA where %f represents 
+         the file name  
       cD%fhook-scala-lintcA - The command to check/lint the current Scala file, 
          default is set to cC"scalac \"%f\""cA 
     
@@ -68101,9 +68102,9 @@ $a
 
     cDExecuting, Formatting and LintingcA
     
-      cD%fhook-fusion-execcA - The command to execute the current Scala file, default
-         is set to cC"fut \"%f\" -o \"%b.py\" && python3 \"%b.py\" 2>&1"cA where %f represenscala the file name  
-         and %b the basename without the Fusion file extension
+      cD%fhook-fusion-execcA - The command to execute the current Fusion file, default
+         is set to cC"fut \"%f\" -o \"%b.py\" && python3 \"%b.py\" 2>&1"cA where %f represents 
+         the file name and %b the basename without the Fusion file extension
       cD%fhook-fusion-formatcA - The command to format current Fusion file, default  
          is set to cC"astyle --mode=cs --indent=tab --indent=force-tab=4 \"%f\""cA
           where %f represents the Fusiona the file name  
