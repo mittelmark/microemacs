@@ -167,6 +167,10 @@ set-variable .fhook-fusion.item-list-r4 "Enum \CCb\\1\CCA"
 
 ; Fusion Linting and Formatting
 !if &not &seq &which "fut" "ERROR"
+  0 define-macro fhook-fusion-replace
+    fhook-generic-replace "(\\([0-9]+\\))" ":\\1"
+  !emacro
+
   set-variable %fhook-fusion-lint "fut \"%f\" -o \"%b.py\" 2>&1 "
   set-variable %fhook-fusion-exec "fut \"%f\" -o \"%b.py\" 2>&1 && python3 %b.py"
   !if &not &seq &which "astyle" "ERROR"
