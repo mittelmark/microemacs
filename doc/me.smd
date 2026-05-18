@@ -5175,6 +5175,8 @@
 
 ## Development History 
 
+  - [260518] - Improvements in indentation, formatting and linting Fusion code
+  
   - [260505] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel
             
   - [260417] - Fixing Cut issue not updating  clipboard on X11, fixing selection
@@ -68883,7 +68885,7 @@ $a
   
   > __%fhook-scala-exec__ - The command to execute the current Scala file, default
        is set to _"scalac \"%f\" && scala \"%b\""_ where %f represenscala the file name  
-       and %b the basename without the scala file extension
+       and %b the basename without the Ccala file extension
   > __%fhook-scala-format__ - The command to format current Scala file, default  
        is set to _"scalafmt \"%f\""_ or_"astyle --indent-spaces=2 \"%f\""_ where %f represenscala the file name  
   > __%fhook-scala-lint__ - The command to check/lint the current Scala file, 
@@ -68984,6 +68986,25 @@ $a
      The  list  of  abbreviations  can be used  interactively  in the GUI version of
      MicroEmacs using the [abbrev-list(3)](abbrev-list(3)) command.
 
+  __Executing, Formatting and Linting__
+  
+  > __%fhook-fusion-exec__ - The command to execute the current Scala file, default
+       is set to _"fut \"%f\" -o \"%b.py\" && python3 \"%b.py\" 2>&1"_ where %f represenscala the file name  
+       and %b the basename without the Fusion file extension
+  > __%fhook-fusion-format__ - The command to format current Fusion file, default  
+       is set to _"astyle --mode=cs --indent=tab --indent=force-tab=4 \"%f\""_
+        where %f represents the Fusiona the file name  
+  > __%fhook-fusion-lint__ - The command to check/lint the current Fusion file, 
+       default is set to _"fut \"%f\" -o \"%b.py\" 2>&1 "_ 
+  
+  > The setting assume that the _fut_ transpiler the _python3_  interpreter
+    and the _astyle_ formatter are available via the _PATH_ environment variable. 
+    On Windows you must insert here either the complete _PATH_ to the 
+    executables or add the folder where this file is to the _PATH_ variable.
+
+  > These global variables should be changed if necessary usually within your _USERNAME.emf_ 
+    or with the _myfusion.emf_ file.
+
 ## BUGS
 
 
@@ -68997,6 +69018,7 @@ $a
   [Supported File Types](MicroEmacs - Supported File Types)
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle(3)](expand-abbrev-handle(3)) 
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
+  [file-exec(3)](file-exex(3)), [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)),  
   [restyle-region(3)](restyle-region(3)), [restyle-buffer(3)](restyle-buffer(3)),
   [item-list(3)](item-list(3)), [time(2m)](time(2m)).
 !! me-id: m9typ075

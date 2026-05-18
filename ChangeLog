@@ -7,12 +7,14 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260505.0549>
+>  Last Modified : <260518.1752>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
 
-  [2605005] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel
+  [260518] - Improvements in indentation, formatting and linting Fusion code
+
+  [260505] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel
             
   [260417] - Fixing Cut issue not updating  clipboard on X11, fixing selection
              of  primary on Wayland  and the  introduction  of  newlines  with
