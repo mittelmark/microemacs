@@ -182,6 +182,7 @@ set-variable .fhook-cpp.item-list-r8 "Dtor \ecB\\1\ecA"
     hilight .hilight.cpp    1 "signed"       .scheme.type
     hilight .hilight.cpp    1 "size_t"       .scheme.type
     hilight .hilight.cpp    1 "static"       .scheme.type
+    hilight .hilight.cpp    1 "string"       .scheme.type    
     hilight .hilight.cpp    1 "struct"       .scheme.type
     hilight .hilight.cpp    1 "template"     .scheme.type
     hilight .hilight.cpp    1 "typedef"      .scheme.type
