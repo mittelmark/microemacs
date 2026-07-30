@@ -279,7 +279,9 @@ static void meSetIconState (Display *display, Window window);
 #endif /* _XTERM */
 
 #if MEOPT_MOUSE
+#ifdef _ME_CONSOLE
 static int TTtermHasSGRMouse(void);
+#endif
 #endif
 
 /**************************************************************************
@@ -3037,6 +3039,7 @@ TCAPmove(int row, int col)
 #endif /* _ME_CONSOLE */
 
 #if MEOPT_MOUSE
+#ifdef _ME_CONSOLE
 /*
  * TTtermHasSGRMouse
  * Check if the current terminal is known to support SGR mouse mode.
@@ -3090,6 +3093,7 @@ TTtermHasSGRMouse(void)
 
     return 0;
 }
+#endif /* _ME_CONSOLE */
 
 /*
  * TTinitMouse
