@@ -12,36 +12,19 @@
 0 define-macro start-up
   execute-file "me"
   delete-other-windows
-
-  ; Get topic from command line argument or prompt user
-  !force set-variable #l0 @1
-  !if &not $status
-    set-variable #l0 @ml00 "R help topic"
-  !endif
-
-  ; Check that we got a topic
-  !if &not &seq #l0 ""
-    ; Clear the scratch buffer
-    beginning-of-buffer
-    set-mark
-    end-of-buffer
-    delete-region
-
-    ; Run R help and pipe output into buffer
-    ; Rscript -e "help('topic')" renders plain text to stdout
-    0 pipe-shell-command &spr "Rscript -e \"options(help_type='text'); help('%s')\" 2>&1" #l0 $buffer-bname
-
-    ; If R help failed, show error
-    !if &not $status
-      insert-string &spr "No R help found for '%s'" #l0
-      insert-string "\n\nUsage: mec @rdoc <topic>"
-      insert-string "\n       e.g. mec @rdoc mean"
-      insert-string "\n       e.g. mec @rdoc ggplot"
-      insert-string "\n\nRequires R to be installed and in PATH"
+  set-variable #l0 0
+  !while &not &seq $buffer-bname "*scratch*"
+    !force file-exists $buffer-bname
+    !if &equ $result 0
+      r-doc $buffer-bname
+      delete-other-windows
+      set-variable #l0 1
+      !goto end
     !endif
-
-    ; Set view mode
-    -1 buffer-mode "view"
-    beginning-of-buffer
+  !done
+*end
+  !if &equ #l0 0
+    r-doc
+    delete-other-windows
   !endif
 !emacro
