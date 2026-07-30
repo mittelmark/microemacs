@@ -12,6 +12,17 @@
 
 ## 2026
 
+  [260730] - Adding SGR mouse protocol support for terminal version (mec),
+             enabling mouse click, drag, and scroll support in xterm-compatible
+             terminal emulators. Uses DECSET modes 1000 and 1006 for SGR
+             extended coordinates. Auto-detects terminal type to avoid
+             enabling mouse on VTE-based terminals (gnome-terminal, ROXTerm)
+             which have compatibility issues.
+
+  [260730] - Adding man page and R help browsers for MicroEmacs. New commands
+             mec @man <topic> and mec @rdoc <topic> allow browsing man pages
+             and R help documentation directly in MicroEmacs buffers.
+
   [260518] - Improvements in indentation, formatting and linting Fusion code
 
   [260505] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel

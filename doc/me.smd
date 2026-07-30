@@ -45960,6 +45960,46 @@ $a
   
   >  Rests the mouse configuration to the default settings.
 
+### Terminal Mouse Support
+
+  The terminal version of MicroEmacs (mec) supports mouse input in
+  xterm-compatible terminal emulators using the SGR mouse protocol.
+  This enables mouse click, drag, and scroll wheel functionality
+  directly in the terminal.
+
+  Mouse support is automatically enabled when the following conditions
+  are met:
+
+  1. The terminal is identified as xterm-compatible (e.g., xterm,
+     alacritty, kitty, wezterm, foot, tmux, screen)
+  2. The terminal is NOT a VTE-based terminal (gnome-terminal, ROXTerm,
+     xfce4-terminal) which have known compatibility issues
+
+  The SGR mouse protocol uses DECSET modes 1000 (basic mouse) and
+  1006 (SGR extended coordinates) to transmit mouse events. Mouse
+  events are parsed from the input stream using the SGR format:
+  ESC[<button;column;rowM for press events and ESC[<button;column;rowm
+  for release events.
+
+  Supported mouse actions:
+
+  - Left click: Position cursor
+  - Left drag: Select text region
+  - Middle click: Paste from PRIMARY selection
+  - Wheel up/down: Scroll window
+  - Right click: Context menu (if bound)
+
+  Mouse support can be enabled or disabled at runtime using the
+  user-setup dialog (Platform tab) or by setting the $mouse variable.
+
+  Note: On VTE-based terminals (gnome-terminal, etc.), mouse support
+  is automatically disabled even if enabled in user-setup, due to
+  these terminals not properly supporting the SGR mouse protocol.
+
+  Terminal detection can be overridden by setting the environment
+  variable ME_ENABLE_MOUSE=1 to force mouse enablement, though this
+  may result in degraded terminal behavior.
+
 
 ## File Types 
 
