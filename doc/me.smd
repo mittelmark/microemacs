@@ -5175,6 +5175,9 @@
 
 ## Development History 
 
+  - [260729] - adding mouse support for xterm comparible terminals like gnome-terminal or
+               the terminal of MacOS
+               
   - [260518] - Improvements in indentation, formatting and linting Fusion code
   
   - [260505] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel
