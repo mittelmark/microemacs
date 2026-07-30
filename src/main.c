@@ -2078,7 +2078,7 @@ main(int argc, char *argv[])
                 meFrameMakeCur(dadp->frame, 1);
 #endif
 
-#if MEOPT_MOUSE
+#if (MEOPT_MOUSE) && (defined _ME_WINDOW)
                 /* Re-position the mouse */
                 mouse_X = clientToCol (dadp->mouse_x);
                 mouse_Y = clientToRow (dadp->mouse_y);
