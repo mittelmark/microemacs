@@ -1,0 +1,44 @@
+; -!- emf -!-
+; Copyright (C) 2025 MicroEmacs User.
+;
+; All rights reserved.
+;
+; Synopsis:    Browse man pages in MicroEmacs
+; Authors:     MicroEmacs User
+;
+; Usage:       mec @man <topic>      - Show man page for <topic>
+;              mec @man              - Prompt for topic
+;
+0 define-macro start-up
+  execute-file "me"
+  delete-other-windows
+
+  ; Get topic from command line argument or prompt user
+  !force set-variable #l0 @1
+  !if &not $status
+    set-variable #l0 @ml00 "Man page topic"
+  !endif
+
+  ; Check that we got a topic
+  !if &not &seq #l0 ""
+    ; Clear the scratch buffer
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    delete-region
+
+    ; Run man and pipe output into buffer
+    0 pipe-shell-command &spr "man %s 2>&1 | col -b" #l0 $buffer-bname
+
+    ; If man failed, show error
+    !if &not $status
+      insert-string &spr "No man page found for '%s'" #l0
+      insert-string "\n\nUsage: mec @man <topic>"
+      insert-string "\n       e.g. mec @man ls"
+    !endif
+
+    ; Set view mode
+    -1 buffer-mode "view"
+    beginning-of-buffer
+  !endif
+!emacro
