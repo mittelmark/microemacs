@@ -304,7 +304,7 @@ set-variable .user-mouse-set-button.bnames "|\HLeft|\HMiddle|\HRight|Wheel \HUp|
 
 0 define-macro user-set-mouse
     set-variable #l1 $mouse
-    set-variable #l0 &reg &spr "/history/%s/mouse" $platform #l1
+    set-variable #l0 &reg &spr "/history/%s/mouse" %platform #l1
     !if &les @# 0
         set-variable @# &abs @#
         set-variable #l0 &bxor #l0 @#
@@ -313,7 +313,7 @@ set-variable .user-mouse-set-button.bnames "|\HLeft|\HMiddle|\HRight|Wheel \HUp|
             set-variable #l0 &bxor #l0 @#
         !endif
         set-variable $mouse #l1
-        set-registry &spr "/history/%s/mouse" $platform #l0
+        set-registry &spr "/history/%s/mouse" %platform #l0
         !if &equ &abs @# 0x400
             user-setup-backups
         !endif
@@ -323,11 +323,11 @@ set-variable .user-mouse-set-button.bnames "|\HLeft|\HMiddle|\HRight|Wheel \HUp|
 !emacro
 
 0 define-macro user-set-mouse-nob
-    set-variable #l0 &reg &spr "/history/%s/mouse" $platform $mouse
+    set-variable #l0 &reg &spr "/history/%s/mouse" %platform $mouse
     set-variable #l1 &band #l0 0x00f
     !if &les @# 0
         set-variable #l0 &bor &band #l0 &bnot 0x00f @ml2 "" #l1
-        set-registry &spr "/history/%s/mouse" $platform #l0
+        set-registry &spr "/history/%s/mouse" %platform #l0
     !else
         set-variable $result #l1
     !endif

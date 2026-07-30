@@ -380,6 +380,12 @@
 #include <X11/Xutil.h>
 #endif /* _XTERM */
 
+#ifdef _ME_CONSOLE
+#ifdef _TCAP
+#define _MOUSE          1       /* Mouse supported on TERM (SGR mouse)   */
+#endif /* _TCAP */
+#endif /* _ME_CONSOLE */
+
 #ifndef _ME_CONSOLE             /* window only mode?                     */
 #undef _TCAP                    /* Do not want Termcap                   */
 #endif
@@ -502,7 +508,7 @@
 #endif
 
 #ifdef _MOUSE
-#define MEOPT_MOUSE     0       /* do mouse pointer stuff                */
+#define MEOPT_MOUSE     1       /* do mouse pointer stuff                */
 #else
 /* DO NOT CHANGE THIS VALUE */
 #define MEOPT_MOUSE     0
