@@ -278,6 +278,10 @@ static void meSetIconState (Display *display, Window window);
 #define meStdin 0
 #endif /* _XTERM */
 
+#if MEOPT_MOUSE
+static int TTtermHasSGRMouse(void);
+#endif
+
 /**************************************************************************
 * Mouse                                                                   *
 **************************************************************************/
@@ -2668,8 +2672,9 @@ TCAPopen(void)
     }
 
 #if MEOPT_MOUSE
-    /* Enable SGR mouse mode for terminal mouse support */
-    if(meMouseCfg & meMOUSE_ENBLE)
+    /* Enable SGR mouse mode for terminal mouse support
+     * only if the terminal is known to support it */
+    if((meMouseCfg & meMOUSE_ENBLE) && TTtermHasSGRMouse())
     {
         /* Enable SGR extended mouse mode (mode 1006) and basic mouse tracking (mode 1000) */
         fputs("\033[?1006h\033[?1000h", stdout);
@@ -3033,6 +3038,60 @@ TCAPmove(int row, int col)
 
 #if MEOPT_MOUSE
 /*
+ * TTtermHasSGRMouse
+ * Check if the current terminal is known to support SGR mouse mode.
+ * Returns 1 if SGR mouse should be enabled, 0 otherwise.
+ */
+static int
+TTtermHasSGRMouse(void)
+{
+    char *term;
+    char *termProgram;
+
+    /* Check $TERM_PROGRAM first - most reliable */
+    termProgram = getenv("TERM_PROGRAM");
+    if(termProgram != NULL)
+    {
+        /* Terminals known to support SGR mouse */
+        if(strcmp(termProgram, "xterm") == 0 ||
+           strcmp(termProgram, "rxvt") == 0 ||
+           strcmp(termProgram, "rxvt-unicode") == 0 ||
+           strcmp(termProgram, "Alacritty") == 0 ||
+           strcmp(termProgram, "kitty") == 0 ||
+           strcmp(termProgram, "iTerm.app") == 0 ||
+           strcmp(termProgram, "WezTerm") == 0 ||
+           strcmp(termProgram, "mintty") == 0 ||
+           strcmp(termProgram, "screen") == 0 ||
+           strcmp(termProgram, "tmux") == 0)
+            return 1;
+        /* VTE-based terminals (gnome-terminal, ROXTerm, etc.) - unreliable SGR mouse */
+        if(strncmp(termProgram, "VTE", 3) == 0)
+            return 0;
+    }
+
+    /* Fall back to $TERM checks */
+    term = getenv("TERM");
+    if(term == NULL)
+        return 0;
+
+    /* xterm-like terminals known to support SGR mouse */
+    if(strncmp(term, "xterm", 5) == 0 ||
+       strncmp(term, "rxvt", 4) == 0 ||
+       strncmp(term, "alacritty", 9) == 0 ||
+       strncmp(term, "kitty", 5) == 0 ||
+       strncmp(term, "screen", 6) == 0 ||
+       strncmp(term, "tmux", 4) == 0 ||
+       strncmp(term, "linux", 5) == 0 ||
+       strncmp(term, "cygwin", 6) == 0 ||
+       strncmp(term, "putty", 5) == 0 ||
+       strncmp(term, "st-", 3) == 0 ||
+       strcmp(term, "st") == 0)
+        return 1;
+
+    return 0;
+}
+
+/*
  * TTinitMouse
  * Sort out what to do with the mouse buttons.
  */
@@ -3044,8 +3103,9 @@ TTinitMouse(void)
     if(meSystemCfg & meSYSTEM_CONSOLE)
     {
 #endif /* _ME_WINDOW */
-        /* For console/terminal version, enable/disable SGR mouse mode */
-        if(meMouseCfg & meMOUSE_ENBLE)
+        /* For console/terminal version, enable/disable SGR mouse mode
+         * only if the terminal is known to support it */
+        if((meMouseCfg & meMOUSE_ENBLE) && TTtermHasSGRMouse())
             fputs("\033[?1006h\033[?1000h", stdout);
         else
             fputs("\033[?1006l\033[?1000l", stdout);
