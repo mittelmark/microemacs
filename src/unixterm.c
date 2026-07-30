@@ -3044,8 +3044,12 @@ TTinitMouse(void)
     if(meSystemCfg & meSYSTEM_CONSOLE)
     {
 #endif /* _ME_WINDOW */
-        /* For console/terminal version, enable mouse if configured */
-        /* SGR mouse mode is enabled in TCAPopen() */
+        /* For console/terminal version, enable/disable SGR mouse mode */
+        if(meMouseCfg & meMOUSE_ENBLE)
+            fputs("\033[?1006h\033[?1000h", stdout);
+        else
+            fputs("\033[?1006l\033[?1000l", stdout);
+        fflush(stdout);
 #ifdef _ME_WINDOW
     }
     else
@@ -4471,8 +4475,9 @@ TTahead(void)
             if(read(meStdin,&cc,1) > 0)
             {
 #if MEOPT_MOUSE
-                /* SGR mouse sequence parser */
-                if(sgrMouseState != SGR_MOUSE_STATE_IDLE)
+                /* SGR mouse sequence parser - only active when mouse is enabled */
+                if((sgrMouseState != SGR_MOUSE_STATE_IDLE) &&
+                   (meMouseCfg & meMOUSE_ENBLE))
                 {
                     /* Continue parsing SGR mouse sequence */
                     if(cc >= '0' && cc <= '9')
@@ -4571,11 +4576,27 @@ TTahead(void)
                     }
                     else
                     {
-                        /* Invalid character - reset parser */
+                        /* Invalid sequence - push back consumed characters and reset.
+                         * The ESC and any intermediate chars (e.g. '[') were consumed
+                         * during parsing but the sequence turned out to be invalid.
+                         * We must re-inject them so normal key handling gets them. */
+                        if(sgrMouseState == SGR_MOUSE_STATE_CSI)
+                        {
+                            /* Had ESC + [, push both back */
+                            addKeyToBuffer('\033');
+                            addKeyToBuffer('[');
+                        }
+                        else if(sgrMouseState == SGR_MOUSE_STATE_ESC)
+                        {
+                            /* Had ESC only, push it back */
+                            addKeyToBuffer('\033');
+                        }
                         sgrMouseState = SGR_MOUSE_STATE_IDLE;
+                        /* Now fall through to add current char normally */
+                        goto sgr_add_char;
                     }
                 }
-                else if(cc == '\033')
+                else if((cc == '\033') && (meMouseCfg & meMOUSE_ENBLE))
                 {
                     /* Start of potential SGR mouse sequence */
                     sgrMouseState = SGR_MOUSE_STATE_ESC;
@@ -4584,6 +4605,7 @@ TTahead(void)
                     sgrMouseRow = 0;
                 }
                 else
+                sgr_add_char:
 #endif /* MEOPT_MOUSE */
                 {
                     /* C-Space is returned as "\x00" (or ^@) or nul. This is a
