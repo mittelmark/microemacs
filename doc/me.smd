@@ -411,6 +411,7 @@
   [emftags(3f)](emftags(3f)) Generate a MicroEmacs macro tags file  
   [filetype(3f)](filetype(3f)) Determine file type UNIX, DOS or Windows  
   [gdiff(3f)](gdiff(3f)) Command line graphical file difference  
+  [info(3f)](info(3f)) Start the Info browser of MicroEmacs  
   [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
   [jstags(3f)](jstags(3f)) Generate a Javascript tags file  
   [luatags(3f)](luatags(3f)) Generate a Lua tags file  
@@ -418,6 +419,8 @@
   [perltags(3f)](perltags(3f)) Generate a Perl tags file  
   [phptags(3f)](phptags(3f)) Generate a PHP tags file    
   [printall(3f)](printall(3f)) Formatted print job  
+  [pydoc(3f)](pydoc(3f)) Start the Python module docu browser of MicroEmacs 
+  [rdoc(3f)](rdoc(3f)) Start the R help page browser of MicroEmacs 
   [tcltags(3f)](tcltags(3f)) Generate a Tcl/Tk tags file  
   [textags(3f)](textags(3f)) Generate a LaTeX/BibTeX tags file  
   [unix2dos(3f)](unix2dos(3f)) Convert UNIX format files to DOS format files  
@@ -3921,6 +3924,7 @@
   [psm1(9)](psm1(9)) PowerShell Language Module File  
   [puml(9)](puml(9)) PlantUML diagram file    
   [py(9)](py(9)) Python Language File  
+  [pydoc(3f)](pydoc(3f)) Start the Python module docu browser of MicroEmacs 
   [py-doc(3)](py-doc(3)) Display Python module manual pages    
   [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
@@ -3933,6 +3937,7 @@
   [query-replace-string-in-files(3)](query-replace-string-in-files(3)) Conditionally search and replace strings across files  
   [quick-exit(2)](quick-exit(2)) (esc z) Exit the editor writing changes  
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
+  [rdoc(3f)](rdoc(3f)) Start the R help page browser of MicroEmacs  
   [RegisterVariables(4)](RegisterVariables(4)) Register variables  
   [RegularExpressions(2)](RegularExpressions(2)) Regular Expressions  
   [r(9)](r(9)) R Language File  
@@ -5174,6 +5179,9 @@
 
 
 ## Development History 
+
+  - [260731] - adding and documenting @info, @pydoc, @rdoc documentation browser
+               startup macros
 
   - [260729] - adding mouse support for xterm comparible terminals like gnome-terminal or
                the terminal of MacOS
@@ -34436,6 +34444,63 @@ $a
 
 
   [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [lua(9)](lua(9)).
+!! me-id: m3fcl018
+! 3finfo
+! 3fpydoc
+! 3frdoc
+## NAME
+
+
+  info - start MicroEmacs's info browser 
+  pydoc - start MicroEmacs's Python documentation browser   
+  rdoc - start MicroEmacs's R help page browser  
+  
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@info" _<infopage>_  
+  __me__ "@rdoc" _<helppage>_  
+  __me__ "@pydoc" _<helptopic>_  
+
+
+## DESCRIPTION
+
+
+  The start-up files `info.emf`, `rdoc.emf` and `pydoc.emf` may be invoked
+  from the command line as to browser documenation and help pages using
+  MicroEmacs's inbuild documentation browsers for these tools and
+  programming languages.
+
+
+## EXAMPLE
+
+
+  When using ME as a command line filter it is advisable to control the
+  backup command line options. Typically the backups and auto-save are
+  disabled so that no backup files are generated i.e.
+
+      mecb @info coreutils    # browse coreutils documentation page
+      mecb @rdoc mean         # browse function help page for stats::mean
+      mecb @rdoc cluster::pam # browse function help page for cluster::pam
+      mecb @pydoc argparse    # browse module help page for argparse
+      mecb @pydoc file        # browse module help page for ./file.py
+
+
+## NOTES
+
+
+  These command line tools allow using ME as an more sophisticated
+  replacement for the standard documentation tools in Unix platforms.
+  The functionality on Windows has not being tested.
+
+## SEE ALSO
+
+
+  [me(1)](me(1)), [start-up(3)](start-up(3)), [info(3)](info(3)), 
+  [py-doc(3)](py-doc(3)), [r-doc(3)](r-doc(3)).
 !! me-id: m3mac000
 ! 3 compile
 ## NAME
@@ -38582,7 +38647,7 @@ $a
 ## SEE ALSO
 
 
-  [info(9)](info(9)).
+  [info(9)](info(9)), [info(3f)](info(3f)).
 !! me-id: m3mac044
 ! 3 gdiff
 ! 5 %gdiff-com
@@ -44480,7 +44545,7 @@ $a
   
 ## SEE ALSO
 
-  [r(9)](r(9))
+  [rdoc(3f)](rdoc(3f)), [r(9)](r(9)).
 !! me-id: m3mac100
 ! 3 py-doc
 ! 3 py-exec
@@ -44580,7 +44645,7 @@ $a
   
 ## SEE ALSO
 
-  [py(9)](py(9)).
+  [pydoc(3f)](pydoc(3f)), [py(9)](py(9)).
 !! me-id: m3mac101
 ! 3 tcl-exec
 ! 3 tcl-format

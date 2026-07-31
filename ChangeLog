@@ -7,10 +7,13 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260518.1752>
+>  Last Modified : <260731.1035>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260731] - Adding pydoc.emf, documenting command line filters
+             info, pydoc and rdoc to be called like: 'mecb @pydoc topic' etc
 
   [260730] - Adding SGR mouse protocol support for terminal version (mec),
              enabling mouse click, drag, and scroll support in xterm-compatible

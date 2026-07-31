@@ -519,6 +519,7 @@ Miscellaneous Information
     lsemftags(3f)lmemftags(3f)le Generate a MicroEmacs macro tags file  
     lsfiletype(3f)lmfiletype(3f)le Determine file type UNIX, DOS or Windows  
     lsgdiff(3f)lmgdiff(3f)le Command line graphical file difference  
+    lsinfo(3f)lminfo(3f)le Start the Info browser of MicroEmacs  
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
     lsjstags(3f)lmjstags(3f)le Generate a Javascript tags file  
     lsluatags(3f)lmluatags(3f)le Generate a Lua tags file  
@@ -526,6 +527,8 @@ Miscellaneous Information
     lsperltags(3f)lmperltags(3f)le Generate a Perl tags file  
     lsphptags(3f)lmphptags(3f)le Generate a PHP tags file    
     lsprintall(3f)lmprintall(3f)le Formatted print job  
+    lspydoc(3f)lmpydoc(3f)le Start the Python module docu browser of MicroEmacs 
+    lsrdoc(3f)lmrdoc(3f)le Start the R help page browser of MicroEmacs 
     lstcltags(3f)lmtcltags(3f)le Generate a Tcl/Tk tags file  
     lstextags(3f)lmtextags(3f)le Generate a LaTeX/BibTeX tags file  
     lsunix2dos(3f)lmunix2dos(3f)le Convert UNIX format files to DOS format files  
@@ -4000,6 +4003,7 @@ Miscellaneous Information
     lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
     lspuml(9)lmpuml(9)le PlantUML diagram file    
     lspy(9)lmpy(9)le Python Language File  
+    lspydoc(3f)lmpydoc(3f)le Start the Python module docu browser of MicroEmacs 
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages    
     lspy-exec(3)lmpy-exec(3)le Executes the current Python script with or without command line arguments  
     lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf    
@@ -4012,6 +4016,7 @@ Miscellaneous Information
     lsquery-replace-string-in-files(3)lmquery-replace-string-in-files(3)le Conditionally search and replace strings across files  
     lsquick-exit(2)lmquick-exit(2)le (esc z) Exit the editor writing changes  
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
+    lsrdoc(3f)lmrdoc(3f)le Start the R help page browser of MicroEmacs  
     lsRegisterVariables(4)lmRegisterVariables(4)le Register variables  
     lsRegularExpressions(2)lmRegularExpressions(2)le Regular Expressions  
     lsr(9)lmr(9)le R Language File  
@@ -5250,6 +5255,12 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260731] - adding and documenting @info, @pydoc, @rdoc documentation browser
+                 startup macros
+
+    - [260729] - adding mouse support for xterm comparible terminals like gnome-terminal or
+                 the terminal of MacOS
+                 
     - [260518] - Improvements in indentation, formatting and linting Fusion code
     
     - [260505] - Release v09.12.26.beta2, new platform Linux with Kernel 7 Ubuntu intel
@@ -34009,6 +34020,62 @@ $a
 
 
     lsfind-tag(2)lmfind-tag(2)le, lsstart-up(3)lmstart-up(3)le, lslua(9)lmlua(9)le.
+! 3finfo
+! 3fpydoc
+! 3frdoc
+cEcENAME cEcA
+
+
+    info - start MicroEmacs's info browser 
+    pydoc - start MicroEmacs's Python documentation browser   
+    rdoc - start MicroEmacs's R help page browser  
+    
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@info" cC<infopage>cA  
+    cDmecA "@rdoc" cC<helppage>cA  
+    cDmecA "@pydoc" cC<helptopic>cA  
+
+
+cEDESCRIPTION cA
+
+
+    The start-up files cGinfo.emfcA, cGrdoc.emfcA and cGpydoc.emfcA may be invoked
+    from the command line as to browser documenation and help pages using
+    MicroEmacs's inbuild documentation browsers for these tools and
+    programming languages.
+
+
+cEEXAMPLE cA
+
+
+    When using ME as a command line filter it is advisable to control the
+    backup command line options. Typically the backups and auto-save are
+    disabled so that no backup files are generated i.e.
+
+        mecb @info coreutils    # browse coreutils documentation page
+        mecb @rdoc mean         # browse function help page for stats::mean
+        mecb @rdoc cluster::pam # browse function help page for cluster::pam
+        mecb @pydoc argparse    # browse module help page for argparse
+        mecb @pydoc file        # browse module help page for ./file.py
+
+
+cENOTES cA
+
+
+    These command line tools allow using ME as an more sophisticated
+    replacement for the standard documentation tools in Unix platforms.
+    The functionality on Windows has not being tested.
+
+cESEE ALSO cA
+
+
+    lsme(1)lmme(1)le, lsstart-up(3)lmstart-up(3)le, lsinfo(3)lminfo(3)le, 
+    lspy-doc(3)lmpy-doc(3)le, lsr-doc(3)lmr-doc(3)le.
 ! 3 compile
 cEcENAME cEcA
 
@@ -38084,7 +38151,7 @@ $a
 cESEE ALSO cA
 
 
-    lsinfo(9)lminfo(9)le.
+    lsinfo(9)lminfo(9)le, lsinfo(3f)lminfo(3f)le.
 ! 3 gdiff
 ! 5 %gdiff-com
 cEcENAME cEcA
@@ -43890,7 +43957,7 @@ $a
     
 cESEE ALSO cA
 
-    lsr(9)lmr(9)le
+    lsrdoc(3f)lmrdoc(3f)le, lsr(9)lmr(9)le.
 ! 3 py-doc
 ! 3 py-exec
 ! 3 py-format
@@ -43987,7 +44054,7 @@ $a
     
 cESEE ALSO cA
 
-    lspy(9)lmpy(9)le.
+    lspydoc(3f)lmpydoc(3f)le, lspy(9)lmpy(9)le.
 ! 3 tcl-exec
 ! 3 tcl-format
 ! 3 tcl-lint
@@ -45351,6 +45418,46 @@ $a
     cGDefaultscA
     
        Rests the mouse configuration to the default settings.
+
+### Terminal Mouse Support
+
+    The terminal version of MicroEmacs (mec) supports mouse input in
+    xterm-compatible terminal emulators using the SGR mouse protocol.
+    This enables mouse click, drag, and scroll wheel functionality
+    directly in the terminal.
+
+    Mouse support is automatically enabled when the following conditions
+    are met:
+
+    1. The terminal is identified as xterm-compatible (e.g., xterm,
+       alacritty, kitty, wezterm, foot, tmux, screen)
+    2. The terminal is NOT a VTE-based terminal (gnome-terminal, ROXTerm,
+       xfce4-terminal) which have known compatibility issues
+
+    The SGR mouse protocol uses DECSET modes 1000 (basic mouse) and
+    1006 (SGR extended coordinates) to transmit mouse events. Mouse
+    events are parsed from the input stream using the SGR format:
+    ESC[<button;column;rowM for press events and ESC[<button;column;rowm
+    for release events.
+
+    Supported mouse actions:
+
+    - Left click: Position cursor
+    - Left drag: Select text region
+    - Middle click: Paste from PRIMARY selection
+    - Wheel up/down: Scroll window
+    - Right click: Context menu (if bound)
+
+    Mouse support can be enabled or disabled at runtime using the
+    user-setup dialog (Platform tab) or by setting the $mouse variable.
+
+    Note: On VTE-based terminals (gnome-terminal, etc.), mouse support
+    is automatically disabled even if enabled in user-setup, due to
+    these terminals not properly supporting the SGR mouse protocol.
+
+    Terminal detection can be overridden by setting the environment
+    variable ME_ENABLE_MOUSE=1 to force mouse enablement, though this
+    may result in degraded terminal behavior.
 
 
 cEFile Types  cA

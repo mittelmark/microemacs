@@ -1,0 +1,31 @@
+; -!- emf -!-
+; Copyright (C) 2025 MicroEmacs User.
+;
+; All rights reserved.
+;
+; Synopsis:    Browse R help pages in MicroEmacs
+; Authors:     MicroEmacs User
+;
+; Usage:       mec @pydoc <topic>  - Show Python help for <topic>
+;              mec @pydoc file     - Show Python help for file.py
+;              mec @pydoc          - Prompt for topic
+;
+0 define-macro start-up
+  execute-file "me"
+  delete-other-windows
+  set-variable #l0 0
+  !while &not &seq $buffer-bname "*scratch*"
+    !force file-exists $buffer-bname
+    !if &equ $result 0
+      py-doc $buffer-bname
+      delete-other-windows
+      set-variable #l0 1
+      !goto end
+    !endif
+  !done
+*end
+  !if &equ #l0 0
+    py-doc
+    delete-other-windows
+  !endif
+!emacro

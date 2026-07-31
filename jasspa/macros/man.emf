@@ -25,7 +25,7 @@
     beginning-of-buffer
     set-mark
     end-of-buffer
-    delete-region
+    -1 kill-region
 
     ; Run man and pipe output into buffer
     0 pipe-shell-command &spr "man %s 2>&1 | col -b" #l0 $buffer-bname
