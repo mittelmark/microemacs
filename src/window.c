@@ -844,6 +844,7 @@ windowScrollLeft (int f, int n)
 int
 windowSetScrollWithMouse (int f, int n)
 {
+#if MEOPT_SCROLL
     long mousePos;                      /* Curent mouse position */
     long screenTopRow;                  /* Top row of the screen */
     long currentTopRow;                 /* Current buffer top row. */
@@ -851,7 +852,7 @@ windowSetScrollWithMouse (int f, int n)
     static long startMouse;             /* Starting mouse position */
     static long mouseRatio;             /* Ratio of mouse movement to lines */
     static long maxTopRow;              /* The maximum top row */
-    
+
     /* Has this window got a bar present ?? */
     if ((frameCur->windowCur->vertScrollBarMode & WMSCROL) == 0)
         return meFALSE;                   /* No quit and bitch about it */
@@ -959,8 +960,13 @@ windowSetScrollWithMouse (int f, int n)
     /* Go and scroll - simple signed difference of the current top line and the
      * target top line -  done when the scroll has finished - simple !! */
     return (windowScrollDown (meTRUE, (int)(screenTopRow - currentTopRow)));
+#else
+    (void)f;
+    (void)n;
+    return meFALSE;                       /* Scroll bars not available */
+#endif /* MEOPT_SCROLL */
 }
-#endif
+#endif /* MEOPT_MOUSE */
 
 /*
  * This command makes the current window the only window on the screen. Bound

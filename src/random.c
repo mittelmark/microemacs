@@ -2997,11 +2997,15 @@ setCursorToMouse(int f, int n)
     }
     
     /* Handle the menu line */
+#if MEOPT_OSD
     if(row < frameCur->menuDepth)
     {
         mouse_pos = MIMENU;
         return meTRUE ;
     }
+#else
+    (void)frameCur; /* unused in ne */
+#endif
     
     /* Locate the window associated with the mouse position. */
     col = mouse_X ;
@@ -3036,11 +3040,12 @@ setCursorToMouse(int f, int n)
     col -= wp->frameColumn ;                 /* Normalise the column count */
     if (col >= wp->textWidth)
     {
+#if MEOPT_SCROLL
         /* Iterate down the scroll positions */
         for (ii = 0; ii <= (WCVSBML-WCVSBSPLIT); ii++)
             if (row < wp->vertScrollBarPos[ii])
                 break;
-        
+
         if (col > wp->textWidth) /* Report if in the second column */
             mouse_pos = MICOLUNM2;
         else
@@ -3052,6 +3057,9 @@ setCursorToMouse(int f, int n)
             mouse_pos |= MISBML;        /* Yes - report corner */
         else
             mouse_pos |= MIDIVIDER;     /* Report divider */
+#else
+        mouse_pos = MIDIVIDER;
+#endif
         return (meTRUE);                  /* Done */
     }
     

@@ -21,7 +21,7 @@ mec:
 	cd src && make -f linux32gcc.gmk BTYP=c
 
 mew:
-	cd src && make -f linux32gcc.gmk BTYP=w			
+	cd src && make -f linux32gcc.gmk BTYP=w		    
 
 mecw:
 	cd src && make -f linux32gcc.gmk BTYP=cw			
@@ -34,6 +34,9 @@ mewb: bfs/bin mew
 
 mecwb: bfs/bin mecw
 	./bfs/bfs -a ./src/.linux32gcc-release-mecw/mecw -o $(RELEASE)-mecwb.bin ./jasspa
+
+nec:
+	cd src && make -f linux32gcc.gmk BCOR=ne BTYP=c
 
 release: $(app)
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin

@@ -750,6 +750,7 @@ mlHandleMouse(meUByte *inpBuf, int inpBufSz, int compOff)
     {
         if (col >= frameCur->windowCur->textWidth)
         {
+#if MEOPT_SCROLL
             /* only do scroll bar if on pick and bars are enabled */
             if((inpBuf == NULL) && (frameCur->windowCur->vertScrollBarMode & WMSCROL))
             {
@@ -767,6 +768,9 @@ mlHandleMouse(meUByte *inpBuf, int inpBufSz, int compOff)
                     windowScrollDown(0,1) ;
                 update(meTRUE) ;
             }
+#else
+            (void)inpBuf; /* unused */
+#endif
         }
         else
         {
