@@ -285,7 +285,7 @@
   [count-words(2)](count-words(2)) (esc C-c) Count the number of words in a region  
   [exchange-point-and-mark(2)](exchange-point-and-mark(2)) (C-x C-x) Exchange the cursor and marked
   position  
-  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
+  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to an alpha marked location  
   [kill-rectangle(2)](kill-rectangle(2)) (esc C-w) Delete a column of text  
   [kill-region(2)](kill-region(2)) (C-w) Delete all characters in the marked region  
   [set-alpha-mark(2)](set-alpha-mark(2)) (C-x C-a) Place an alphabetic marker in the buffer  
@@ -2039,8 +2039,8 @@
   [global-unbind-key(2)](global-unbind-key(2)) (esc C-k) Unbind a key from a named command or macro  
   [go-exec(3)](go-exec(3)) Executes the current Go program with or without command line arguments  
   [go-format(3)](go-format(3)) Format Go source code using the `go fmt` command  
-  [go-lint(3)](go-lint(3))  Check a Go soruce code file for possible  problems using the program `go vet`  
-  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
+  [go-lint(3)](go-lint(3))  Check a Go source code file for possible  problems using the program `go vet`  
+  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to an alpha marked location  
   [goto-line(2)](goto-line(2)) (esc g) Move the cursor to specified line  
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
   [goto-position(2)](goto-position(2)) Restore a stored position  
@@ -2404,7 +2404,7 @@
   [global-bind-key(2)](global-bind-key(2)) (esc k) Bind a key to a named command or macro  
   [global-mode(2)](global-mode(2)) (esc m) Change a global buffer mode  
   [global-unbind-key(2)](global-unbind-key(2)) (esc C-k) Unbind a key from a named command or macro  
-  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
+  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to an alpha marked location  
   [goto-line(2)](goto-line(2)) (esc g) Move the cursor to specified line  
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
   [goto-position(2)](goto-position(2)) Restore a stored position  
@@ -2657,7 +2657,7 @@
   [git-tag(3)](git-tag(3)) MicroEmacs Git interface - view and add Git tags  
   [go-exec(3)](go-exec(3)) Executes the current Go program with or without command line arguments  
   [go-format(3)](go-format(3)) Format Go source code using the `go fmt` command  
-  [go-lint(3)](go-lint(3))  Check a Go soruce code file for possible  problems using the program `go vet`  
+  [go-lint(3)](go-lint(3))  Check a Go source code file for possible  problems using the program `go vet`  
   [grep(3)](grep(3)) Search a file for a pattern  
   [ifill-paragraph(3)](ifill-paragraph(3)) (esc q) Format a paragraph  
   [indent-decrease(3)](indent-decrease(3)) Decrease the line indentation  
@@ -3699,8 +3699,8 @@
   [go(9)](go(9)) Go programming language  
   [go-exec(3)](go-exec(3)) Executes the current Go program with or without command line arguments  
   [go-format(3)](go-format(3)) Format Go source code using the `go fmt` command  
-  [go-lint(3)](go-lint(3))  Check a Go soruce code file for possible  problems using the program `go vet`  
-  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to a alpha marked location  
+  [go-lint(3)](go-lint(3))  Check a Go source code file for possible  problems using the program `go vet`  
+  [goto-alpha-mark(2)](goto-alpha-mark(2)) (C-x a) Move the cursor to an alpha marked location  
   [goto-line(2)](goto-line(2)) (esc g) Move the cursor to specified line  
   [goto-matching-fence(2)](goto-matching-fence(2)) (esc C-f) Move the cursor to matching fence  
   [goto-position(2)](goto-position(2)) Restore a stored position  
@@ -4151,7 +4151,7 @@
      __Steven Phillips__ - _Current Maintainer (since 1988)_  
      __Detlef Groth__ - _Current Maintainer (since 2020)_       
 
-  Additional contributions have been made as follows, in chrononlogical
+  Additional contributions have been made as follows, in chronological
   order:-
 
      Sebastian Bojers
@@ -13962,7 +13962,7 @@ $a
   display. When __change-font__ is invoked with no arguments, or a negative
   argument then a font dialog is presented to the user to allow the font to
   be selected. The current font is not changed if a negative argument is
-  given, in both cases the variable [$result(5)]($result(5)) is set the the user selected
+  given, in both cases the variable [$result(5)]($result(5)) is set the user selected
   font. The format of the returned string is "`OWwwwwhhhhhFontName`", where:-
 
   __O__
@@ -14167,7 +14167,7 @@ $a
   [.change-font.sz-font(5)](.change-font.sz-font(5)) and [.change-font.sz-size(5)](.change-font.sz-size(5))  are  used to cycle
   through two standard fonts, Adobe courier and  lucidatypewriter.  The user
   can define  their own short fonts using just the family and the weight and
-  give the their list of available sizes through which they like to cycle through. 
+  give their list of available sizes through which they like to cycle through. 
 
 ## EXAMPLE
 
@@ -15375,7 +15375,7 @@ $a
      of `v` indents both the current line and next time onwards (similar to
      `u`).
 
-  >  Refer the the _type_=`t` for an example of indentation switching.
+  >  Refer the _type_=`t` for an example of indentation switching.
 
 
 ## EXAMPLE
@@ -16993,7 +16993,7 @@ $a
 ## NAME
 
 
-  goto-alpha-mark - Move the cursor to a alpha marked location
+  goto-alpha-mark - Move the cursor to an alpha marked location
 $a
 
 
@@ -20846,7 +20846,7 @@ $a
   >  When this bit is set windows whose [$window-flags(5)]($window-flags(5)) are set to be
      ignored by this command are not skipped. The setting of bit `0x010` of a
      windows __$window-flags__ will make the default action of this command
-     skip it which means the the command may not simply select the next
+     skip it which means the command may not simply select the next
      window but the next window without this flag set. Setting this bit of
      the numeric argument will force the command to always select the next
      window.
@@ -22144,7 +22144,7 @@ $a
   before saving so that the whole buffer is saved and restored when saving
   is complete
 
-  If [auto(2m)](auto(2m)) mode is enabled the the file is written out in the style
+  If [auto(2m)](auto(2m)) mode is enabled the file is written out in the style
   indicated by modes [cr(2m)](cr(2m)), [lf(2m)](lf(2m)) and [ctrlz(2m)](ctrlz(2m)). Otherwise the file is
   written out in the style on the current platform.
 
@@ -23295,7 +23295,7 @@ $a
 
   __0x200__
  
-  >  No wait option, when set the the command is run without waiting for
+  >  No wait option, when set the command is run without waiting for
      any completion status. This allows processes to be run and then
      forgotten about e.g. a Word processor, Adobe Acrobat reader etc.
 
@@ -24355,7 +24355,7 @@ $a
   `0`
  
   >  Resets the screen update disable count to zero, useful to remember
-     when the the disable feature has been used incorrectly.
+     when the disable feature has been used incorrectly.
 
   `1`
  
@@ -25825,7 +25825,7 @@ $a
   been generated using __kill-rectangle__) into the current buffer in a column
   fashion. That is to say that the first line of text in the kill buffer is
   inserted into the current line of text in the current buffer from the
-  current cursor column, the cursor is then moved the the next line and
+  current cursor column, the cursor is then moved the next line and
   placed at the same column. The process is then repeated for the second
   line of text in the kill buffer etc.
 
@@ -32892,7 +32892,7 @@ $a
 
 
   Command variables are set in the context of a command or macro and are
-  similar to buffer variables. `.var` retrieves the the current macros command
+  similar to buffer variables. `.var` retrieves the current macros command
   variable whereas `.hilight.var` will get command __hilight__ command variable.
 
   It is important to understand that these variables are stored with the
@@ -35902,7 +35902,7 @@ $a
     
   __insert-macro__ is a macro defined in `etfinsrt.emf`.
 
-  [magic(2m)](magic(2m)) mode is always used to perform the the search/replace so the
+  [magic(2m)](magic(2m)) mode is always used to perform the search/replace so the
   replace strings should be appropriate for __magic__.
 
 
@@ -37255,7 +37255,7 @@ $a
 
   __up__, __down__, __left__, __right__
   
-  >  The cursor keys (or any other keys bound the the same commands) will
+  >  The cursor keys (or any other keys bound the same commands) will
      move the cursor, drawing in the current mode.
 
   __d__
@@ -40769,7 +40769,7 @@ $a
   >  Defines the text labels that are added to the setup menu, the label is
      associated with the enable button.
 
-  To add a new feature switch then the the character flags to hold the state
+  To add a new feature switch then the character flags to hold the state
   are are defined with the __.fhook-XXX.setup-flags__ and
   __.fhook-XXX.setup-labels__. The characters defined with the __setup-flags__
   should be added to __.fhook-XXX.setup-mask__. If the option is to be enabled
@@ -43409,7 +43409,7 @@ $a
   
   >  Defines the _options_ that are specified on the command line, the
      default options may also be defined with the __file-setup(3)__ command
-     invoked from the command line or from the the __Tools__ menu. The
+     invoked from the command line or from the __Tools__ menu. The
      _find-options_ are defined as follows:
 
   >  __-2__
@@ -43635,7 +43635,7 @@ $a
   
   >  Defines the _options_ that are specified on the command line, the
      default options may also be defined with the [find-setup(3)](find-setup(3)) command
-     invoked from the command line or from the the __Tools__ menu. The
+     invoked from the command line or from the __Tools__ menu. The
      _grep-options_ are defined as follows:
 
   >  __-a__
@@ -43826,7 +43826,7 @@ $a
 ## DESCRIPTION
 
 
-  __replace-string-in-files__ performs a search for a _from-pattern_ and and
+  __replace-string-in-files__ performs a search for a _from-pattern_ and
   replaces the string with _to-pattern_ in all files that match _file-mask_ in
   the current directory (or from _starting-path_) using built in MicroEmacs
   2009 constructs rather than relying on any external executables such as
@@ -43839,7 +43839,7 @@ $a
   
   >  Defines the _options_ that are specified on the command line, the
      default options may also be defined with the [find-setup(3)](find-setup(3)) command
-     invoked from the command line or from the the __Tools__ menu. The
+     invoked from the command line or from the __Tools__ menu. The
      _find-options_ are defined as follows:
 
   >  __-2__
@@ -48671,7 +48671,7 @@ $a
    
   >  The MicroEmacs language name must be found, this can be done by first
      using [user-setup(3)](user-setup(3)) or [spell-buffer(3)](spell-buffer(3)) to ensure that the current
-     language is set the the require one and then running __describe-word__.
+     language is set the require one and then running __describe-word__.
      The command will probably fail, but before it does it will set the
      variable `.describe-word.lang`, use the command [describe-variable(2)](describe-variable(2)) to
      get the value of this variable, this value is the internal language
@@ -49092,7 +49092,7 @@ $a
   `Paper Size`
   
   >  Defines the size of the printer paper, selecting this item produces a
-     pop down menu listing of all available paper sizes. If the the Windows
+     pop down menu listing of all available paper sizes. If the Windows
      printer driver is being used this field cannot be selected and the
      __Edit__ button is used instead.
 
@@ -51456,7 +51456,7 @@ $a
 
   If no value is specified then default value is 0 and __h__ can not be
   specified. The _default_ value is returned when the user enters an empty
-  string. If the _initial_ string is specified the the input buffer will be
+  string. If the _initial_ string is specified the input buffer will be
   initialized to the given string instead of and empty one.
 
   The flag __h__ specifies what type of data is to be entered, this specifies
@@ -52621,7 +52621,7 @@ $a
 
   __&find__ searches for a named file _<basename><extension>_ on the MicroEmacs
   2009 search path defined by the variable [$search-path(5)]($search-path(5)), initialized by
-  the system of from the the environment variables [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)) etc.
+  the system of from the environment variables [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)) etc.
 
   Each path component defined in __$search-path__ is prepended to the
   constructed file name and it's existence is tested. If the file exists,
@@ -52639,7 +52639,7 @@ $a
      may be specified if no extension is required.
 
   __&which__ searches for the given executable program _<progname>_ on the system
-  program search path defined the the environment variable __$PATH__.
+  program search path defined the environment variable __$PATH__.
 
 
 ## USAGE
@@ -55136,7 +55136,7 @@ $a
 
   `0x10`
   
-  >  Scroll method 1 will scroll the current line to the the top of the
+  >  Scroll method 1 will scroll the current line to the top of the
      window whenver the current line is moved off the screen using
      [backward-line(2)](backward-line(2)) and to the bottom of the window when [forward-line(2)](forward-line(2))
      is used. This creates the effect of a smooth scroll.
@@ -55746,7 +55746,7 @@ $a
 
   >  If the file is not in view mode MicroEmacs attempts to check the file
      back into RCS using either __$rcs-ci-com__ (if the RCS file already
-     exists) or the the __$rcs-cif-com__ (RCS __C__heck __I__n __F__irst __COM__mand). The "`%f`"
+     exists) or the __$rcs-cif-com__ (RCS __C__heck __I__n __F__irst __COM__mand). The "`%f`"
      is again used for the file name, the "`%m`" can also be used to get a
      comment from the user at check in time which will be inserted (without
      quotes) into the __$rcs-ci-com__ command line. For example, one possible
@@ -56690,7 +56690,7 @@ $a
 
   __0x1000__
   
-  >  If this bit set, the then execution of the [tab(2)](tab(2)) command (bound to
+  >  If this bit set, then execution of the [tab(2)](tab(2)) command (bound to
      `tab`) always checks and adjusts the indentation of the current line
      when the current buffer has an [indentation](indent(2)) method. If the bit is clear
      then the `tab` may only checks the indentation when the cursor is in
@@ -56818,7 +56818,7 @@ $a
 
   __0x200000__
   
-  >  If this bit set, the then execution of the [tab(2)](tab(2)) command (bound to
+  >  If this bit set, then execution of the [tab(2)](tab(2)) command (bound to
      `tab`) checks and adjusts the indentation of the current line when the
      cursor is in column zero and current buffer has an [indentation](indent(2)) method.
      The setting of this bit has no effect if bit __0x1000__ is set. If this
@@ -58190,7 +58190,7 @@ $a
 
   The filter takes the form of a [regex](RegularExpressions(2)). The filter string should also
   contain the path to the required directory, the path many not contain
-  wild-cards. If no path is specified the the path of the current buffers
+  wild-cards. If no path is specified the path of the current buffers
   file name is taken, if the current buffer has no file name then the
   current working directory is used.
 
@@ -60800,7 +60800,7 @@ $a
   When the help system is invoked with the tag then the text is displayed.
   There are 2 types of internal command lines, lines starting with a '`|`'
   indicate that the following line should only be displayed if the requested
-  help page is _<helpId>_, where _<helpId>_ is the the name used in the
+  help page is _<helpId>_, where _<helpId>_ is the name used in the
   _<helpTag>_. This is a useful mechanism for pages with multiple _<helpTag>_s.
 
   Lines which contain just "`$?`" are MicroEmacs command lines where `?` can be:
@@ -61282,7 +61282,7 @@ $a
 ## NOTES
 
 
-  The __.Xdefaults__ file is typically read once at login and and any changes to
+  The __.Xdefaults__ file is typically read once at login and any changes to
   the files are not enacted until the Window Manager is re-started or a new
   login session commences.
 
@@ -65483,7 +65483,7 @@ $a
   the paragraph, each paragraph is effectively independent with respect to
   determining the indentation level.
 
-  The indentation level is defined to be the the column of the first
+  The indentation level is defined to be the column of the first
   non-white-space character of the first line divided by the _Indent_ _Width_
   (see indent-setup) rounded up. For example this the first non-white of
   this paragraph is the 'F' at column 4, with an indent width of 4 (the
@@ -66898,7 +66898,7 @@ $a
 
   > __%fhook-rust-exec__ - The command to execute the current Rust file, default
        is set to _"rustc %f -o %b && ./%b"_ where %f represents the file name 
-       and %b the the filename without extension 
+       and %b the filename without extension 
   > __%fhook-rust-format__ - The command to format current Rust file, default  
        is set to _"rustfmt  %f"_ where %f represents the file name  
   > __%fhook-rust-lint__ - The command to check/lint the current Rust file, 
@@ -67203,7 +67203,7 @@ $a
   __Folding and Information Hiding__
   
   >  Generic folding is enabled within the Dot files. The folds occur about the
-     subgraph opening brace and and the closing curly brace of this subgraph. 
+     subgraph opening brace and the closing curly brace of this subgraph. 
      The subgraph keyword and the closing curly brace should be both the first
      none whitespace character on their line.
 
