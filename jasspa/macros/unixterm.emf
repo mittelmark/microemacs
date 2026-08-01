@@ -62,8 +62,8 @@ set-variable .change-font.xfontsel 0
     translate-key "´" "'"
   !endif
   
-  ; might be called like this:
-  define-macro change-font-size
+ ; might be called like this:
+ define-macro change-font-size
     set-variable #l0 1
     set-variable .new-size .change-font.sz-size
     set-variable .old-size .change-font.sz-size
@@ -358,3 +358,82 @@ set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
 !if &and %unixterm-auto-color &gre %unixterm-color-count 16 &not &band $system 0x008
     set-variable $system &bor $system 0x008
 !endif
+
+define-macro copy-region-clipboard
+  ; Copy the region to the kill buffer
+  copy-region
+  !if &not $status
+    ml-write "[No region selected]"
+    !abort
+  !endif
+  
+  ; Save the current buffer name for later
+  set-variable #l0 $buffer-fname
+  set-variable $debug 1
+  ; Create a temp buffer to hold the clipboard content
+  !force delete-buffer "*clipboard-tmp*"
+  find-buffer "*clipboard-tmp*"
+  yank
+  
+  ; Write to a temp file
+  set-variable #l1 $temp-name
+  set-variable $buffer-fname #l1
+  !force !force 0 write-buffer #l1
+  !if &not $status
+    ml-write "[Failed to create temp file]"
+    delete-buffer "*clipboard-tmp*"
+    set-variable $buffer-fname #l0
+    !abort
+  !endif
+  
+  ; Check that temp file exists
+  !if &not &exi #l1
+    ml-write &cat "[Temp file not found: " #l1 "]"
+    delete-buffer "*clipboard-tmp*"
+    set-variable $buffer-fname #l0
+    !abort
+  !endif
+  
+  ; Determine which clipboard tool to use
+  set-variable #l2 ""
+  set-variable #l3 &which "wl-copy"
+  !if &seq #l3 "ERROR"
+    set-variable #l3 &which "xclip"
+    !if &seq #l3 "ERROR"
+      set-variable #l3 &which "pbcopy"
+      !if &not &seq #l3 "ERROR"
+        set-variable #l2 "pbcopy <"
+      !endif
+    !else
+      set-variable #l2 "xclip -selection clipboard -i"
+    !endif
+  !else
+    ; or "wl-copy < <(cat filename) to avoid isses with trainling newlines
+    set-variable #l2 "wl-copy <"
+  !endif
+  
+  ; Pipe the temp file to the clipboard tool
+  !if &seq #l2 ""
+    ml-write "[No clipboard tool found]"
+    !force delete-buffer "*clipboard-tmp*"
+    set-variable $buffer-fname #l0
+    !return
+  !endif
+  set-variable #l4 &spr "%s %s" #l2 #l1
+  shell-command #l4
+  
+  !if $status
+    ml-write &cat "[Copied to clipboard via " #l2 "]"
+  !else
+    ml-write &cat "[Clipboard copy failed: " #l2 "]"
+  !endif
+  
+  ; Clean up
+  shell-command &cat &cond &band $system 0x100 "erase " "rm " #l1
+  delete-buffer "*clipboard-tmp*"
+  set-variable $buffer-fname #l0
+!emacro
+
+; Bind to C-c c
+;global-bind-key copy-region-clipboard "C-c c"
+  
