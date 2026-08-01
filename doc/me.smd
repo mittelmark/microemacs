@@ -796,7 +796,6 @@
   [%http-flags(5)](%http-flags(5)) Configure the HTTP console  
   [%http-proxy-addr(5)](%http-proxy-addr(5)) Set HTTP proxy server address  
   [%http-proxy-port(5)](%http-proxy-port(5)) Set HTTP proxy server port  
-  [Dialogs and Menus](Dialogs and Menus)  
 !! me-id: amicr015
 !   Dialogs and Menus
 ## DIALOGS AND MENUS
@@ -1550,76 +1549,6 @@
   [$show-modes(5)]($show-modes(5)) Select buffer modes to display  
   [$window-mode-line(5)]($window-mode-line(5)) Window mode line position  
   [$window-scroll-bar(5)]($window-scroll-bar(5)) Window scroll bar (or separator) position  
-!! me-id: amicr028
-!   MicroEmacs Files
-## FILE HANDLING COMMANDS
-
-
-  Commands to read, write and interact with files:
-
-
-## Commands 
-
-
-  [append-buffer(2)](append-buffer(2)) Write contents of buffer to end of named file  
-  [browse(3)](browse(3)) Browse a file or buffer in view mode  
-  [change-file-name(2)](change-file-name(2)) (C-x n) Change the file name of the current buffer  
-  [directory-tree(2)](directory-tree(2)) Draw the file directory tree  
-  [file-attrib(3)](file-attrib(3)) Set the current buffers system file attributes  
-  [file-browser(3)](file-browser(3)) (f10) Browse the file system  
-  [file-browser-close(3)](file-browser-close(3)) Close the file-browser  
-  [file-browser-swap-buffers(3)](file-browser-swap-buffers(3)) Swap between file-browser windows  
-  [file-exec(3)](file-exec(3)) execute the current file  
-  [file-exists(3)](file-exists(3)) checks if the given file exists    
-  [file-format(3)](file-format(3)) format the buffer using a formatting tool  
-  [file-lint(3)](file-lint(3)) use a linting tool for the current file  
-  [file-op(2)](file-op(2)) File system operations command  
-  [file-tool-setup(3)](file-tool-setup(3)) Define file browser tools  
-  [find-bfile(3)](find-bfile(3)) (C-x 9) Load a file as binary data  
-  [find-cfile(3)](find-cfile(3)) Load a crypted file  
-  [find-file(2)](find-file(2)) (C-x C-f) Load a file  
-  [find-zfile(3)](find-zfile(3)) Compressed file support  
-  [ftp(3)](ftp(3)) Initiate an FTP connection  
-  [insert-file(2)](insert-file(2)) (C-x C-i) Insert file into current buffer  
-  [insert-file-name(2)](insert-file-name(2)) (C-x C-y) Insert filename into current buffer  
-  [page-bfile(3)](page-bfile(3)) Load a large binary file as binary data  
-  [page-file(3)](page-file(3)) Load a large file in page mode  
-  [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to file  
-  [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
-  [reread-all(3)](reread-all(3)) Reload all files  
-  [reread-file(3)](reread-file(3)) Reload the current buffer's file  
-  [save-all(3)](save-all(3)) Save all modified files (with query)  
-  [save-buffer(2)](save-buffer(2)) (C-x C-s) Save contents of changed buffer to file  
-  [save-some-buffers(2)](save-some-buffers(2)) Save contents of all changed buffers to file (with query)  
-  [set-encryption-key(2)](set-encryption-key(2)) (esc e) Define the encryption key  
-  [suspend-emacs(2)](suspend-emacs(2)) Suspend editor and place in background  
-  [view-file(2)](view-file(2)) (C-x C-v) Load a file read only  
-  [watch(3)](watch(3)) Monitor a changing file  
-  [watch-reset(3)](watch-reset(3)) Reset the watch command counters  
-  [watch-time(3)](watch-time(3)) Change the watch command poll time  
-  [write-buffer(2)](write-buffer(2)) (C-x C-w) Write contents of buffer to named (new) file  
-  [write-region(3)](write-region(3)) Write contents of region to named (new) file  
-  [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
-
-
-## Variables 
-
-
-  [$MEINSTALLPATH(5)]($MEINSTALLPATH(5)) MicroEmacs system macros search path  
-  [$MEPATH(5)]($MEPATH(5)) MicroEmacs search path  
-  [$MEUSERPATH(5)]($MEUSERPATH(5)) MicroEmacs user directory  
-  [$auto-time(5)]($auto-time(5)) Automatic buffer save time  
-  [$file-ignore(5)]($file-ignore(5)) File extensions to ignore  
-  [$home(5)]($home(5)) Users 'home' directory location  
-  [$kept-versions(5)]($kept-versions(5)) Number of backups to be kept  
-  [$search-path(5)]($search-path(5)) MicroEmacs search path  
-  [$timestamp(5)]($timestamp(5)) Time stamp string  
-  [$user-name(5)]($user-name(5)) MicroEmacs user name  
-  [$user-path(5)]($user-path(5)) MicroEmacs user directory  
-  [%ftp-flags(5)](%ftp-flags(5)) Configure the FTP console  
-  [%http-flags(5)](%http-flags(5)) Configure the HTTP console  
-  [%http-proxy-addr(5)](%http-proxy-addr(5)) Set HTTP proxy server address  
-  [%http-proxy-port(5)](%http-proxy-port(5)) Set HTTP proxy server port  
 !! me-id: amicr029
 !   MicroEmacs - Games
 ## GAMES
@@ -46025,7 +45954,7 @@ $a
   
   >  Rests the mouse configuration to the default settings.
 
-### Terminal Mouse Support
+## Terminal Mouse Support
 
   The terminal version of MicroEmacs (mec) supports mouse input in
   xterm-compatible terminal emulators using the SGR mouse protocol.

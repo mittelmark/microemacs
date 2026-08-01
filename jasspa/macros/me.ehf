@@ -896,7 +896,6 @@ Miscellaneous Information
     ls%http-flags(5)lm%http-flags(5)le Configure the HTTP console  
     ls%http-proxy-addr(5)lm%http-proxy-addr(5)le Set HTTP proxy server address  
     ls%http-proxy-port(5)lm%http-proxy-port(5)le Set HTTP proxy server port  
-    lsDialogs and MenuslmDialogs and Menusle  
 !   Dialogs and Menus
 cEcEDIALOGS AND MENUS cEcA
 
@@ -1637,75 +1636,6 @@ Miscellaneous Information
     ls$show-modes(5)lm$show-modes(5)le Select buffer modes to display  
     ls$window-mode-line(5)lm$window-mode-line(5)le Window mode line position  
     ls$window-scroll-bar(5)lm$window-scroll-bar(5)le Window scroll bar (or separator) position  
-!   MicroEmacs Files
-cEcEFILE HANDLING COMMANDS cEcA
-
-
-    Commands to read, write and interact with files:
-
-
-cECommands  cA
-
-
-    lsappend-buffer(2)lmappend-buffer(2)le Write contents of buffer to end of named file  
-    lsbrowse(3)lmbrowse(3)le Browse a file or buffer in view mode  
-    lschange-file-name(2)lmchange-file-name(2)le (C-x n) Change the file name of the current buffer  
-    lsdirectory-tree(2)lmdirectory-tree(2)le Draw the file directory tree  
-    lsfile-attrib(3)lmfile-attrib(3)le Set the current buffers system file attributes  
-    lsfile-browser(3)lmfile-browser(3)le (f10) Browse the file system  
-    lsfile-browser-close(3)lmfile-browser-close(3)le Close the file-browser  
-    lsfile-browser-swap-buffers(3)lmfile-browser-swap-buffers(3)le Swap between file-browser windows  
-    lsfile-exec(3)lmfile-exec(3)le execute the current file  
-    lsfile-exists(3)lmfile-exists(3)le checks if the given file exists    
-    lsfile-format(3)lmfile-format(3)le format the buffer using a formatting tool  
-    lsfile-lint(3)lmfile-lint(3)le use a linting tool for the current file  
-    lsfile-op(2)lmfile-op(2)le File system operations command  
-    lsfile-tool-setup(3)lmfile-tool-setup(3)le Define file browser tools  
-    lsfind-bfile(3)lmfind-bfile(3)le (C-x 9) Load a file as binary data  
-    lsfind-cfile(3)lmfind-cfile(3)le Load a crypted file  
-    lsfind-file(2)lmfind-file(2)le (C-x C-f) Load a file  
-    lsfind-zfile(3)lmfind-zfile(3)le Compressed file support  
-    lsftp(3)lmftp(3)le Initiate an FTP connection  
-    lsinsert-file(2)lminsert-file(2)le (C-x C-i) Insert file into current buffer  
-    lsinsert-file-name(2)lminsert-file-name(2)le (C-x C-y) Insert filename into current buffer  
-    lspage-bfile(3)lmpage-bfile(3)le Load a large binary file as binary data  
-    lspage-file(3)lmpage-file(3)le Load a large file in page mode  
-    lspage-file-save-buffer(3)lmpage-file-save-buffer(3)le (C-x C-s) Save contents of a page mode buffer to file  
-    lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
-    lsreread-all(3)lmreread-all(3)le Reload all files  
-    lsreread-file(3)lmreread-file(3)le Reload the current buffer's file  
-    lssave-all(3)lmsave-all(3)le Save all modified files (with query)  
-    lssave-buffer(2)lmsave-buffer(2)le (C-x C-s) Save contents of changed buffer to file  
-    lssave-some-buffers(2)lmsave-some-buffers(2)le Save contents of all changed buffers to file (with query)  
-    lsset-encryption-key(2)lmset-encryption-key(2)le (esc e) Define the encryption key  
-    lssuspend-emacs(2)lmsuspend-emacs(2)le Suspend editor and place in background  
-    lsview-file(2)lmview-file(2)le (C-x C-v) Load a file read only  
-    lswatch(3)lmwatch(3)le Monitor a changing file  
-    lswatch-reset(3)lmwatch-reset(3)le Reset the watch command counters  
-    lswatch-time(3)lmwatch-time(3)le Change the watch command poll time  
-    lswrite-buffer(2)lmwrite-buffer(2)le (C-x C-w) Write contents of buffer to named (new) file  
-    lswrite-region(3)lmwrite-region(3)le Write contents of region to named (new) file  
-    lszfile-setup(3)lmzfile-setup(3)le Compressed file support setup  
-
-
-cEVariables  cA
-
-
-    ls$MEINSTALLPATH(5)lm$MEINSTALLPATH(5)le MicroEmacs system macros search path  
-    ls$MEPATH(5)lm$MEPATH(5)le MicroEmacs search path  
-    ls$MEUSERPATH(5)lm$MEUSERPATH(5)le MicroEmacs user directory  
-    ls$auto-time(5)lm$auto-time(5)le Automatic buffer save time  
-    ls$file-ignore(5)lm$file-ignore(5)le File extensions to ignore  
-    ls$home(5)lm$home(5)le Users 'home' directory location  
-    ls$kept-versions(5)lm$kept-versions(5)le Number of backups to be kept  
-    ls$search-path(5)lm$search-path(5)le MicroEmacs search path  
-    ls$timestamp(5)lm$timestamp(5)le Time stamp string  
-    ls$user-name(5)lm$user-name(5)le MicroEmacs user name  
-    ls$user-path(5)lm$user-path(5)le MicroEmacs user directory  
-    ls%ftp-flags(5)lm%ftp-flags(5)le Configure the FTP console  
-    ls%http-flags(5)lm%http-flags(5)le Configure the HTTP console  
-    ls%http-proxy-addr(5)lm%http-proxy-addr(5)le Set HTTP proxy server address  
-    ls%http-proxy-port(5)lm%http-proxy-port(5)le Set HTTP proxy server port  
 !   MicroEmacs - Games
 cEcEGAMES cEcA
 
@@ -45419,7 +45349,7 @@ $a
     
        Rests the mouse configuration to the default settings.
 
-### Terminal Mouse Support
+cETerminal Mouse Support cA
 
     The terminal version of MicroEmacs (mec) supports mouse input in
     xterm-compatible terminal emulators using the SGR mouse protocol.
