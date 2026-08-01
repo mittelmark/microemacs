@@ -3,7 +3,7 @@
 ;  Created By    : Detlef Groth, University of Potsdam
 ;  Author        : Detlef Groth, University of Potsdam
 ;  Created       : Wed Sep 25 15:42:35 2024
-;  Last Modified : <241226.0942>
+;  Last Modified : <260801.0708>
 ;
 ;  Description   : Documentation viewer within MicroEmacs for
 ;                  Python  
@@ -55,7 +55,11 @@ define-macro py-doc
   !if &not $status
     set-variable #l0 @ml00 "Python help on"
   !endif
-  0 pipe-shell-command &spr "LANG=en_US pydoc %s" #l0 "*py-doc*"
+  !if &seq &which "pydoc3" ""
+    0 pipe-shell-command &spr "LANG=en_US pydoc %s" #l0 "*py-doc*"
+  !else
+    0 pipe-shell-command &spr "LANG=en_US pydoc3 %s" #l0 "*py-doc*"
+  !endif
   -1 buffer-mode "view"
   beginning-of-buffer
   3 kill-line
