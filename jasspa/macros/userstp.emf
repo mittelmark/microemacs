@@ -633,6 +633,9 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\} Termca\Hp Color" 0x04 user-set-system
         osd .osd.user-plat 340 "fh" "          "
         osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\} Use \HFonts" 0x10 user-set-system
+        osd .osd.user-plat 360 "fh" ""
+        osd .osd.user-plat 417 "fh" "      "
+        osd .osd.user-plat 420 "Ctfxp" &cat .osd.checkbox-chars "\} Use Clipbo\Hard" 0x2000000 user-set-system
     !else
         !if .change-font.xfontsel
             osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
