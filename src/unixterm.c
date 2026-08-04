@@ -5946,22 +5946,69 @@ meSetIconState (Display *display, Window window)
  * console-only (no X11/Wayland clipboard support).
  *
  * TTsetClipboard pipes the kill buffer to an external clipboard tool:
+ *   - clip.exe (WSL)
+ *   - clip.exe (Cygwin)
  *   - xclip (X11)
  *   - wl-copy (Wayland)
  *   - pbcopy (macOS)
  */
+
+#include <sys/utsname.h>
+
+/* Detect if running under Windows Subsystem for Linux (WSL).
+ * Returns 1 if WSL, 0 otherwise.
+ * Detection uses uname() - WSL1 kernel ends with "-Microsoft",
+ * WSL2 kernel ends with "microsoft-standard-WSL2".
+ */
+static int
+TTisWSL(void)
+{
+    static int wslDetected = -1;  /* -1=not checked, 0=no, 1=yes */
+    struct utsname buf;
+
+    if(wslDetected >= 0)
+        return wslDetected;
+
+    wslDetected = 0;
+    if(uname(&buf) == 0 && meStrcmp(buf.sysname, "Linux") == 0)
+    {
+        /* WSL1: kernel release ends with "-Microsoft" (capital M) */
+        /* WSL2: kernel release ends with "microsoft-standard-WSL2" (lowercase) */
+        if(strstr(buf.release, "microsoft") != NULL ||
+           strstr(buf.release, "Microsoft") != NULL)
+            wslDetected = 1;
+    }
+    return wslDetected;
+}
+
+/* Detect if running under Cygwin.
+ * Returns 1 if Cygwin, 0 otherwise.
+ * Detection checks for the _CYGWIN compile-time define.
+ */
+static int
+TTisCygwin(void)
+{
+#ifdef _CYGWIN
+    return 1;
+#else
+    return 0;
+#endif
+}
+
 void
 TTsetClipboard(void)
 {
     meKillNode *killp;
     meInt len;
     static int clipChecked = 0;
-    static int clipTool = 0;    /* 0=none, 1=xclip, 2=wl-copy, 3=pbcopy */
+    static int clipTool = 0;    /* 0=none, 1=xclip, 2=wl-copy, 3=pbcopy, 4=clip.exe (WSL), 5=clip.exe (Cygwin), 6=xsel */
     meUByte *sessionType;
     int fd[2];
     pid_t pid;
 
     if(meSystemCfg & meSYSTEM_NOCLIPBRD)
+        return ;
+    if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
         return ;
     if(kbdmode == mePLAY)
         return ;
@@ -5977,18 +6024,38 @@ TTsetClipboard(void)
     if(!clipChecked)
     {
         clipChecked = 1;
-        sessionType = meGetenv("XDG_SESSION_TYPE");
-        if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+        /* WSL: use clip.exe to interact with Windows clipboard */
+        if(TTisWSL() && system((char *)"which clip.exe >/dev/null 2>&1") == 0)
+            clipTool = 4;
+        /* Cygwin: use clip.exe via /cygdrive/c/Windows/System32/clip.exe */
+        if(clipTool == 0 && TTisCygwin())
         {
-            if(meGetenv("WAYLAND_DISPLAY") != NULL &&
-               system((char *)"which wl-copy >/dev/null 2>&1") == 0)
-                clipTool = 2;
+            if(system((char *)"which clip.exe >/dev/null 2>&1") == 0)
+                clipTool = 4;
+            else if(system((char *)"test -x /cygdrive/c/Windows/System32/clip.exe") == 0)
+                clipTool = 5;  /* Cygwin with full path */
+        }
+        if(clipTool == 0)
+        {
+            sessionType = meGetenv("XDG_SESSION_TYPE");
+            if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+            {
+                if(meGetenv("WAYLAND_DISPLAY") != NULL &&
+                   system((char *)"which wl-copy >/dev/null 2>&1") == 0)
+                    clipTool = 2;
+            }
         }
         if(clipTool == 0)
         {
             if(meGetenv("DISPLAY") != NULL &&
                system((char *)"which xclip >/dev/null 2>&1") == 0)
                 clipTool = 1;
+        }
+        if(clipTool == 0)
+        {
+            if(meGetenv("DISPLAY") != NULL &&
+               system((char *)"which xsel >/dev/null 2>&1") == 0)
+                clipTool = 6;
         }
         if(clipTool == 0)
         {
@@ -6014,6 +6081,12 @@ TTsetClipboard(void)
             execlp("xclip", "xclip", "-selection", "clipboard", "-i", NULL);
         else if(clipTool == 2)
             execlp("wl-copy", "wl-copy", NULL);
+        else if(clipTool == 4)
+            execlp("clip.exe", "clip.exe", NULL);
+        else if(clipTool == 5)
+            execlp("/cygdrive/c/Windows/System32/clip.exe", "/cygdrive/c/Windows/System32/clip.exe", NULL);
+        else if(clipTool == 6)
+            execlp("xsel", "xsel", "--clipboard", "--input", NULL);
         else
             execlp("pbcopy", "pbcopy", NULL);
         _exit(1);
@@ -6036,7 +6109,7 @@ void
 TTgetClipboard(void)
 {
     static int clipChecked = 0;
-    static int clipTool = 0;    /* 0=none, 1=xclip, 2=wl-paste, 3=pbpaste */
+    static int clipTool = 0;    /* 0=none, 1=xclip, 2=wl-paste, 3=pbpaste, 4=powershell.exe (WSL), 5=cat /dev/clipboard (Cygwin), 6=xsel */
     meUByte *sessionType;
     meUByte buf[4096];
     meUByte *tmpbuf, *dd;
@@ -6046,24 +6119,44 @@ TTgetClipboard(void)
 
     if(meSystemCfg & meSYSTEM_NOCLIPBRD)
         return ;
+    if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
+        return ;
     if(kbdmode == mePLAY)
         return ;
 
     if(!clipChecked)
     {
         clipChecked = 1;
-        sessionType = meGetenv("XDG_SESSION_TYPE");
-        if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+        /* WSL: use powershell.exe to read Windows clipboard */
+        if(TTisWSL() && system((char *)"which powershell.exe >/dev/null 2>&1") == 0)
+            clipTool = 4;
+        /* Cygwin: use /dev/clipboard (special Cygwin device for Windows clipboard) */
+        if(clipTool == 0 && TTisCygwin())
         {
-            if(meGetenv("WAYLAND_DISPLAY") != NULL &&
-               system((char *)"which wl-paste >/dev/null 2>&1") == 0)
-                clipTool = 2;
+            if(system((char *)"test -r /dev/clipboard") == 0)
+                clipTool = 5;
+        }
+        if(clipTool == 0)
+        {
+            sessionType = meGetenv("XDG_SESSION_TYPE");
+            if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+            {
+                if(meGetenv("WAYLAND_DISPLAY") != NULL &&
+                   system((char *)"which wl-paste >/dev/null 2>&1") == 0)
+                    clipTool = 2;
+            }
         }
         if(clipTool == 0)
         {
             if(meGetenv("DISPLAY") != NULL &&
                system((char *)"which xclip >/dev/null 2>&1") == 0)
                 clipTool = 1;
+        }
+        if(clipTool == 0)
+        {
+            if(meGetenv("DISPLAY") != NULL &&
+               system((char *)"which xsel >/dev/null 2>&1") == 0)
+                clipTool = 6;
         }
         if(clipTool == 0)
         {
@@ -6089,6 +6182,12 @@ TTgetClipboard(void)
             execlp("xclip", "xclip", "-selection", "clipboard", "-o", NULL);
         else if(clipTool == 2)
             execlp("wl-paste", "wl-paste", NULL);
+        else if(clipTool == 4)
+            execlp("powershell.exe", "powershell.exe", "-Command", "Get-Clipboard", NULL);
+        else if(clipTool == 5)
+            execlp("cat", "cat", "/dev/clipboard", NULL);
+        else if(clipTool == 6)
+            execlp("xsel", "xsel", "--clipboard", "--output", NULL);
         else
             execlp("pbpaste", "pbpaste", NULL);
         _exit(1);

@@ -59,7 +59,7 @@ set-variable .change-font.xfontsel 0
   !if &or &seq #l0 "iso8859-15" &seq #l0 "iso8859-16"
     translate-key "\x80" "\xa4"
     translate-key "" ""
-    translate-key "´" "'"
+    translate-key "ï¿½" "'"
   !endif
   
  ; might be called like this:
@@ -396,20 +396,41 @@ define-macro copy-region-clipboard
   
   ; Determine which clipboard tool to use
   set-variable #l2 ""
-  set-variable #l3 &which "wl-copy"
-  !if &seq #l3 "ERROR"
-    set-variable #l3 &which "xclip"
-    !if &seq #l3 "ERROR"
-      set-variable #l3 &which "pbcopy"
-      !if &not &seq #l3 "ERROR"
-        set-variable #l2 "pbcopy <"
-      !endif
-    !else
-      set-variable #l2 "xclip -selection clipboard -i"
-    !endif
+  ; Check for WSL/Cygwin first (clip.exe)
+  set-variable #l3 &which "clip.exe"
+  !if &not &seq #l3 "ERROR"
+    set-variable #l2 "clip.exe <"
   !else
-    ; or "wl-copy < <(cat filename) to avoid isses with trainling newlines
-    set-variable #l2 "wl-copy <"
+    ; Check for Cygwin with full path to clip.exe
+    !if &seq %platform "cygwin"
+      set-variable #l3 &cat "/cygdrive/c/Windows/System32/clip.exe"
+      !if &not &seq #l3 "ERROR"
+        set-variable #l2 &cat #l3 " <"
+      !endif
+    !endif
+    !if &seq #l2 ""
+      set-variable #l3 &which "wl-copy"
+      !if &seq #l3 "ERROR"
+        set-variable #l3 &which "xclip"
+        !if &seq #l3 "ERROR"
+          ; Try xsel as alternative to xclip
+          set-variable #l3 &which "xsel"
+          !if &seq #l3 "ERROR"
+            set-variable #l3 &which "pbcopy"
+            !if &not &seq #l3 "ERROR"
+              set-variable #l2 "pbcopy <"
+            !endif
+          !else
+            set-variable #l2 "xsel --clipboard --input <"
+          !endif
+        !else
+          set-variable #l2 "xclip -selection clipboard -i"
+        !endif
+      !else
+        ; or "wl-copy < <(cat filename) to avoid isses with trainling newlines
+        set-variable #l2 "wl-copy <"
+      !endif
+    !endif
   !endif
   
   ; Pipe the temp file to the clipboard tool
