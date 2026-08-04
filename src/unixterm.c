@@ -5961,6 +5961,48 @@ static int conClipChecked = 0;
 static int conClipTool = 0;    /* 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy/pbpaste,
                                   4=clip.exe (WSL), 5=clip.exe (Cygwin), 6=xsel */
 
+/* Check if a program is executable by searching PATH.
+ * Uses access() - no subprocess spawning, no terminal flickering. */
+static int
+TTfindInPath(meUByte *name)
+{
+    meUByte *path, *pathEnd;
+    meUByte buf[256];
+    int dlen;
+
+    path = meGetenv("PATH");
+    if(path == NULL)
+        return 0;
+
+    while(*path != '\0')
+    {
+        pathEnd = meStrchr(path, ':');
+        if(pathEnd != NULL)
+            dlen = pathEnd - path;
+        else
+            dlen = meStrlen(path);
+
+        if(dlen > 0 && dlen + meStrlen(name) + 2 <= (int)sizeof(buf))
+        {
+            meStrncpy(buf, path, dlen);
+            buf[dlen] = '\0';
+            if(buf[dlen-1] != '/')
+            {
+                buf[dlen] = '/';
+                dlen++;
+            }
+            meStrcpy(buf + dlen, name);
+            if(access((char *)buf, X_OK) == 0)
+                return 1;
+        }
+
+        if(pathEnd == NULL)
+            break;
+        path = pathEnd + 1;
+    }
+    return 0;
+}
+
 /* Detect if running under Windows Subsystem for Linux (WSL).
  * Returns 1 if WSL, 0 otherwise.
  * Detection uses uname() - WSL1 kernel ends with "-Microsoft",
@@ -6014,7 +6056,7 @@ TTdetectClipTool(void)
     conClipChecked = 1;
 
     /* WSL: use clip.exe to interact with Windows clipboard */
-    if(TTisWSL() && system((char *)"which clip.exe >/dev/null 2>&1") == 0)
+    if(TTisWSL() && TTfindInPath((meUByte *)"clip.exe"))
     {
         conClipTool = 4;
         return ;
@@ -6022,12 +6064,12 @@ TTdetectClipTool(void)
     /* Cygwin: use clip.exe via /cygdrive/c/Windows/System32/clip.exe */
     if(TTisCygwin())
     {
-        if(system((char *)"which clip.exe >/dev/null 2>&1") == 0)
+        if(TTfindInPath((meUByte *)"clip.exe"))
         {
             conClipTool = 4;
             return ;
         }
-        if(system((char *)"test -x /cygdrive/c/Windows/System32/clip.exe") == 0)
+        if(access("/cygdrive/c/Windows/System32/clip.exe", X_OK) == 0)
         {
             conClipTool = 5;
             return ;
@@ -6038,7 +6080,7 @@ TTdetectClipTool(void)
     if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
     {
         if(meGetenv("WAYLAND_DISPLAY") != NULL &&
-           system((char *)"which wl-copy >/dev/null 2>&1") == 0)
+           TTfindInPath((meUByte *)"wl-copy"))
         {
             conClipTool = 2;
             return ;
@@ -6046,20 +6088,20 @@ TTdetectClipTool(void)
     }
     /* X11: use xclip */
     if(meGetenv("DISPLAY") != NULL &&
-       system((char *)"which xclip >/dev/null 2>&1") == 0)
+       TTfindInPath((meUByte *)"xclip"))
     {
         conClipTool = 1;
         return ;
     }
     /* X11: use xsel as fallback */
     if(meGetenv("DISPLAY") != NULL &&
-       system((char *)"which xsel >/dev/null 2>&1") == 0)
+       TTfindInPath((meUByte *)"xsel"))
     {
         conClipTool = 6;
         return ;
     }
     /* macOS: use pbcopy */
-    if(system((char *)"which pbcopy >/dev/null 2>&1") == 0)
+    if(TTfindInPath((meUByte *)"pbcopy"))
     {
         conClipTool = 3;
         return ;

@@ -388,7 +388,7 @@ define-macro copy-region-clipboard
   
   ; Check that temp file exists
   !if &not &exi #l1
-    ml-write &cat "[Temp file not found: " #l1 "]"
+    ml-write &cat &cat "[Temp file not found: " #l1 "]"
     delete-buffer "*clipboard-tmp*"
     set-variable $buffer-fname #l0
     !abort
@@ -403,7 +403,7 @@ define-macro copy-region-clipboard
   !else
     ; Check for Cygwin with full path to clip.exe
     !if &seq %platform "cygwin"
-      set-variable #l3 &cat "/cygdrive/c/Windows/System32/clip.exe"
+      set-variable #l3 &which "/cygdrive/c/Windows/System32/clip.exe"
       !if &not &seq #l3 "ERROR"
         set-variable #l2 &cat #l3 " <"
       !endif
@@ -444,9 +444,9 @@ define-macro copy-region-clipboard
   shell-command #l4
   
   !if $status
-    ml-write &cat "[Copied to clipboard via " #l2 "]"
+    ml-write &cat &cat "[Copied to clipboard via " #l2 "]"
   !else
-    ml-write &cat "[Clipboard copy failed: " #l2 "]"
+    ml-write &cat &cat "[Clipboard copy failed: " #l2 "]"
   !endif
   
   ; Clean up

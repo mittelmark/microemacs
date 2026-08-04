@@ -244,9 +244,44 @@ add_newline:
         }
         else if(!xclipChecked)
         {
+            /* Check for xclip using access() - no subprocess, no flickering */
             xclipChecked = 1;
-            xclipAvailable = (meGetenv("DISPLAY") != NULL) && (meGetenv("PATH") != NULL) &&
-                (system((char *)"which xclip >/dev/null 2>&1") == 0);
+            xclipAvailable = 0;
+            if(meGetenv("DISPLAY") != NULL)
+            {
+                meUByte *path = meGetenv("PATH");
+                if(path != NULL)
+                {
+                    meUByte buf[256];
+                    meUByte *p = path;
+                    meUByte *pe;
+                    int dlen;
+                    while(*p != '\0')
+                    {
+                        pe = meStrchr(p, ':');
+                        dlen = (pe != NULL) ? (pe - p) : meStrlen(p);
+                        if(dlen > 0 && dlen + 7 < (int)sizeof(buf))
+                        {
+                            meStrncpy(buf, p, dlen);
+                            buf[dlen] = '\0';
+                            if(buf[dlen-1] != '/')
+                            {
+                                buf[dlen] = '/';
+                                dlen++;
+                            }
+                            meStrcpy(buf + dlen, "xclip");
+                            if(access((char *)buf, X_OK) == 0)
+                            {
+                                xclipAvailable = 1;
+                                break;
+                            }
+                        }
+                        if(pe == NULL)
+                            break;
+                        p = pe + 1;
+                    }
+                }
+            }
         }
         if(xclipAvailable)
         {
