@@ -384,6 +384,7 @@
 #ifdef _TCAP
 #define _MOUSE          1       /* Mouse supported on TERM (SGR mouse)   */
 #endif /* _TCAP */
+#define _CLIPBRD        1       /* Enable clipboard via external tools (xclip, wl-copy, pbcopy) */
 #endif /* _ME_CONSOLE */
 
 #ifndef _ME_CONSOLE             /* window only mode?                     */

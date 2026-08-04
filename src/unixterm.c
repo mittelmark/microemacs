@@ -5937,4 +5937,202 @@ meSetIconState (Display *display, Window window)
     XSetWMHints(display, window, &wmHints) ;
 }
 #endif /* _XPM */
-#endif /* _XTERM */    
+#endif /* _XTERM */
+
+#if defined(_CLIPBRD) && !defined(_XTERM)
+
+/* Console clipboard stubs - these satisfy the linker for #ifdef _CLIPBRD
+ * blocks in region.c, eval.c, input.c, line.c, and random.c when building
+ * console-only (no X11/Wayland clipboard support).
+ *
+ * TTsetClipboard pipes the kill buffer to an external clipboard tool:
+ *   - xclip (X11)
+ *   - wl-copy (Wayland)
+ *   - pbcopy (macOS)
+ */
+void
+TTsetClipboard(void)
+{
+    meKillNode *killp;
+    meInt len;
+    static int clipChecked = 0;
+    static int clipTool = 0;    /* 0=none, 1=xclip, 2=wl-copy, 3=pbcopy */
+    meUByte *sessionType;
+    int fd[2];
+    pid_t pid;
+
+    if(meSystemCfg & meSYSTEM_NOCLIPBRD)
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+    if((klhead == NULL) || (klhead->kill == NULL))
+        return ;
+
+    killp = klhead->kill;
+    len = meStrlen(killp->data);
+    if(len == 0)
+        return ;
+
+    /* Detect clipboard tool once */
+    if(!clipChecked)
+    {
+        clipChecked = 1;
+        sessionType = meGetenv("XDG_SESSION_TYPE");
+        if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+        {
+            if(meGetenv("WAYLAND_DISPLAY") != NULL &&
+               system((char *)"which wl-copy >/dev/null 2>&1") == 0)
+                clipTool = 2;
+        }
+        if(clipTool == 0)
+        {
+            if(meGetenv("DISPLAY") != NULL &&
+               system((char *)"which xclip >/dev/null 2>&1") == 0)
+                clipTool = 1;
+        }
+        if(clipTool == 0)
+        {
+            if(system((char *)"which pbcopy >/dev/null 2>&1") == 0)
+                clipTool = 3;
+        }
+    }
+
+    if(clipTool == 0)
+        return ;
+
+    if(pipe(fd) < 0)
+        return ;
+
+    pid = meFork();
+    if(pid == 0)
+    {
+        /* Child: read from fd[0], feed to clipboard tool */
+        close(fd[1]);
+        dup2(fd[0], 0);
+        close(fd[0]);
+        if(clipTool == 1)
+            execlp("xclip", "xclip", "-selection", "clipboard", "-i", NULL);
+        else if(clipTool == 2)
+            execlp("wl-copy", "wl-copy", NULL);
+        else
+            execlp("pbcopy", "pbcopy", NULL);
+        _exit(1);
+    }
+    else if(pid > 0)
+    {
+        /* Parent: write kill buffer data to pipe */
+        close(fd[0]);
+        write(fd[1], killp->data, len);
+        close(fd[1]);
+    }
+    else
+    {
+        close(fd[0]);
+        close(fd[1]);
+    }
+}
+
+void
+TTgetClipboard(void)
+{
+    static int clipChecked = 0;
+    static int clipTool = 0;    /* 0=none, 1=xclip, 2=wl-paste, 3=pbpaste */
+    meUByte *sessionType;
+    meUByte buf[4096];
+    meUByte *tmpbuf, *dd;
+    meInt total, n;
+    int fd[2];
+    pid_t pid;
+
+    if(meSystemCfg & meSYSTEM_NOCLIPBRD)
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+
+    if(!clipChecked)
+    {
+        clipChecked = 1;
+        sessionType = meGetenv("XDG_SESSION_TYPE");
+        if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+        {
+            if(meGetenv("WAYLAND_DISPLAY") != NULL &&
+               system((char *)"which wl-paste >/dev/null 2>&1") == 0)
+                clipTool = 2;
+        }
+        if(clipTool == 0)
+        {
+            if(meGetenv("DISPLAY") != NULL &&
+               system((char *)"which xclip >/dev/null 2>&1") == 0)
+                clipTool = 1;
+        }
+        if(clipTool == 0)
+        {
+            if(system((char *)"which pbpaste >/dev/null 2>&1") == 0)
+                clipTool = 3;
+        }
+    }
+
+    if(clipTool == 0)
+        return ;
+
+    if(pipe(fd) < 0)
+        return ;
+
+    pid = meFork();
+    if(pid == 0)
+    {
+        /* Child: exec clipboard tool to stdout */
+        close(fd[0]);
+        dup2(fd[1], 1);
+        close(fd[1]);
+        if(clipTool == 1)
+            execlp("xclip", "xclip", "-selection", "clipboard", "-o", NULL);
+        else if(clipTool == 2)
+            execlp("wl-paste", "wl-paste", NULL);
+        else
+            execlp("pbpaste", "pbpaste", NULL);
+        _exit(1);
+    }
+    else if(pid > 0)
+    {
+        /* Parent: read clipboard content into kill buffer */
+        close(fd[1]);
+        total = 0;
+        tmpbuf = NULL;
+        while((n = read(fd[0], buf, sizeof(buf))) > 0)
+        {
+            dd = meRealloc(tmpbuf, total + n + 1);
+            if(dd == NULL)
+            {
+                meFree(tmpbuf);
+                break;
+            }
+            tmpbuf = dd;
+            memcpy(tmpbuf + total, buf, n);
+            total += n;
+        }
+        close(fd[0]);
+        if(tmpbuf != NULL && total > 0)
+        {
+            tmpbuf[total] = '\0';
+            killSave();
+            if((dd = killAddNode(total + 1)) != NULL)
+                memcpy(dd, tmpbuf, total + 1);
+            thisflag = meCFKILL;
+        }
+        meFree(tmpbuf);
+    }
+    else
+    {
+        close(fd[0]);
+        close(fd[1]);
+    }
+}
+
+void
+TTsetPrimary(void)
+{
+    /* No primary selection support for console mode */
+}
+
+#endif /* _CLIPBRD && !_XTERM */
