@@ -359,6 +359,7 @@ extern int  TTstart(void) ;
 extern void TTgetClipboard(void);
 extern void TTsetClipboard(void);
 extern void TTsetPrimary(void);
+extern void TTshowClipStats(void);
 #endif
 
 #if MEOPT_CLIENTSERVER

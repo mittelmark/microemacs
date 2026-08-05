@@ -369,13 +369,65 @@ osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\\} Use \\HFonts" 0x10 
 ## Testing
 
 No formal test suite exists. Manual testing:
+
+### Basic Startup Test
+
 ```bash
-### Test console build
+# Test console build
 TERM=xterm-256color MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec
 
-### Test GUI build  
+# Test GUI build  
 MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
 ```
+
+### Automated Startup Test with `user/simple.emf`
+
+For automated testing (e.g., verifying startup behavior or clipboard stats), use the startup macro file `user/simple.emf`. This file loads the standard ME startup (`execute-file "me"`) and then defines a `start-up` macro that displays a message and immediately exits:
+
+```me
+; -!- emf -!-
+execute-file "me"
+
+define-macro start-up
+  1000 ml-write "Hello Emacs"
+  exit-emacs
+!emacro
+```
+
+Run it with:
+
+```bash
+MENAME=temp MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./user/simple
+```
+
+The `@./user/simple` argument tells ME to execute `user/simple.emf` as the startup file. The `start-up` macro runs automatically after all initialization, prints "Hello Emacs", and exits. This provides a clean, non-interactive way to verify that ME starts correctly.
+
+To test with clipboard enabled, set the clipboard bit in `$system` before `execute-file`:
+
+```me
+; -!- emf -!-
+set-variable $system &bor $system 0x2000000
+execute-file "me"
+
+define-macro start-up
+  1000 ml-write "Hello Emacs with clipboard"
+  exit-emacs
+!emacro
+```
+
+To check clipboard spawn stats, capture stderr when running:
+
+```bash
+MENAME=temp MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./user/simple 2>/tmp/clip-stats.txt
+cat /tmp/clip-stats.txt
+```
+
+If clipboard tools were spawned, you'll see lines like:
+```
+[CLIP-STATS] set=<copy_spawns> get=<paste_spawns> tool=<tool_id>
+```
+
+Tool IDs: 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy, 4=clip.exe(WSL), 5=clip.exe(Cygwin), 6=xsel.
 
 ## Documentation
 

@@ -4103,8 +4103,13 @@ TTcheckWaylandClipboard(void)
 static int
 TTisWaylandSession(void)
 {
-    meUByte *sessionType = meGetenv("XDG_SESSION_TYPE");
-    return (sessionType != NULL) && (meStrcmp(sessionType, "wayland") == 0);
+    static int waylandSession = -1;  /* -1=not checked, 0=no, 1=yes */
+    meUByte *sessionType;
+    if(waylandSession >= 0)
+        return waylandSession;
+    sessionType = meGetenv("XDG_SESSION_TYPE");
+    waylandSession = (sessionType != NULL) && (meStrcmp(sessionType, "wayland") == 0);
+    return waylandSession;
 }
 
 static void
@@ -5960,6 +5965,8 @@ meSetIconState (Display *display, Window window)
 static int conClipChecked = 0;
 static int conClipTool = 0;    /* 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy/pbpaste,
                                   4=clip.exe (WSL), 5=clip.exe (Cygwin), 6=xsel */
+static int conClipSetCount = 0;  /* Number of clipboard set (copy) spawns */
+static int conClipGetCount = 0;  /* Number of clipboard get (paste) spawns */
 
 /* Check if a program is executable by searching PATH.
  * Uses access() - no subprocess spawning, no terminal flickering. */
@@ -6165,6 +6172,7 @@ TTsetClipboard(void)
         close(fd[0]);
         write(fd[1], killp->data, len);
         close(fd[1]);
+        conClipSetCount++;
     }
     else
     {
@@ -6237,6 +6245,7 @@ TTgetClipboard(void)
             total += n;
         }
         close(fd[0]);
+        conClipGetCount++;
         if(tmpbuf != NULL && total > 0)
         {
             tmpbuf[total] = '\0';
@@ -6252,6 +6261,15 @@ TTgetClipboard(void)
         close(fd[0]);
         close(fd[1]);
     }
+}
+
+/* Display clipboard spawn counts to stderr for debugging.
+ * Called from macros to check clipboard tool usage. */
+void
+TTshowClipStats(void)
+{
+    fprintf(stderr, "[CLIP-STATS] set=%d get=%d tool=%d\n",
+            conClipSetCount, conClipGetCount, conClipTool);
 }
 
 void

@@ -234,65 +234,72 @@ add_newline:
         /* After explicit copy, run xclip to take over clipboard.
          * This pipes clipboard content through xclip, making xclip the owner
          * instead of ME, so subsequent mouse selections don't affect clipboard.
-         * Only run on pure X11 (not Wayland, not console). */
-        sessionType = meGetenv("XDG_SESSION_TYPE");
-        if(!xclipChecked && sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+         * Only run on pure X11 (not Wayland, not console) AND only when
+         * clipboard is enabled. */
+        if(meSystemCfg & meSYSTEM_CLIPBOARD)
         {
-            /* On Wayland - let Wayland clipboard handle it */
-            xclipChecked = 1;
-            xclipAvailable = 0;
-        }
-        else if(!xclipChecked)
-        {
-            /* Check for xclip using access() - no subprocess, no flickering */
-            xclipChecked = 1;
-            xclipAvailable = 0;
-            if(meGetenv("DISPLAY") != NULL)
+            if(!xclipChecked)
             {
-                meUByte *path = meGetenv("PATH");
-                if(path != NULL)
+                sessionType = meGetenv("XDG_SESSION_TYPE");
+                if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
                 {
-                    meUByte buf[256];
-                    meUByte *p = path;
-                    meUByte *pe;
-                    int dlen;
-                    while(*p != '\0')
+                    /* On Wayland - let Wayland clipboard handle it */
+                    xclipChecked = 1;
+                    xclipAvailable = 0;
+                }
+                else
+                {
+                    /* Check for xclip using access() - no subprocess, no flickering */
+                    xclipChecked = 1;
+                    xclipAvailable = 0;
+                    if(meGetenv("DISPLAY") != NULL)
                     {
-                        pe = meStrchr(p, ':');
-                        dlen = (pe != NULL) ? (pe - p) : meStrlen(p);
-                        if(dlen > 0 && dlen + 7 < (int)sizeof(buf))
+                        meUByte *path = meGetenv("PATH");
+                        if(path != NULL)
                         {
-                            meStrncpy(buf, p, dlen);
-                            buf[dlen] = '\0';
-                            if(buf[dlen-1] != '/')
+                            meUByte buf[256];
+                            meUByte *p = path;
+                            meUByte *pe;
+                            int dlen;
+                            while(*p != '\0')
                             {
-                                buf[dlen] = '/';
-                                dlen++;
-                            }
-                            meStrcpy(buf + dlen, "xclip");
-                            if(access((char *)buf, X_OK) == 0)
-                            {
-                                xclipAvailable = 1;
-                                break;
+                                pe = meStrchr(p, ':');
+                                dlen = (pe != NULL) ? (pe - p) : meStrlen(p);
+                                if(dlen > 0 && dlen + 7 < (int)sizeof(buf))
+                                {
+                                    meStrncpy(buf, p, dlen);
+                                    buf[dlen] = '\0';
+                                    if(buf[dlen-1] != '/')
+                                    {
+                                        buf[dlen] = '/';
+                                        dlen++;
+                                    }
+                                    meStrcpy(buf + dlen, "xclip");
+                                    if(access((char *)buf, X_OK) == 0)
+                                    {
+                                        xclipAvailable = 1;
+                                        break;
+                                    }
+                                }
+                                if(pe == NULL)
+                                    break;
+                                p = pe + 1;
                             }
                         }
-                        if(pe == NULL)
-                            break;
-                        p = pe + 1;
                     }
                 }
             }
-        }
-        if(xclipAvailable)
-        {
-#ifdef _UNIX
-            /* Fork and pipe through xclip to hand ownership to xclip */
-            if(meFork() == 0)
+            if(xclipAvailable)
             {
-                execlp("sh", "sh", "-c", "xclip -selection clipboard -o 2>/dev/null | xclip -selection clipboard -i", NULL);
-                _exit(1);
-            }
+#ifdef _UNIX
+                /* Fork and pipe through xclip to hand ownership to xclip */
+                if(meFork() == 0)
+                {
+                    execlp("sh", "sh", "-c", "xclip -selection clipboard -o 2>/dev/null | xclip -selection clipboard -i", NULL);
+                    _exit(1);
+                }
 #endif
+            }
         }
     }
 #endif

@@ -1,0 +1,11 @@
+; simple startup file can be
+; used for testing microemacs functionalities
+; by adding code below of the message line
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;set-variable $system &bor $system 0x2000000
+execute-file "me"
+
+define-macro start-up
+  1000 ml-write "Hello Emacs"
+  exit-emacs
+!emacro
