@@ -229,7 +229,6 @@ add_newline:
     {
         static int xclipChecked = 0;
         static int xclipAvailable = 0;
-        meUByte *sessionType;
         
         /* After explicit copy, run xclip to take over clipboard.
          * This pipes clipboard content through xclip, making xclip the owner
@@ -240,6 +239,8 @@ add_newline:
         {
             if(!xclipChecked)
             {
+#ifndef _WIN32
+                meUByte *sessionType;
                 sessionType = meGetenv("XDG_SESSION_TYPE");
                 if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
                 {
@@ -288,6 +289,10 @@ add_newline:
                         }
                     }
                 }
+#else
+                xclipChecked = 1;
+                xclipAvailable = 0;
+#endif
             }
             if(xclipAvailable)
             {
