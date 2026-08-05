@@ -5185,11 +5185,18 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260804] - support  for  xsel,  xclip  (X11),  wl-copy  (Wayland),  pbpaste
+                 (MacOS),  clip.exe  (Cygwin-Windows,  WSL-Windows and Windows for
+                 copying text as well from the terminal to the System clipboard.
+                 Needs to be enabled within the user-setup dialog.
+
+    - [260801] - fixing pydoc/pydoc3 issue for py-doc macro
+    
     - [260731] - adding and documenting @info, @pydoc, @rdoc documentation browser
                  startup macros
 
-    - [260729] - adding mouse support for xterm comparible terminals like gnome-terminal or
-                 the terminal of MacOS
+    - [260729] - adding mouse support for xterm compatible terminals like gnome-terminal or
+                 the terminal of MacOS using SRG protocoll
                  
     - [260518] - Improvements in indentation, formatting and linting Fusion code
     
