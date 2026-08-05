@@ -5109,11 +5109,18 @@
 
 ## Development History 
 
+  - [260804] - support  for  xsel,  xclip  (X11),  wl-copy  (Wayland),  pbpaste
+               (MacOS),  clip.exe  (Cygwin-Windows,  WSL-Windows and Windows for
+               copying text as well from the terminal to the System clipboard.
+               Needs to be enabled within the user-setup dialog.
+
+  - [260801] - fixing pydoc/pydoc3 issue for py-doc macro
+  
   - [260731] - adding and documenting @info, @pydoc, @rdoc documentation browser
                startup macros
 
-  - [260729] - adding mouse support for xterm comparible terminals like gnome-terminal or
-               the terminal of MacOS
+  - [260729] - adding mouse support for xterm compatible terminals like gnome-terminal or
+               the terminal of MacOS using SRG protocoll
                
   - [260518] - Improvements in indentation, formatting and linting Fusion code
   
@@ -13495,16 +13502,22 @@ $a
   - __copy-region__ (M-w) updates both X11 CLIPBOARD and Wayland clipboard
   - Mouse selection only updates X11 PRIMARY (for middle-click compatibility)
 
-  The `yank` (C-y) command tries Wayland clipboard first on Wayland systems,
+  The `yank` (C-y) tries Wayland clipboard first on Wayland systems,
   falling back to X11 CLIPBOARD if needed.
+
+  On WSL and Cygwin, `clip.exe` provides clipboard access to the Windows
+  clipboard. On macOS, `pbcopy`/`pbpaste` are used (built-in).
 
   To enable clipboard support, use `M-x user-setup` and check "Use Clipboard"
   in the Platform tab, or set the `$system` variable with the clipboard bit:
   `set-variable $system &bor $system 0x2000000`
 
-  Requirements for Wayland clipboard support:
-  - `wl-clipboard` package installed (provides `wl-copy` and `wl-paste`)
-  - `$XDG_SESSION_TYPE=wayland` environment variable
+  Required external tools by platform:
+  - Wayland: `wl-clipboard` package (provides `wl-copy` and `wl-paste`)
+  - X11: `xclip` (recommended) or `xsel`
+  - WSL: `clip.exe` (built-in on Windows)
+  - Cygwin: `clip.exe` (via `/cygdrive/c/Windows/System32/clip.exe`)
+  - macOS: `pbcopy`/`pbpaste` (built-in)
 
   The numeric argument _n_ was introduced in the '04 release.
 
@@ -45366,6 +45379,33 @@ $a
      Scheme being used. This indirectly sets bit `0x10` of the [$system(5)]($system(5))
      variable.
 
+  `Use Clipboard`
+
+  >  When enabled, MicroEmacs uses the system clipboard for copy and paste
+     operations with external applications. This sets bit `0x2000000` of the
+     [$system(5)]($system(5)) variable. On X11, this switches from the PRIMARY selection
+     (mouse select/middle-click paste) to the CLIPBOARD selection (Ctrl+C /
+     Ctrl+V compatible with most applications). On Wayland, both the X11
+     CLIPBOARD and Wayland clipboard are updated for maximum compatibility.
+     The following external clipboard tools are searched in order of priority
+     and must be installed for the corresponding platform:
+
+  > >  `clip.exe` - WSL and Cygwin (Windows clipboard interop)
+  > >  `wl-copy` / `wl-paste` - Wayland (install `wl-clipboard` package)
+  > >  `xclip` - X11 (install `xclip` package, recommended)
+  > >  `xsel` - X11 fallback (install `xsel` package)
+  > >  `pbcopy` / `pbpaste` - macOS (built-in)
+
+  >  On X11 with `xclip` installed, explicit copy commands (`M-w`, `C-x r o`)
+     pipe the clipboard through xclip so that xclip becomes the clipboard
+     owner. This prevents subsequent mouse selections from overwriting the
+     clipboard, allowing mouse-select/middle-click-paste to work independently
+     of explicit copy/paste.
+
+  >  Note: The console version (mec) uses the same clipboard tools via the
+     `_CLIPBRD` feature flag, enabling clipboard support even without an X or
+     Wayland display server.
+
   `Draw White Spaces`
   
   >  Enables the drawing of visible white spaces, i.e. space, tab and
@@ -45478,6 +45518,13 @@ $a
   `Use Fonts`
   
   >  See __Platform UNIX Setup__ above.
+
+  `Use Clipboard`
+  
+  >  See __Platform UNIX Setup__ above. In the console (mec), clipboard
+     support is provided via external tools (`clip.exe` for WSL/Cygwin,
+     `xclip`/`xsel` for X11, `wl-copy`/`wl-paste` for Wayland, or
+     `pbcopy`/`pbpaste` for macOS) using the `_CLIPBRD` feature flag.
 
   `Draw White Spaces`
   

@@ -320,12 +320,6 @@ extern void meFrameSetWindowSize(meFrame *frame) ;
 extern void meFrameRepositionWindow(meFrame *frame, int resize) ;
 #endif
 
-#ifdef _CLIPBRD
-extern void TTgetClipboard(void);
-extern void TTsetClipboard(void);
-extern void TTsetPrimary(void);
-#endif
-
 #ifdef _ME_CONSOLE
 
 /* If both console and window must test which one should be used */
@@ -360,6 +354,13 @@ extern int  TTstart(void) ;
 
 #endif /* _ME_CONSOLE */
 #endif /* _ME_WINDOW */
+
+#ifdef _CLIPBRD
+extern void TTgetClipboard(void);
+extern void TTsetClipboard(void);
+extern void TTsetPrimary(void);
+extern void TTshowClipStats(void);
+#endif
 
 #if MEOPT_CLIENTSERVER
 extern void TTopenClientServer(void) ;

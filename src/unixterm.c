@@ -4103,8 +4103,13 @@ TTcheckWaylandClipboard(void)
 static int
 TTisWaylandSession(void)
 {
-    meUByte *sessionType = meGetenv("XDG_SESSION_TYPE");
-    return (sessionType != NULL) && (meStrcmp(sessionType, "wayland") == 0);
+    static int waylandSession = -1;  /* -1=not checked, 0=no, 1=yes */
+    meUByte *sessionType;
+    if(waylandSession >= 0)
+        return waylandSession;
+    sessionType = meGetenv("XDG_SESSION_TYPE");
+    waylandSession = (sessionType != NULL) && (meStrcmp(sessionType, "wayland") == 0);
+    return waylandSession;
 }
 
 static void
@@ -5937,4 +5942,340 @@ meSetIconState (Display *display, Window window)
     XSetWMHints(display, window, &wmHints) ;
 }
 #endif /* _XPM */
-#endif /* _XTERM */    
+#endif /* _XTERM */
+
+#if defined(_CLIPBRD) && !defined(_XTERM)
+
+/* Console clipboard stubs - these satisfy the linker for #ifdef _CLIPBRD
+ * blocks in region.c, eval.c, input.c, line.c, and random.c when building
+ * console-only (no X11/Wayland clipboard support).
+ *
+ * TTsetClipboard pipes the kill buffer to an external clipboard tool:
+ *   - clip.exe (WSL)
+ *   - clip.exe (Cygwin)
+ *   - xclip (X11)
+ *   - wl-copy (Wayland)
+ *   - pbcopy (macOS)
+ */
+
+#include <sys/utsname.h>
+
+/* Shared clipboard tool detection state - avoids running system() calls
+ * multiple times which causes flickering on Wayland terminals. */
+static int conClipChecked = 0;
+static int conClipTool = 0;    /* 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy/pbpaste,
+                                  4=clip.exe (WSL), 5=clip.exe (Cygwin), 6=xsel */
+static int conClipSetCount = 0;  /* Number of clipboard set (copy) spawns */
+static int conClipGetCount = 0;  /* Number of clipboard get (paste) spawns */
+
+/* Check if a program is executable by searching PATH.
+ * Uses access() - no subprocess spawning, no terminal flickering. */
+static int
+TTfindInPath(meUByte *name)
+{
+    meUByte *path, *pathEnd;
+    meUByte buf[256];
+    int dlen;
+
+    path = meGetenv("PATH");
+    if(path == NULL)
+        return 0;
+
+    while(*path != '\0')
+    {
+        pathEnd = meStrchr(path, ':');
+        if(pathEnd != NULL)
+            dlen = pathEnd - path;
+        else
+            dlen = meStrlen(path);
+
+        if(dlen > 0 && dlen + meStrlen(name) + 2 <= (int)sizeof(buf))
+        {
+            meStrncpy(buf, path, dlen);
+            buf[dlen] = '\0';
+            if(buf[dlen-1] != '/')
+            {
+                buf[dlen] = '/';
+                dlen++;
+            }
+            meStrcpy(buf + dlen, name);
+            if(access((char *)buf, X_OK) == 0)
+                return 1;
+        }
+
+        if(pathEnd == NULL)
+            break;
+        path = pathEnd + 1;
+    }
+    return 0;
+}
+
+/* Detect if running under Windows Subsystem for Linux (WSL).
+ * Returns 1 if WSL, 0 otherwise.
+ * Detection uses uname() - WSL1 kernel ends with "-Microsoft",
+ * WSL2 kernel ends with "microsoft-standard-WSL2".
+ */
+static int
+TTisWSL(void)
+{
+    static int wslDetected = -1;  /* -1=not checked, 0=no, 1=yes */
+    struct utsname buf;
+
+    if(wslDetected >= 0)
+        return wslDetected;
+
+    wslDetected = 0;
+    if(uname(&buf) == 0 && meStrcmp(buf.sysname, "Linux") == 0)
+    {
+        /* WSL1: kernel release ends with "-Microsoft" (capital M) */
+        /* WSL2: kernel release ends with "microsoft-standard-WSL2" (lowercase) */
+        if(strstr(buf.release, "microsoft") != NULL ||
+           strstr(buf.release, "Microsoft") != NULL)
+            wslDetected = 1;
+    }
+    return wslDetected;
+}
+
+/* Detect if running under Cygwin.
+ * Returns 1 if Cygwin, 0 otherwise.
+ * Detection checks for the _CYGWIN compile-time define.
+ */
+static int
+TTisCygwin(void)
+{
+#ifdef _CYGWIN
+    return 1;
+#else
+    return 0;
+#endif
+}
+
+/* Detect the best available clipboard tool once.
+ * Uses file-scope statics conClipChecked/conClipTool so detection
+ * only runs once, avoiding flickering from multiple system() calls. */
+static void
+TTdetectClipTool(void)
+{
+    meUByte *sessionType;
+
+    if(conClipChecked)
+        return ;
+    conClipChecked = 1;
+
+    /* WSL: use clip.exe to interact with Windows clipboard */
+    if(TTisWSL() && TTfindInPath((meUByte *)"clip.exe"))
+    {
+        conClipTool = 4;
+        return ;
+    }
+    /* Cygwin: use clip.exe via /cygdrive/c/Windows/System32/clip.exe */
+    if(TTisCygwin())
+    {
+        if(TTfindInPath((meUByte *)"clip.exe"))
+        {
+            conClipTool = 4;
+            return ;
+        }
+        if(access("/cygdrive/c/Windows/System32/clip.exe", X_OK) == 0)
+        {
+            conClipTool = 5;
+            return ;
+        }
+    }
+    /* Wayland: use wl-copy/wl-paste */
+    sessionType = meGetenv("XDG_SESSION_TYPE");
+    if(sessionType != NULL && meStrcmp(sessionType, "wayland") == 0)
+    {
+        if(meGetenv("WAYLAND_DISPLAY") != NULL &&
+           TTfindInPath((meUByte *)"wl-copy"))
+        {
+            conClipTool = 2;
+            return ;
+        }
+    }
+    /* X11: use xclip */
+    if(meGetenv("DISPLAY") != NULL &&
+       TTfindInPath((meUByte *)"xclip"))
+    {
+        conClipTool = 1;
+        return ;
+    }
+    /* X11: use xsel as fallback */
+    if(meGetenv("DISPLAY") != NULL &&
+       TTfindInPath((meUByte *)"xsel"))
+    {
+        conClipTool = 6;
+        return ;
+    }
+    /* macOS: use pbcopy */
+    if(TTfindInPath((meUByte *)"pbcopy"))
+    {
+        conClipTool = 3;
+        return ;
+    }
+}
+
+void
+TTsetClipboard(void)
+{
+    meKillNode *killp;
+    meInt len;
+    int fd[2];
+    pid_t pid;
+
+    if(meSystemCfg & meSYSTEM_NOCLIPBRD)
+        return ;
+    if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+    if((klhead == NULL) || (klhead->kill == NULL))
+        return ;
+
+    killp = klhead->kill;
+    len = meStrlen(killp->data);
+    if(len == 0)
+        return ;
+
+    TTdetectClipTool();
+
+    if(conClipTool == 0)
+        return ;
+
+    if(pipe(fd) < 0)
+        return ;
+
+    pid = meFork();
+    if(pid == 0)
+    {
+        /* Child: read from fd[0], feed to clipboard tool */
+        close(fd[1]);
+        dup2(fd[0], 0);
+        close(fd[0]);
+        if(conClipTool == 1)
+            execlp("xclip", "xclip", "-selection", "clipboard", "-i", NULL);
+        else if(conClipTool == 2)
+            execlp("wl-copy", "wl-copy", NULL);
+        else if(conClipTool == 4)
+            execlp("clip.exe", "clip.exe", NULL);
+        else if(conClipTool == 5)
+            execlp("/cygdrive/c/Windows/System32/clip.exe", "/cygdrive/c/Windows/System32/clip.exe", NULL);
+        else if(conClipTool == 6)
+            execlp("xsel", "xsel", "--clipboard", "--input", NULL);
+        else
+            execlp("pbcopy", "pbcopy", NULL);
+        _exit(1);
+    }
+    else if(pid > 0)
+    {
+        /* Parent: write kill buffer data to pipe */
+        close(fd[0]);
+        write(fd[1], killp->data, len);
+        close(fd[1]);
+        conClipSetCount++;
+    }
+    else
+    {
+        close(fd[0]);
+        close(fd[1]);
+    }
+}
+
+void
+TTgetClipboard(void)
+{
+    meUByte buf[4096];
+    meUByte *tmpbuf, *dd;
+    meInt total, n;
+    int fd[2];
+    pid_t pid;
+
+    if(meSystemCfg & meSYSTEM_NOCLIPBRD)
+        return ;
+    if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
+        return ;
+    if(kbdmode == mePLAY)
+        return ;
+
+    TTdetectClipTool();
+
+    if(conClipTool == 0)
+        return ;
+
+    if(pipe(fd) < 0)
+        return ;
+
+    pid = meFork();
+    if(pid == 0)
+    {
+        /* Child: exec clipboard tool to stdout */
+        close(fd[0]);
+        dup2(fd[1], 1);
+        close(fd[1]);
+        if(conClipTool == 1)
+            execlp("xclip", "xclip", "-selection", "clipboard", "-o", NULL);
+        else if(conClipTool == 2)
+            execlp("wl-paste", "wl-paste", NULL);
+        else if(conClipTool == 4)
+            execlp("powershell.exe", "powershell.exe", "-Command", "Get-Clipboard", NULL);
+        else if(conClipTool == 5)
+            execlp("cat", "cat", "/dev/clipboard", NULL);
+        else if(conClipTool == 6)
+            execlp("xsel", "xsel", "--clipboard", "--output", NULL);
+        else
+            execlp("pbpaste", "pbpaste", NULL);
+        _exit(1);
+    }
+    else if(pid > 0)
+    {
+        /* Parent: read clipboard content into kill buffer */
+        close(fd[1]);
+        total = 0;
+        tmpbuf = NULL;
+        while((n = read(fd[0], buf, sizeof(buf))) > 0)
+        {
+            dd = meRealloc(tmpbuf, total + n + 1);
+            if(dd == NULL)
+            {
+                meFree(tmpbuf);
+                break;
+            }
+            tmpbuf = dd;
+            memcpy(tmpbuf + total, buf, n);
+            total += n;
+        }
+        close(fd[0]);
+        conClipGetCount++;
+        if(tmpbuf != NULL && total > 0)
+        {
+            tmpbuf[total] = '\0';
+            killSave();
+            if((dd = killAddNode(total + 1)) != NULL)
+                memcpy(dd, tmpbuf, total + 1);
+            thisflag = meCFKILL;
+        }
+        meFree(tmpbuf);
+    }
+    else
+    {
+        close(fd[0]);
+        close(fd[1]);
+    }
+}
+
+/* Display clipboard spawn counts to stderr for debugging.
+ * Called from macros to check clipboard tool usage. */
+void
+TTshowClipStats(void)
+{
+    fprintf(stderr, "[CLIP-STATS] set=%d get=%d tool=%d\n",
+            conClipSetCount, conClipGetCount, conClipTool);
+}
+
+void
+TTsetPrimary(void)
+{
+    /* No primary selection support for console mode */
+}
+
+#endif /* _CLIPBRD && !_XTERM */
