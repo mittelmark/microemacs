@@ -250,7 +250,7 @@ extern  int     mlwrite(int flags, meUByte *fmt, ...) ;
 #ifdef _ME_WINDOW
 #define mePrintMessage(mm) MessageBox(NULL,(char *) mm,ME_FULLNAME " '" meVERSION,MB_OK);
 #else
-#define mePrintMessage(mm) do{ int dummyInt; WriteFile(GetStdHandle(STD_ERROR_HANDLE),mm,meStrlen(mm),&dummyInt,NULL); } while(0)
+#define mePrintMessage(mm) do{ DWORD dummyInt; WriteFile(GetStdHandle(STD_ERROR_HANDLE),mm,meStrlen(mm),&dummyInt,NULL); } while(0)
 #endif
 #else
 #define mePrintMessage(mm) write(2,mm,meStrlen(mm))
