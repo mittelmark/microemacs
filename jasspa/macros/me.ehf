@@ -13459,16 +13459,22 @@ $a
     - cDcopy-regioncA (M-w) updates both X11 CLIPBOARD and Wayland clipboard
     - Mouse selection only updates X11 PRIMARY (for middle-click compatibility)
 
-    The cGyankcA (C-y) command tries Wayland clipboard first on Wayland systems,
+    The cGyankcA (C-y) tries Wayland clipboard first on Wayland systems,
     falling back to X11 CLIPBOARD if needed.
+
+    On WSL and Cygwin, cGclip.execA provides clipboard access to the Windows
+    clipboard. On macOS, cGpbcopycA/cGpbpastecA are used (built-in).
 
     To enable clipboard support, use cGM-x user-setupcA and check "Use Clipboard"
     in the Platform tab, or set the cG$systemcA variable with the clipboard bit:
     `set-variable $system &bor $system 0x2000000`
 
-    Requirements for Wayland clipboard support:
-    - cGwl-clipboardcA package installed (provides cGwl-copycA and cGwl-pastecA)
-    - cG$XDG_SESSION_TYPE=waylandcA environment variable
+    Required external tools by platform:
+    - Wayland: cGwl-clipboardcA package (provides cGwl-copycA and cGwl-pastecA)
+    - X11: cGxclipcA (recommended) or cGxselcA
+    - WSL: cGclip.execA (built-in on Windows)
+    - Cygwin: cGclip.execA (via cG/cygdrive/c/Windows/System32/clip.execA)
+    - macOS: cGpbcopycA/cGpbpastecA (built-in)
 
     The numeric argument cCncA was introduced in the '04 release.
 
@@ -44761,6 +44767,33 @@ $a
        Scheme being used. This indirectly sets bit cG0x10cA of the ls$system(5)lm$system(5)le
        variable.
 
+    `Use Clipboard`
+
+       When enabled, MicroEmacs uses the system clipboard for copy and paste
+       operations with external applications. This sets bit cG0x2000000cA of the
+       ls$system(5)lm$system(5)le variable. On X11, this switches from the PRIMARY selection
+       (mouse select/middle-click paste) to the CLIPBOARD selection (Ctrl+C /
+       Ctrl+V compatible with most applications). On Wayland, both the X11
+       CLIPBOARD and Wayland clipboard are updated for maximum compatibility.
+       The following external clipboard tools are searched in order of priority
+       and must be installed for the corresponding platform:
+
+        cGclip.execA - WSL and Cygwin (Windows clipboard interop)
+        cGwl-copycA / cGwl-pastecA - Wayland (install cGwl-clipboardcA package)
+        cGxclipcA - X11 (install cGxclipcA package, recommended)
+        cGxselcA - X11 fallback (install cGxselcA package)
+        cGpbcopycA / cGpbpastecA - macOS (built-in)
+
+       On X11 with cGxclipcA installed, explicit copy commands (cGM-wcA, `C-x r o`)
+       pipe the clipboard through xclip so that xclip becomes the clipboard
+       owner. This prevents subsequent mouse selections from overwriting the
+       clipboard, allowing mouse-select/middle-click-paste to work independently
+       of explicit copy/paste.
+
+       Note: The console version (mec) uses the same clipboard tools via the
+       cG_CLIPBRDcA feature flag, enabling clipboard support even without an X or
+       Wayland display server.
+
     `Draw White Spaces`
     
        Enables the drawing of visible white spaces, i.e. space, tab and
@@ -44873,6 +44906,13 @@ $a
     `Use Fonts`
     
        See cDPlatform UNIX SetupcA above.
+
+    `Use Clipboard`
+    
+       See cDPlatform UNIX SetupcA above. In the console (mec), clipboard
+       support is provided via external tools (cGclip.execA for WSL/Cygwin,
+       cGxclipcA/cGxselcA for X11, cGwl-copycA/cGwl-pastecA for Wayland, or
+       cGpbcopycA/cGpbpastecA for macOS) using the cG_CLIPBRDcA feature flag.
 
     `Draw White Spaces`
     
