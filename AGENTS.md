@@ -2,7 +2,20 @@
 
 ## Overview
 
-MicroEmacs is an OS-independent text editor with terminal (mec) and GUI (mew) versions. The interface is implemented in ME macro language.
+**JASSPA MicroEmacs 2009** (with 2023-2026 extensions by Detlef Groth / mittelmark) is an OS-independent, extensible text editor with both terminal (`mec`) and GUI/X11 (`mew`) variants. The interface is implemented in ME macro language (`.emf` files). Licensed under **GPLv2**.
+
+Current version: **v09.12.26b3** (defined in `src/evers.h`).
+
+### Key Characteristics
+
+- Small (~600KB bare executable, ~2.5-4MB with embedded macros/dictionary)
+- Cross-platform: Linux, macOS, FreeBSD, Windows (native + Cygwin + MSYS2)
+- Emacs-like keybindings (CUA bindings also available via `jeany.emf`)
+- Extensible via its own ME macro language
+- Single-file standalone executables via BFS (Built-in File System)
+- 45+ color themes (Dracula, Solarized, Ayu, etc.)
+- 80+ file hooks for syntax highlighting
+- Built-in spell checking, code folding, git integration
 
 ## Build Commands
 
@@ -87,74 +100,70 @@ Output: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
 - Executable: `src/.linux32gcc-release-mecw/mecw` (both)
 - Executable: `src/.linux32gcc-release-mew/mew` (X11)
 
-### MinGW/MSYS2 Windows Build
+### Build Options
 
-#### Build Goals
+The `src/linux32gcc.gmk` Makefile supports these variables:
 
-**winmingwgcc.gmk/mak files - MSYS2 executables:**
-- Produce true MSYS2 executables for terminal use
-- Support MSYS-style filenames (e.g., `/c/Users/name`)
-- Designed to run in MSYS2 bash terminal
-- Build location: **GitHub Actions only** using `.github/workflows/binaries-msys2.yml`
-- Cannot be built locally on Linux (requires MSYS2 environment)
+| Variable | Values | Effect |
+|----------|--------|--------|
+| `BTYP` | `c`, `w`, `cw` | Console-only, Window-only, Both |
+| `BCFG` | `release`, `debug` | Optimized vs debug build |
+| `BCOR` | `me`, `ne` | MicroEmacs vs NanoEmacs |
 
-**linuxmingwgcc.gmk/mak files - Native Windows executables:**
-- Produce true Windows executables for PowerShell and Cmd terminals
-- Use normal Windows file paths (e.g., `C:\Users\name`)
-- Cross-compilation from Linux to Windows
-- Build locations:
-  - **Locally on Linux** (this machine)
-  - **GitHub Actions** using `.github/workflows/binaries-linuxmingwgcc.yml`
+### Executable Types
 
-#### Makefile Summary
+| Type | Description |
+|------|-------------|
+| `mec` | Console/terminal only (termcap/ncurses) |
+| `mew` | X11/Windows GUI only |
+| `mecw` | Combined terminal + X11 (default) |
+| `mecb` | Console standalone (macros embedded via BFS) |
+| `mewb` | GUI standalone (macros embedded via BFS) |
+| `mecwb` | Combined standalone (macros embedded via BFS) |
 
-| Makefile | Purpose | Compiler | Filenames | Terminal |
-|----------|---------|-----------|------------|----------|
-| `winmingwgcc.gmk` (bfs/) | MSYS2 bfs executable | Native gcc (MSYS2) | MSYS paths | MSYS2 bash |
-| `winmingwgcc.mak` (src/) | MSYS2 mec/mew executables | Native gcc (MSYS2) | MSYS paths | MSYS2 bash / Windows GUI |
-| `linuxmingwgcc.gmk` (bfs/) | Cross-compile bfs for Windows | `x86_64-w64-mingw32-gcc` | Windows paths | PowerShell/Cmd |
-| `linuxmingwgcc.mak` (src/) | Cross-compile mec/mew for Windows | `x86_64-w64-mingw32-gcc` | Windows paths | PowerShell/Cmd / Windows GUI |
+The `b` suffix indicates a "bfs-built" standalone binary that includes all macro files, help, and dictionary.
 
-#### Build Commands
+### Platform-Specific Build Files
 
-**MSYS2 Build (GitHub Actions only):**
-```bash
-# bfs build
-cd bfs && make -f winmingwgcc.gmk
+**Top-level Makefiles** (project root):
 
-# Console build (mec)
-cd src && make -f winmingwgcc.mak BTYP=c
+| File | Platform | Notes |
+|------|----------|-------|
+| `linux32gcc.gmk` | Linux (primary) | GNU Make, gcc, 32/64-bit |
+| `linuxmingwgcc.gmk` | Linux cross-compile to Windows | MinGW `i686-w64-mingw32-gcc` |
+| `cygwin.gmk` | Cygwin Windows | GNU Make |
+| `freebsd.mak` | FreeBSD | Uses default `make` (not gmake) |
+| `macos32gcc.gmk` | macOS | GNU Make |
+| `winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
+| `win32winlibs.gmk` | Windows (WinLibs) | Native Windows gcc |
+| `Makefile` | Generic top-level | Release packaging, bfs build |
 
-# GUI build (mew)
-cd src && make -f winmingwgcc.mak BTYP=w
-```
+**Source Makefiles** (in `src/`):
 
-**Linux Cross-Compile (local or GitHub Actions):**
-```bash
-# bfs build
-make -f linuxmingwgcc.gmk bfs/bin
+| File | Platform |
+|------|----------|
+| `linux32gcc.gmk` | Linux gcc (primary, 150 lines) |
+| `linuxmingwgcc.mak` | Cross-compile from Linux to Windows |
+| `cygwin.gmk` | Cygwin |
+| `darwin.gmk` | macOS |
+| `freebsd.mak` | FreeBSD |
+| `openbsd.gmk` | OpenBSD |
+| `winmingwgcc.mak` | MSYS2 native Windows |
+| `win32v8.mak` | Windows MSVC v8 |
+| `win32winlibs.mak` | Windows WinLibs |
 
-# Console build (mec32.exe)
-make -f linuxmingwgcc.mak mec
+### CMake Support
 
-# GUI build (mew32.exe)
-make -f linuxmingwgcc.mak mew
-```
+A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Windows, and macOS with optional GUI.
 
-#### GitHub Actions Workflows
+### Install Scripts
 
-**MSYS2 Build** (`.github/workflows/binaries-msys2.yml`):
-```bash
-# Runs on Windows with MSYS2
-# Builds bfs, mec (console), and mew (GUI) with MSYS2 support
-```
-
-**Linux MinGW Cross-Compile** (`.github/workflows/binaries-linuxmingwgcc.yml`):
-```bash
-# Runs on Ubuntu 22.04
-# Cross-compiles bfs, mec, mew, mecb, mewb for native Windows
-# Creates release packages (brew, scoop)
-```
+| File | Purpose |
+|------|---------|
+| `install.sh` | Unix curl-based installer (downloads latest release) |
+| `install-windows.ps1` | Windows PowerShell installer |
+| `install-fonts.sh` | X11 font installer |
+| `install-dict.sh` | Spelling dictionary installer |
 
 ## C Code Style
 
@@ -226,6 +235,76 @@ functionName(int arg)
 /* Brief inline comment */
 ```
 
+### Key Source Files
+
+| File | Purpose |
+|------|---------|
+| `main.c` | Main entry point (2119 lines), command-line parsing, initialization |
+| `basic.c` | Basic editing commands |
+| `bind.c` | Key binding management |
+| `buffer.c` | Buffer management |
+| `display.c` | Screen display/redraw |
+| `eval.c` | Expression evaluation (macro interpreter core) |
+| `exec.c` | Command execution engine |
+| `file.c` / `fileio.c` | File I/O operations |
+| `frame.c` | Window frame management |
+| `hilight.c` | Syntax highlighting |
+| `input.c` | User input handling |
+| `isearch.c` | Incremental search |
+| `key.c` | Keyboard processing |
+| `line.c` | Line editing |
+| `macro.c` | ME macro language interpreter |
+| `narrow.c` | Buffer narrowing |
+| `next.c` | Buffer/window switching |
+| `osd.c` | On-Screen Display (dialogs, menus) |
+| `region.c` | Region operations (copy, cut, paste) |
+| `regex.c` | Regular expression engine |
+| `registry.c` | Settings registry (persistent user config) |
+| `search.c` | Search and replace |
+| `spawn.c` | Process spawning (shell, commands) |
+| `spell.c` | Spell checking |
+| `tag.c` | Tags support |
+| `termio.c` | Terminal I/O abstraction |
+| `undo.c` | Undo/redo |
+| `window.c` | Window management |
+| `word.c` | Word operations |
+| `bfs.c` | Built-in File System (embedding support) |
+
+### Platform-Specific Terminal Files
+
+| File | Purpose |
+|------|---------|
+| `unixterm.c` | Unix/X11/terminal interface (termcap, X11, Wayland, clipboard) |
+| `winterm.c` / `winterm.h` | Windows terminal/GUI interface |
+| `dosterm.c` | DOS terminal interface |
+| `winprint.c` | Windows printing |
+
+### Header Files
+
+| File | Purpose |
+|------|---------|
+| `emain.h` | Platform detection, master include (610 lines) |
+| `estruct.h` | Data structures and constants (1390 lines) |
+| `edef.h` | Global variable definitions (839 lines) |
+| `efunc.h` | Function declarations |
+| `eterm.h` | Terminal interface API (664 lines) |
+| `evers.h` | Version definition (v09.12.26b3) |
+| `eopt.h` | Optional feature flags |
+
+### Definition Files (`.def`)
+
+These are included by headers to generate lookup tables:
+
+| File | Purpose |
+|------|---------|
+| `ebind.def` | Initial key-to-command bindings (314 lines) |
+| `efunc.def` | Command name table with DEFFUNC macros (399 lines) |
+| `evar.def` | Environment variable names |
+| `emode.def` | Mode name definitions |
+| `eskeys.def` | Special key name definitions |
+| `eprint.def` | Print format definitions |
+| `etermcap.def` | Termcap capability definitions |
+
 ## ME Macro Style (.emf files)
 
 ### Header Template
@@ -261,17 +340,53 @@ functionName(int arg)
 - `!if &not &seq ...` - Negated string compare
 - `!force` - Ignore errors
 
+### ME Macro Language Details
+
+**Variable Types:**
+- `$name` - Global variables (e.g., `$system`, `$buffer-bname`)
+- `#l0-#l9` - Local register variables (per macro scope)
+- `%name` - Macro variables (temporary, within current execution)
+
+**Control Flow:**
+- `!if`, `!else`, `!endif` - Conditional execution
+- `!while`, `!done` - While loops
+- `!repeat`, `!until` - Repeat-until loops
+- `!force` - Ignore errors in next command
+
+**File Types:**
+| Extension | Purpose |
+|-----------|---------|
+| `.emf` | Macro files (executable ME macros, configuration) |
+| `.etf` | Template files (file header templates for languages) |
+| `.eaf` | Abbreviation files |
+| `.erf` | Registry/evaluation files (persistent settings) |
+| `.edf` | Dictionary files (spelling) |
+
+**Naming Patterns:**
+- `hk*.emf` - File hooks (syntax highlighting for languages)
+- `scheme*.emf` - Color theme/scheme files (45+ themes)
+- `*.ehf` - Compiled help files (binary format)
+
 ## Key Directories
 
-- `src/` - C source code
+- `src/` - C source code (~30 .c files, ~20 headers, 7 .def files)
 - `src/*.h` - Header files (edef.h, eterm.h, etc.)
 - `src/build` - Build script
-- `jasspa/macros/` - ME macro files (.emf)
+- `jasspa/macros/` - ME macro files (.emf, 462 files total)
 - `jasspa/macros/*.ehf` - Compiled help files
+- `jasspa/spelling/` - Spelling dictionaries (English)
+- `jasspa/pixmaps/` - Icons (XPM, PNG formats)
+- `jasspa/contrib/` - Contributed/user macro files
+- `bfs/` - Built-in File System tool (embeds macros into executables)
 - `doc/` - Documentation (me.smd → me.ehf)
-- `user/` - User configuration
+- `docs/` - EMF tutorial (emf-tutorial.md)
+- `fonts/` - TTF font packages (Source Code Pro, Ubuntu Mono, etc.)
+- `tests/` - Sample source files in 42+ programming languages
+- `user/` - Example/test user macro files
 - `~/.jasspa/USERNAME/` - User-specific configuration directory
 - `~/.jasspa/USERNAME/USERNAME.emf` - User startup macro file
+- `~/.jasspa/USERNAME/USERNAME.erf` - User registry (persistent settings)
+- `~/.jasspa/USERNAME/USERNAME.edf` - Personal spelling dictionary
 
 ## Important System Flags (src/edef.h)
 
@@ -435,6 +550,23 @@ Tool IDs: 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy, 4=clip.exe(WSL), 5=clip
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
 - HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm`
 - Links section at top of me.smd for cross-references
+
+## CI/CD (GitHub Actions)
+
+12 workflow files in `.github/workflows/`:
+
+| Workflow | Purpose |
+|----------|---------|
+| `binaries-linux.yml` | Ubuntu 22.04/24.04 (x86_64 + ARM) builds |
+| `binaries-linuxmingwgcc.yml` | Linux cross-compile to Windows |
+| `binaries-macos32gcc.yml` | macOS builds (Intel + ARM) |
+| `binaries-winlibs.yml` | Windows native builds |
+| `binaries-msys2.yml` | MSYS2 Windows builds |
+| `binaries-fedorax86_64.yml` | Fedora-specific builds |
+| `cygwin.yml` / `cygwin2.yml` | Cygwin builds |
+| `bdf-fonts.yml` / `ttf-fonts.yml` | Font packaging |
+| `ubuntu-arm-check.yml` | ARM compatibility check |
+| `testing.yml` | Testing workflow |
 
 ## Common Patterns
 
@@ -819,3 +951,80 @@ Hand CLIPBOARD ownership to xclip after explicit copy, so ME doesn't own it for 
 3. Press `ESC-w` → Both updated
 4. Select text with mouse → Only PRIMARY updated (xclip owns CLIPBOARD)
 5. Press `C-y` → Works normally
+
+---
+
+## Tests Directory
+
+The `tests/` directory contains sample source files in 42+ programming languages for testing syntax highlighting and file hooks. These are useful for verifying that `hk*.emf` file hooks work correctly.
+
+## User Configuration
+
+### Directory Structure
+
+```
+~/.jasspa/
+  $LOGNAME/                    # or $MENAME/
+    $LOGNAME.emf               # User startup macros
+    $LOGNAME.erf               # User registry (persistent settings)
+    $LOGNAME.edf               # Personal spelling dictionary
+```
+
+### User Startup File
+
+The user startup file (`~/.jasspa/USERNAME/USERNAME.emf`) is executed after `me.emf` during startup. Use it to customize keybindings, set variables, or load additional macros.
+
+Example:
+```me
+; -!- emf -!-
+; User startup file
+
+; Enable clipboard mode
+set-variable $system &bor $system 0x2000000
+
+; Load custom keybindings
+load-library "my-keybinds"
+```
+
+### User Registry
+
+The user registry (`~/.jasspa/USERNAME/USERNAME.erf`) stores persistent settings saved by the User Setup GUI (`M-x user-setup`). It contains key-value pairs for editor configuration.
+
+## Color Themes
+
+45+ color themes are available in `jasspa/macros/scheme*.emf`. To apply a theme:
+
+1. Run `M-x user-setup`
+2. Go to the "Color Scheme" tab
+3. Select a theme and click Apply
+
+Or load manually:
+```me
+load-library "scheme-dracula"   ; Dracula theme
+load-library "scheme-solarized-dark"  ; Solarized Dark
+```
+
+## Spell Checking
+
+Built-in spell checking is available:
+- `M-x spell` - Start spell checking
+- `M-x spell-word` - Check current word
+- `M-x spell-buffer` - Check entire buffer
+
+Dictionaries are in `jasspa/spelling/`. Personal dictionary is stored in `~/.jasspa/USERNAME/USERNAME.edf`.
+
+## Code Folding
+
+Code folding is provided by `jasspa/macros/fold.emf`:
+- `M-x fold-mode` - Toggle fold mode
+- `M-x fold-region` - Fold a region
+- `M-x fold-all` - Fold all regions
+- `M-x unfold-all` - Unfold all
+
+## Git Integration
+
+Git commands are available via `jasspa/macros/git.emf`:
+- `M-x git-status` - Show git status
+- `M-x git-blame` - Show git blame
+- `M-x git-log` - Show git log
+- `M-x git-diff` - Show git diff
