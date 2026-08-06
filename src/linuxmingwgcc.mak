@@ -73,7 +73,7 @@ CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
 LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -Wl,-Bstatic -lz -Wl,-Bdynamic
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs

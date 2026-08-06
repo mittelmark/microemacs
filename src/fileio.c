@@ -1659,11 +1659,13 @@ ffgetBuf(void)
 #endif
 #ifdef _WIN32
         {
-            if(ReadFile(meio.rp,ffbuf,meFIOBUFSIZ,&ffremain,NULL) == 0)
+            DWORD bytesRead ;
+            if(ReadFile(meio.rp,ffbuf,meFIOBUFSIZ,&bytesRead,NULL) == 0)
             {
                 if((meio.rp != GetStdHandle(STD_INPUT_HANDLE)) || (GetLastError() != ERROR_BROKEN_PIPE))
                     return mlwrite(MWABORT,"[File read error %d]",GetLastError());
             }
+            ffremain = (meInt) bytesRead ;
             if(ffremain <= 0)
             {
                 ffremain = -1 ;
@@ -2075,17 +2077,20 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
         /* partial reading only supported by the insert-file command on regular files */
         if(length < 0)
         {
-            meUInt fsu, fsl ;
+            meUInt fsl ;
 #ifdef _LARGEFILE_SOURCE
             off_t fs ;
+            meUInt fsu ;
             fseeko(meio.rp,0,SEEK_END) ;
             fs = ftello(meio.rp) ;
             fsu = (meUInt) (fs >> 32) ;
             fsl = (meUInt) fs ;
 #else
 #ifdef _WIN32
-            fsl = GetFileSize(meio.rp,&fsu) ;
+            DWORD fsu ;
+            fsl = (meUInt) GetFileSize(meio.rp,&fsu) ;
 #else
+            meUInt fsu ;
             fseek(meio.rp,0,SEEK_END) ;
             fsl = ftell(meio.rp) ;
             fsu = 0 ;
@@ -2116,7 +2121,10 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
         fseeko(meio.rp,(((off_t) uoffset) << 32) | ((off_t) ffoffset),SEEK_SET) ;
 #else
 #ifdef _WIN32
-        SetFilePointer(meio.rp,ffoffset,&uoffset,FILE_BEGIN) ;
+        {
+            LONG uoffsetHi = (LONG) uoffset ;
+            SetFilePointer(meio.rp,ffoffset,&uoffsetHi,FILE_BEGIN) ;
+        }
 #else
         fseek(meio.rp,ffoffset,SEEK_SET) ;
 #endif
@@ -2219,8 +2227,8 @@ ffputBuf(void)
 #endif
     {
 #ifdef _WIN32
-        meInt written ;
-        if((WriteFile(meio.wp,ffbuf,ffremain,&written,NULL) == 0) || (written != ffremain))
+        DWORD written ;
+        if((WriteFile(meio.wp,ffbuf,ffremain,&written,NULL) == 0) || ((meInt) written != ffremain))
         {
             ffwerror = 1 ;
             return mlwrite(MWABORT,(meUByte *)"[Write failed - %d]",meFileGetError());
