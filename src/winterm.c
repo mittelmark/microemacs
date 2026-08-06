@@ -583,7 +583,10 @@ TTopenClientServer(void)
             meUByte buff[meBUF_SIZE_MAX] ;
 
             ii = sprintf((char *)buff,"%d\n",(int) baseHwnd) ;
-            WriteFile(clientHandle,buff,ii,&ii,NULL) ;
+            {
+                DWORD bytesWritten ;
+                WriteFile(clientHandle,buff,ii,&bytesWritten,NULL) ;
+            }
 
             sprintf((char *)buff,"Client Server: %s\n\n",fname) ;
             addLineToEob(bp,buff) ;     /* Add string */
