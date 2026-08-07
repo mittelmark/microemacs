@@ -2,7 +2,6 @@ VERSION=$(shell grep -E '^#define me\(YEAR\|MONTH\|DAY\)' src/evers.h | awk '{ p
 TOOLKIT=win32winlibs
 MAKE=mingw32-make.exe
 bfs/exe:
-	cd bfs && $(MAKE) -f $(TOOLKIT).gmk clean	
 	cd bfs && $(MAKE) -f $(TOOLKIT).gmk
 mec: 
 	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=c
