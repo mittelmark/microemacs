@@ -68,20 +68,16 @@ EXE      = .exe
 BDIST    ?= msys2
 
 ifeq "$(BDIST)" "mingw64"
-CC       = /mingw64/bin/gcc
-RC       = /mingw64/bin/windres
-STRIP    = /mingw64/bin/strip
-AR       = /mingw64/bin/ar
 OUTTAG   = mingw64gcc
 LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -Wl,-Bstatic -lz -Wl,-Bdynamic
 else
+OUTTAG   = msys64gcc
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
+endif
 CC       = gcc
 RC       = windres
 STRIP    = strip
 AR       = ar
-OUTTAG   = msys64gcc
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
-endif
 
 MK       = make
 LD       = $(CC)
