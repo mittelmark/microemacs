@@ -275,6 +275,28 @@ static int  mouseState =0;              /* State of the mouse. */
 static meUShort mouseKeys[8] = { 0, 1, 2, 0, 3, 0, 0, 0 } ;
 static meUByte mouseInFrame=0 ;
 
+/* SGR mouse state machine for VT mouse input */
+#define SGR_MOUSE_STATE_IDLE       0  /* Waiting for ESC */
+#define SGR_MOUSE_STATE_ESC        1  /* Got ESC, waiting for [ */
+#define SGR_MOUSE_STATE_CSI        2  /* Got [, waiting for < */
+#define SGR_MOUSE_STATE_BUTTON     3  /* Reading button number */
+#define SGR_MOUSE_STATE_COL        4  /* Reading column number */
+#define SGR_MOUSE_STATE_ROW        5  /* Reading row number */
+
+int sgrMouseState = SGR_MOUSE_STATE_IDLE;
+int sgrMouseButton = 0;
+int sgrMouseCol = 0;
+int sgrMouseRow = 0;
+meUByte vtMouseEnabled = 0;  /* VT mouse input is active */
+
+/* Pushback buffer for SGR parser - when an invalid sequence is detected,
+ * consumed ESC/[ chars must be re-injected for normal processing.
+ * Uses FIFO order: chars are pushed at pushbackLen, popped at pushbackIdx */
+#define SGR_PUSHBACK_SIZE 4
+meUByte sgrPushbackBuf[SGR_PUSHBACK_SIZE];
+int sgrPushbackLen = 0;
+int sgrPushbackIdx = 0;
+
 #ifdef _ME_WINDOW
 #define mouseHide() ((mouseState & MOUSE_STATE_VISIBLE) ? (SetCursor(NULL),(mouseState &= ~MOUSE_STATE_VISIBLE)):0)
 #define mouseShow() ((mouseState & MOUSE_STATE_VISIBLE) ? 0:(SetCursor(meCursors[meCurCursor]),(mouseState |= MOUSE_STATE_VISIBLE)))
@@ -899,6 +921,16 @@ ConsoleHandlerRoutine(DWORD dwCtrlType)
 int
 TTend (void)
 {
+    /* Disable VT mouse if enabled */
+    if(vtMouseEnabled)
+    {
+        /* Disable SGR mouse mode: \033[?1006l + \033[?1000l */
+        fwrite("\033[?1006l", 1, 8, stdout);
+        fwrite("\033[?1000l", 1, 8, stdout);
+        fflush(stdout);
+        vtMouseEnabled = 0;
+    }
+
 #ifdef _ME_WINDOW
     if (meSystemCfg & meSYSTEM_CONSOLE)
 #endif /* _ME_WINDOW */
@@ -941,6 +973,185 @@ TTend (void)
     }
     return meTRUE ;
 }
+
+#if MEOPT_MOUSE
+/*
+ * meParseSGRMouseChar
+ * Parse a character as part of an SGR mouse sequence.
+ * Returns 1 if the character was consumed (part of SGR mouse sequence),
+ * 0 if not (should be processed as normal keyboard input).
+ * When a complete SGR mouse sequence is parsed, sets up msg with the
+ * appropriate WM_* mouse message for WinMouse() to handle.
+ */
+static int
+meParseSGRMouseChar(MSG *msg, meUByte cc)
+{
+    if(!vtMouseEnabled || !(meMouseCfg & meMOUSE_ENBLE))
+    {
+        /* VT mouse not active, reset parser and don't consume */
+        sgrMouseState = SGR_MOUSE_STATE_IDLE;
+        return 0;
+    }
+
+    if(sgrMouseState == SGR_MOUSE_STATE_IDLE)
+    {
+        /* Waiting for ESC to start a potential SGR mouse sequence */
+        if(cc == '\033')
+        {
+            sgrMouseState = SGR_MOUSE_STATE_ESC;
+            sgrMouseButton = 0;
+            sgrMouseCol = 0;
+            sgrMouseRow = 0;
+            return 1;  /* Consumed ESC */
+        }
+        return 0;  /* Not part of mouse sequence */
+    }
+
+    /* We're in the middle of parsing an SGR mouse sequence */
+    if(cc >= '0' && cc <= '9')
+    {
+        /* Accumulate digit */
+        if(sgrMouseState == SGR_MOUSE_STATE_BUTTON)
+            sgrMouseButton = sgrMouseButton * 10 + (cc - '0');
+        else if(sgrMouseState == SGR_MOUSE_STATE_COL)
+            sgrMouseCol = sgrMouseCol * 10 + (cc - '0');
+        else if(sgrMouseState == SGR_MOUSE_STATE_ROW)
+            sgrMouseRow = sgrMouseRow * 10 + (cc - '0');
+        return 1;  /* Consumed */
+    }
+    else if(cc == ';' && (sgrMouseState == SGR_MOUSE_STATE_BUTTON ||
+                          sgrMouseState == SGR_MOUSE_STATE_COL))
+    {
+        /* Separator - advance to next field */
+        if(sgrMouseState == SGR_MOUSE_STATE_BUTTON)
+            sgrMouseState = SGR_MOUSE_STATE_COL;
+        else if(sgrMouseState == SGR_MOUSE_STATE_COL)
+            sgrMouseState = SGR_MOUSE_STATE_ROW;
+        return 1;  /* Consumed */
+    }
+    else if(cc == 'M' || cc == 'm')
+    {
+        /* End of SGR mouse sequence - process the event */
+        int isRelease = (cc == 'm');
+        int isMotion = 0;
+        UINT wParam = 0;
+
+        /* Check for motion (button + 32) */
+        if(sgrMouseButton >= 32)
+        {
+            sgrMouseButton -= 32;
+            isMotion = 1;
+        }
+
+        /* Set mouse position (convert from 1-based to 0-based) */
+        mouse_X = sgrMouseCol - 1;
+        mouse_Y = sgrMouseRow - 1;
+        mouse_dX = 0;
+        mouse_dY = 0;
+        mouseInFrame = 1;
+
+        if(isMotion)
+        {
+            /* Mouse motion - generate mouse move event */
+            msg->message = WM_MOUSEMOVE;
+            msg->wParam = 0;
+            if(sgrMouseButton == 0) wParam |= MK_LBUTTON;
+            else if(sgrMouseButton == 1) wParam |= MK_MBUTTON;
+            else if(sgrMouseButton == 2) wParam |= MK_RBUTTON;
+            msg->wParam = wParam;
+        }
+        else if(isRelease)
+        {
+            /* Button release */
+            if(sgrMouseButton == 0)
+            {
+                msg->message = WM_LBUTTONUP;
+                wParam |= MK_LBUTTON;
+            }
+            else if(sgrMouseButton == 1)
+            {
+                msg->message = WM_MBUTTONUP;
+                wParam |= MK_MBUTTON;
+            }
+            else if(sgrMouseButton == 2)
+            {
+                msg->message = WM_RBUTTONUP;
+                wParam |= MK_RBUTTON;
+            }
+            /* Wheel events don't have release */
+            else if(sgrMouseButton == 64)
+                msg->message = WM_MOUSEWHEEL, wParam = 0x0;
+            else if(sgrMouseButton == 65)
+                msg->message = WM_MOUSEWHEEL, wParam = 0x80000000;
+            msg->wParam = wParam;
+        }
+        else
+        {
+            /* Button press */
+            if(sgrMouseButton == 0)
+            {
+                msg->message = WM_LBUTTONDOWN;
+                wParam |= MK_LBUTTON;
+            }
+            else if(sgrMouseButton == 1)
+            {
+                msg->message = WM_MBUTTONDOWN;
+                wParam |= MK_MBUTTON;
+            }
+            else if(sgrMouseButton == 2)
+            {
+                msg->message = WM_RBUTTONDOWN;
+                wParam |= MK_RBUTTON;
+            }
+            else if(sgrMouseButton == 64)
+                msg->message = WM_MOUSEWHEEL, wParam = 0x0;
+            else if(sgrMouseButton == 65)
+                msg->message = WM_MOUSEWHEEL, wParam = 0x80000000;
+            msg->wParam = wParam;
+        }
+
+        /* Set up lParam with mouse position */
+        msg->lParam = ((mouse_Y) << 16) | mouse_X;
+        ttmodif = 0;
+
+        sgrMouseState = SGR_MOUSE_STATE_IDLE;
+        return 1;  /* Consumed - message is ready */
+    }
+    else if(cc == '[' && sgrMouseState == SGR_MOUSE_STATE_ESC)
+    {
+        /* Got CSI - wait for < */
+        sgrMouseState = SGR_MOUSE_STATE_CSI;
+        return 1;  /* Consumed */
+    }
+    else if(cc == '<' && sgrMouseState == SGR_MOUSE_STATE_CSI)
+    {
+        /* Got SGR mouse prefix - start reading button */
+        sgrMouseState = SGR_MOUSE_STATE_BUTTON;
+        return 1;  /* Consumed */
+    }
+    else
+    {
+        /* Invalid sequence - push back consumed characters and reset.
+         * The ESC and any intermediate chars (e.g. '[') were consumed
+         * during parsing but the sequence turned out to be invalid.
+         * We store them so the caller can re-process them normally. */
+        sgrPushbackLen = 0;
+        if(sgrMouseState == SGR_MOUSE_STATE_CSI)
+        {
+            /* Had ESC + [, push both back */
+            sgrPushbackBuf[sgrPushbackLen++] = '\033';
+            sgrPushbackBuf[sgrPushbackLen++] = '[';
+        }
+        else if(sgrMouseState == SGR_MOUSE_STATE_ESC)
+        {
+            /* Had ESC only, push it back */
+            sgrPushbackBuf[sgrPushbackLen++] = '\033';
+        }
+        sgrMouseState = SGR_MOUSE_STATE_IDLE;
+        return 0;
+    }
+}
+#endif /* MEOPT_MOUSE */
 
 /* Get a console message and format as a standard windows message */
 static int
@@ -1007,6 +1218,108 @@ meGetConsoleMessage(MSG *msg, int mode)
                              * (ESC [) or SS3 (ESC O) sequences */
                             if(ii+1 < (int)bytesRead && rawBuf[ii+1] == '[')
                             {
+                                /* Check for SGR mouse: ESC [ < (button;col;rowM/m) */
+                                if(ii+2 < (int)bytesRead && rawBuf[ii+2] == '<')
+                                {
+#if MEOPT_MOUSE
+                                    if(vtMouseEnabled && (meMouseCfg & meMOUSE_ENBLE))
+                                    {
+                                        /* Parse SGR mouse: ESC [ < btn ; col ; row M/m */
+                                        int si = ii + 3 ;
+                                        int btn = 0, col = 0, row = 0 ;
+                                        int state = 0 ; /* 0=btn, 1=col, 2=row, 3=done */
+                                        meUByte finalByte = 0 ;
+                                        while(si < (int)bytesRead)
+                                        {
+                                            meUByte c = rawBuf[si] ;
+                                            if(c == 'M' || c == 'm')
+                                            {
+                                                finalByte = c ;
+                                                si++ ;
+                                                break ;
+                                            }
+                                            else if(c == ';')
+                                                state++ ;
+                                            else if(c >= '0' && c <= '9')
+                                            {
+                                                if(state == 0) btn = btn * 10 + (c - '0') ;
+                                                else if(state == 1) col = col * 10 + (c - '0') ;
+                                                else if(state == 2) row = row * 10 + (c - '0') ;
+                                            }
+                                            else
+                                                break ; /* Invalid */
+                                            si++ ;
+                                        }
+                                        if(finalByte)
+                                        {
+                                            int isRelease = (finalByte == 'm') ;
+                                            int isMotion = 0 ;
+                                            UINT wBtn = 0 ;
+
+                                            /* Check for motion (button + 32) */
+                                            if(btn >= 32)
+                                            {
+                                                btn -= 32 ;
+                                                isMotion = 1 ;
+                                            }
+
+                                            /* Set mouse position (1-based to 0-based) */
+                                            mouse_X = col - 1 ;
+                                            mouse_Y = row - 1 ;
+                                            mouse_dX = 0 ;
+                                            mouse_dY = 0 ;
+                                            mouseInFrame = 1 ;
+
+                                            if(isMotion)
+                                            {
+                                                msg->message = WM_MOUSEMOVE ;
+                                                if(btn == 0) wBtn = MK_LBUTTON ;
+                                                else if(btn == 1) wBtn = MK_MBUTTON ;
+                                                else if(btn == 2) wBtn = MK_RBUTTON ;
+                                            }
+                                            else if(isRelease)
+                                            {
+                                                if(btn == 0) msg->message = WM_LBUTTONUP, wBtn = MK_LBUTTON ;
+                                                else if(btn == 1) msg->message = WM_MBUTTONUP, wBtn = MK_MBUTTON ;
+                                                else if(btn == 2) msg->message = WM_RBUTTONUP, wBtn = MK_RBUTTON ;
+                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL ;
+                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL ;
+                                            }
+                                            else
+                                            {
+                                                if(btn == 0) msg->message = WM_LBUTTONDOWN, wBtn = MK_LBUTTON ;
+                                                else if(btn == 1) msg->message = WM_MBUTTONDOWN, wBtn = MK_MBUTTON ;
+                                                else if(btn == 2) msg->message = WM_RBUTTONDOWN, wBtn = MK_RBUTTON ;
+                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL ;
+                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL ;
+                                            }
+
+                                            msg->wParam = wBtn ;
+                                            msg->lParam = ((mouse_Y) << 16) | (mouse_X & 0xffff) ;
+                                            ttmodif = 0 ;
+                                            ii = si ;
+                                            return meTRUE ;
+                                        }
+                                    }
+#endif
+                                    /* SGR mouse disabled or parse failed - skip sequence */
+                                    {
+                                        int si = ii + 3 ;
+                                        while(si < (int)bytesRead)
+                                        {
+                                            meUByte c = rawBuf[si] ;
+                                            if(c == 'M' || c == 'm')
+                                            {
+                                                si++ ;
+                                                break ;
+                                            }
+                                            si++ ;
+                                        }
+                                        ii = si ;
+                                    }
+                                }
+                                else
+                                {
                                 /* CSI sequence: ESC [ <params> <final> */
                                 int si = ii + 2 ;
                                 meUByte params[32] ;
@@ -1093,6 +1406,7 @@ meGetConsoleMessage(MSG *msg, int mode)
                                     }
                                 }
                                 ii = si ;
+                                } /* end else (not SGR mouse) */
                             }
                             else if(ii+1 < (int)bytesRead && rawBuf[ii+1] == 'O')
                             {
@@ -1289,8 +1603,37 @@ meGetConsoleMessage(MSG *msg, int mode)
         }
         else if (kr->bKeyDown)
         {
-            msg->message = WM_CHAR;
-            msg->wParam = (meUByte) kr->uChar.AsciiChar;
+            meUByte cc = (meUByte) kr->uChar.AsciiChar;
+#if MEOPT_MOUSE
+            /* Check for pushback characters from SGR mouse parser */
+            if(sgrPushbackIdx < sgrPushbackLen)
+            {
+                cc = sgrPushbackBuf[sgrPushbackIdx++];
+                if(sgrPushbackIdx >= sgrPushbackLen)
+                    sgrPushbackIdx = sgrPushbackLen = 0;
+                /* Re-inject this character as a normal key */
+                msg->message = WM_CHAR;
+                msg->wParam = cc;
+            }
+            /* Try to parse as SGR mouse sequence */
+            else if(meParseSGRMouseChar(msg, cc))
+            {
+                /* SGR parser consumed the char and filled in msg */
+                ttmodif = 0;
+                if(sgrMouseState == SGR_MOUSE_STATE_IDLE)
+                {
+                    /* Complete mouse event ready */
+                    return meTRUE;
+                }
+                /* Still parsing sequence, skip to next char */
+                msg->message = 0;
+            }
+            else
+#endif /* MEOPT_MOUSE */
+            {
+                msg->message = WM_CHAR;
+                msg->wParam = cc;
+            }
         }
         else
             msg->message = 0;
@@ -1352,9 +1695,12 @@ meGetConsoleMessage(MSG *msg, int mode)
         else if (mr->dwEventFlags & MOUSE_WHEELED)
         {
             msg->message = WM_MOUSEWHEEL;
-            /* Haven't got NT5 so cant see it working and as usual the MS docs are crap
-             * so I don't know whether this was a wheel up or down event */
-            msg->wParam  = (1) ? 0x0:0x80000000 ;
+            /* The high word of dwEventFlags contains the wheel delta.
+             * Positive = wheel up, negative = wheel down. */
+            if((short)HIWORD(mr->dwEventFlags) > 0)
+                msg->wParam = 0x0;      /* Wheel up */
+            else
+                msg->wParam = 0x80000000;  /* Wheel down */
         }
 #endif
 #endif
@@ -3129,6 +3475,59 @@ WinShutdown (void)
 
 #if MEOPT_MOUSE
 /*
+ * TTtermHasVTMouse
+ * Check if the current terminal supports VT/SGR mouse input.
+ * Windows Terminal, mintty, ConEmu, and other modern terminals
+ * support SGR mouse sequences when ENABLE_VIRTUAL_TERMINAL_INPUT is set.
+ * Returns 1 if VT mouse should be enabled, 0 otherwise.
+ */
+static int
+TTtermHasVTMouse(void)
+{
+    char *termProgram;
+    char *term;
+
+    /* Check TERM_PROGRAM first - most reliable */
+    termProgram = getenv("TERM_PROGRAM");
+    if(termProgram != NULL)
+    {
+        /* Terminals known to support SGR mouse via VT input */
+        if(strcmp(termProgram, "Windows Terminal") == 0 ||
+           strcmp(termProgram, "mintty") == 0 ||
+           strcmp(termProgram, "ConEmu") == 0 ||
+           strcmp(termProgram, "cmder") == 0 ||
+           strcmp(termProgram, "WezTerm") == 0 ||
+           strcmp(termProgram, "Alacritty") == 0 ||
+           strcmp(termProgram, "kitty") == 0 ||
+           strcmp(termProgram, "xterm") == 0 ||
+           /* PowerShell 7+ sets TERM_PROGRAM to "pwsh" or "powershell" */
+           strcmp(termProgram, "pwsh") == 0 ||
+           strcmp(termProgram, "powershell") == 0)
+            return 1;
+    }
+
+    /* Check WT_SESSION - unique to Windows Terminal */
+    if(getenv("WT_SESSION") != NULL)
+        return 1;
+
+    /* Check TERM for mintty/cygwin */
+    term = getenv("TERM");
+    if(term != NULL)
+    {
+        if(strcmp(term, "xterm") == 0 ||
+           strcmp(term, "xterm-256color") == 0 ||
+           strcmp(term, "cygwin") == 0 ||
+           strncmp(term, "xterm-", 6) == 0 ||
+           strncmp(term, "screen-", 7) == 0 ||
+           strcmp(term, "tmux") == 0)
+            return 1;
+    }
+
+    /* Default: don't enable VT mouse */
+    return 0;
+}
+
+/*
  * TTinitMouse
  * Sort out what to do with the mouse buttons.
  */
@@ -3150,6 +3549,29 @@ TTinitMouse(void)
         mouseKeys[1] = b1 ;
         mouseKeys[2] = b2 ;
         mouseKeys[4] = b3 ;
+
+#ifdef _ME_CONSOLE
+#ifdef _ME_WINDOW
+        if(meSystemCfg & meSYSTEM_CONSOLE)
+        {
+#endif
+            if(ttPipeMode)
+            {
+                /* Pipe mode (mintty/MSYS2): can't use ENABLE_VIRTUAL_TERMINAL_INPUT
+                 * on pipe handles, but stdout IS the terminal. Send SGR mouse
+                 * enable sequences directly so the terminal sends mouse events
+                 * as SGR sequences on stdin. */
+                if(TTtermHasVTMouse())
+                {
+                    fputs("\033[?1006h\033[?1000h", stdout);
+                    fflush(stdout);
+                    vtMouseEnabled = 1;
+                }
+            }
+#ifdef _ME_WINDOW
+        }
+#endif
+#endif
 
 #ifdef _ME_WINDOW
 #ifdef _ME_CONSOLE
@@ -5271,7 +5693,7 @@ TTstart (void)
             GetConsoleMode(hInput, &OldConsoleMode);
 
             /* and reset this to what MicroEMACS needs */
-            ConsoleMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
+            ConsoleMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_EXTENDED_FLAGS;
             SetConsoleMode(hInput, ConsoleMode);
 
             /* Set emergency quit handler routine */

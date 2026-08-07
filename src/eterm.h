@@ -185,6 +185,7 @@ extern	char *tgoto(char *, int, int ) ;
                         (TTbreakCnt=TTBREAKCNT,TTahead(),TTbreakFlag)))
 #if MEOPT_MOUSE
 extern void TTinitMouse(void);
+extern int TTtermHasVTMouse(void);
 #endif
 
 #ifdef _ME_CONSOLE
