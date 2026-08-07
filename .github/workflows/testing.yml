@@ -127,13 +127,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build mec (console)
-        shell: C:/cygwin/bin/bash.exe --login --norc -eo pipefail -o igncr {0}
         run: |
-          make -f cygwin.gmk mec
+          "C:/cygwin/bin/bash.exe" --login --norc -eo pipefail -o igncr "make -f cygwin.gmk mec"
       - name: Run basic tests
-        shell: C:/cygwin/bin/bash.exe --login --norc -eo pipefail -o igncr {0}
         run: |
-          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
+          "C:/cygwin/bin/bash.exe" --login --norc -eo pipefail -o igncr "MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true"
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:/cygwin/bin/bash.exe --login --norc -eo pipefail -o igncr {0}
