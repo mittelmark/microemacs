@@ -5291,7 +5291,6 @@ TTstart (void)
                 SetConsoleCursorPosition(hOutput,coord);
             }
         }
-        }
     }
 #ifdef _ME_WINDOW
     else
