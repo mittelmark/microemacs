@@ -58,6 +58,7 @@ jobs:
             export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
             echo "VRS=$VRS" >> $GITHUB_ENV
             echo "GCC=gcc-15" >> $GITHUB_ENV
+            export TERM=xterm
             make -f macos32gcc.gmk mec CC=gcc-15
       - name: Run basic tests
         run: |
@@ -135,7 +136,7 @@ jobs:
           MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
-        shell: cygwin {0}
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           if [ -s tests/test-output.txt ]; then
             echo "Tests produced output"
