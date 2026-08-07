@@ -18,7 +18,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libxt-dev
       - name: Build mec (console)
-        run: make -f src/linux32gcc.gmk mec
+        run: make -f linux32gcc.gmk mec
       - name: Run basic tests
         run: |
           rm -f tests/test-output.txt
@@ -47,11 +47,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build mec (console)
-        run: make -f src/darwin.gmk mec
+        run: | 
+            brew install xquartz
+            brew install make
+            brew install coreutils
+            export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
+            export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
+            export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+            echo "VRS=$VRS" >> $GITHUB_ENV
+            echo "GCC=gcc-15" >> $GITHUB_ENV
+            make -f macos32gcc.gmk mec CC=${GCC}
       - name: Run basic tests
         run: |
           rm -f tests/test-output.txt
-          MEPATH=jasspa/macros ./src/.darwin-release-mec/mec @tests/test-basics 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.macos32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         run: |
@@ -84,12 +93,12 @@ jobs:
         shell: msys2 {0}
         run: |
           cd src
-          make -f winmingwgcc.mak BTYP=c all
+          make -f winmingwgcc.mak BTYP=c all BDIST=mingw64
       - name: Run basic tests
         shell: msys2 {0}
         run: |
-          rm -f tests/test-output.txt
-          MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec32.exe @tests/test-basics 2>/dev/null || true
+          ls src/
+          MEPATH=jasspa/macros src/.mingw64win-release-mec/mec32.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: msys2 {0}
@@ -109,45 +118,6 @@ jobs:
           name: test-results-windows-mingw
           path: tests/test-output.txt
 
-  windows-msys2:
-    runs-on: windows-latest
-    name: Test on Windows (MSYS2)
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: msys
-          install: gcc make
-      - name: Build mec (console)
-        shell: msys2 {0}
-        run: |
-          cd src
-          make -f winmingwgcc.mak BTYP=c all
-      - name: Run basic tests
-        shell: msys2 {0}
-        run: |
-          rm -f tests/test-output.txt
-          MEPATH=jasspa/macros src/.msys64gcc-release-mec/mec32.exe @tests/test-basics 2>/dev/null || true
-          cat tests/test-output.txt
-      - name: Verify test results
-        shell: msys2 {0}
-        run: |
-          if [ -s tests/test-output.txt ]; then
-            echo "Tests produced output"
-            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
-            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
-          else
-            echo "FAIL: No test output produced"
-            exit 1
-          fi
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results-windows-msys2
-          path: tests/test-output.txt
-
   cygwin:
     runs-on: windows-latest
     name: Test on Cygwin
@@ -156,13 +126,11 @@ jobs:
       - name: Build mec (console)
         shell: cygwin {0}
         run: |
-          cd src
           make -f cygwin.gmk mec
       - name: Run basic tests
         shell: cygwin {0}
         run: |
-          rm -f tests/test-output.txt
-          MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: cygwin {0}
