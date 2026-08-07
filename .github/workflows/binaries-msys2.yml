@@ -70,7 +70,7 @@ jobs:
          cd src
          make -f winmingwgcc.mak print-info
          make -f winmingwgcc.mak BTYP=c all BDIST=${{ matrix.subsystem }}64
-         ls -la .-*-release-mec/
+         ls -la .*-release-mec/
          ./.*-release-mec/mec32.exe -V
          cd ..
     - name: compile mew executable
