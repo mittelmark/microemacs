@@ -140,6 +140,8 @@ PRGOBJS  = $(OUTDIR)/abbrev.o $(OUTDIR)/basic.o $(OUTDIR)/bfs.o $(OUTDIR)/bind.o
 # Rules
 .SUFFIXES: .c .o .rc .coff
 
+all: $(PRGLIBS) $(OUTDIR)/$(PRGFILE)
+
 $(OUTDIR)/%.o : %.c
 	$(CC) $(CCDEFS) $(CCPROF) $(BCOR_CDF) $(BTYP_CDF) $(CCFLAGS) -c -o $@ $<
 
@@ -151,8 +153,6 @@ $(OUTDIR)/access.o : $(OUTDIR) ../bfs/win32/src/access.c
 
 $(OUTDIR)/%.coff : %.rc
 	$(RC) $(RCFLAGS) -o $@ -i $<
-
-all: $(PRGLIBS) $(OUTDIR)/$(PRGFILE)
 
 $(OUTDIR)/$(PRGFILE): $(OUTDIR) $(PRGOBJS) $(PRGLIBS)
 	-$(RM) $@
