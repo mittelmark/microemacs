@@ -62,16 +62,63 @@ INSTPROGFLAGS =
 A        = .a
 EXE      = .exe
 
-# BDIST controls the build distribution:
+# BDIST controls build distribution:
 #   msys2   - MSYS2 executables (default), requires msys-2.0.dll at runtime
-#   mingw64 - Native Windows executables using MinGW-w64, static zlib
+#   mingw64 - Native Windows executables, static zlib, standalone
 BDIST    ?= msys2
 
+# Auto-detect MSYSTEM and set OUTTAG + PKGPFX accordingly
+# OUTTAG controls output directory name: .{env}{subsystem}-release-{type}
+# PKGPFX is package prefix for pacman
+ifdef MSYSTEM
+ifeq "$(MSYSTEM)" "UCRT64"
+PKGPFX   = mingw-w64-ucrt-x86_64
+else ifeq "$(MSYSTEM)" "MINGW64"
+PKGPFX   = mingw-w64-x86_64
+else ifeq "$(MSYSTEM)" "MINGW32"
+PKGPFX   = mingw-w64-i686
+else
+PKGPFX   = gcc
+endif
+else
+# MSYSTEM not set (non-MSYS2 build)
+endif
+
+# Set OUTTAG based on BDIST and MSYSTEM
+# Format: .{env}{subsystem}-release-{type}
+#   msys subsystem: needs msys-2.0.dll, dynamic zlib
+#   win subsystem:  standalone, static zlib
 ifeq "$(BDIST)" "mingw64"
-OUTTAG   = mingw64gcc
+# Force native Windows build (static zlib)
+ifdef MSYSTEM
+ifeq "$(MSYSTEM)" "UCRT64"
+OUTTAG   = ucrt64win
+else ifeq "$(MSYSTEM)" "MINGW64"
+OUTTAG   = mingw64win
+else ifeq "$(MSYSTEM)" "MINGW32"
+OUTTAG   = mingw32win
+else
+OUTTAG   = msys64win
+endif
+else
+OUTTAG   = msys64win
+endif
 LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -Wl,-Bstatic -lz -Wl,-Bdynamic
 else
-OUTTAG   = msys64gcc
+# Default MSYS2 build (dynamic zlib)
+ifdef MSYSTEM
+ifeq "$(MSYSTEM)" "UCRT64"
+OUTTAG   = ucrt64msys
+else ifeq "$(MSYSTEM)" "MINGW64"
+OUTTAG   = mingw64msys
+else ifeq "$(MSYSTEM)" "MINGW32"
+OUTTAG   = mingw32msys
+else
+OUTTAG   = msys64msys
+endif
+else
+OUTTAG   = msys64msys
+endif
 LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
 endif
 CC       = gcc
@@ -208,3 +255,12 @@ clean:
 spotless: clean
 	$(RM) *~
 	$(RM) tags
+
+print-info:
+	@echo "MSYSTEM=$(MSYSTEM)"
+	@echo "BDIST=$(BDIST)"
+	@echo "OUTTAG=$(OUTTAG)"
+	@echo "PKGPFX=$(PKGPFX)"
+	@echo "OUTDIR=$(OUTDIR)"
+	@echo "CC=$(CC)"
+	@echo "LDLIBSB=$(LDLIBSB)"

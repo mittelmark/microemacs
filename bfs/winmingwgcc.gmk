@@ -32,7 +32,57 @@
 # Define the build definitions.
 #
 TOOLKIT=        winmingwgcc
-OUTDIR   =      .$(TOOLKIT)-release
+
+# BDIST controls build distribution:
+#   msys2   - MSYS2 executables (default), needs msys-2.0.dll
+#   mingw64 - Native Windows executables, standalone
+BDIST    ?= msys2
+
+# Auto-detect MSYS2 environment and set OUTDIR + PKGPFX
+# Format: .{env}{subsystem}-release
+ifdef MSYSTEM
+ifeq "$(MSYSTEM)" "UCRT64"
+PKGPFX   = mingw-w64-ucrt-x86_64
+else ifeq "$(MSYSTEM)" "MINGW64"
+PKGPFX   = mingw-w64-x86_64
+else ifeq "$(MSYSTEM)" "MINGW32"
+PKGPFX   = mingw-w64-i686
+else
+PKGPFX   = gcc
+endif
+else
+# MSYSTEM not set (non-MSYS2 build)
+endif
+
+ifeq "$(BDIST)" "mingw64"
+ifdef MSYSTEM
+ifeq "$(MSYSTEM)" "UCRT64"
+OUTDIR   =      .ucrt64win-release
+else ifeq "$(MSYSTEM)" "MINGW64"
+OUTDIR   =      .mingw64win-release
+else ifeq "$(MSYSTEM)" "MINGW32"
+OUTDIR   =      .mingw32win-release
+else
+OUTDIR   =      .msys64win-release
+endif
+else
+OUTDIR   =      .msys64win-release
+endif
+else
+ifdef MSYSTEM
+ifeq "$(MSYSTEM)" "UCRT64"
+OUTDIR   =      .ucrt64msys-release
+else ifeq "$(MSYSTEM)" "MINGW64"
+OUTDIR   =      .mingw64msys-release
+else ifeq "$(MSYSTEM)" "MINGW32"
+OUTDIR   =      .mingw32msys-release
+else
+OUTDIR   =      .msys64msys-release
+endif
+else
+OUTDIR   =      .msys64msys-release
+endif
+endif
 
 # On MSYS2, use the MinGW gcc that has Windows headers
 CC=		gcc
@@ -99,4 +149,10 @@ $(OUTDIR)/win32dir.o : win32/src/win32dir.c
 
 $(OUTDIR):
 	-mkdir $(OUTDIR)
+
+print-info:
+	@echo "MSYSTEM=$(MSYSTEM)"
+	@echo "OUTDIR=$(OUTDIR)"
+	@echo "PKGPFX=$(PKGPFX)"
+	@echo "CC=$(CC)"
 #
