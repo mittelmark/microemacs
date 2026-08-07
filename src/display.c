@@ -2182,7 +2182,9 @@ screenUpdate(int f, int n)
     /* update the cursor and flush the buffers */
     resetCursor() ;
 
+    ME_DBGTRACE("12c: Before TTflush in screenUpdate") ;
     TTflush();
+    ME_DBGTRACE("12d: After TTflush in screenUpdate") ;
 
 #if MEOPT_MWFRAME
     }
@@ -2242,6 +2244,7 @@ update(int flag)    /* force=meTRUE update past type ahead? */
     meUInt arg ;
 #endif
 
+    ME_DBGTRACE("12: update entered") ;
     if((alarmState & meALARM_PIPED) ||
        (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec || TTahead())))
         return meTRUE ;

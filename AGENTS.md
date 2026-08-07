@@ -42,16 +42,25 @@ Output: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
 
 #### Build Goals
 
-**winmingwgcc.gmk/mak files - MSYS2 executables:**
-- Produce true MSYS2 executables for terminal use
+The `winmingwgcc.mak` makefile supports two build distributions via the
+`BDIST` variable:
+
+**BDIST=msys2 (default) - MSYS2 executables:**
+- Produce MSYS2 executables that require `msys-2.0.dll` at runtime
 - Support MSYS-style filenames (e.g., `/c/Users/name`)
 - Designed to run in MSYS2 bash terminal
-- Build location: **GitHub Actions only** using `.github/workflows/binaries-msys2.yml`
-- Cannot be built locally on Linux (requires MSYS2 environment)
+- Compiler: `/usr/bin/gcc` (target: `x86_64-pc-cygwin`)
+- zlib linked dynamically
 
-**linuxmingwgcc.gmk/mak files - Native Windows executables:**
-- Produce true Windows executables for PowerShell and Cmd terminals
+**BDIST=mingw64 - Native Windows executables:**
+- Produce standalone Windows executables with no external DLLs
 - Use normal Windows file paths (e.g., `C:\Users\name`)
+- Run in PowerShell, Cmd, or as Windows GUI applications
+- Compiler: `/mingw64/bin/gcc` (target: `x86_64-w64-mingw32`)
+- zlib linked statically
+- Requires `mingw-w64-x86_64-gcc` package
+
+**linuxmingwgcc.mak - Cross-compiled native Windows executables:**
 - Cross-compilation from Linux to Windows
 - Build locations:
   - **Locally on Linux** (this machine)
@@ -59,86 +68,48 @@ Output: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
 
 #### Makefile Summary
 
-| Makefile | Purpose | Compiler | Filenames | Terminal |
-|----------|---------|-----------|------------|----------|
-| `winmingwgcc.gmk` (bfs/) | MSYS2 bfs executable | Native gcc (MSYS2) | MSYS paths | MSYS2 bash |
-| `winmingwgcc.mak` (src/) | MSYS2 mec/mew executables | Native gcc (MSYS2) | MSYS paths | MSYS2 bash / Windows GUI |
-| `linuxmingwgcc.gmk` (bfs/) | Cross-compile bfs for Windows | `x86_64-w64-mingw32-gcc` | Windows paths | PowerShell/Cmd |
-| `linuxmingwgcc.mak` (src/) | Cross-compile mec/mew for Windows | `x86_64-w64-mingw32-gcc` | Windows paths | PowerShell/Cmd / Windows GUI |
-
-#### GitHub Actions Workflows
-
-**MSYS2 Build** (`.github/workflows/binaries-msys2.yml`):
-```bash
-# Runs on Windows with MSYS2
-# Builds bfs, mec (console), and mew (GUI) with MSYS2 support
-```
-
-**Linux MinGW Cross-Compile** (`.github/workflows/binaries-linuxmingwgcc.yml`):
-```bash
-# Runs on Ubuntu 22.04
-# Cross-compiles bfs, mec, mew, mecb, mewb for native Windows
-# Creates release packages (brew, scoop)
-```
-
-### Build Output
-
-- Executable: `src/.linux32gcc-release-mec/mec` (console)
-- Executable: `src/.linux32gcc-release-mecw/mecw` (both)
-- Executable: `src/.linux32gcc-release-mew/mew` (X11)
-
-### MinGW/MSYS2 Windows Build
-
-#### Build Goals
-
-**winmingwgcc.gmk/mak files - MSYS2 executables:**
-- Produce true MSYS2 executables for terminal use
-- Support MSYS-style filenames (e.g., `/c/Users/name`)
-- Designed to run in MSYS2 bash terminal
-- Build location: **GitHub Actions only** using `.github/workflows/binaries-msys2.yml`
-- Cannot be built locally on Linux (requires MSYS2 environment)
-
-**linuxmingwgcc.gmk/mak files - Native Windows executables:**
-- Produce true Windows executables for PowerShell and Cmd terminals
-- Use normal Windows file paths (e.g., `C:\Users\name`)
-- Cross-compilation from Linux to Windows
-- Build locations:
-  - **Locally on Linux** (this machine)
-  - **GitHub Actions** using `.github/workflows/binaries-linuxmingwgcc.yml`
-
-#### Makefile Summary
-
-| Makefile | Purpose | Compiler | Filenames | Terminal |
-|----------|---------|-----------|------------|----------|
-| `winmingwgcc.gmk` (bfs/) | MSYS2 bfs executable | Native gcc (MSYS2) | MSYS paths | MSYS2 bash |
-| `winmingwgcc.mak` (src/) | MSYS2 mec/mew executables | Native gcc (MSYS2) | MSYS paths | MSYS2 bash / Windows GUI |
-| `linuxmingwgcc.gmk` (bfs/) | Cross-compile bfs for Windows | `x86_64-w64-mingw32-gcc` | Windows paths | PowerShell/Cmd |
-| `linuxmingwgcc.mak` (src/) | Cross-compile mec/mew for Windows | `x86_64-w64-mingw32-gcc` | Windows paths | PowerShell/Cmd / Windows GUI |
+| Makefile | Purpose | Compiler | Output Dir | Runtime |
+|----------|---------|-----------|------------|---------|
+| `winmingwgcc.mak BDIST=msys2` | MSYS2 mec/mew | MSYS2 gcc | `.msys64gcc-*` | Needs `msys-2.0.dll` |
+| `winmingwgcc.mak BDIST=mingw64` | Native Windows mec/mew | MinGW-w64 gcc | `.mingw64gcc-*` | No external DLLs |
+| `linuxmingwgcc.mak` | Cross-compile from Linux | `x86_64-w64-mingw32-gcc` | `.linuxmingwgcc-*` | No external DLLs |
 
 #### Build Commands
 
-**MSYS2 Build (GitHub Actions only):**
+**MSYS2 Build (from MSYS2 bash):**
 ```bash
-# bfs build
-cd bfs && make -f winmingwgcc.gmk
+cd src
+make -f winmingwgcc.mak                    # Release GUI (mew)
+make -f winmingwgcc.mak BCFG=debug         # Debug GUI
+make -f winmingwgcc.mak BTYP=c             # Release console (mec)
+make -f winmingwgcc.mak BTYP=cw            # Both console+GUI
+make -f winmingwgcc.mak BCOR=ne            # NanoEmacs build
+```
 
-# Console build (mec)
-cd src && make -f winmingwgcc.mak BTYP=c
-
-# GUI build (mew)
-cd src && make -f winmingwgcc.mak BTYP=w
+**Native Windows Build (from MSYS2 bash):**
+```bash
+cd src
+make -f winmingwgcc.mak BDIST=mingw64                    # Release GUI
+make -f winmingwgcc.mak BDIST=mingw64 BCFG=debug         # Debug GUI
+make -f winmingwgcc.mak BDIST=mingw64 BTYP=c             # Release console
+make -f winmingwgcc.mak BDIST=mingw64 BTYP=cw            # Both console+GUI
+make -f winmingwgcc.mak BDIST=mingw64 BCOR=ne            # NanoEmacs build
 ```
 
 **Linux Cross-Compile (local or GitHub Actions):**
 ```bash
-# bfs build
-make -f linuxmingwgcc.gmk bfs/bin
+cd src
+make -f linuxmingwgcc.mak BTYP=c    # Console build (mec32.exe)
+make -f linuxmingwgcc.mak BTYP=w    # GUI build (mew32.exe)
+```
 
-# Console build (mec32.exe)
-make -f linuxmingwgcc.mak mec
+#### Prerequisites
 
-# GUI build (mew32.exe)
-make -f linuxmingwgcc.mak mew
+**MSYS2 Build**: Base MSYS2 installation (no additional packages).
+
+**Native Windows Build**: Install MinGW-w64 toolchain:
+```bash
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-zlib
 ```
 
 #### GitHub Actions Workflows
@@ -155,6 +126,16 @@ make -f linuxmingwgcc.mak mew
 # Cross-compiles bfs, mec, mew, mecb, mewb for native Windows
 # Creates release packages (brew, scoop)
 ```
+
+#### Technical Notes
+
+**TEMP/TMP Path Issue**: When building with `BDIST=mingw64` from MSYS2 bash,
+the native MinGW compiler needs Windows-style temp paths. The makefile handles
+this automatically via `cygpath` conversion (see `doc/msys-binaries.md`).
+
+**PATH Setup**: The makefile automatically prepends `/mingw64/bin` to PATH
+when building with `BDIST=mingw64`, so `cc1.exe` and `as.exe` can find their
+dependent DLLs (`libisl`, `libmpc`, `libmpfr`). No manual PATH setup needed.
 
 ## C Code Style
 

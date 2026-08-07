@@ -220,7 +220,6 @@ extern void TCAPschemeReset(void) ;
 #define TTshowCur  TCAPshowCur
 #define TTaddColor TCAPaddColor
 #define TTsetBgcol()
-#define meFrameTermInit(f,s) meTRUE
 #define meFrameTermFree(f,s)
 #define meFrameTermMakeCur(f)
 

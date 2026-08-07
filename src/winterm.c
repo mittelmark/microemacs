@@ -213,8 +213,8 @@ int ttServerToRead = 0;
 meUByte ttServerCheck = 0;
 #endif
 
-LONG APIENTRY
-MainWndProc (HWND hWnd, UINT message, UINT wParam, LONG lParam) ;
+LRESULT CALLBACK
+MainWndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) ;
 
 /***************************************************************************/
 #ifdef _ME_CONSOLE
@@ -252,6 +252,7 @@ static int ttshowState;                 /* Show state of the window */
 HANDLE ttInstance;                      /* Instance of the application */
 static DWORD ttThreadId = 0;            /* Current thread identity */
 static HBRUSH ttBrush = NULL;           /* Current background brush */
+static int ttPipeMode = 0;              /* Pipe mode - hOutput is not a real console, use ANSI fallback */
 
 /* Font type settings */
 LOGFONT ttlogfont={0};                  /* Current logical font */
@@ -749,20 +750,67 @@ ConsolePaint (void)
     /* Work out region to update */
     if (consolePaintArea.Right > 0)
     {
-        COORD coordUpdateBegin, coordBufferSize;
+        if (ttPipeMode)
+        {
+            /* ANSI fallback for pipe mode (MSYS2/mintty).
+             * ciScreenBuffer is filled by ConsoleDrawString, so we
+             * iterate the dirty rectangle and emit ANSI escape sequences
+             * to stdout instead of calling WriteConsoleOutput. */
+            static const BYTE ansiFgMap[16] = {
+                30, 34, 32, 36, 31, 35, 33, 37,
+                90, 94, 92, 96, 91, 95, 93, 97
+            };
+            static const BYTE ansiBgMap[16] = {
+                40, 44, 42, 46, 41, 45, 43, 47,
+               100,104,102,106,101,105,103,107
+            };
+            static WORD lastAttr = 0xFFFF;
+            int row, col;
+            char buf[128];
+            int len;
 
-        /* Set size of screen buffer */
-        coordBufferSize.X = frameCur->width;
-        coordBufferSize.Y = frameCur->depth+1;
+            for (row = consolePaintArea.Top; row <= consolePaintArea.Bottom; row++)
+            {
+                /* Move cursor to start of row (1-based) */
+                len = sprintf(buf, "\033[%d;%dH", row + 1, consolePaintArea.Left + 1);
+                fwrite(buf, 1, len, stdout);
 
-        consolePaintArea.Right-- ;
-        /* top left cord of buffer to write from */
-        coordUpdateBegin.X = consolePaintArea.Left ;
-        coordUpdateBegin.Y = consolePaintArea.Top ;
+                for (col = consolePaintArea.Left; col < consolePaintArea.Right; col++)
+                {
+                    CHAR_INFO *pCI = &ciScreenBuffer[(row * frameCur->width) + col];
+                    WORD attr = pCI->Attributes;
 
-        /* Write to console */
-        WriteConsoleOutput(hOutput, ciScreenBuffer, coordBufferSize,
-                           coordUpdateBegin, &consolePaintArea);
+                    if (attr != lastAttr)
+                    {
+                        int fg = attr & 0x0F;
+                        int bg = (attr >> 4) & 0x0F;
+                        len = sprintf(buf, "\033[%d;%dm",
+                                      ansiFgMap[fg], ansiBgMap[bg]);
+                        fwrite(buf, 1, len, stdout);
+                        lastAttr = attr;
+                    }
+                    putchar(pCI->Char.AsciiChar);
+                }
+            }
+            fflush(stdout);
+        }
+        else
+        {
+            COORD coordUpdateBegin, coordBufferSize;
+
+            /* Set size of screen buffer */
+            coordBufferSize.X = frameCur->width;
+            coordBufferSize.Y = frameCur->depth+1;
+
+            consolePaintArea.Right-- ;
+            /* top left cord of buffer to write from */
+            coordUpdateBegin.X = consolePaintArea.Left ;
+            coordUpdateBegin.Y = consolePaintArea.Top ;
+
+            /* Write to console */
+            WriteConsoleOutput(hOutput, ciScreenBuffer, coordBufferSize,
+                               coordUpdateBegin, &consolePaintArea);
+        }
 
         /* Remove the region, as we just updated it */
         consolePaintArea.Right = consolePaintArea.Bottom = 0 ;
@@ -779,6 +827,12 @@ ConsoleDrawString(meUByte *ss, WORD wAttribute, int x, int y, int len)
     BOOL bAny = meFALSE;  /* Anything to refresh? */
     meUByte cc ;
     int r=x+len ;
+
+    if(ciScreenBuffer == NULL)
+    {
+        ME_DBGTRACE("11: ConsoleDrawString - ciScreenBuffer is NULL!") ;
+        return ;
+    }
 
     /* Get pointer to correct location in screen buffer */
     pCI = &ciScreenBuffer[(y * frameCur->width) + x];
@@ -814,15 +868,27 @@ ConsoleDrawString(meUByte *ss, WORD wAttribute, int x, int y, int len)
 BOOL WINAPI
 ConsoleHandlerRoutine(DWORD dwCtrlType)
 {
+    ME_DBGTRACE("99: ConsoleHandlerRoutine invoked") ;
     /* Trap user's click on 'X' window button, and exit cleanly */
     switch (dwCtrlType)
     {
     case CTRL_BREAK_EVENT:
+        ME_DBGTRACE("99a: CTRL_BREAK_EVENT") ;
+        break ;
     case CTRL_CLOSE_EVENT:
+        ME_DBGTRACE("99b: CTRL_CLOSE_EVENT") ;
+        break ;
     case CTRL_LOGOFF_EVENT:
+        ME_DBGTRACE("99c: CTRL_LOGOFF_EVENT") ;
+        break ;
     case CTRL_SHUTDOWN_EVENT:
-        meDie() ;
+        ME_DBGTRACE("99d: CTRL_SHUTDOWN_EVENT") ;
+        break ;
+    default:
+        ME_DBGTRACE("99e: unknown ctrl type") ;
+        break ;
     }
+    meDie() ;
     return meFALSE ;
 }
 
@@ -837,31 +903,41 @@ TTend (void)
     if (meSystemCfg & meSYSTEM_CONSOLE)
 #endif /* _ME_WINDOW */
     {
-        CONSOLE_CURSOR_INFO CursorInfo;
-        COORD dwCursorPosition;
-
-        /* Restore the console mode and title */
-        if(hInput != INVALID_HANDLE_VALUE)
-            SetConsoleMode(hInput, OldConsoleMode);
-
-        /* Show the cursor */
-        GetConsoleCursorInfo (hOutput, &CursorInfo);
-        CursorInfo.bVisible = meTRUE;
-        SetConsoleCursorInfo (hOutput, &CursorInfo);
-#if MEOPT_EXTENDED
-        if((alarmState & meALARM_PIPED) == 0)
-#endif
+        if(ttPipeMode)
         {
-            /* restore the console buffer size */
-            SetConsoleScreenBufferSize(hOutput, OldConsoleSize);
-
-            /* Set cursor to bottom of screen, and print a newline */
-            dwCursorPosition.X = 0;
-            dwCursorPosition.Y = TTdepthDefault - 1;
-            SetConsoleCursorPosition(hOutput, dwCursorPosition);
-            putchar ('\n');
+            /* Pipe mode: restore terminal state with ANSI sequences */
+            fwrite("\033[?25h", 1, 6, stdout) ;       /* Show cursor */
+            fwrite("\033[0m", 1, 4, stdout) ;          /* Reset attributes */
+            fflush(stdout) ;
         }
-        SetConsoleTitle(chConsoleTitle);
+        else
+        {
+            CONSOLE_CURSOR_INFO CursorInfo;
+            COORD dwCursorPosition;
+
+            /* Restore the console mode and title */
+            if(hInput != INVALID_HANDLE_VALUE)
+                SetConsoleMode(hInput, OldConsoleMode);
+
+            /* Show the cursor */
+            GetConsoleCursorInfo (hOutput, &CursorInfo);
+            CursorInfo.bVisible = meTRUE;
+            SetConsoleCursorInfo (hOutput, &CursorInfo);
+#if MEOPT_EXTENDED
+            if((alarmState & meALARM_PIPED) == 0)
+#endif
+            {
+                /* restore the console buffer size */
+                SetConsoleScreenBufferSize(hOutput, OldConsoleSize);
+
+                /* Set cursor to bottom of screen, and print a newline */
+                dwCursorPosition.X = 0;
+                dwCursorPosition.Y = TTdepthDefault - 1;
+                SetConsoleCursorPosition(hOutput, dwCursorPosition);
+                putchar ('\n');
+            }
+            SetConsoleTitle(chConsoleTitle);
+        }
     }
     return meTRUE ;
 }
@@ -889,12 +965,300 @@ meGetConsoleMessage(MSG *msg, int mode)
     /* Get the next keyboard/mouse/resize event */
     if(ReadConsoleInput(hInput, &ir, 1, &dwCount) == 0)
     {
-        /* if ReadConsoleInput fails we have lost the console input
-         * and as the user is waiting on this bomb out */
-        if(!mode)
-            meDie() ;
-        hInput = INVALID_HANDLE_VALUE ;
-        return meFALSE ;
+        ME_DBGTRACE("95: ReadConsoleInput FAILED") ;
+        /* ReadConsoleInput failed - this happens when hInput is a pipe
+         * handle (e.g. MSYS2/mintty). Fall back to reading raw bytes
+         * and parsing ANSI escape sequences for terminal input. */
+        {
+            static int pipeBufLen = 0 ;
+            static meUByte pipeBuf[256] ;
+            meUByte rawBuf[256] ;
+            DWORD bytesRead ;
+
+            if(pipeBufLen == 0)
+            {
+                /* MSYS2/Cygwin: GetStdHandle returns a pipe, not a console.
+                 * ReadConsoleInput fails and ReadFile blocks on Cygwin pipes.
+                 * Use fread(stdin) which works via the C runtime layer. */
+                bytesRead = (DWORD) fread(rawBuf, 1, sizeof(rawBuf)-1, stdin) ;
+                if(bytesRead > 0)
+                {
+                    ME_DBGTRACE("95c: fread(stdin) succeeded") ;
+                }
+                else
+                {
+                    ME_DBGTRACE("95a: fread(stdin) FAILED") ;
+                    if(!mode)
+                        meDie() ;
+                    hInput = INVALID_HANDLE_VALUE ;
+                    return meFALSE ;
+                }
+                rawBuf[bytesRead] = '\0' ;
+
+                /* Parse ANSI escape sequences into internal key codes.
+                 * We buffer partial sequences across reads. */
+                {
+                    int ii = 0 ;
+                    while(ii < (int)bytesRead)
+                    {
+                        if(rawBuf[ii] == '\x1b')
+                        {
+                            /* Start of escape sequence - check for CSI
+                             * (ESC [) or SS3 (ESC O) sequences */
+                            if(ii+1 < (int)bytesRead && rawBuf[ii+1] == '[')
+                            {
+                                /* CSI sequence: ESC [ <params> <final> */
+                                int si = ii + 2 ;
+                                meUByte params[32] ;
+                                int pi = 0 ;
+                                while(si < (int)bytesRead && pi < 31)
+                                {
+                                    meUByte c = rawBuf[si] ;
+                                    if(c >= 0x40 && c <= 0x7e)
+                                    {
+                                        /* Final byte - end of sequence */
+                                        params[pi] = '\0' ;
+                                        /* Map CSI sequences to VK codes */
+                                        switch(c)
+                                        {
+                                        case 'A': /* Up */
+                                            pipeBuf[pipeBufLen++] = 0xe0 ;
+                                            pipeBuf[pipeBufLen++] = 0x26 ; /* VK_UP */
+                                            break ;
+                                        case 'B': /* Down */
+                                            pipeBuf[pipeBufLen++] = 0xe0 ;
+                                            pipeBuf[pipeBufLen++] = 0x28 ; /* VK_DOWN */
+                                            break ;
+                                        case 'C': /* Right */
+                                            pipeBuf[pipeBufLen++] = 0xe0 ;
+                                            pipeBuf[pipeBufLen++] = 0x27 ; /* VK_RIGHT */
+                                            break ;
+                                        case 'D': /* Left */
+                                            pipeBuf[pipeBufLen++] = 0xe0 ;
+                                            pipeBuf[pipeBufLen++] = 0x25 ; /* VK_LEFT */
+                                            break ;
+                                        case 'H': /* Home */
+                                            pipeBuf[pipeBufLen++] = 0xe0 ;
+                                            pipeBuf[pipeBufLen++] = 0x24 ; /* VK_HOME */
+                                            break ;
+                                        case 'F': /* End */
+                                            pipeBuf[pipeBufLen++] = 0xe0 ;
+                                            pipeBuf[pipeBufLen++] = 0x23 ; /* VK_END */
+                                            break ;
+                                        case 'Z': /* Shift-Tab (backtab) */
+                                            pipeBuf[pipeBufLen++] = 0x00 ;
+                                            pipeBuf[pipeBufLen++] = 0x09 ; /* VK_TAB */
+                                            break ;
+                                        case '~': /* Tilde sequences */
+                                            if(pi > 0)
+                                            {
+                                                meUByte pn = params[0] ;
+                                                switch(pn)
+                                                {
+                                                case '1': /* Home */
+                                                    pipeBuf[pipeBufLen++] = 0xe0 ;
+                                                    pipeBuf[pipeBufLen++] = 0x24 ; /* VK_HOME */
+                                                    break ;
+                                                case '2': /* Insert */
+                                                    pipeBuf[pipeBufLen++] = 0xe0 ;
+                                                    pipeBuf[pipeBufLen++] = 0x2d ; /* VK_INSERT */
+                                                    break ;
+                                                case '3': /* Delete */
+                                                    pipeBuf[pipeBufLen++] = 0xe0 ;
+                                                    pipeBuf[pipeBufLen++] = 0x2e ; /* VK_DELETE */
+                                                    break ;
+                                                case '4': /* End */
+                                                    pipeBuf[pipeBufLen++] = 0xe0 ;
+                                                    pipeBuf[pipeBufLen++] = 0x23 ; /* VK_END */
+                                                    break ;
+                                                case '5': /* Page Up */
+                                                    pipeBuf[pipeBufLen++] = 0xe0 ;
+                                                    pipeBuf[pipeBufLen++] = 0x21 ; /* VK_PRIOR */
+                                                    break ;
+                                                case '6': /* Page Down */
+                                                    pipeBuf[pipeBufLen++] = 0xe0 ;
+                                                    pipeBuf[pipeBufLen++] = 0x22 ; /* VK_NEXT */
+                                                    break ;
+                                                }
+                                            }
+                                            break ;
+                                        }
+                                        si++ ;
+                                        break ;
+                                    }
+                                    else
+                                    {
+                                        params[pi++] = c ;
+                                        si++ ;
+                                    }
+                                }
+                                ii = si ;
+                            }
+                            else if(ii+1 < (int)bytesRead && rawBuf[ii+1] == 'O')
+                            {
+                                /* SS3 sequence: ESC O <final> */
+                                if(ii+2 < (int)bytesRead)
+                                {
+                                    switch(rawBuf[ii+2])
+                                    {
+                                    case 'P': /* F1 */
+                                        pipeBuf[pipeBufLen++] = 0x00 ;
+                                        pipeBuf[pipeBufLen++] = 0x70 ; /* VK_F1 */
+                                        break ;
+                                    case 'Q': /* F2 */
+                                        pipeBuf[pipeBufLen++] = 0x00 ;
+                                        pipeBuf[pipeBufLen++] = 0x71 ; /* VK_F2 */
+                                        break ;
+                                    case 'R': /* F3 */
+                                        pipeBuf[pipeBufLen++] = 0x00 ;
+                                        pipeBuf[pipeBufLen++] = 0x72 ; /* VK_F3 */
+                                        break ;
+                                    case 'S': /* F4 */
+                                        pipeBuf[pipeBufLen++] = 0x00 ;
+                                        pipeBuf[pipeBufLen++] = 0x73 ; /* VK_F4 */
+                                        break ;
+                                    }
+                                    ii += 3 ;
+                                }
+                                else
+                                    ii++ ;
+                            }
+                            else
+                            {
+                                /* Bare ESC */
+                                pipeBuf[pipeBufLen++] = 0x1b ;
+                                ii++ ;
+                            }
+                        }
+                        else if(rawBuf[ii] == '\r' || rawBuf[ii] == '\n')
+                        {
+                            pipeBuf[pipeBufLen++] = 0x0d ;
+                            ii++ ;
+                        }
+                        else if(rawBuf[ii] == '\t')
+                        {
+                            pipeBuf[pipeBufLen++] = 0x09 ;
+                            ii++ ;
+                        }
+                        else if(rawBuf[ii] == 0x7f)
+                        {
+                            /* DEL -> Backspace */
+                            pipeBuf[pipeBufLen++] = 0x08 ;
+                            ii++ ;
+                        }
+                        else if(rawBuf[ii] >= 0x01 && rawBuf[ii] <= 0x1a)
+                        {
+                            /* Control character (Ctrl+A through Ctrl+Z)
+                             * Map to VK code with Ctrl modifier flag */
+                            pipeBuf[pipeBufLen++] = 0xc0 ; /* Ctrl modifier marker */
+                            pipeBuf[pipeBufLen++] = rawBuf[ii] + 0x40 ; /* VK code */
+                            ii++ ;
+                        }
+                        else
+                        {
+                            /* Regular character */
+                            pipeBuf[pipeBufLen++] = rawBuf[ii] ;
+                            ii++ ;
+                        }
+                    }
+                }
+            }
+
+            if(pipeBufLen > 0)
+            {
+                meUByte c = pipeBuf[0] ;
+
+                /* Shift buffer down */
+                memmove(pipeBuf, pipeBuf+1, --pipeBufLen) ;
+
+                /* Reset modifier state - will be set below if needed */
+                ttmodif = 0 ;
+
+                msg->lParam = 0 ;
+                if(c == 0xc0)
+                {
+                    /* Ctrl+key: next byte is the VK code */
+                    if(pipeBufLen > 0)
+                    {
+                        msg->message = WM_KEYDOWN ;
+                        msg->wParam = pipeBuf[0] ;
+                        memmove(pipeBuf, pipeBuf+1, --pipeBufLen) ;
+                        ttmodif = ME_CONTROL ;
+                        /* Set extended key flag for arrow keys, Home/End, PgUp/Dn, Insert, Delete */
+                        if(msg->wParam == VK_LEFT || msg->wParam == VK_RIGHT ||
+                           msg->wParam == VK_UP || msg->wParam == VK_DOWN ||
+                           msg->wParam == VK_HOME || msg->wParam == VK_END ||
+                           msg->wParam == VK_PRIOR || msg->wParam == VK_NEXT ||
+                           msg->wParam == VK_INSERT || msg->wParam == VK_DELETE)
+                            msg->lParam = 0x01000000 ;
+                    }
+                    else
+                    {
+                        /* Incomplete sequence - put back */
+                        pipeBuf[0] = c ;
+                        pipeBufLen = 1 ;
+                        return meFALSE ;
+                    }
+                }
+                else if(c >= 0xe0)
+                {
+                    /* Extended key (arrow, function, etc.) */
+                    if(pipeBufLen > 0)
+                    {
+                        msg->message = WM_KEYDOWN ;
+                        msg->wParam = pipeBuf[0] ;
+                        memmove(pipeBuf, pipeBuf+1, --pipeBufLen) ;
+                        msg->lParam = 0x01000000 ; /* Extended key flag */
+                    }
+                    else
+                    {
+                        /* Incomplete sequence - put back */
+                        pipeBuf[0] = c ;
+                        pipeBufLen = 1 ;
+                        return meFALSE ;
+                    }
+                }
+                else if(c == 0x00)
+                {
+                    /* Two-byte scan code (function keys, etc.) */
+                    if(pipeBufLen > 0)
+                    {
+                        msg->message = WM_KEYDOWN ;
+                        msg->wParam = pipeBuf[0] ;
+                        memmove(pipeBuf, pipeBuf+1, --pipeBufLen) ;
+                    }
+                    else
+                        return meFALSE ;
+                }
+                else if(c & 0x80)
+                {
+                    /* High bit set - extended char */
+                    msg->message = WM_CHAR ;
+                    msg->wParam = c ;
+                }
+                else
+                {
+                    /* Regular character or control character */
+                    if(c < 0x20 || c == 0x7f)
+                    {
+                        /* Control character - generate WM_KEYDOWN */
+                        msg->message = WM_KEYDOWN ;
+                        msg->wParam = (c == 0x0d) ? VK_RETURN :
+                                      (c == 0x08) ? VK_BACK :
+                                      (c == 0x09) ? VK_TAB : c ;
+                    }
+                    else
+                    {
+                        /* Printable character */
+                        msg->message = WM_CHAR ;
+                        msg->wParam = c ;
+                    }
+                }
+
+                return meTRUE ;
+            }
+            return meFALSE ;
+        }
     }
     /* Let the proper event handler field this event */
     if (ir.EventType == KEY_EVENT)
@@ -2817,7 +3181,7 @@ TTinitMouse(void)
  * Returning meTRUE if the event is handled; otherwise meFALSE.
  */
 int
-WinMouse(HWND hwnd, UINT message, UINT wParam, LONG lParam)
+WinMouse(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     meFrame *frame ;
 
@@ -3013,7 +3377,7 @@ WinMouse(HWND hwnd, UINT message, UINT wParam, LONG lParam)
  * Returning meTRUE if the event is handled; otherwise meFALSE.
  */
 int
-WinKeyboard (HWND hwnd, UINT message, UINT wParam, LONG lParam)
+WinKeyboard (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     meFrame *frame ;
     meUShort cc;                  /* Local keyboard character */
@@ -4413,8 +4777,11 @@ meGetMessage(MSG *msg, int mode)
                 if(hInput != INVALID_HANDLE_VALUE)
                     hTable[ii++] = hInput ;
                 else if(!mode)
+                {
+                    ME_DBGTRACE("96: hInput INVALID - calling meDie") ;
                     /* stdin has gone and we're only interested in user input - exit */
                     meDie() ;
+                }
             }
 #endif
 #if MEOPT_IPIPES
@@ -4435,6 +4802,12 @@ meGetMessage(MSG *msg, int mode)
 #endif
             /* Wait for either user or process activity */
             jj = MsgWaitForMultipleObjects(ii,hTable,meFALSE,INFINITE,QS_ALLINPUT) - WAIT_OBJECT_0 ;
+            if(jj < 0)
+                ME_DBGTRACE("97: MsgWaitForMultipleObjects FAILED (negative)") ;
+            else if(jj >= ii)
+                ME_DBGTRACE("97: MsgWaitForMultipleObjects - no handle signaled, message queue") ;
+            else
+                ME_DBGTRACE("97: MsgWaitForMultipleObjects - handle signaled") ;
 #ifdef _ME_CONSOLE
 #ifdef _ME_WINDOW
             if(meSystemCfg & meSYSTEM_CONSOLE)
@@ -4481,7 +4854,7 @@ TTwaitForChar(void)
     /* If no keys left then if theres currently no mouse timer and
      * theres a button press (No mouse-time key) then check for a
      * time-mouse-? key, if found add a timer start a mouse checking
-     */
+     * loop */
     if(!isTimerSet(MOUSE_TIMER_ID) &&
        ((mc=(mouseState & MOUSE_STATE_BUTTONS)) != 0))
     {
@@ -4502,6 +4875,7 @@ TTwaitForChar(void)
         doIdlePickEvent ();         /* Check the idle event */
 #endif
 
+    ME_DBGTRACE("15: TTwaitForChar entered") ;
     /* Pend for messages */
     for (;;)
     {
@@ -4706,13 +5080,17 @@ meFrameTermFree(meFrame *frame, meFrame *sibling)
 int
 meFrameTermInit(meFrame *frame, meFrame *sibling)
 {
+    ME_DBGTRACE("9: meFrameTermInit entered") ;
     if(sibling == NULL)
     {
 #ifdef _ME_CONSOLE
 #ifdef _ME_WINDOW
         if(meSystemCfg & meSYSTEM_CONSOLE)
 #endif /* _ME_WINDOW */
+        {
             meFrameSetWindowSize(frame) ;
+            ME_DBGTRACE("9a: After meFrameSetWindowSize in meFrameTermInit") ;
+        }
 #ifdef _ME_WINDOW
         else
 #endif /* _ME_WINDOW */
@@ -4726,6 +5104,7 @@ meFrameTermInit(meFrame *frame, meFrame *sibling)
                 return meFALSE ;
             memset(frameData,0,sizeof(meFrameData)) ;
             frame->termData = frameData ;
+            ME_DBGTRACE("10: meFrameInitWindow - before CreateWindow(frame)") ;
             frameData->hwnd = CreateWindow ("MicroEmacsClass",
                                             ME_FULLNAME " " meVERSION,
                                             WS_OVERLAPPEDWINDOW,  /* No scroll bars */
@@ -4765,6 +5144,7 @@ meFrameTermInit(meFrame *frame, meFrame *sibling)
 int
 TTstart (void)
 {
+    ME_DBGTRACE("7: TTstart entered") ;
 #ifdef _ME_CONSOLE
 #ifdef _ME_WINDOW
     if (meSystemCfg & meSYSTEM_CONSOLE)
@@ -4780,43 +5160,75 @@ TTstart (void)
         meSYSTEM_MASK &= ~meSYSTEM_FONTS ;
         meSystemCfg = (meSystemCfg & ~(meSYSTEM_FONTS|meSYSTEM_RGBCOLOR)) | (meSYSTEM_ANSICOLOR|meSYSTEM_XANSICOLOR) ;
 
-        /* This will allocate a console if started from
-         * the windows NT program manager. */
-        AllocConsole();
-
-        /* Save the titlebar of the window so we can
-         * restore it when we leave. */
-        GetConsoleTitle(chConsoleTitle, sizeof(chConsoleTitle));
-
-        /* Set Window Title to MicroEMACS */
-/*        SetConsoleTitle();*/
-
-        /* Get our standard handles */
-        hInput = GetStdHandle(STD_INPUT_HANDLE);
-        hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-
-        /* get a ptr to the output screen buffer */
-        if(GetConsoleScreenBufferInfo(hOutput,&Console))
+        /* Save original std handles BEFORE AllocConsole.
+         * When running from MSYS2/mintty, these are pipe handles to the
+         * pseudo-terminal. AllocConsole() creates a NEW console disconnected
+         * from mintty, so GetStdHandle after AllocConsole returns the wrong
+         * handles. We must restore the originals for pipe mode. */
         {
-            OldConsoleSize.X = Console.dwSize.X ;
-            OldConsoleSize.Y = Console.dwSize.Y ;
+            HANDLE hOrigInput = GetStdHandle(STD_INPUT_HANDLE);
+            HANDLE hOrigOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
-            /* let MicroEMACS know our starting screen size */
-            /* this should be the window size, not the buffer size
-             * as this needs the scroll-bar to use */
-            TTwidthDefault = Console.srWindow.Right-Console.srWindow.Left+1;
-            TTdepthDefault = Console.srWindow.Bottom-Console.srWindow.Top+1;
+            /* This will allocate a console if started from
+             * the windows NT program manager. */
+            AllocConsole();
+
+            /* Save the titlebar of the window so we can
+             * restore it when we leave. */
+            GetConsoleTitle(chConsoleTitle, sizeof(chConsoleTitle));
+
+            /* Set Window Title to MicroEMACS */
+    /*        SetConsoleTitle();*/
+
+            /* Get our standard handles */
+            hInput = GetStdHandle(STD_INPUT_HANDLE);
+            hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            /* get a ptr to the output screen buffer */
+            if(GetConsoleScreenBufferInfo(hOutput,&Console))
+            {
+                OldConsoleSize.X = Console.dwSize.X ;
+                OldConsoleSize.Y = Console.dwSize.Y ;
+
+                /* let MicroEMACS know our starting screen size */
+                /* this should be the window size, not the buffer size
+                 * as this needs the scroll-bar to use */
+                TTwidthDefault = Console.srWindow.Right-Console.srWindow.Left+1;
+                TTdepthDefault = Console.srWindow.Bottom-Console.srWindow.Top+1;
+            }
+            else
+            {
+                /* Can't get the console info, this typically happens when
+                 * running from a pseudo-terminal (e.g. MSYS2/mintty) where
+                 * hOutput is a pipe not a console handle. Restore the
+                 * original pipe handles so PeekNamedPipe and
+                 * MsgWaitForMultipleObjects work correctly with the
+                 * mintty pseudo-terminal. Try CONOUT$ for terminal size. */
+                HANDLE hConOut ;
+                ttPipeMode = 1 ;
+                hInput = hOrigInput ;
+                hOutput = hOrigOutput ;
+                hConOut = CreateFile("CONOUT$", GENERIC_READ | GENERIC_WRITE,
+                                     FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                     NULL, OPEN_EXISTING, 0, NULL);
+                if(hConOut != INVALID_HANDLE_VALUE)
+                {
+                    if(GetConsoleScreenBufferInfo(hConOut, &Console))
+                    {
+                        TTwidthDefault = Console.srWindow.Right - Console.srWindow.Left + 1;
+                        TTdepthDefault = Console.srWindow.Bottom - Console.srWindow.Top + 1;
+                        OldConsoleSize.X = (SHORT) TTwidthDefault ;
+                        OldConsoleSize.Y = (SHORT) TTdepthDefault ;
+                    }
+                    CloseHandle(hConOut);
+                }
+                if(TTwidthDefault == 0)
+                {
+                    TTwidthDefault = OldConsoleSize.X = 80 ;
+                    TTdepthDefault = OldConsoleSize.Y = 50 ;
+                }
+            }
         }
-#if MEOPT_EXTENDED
-        else if(alarmState & meALARM_PIPED)
-        {
-            /* can't get the console so can't get the size but as running in -p piped mode set to a default 80x50 */
-            TTwidthDefault = OldConsoleSize.X = 80 ;
-            TTdepthDefault = OldConsoleSize.Y = 50 ;
-        }
-#endif
-        else
-            return meFALSE ;
                 
         if(TTwidthDefault < 8)
             TTwidthDefault = 8 ;
@@ -4829,9 +5241,12 @@ TTstart (void)
         {
             /* now fix the window buffer size to this window size to
              * get rid of the horrid scroll bars! */
-            coord.X = TTwidthDefault ;
-            coord.Y = TTdepthDefault ;
-            SetConsoleScreenBufferSize(hOutput,coord);
+            if(!ttPipeMode)
+            {
+                coord.X = TTwidthDefault ;
+                coord.Y = TTdepthDefault ;
+                SetConsoleScreenBufferSize(hOutput,coord);
+            }
         }
         consolePaintArea.Right = consolePaintArea.Bottom = 0 ;
         consolePaintArea.Left = consolePaintArea.Top = (SHORT) 0x7fff ;
@@ -4843,28 +5258,39 @@ TTstart (void)
         mouseInFrame = 1 ;
 #endif
 
-        /* save the original console mode to restore on exit */
-        GetConsoleMode(hInput, &OldConsoleMode);
-
-        /* and reset this to what MicroEMACS needs */
-        ConsoleMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
-        SetConsoleMode(hInput, ConsoleMode);
-
-        /* Set emergency quit handler routine */
-        SetConsoleCtrlHandler (ConsoleHandlerRoutine, meTRUE);
-
-        /* Hide the cursor - this does not seem to work on win98!! */
-        GetConsoleCursorInfo (hOutput, &CursorInfo);
-        CursorInfo.bVisible = meFALSE;
-        SetConsoleCursorInfo (hOutput, &CursorInfo);
-#if MEOPT_EXTENDED
-        if(!(alarmState & meALARM_PIPED))
-#endif
+        if(ttPipeMode)
         {
-            /* so move the cursor to a fixed less annoying position */
-            coord.X = TTwidthDefault-1;
-            coord.Y = 0;
-            SetConsoleCursorPosition(hOutput,coord);
+            /* Pipe mode: use ANSI escape sequences instead of Win32 console APIs */
+            /* Hide cursor */
+            fwrite("\033[?25l", 1, 6, stdout) ;
+            fflush(stdout) ;
+        }
+        else
+        {
+            /* save the original console mode to restore on exit */
+            GetConsoleMode(hInput, &OldConsoleMode);
+
+            /* and reset this to what MicroEMACS needs */
+            ConsoleMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
+            SetConsoleMode(hInput, ConsoleMode);
+
+            /* Set emergency quit handler routine */
+            SetConsoleCtrlHandler (ConsoleHandlerRoutine, meTRUE);
+
+            /* Hide the cursor - this does not seem to work on win98!! */
+            GetConsoleCursorInfo (hOutput, &CursorInfo);
+            CursorInfo.bVisible = meFALSE;
+            SetConsoleCursorInfo (hOutput, &CursorInfo);
+#if MEOPT_EXTENDED
+            if(!(alarmState & meALARM_PIPED))
+#endif
+            {
+                /* so move the cursor to a fixed less annoying position */
+                coord.X = TTwidthDefault-1;
+                coord.Y = 0;
+                SetConsoleCursorPosition(hOutput,coord);
+            }
+        }
         }
     }
 #ifdef _ME_WINDOW
@@ -4878,6 +5304,7 @@ TTstart (void)
         FreeConsole ();
 #endif /* _ME_CONSOLE */
 
+        ME_DBGTRACE("8: TTstart window path - before CreateWindow") ;
         baseHwnd = CreateWindow ("MicroEmacsClass",
                                  ME_FULLNAME " " meVERSION,
                                  WS_DISABLED,
@@ -4888,8 +5315,12 @@ TTstart (void)
                                  ttInstance,
                                  NULL);
 
+        ME_DBGTRACE("9: TTstart after CreateWindow") ;
         if(!baseHwnd)
+        {
+            mePrintMessage("CreateWindow failed") ;
             return meFALSE ;
+        }
         TTchangeFont(NULL, -1, 0, 0, 0);
     }
 #endif /* _ME_WINDOW */
@@ -4935,8 +5366,23 @@ TTahead (void)
          * them. */
         while(TTnoKeys != KEYBUFSIZ)
         {
-            if((hInput != INVALID_HANDLE_VALUE) &&
-               (PeekConsoleInput(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
+            int hasInput = 0 ;
+            if(hInput != INVALID_HANDLE_VALUE)
+            {
+                if(ttPipeMode)
+                {
+                    /* Pipe mode: use PeekNamedPipe to check for data */
+                    DWORD avail = 0 ;
+                    if(PeekNamedPipe(hInput, NULL, 0, NULL, &avail, NULL) && avail > 0)
+                        hasInput = 1 ;
+                }
+                else
+                {
+                    if((PeekConsoleInput(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
+                        hasInput = 1 ;
+                }
+            }
+            if(hasInput)
             {
                 if(meGetConsoleMessage(&msg,0))
                 {
@@ -5070,8 +5516,22 @@ TTaheadFlush (void)
         INPUT_RECORD ir;
         for (;;)
         {
-            if((hInput != INVALID_HANDLE_VALUE) &&
-               (PeekConsoleInput(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
+            int hasInput = 0 ;
+            if(hInput != INVALID_HANDLE_VALUE)
+            {
+                if(ttPipeMode)
+                {
+                    DWORD avail = 0 ;
+                    if(PeekNamedPipe(hInput, NULL, 0, NULL, &avail, NULL) && avail > 0)
+                        hasInput = 1 ;
+                }
+                else
+                {
+                    if((PeekConsoleInput(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
+                        hasInput = 1 ;
+                }
+            }
+            if(hasInput)
             {
                 if(meGetConsoleMessage(&msg,0))
                 {
@@ -5907,6 +6367,8 @@ WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmd
 /*     if(logfp == NULL)*/
 /*         logfp = fopen("log","w+") ;*/
 
+    ME_DBGTRACE("1: Entry to WinMain/main") ;
+
 #ifdef _ME_WINDOW
     /* Initialise the window data and register window class */
     if (!hPrevInstance)
@@ -5931,6 +6393,7 @@ WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmd
         ttshowState = nCmdShow;
     }
 #endif /* _ME_WINDOW */
+    ME_DBGTRACE("2: After RegisterClass") ;
     {
         OSVERSIONINFO os;
 
@@ -6065,14 +6528,19 @@ WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmd
      * Note that we cannot delete the string that we have allocated since
      * EMACS may retain parts of the argument list. */
     mesetup (argc, argv);
+    ME_DBGTRACE("6b: After mesetup returned") ;
 
     /* Just incase the window has been resized during start up go and check */
     meFrameResizeWindow(frameCur) ;                    /* Resize the screen */
+    ME_DBGTRACE("6c: After meFrameResizeWindow") ;
 
     /* Sint in a continual loop and process messages. */
+    ME_DBGTRACE("6c: Before main loop") ;
     while (1)
     {
+        ME_DBGTRACE("6d: Before doOneKey") ;
         doOneKey() ;
+        ME_DBGTRACE("6e: After doOneKey") ;
         if(TTbreakFlag)
         {
             TTinflush() ;
@@ -6229,10 +6697,10 @@ meFrameKillFocus(meFrame *frame)
 
 ****************************************************************************/
 
-LONG APIENTRY
-MainWndProc (HWND hWnd, UINT message, UINT wParam, LONG lParam)
+LRESULT CALLBACK
+MainWndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static LONG setCursorLastLParam ;
+    static LPARAM setCursorLastLParam ;
     meFrame *frame ;
 
     /* static int msgCount=0 ;*/

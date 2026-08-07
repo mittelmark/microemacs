@@ -3,7 +3,10 @@
 # JASSPA MicroEmacs - www.jasspa.com
 # winmingwgcc.mak - Make file for native Windows build using MinGW/MSYS2.
 #
-# This makefile is for NATIVE WINDOWS/MSYS2 builds.
+# This makefile supports two build distributions controlled by BDIST:
+#   BDIST=msys2   - MSYS2 executables (default), requires msys-2.0.dll
+#   BDIST=mingw64 - Native Windows executables using MinGW-w64, static zlib
+#
 # For cross-compilation from Linux, see linuxmingwgcc.mak
 #
 # Copyright (C) 2007-2009 JASSPA (www.jasspa.com)
@@ -31,13 +34,23 @@
 #
 #     To build from the command line using make & makefile. 
 #
-#	Run "make -f winmingwgcc.mak"            for optimised build produces ./.winmingwgcc-release-mew/mew32.exe
-#	Run "make -f winmingwgcc.mak BCFG=debug" for debug build produces     ./.winmingwgcc-debug-mew/mew32.exe
-#	Run "make -f winmingwgcc.mak BTYP=c"     for console support          ./.winmingwgcc-release-mec/mec32.exe
-#	Run "make -f winmingwgcc.mak BCOR=ne"    for ne build produces        ./.winmingwgcc-release-new/new32.exe
+#	MSYS2 builds (default, requires msys-2.0.dll at runtime):
+#	  make -f winmingwgcc.mak                              release GUI build
+#	  make -f winmingwgcc.mak BCFG=debug                   debug GUI build
+#	  make -f winmingwgcc.mak BTYP=c                       release console build
+#	  make -f winmingwgcc.mak BCOR=ne                      release ne build
 #
-#	Run "make -f winmingwgcc.mak clean"      to clean source directory
-#	Run "make -f winmingwgcc.mak spotless"   to clean source directory even more
+#	Native Windows builds (BDIST=mingw64, no runtime DLLs needed):
+#	  make -f winmingwgcc.mak BDIST=mingw64                release GUI build
+#	  make -f winmingwgcc.mak BDIST=mingw64 BCFG=debug     debug GUI build
+#	  make -f winmingwgcc.mak BDIST=mingw64 BTYP=c         release console build
+#
+#	  make -f winmingwgcc.mak clean                        to clean source directory
+#	  make -f winmingwgcc.mak spotless                     to clean source directory even more
+#
+#	Output directories:
+#	  MSYS2 builds:   ./.msys64gcc-{release,debug}-me{c,w}/
+#	  Windows builds: ./.mingw64gcc-{release,debug}-me{c,w}/
 #
 ##############################################################################
 #
@@ -49,20 +62,37 @@ INSTPROGFLAGS =
 A        = .a
 EXE      = .exe
 
+# BDIST controls the build distribution:
+#   msys2   - MSYS2 executables (default), requires msys-2.0.dll at runtime
+#   mingw64 - Native Windows executables using MinGW-w64, static zlib
+BDIST    ?= msys2
+
+ifeq "$(BDIST)" "mingw64"
+CC       = /mingw64/bin/gcc
+RC       = /mingw64/bin/windres
+STRIP    = /mingw64/bin/strip
+AR       = /mingw64/bin/ar
+OUTTAG   = mingw64gcc
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -Wl,-Bstatic -lz -Wl,-Bdynamic
+else
 CC       = gcc
 RC       = windres
-MK       = make
-LD       = $(CC)
 STRIP    = strip
 AR       = ar
+OUTTAG   = msys64gcc
+LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
+endif
+
+MK       = make
+LD       = $(CC)
 RM       = rm -f
 RMDIR    = rm -r -f
 
 TOOLKIT  = winmingwgcc
 ifeq "$(BPRF)" "1"
-BUILDID  = $(TOOLKIT)p
+BUILDID  = $(OUTTAG)p
 else
-BUILDID  = $(TOOLKIT)
+BUILDID  = $(OUTTAG)
 endif
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
@@ -73,7 +103,18 @@ CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
 LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops
 LDFLAGSD = -g
-LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lz
+
+# When building with mingw64 from MSYS2, the native Windows gcc cannot resolve
+# MSYS2 paths in TEMP/TMP environment variables. Override them with proper
+# Windows paths so cc1.exe and the assembler can create temp files.
+# Also ensure /mingw64/bin is on PATH so cc1.exe and as.exe can find their
+# dependent DLLs (libisl, libmpc, libmpfr).
+ifeq "$(BDIST)" "mingw64"
+WINTEMP  := $(shell cygpath -w /tmp 2>/dev/null || echo C:\\msys64\\tmp)
+export TEMP  = $(WINTEMP)
+export TMP   = $(WINTEMP)
+export PATH := /mingw64/bin:$(PATH)
+endif
 
 ARFLAGSR = rcs
 ARFLAGSD = rcs

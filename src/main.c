@@ -147,6 +147,7 @@ meInit(meUByte *bname)
 
     if (TTstart() == meFALSE)             /* Started ?? */
         meExit(1) ;
+    ME_DBGTRACE("5a: After TTstart") ;
 
     /* add 2 to hilBlockS to allow for a double trunc-scheme change
      * Note: ME is not yet 'initialised' so any meMalloc failure will
@@ -531,6 +532,8 @@ exitEmacs(int f, int n)
 {
     int s, ec=0 ;
     char buff[128] ;
+
+    ME_DBGTRACE("90: exitEmacs called") ;
 
 #if MEOPT_EXTENDED
     /* Set the exit code */
@@ -1060,6 +1063,7 @@ sigchild(SIGNAL_PROTOTYPE)
 int
 meDie(void)
 {
+    ME_DBGTRACE("91: meDie called") ;
     /* To get here we have received a signal and am about to die! Ensure that
      * we are in a DIE state to prevent any output on the display which is
      * being torn down. Our main purpose is to preserve the session
@@ -1127,7 +1131,9 @@ doOneKey(void)
     register int    mflag;
     int     basec;              /* c stripped of meta character   */
 
+    ME_DBGTRACE("12a: doOneKey - before update") ;
     update(meFALSE);                          /* Fix up the screen    */
+    ME_DBGTRACE("12b: doOneKey - after update") ;
 
     /*
      * If we are not playing or recording a macro. This is the ONLY place
@@ -1140,7 +1146,9 @@ doOneKey(void)
     if (kbdmode == meSTOP)
         kbdmode = meIDLE;             /* In an idle state  */
 
+    ME_DBGTRACE("13: Before meGetKeyFromUser") ;
     c = meGetKeyFromUser(meFALSE, 1, meGETKEY_COMMAND);     /* Get a key */
+    ME_DBGTRACE("14: After meGetKeyFromUser") ;
 
     if (frameCur->mlStatus & MLSTATUS_CLEAR)
         mlerase(MWCLEXEC) ;
@@ -1567,7 +1575,9 @@ missing_arg:
         }
     }
     /* Set up the path information. */
+    ME_DBGTRACE("3: Before meSetupPathsAndUser") ;
     meSetupPathsAndUser(argv[0]) ;
+    ME_DBGTRACE("4: After meSetupPathsAndUser") ;
 
 #if MEOPT_CLIENTSERVER
     if(userClientServer && TTconnectClientServer())
@@ -1683,7 +1693,9 @@ missing_arg:
     }
 #endif
 
+    ME_DBGTRACE("5: Before meInit") ;
     meInit(BmainN);           /* Buffers, windows.    */
+    ME_DBGTRACE("6: After meInit") ;
 
 #ifdef _DOS
     if(dumpScreen)
@@ -1700,6 +1712,8 @@ missing_arg:
     screenUpdateDisabledCount = -9999 ;
     /* run me.emf unless an @... arg was given in which case run that */
     execFile(file,meTRUE,noFiles) ;
+    ME_DBGTRACE("6a: After execFile") ;
+    ME_DBGTRACE("6b: Before bfind") ;
 
     /* initalize *scratch* colors & modes to global defaults & check for a hook */
     if((mainbp=bfind(BmainN,0)) != NULL)

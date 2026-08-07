@@ -246,9 +246,21 @@ extern  int     doRedrawEvent(void);
 #define MWSTDALLWRT 0x600
 
 extern  int     mlwrite(int flags, meUByte *fmt, ...) ;
+
+/* Debug trace macro - writes to me_dbgtrace.txt in current directory */
+#define ME_DBGTRACE(msg) do { \
+    FILE *_dbgfp = fopen("me_dbgtrace.txt", "a") ; \
+    if(_dbgfp) { fprintf(_dbgfp, "%s\n", msg) ; fclose(_dbgfp) ; } \
+} while(0)
+
 #ifdef _WIN32
 #ifdef _ME_WINDOW
 #define mePrintMessage(mm) MessageBox(NULL,(char *) mm,ME_FULLNAME " '" meVERSION,MB_OK);
+#elif defined(__CYGWIN__)
+/* MSYS2/Cygwin build: use POSIX write() to avoid mangled output from
+ * the MSYS2 emulation layer's handling of WriteFile */
+extern int write(int, const void *, unsigned int);
+#define mePrintMessage(mm) write(2,mm,meStrlen(mm))
 #else
 #define mePrintMessage(mm) do{ DWORD dummyInt; WriteFile(GetStdHandle(STD_ERROR_HANDLE),mm,meStrlen(mm),&dummyInt,NULL); } while(0)
 #endif
