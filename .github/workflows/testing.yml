@@ -22,6 +22,8 @@ jobs:
       - name: Run basic tests
         run: |
           #rm -f tests/test-output.txt
+          echo "VRS=$VRS" >> $GITHUB_ENV
+          export TERM=xterm
           MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
@@ -124,11 +126,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build mec (console)
-        shell: cygwin {0}
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           make -f cygwin.gmk mec
       - name: Run basic tests
-        shell: cygwin {0}
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
