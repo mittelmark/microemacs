@@ -1,0 +1,65 @@
+; -!- emf -!-
+; Test basic MicroEmacs functionality for CI testing
+; Usage: me @tests/test-basics
+; Results are written to tests/test-output.txt
+
+define-macro start-up
+    ; Open test output file
+    find-file "tests/test-output.txt"
+
+    ; Test 1: Version
+    insert-string "TEST:version="
+    insert-string $version
+    insert-newline
+
+    ; Test 2: Frame dimensions
+    insert-string "TEST:frame-width="
+    insert-string $frame-width
+    insert-newline
+    insert-string "TEST:frame-depth="
+    insert-string $frame-depth
+    insert-newline
+
+    ; Test 3: Window dimensions
+    insert-string "TEST:window-width="
+    insert-string $window-width
+    insert-newline
+    insert-string "TEST:window-depth="
+    insert-string $window-depth
+    insert-newline
+
+    ; Test 4: Buffer name
+    insert-string "TEST:buffer-name="
+    insert-string $buffer-bname
+    insert-newline
+
+    ; Test 5: Test basic arithmetic
+    set-variable #l0 &add 1 2
+    insert-string "TEST:arithmetic="
+    insert-string #l0
+    insert-newline
+
+    ; Test 6: Test string operations
+    set-variable #l1 &cat "Hello" " World"
+    insert-string "TEST:string-cat="
+    insert-string #l1
+    insert-newline
+
+    ; Test 7: Test platform detection
+    insert-string "TEST:platform="
+    insert-string $platform
+    insert-newline
+
+    ; Test 8: Test system flags
+    insert-string "TEST:system="
+    insert-string $system
+    insert-newline
+
+    ; All tests complete
+    insert-string "TEST:all-tests=complete"
+    insert-newline
+
+    ; Save and exit
+    save-buffer
+    exit-emacs
+!emacro

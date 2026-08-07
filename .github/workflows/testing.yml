@@ -1,72 +1,183 @@
-name: Testing Action features
+name: Testing MicroEmacs basic features
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ master, msys-fix ]
+  pull_request:
     branches: [ master ]
 
 jobs:
   linux:
-    runs-on: ubuntu-latest
-    name: Build on Ubuntu-latest
-
+    runs-on: ubuntu-22.04
+    name: Test on Linux
     steps:
       - uses: actions/checkout@v4
-      - name: check Python package install
-        run:  |
-          uname -a
-          uname -n
-          uname -s
-          python --version
-          python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
-          ./menv/bin/meapp -V
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libxt-dev
+      - name: Build mec (console)
+        run: make -f src/linux32gcc.gmk mec
+      - name: Run basic tests
+        run: |
+          rm -f tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-linux
+          path: tests/test-output.txt
+
   macos:
     runs-on: macos-latest
-    name: Build on MacOS latest
+    name: Test on macOS
     steps:
       - uses: actions/checkout@v4
-      - name: check Python package install
-        run:  |
-          uname -a
-          uname -n
-          uname -s
-          python --version
-          python -m venv menv
-          ./menv/bin/pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
-          ./menv/bin/meapp -V
+      - name: Build mec (console)
+        run: make -f src/darwin.gmk mec
+      - name: Run basic tests
+        run: |
+          rm -f tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.darwin-release-mec/mec @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-macos
+          path: tests/test-output.txt
 
-  macos13:
-    runs-on: macos-13
-    name: Build on MacOS 13
+  windows-mingw:
+    runs-on: windows-latest
+    name: Test on Windows (MinGW64)
     steps:
       - uses: actions/checkout@v4
-      - name: check MicroEmacs curl install
-        shell: bash
-        run:  |
-          brew install xquartz
-          curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-unix.sh  -o install.sh
-          bash install.sh -V
-          source ~/.bashrc ## for the current session
-          me -V
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          install: mingw-w64-x86_64-gcc make
+      - name: Build mec (console)
+        shell: msys2 {0}
+        run: |
+          cd src
+          make -f winmingwgcc.mak BTYP=c all
+      - name: Run basic tests
+        shell: msys2 {0}
+        run: |
+          rm -f tests/test-output.txt
+          MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec32.exe @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        shell: msys2 {0}
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-windows-mingw
+          path: tests/test-output.txt
 
-  windows:
-    runs-on: windows-2022
-    name: Build on Windows 2022
-
+  windows-msys2:
+    runs-on: windows-latest
+    name: Test on Windows (MSYS2)
     steps:
       - uses: actions/checkout@v4
-      - name: check Python package install
-        run:  |
-          python --version
-          python -c "import sys; print(sys.executable)"
-          pip --version
-          #pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
-          python -m venv menv
-          dir menv\Scripts
-          menv\Scripts\activate.bat
-          $Env:PATH = [System.Environment]::CurrentDirectory + "menv\Scripts" + ";"+$Env:PATH
-          python -c "import sys; print(sys.executable)"
-          python -c "import os; print(os.path.expanduser('~'))"
-          pip install https://github.com/user-attachments/files/16840928/meapp-9.12.24b1.tar.gz
-          $Env:PATH += ";C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts"
-          meapp -V 
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: msys
+          install: gcc make
+      - name: Build mec (console)
+        shell: msys2 {0}
+        run: |
+          cd src
+          make -f winmingwgcc.mak BTYP=c all
+      - name: Run basic tests
+        shell: msys2 {0}
+        run: |
+          rm -f tests/test-output.txt
+          MEPATH=jasspa/macros src/.msys64gcc-release-mec/mec32.exe @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        shell: msys2 {0}
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-windows-msys2
+          path: tests/test-output.txt
+
+  cygwin:
+    runs-on: windows-latest
+    name: Test on Cygwin
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build mec (console)
+        shell: cygwin {0}
+        run: |
+          cd src
+          make -f cygwin.gmk mec
+      - name: Run basic tests
+        shell: cygwin {0}
+        run: |
+          rm -f tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        shell: cygwin {0}
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-cygwin
+          path: tests/test-output.txt

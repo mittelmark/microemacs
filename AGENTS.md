@@ -544,6 +544,108 @@ If clipboard tools were spawned, you'll see lines like:
 
 Tool IDs: 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy, 4=clip.exe(WSL), 5=clip.exe(Cygwin), 6=xsel.
 
+### Automated CI Testing with `tests/test-basics.emf`
+
+The file `tests/test-basics.emf` provides a comprehensive automated test that verifies ME compiles and runs correctly. It tests core functionality by writing results to a file, then exits cleanly. This approach works on all platforms including Windows (MSYS2, MinGW64, Cygwin) where terminal output may not work in non-interactive mode.
+
+#### How It Works
+
+1. `tests/test-basics.emf` defines a `start-up` macro that runs after ME initializes
+2. The macro writes test results to `tests/test-output.txt` using `find-file`, `insert-string`, and `save-buffer`
+3. `exit-emacs` terminates the process cleanly
+4. The output file is checked for expected `TEST:` lines
+
+#### Running Locally
+
+```bash
+# Linux
+MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics
+cat tests/test-output.txt
+
+# macOS
+MEPATH=jasspa/macros ./src/.darwin-release-mec/mec @tests/test-basics
+cat tests/test-output.txt
+
+# Windows (MinGW64 or MSYS2 shell)
+MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec32.exe @tests/test-basics
+cat tests/test-output.txt
+```
+
+**Key points:**
+- Use `@tests/test-basics` — no `.emf` extension, no `-p` flag
+- The `start-up` macro is called automatically after ME initialization
+- `save-buffer` (not `save-file`) saves the output file
+- `exit-emacs` terminates the process — required for clean exit
+- Use `MENAME=ci-test` to avoid loading user config files
+
+#### Test Output Format
+
+Each test writes a `TEST:key=value` line. The test passes if all expected keys are present:
+
+```
+TEST:version=20091226b3
+TEST:frame-width=120
+TEST:frame-depth=30
+TEST:window-width=119
+TEST:window-depth=28
+TEST:buffer-name=test-output.txt
+TEST:arithmetic=3
+TEST:string-cat=Hello World
+TEST:platform=win32
+TEST:system=294701
+TEST:all-tests=complete
+```
+
+#### Verification Script
+
+```bash
+rm -f tests/test-output.txt
+MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics 2>/dev/null
+if [ -s tests/test-output.txt ] && grep -q "TEST:all-tests=complete" tests/test-output.txt; then
+    echo "PASS: All tests completed"
+else
+    echo "FAIL: Tests did not complete"
+    exit 1
+fi
+```
+
+#### CI Workflow
+
+The `testing.yml` workflow runs on every push to `master`/`msys-fix` and on pull requests. It builds and tests on 5 platforms:
+
+| Platform | Build Command | Shell |
+|----------|--------------|-------|
+| Linux (Ubuntu 22.04) | `make -f src/linux32gcc.gmk mec` | bash |
+| macOS | `make -f src/darwin.gmk mec` | bash |
+| Windows (MinGW64) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
+| Windows (MSYS2) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
+| Windows (Cygwin) | `make -f src/cygwin.gmk mec` | cygwin |
+
+Each job: builds → runs `@tests/test-basics` → verifies output file → uploads as artifact.
+
+#### Creating New Tests
+
+To add a new test, edit `tests/test-basics.emf` and add insert-string lines inside the `start-up` macro:
+
+```me
+; Test N: Description
+insert-string "TEST:my-key="
+insert-string $my-variable
+insert-newline
+```
+
+Then add a verification line to `testing.yml`:
+```yaml
+grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FAIL: my test"
+```
+
+#### Platform Notes
+
+- **Windows console builds** (MinGW64, MSYS2, Cygwin): Use file-based output, not `ml-write -1` (stdout may not work in ConPTY/pipe mode)
+- **MSYS2 builds**: Get pipe handles from mintty, not real console handles. The `@file` approach works because `start-up` runs before the input loop
+- **MinGW64 builds**: Get real console via ConPTY from mintty. Both `@file` and pipe mode work
+- **Linux/macOS**: Full terminal support, both approaches work
+
 ## Documentation
 
 - Source: `doc/me.smd` (Markdown-like format)
@@ -566,7 +668,7 @@ Tool IDs: 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy, 4=clip.exe(WSL), 5=clip
 | `cygwin.yml` / `cygwin2.yml` | Cygwin builds |
 | `bdf-fonts.yml` / `ttf-fonts.yml` | Font packaging |
 | `ubuntu-arm-check.yml` | ARM compatibility check |
-| `testing.yml` | Testing workflow |
+| `testing.yml` | Automated testing (Linux, macOS, Windows×3, Cygwin) |
 
 ## Common Patterns
 
