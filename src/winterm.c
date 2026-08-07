@@ -1751,7 +1751,27 @@ meGetConsoleMessage(MSG *msg, int mode)
         CONSOLE_SCREEN_BUFFER_INFO Console;
         COORD size ;
 
-        GetConsoleScreenBufferInfo(hOutput, &Console);
+        if(ttPipeMode)
+        {
+            /* In pipe mode, hOutput is a pipe handle - try CONOUT$ */
+            HANDLE hConOut = CreateFile("CONOUT$", GENERIC_READ,
+                                        FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                        NULL, OPEN_EXISTING, 0, NULL);
+            if(hConOut == INVALID_HANDLE_VALUE ||
+               !GetConsoleScreenBufferInfo(hConOut, &Console))
+            {
+                if(hConOut != INVALID_HANDLE_VALUE)
+                    CloseHandle(hConOut) ;
+                return meFALSE ;
+            }
+            CloseHandle(hConOut) ;
+        }
+        else
+        {
+            if(!GetConsoleScreenBufferInfo(hOutput, &Console))
+                return meFALSE ;
+        }
+
         /* this should be the window size, not the buffer size
          * as this needs the scroll-bar to use */
         size.X = Console.srWindow.Right-Console.srWindow.Left+1;
@@ -1760,11 +1780,13 @@ meGetConsoleMessage(MSG *msg, int mode)
 #if MEOPT_EXTENDED
         if((alarmState & meALARM_PIPED) == 0)
 #endif
-            SetConsoleScreenBufferSize(hOutput, size);
+            if(!ttPipeMode)
+                SetConsoleScreenBufferSize(hOutput, size);
 
-        /* Tell micro-emacs about it */
-        frameCur->width = size.X ;
-        frameCur->depth = size.Y-1 ;
+        /* Tell micro-emacs about it using proper change functions
+         * which handle bounds checking and buffer reallocation */
+        meFrameChangeWidth(frameCur, size.X) ;
+        meFrameChangeDepth(frameCur, size.Y-1) ;
         meFrameSetWindowSize(frameCur) ;
     }
     else if (ir.EventType == FOCUS_EVENT)
