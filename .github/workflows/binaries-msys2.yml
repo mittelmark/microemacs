@@ -12,10 +12,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { sys: mingw32, runs-on: 'windows-latest' }
-          - { sys: mingw64, runs-on: 'windows-latest' }
-          - { sys: ucrt64, runs-on: 'windows-latest' }
-    name: run ${{ matrix.sys }}
+          - { sys: mingw32, runs-on: 'windows-latest', subsystem: msys }
+          - { sys: mingw64, runs-on: 'windows-latest', subsystem: msys }
+          - { sys: ucrt64, runs-on: 'windows-latest', subsystem: msys }
+          - { sys: mingw32, runs-on: 'windows-latest', subsystem: mingw }
+          - { sys: mingw64, runs-on: 'windows-latest', subsystem: mingw }
+          - { sys: ucrt64, runs-on: 'windows-latest', subsystem: mingw }
+    name: ${{ matrix.subsystem }} ${{ matrix.sys }}
     defaults:
       run:
         shell: msys2 {0}
@@ -25,29 +28,30 @@ jobs:
       with:
         fetch-depth: 0
         persist-credentials: false    
-    - name: Setup     
+    - name: Setup MSYS2     
       uses: msys2/setup-msys2@v2
       with:
         update: true
+        msystem: ${{ matrix.sys }}
         install: >-
            curl
            git
            make
-           zlib
-           zlib-devel
-           gcc
-           ncurses
-           ncurses-devel
            unzip 
            zip
+    - name: Install MSYS packages
+      if: matrix.subsystem == 'msys'
+      run: |
+         pacman -S --noconfirm gcc ncurses ncurses-devel zlib zlib-devel
+    - name: Install MinGW packages
+      if: matrix.subsystem == 'mingw'
+      run: |
+         pacman -S --noconfirm mingw-w64-${{ matrix.sys }}-gcc mingw-w64-${{ matrix.sys }}-ncurses mingw-w64-${{ matrix.sys }}-zlib
     - name: compile bfs executable
       run: |
          gcc --version
          uname -a
          uname -m
-         uname -s
-         uname -o
-         uname -r
          cd bfs
          make -f winmingwgcc.gmk
          ls -la
@@ -65,16 +69,13 @@ jobs:
          cd src
          make -f winmingwgcc.mak BTYP=w all
          ls -la
-         pwd
-         ls /c/*
          cd ..
-         cygpath `pwd`
     - name: create mecb executable
       run: |
          make -f winmingwgcc.gmk mecb
     - name: create mewb executable
       run: |
-         make -f winmingwgcc.gmk mecb
+         make -f winmingwgcc.gmk mewb
 
     - name: create Release executable
       run: |
@@ -82,21 +83,8 @@ jobs:
          make -f winmingwgcc.gmk release app=mewb
          ls
     
-    - name: Upload Msys Combined Release
+    - name: Upload Release
       uses: actions/upload-artifact@v6
       with: 
-        name: Release-winmingwgcc-${{ matrix.sys }}-${{ env.VERSION }}-windows
+        name: Release-${{ matrix.subsystem }}-${{ matrix.sys }}-${{ env.VERSION }}
         path: windows-msys-microemacs*
-
-    - name: Upload Msys64
-      uses: actions/upload-artifact@v6
-      with: 
-        name: Release-${{ matrix.sys }}
-        path: c:\msys64
-
-    - name: Upload Msys32
-      uses: actions/upload-artifact@v6
-      with: 
-        name: Release-${{ matrix.sys }}
-        path: c:\msys32
-    
