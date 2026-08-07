@@ -155,7 +155,7 @@ $(OUTDIR)/%.coff : %.rc
 all: $(PRGLIBS) $(OUTDIR)/$(PRGFILE)
 
 $(OUTDIR)/$(PRGFILE): $(OUTDIR) $(PRGOBJS) $(PRGLIBS)
-	$(RM) $@
+	-$(RM) $@
 	$(LD) $(LDDEFS) $(LDPROF) $(BTYP_LDF) $(LDFLAGS) -o $@ $(PRGOBJS) $(PRGLIBS) $(LDLIBS)
 	$(STRIP) $@
 
