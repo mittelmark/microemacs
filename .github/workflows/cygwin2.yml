@@ -76,7 +76,7 @@ jobs:
       run: |
         mkdir workspace
         cd workspace
-        git clone https://github.com/mittelmark/microemacs.git
+        git clone -b ${{ github.ref_name }} https://github.com/mittelmark/microemacs.git
         cd microemacs
         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV

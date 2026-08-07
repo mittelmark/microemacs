@@ -121,20 +121,31 @@ jobs:
           name: test-results-windows-mingw
           path: tests/test-output.txt
 
-  cygwin:
+  cygwin-x64:
     runs-on: windows-latest
-    name: Test on Cygwin
+    name: Test on Cygwin (x86_64)
     steps:
       - uses: actions/checkout@v4
+      - name: Install Cygwin
+        uses: cygwin/cygwin-install-action@v6
+        with:
+          packages: |
+            make
+            gcc-core
+          install-dir: C:\cygwin
+          platform: x86_64
       - name: Build mec (console)
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
-          "C:/cygwin/bin/bash.exe" --login --norc -eo pipefail -o igncr "make -f cygwin.gmk mec"
+          cd $GITHUB_WORKSPACE/src
+          make -f cygwin.gmk mec
       - name: Run basic tests
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
-          "C:/cygwin/bin/bash.exe" --login --norc -eo pipefail -o igncr "MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true"
+          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
-        shell: C:/cygwin/bin/bash.exe --login --norc -eo pipefail -o igncr {0}
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           if [ -s tests/test-output.txt ]; then
             echo "Tests produced output"
@@ -148,5 +159,46 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results-cygwin
+          name: test-results-cygwin-x64
+          path: tests/test-output.txt
+
+  cygwin-x86:
+    runs-on: windows-latest
+    name: Test on Cygwin (x86)
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Cygwin
+        uses: cygwin/cygwin-install-action@v6
+        with:
+          packages: |
+            make
+            gcc-core
+          install-dir: C:\cygwin
+          platform: x86
+      - name: Build mec (console)
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          cd $GITHUB_WORKSPACE/src
+          make -f cygwin.gmk mec
+      - name: Run basic tests
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-cygwin-x86
           path: tests/test-output.txt
