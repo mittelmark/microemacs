@@ -90,10 +90,11 @@ jobs:
       run: |
          make -f winmingwgcc.gmk release app=mecb BDIST=${{ matrix.subsystem }}64
          make -f winmingwgcc.gmk release app=mewb BDIST=${{ matrix.subsystem }}64
+         rm *.exe
          ls
     
     - name: Upload Release
       uses: actions/upload-artifact@v6
       with: 
         name: Release-${{ matrix.subsystem }}-${{ matrix.sys }}-${{ env.VERSION }}
-        path: windows-${{ matrix.subsystem }}-*-microemacs*
+        path: windows-${{ matrix.subsystem }}-*-microemacs*/*
