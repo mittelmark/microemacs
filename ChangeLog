@@ -7,10 +7,26 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260731.1035>
+>  Last Modified : <260808.0150>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260807] - Fixed terminal resize crash: WINDOW_BUFFER_SIZE_EVENT handler
+             now uses meFrameChangeWidth/meFrameChangeDepth for proper
+             bounds checking and buffer reallocation. Added pipe mode guard
+             for GetConsoleScreenBufferInfo via CONOUT$.
+
+  [260807] - Fixed user-setup edituser checkbox: corrected index from 11
+             to 10 so the "Edit" checkbox toggles the correct registry
+             key (/history/edituser). Changed &reg default from "1" to
+             "0" so user.emf is not opened by default when unchecked.
+
+  [260807] - Added mouse support for Windows terminal version (mec32.exe).
+             Native Win32 MOUSE_EVENT for console mode, SGR VT mouse via
+             stdin/stdout for pipe mode (mintty). Supports click, drag,
+             and scroll wheel. ENABLE_EXTENDED_FLAGS added to console mode.
+             Seems to work on cmd, Powershell and Even Msys2 mintty terminals.
 
   [260731] - Adding pydoc.emf, documenting command line filters
              info, pydoc and rdoc to be called like: 'mecb @pydoc topic' etc

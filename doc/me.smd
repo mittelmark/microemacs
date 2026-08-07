@@ -5109,6 +5109,22 @@
 
 ## Development History 
 
+  - [260807] - Fixed terminal resize crash: WINDOW_BUFFER_SIZE_EVENT handler
+               now uses meFrameChangeWidth/meFrameChangeDepth for proper
+               bounds checking and buffer reallocation. Added pipe mode guard
+               for GetConsoleScreenBufferInfo via CONOUT$.
+
+  - [260807] - Fixed user-setup edituser checkbox: corrected index from 11
+               to 10 so the "Edit" checkbox toggles the correct registry
+               key (/history/edituser). Changed &reg default from "1" to
+               "0" so user.emf is not opened by default when unchecked.
+
+  - [260807] - Added mouse support for Windows terminal version (mec32.exe).
+               Seems to work on cmd, Powershell and Even Msys2 mintty terminals.
+               Native Win32 MOUSE_EVENT for console mode, SGR VT mouse via
+               stdin/stdout for pipe mode (mintty). Supports click, drag,
+               and scroll wheel. ENABLE_EXTENDED_FLAGS added to console mode.
+
   - [260804] - support  for  xsel,  xclip  (X11),  wl-copy  (Wayland),  pbpaste
                (MacOS),  clip.exe  (Cygwin-Windows,  WSL-Windows and Windows for
                copying text as well from the terminal to the System clipboard.
@@ -45823,7 +45839,9 @@ $a
   >  Enables or disables the mouse, when disabled the mouse can not be used
      and will not generate any key events. This does not apply to UNIX
      Termcap systems as the mouse cut and paste operation is performed by
-     the Xterm. This indirectly sets bit 0x010 of the [$mouse(5)]($mouse(5)) variable.
+     the Xterm if the mouse is disabled. Since MicroEmacs version 0926b3
+     the mouse is enabled per default for most terminals in Windows, and Unix.
+     This checkbox indirectly sets bit 0x010 of the [$mouse(5)]($mouse(5)) variable.
 
   `Number Buttons`
   
