@@ -21,7 +21,7 @@ jobs:
         run: make -f linux32gcc.gmk mec
       - name: Run basic tests
         run: |
-          rm -f tests/test-output.txt
+          #rm -f tests/test-output.txt
           MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
@@ -56,10 +56,10 @@ jobs:
             export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
             echo "VRS=$VRS" >> $GITHUB_ENV
             echo "GCC=gcc-15" >> $GITHUB_ENV
-            make -f macos32gcc.gmk mec CC=${GCC}
+            make -f macos32gcc.gmk mec CC=gcc-15
       - name: Run basic tests
         run: |
-          rm -f tests/test-output.txt
+          #rm -f tests/test-output.txt
           MEPATH=jasspa/macros ./src/.macos32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
