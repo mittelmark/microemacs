@@ -46,7 +46,13 @@ jobs:
     - name: Install MinGW packages
       if: matrix.subsystem == 'mingw'
       run: |
-         pacman -S --noconfirm mingw-w64-${{ matrix.sys }}-gcc mingw-w64-${{ matrix.sys }}-ncurses mingw-w64-${{ matrix.sys }}-zlib
+         case "${{ matrix.sys }}" in
+           mingw32) PKGPFX="mingw-w64-i686" ;;
+           mingw64) PKGPFX="mingw-w64-x86_64" ;;
+           ucrt64)  PKGPFX="mingw-w64-ucrt-x86_64" ;;
+           *)       echo "Unknown sys: ${{ matrix.sys }}"; exit 1 ;;
+         esac
+         pacman -S --noconfirm ${PKGPFX}-gcc ${PKGPFX}-ncurses ${PKGPFX}-zlib
     - name: compile bfs executable
       run: |
          gcc --version
@@ -60,27 +66,50 @@ jobs:
     - name: compile mec executable
       run: |
          cd src
-         make -f winmingwgcc.mak BTYP=c all
+         if [ "${{ matrix.subsystem }}" = "mingw" ]; then
+           make -f winmingwgcc.mak BDIST=mingw64 BTYP=c all
+           BUILDDIR=".mingw64gcc-release-mec"
+         else
+           make -f winmingwgcc.mak BTYP=c all
+           BUILDDIR=".msys64gcc-release-mec"
+         fi
          ls -la
-         ./.${{ matrix.subsystem }}64gcc-release-mec/mec32.exe -V
+         ./${BUILDDIR}/mec32.exe -V
          cd ..
     - name: compile mew executable
       run: |
          cd src
-         make -f winmingwgcc.mak BTYP=w all
+         if [ "${{ matrix.subsystem }}" = "mingw" ]; then
+           make -f winmingwgcc.mak BDIST=mingw64 BTYP=w all
+         else
+           make -f winmingwgcc.mak BTYP=w all
+         fi
          ls -la
          cd ..
     - name: create mecb executable
       run: |
-         make -f winmingwgcc.gmk mecb
+         if [ "${{ matrix.subsystem }}" = "mingw" ]; then
+           make -f winmingwgcc.gmk BDIST=mingw64 mecb
+         else
+           make -f winmingwgcc.gmk mecb
+         fi
     - name: create mewb executable
       run: |
-         make -f winmingwgcc.gmk mewb
+         if [ "${{ matrix.subsystem }}" = "mingw" ]; then
+           make -f winmingwgcc.gmk BDIST=mingw64 mewb
+         else
+           make -f winmingwgcc.gmk mewb
+         fi
 
     - name: create Release executable
       run: |
-         make -f winmingwgcc.gmk release app=mecb
-         make -f winmingwgcc.gmk release app=mewb
+         if [ "${{ matrix.subsystem }}" = "mingw" ]; then
+           make -f winmingwgcc.gmk BDIST=mingw64 release app=mecb
+           make -f winmingwgcc.gmk BDIST=mingw64 release app=mewb
+         else
+           make -f winmingwgcc.gmk release app=mecb
+           make -f winmingwgcc.gmk release app=mewb
+         fi
          ls
     
     - name: Upload Release

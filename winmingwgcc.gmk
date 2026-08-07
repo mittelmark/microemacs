@@ -1,21 +1,27 @@
 VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
-RELEASE:="windows-msys-microemacs-$(VERSION)"
+RELEASE1:="windows-msys64-microemacs-$(VERSION)"
+RELEASE2:="windows-mingw64-microemacs-$(VERSION)"
 TOOLKIT=winmingwgcc
 MAKE=make
 bfs/exe:
 	cd bfs && $(MAKE) -f $(TOOLKIT).gmk clean	
 	cd bfs && $(MAKE) -f $(TOOLKIT).gmk
 mec: 
-	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=c
+	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=c BDIST=msys64
+	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=c BDIST=mingw64	
 
 mew: 
-	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=w
+	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=w BDIST=msys64
+	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=w BDIST=mingw64
 
 mecb: bfs/exe mec
-	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mec/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.msys64gcc-release-mec/mec32.exe -o $(RELEASE1)-mecb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.mingw64-release-mec/mec32.exe -o $(RELEASE2)-mecb.exe ./jasspa
 
 mewb: bfs/exe mew
-	./bfs/bfs.exe -a ./src/.$(TOOLKIT)-release-mew/mew32.exe -o $(RELEASE)-mewb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.msys64gcc-release-mew/mew32.exe -o $(RELEASE1)-mewb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.mingw64gcc-release-mew/mew32.exe -o $(RELEASE2)-mewb.exe ./jasspa	
 
 release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE1) ext=exe
+	make -f release.gmk app=$(app) RELEASE=$(RELEASE2) ext=exe	
