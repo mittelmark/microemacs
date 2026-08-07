@@ -492,7 +492,7 @@ gettimeofday (struct meTimeval *tp, struct meTimezone *tz)
     UNREFERENCED_PARAMETER (tz);
 
     /* Get the second resolution time */
-    tp->tv_sec = (int) time(NULL) ;
+    tp->tv_sec = (int)((long)time(NULL) & 0x7FFFFFFF) ;
 
     /* Get the microsecond time */
     GetLocalTime(&stime) ;
@@ -611,14 +611,14 @@ TTopenClientServer(void)
 int
 TTcheckClientServer(void)
 {
-    int ii ;
+    DWORD ii ;
 
     if (serverHandle == INVALID_HANDLE_VALUE)
         return 0 ;
     /* The handle exists. If the file is non-NULL then there is something to
      * do */
     ii = GetFileSize (serverHandle, NULL);
-    if (ii == ttServerSize)
+    if (ii == (DWORD) ttServerSize)
         return 0;
     ttServerToRead += ii - ttServerSize ;
     ttServerSize = ii;
@@ -6465,9 +6465,9 @@ WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmd
     /* Get the rest of the parameters from the passed in command line */
     if ((lpCmdLine != NULL) && (*lpCmdLine != '\0'))
     {
-        char *lpbuf;                    /* Newly allocated line buffer */
-        char cc;                        /* Local character buffer */
-        char endc;                      /* Termination character for option. */
+        meUByte *lpbuf;                 /* Newly allocated line buffer */
+        meUByte cc;                     /* Local character buffer */
+        meUByte endc;                   /* Termination character for option. */
 
         lpbuf = meStrdup (lpCmdLine);
         while (*lpbuf != '\0')
@@ -7074,9 +7074,9 @@ unhandled_message:
         /* fprintf(logfp,"Unhandled message %x %x %x\n",message, wParam, lParam) ;*/
         /* fflush(logfp) ;*/
         {
-            int ii ;
+            LRESULT ii ;
             ii = DefWindowProc(hWnd, message, wParam, lParam) ;
-            return ii ;
+            return (int) ii ;
         }
     }
     return meFALSE ;
@@ -7145,7 +7145,7 @@ TTsetBgcol (void)
         meFrameLoopContinue(loopFrame->flags & meFRAME_HIDDEN) ;
 
         if (((newBrush = CreateSolidBrush (eCellMetrics.pInfo.cPal [bcol].cpixel)) != NULL) &&
-            (SetClassLong(meFrameGetWinHandle(loopFrame), GCLP_HBRBACKGROUND, (LONG)(newBrush)) != (LONG)(NULL)))
+            (SetClassLongPtr(meFrameGetWinHandle(loopFrame), GCLP_HBRBACKGROUND, (LONG_PTR)(newBrush)) != (LONG_PTR)(NULL)))
         {
             /* The new brush has been installed. Delete the old brush if we
              * have defined it and remember the old context */
