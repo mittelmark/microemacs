@@ -22,7 +22,7 @@
 ; Authors:     Steven Phillips, Jon Green & Detlef Groth
 ;
 ; Is this macro release compatible with the binary?
-!if &les $version "20091225"
+!if &les $version "20091226"
     5000 ml-write "[Warning: The MicroEmacs executable is not compatible with this macro release]"
 !endif
 ; If <$user-name>.erf registry file isn't found then this is a new user
