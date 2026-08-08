@@ -143,24 +143,25 @@ jobs:
           cd $GITHUB_WORKSPACE/src
           make -f cygwin.gmk mec
       - name: Run basic tests
-        shell: C:\cygwin\bin\bash.exe --norc -eo pipefail -o igncr '{0}'
+        shell: pwsh
         run: |
-          cd $GITHUB_WORKSPACE
-          export TERM=xterm
-          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
-          cat tests/test-output.txt
+          $env:PATH = "C:\cygwin\bin;$env:PATH"
+          $env:MEPATH = "jasspa/macros"
+          Set-Location $env:GITHUB_WORKSPACE
+          & .\src\mec.exe @tests/test-basics 2>$null
+          Get-Content tests\test-output.txt
       - name: Verify test results
-        shell: C:\cygwin\bin\bash.exe --norc -eo pipefail -o igncr '{0}'
+        shell: pwsh
         run: |
-          cd $GITHUB_WORKSPACE
-          if [ -s tests/test-output.txt ]; then
+          Set-Location $env:GITHUB_WORKSPACE
+          if (Test-Path tests\test-output.txt) {
             echo "Tests produced output"
-            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
-            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
-          else
+            Select-String -Path tests\test-output.txt -Pattern "TEST:version=" -Quiet && echo "PASS: version test" || echo "FAIL: version test"
+            Select-String -Path tests\test-output.txt -Pattern "TEST:all-tests=complete" -Quiet && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          } else {
             echo "FAIL: No test output produced"
             exit 1
-          fi
+          }
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
@@ -190,24 +191,25 @@ jobs:
           cd $GITHUB_WORKSPACE/src
           make -f cygwin.gmk mec
       - name: Run basic tests
-        shell: C:\cygwin\bin\bash.exe --norc -eo pipefail -o igncr '{0}'
+        shell: pwsh
         run: |
-          cd $GITHUB_WORKSPACE
-          export TERM=xterm
-          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
-          cat tests/test-output.txt
+          $env:PATH = "C:\cygwin\bin;$env:PATH"
+          $env:MEPATH = "jasspa/macros"
+          Set-Location $env:GITHUB_WORKSPACE
+          & .\src\mec.exe @tests/test-basics 2>$null
+          Get-Content tests\test-output.txt
       - name: Verify test results
-        shell: C:\cygwin\bin\bash.exe --norc -eo pipefail -o igncr '{0}'
+        shell: pwsh
         run: |
-          cd $GITHUB_WORKSPACE
-          if [ -s tests/test-output.txt ]; then
+          Set-Location $env:GITHUB_WORKSPACE
+          if (Test-Path tests\test-output.txt) {
             echo "Tests produced output"
-            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
-            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
-          else
+            Select-String -Path tests\test-output.txt -Pattern "TEST:version=" -Quiet && echo "PASS: version test" || echo "FAIL: version test"
+            Select-String -Path tests\test-output.txt -Pattern "TEST:all-tests=complete" -Quiet && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+          } else {
             echo "FAIL: No test output produced"
             exit 1
-          fi
+          }
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
