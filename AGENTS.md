@@ -653,6 +653,37 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 - HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm`
 - Links section at top of me.smd for cross-references
 
+## Branch Strategy
+
+The project uses a three-layer Gitflow approach:
+
+```
+master (stable releases, updated rarely)
+  ↑
+devel (main integration branch, tested on all platforms)
+  ↑
+feature branches (msys-fix, clipboard-x11wayland, etc.)
+```
+
+| Branch | Purpose | CI Trigger | Merges |
+|--------|---------|------------|--------|
+| `master` | Release-ready code | PRs only (from `devel`) | Rare, after final test |
+| `devel` | Integration branch | Push + PR | After feature CI passes |
+| `feature/*` | New development | Optional local CI | Into `devel` when ready |
+
+**Workflow:**
+1. Create feature branch from `devel`
+2. Develop and test locally
+3. Push to feature branch (optional CI)
+4. Create PR into `devel` (triggers full CI: 6 test jobs)
+5. After CI passes, merge to `devel`
+6. Periodically merge `devel` into `master` for releases
+
+**CI triggers** (`.github/workflows/`):
+- `push` → `devel` only
+- `pull_request` → `devel` and `master`
+- `workflow_dispatch` → `devel`
+
 ## CI/CD (GitHub Actions)
 
 12 workflow files in `.github/workflows/`:
