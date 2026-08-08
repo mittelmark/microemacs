@@ -2,7 +2,7 @@ name: Building BDF fonts
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ devel ]
 
 jobs:
   build:

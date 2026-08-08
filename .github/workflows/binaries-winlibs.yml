@@ -2,7 +2,7 @@ name: Binaries Windows (windows-winlibs)
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ devel ]
 #env:
 #   VERSION: "091224b1"
 

@@ -2,7 +2,7 @@ name: Binaries Windows-Cygwin2
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ devel ]
 env:
    VERSION: "091226b1"
 jobs:

@@ -3,9 +3,9 @@ name: Testing MicroEmacs basic features
 on:
   workflow_dispatch:
   push:
-    branches: [ master, msys-fix ]
+    branches: [ devel ]
   pull_request:
-    branches: [ master ]
+    branches: [ devel, master ]
 
 jobs:
   linux:

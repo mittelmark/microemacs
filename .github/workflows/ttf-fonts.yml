@@ -2,7 +2,7 @@ name: Fonts for X11
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ devel ]
 env:
    VERSION: "091224b"
 jobs:

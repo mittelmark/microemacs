@@ -2,7 +2,7 @@ name: Binaries MacOS-14,15 (macos-gcc)
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ devel ]
 
 permissions:
   contents: read

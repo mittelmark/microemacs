@@ -2,7 +2,7 @@ name: Binaries Linux (self-hosted)
 
 on:
   workflow_dispatch:
-    branches: [ master, dev ]
+    branches: [ devel ]
 
 jobs:
   build:

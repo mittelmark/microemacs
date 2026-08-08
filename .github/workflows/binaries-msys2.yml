@@ -2,9 +2,9 @@ name: Binaries Windows-Msys2
 
 on:
   workflow_dispatch:
-    branches: [ master, msys-fix ]
+    branches: [ devel ]
   push:
-    branches: [ master, msys-fix ]
+    branches: [ devel ]
 jobs:
   build:
     runs-on: ${{ matrix.runs-on }}

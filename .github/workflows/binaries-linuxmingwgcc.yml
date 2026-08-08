@@ -2,7 +2,7 @@ name: Binaries Windows (linux-mingw-gcc)
 
 on:
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ devel ]
 
 env: 
     VERSION: "091226b2"

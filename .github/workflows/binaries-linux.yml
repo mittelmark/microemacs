@@ -2,7 +2,7 @@ name: Binaries Ubuntu 22,24 (linux-gcc)
 
 on:
   workflow_dispatch:
-    branches: [ master, dev ]
+    branches: [ devel ]
 env:
    VERSION: "091224b"
 jobs:
