@@ -147,7 +147,7 @@ set-variable %user-misc-cmd  "|alias-path-setup|cc-setup|cvs-setup|mail-setup|fi
 
 0 define-macro user-set-checkbox
     set-variable #l2 &cat "/history/" &lget "|main-menu|spell/autosave|exact|magic|backup|quiet|tab|undo|spell/autospell|msshift|edituser|expaccent|explookbk|expword|find-buffer|mskeys|" &abs @#
-    set-variable #l0 &lget "|1|0|1|1|1|1|1|1|0|0|1|0|1|0|0|0|" &abs @#
+    set-variable #l0 &lget "|1|0|1|1|1|1|1|1|0|0|0|0|1|0|0|0|" &abs @#
     set-variable #l0 &reg #l2 #l0
     !if &les @# 0
         set-variable #l0 &bxor #l0 1
@@ -173,7 +173,7 @@ set-variable %user-misc-cmd  "|alias-path-setup|cc-setup|cvs-setup|mail-setup|fi
                 !if &not $status
                     insert-string "; -!- emf -!-\n"
                     insert-string "; This is part of the JASSPA MicroEmacs macro files\n"
-                    insert-string "; Copyright (C) 1999-2009 JASSPA (www.jasspa.com)\n"
+                    insert-string "; Copyright (C) 1999-2026 JASSPA (www.jasspa.com)\n"
                     insert-string "; See the file me.emf for copying and conditions.\n"
                     insert-string ";\n"
                     insert-string "; Add your company macros and definitions to this file.\n"
@@ -188,7 +188,7 @@ set-variable %user-misc-cmd  "|alias-path-setup|cc-setup|cvs-setup|mail-setup|fi
     !if &not &seq &set #l0 &reg "/history/setup-file" "" ""
         set-variable #l0 &spr "%s%s.emf" $user-path #l0
         !if &sequ &stat "t" #l0 "R"
-            !if &reg "/history/edituser" "1"
+            !if &reg "/history/edituser" "0"
                 !force 0 find-file &cat "file:" #l0
             !endif
         !else
@@ -815,7 +815,7 @@ osd .osd.user-start 80  ""
 osd .osd.user-start 90  "Sfh" "  Setup \HFile:   " 100
 osd .osd.user-start 100 "EtxHfh" .scheme.osd-entry "##############" 4 user-set-entry
 osd .osd.user-start 103 "fh" "         "
-osd .osd.user-start 105 "Ctpfx" &cat .osd.checkbox-chars "\} E\Hdit" 11 user-set-checkbox
+osd .osd.user-start 105 "Ctpfx" &cat .osd.checkbox-chars "\} E\Hdit" 10 user-set-checkbox
 osd .osd.user-start 110 "Sfh" "  Compan\Hy File: " 120
 osd .osd.user-start 120 "EtxHf" .scheme.osd-entry "##############" 3 user-set-entry
 osd .osd.user-start 130 "Sfh" "  \HEmulation:    " 140

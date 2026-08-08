@@ -1028,6 +1028,18 @@ TTallKeysFlush(void)
         TTnextKeyIdx = nidx ;
         TTnoKeys-- ;
     }
+#ifdef _WIN32
+    /* Reset SGR mouse parser state to prevent stale sequences from
+     * being left in the middle of parsing when the key buffer is flushed */
+    {
+        extern int sgrMouseState;
+        extern int sgrPushbackLen;
+        extern int sgrPushbackIdx;
+        sgrMouseState = 0;  /* SGR_MOUSE_STATE_IDLE */
+        sgrPushbackLen = 0;
+        sgrPushbackIdx = 0;
+    }
+#endif
 }
 #endif
 

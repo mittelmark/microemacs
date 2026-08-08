@@ -2,9 +2,9 @@ name: Binaries Windows-Msys2
 
 on:
   workflow_dispatch:
-    branches: [ master ]
-env:
-   VERSION: "091226b2"
+    branches: [ master, msys-fix ]
+  push:
+    branches: [ master, msys-fix ]
 jobs:
   build:
     runs-on: ${{ matrix.runs-on }}
@@ -53,6 +53,10 @@ jobs:
            *)       echo "Unknown sys: ${{ matrix.sys }}"; exit 1 ;;
          esac
          pacman -S --noconfirm ${PKGPFX}-gcc ${PKGPFX}-ncurses ${PKGPFX}-zlib
+    - name: Detect version
+      run: |
+        export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+        echo "VERSION=$VRS" >> $GITHUB_ENV
     - name: compile bfs executable
       run: |
          gcc --version
