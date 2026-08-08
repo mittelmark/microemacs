@@ -38,7 +38,7 @@ elif [ $OS = "cygwin" ]; then
     MEWB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
-    if [ $KERNEL -eq 22 ]; then    
+    if [ $KERNEL -lt 23 ]; then    
         echo "Error: Installs of prebuild versions for MacOS 13 is not supported since 2026!"
         echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
         exit
