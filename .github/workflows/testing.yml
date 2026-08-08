@@ -145,11 +145,13 @@ jobs:
       - name: Run basic tests
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          cd $GITHUB_WORKSPACE
           MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          cd $GITHUB_WORKSPACE
           if [ -s tests/test-output.txt ]; then
             echo "Tests produced output"
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
@@ -189,12 +191,14 @@ jobs:
       - name: Run basic tests
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          cd $GITHUB_WORKSPACE
           export TERM=xterm
           MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          cd $GITHUB_WORKSPACE
           if [ -s tests/test-output.txt ]; then
             echo "Tests produced output"
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
