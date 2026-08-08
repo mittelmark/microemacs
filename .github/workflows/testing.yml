@@ -146,7 +146,7 @@ jobs:
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           cd $GITHUB_WORKSPACE
-          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
+          timeout 30 sh -c 'MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null' || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
@@ -193,7 +193,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           export TERM=xterm
-          MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
+          timeout 30 sh -c 'MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null' || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
