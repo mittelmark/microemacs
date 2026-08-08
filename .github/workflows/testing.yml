@@ -132,6 +132,9 @@ jobs:
           packages: |
             make
             gcc-core
+            zlib-devel
+            libXt-devel
+            libncurses-devel
           install-dir: C:\cygwin
           platform: x86_64
       - name: Build mec (console)
@@ -173,6 +176,9 @@ jobs:
           packages: |
             make
             gcc-core
+            zlib-devel
+            libXt-devel
+            libncurses-devel
           install-dir: C:\cygwin
           platform: x86
       - name: Build mec (console)
