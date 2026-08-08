@@ -189,6 +189,7 @@ jobs:
       - name: Run basic tests
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          export TERM=xterm
           MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results

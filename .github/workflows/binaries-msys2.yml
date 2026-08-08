@@ -2,9 +2,9 @@ name: Binaries Windows-Msys2
 
 on:
   workflow_dispatch:
-    branches: [ master ]
-env:
-   VERSION: "091226b2"
+    branches: [ master, msys-fix ]
+  push:
+    branches: [ master, msys-fix ]
 jobs:
   build:
     runs-on: ${{ matrix.runs-on }}
@@ -28,6 +28,11 @@ jobs:
       with:
         fetch-depth: 0
         persist-credentials: false    
+    - name: Detect version
+      shell: msys2 {0}
+      run: |
+        export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+        echo "VERSION=$VRS" >> $GITHUB_ENV
     - name: Setup MSYS2     
       uses: msys2/setup-msys2@v2
       with:
