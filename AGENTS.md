@@ -684,6 +684,39 @@ feature branches (msys-fix, clipboard-x11wayland, etc.)
 - `pull_request` → `devel` and `master`
 - `workflow_dispatch` → `devel`
 
+### Release Process
+
+When ready to release (e.g., beta3 or stable):
+
+```bash
+# 1. Ensure devel is up-to-date and CI has passed
+git checkout devel
+git pull origin devel
+
+# 2. Merge devel into master
+git checkout master
+git merge devel
+
+# 3. Create version tag
+git tag v09.12.26.beta3
+
+# 4. Push master and tags
+git push origin master --tags
+
+# 5. Create GitHub release from tag (manually or via gh CLI)
+gh release create v09.12.26.beta3 --title "v09.12.26.beta3" --notes "Release notes"
+```
+
+**Tag naming convention:**
+- Beta: `v09.12.26.beta1`, `v09.12.26.beta2`, `v09.12.26.beta3`
+- Stable: `v09.12.26` (no beta suffix)
+
+**After release, clean up merged feature branches:**
+```bash
+git branch -d featurebranch
+git push origin --delete featurebranch
+```
+
 ## CI/CD (GitHub Actions)
 
 12 workflow files in `.github/workflows/`:
