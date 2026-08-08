@@ -18,8 +18,8 @@ if [ "`which curl 2>/dev/null`" = "" ]; then
     exit
 fi
 if [ $OS = "Msys" ]; then
-    MECB="windows-10-intel-microemacs-${VERSION}-mecb"
-    MEWB="windows-10-intel-microemacs-${VERSION}-mewb"
+    MECB="windows-mingw-UCRT64-microemacs-${VERSION}-mecb"
+    MEWB="windows-mingw-UCRT64-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
