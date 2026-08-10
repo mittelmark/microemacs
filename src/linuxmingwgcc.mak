@@ -67,19 +67,6 @@ EXE      = .exe
 #   mingw32           - i686-w64-mingw32-gcc, static zlib, 32-bit Windows
 BDIST ?= mingw64
 
-# Detect UCRT support: some older toolchains (e.g. Ubuntu 22.04 GCC 11.2)
-# do not recognize -mcrtdll=ucrt. Test at configure time.
-UCRT_SUPPORTED :=
-ifeq "$(BDIST)" "ucrt64"
-UCRT_TEST := $(shell if printf '%s\n' 'int main(){return 0;}' > /tmp/ucrt_test.c && $(CC) -mcrtdll=ucrt -x c /tmp/ucrt_test.c -o /tmp/ucrt_test 2>/dev/null; then echo YES; fi)
-ifeq "$(UCRT_TEST)" "YES"
-UCRT_SUPPORTED := 1
-else
-$(warning UCRT support not available in toolchain, falling back to msvcrt)
-BDIST := mingw64
-endif
-endif
-
 # Select cross-compile toolchain based on BDIST
 ifeq "$(BDIST)" "mingw32"
 CC       = i686-w64-mingw32-gcc
@@ -115,6 +102,20 @@ BUILDID  = $(TOOLKIT)
 endif
 OUTDIRR  = .$(TOOLKIT)-$(BDTAG)-release
 OUTDIRD  = .$(TOOLKIT)-$(BDTAG)-debug
+
+# Detect UCRT support: some older toolchains (e.g. Ubuntu 22.04 GCC 11.2)
+# do not recognize -mcrtdll=ucrt. Test at configure time.
+UCRT_SUPPORTED :=
+ifeq "$(BDIST)" "ucrt64"
+UCRT_TEST := $(shell if printf '%s\n' 'int main(){return 0;}' > /tmp/ucrt_test.c && $(CC) -mcrtdll=ucrt -x c /tmp/ucrt_test.c -o /tmp/ucrt_test 2>/dev/null; then echo YES; fi)
+ifeq "$(UCRT_TEST)" "YES"
+UCRT_SUPPORTED := 1
+else
+$(warning UCRT support not available in toolchain, falling back to msvcrt)
+BDIST := mingw64
+BDTAG := mingw64
+endif
+endif
 
 CCDEFS   = -D_WIN32 -Wall
 # UCRT target needs -mcrtdll=ucrt; this switches from msvcrt.dll to ucrtbase.dll

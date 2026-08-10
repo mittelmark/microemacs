@@ -39,13 +39,28 @@ OUTDIR   =      .linuxmingwgcc-mingw32-release
 CC=		i686-w64-mingw32-gcc
 else ifeq "$(BDIST)" "ucrt64"
 OUTDIR   =      .linuxmingwgcc-ucrt64-release
-CC=		x86_64-w64-mingw32-gcc
+# Use UCRT-specific compiler if available, otherwise fall back to generic
+CC		= x86_64-w64-mingw32ucrt-gcc
+ifeq ($(shell which $(CC) 2>/dev/null),)
+CC		= x86_64-w64-mingw32-gcc
+endif
+# Detect UCRT support: test if -mcrtdll=ucrt works with the compiler
+UCRT_TEST := $(shell if printf '%s\n' 'int main(){return 0;}' > /tmp/ucrt_test.c && $(CC) -mcrtdll=ucrt -x c /tmp/ucrt_test.c -o /tmp/ucrt_test 2>/dev/null; then echo YES; fi)
+ifeq "$(UCRT_TEST)" "YES"
+UCRT_SUPPORTED := 1
+else
+$(warning UCRT support not available in toolchain, falling back to msvcrt)
+BDIST := mingw64
+OUTDIR   =      .linuxmingwgcc-mingw64-release
+CC		= x86_64-w64-mingw32-gcc
+endif
 else
 OUTDIR   =      .linuxmingwgcc-mingw64-release
 CC=		x86_64-w64-mingw32-gcc
 endif
 CFLAGS=		-g -O0 -D_WIN32 -DNO_BFS_UNISTD_STUBS -I. -Iwin32/include
-# UCRT target needs -mcrtdll=ucrt to link against ucrtbase.dll instead of msvcrt.dll
+# UCRT target: use UCRT-specific compiler which links against ucrtbase.dll automatically
+# The -mcrtdll=ucrt flag is only needed when using the generic compiler without UCRT packages
 ifeq "$(BDIST)" "ucrt64"
 CFLAGS+= -mcrtdll=ucrt
 endif
@@ -96,11 +111,23 @@ $(BFS):		$(OUTDIR) $(PRGOBJS)
 		$(CC) $(CFLAGS) -o $@ $(PRGOBJS) -fstack-protector -lssp -Lwin32/lib -lz
 		cp $(BFS) .
 #
-$(PRGOBJS): $(PRGHDRS) 
+$(PRGOBJS): $(PRGHDRS)
 
 $(OUTDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
-
 $(OUTDIR):
 	-mkdir $(OUTDIR)
 #
+
+$(OUTDIR)/bfs.o: bfs.h
+$(OUTDIR)/bfsutil.o: bfs.h bfsutil.h
+$(OUTDIR)/uappend.o: bfs.h bfsutil.h
+$(OUTDIR)/ubuild.o: bfs.h bfsutil.h
+$(OUTDIR)/ucopy.o: bfs.h bfsutil.h
+$(OUTDIR)/ucreate.o: bfs.h bfsutil.h
+$(OUTDIR)/uinfo.o: bfs.h bfsutil.h
+$(OUTDIR)/ulist.o: bfs.h bfsutil.h
+$(OUTDIR)/ustrip.o: bfs.h bfsutil.h
+$(OUTDIR)/utest.o: bfs.h bfsutil.h
+$(OUTDIR)/uxdir.o: bfs.h bfsutil.h
+$(OUTDIR)/uxfile.o: bfs.h bfsutil.h

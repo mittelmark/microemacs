@@ -80,6 +80,12 @@ The `BDIST` variable selects the cross-compile target:
 
 The `ucrt64` target adds `-mcrtdll=ucrt` to CCFLAGS and LDFLAGS, which switches the C runtime from `libmsvcrt.a` to `libucrt.a`, producing imports for `api-ms-win-crt-*.dll` stubs.
 
+**Auto-detection:** The makefile automatically tests whether the toolchain supports `-mcrtdll=ucrt` at configure time. If the compiler does not recognize the flag (e.g. older GCC on Ubuntu 22.04), it falls back to `mingw64` (msvcrt) with a warning. To guarantee UCRT support, install the dedicated UCRT packages:
+
+```bash
+sudo apt install gcc-mingw-w64-ucrt64 binutils-mingw-w64-ucrt64 mingw-w64-ucrt64-dev
+```
+
 ### Known Issues
 
 1. **`-mfpmath=sse` on i686**: The `mingw32` target omits `-mfpmath=sse` since SSE is not available on 32-bit x86. This is handled automatically by the makefile.
