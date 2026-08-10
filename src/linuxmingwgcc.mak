@@ -67,6 +67,21 @@ EXE      = .exe
 #   mingw32           - i686-w64-mingw32-gcc, static zlib, 32-bit Windows
 BDIST ?= mingw64
 
+# Detect UCRT support: some older toolchains (e.g. Ubuntu 22.04 GCC 11.2)
+# do not recognize -mcrtdll=ucrt. Test at configure time.
+ifeq "$(BDIST)" "ucrt64"
+UCRT_CFLAGS := $(shell echo 'int main(){return 0;}' | \
+    $(CC) -mcrtdll=ucrt -x c - -o /dev/null - 2>/dev/null && echo "-mcrtdll=ucrt" || echo "")
+ifeq "$(UCRT_CFLAGS)" ""
+$(warning UCRT support not available in toolchain, falling back to msvcrt)
+BDIST := mingw64
+endif
+CCFLAGSR_UCRT = $(UCRT_CFLAGS)
+CCFLAGSD_UCRT = $(UCRT_CFLAGS)
+LDFLAGSR_UCRT = $(UCRT_CFLAGS)
+LDFLAGSD_UCRT = $(UCRT_CFLAGS)
+endif
+
 # Select cross-compile toolchain based on BDIST
 ifeq "$(BDIST)" "mingw32"
 CC       = i686-w64-mingw32-gcc
@@ -111,8 +126,8 @@ CCFLAGSR = -O3 -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uniniti
 LDFLAGSR = -O3 -Ofast -flto -funroll-loops
 else
 ifeq "$(BDIST)" "ucrt64"
-CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized -mcrtdll=ucrt
-LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops -mcrtdll=ucrt
+CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized $(CCFLAGSR_UCRT)
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops $(LDFLAGSR_UCRT)
 else
 CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops
