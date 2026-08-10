@@ -1,29 +1,59 @@
 VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
-RELEASE=windows-10-intel-microemacs-$(VERSION)
+# BDIST controls cross-compile target toolchain:
+#   mingw64 (default) - x86_64-w64-mingw32-gcc, static zlib, native Windows 64-bit
+#   ucrt64            - x86_64-w64-mingw32-gcc (UCRT), static zlib, native Windows 64-bit with UCRT
+#   mingw32           - i686-w64-mingw32-gcc, static zlib, 32-bit Windows
+BDIST ?= mingw64
+# Determine output dir prefix from BDIST (matches src/linuxmingwgcc.mak TOOLKIT)
+ifeq "$(BDIST)" "mingw32"
+BDFIX = mingw32
+else ifeq "$(BDIST)" "ucrt64"
+BDFIX = ucrt64
+else
+BDFIX = mingw64
+endif
+RELEASE=windows-$(BDFIX)-microemacs-$(VERSION)
 app=mecb
 default:
-	echo "$(VERSION)"
+	echo "$(VERSION) BDIST=$(BDIST)"
 bfs/exe:
-	cd bfs && make -f linuxmingwgcc.gmk clean	
-	cd bfs && make -f linuxmingwgcc.gmk
+	cd bfs && make -f linuxmingwgcc.gmk BDIST=$(BDIST) clean
+	cd bfs && make -f linuxmingwgcc.gmk BDIST=$(BDIST)
 bfs/bin:
 	cd bfs && make
-	cd bfs && make -f linuxmingwgcc.gmk clean
-	cd bfs && make -f linuxmingwgcc.gmk 
+	cd bfs && make -f linuxmingwgcc.gmk BDIST=$(BDIST) clean
+	cd bfs && make -f linuxmingwgcc.gmk BDIST=$(BDIST)
 
-mec: 
-	cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c
+# Default targets use BDIST (mingw64 by default)
+mec:
+	cd src && make -f linuxmingwgcc.mak BTYP=c BDIST=$(BDIST)
 
-mew: 
-	cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres
+mew:
+	cd src && make -f linuxmingwgcc.mak BDIST=$(BDIST)
 
-mecb: bfs/bin mec
-	./bfs/bfs -a ./src/.linuxmingwgcc-release-mec/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa
+mece32:
+	cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BTYP=c BDIST=mingw32
 
-mewb: bfs/bin mew
-	./bfs/bfs -a ./src/.linuxmingwgcc-release-mew/mew32.exe -o $(RELEASE)-mewb.exe ./jasspa		
+mew32:
+	cd src && make -f linuxmingwgcc.mak CC=i686-w64-mingw32-gcc RC=i686-w64-mingw32-windres BDIST=mingw32
 
-release: bfs/exe $(app) 
+mece64:
+	cd src && make -f linuxmingwgcc.mak CC=x86_64-w64-mingw32-gcc RC=x86_64-w64-mingw32-windres BTYP=c BDIST=mingw64
+
+mewe64:
+	cd src && make -f linuxmingwgcc.mak CC=x86_64-w64-mingw32-gcc RC=x86_64-w64-mingw32-windres BDIST=mingw64
+
+mecb: bfs/exe mec
+	@MEC_DIR=$$(ls -d src/.linuxmingwgcc-$(BDFIX)-release-mec 2>/dev/null | head -1); \
+	if [ -z "$$MEC_DIR" ]; then echo "ERROR: no mecb build found for BDIST=$(BDIST)"; exit 1; fi; \
+	./bfs/bfs -a ./$$MEC_DIR/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa
+
+mewb: bfs/exe mew
+	@MEW_DIR=$$(ls -d src/.linuxmingwgcc-$(BDFIX)-release-mew 2>/dev/null | head -1); \
+	if [ -z "$$MEW_DIR" ]; then echo "ERROR: no mewb build found for BDIST=$(BDIST)"; exit 1; fi; \
+	./bfs/bfs -a ./$$MEW_DIR/mew32.exe -o $(RELEASE)-mewb.exe ./jasspa
+
+release: bfs/exe $(app)
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
 
 brew: mecb mewb
@@ -43,3 +73,16 @@ scoop: mecb mewb
 	cp README-standalone.md  mecw-scoop-$(VERSION)/README.md
 	zip mecw-scoop-$(VERSION).zip mecw-scoop-$(VERSION)/*
 	sha256sum mecw-scoop-$(VERSION).zip > mecw-scoop-$(VERSION).sha256
+
+# Convenience targets for building all three variants
+mingw32:
+	$(MAKE) -f linuxmingwgcc.gmk BDIST=mingw32
+
+mingw64:
+	$(MAKE) -f linuxmingwgcc.gmk BDIST=mingw64
+
+ucrt64:
+	$(MAKE) -f linuxmingwgcc.gmk BDIST=ucrt64
+
+# Build all three architectures
+all-windows: mecb mingw64-mecb ucrt64-mecb

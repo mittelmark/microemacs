@@ -29,15 +29,27 @@
 # Notes:
 #     Run ./build.sh to compile, ./build.sh -h for more information.
 #
-#     To build from the command line using make & makefile. 
+#     To build from the command line using make & makefile.
 #
-#	Run "make -f linuxmingwgcc.mak"            for optimised build produces ./.linuxmingwgcc-release-mew/mew32.exe
-#	Run "make -f linuxmingwgcc.mak BCFG=debug" for debug build produces     ./.linuxmingwgcc-debug-mew/mew32.exe
-#	Run "make -f linuxmingwgcc.mak BTYP=c"     for console support          ./.linuxmingwgcc-release-mec/mec32.exe
-#	Run "make -f linuxmingwgcc.mak BCOR=ne"    for ne build produces        ./.linuxmingwgcc-release-new/new32.exe
+#     Cross-compile toolchains (Linux host):
+#       BDIST=mingw64 (default) - x86_64-w64-mingw32-gcc, static zlib, native Windows
+#       BDIST=ucrt64            - x86_64-w64-mingw32-gcc (UCRT), static zlib, native Windows
+#       BDIST=mingw32           - i686-w64-mingw32-gcc, static zlib, 32-bit Windows
 #
-#	Run "make -f linuxmingwgcc.mak clean"      to clean source directory
-#	Run "make -f linuxmingwgcc.mak spotless"   to clean source directory even more
+#     Run "make -f linuxmingwgcc.mak"                for 64-bit release build
+#     Run "make -f linuxmingwgcc.mak BCFG=debug"     for debug build
+#     Run "make -f linuxmingwgcc.mak BTYP=c"         for console support
+#     Run "make -f linuxmingwgcc.mak BDIST=ucrt64"   for UCRT 64-bit build
+#     Run "make -f linuxmingwgcc.mak BDIST=mingw32"  for 32-bit build
+#     Run "make -f linuxmingwgcc.mak BCOR=ne"        for ne build
+#
+#     Run "make -f linuxmingwgcc.mak clean"          to clean source directory
+#     Run "make -f linuxmingwgcc.mak spotless"       to clean source directory even more
+#
+#     Output directories:
+#       BDIST=mingw64: ./.linuxmingwgcc-mingw64-{release,debug}-me{c,w}/
+#       BDIST=ucrt64:  ./.linuxmingwgcc-ucrt64-{release,debug}-me{c,w}/
+#       BDIST=mingw32: ./.linuxmingwgcc-mingw32-{release,debug}-me{c,w}/
 #
 ##############################################################################
 #
@@ -49,29 +61,65 @@ INSTPROGFLAGS =
 A        = .a
 EXE      = .exe
 
+# BDIST controls the cross-compile target toolchain and runtime:
+#   mingw64 (default) - x86_64-w64-mingw32-gcc, static zlib, native Windows
+#   ucrt64            - x86_64-w64-mingw32-gcc (UCRT), static zlib, native Windows
+#   mingw32           - i686-w64-mingw32-gcc, static zlib, 32-bit Windows
+BDIST ?= mingw64
+
+# Select cross-compile toolchain based on BDIST
+ifeq "$(BDIST)" "mingw32"
+CC       = i686-w64-mingw32-gcc
+RC       = i686-w64-mingw32-windres
+MK       = make
+LD       = $(CC)
+STRIP    = i686-w64-mingw32-strip
+AR       = i686-w64-mingw32-ar
+else
 CC       = x86_64-w64-mingw32-gcc
 RC       = x86_64-w64-mingw32-windres
 MK       = make
 LD       = $(CC)
 STRIP    = x86_64-w64-mingw32-strip
 AR       = x86_64-w64-mingw32-ar
+endif
 RM       = rm -f
 RMDIR    = rm -r -f
 
 TOOLKIT  = linuxmingwgcc
+# BDTAG controls output directory name (e.g. .linuxmingwgcc-mingw64-release-...)
+ifeq "$(BDIST)" "mingw32"
+BDTAG = mingw32
+else ifeq "$(BDIST)" "ucrt64"
+BDTAG = ucrt64
+else
+BDTAG = mingw64
+endif
 ifeq "$(BPRF)" "1"
 BUILDID  = $(TOOLKIT)p
 else
 BUILDID  = $(TOOLKIT)
 endif
-OUTDIRR  = .$(BUILDID)-release
-OUTDIRD  = .$(BUILDID)-debug
+OUTDIRR  = .$(TOOLKIT)-$(BDTAG)-release
+OUTDIRD  = .$(TOOLKIT)-$(BDTAG)-debug
 
 CCDEFS   = -D_WIN32 -Wall
+# UCRT target needs -mcrtdll=ucrt; this switches from msvcrt.dll to ucrtbase.dll
+# -mfpmath=sse is only valid for x86_64; omit for i686 (mingw32)
+ifeq "$(BDIST)" "mingw32"
+CCFLAGSR = -O3 -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
+LDFLAGSR = -O3 -Ofast -flto -funroll-loops
+else
+ifeq "$(BDIST)" "ucrt64"
+CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized -mcrtdll=ucrt
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops -mcrtdll=ucrt
+else
 CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops
+endif
+endif
 CCFLAGSD = -g -D_DEBUG
-LDDEFS   = 
-LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
+LDDEFS   =
 LDFLAGSD = -g
 LDLIBSB  = -lshell32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -Wl,-Bstatic -lz -Wl,-Bdynamic
 

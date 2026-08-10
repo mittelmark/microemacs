@@ -32,10 +32,23 @@
 # Define the build definitions.
 #
 TOOLKIT=        linuxmingwgcc
-OUTDIR   =      .$(TOOLKIT)-release
-
+# BDIST controls cross-compile target (defaults to mingw32 for backward compat)
+BDIST ?= mingw32
+ifeq "$(BDIST)" "mingw32"
+OUTDIR   =      .linuxmingwgcc-mingw32-release
 CC=		i686-w64-mingw32-gcc
+else ifeq "$(BDIST)" "ucrt64"
+OUTDIR   =      .linuxmingwgcc-ucrt64-release
+CC=		x86_64-w64-mingw32-gcc
+else
+OUTDIR   =      .linuxmingwgcc-mingw64-release
+CC=		x86_64-w64-mingw32-gcc
+endif
 CFLAGS=		-g -O0 -D_WIN32 -DNO_BFS_UNISTD_STUBS -I. -Iwin32/include
+# UCRT target needs -mcrtdll=ucrt to link against ucrtbase.dll instead of msvcrt.dll
+ifeq "$(BDIST)" "ucrt64"
+CFLAGS+= -mcrtdll=ucrt
+endif
 LIBS=		-fstack-protector -lssp -lz #win32/lib/libz.a
 #
 # Some useful commands

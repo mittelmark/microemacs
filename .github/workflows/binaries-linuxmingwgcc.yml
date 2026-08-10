@@ -4,139 +4,98 @@ on:
   workflow_dispatch:
     branches: [ devel ]
 
-env: 
+env:
     VERSION: "091226b2"
 
 jobs:
   build:
     runs-on: ubuntu-22.04
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { bdist: mingw64, arch: x64,  label: mingw64 }
+          - { bdist: ucrt64,  arch: x64-ucrt, label: ucrt64 }
+          - { bdist: mingw32, arch: x86,   label: mingw32 }
+    name: Build ${{ matrix.label }} (${{ matrix.arch }})
 
     steps:
     - uses: actions/checkout@v6
-     
-    - name: developer library installs
+
+    - name: Install cross-compile toolchain
       run: |
-        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686 
+        sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686
         sudo apt install libz-mingw-w64 libz-mingw-w64-dev
         sudo apt install desktop-file-utils
+
+    - name: Detect version
+      run: |
         export VRS=`grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
+        echo "BDIST=${{ matrix.bdist }}" >> $GITHUB_ENV
 
-    - name: make bfs binary
-      run:  make -f linuxmingwgcc.gmk bfs/bin
+    - name: Build bfs binary
+      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} bfs/bin
 
-    - name: make mec binary       
-      run:  make -f linuxmingwgcc.gmk mec
+    - name: Build mec binary
+      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mec
 
-    - name: make mew binary       
-      run:  make -f linuxmingwgcc.gmk mew
+    - name: Build mew binary
+      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mew
 
-    - name: make mecb binary
-      run:  |
-        make -f linuxmingwgcc.gmk mecb
-    
-    - name: make mewb binary
-      run:  make -f linuxmingwgcc.gmk mewb
-    
-    - name: make brew package
-      run:  | 
-        make -f linuxmingwgcc.gmk brew
-        rm -rf brew-*/
+    - name: Build mecb bundle
+      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mecb
 
-    - name: make scope package
+    - name: Build mewb bundle
+      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mewb
+
+    - name: Create release package
       run: |
-        make -f linuxmingwgcc.gmk scoop
-        rm -rf mecw-scoop-*/
-        
-    - name: Download zlib1.dll
+        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mecb
+        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mewb
+
+    - name: Create brew package
       run: |
-        wget  https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-16.0.0-10.0.0-ucrt-r5/winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
-        unzip -q winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64ucrt-10.0.0-r5.zip
-        cp mingw32/bin/zlib1.dll .
-        wget https://github.com/madler/zlib/raw/develop/LICENSE -O zlib-LICENSE.txt
+        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} brew
+        mkdir -p brew-${{ matrix.label }}-${{ env.VRS }}
+        cp -r brew-windows-*/* brew-${{ matrix.label }}-${{ env.VRS }}/
+        zip -r brew-${{ matrix.label }}-${{ env.VRS }}.zip brew-${{ matrix.label }}-${{ env.VRS }}/*
+        sha256sum brew-${{ matrix.label }}-${{ env.VRS }}.zip > brew-${{ matrix.label }}-${{ env.VRS }}.sha256
 
-    - name: Make release
+    - name: Create scoop package
       run: |
-        mkdir MicroEmacs09-${VRS}-Windows
-        mkdir MicroEmacs09-${VRS}-Windows/bin
-        #cp zlib1.dll MicroEmacs09-${VRS}-Windows/bin/
-        #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows/bin/
-        cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows/bin/
-        cp src/.linuxmingwgcc-release-mew/mew32.exe MicroEmacs09-${VRS}-Windows/bin/
-        cp src/.linuxmingwgcc-release-mec/mec32.exe  MicroEmacs09-${VRS}-Windows/bin/
-        cp windows-*me*.exe MicroEmacs09-${VRS}-Windows/bin/
-        cp license.txt MicroEmacs09-${VRS}-Windows/
-        cp COPYING MicroEmacs09-${VRS}-Windows/
-        cp README-standalone.md MicroEmacs09-${VRS}-Windows/
-        cd jasspa 
-        #zip macros.zip macros/*
-        #cd ..
-        #cp jasspa/macros.zip MicroEmacs09-${VRS}-Windows/
+        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} scoop
+        mkdir -p scoop-${{ matrix.label }}-${{ env.VRS }}
+        cp -r mecw-scoop-*/* scoop-${{ matrix.label }}-${{ env.VRS }}/
+        zip -r scoop-${{ matrix.label }}-${{ env.VRS }}.zip scoop-${{ matrix.label }}-${{ env.VRS }}/*
+        sha256sum scoop-${{ matrix.label }}-${{ env.VRS }}.zip > scoop-${{ matrix.label }}-${{ env.VRS }}.sha256
 
-    - name: Make mecb release
-      run: |
-        mkdir MicroEmacs09-${VRS}-Windows-mecb
-        mkdir MicroEmacs09-${VRS}-Windows-mecb/bin
-        #cp zlib1.dll MicroEmacs09-${VRS}-Windows-mecb/bin/
-        #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows-mecb/bin/
-        cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows-mecb/bin/
-        cp windows-*-mecb.exe MicroEmacs09-${VRS}-Windows-mecb/bin/
-        cp license.txt MicroEmacs09-${VRS}-Windows-mecb/
-        cp COPYING MicroEmacs09-${VRS}-Windows-mecb/
-        cp README-standalone.md MicroEmacs09-${VRS}-Windows-mecb/
-
-    - name: Make mewb release
-      run: |
-        mkdir MicroEmacs09-${VRS}-Windows-mewb
-        mkdir MicroEmacs09-${VRS}-Windows-mewb/bin
-        #cp zlib1.dll MicroEmacs09-${VRS}-Windows-mewb/bin/
-        #cp zlib-LICENSE.txt MicroEmacs09-${VRS}-Windows-mewb/bin/
-        cp bfs/bfs.exe MicroEmacs09-${VRS}-Windows-mewb/bin/
-        cp windows-*-mewb.exe MicroEmacs09-${VRS}-Windows-mewb/bin/
-        cp license.txt MicroEmacs09-${VRS}-Windows-mewb/
-        cp COPYING MicroEmacs09-${VRS}-Windows-mewb/
-        cp README-standalone.md MicroEmacs09-${VRS}-Windows-mewb/
-
-    - name: Upload Windows Release files
+    - name: Upload ${{ matrix.label }} mecb
       uses: actions/upload-artifact@v6
-      with: 
-        name: MicroEmacs09-${{ env.VRS }}-Windows
-        path: MicroEmacs09-${{ env.VRS }}-Windows
-    
+      with:
+        name: windows-${{ matrix.label }}-mecb-${{ env.VRS }}
+        path: windows-${{ matrix.label }}-*-mecb.exe
 
-    - name: Upload Windows mecb Release files
+    - name: Upload ${{ matrix.label }} mewb
       uses: actions/upload-artifact@v6
-      with: 
-        name: MicroEmacs09-${{ env.VRS }}-Windows-mecb
-        path: MicroEmacs09-${{ env.VRS }}-Windows-mecb
-    
-    - name: Upload Windows mewb Release files
-      uses: actions/upload-artifact@v6
-      with: 
-        name: MicroEmacs09-${{ env.VRS }}-Windows-mewb
-        path: MicroEmacs09-${{ env.VRS }}-Windows-mewb
+      with:
+        name: windows-${{ matrix.label }}-mewb-${{ env.VRS }}
+        path: windows-${{ matrix.label }}-*-mewb.exe
 
-    - name: Combined Release
-      run: |
-        make -f linuxmingwgcc.gmk release app=mecb
-        make -f linuxmingwgcc.gmk release app=mewb
-        export DIR=`ls windows-*-mecb.exe | sed 's/-mecb.exe//'`
-        echo $DIR
-    - name: Upload Ubuntu Combined Release
+    - name: Upload ${{ matrix.label }} combined release
       uses: actions/upload-artifact@v6
-      with: 
-        name: Release-windows-10-intel
-        path: windows-10-intel-*/
+      with:
+        name: Release-windows-${{ matrix.label }}-${{ env.VRS }}
+        path: windows-${{ matrix.label }}-*/
 
-    - name: Upload Brew Package
+    - name: Upload ${{ matrix.label }} brew package
       uses: actions/upload-artifact@v6
-      with: 
-        name: brew-windows
-        path: brew-*
+      with:
+        name: brew-${{ matrix.label }}-${{ env.VRS }}
+        path: brew-${{ matrix.label }}-${{ env.VRS }}.zip
 
-    - name: Upload Scoop Package
+    - name: Upload ${{ matrix.label }} scoop package
       uses: actions/upload-artifact@v6
-      with: 
-        name: scoop-windows
-        path: scoop-*
+      with:
+        name: scoop-${{ matrix.label }}-${{ env.VRS }}
+        path: scoop-${{ matrix.label }}-${{ env.VRS }}.zip
