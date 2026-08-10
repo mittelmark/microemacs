@@ -69,17 +69,15 @@ BDIST ?= mingw64
 
 # Detect UCRT support: some older toolchains (e.g. Ubuntu 22.04 GCC 11.2)
 # do not recognize -mcrtdll=ucrt. Test at configure time.
+UCRT_SUPPORTED :=
 ifeq "$(BDIST)" "ucrt64"
-UCRT_CFLAGS := $(shell echo 'int main(){return 0;}' | \
-    $(CC) -mcrtdll=ucrt -x c - -o /dev/null - 2>/dev/null && echo "-mcrtdll=ucrt" || echo "")
-ifeq "$(UCRT_CFLAGS)" ""
+UCRT_TEST := $(shell if printf '%s\n' 'int main(){return 0;}' > /tmp/ucrt_test.c && $(CC) -mcrtdll=ucrt -x c /tmp/ucrt_test.c -o /tmp/ucrt_test 2>/dev/null; then echo YES; fi)
+ifeq "$(UCRT_TEST)" "YES"
+UCRT_SUPPORTED := 1
+else
 $(warning UCRT support not available in toolchain, falling back to msvcrt)
 BDIST := mingw64
 endif
-CCFLAGSR_UCRT = $(UCRT_CFLAGS)
-CCFLAGSD_UCRT = $(UCRT_CFLAGS)
-LDFLAGSR_UCRT = $(UCRT_CFLAGS)
-LDFLAGSD_UCRT = $(UCRT_CFLAGS)
 endif
 
 # Select cross-compile toolchain based on BDIST
@@ -126,8 +124,8 @@ CCFLAGSR = -O3 -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uniniti
 LDFLAGSR = -O3 -Ofast -flto -funroll-loops
 else
 ifeq "$(BDIST)" "ucrt64"
-CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized $(CCFLAGSR_UCRT)
-LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops $(LDFLAGSR_UCRT)
+CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized $(if $(UCRT_SUPPORTED),-mcrtdll=ucrt,)
+LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops $(if $(UCRT_SUPPORTED),-mcrtdll=ucrt,)
 else
 CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -march=native -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 LDFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops
