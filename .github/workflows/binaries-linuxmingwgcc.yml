@@ -15,8 +15,9 @@ jobs:
       matrix:
         include:
           - { bdist: mingw64, arch: x64,  label: mingw64 }
-          - { bdist: ucrt64,  arch: x64-ucrt, label: ucrt64 }
           - { bdist: mingw32, arch: x86,   label: mingw32 }
+          # ucrt64 support not available on Ubuntu only on Debain
+          #- { bdist: ucrt64,  arch: x64-ucrt, label: ucrt64 }
     name: Build ${{ matrix.label }} (${{ matrix.arch }})
 
     steps:
