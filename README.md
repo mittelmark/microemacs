@@ -1,5 +1,5 @@
 
-## <img src="jasspa/pixmaps/me_s.png" />  Jasspa MicroEmacs 2009 / [Jasspa MicroEmacs 2025](https://github.com/bjasspa/jasspa)
+## <img src="jasspa/pixmaps/me_s.png" />  Jasspa MicroEmacs 2009 / [Jasspa MicroEmacs 2026](https://github.com/bjasspa/jasspa)
 
 [![License](https://img.shields.io/badge/license-GPL2-lightgray.svg)](https://www.gnu.org/licenses/gpl.htm)
 [![Release](https://img.shields.io/github/v/release/mittelmark/microemacs.svg?label=current+release)](https://github.com/mittelmark/microemacs/releases)
@@ -12,6 +12,8 @@
 ![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
 ![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin2/badge.svg)
 
+__MicroEmacs: The lightweight bit powerful extensible terminal and GUI text editor with Emacs like keybindings.__
+
 > [!NOTE]
 > New users should consider using [MicroEmacs 2026](https://github.com/bjasspa/jasspa) 
 > which has better support for Unicode in terminals, more modern font support on X11 and as well adds
@@ -19,6 +21,7 @@
 > Here we will add  mainly smaller improvements and bugfixes.  
 > Currently FreeBSD, Linux 32 bit, Linux kernel 4 builds are only  available  for
 > MicroEmacs 09, so the binaries for this project here which you find below.
+
 
 ## Installation
 
