@@ -13,12 +13,39 @@
 ![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin2/badge.svg)
 
 > [!NOTE]
-> New users should consider using [MicroEmacs 2025](https://github.com/bjasspa/jasspa) 
+> New users should consider using [MicroEmacs 2026](https://github.com/bjasspa/jasspa) 
 > which has better support for Unicode in terminals, more modern font support on X11 and as well adds
-> SSL (https) support. New development will take place mainly in the MicroEmacs 25  project. 
-> Here we will add  smaller improvements and bugfixes.  
-> Currently FreeBSD, Linux 32 bit, Linux kernel 4 builds and Windows Cygwin builds are only  available  for
+> SSL (https) support. New development will take place mainly in the MicroEmacs 26  project.  
+> Here we will add  mainly smaller improvements and bugfixes.  
+> Currently FreeBSD, Linux 32 bit, Linux kernel 4 builds are only  available  for
 > MicroEmacs 09, so the binaries for this project here which you find below.
+
+## Installation
+
+Here in short the single file install command using a shell script for Unix systems and Windows Cygwin or Windows Msys2:
+
+```
+bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+source ~/.bashrc ## for the current session update the PATH settings
+mecb -V
+```
+
+And here the commands for a Windows  Powershell  window  (Please note that you
+should not install  MicroEmacs  26 and  MicroEmacs  09 in parallel on the same
+machine for the same user):
+
+```
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
+mewb -V
+mecb -V
+```
+
+The  executables  `mewb` and `mecb` are then in a folder belonging to the PATH variable, in `$env:LOCALAPPDATA` and you can run it from any terminal
+window or after pressing the Win-r combination and then typing mewb in the run
+command line. There should be as well a start menu entry for the "MicroEmacs 09" executable.
+
+## Table of Contents
 
 - [Executable Types](#Types)
 - [New Features](#Features)
@@ -38,21 +65,23 @@
 - [Binaries Downloads](#Downloads)
 
 Extensible  Terminal and GUI text editor with Emacs feeling coming as a small, single
-file  executable  for Windows,  Linux, MacOS and FreeBSD.  
+file  executable  for Windows,  Windows Cygwin, Windows-WSL, Linux, MacOS and FreeBSD.  
 
-Main features - Pros:
+__Main features - Pros:__
 
 - small!! and fast!!
-- character based user interface in terminal and in GUI mode working the same way
+- character based user interface working the same way in the terminal and in GUI mode 
+- mouse support in Terminal and GUI versions
+- menu entries for all main functions (Esc = in Terminal mode for menu, if mouse is disabled)
 - Windows, Windows Cygwin, Linux, macOS and FreeBSD versions all working the same file
+- inbuild help system
 - single file installs possible (2.5MB-4MB file size)
 - Emacs like (default) or CUA key bindings available
-- menu entries for all main functions (Esc = in Terminal mode for menu)
 - extensible programming language
 - themes, customizations, templates, snippets menu or GUI accessible
 - for its size the text editor with most features without being bloated
 
-Cons: 
+__Main Cons:__
 
 - No Unicode (but full ISO and Windows encoding support) - you can type usually all the keys from your keyboard
 - No softwrap (but automatic wrap is available)
@@ -170,26 +199,19 @@ X11/Windows version with `mewb arguments`.
 On Cygwin Windows you might as well need to install `libxt6` for instance on MobaXterm you write `apt install libxt6` to
 run the `mewb` executable.
 
-To get the colored  terminal  version you should  activate  TermCap  colors in
-Tools-User Setup-Platform and run the mecb version like this:
-
-```
-TERM=xterm mecb ...
-```
-
 To avoid  typing this and for proper  rendering of non  ISO-8859-1  characters
 using the __luit__ tool on a Unix terminal with UTF-8 support it is usually done by performing an
 alias in your `.bashrc` or your `.zshrc` like this:
 
 ```
-alias mec="TERM=xterm luit -encoding ISO8859-15 mecb"
+alias mec="luit -encoding ISO8859-1 mecb"
 alias mew="mewb"
 ```
 
 If you like to have Windows CP1252 character support you can as well use the following `mec` alias:
 
 ```
-alias mec="TERM=xterm luit -encoding CP1252 mecb"
+alias mec="luit -encoding CP1252 mecb"
 ```
 
 <a name="x11fonts"> </a>
