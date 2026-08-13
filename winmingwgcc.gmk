@@ -10,7 +10,7 @@ WIN=msysunix
 WIX=unix
 else
 WIN=msys
-WIX=unix
+WIX=msys
 endif
 endif
 RELEASE:="windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)"
