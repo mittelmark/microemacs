@@ -78,7 +78,7 @@ jobs:
          ./.*-release-mec/mec32.exe -V
          cd ..
     - name: compile mec msys2unix executable
-      if: ${{ matrix.subsystem == 'mingw' && matrix.sys == 'ucrt64' }}
+      if: ${{ matrix.subsystem == 'msys' && matrix.sys == 'ucrt64' }}
       run: |
          cd src
          make -f winmingwgcc.mak print-info
