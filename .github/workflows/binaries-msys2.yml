@@ -87,6 +87,7 @@ jobs:
          ./.*-release-mec/mec32.exe -V
          cd ..
          make -f winmingwgcc.gmk release app=mecb BDIST=msys2unix
+         ls -la *
     - name: compile mew executable
       run: |
          cd src
