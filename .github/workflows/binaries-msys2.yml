@@ -86,6 +86,7 @@ jobs:
          ls -la .*-release-mec/
          ./.*-release-mec/mec32.exe -V
          cd ..
+         make -f winmingwgcc.gmk release app=mecb BDIST=msys2unix
     - name: compile mew executable
       run: |
          cd src
@@ -110,4 +111,9 @@ jobs:
       uses: actions/upload-artifact@v6
       with: 
         name: Release-${{ matrix.subsystem }}-${{ matrix.sys }}-${{ env.VERSION }}
+        path: windows-${{ matrix.subsystem }}-*-microemacs*/*
+    - name: Upload Release Msys2Unix
+      if: ${{ matrix.subsystem == 'msys' && matrix.sys == 'ucrt64' }}
+      with:
+        name: Release-${{ matrix.subsystem }}-msys2unix-${{ env.VERSION }}
         path: windows-${{ matrix.subsystem }}-*-microemacs*/*
