@@ -248,10 +248,15 @@ extern  int     doRedrawEvent(void);
 extern  int     mlwrite(int flags, meUByte *fmt, ...) ;
 
 /* Debug trace macro - writes to me_dbgtrace.txt in current directory */
+/* Only enabled in debug builds (when _DEBUG is defined) */
+#ifdef _DEBUG
 #define ME_DBGTRACE(msg) do { \
     FILE *_dbgfp = fopen("me_dbgtrace.txt", "a") ; \
     if(_dbgfp) { fprintf(_dbgfp, "%s\n", msg) ; fclose(_dbgfp) ; } \
 } while(0)
+#else
+#define ME_DBGTRACE(msg) /* nothing */
+#endif
 
 #ifdef _WIN32
 #ifdef _ME_WINDOW

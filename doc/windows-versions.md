@@ -78,22 +78,23 @@ prefix.
 
 ## Makefile BDIST Options
 
-The `src/winmingwgcc.mak` Makefile supports two build distributions via the
+The `src/winmingwgcc.mak` Makefile supports three build distributions via the
 `BDIST` variable:
 
 | BDIST | Output Tag | zlib Linking | Notes |
 |-------|-----------|--------------|-------|
 | `msys2` (default) | `.{env}msys` | Dynamic (`-lz`) | Requires `msys-2.0.dll` at runtime |
+| `msys2unix` | `.{env}unix` | Dynamic (`-lz`) | Unix terminal (ncurses) for console; Windows GUI for `BTYP=w` |
 | `mingw64` | `.{env}win` | Static (`-Wl,-Bstatic -lz`) | Standalone, no DLLs needed |
 
 Output directory format: `.{env}{subsystem}-release-{type}`
 
-| MSYSTEM | BDIST=msys2 | BDIST=mingw64 |
-|---------|-------------|---------------|
-| `UCRT64` | `.ucrt64msys-release-mec` | `.ucrt64win-release-mec` |
-| `MINGW64` | `.mingw64msys-release-mec` | `.mingw64win-release-mec` |
-| `MINGW32` | `.mingw32msys-release-mec` | `.mingw32win-release-mec` |
-| `MSYS` | `.msys64msys-release-mec` | `.msys64win-release-mec` |
+| MSYSTEM | BDIST=msys2 | BDIST=msys2unix | BDIST=mingw64 |
+|---------|-------------|-----------------|---------------|
+| `UCRT64` | `.ucrt64msys-release-mec` | `.ucrt64unix-release-mec` | `.ucrt64win-release-mec` |
+| `MINGW64` | `.mingw64msys-release-mec` | `.mingw64unix-release-mec` | `.mingw64win-release-mec` |
+| `MINGW32` | `.mingw32msys-release-mec` | `.mingw32unix-release-mec` | `.mingw32win-release-mec` |
+| `MSYS` | `.msys64msys-release-mec` | `.msys64unix-release-mec` | `.msys64win-release-mec` |
 
 ### Auto-Detection
 
@@ -122,22 +123,41 @@ PKGPFX=mingw-w64-x86_64
 # Default (auto-detect, dynamic zlib, MSYS2 build)
 make -f winmingwgcc.mak BTYP=c all
 
+# MSYS2 Unix-like build (console with ncurses, GUI with Windows API)
+make -f winmingwgcc.mak BDIST=msys2unix BTYP=c all  # Console (mec)
+make -f winmingwgcc.mak BDIST=msys2unix BTYP=w all  # GUI (mew)
+
 # Force native Windows build (static zlib, standalone)
 make -f winmingwgcc.mak BDIST=mingw64 BTYP=c all
 ```
+
+### msys2unix Build Details
+
+The `msys2unix` build has special characteristics:
+
+- **Console (`BTYP=c`)**: Uses `unixterm.c` with ncurses for terminal UI, similar to Cygwin builds
+- **GUI (`BTYP=w`)**: Uses `winterm.c` for Windows GUI while still recognizing MSYS paths
+
+A true Unix-style GUI build (using `unixterm.c` with X11) is **not possible** because:
+- `unixterm.c` includes X11 headers (`X11/Intrinsic.h`) when compiled with `-D_CYGWIN`
+- The Windows GUI requires `winterm.c` which uses the Windows API
+- These terminal drivers cannot be mixed in a single build
+
+The GUI build links against Windows libraries (`shell32`, `user32`, `gdi32`, etc.) but still depends on `msys-2.0.dll` for path translation, so it can open files using `/home/user/...` style paths while running as a native Windows GUI application.
 
 ## CI Build Matrix
 
 The `binaries-msys2.yml` workflow builds across all combinations:
 
-| Subsystem | Environment | Output Directory | Result |
-|-----------|-------------|-----------------|--------|
-| `msys` | `mingw32` | `.mingw32msys-release-*` | MSYS2 executable (needs msys-2.0.dll) |
-| `msys` | `mingw64` | `.mingw64msys-release-*` | MSYS2 executable (needs msys-2.0.dll) |
-| `msys` | `ucrt64` | `.ucrt64msys-release-*` | MSYS2 executable (needs msys-2.0.dll) |
-| `mingw` | `mingw32` | `.mingw32win-release-*` | Native Windows (MSVCRT) |
-| `mingw` | `mingw64` | `.mingw64win-release-*` | Native Windows (MSVCRT) |
-| `mingw` | `ucrt64` | `.ucrt64win-release-*` | Native Windows (UCRT) |
+| Subsystem | Environment | BDIST | Output Directory | Result |
+|-----------|-------------|-------|-----------------|--------|
+| `msys` | `mingw32` | `msys2` | `.mingw32msys-release-*` | MSYS2 executable (needs msys-2.0.dll) |
+| `msys` | `mingw64` | `msys2` | `.mingw64msys-release-*` | MSYS2 executable (needs msys-2.0.dll) |
+| `msys` | `ucrt64` | `msys2` | `.ucrt64msys-release-*` | MSYS2 executable (needs msys-2.0.dll) |
+| `msys` | `ucrt64` | `msys2unix` | `.ucrt64unix-release-*` | MSYS2 Unix-like build (needs msys-2.0.dll) |
+| `mingw` | `mingw32` | `mingw64` | `.mingw32win-release-*` | Native Windows (MSVCRT) |
+| `mingw` | `mingw64` | `mingw64` | `.mingw64win-release-*` | Native Windows (MSVCRT) |
+| `mingw` | `ucrt64` | `mingw64` | `.ucrt64win-release-*` | Native Windows (UCRT) |
 
 ## Recommendations
 
@@ -145,3 +165,5 @@ The `binaries-msys2.yml` workflow builds across all combinations:
 - **Max compatibility with old Windows:** `mingw64` with `mingw` subsystem
 - **32-bit systems:** `mingw32` with `mingw` subsystem
 - **Developing within MSYS2:** `msys` subsystem (no need for standalone)
+- **mintty terminal with ncurses:** `msys2unix` with `ucrt64` subsystem (console only)
+- **Windows GUI with MSYS paths:** `msys2unix` with `ucrt64` subsystem (GUI build)

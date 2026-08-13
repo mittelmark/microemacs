@@ -1,12 +1,17 @@
 VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
 BDIST:="msys64"
-MSYS = ${MSYSTEM}
+MSYS := $(shell echo ${MSYSTEM} | tr '[:upper:]' '[:lower:]')
 ifeq (mingw64,$(BDIST))
 WIN=mingw
 WIX=win
 else
+ifeq (msys2unix,$(BDIST))
+WIN=msysunix
+WIX=unix
+else
 WIN=msys
-WIX=msys
+WIX=unix
+endif
 endif
 RELEASE:="windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)"
 TOOLKIT=winmingwgcc

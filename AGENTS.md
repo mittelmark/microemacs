@@ -110,6 +110,49 @@ The `src/linux32gcc.gmk` Makefile supports these variables:
 | `BCFG` | `release`, `debug` | Optimized vs debug build |
 | `BCOR` | `me`, `ne` | MicroEmacs vs NanoEmacs |
 
+### Debug Builds and Trace Logging
+
+Debug builds are created with `BCFG=debug` and define `_DEBUG` in the compiler flags. Debug builds:
+
+- Include debug symbols (`-g` flag)
+- Are not stripped (preserves debug info)
+- Enable the `ME_DBGTRACE` macro for runtime tracing
+
+**`ME_DBGTRACE` Macro** (defined in `src/eextrn.h:250-259`):
+
+```c
+#ifdef _DEBUG
+#define ME_DBGTRACE(msg) do { \
+    FILE *_dbgfp = fopen("me_dbgtrace.txt", "a") ; \
+    if(_dbgfp) { fprintf(_dbgfp, "%s\n", msg) ; fclose(_dbgfp) ; } \
+} while(0)
+#else
+#define ME_DBGTRACE(msg) /* nothing */
+#endif
+```
+
+- **Release builds**: `ME_DBGTRACE` expands to a no-op — no file I/O overhead
+- **Debug builds**: Writes trace messages to `me_dbgtrace.txt` in the current directory
+
+The macro is used in `main.c` to trace execution flow at key points:
+- Startup sequence (lines 150, 1578, 1580, 1696, 1698, 1715, 1716)
+- Exit handling (lines 536, 1066)
+- Input loop (lines 1134, 1136, 1149, 1151)
+
+Example debug build command:
+```bash
+make -f winmingwgcc.mak BDIST=msys2unix BTYP=c BCFG=debug all
+```
+
+Output: `.ucrt64unix-debug-mec/mec32.exe`
+
+When run, this creates `me_dbgtrace.txt` with entries like:
+```
+5a: After TTstart
+90: exitEmacs called
+12a: doOneKey - before update
+```
+
 ### Executable Types
 
 | Type | Description |

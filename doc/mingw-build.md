@@ -108,12 +108,15 @@ Build Windows executables from within an MSYS2 environment on Windows.
 
 ### Build Types
 
-Two build distributions are supported via `BDIST`:
+Three build distributions are supported via `BDIST`:
 
 | BDIST | Compiler | Output | Runtime |
 |-------|----------|--------|---------|
 | `msys2` (default) | `/usr/bin/gcc` | MSYS2 executable | `msys-2.0.dll` + `msys-z.dll` |
+| `msys2unix` | `/usr/bin/gcc` | MSYS2 Unix-like build | `msys-2.0.dll` + `msys-ncursesw6.dll` |
 | `mingw64` | `/mingw64/bin/gcc` | Native Windows executable | Standalone (static zlib) |
+
+The `msys2unix` build is designed for use in the mintty terminal with Unix-style terminal support (ncurses) for the console build, while the GUI build uses the Windows terminal driver with MSYS path translation.
 
 ### MSYS2 Build (default)
 
@@ -129,6 +132,37 @@ make -f winmingwgcc.mak BCOR=ne            # NanoEmacs build
 ```
 
 Output: `.msys64gcc-{release,debug}-me{c,w}/`
+
+### MSYS2 Unix-like Build (`BDIST=msys2unix`)
+
+This build produces executables for use within the MSYS2 environment with Unix-style terminal support. It has two variants:
+
+- **Console build** (`BTYP=c`): Uses `unixterm.c` with ncurses for terminal UI, similar to Cygwin builds
+- **GUI build** (`BTYP=w`): Uses `winterm.c` for Windows GUI while still recognizing MSYS paths via `msys-2.0.dll`
+
+A true Unix-style GUI build (using `unixterm.c` with X11) is **not possible** because:
+- `unixterm.c` includes X11 headers (`X11/Intrinsic.h`) when compiled with `-D_CYGWIN`
+- The Windows GUI requires `winterm.c` which uses the Windows API
+- These terminal drivers cannot be mixed in a single build
+
+```bash
+cd src
+make -f winmingwgcc.mak BDIST=msys2unix              # Release console build (mec)
+make -f winmingwgcc.mak BDIST=msys2unix BTYP=c       # Explicit console build
+make -f winmingwgcc.mak BDIST=msys2unix BTYP=w       # GUI build (Windows libs, MSYS paths)
+```
+
+Output: `.ucrt64unix-release-mec/` (console) or `.ucrt64unix-release-mew/` (GUI)
+
+**DLL Dependencies:**
+```
+msys-2.0.dll      # MSYS2 POSIX emulation layer (path translation)
+msys-z.dll        # MSYS2 zlib (dynamic)
+msys-ncursesw6.dll  # Console only: ncurses terminal UI
+```
+
+**Path Handling:**
+Both console and GUI builds recognize MSYS-style paths (`/home/user/...`, `/c/Users/...`) through the `msys-2.0.dll` translation layer, even though the GUI uses Windows API calls.
 
 ### Native Windows Build (`BDIST=mingw64`)
 
@@ -175,6 +209,14 @@ endif
 ```
 msys-2.0.dll    # MSYS2 POSIX emulation layer
 msys-z.dll      # MSYS2 zlib (dynamic)
+ntdll.dll, KERNEL32.dll, USER32.dll, ...  # Windows system DLLs
+```
+
+**MSYS2 Unix build** (`BDIST=msys2unix`):
+```
+msys-2.0.dll          # MSYS2 POSIX emulation layer (path translation)
+msys-z.dll            # MSYS2 zlib (dynamic)
+msys-ncursesw6.dll    # Console only: ncurses terminal UI
 ntdll.dll, KERNEL32.dll, USER32.dll, ...  # Windows system DLLs
 ```
 
@@ -335,18 +377,21 @@ Builds from within MSYS2 on Windows, supporting MSYS and MinGW subsystems across
 ## Build Matrix Summary
 
 ```
-                    BDIST=mingw64          BDIST=ucrt64           BDIST=mingw32
-                    ─────────────          ───────────          ───────────
-Linux cross-compile x86_64-w64-mingw32   x86_64-w64-mingw32   i686-w64-mingw32
-                    -mcrtdll=default       -mcrtdll=ucrt        (no -mfpmath=sse)
-                    msvcrt.dll             ucrtbase.dll         msvcrt.dll
-                    PE32+ x86-64           PE32+ x86-64         PE32 i386
-                    All Windows            Win10 1903+          All Windows
+                    BDIST=msys2         BDIST=msys2unix         BDIST=mingw64
+                    ─────────────       ──────────────          ───────────
+Compiler            /usr/bin/gcc        /usr/bin/gcc            /mingw64/bin/gcc
+Runtime             msys-2.0.dll        msys-2.0.dll            None (standalone)
+                    msys-z.dll          msys-z.dll
+                    (dynamic)           (dynamic)               static zlib
 
-Native MSYS2        gcc (MSYS2)            —                    —
-                    msys-2.0.dll           —                    —
+Terminal Driver:
+  Console (mec)     winterm.c           unixterm.c (ncurses)    winterm.c
+  GUI (mew)         winterm.c           winterm.c (WinAPI)      winterm.c
 
-Native MinGW64      gcc (/mingw64/bin)     —                    —
-                    msvcrt.dll (static     —                    —
-                    zlib)
+MSYS Path Support:  /home/user/...      /home/user/...          C:\Users\...
+                    /c/Users/...        /c/Users/...
+
+Output:              .ucrt64msys-*       .ucrt64unix-*           .ucrt64win-*
 ```
+
+**Note:** A true Unix-style GUI build using `unixterm.c` with X11 is not possible in the MSYS2 environment because `unixterm.c` requires X11 headers when compiled with `-D_CYGWIN`, while the Windows GUI requires `winterm.c`. The `msys2unix` GUI build uses `winterm.c` for the Windows GUI but links against `msys-2.0.dll` for MSYS path translation.
