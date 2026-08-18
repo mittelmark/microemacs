@@ -4168,37 +4168,30 @@ TTgetWaylandClipboard(void)
 {
     FILE *fp;
     meUByte buff[1024];
-    meUByte *tmpbuf, *dd, *tp;
-    size_t nread, len;
+    meUByte *tmpbuf = NULL;
+    size_t cap = 0, len = 0;
+    size_t nread;
     int ll, ret = meFALSE;
-    
+
     fp = popen((char *)wlPastePath, "r");
     if(fp == NULL)
         return meFALSE;
-    
-    len = 0;
-    while((nread = fread(buff, 1, sizeof(buff), fp)) > 0)
-        len += nread;
-    pclose(fp);
-    
-    if(len == 0)
-        return meFALSE;
-    
-    if((tmpbuf = meMalloc(len + 1)) == NULL)
-        return meFALSE;
-    
-    fp = popen((char *)wlPastePath, "r");
-    if(fp == NULL)
-    {
-        meFree(tmpbuf);
-        return meFALSE;
-    }
-    
-    tp = tmpbuf;
-    ll = 0;
+
     while((nread = fread(buff, 1, sizeof(buff), fp)) > 0)
     {
-        dd = buff;
+        if(len + nread + 1 > cap)
+        {
+            cap = (len + nread + 1) * 2;
+            meUByte *next = meRealloc(tmpbuf, cap);
+            if(next == NULL)
+            {
+                pclose(fp);
+                meFree(tmpbuf);
+                return meFALSE;
+            }
+            tmpbuf = next;
+        }
+        meUByte *dd = buff;
         while(nread--)
         {
             unsigned char cc = *dd++;
@@ -4206,34 +4199,40 @@ TTgetWaylandClipboard(void)
                 ll = 0;
             else if(ll == 0xfff0)
             {
-                *tp++ = '\n';
-                len++;
+                tmpbuf[len++] = '\n';
                 ll = 1;
             }
             else
                 ll++;
-            *tp++ = cc;
+            tmpbuf[len++] = cc;
         }
     }
-    *tp = '\0';
     pclose(fp);
+    tmpbuf[len] = '\0';
 
     /* Strip trailing newlines from Wayland clipboard paste */
-    while(tp > tmpbuf && (tp[-1] == '\n' || tp[-1] == '\r'))
-        tp--, len--;
-    *tp = '\0';
+    while(len > 0 && (tmpbuf[len-1] == '\n' || tmpbuf[len-1] == '\r'))
+        len--;
+    tmpbuf[len] = '\0';
+
+    if(len == 0)
+    {
+        meFree(tmpbuf);
+        return meFALSE;
+    }
 
     if((klhead == NULL) || (klhead->kill == NULL) ||
        (klhead->kill->next != NULL) ||
        meStrcmp(klhead->kill->data, tmpbuf))
     {
         killSave();
-        if((dd = killAddNode(len + 1)) != NULL)
+        meUByte *dd = killAddNode(len + 1);
+        if(dd != NULL)
             memcpy(dd, tmpbuf, len + 1);
         thisflag = meCFKILL;
         ret = meTRUE;
     }
-    
+
     meFree(tmpbuf);
     return ret;
 }
@@ -6123,6 +6122,8 @@ TTsetClipboard(void)
     int fd[2];
     pid_t pid;
 
+    if(clipState & CLIP_DISABLED)
+        return ;
     if(meSystemCfg & meSYSTEM_NOCLIPBRD)
         return ;
     if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
@@ -6190,6 +6191,8 @@ TTgetClipboard(void)
     int fd[2];
     pid_t pid;
 
+    if(clipState & CLIP_DISABLED)
+        return ;
     if(meSystemCfg & meSYSTEM_NOCLIPBRD)
         return ;
     if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
