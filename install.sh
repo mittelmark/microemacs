@@ -18,8 +18,8 @@ if [ "`which curl 2>/dev/null`" = "" ]; then
     exit
 fi
 if [ $OS = "Msys" ]; then
-    MECB="windows-mingw-UCRT64-microemacs-${VERSION}-mecb"
-    MEWB="windows-mingw-UCRT64-microemacs-${VERSION}-mewb"
+    MECB="windows-msysunix-ucrt64 -microemacs-${VERSION}-mecb"  # true msys build
+    MEWB="windows-msys-ucrt64-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
@@ -64,7 +64,7 @@ elif [ $OS = "Darwin" ]; then
     elif [ $KERNEL -eq 26 -a $MACHINE = "x86_64" ]; then    
        MECB="macos-26-x86_64-microemacs-${VERSION}-mecb"
        MEWB="macos-26-x86_64-microemacs-${VERSION}-mewb"
-    elif [ $KERNEL -eq 26 -a $MACHINE = "arm64" ]; then    
+    elif [ $KERNEL -gt 25 -a $MACHINE = "arm64" ]; then    
        MECB="macos-26-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-26-arm64-microemacs-${VERSION}-mewb"
     else
@@ -100,8 +100,11 @@ elif [ "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
     elif [ $KERNEL -eq 6 -a $MACHINE = "x86_64" ]; then    
        MECB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mecb"
        MEWB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mewb"   
+    elif [ $KERNEL -eq 7 -a $MACHINE = "x86_64" ]; then    
+       MECB="linux-7-${MACHINE}-fedora-43-microemacs-${VERSION}-mecb"
+       MEWB="linux-7-${MACHINE}-fedora-43-microemacs-${VERSION}-mewb"   
     else
-        echo "Error: Kernel $KERNEL not supported!"    
+        echo "Error: Kernel $KERNEL for Architecture $MACHINE not supported for RedHat based distros!"    
         exit
     fi
 elif [ "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)'`" != "" ]; then
