@@ -208,6 +208,8 @@ A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Wi
 | `install-fonts.sh` | X11 font installer |
 | `install-dict.sh` | Spelling dictionary installer |
 
+For full details on the install and update mechanism, see `doc/install.md`.
+
 ## C Code Style
 
 ### File Header Template
@@ -695,6 +697,14 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
 - HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm`
 - Links section at top of me.smd for cross-references
+
+Additional reference documentation:
+
+| File | Topic |
+|------|-------|
+| `doc/install.md` | Installation and update logic (`install.sh`, `mecb-update`, version encoding, platform matrix) |
+| `doc/clipboard-support.md` | Clipboard implementation — C source, macro fallback, xclip hand-off, Wayland dual-clipboard |
+| `doc/mingw-build.md` | MinGW/MSYS2 cross-compilation setup and known issues |
 
 ## Branch Strategy
 
