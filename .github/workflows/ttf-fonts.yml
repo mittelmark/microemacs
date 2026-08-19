@@ -7,11 +7,11 @@ env:
    VERSION: "091224b"
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
      
     - name: developer library installs
       run: |
@@ -21,7 +21,7 @@ jobs:
       run:  make -f ttf-fonts.gmk all
 
     - name: Upload ttf zip file
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: ttf-fonts
         path: ttf-fonts.zip
