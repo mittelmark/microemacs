@@ -5,12 +5,6 @@
 # 
 ##############################################################################
 
-anonymous: anonymous-pro-medium.ttf
-anonymous-pro-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro.ttf -O anonymous-pro-medium.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/anonymous-pro-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/anonymous-pro/license.txt -O anonymous-pro-license.txt
-
 cascadia-code: cascadia-code-medium.ttf
 cascadia-code-medium.ttf:
 	wget https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
@@ -26,12 +20,6 @@ courier-prime-medium.ttf:
 	wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Regular.ttf -O courier-prime-medium.ttf
 	wget https://github.com/quoteunquoteapps/CourierPrime/raw/master/fonts/ttf/CourierPrime-Bold.ttf -O courier-prime-bold.ttf
 	wget https://github.com/quoteunquoteapps/CourierPrime/blob/master/OFL.txt -O courier-prime-license.txt
-
-chivo-mono: chivo-mono-medium.ttf
-chivo-mono-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo.ttf -O chivo-mono-medium.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/chivo-bold.ttf -O chivo-mono-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/chivo/OFL.txt -O chivo-mono-license.txt
 
 dejavu: dejavu-sans-mono-medium.ttf
 dejavu-sans-mono-medium.ttf:
@@ -49,26 +37,6 @@ fira-code-medium.ttf:
 	rm -rf fira
 	rm Fira_Code_v6.2.zip
 	wget https://github.com/tonsky/FiraCode/raw/master/LICENSE -O fira-code-license.txt
-
-#inconsolata: inconsolata-medium.ttf
-#inconsolata-medium.ttf:
-#	wget https://github.com/googlefonts/Inconsolata/blob/main/fonts/ttf/Inconsolata-Medium.ttf -O inconsolata-medium.ttf
-#	wget https://github.com/googlefonts/Inconsolata/blob/main/fonts/ttf/Inconsolata-Bold.ttf -O inconsolata-bold.ttf
-#	wget https://github.com/googlefonts/Inconsolata/raw/main/OFL.txt -O inconsolata-license.txt
-
-## works, but inconsolata above does not work 
-inconsolata: inconsolata-go-medium.ttf
-inconsolata-go-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go.ttf -O inconsolata-go-medium.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/inconsolata-go-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/inconsolata-go/license.txt -O inconsolata-go-license.txt
-
-# do not work wide spacing	
-#julia-mono: julia-mono-medium.ttf
-#julia-mono-medium.ttf:
-#	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono-bold.ttf
-#	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/julia-mono.ttf  -O julia-mono-medium.ttf      
-#	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/julia-mono/LICENSE -O julia-mono-license.txt
 
 liberation-mono: liberation-mono-medium.ttf
 liberation-mono-medium.ttf:
@@ -92,17 +60,12 @@ source-code-pro-medium.ttf:
 	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Bold.ttf -O source-code-pro-bold.ttf
 	wget https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/SourceCodePro-Regular.ttf -O source-code-pro-medium.ttf        
 
-terminus: terminus-medium.ttf    
-terminus-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/terminus-bold.ttf 
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/terminus.ttf    -O terminus-medium.ttf    
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/terminus/license.txt -O terminus-license.txt
-
 ubuntu-mono: ubuntu-mono-medium.ttf
 ubuntu-mono-medium.ttf:
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu-bold.ttf -O ubuntu-mono-bold.ttf
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu.ttf    -O ubuntu-mono-medium.ttf    
-	wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ubuntu-license.txt
+	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-Bold.ttf -O ubuntu-mono-bold.ttf
+	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-Regular.ttf  -O ubuntu-mono-medium.ttf    
+	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/blob/main/fonts/ttf/UbuntuSansMono-SemiBold.ttf -o ubuntu-mono-semibold.ttf
+	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/LICENCE.txt -O ubuntu-license.txt
 
 index:
 	mkfontscale .
@@ -132,7 +95,8 @@ install:
 	cp ttf-fonts/* ~/.local/share/fonts
 	xset +fp ~/.local/share/fonts/
 	xset fp rehash
-all: anonymous cascadia-code courier-prime chivo-mono dejavu fira-code inconsolata \
-	liberation-mono proggy-vector proggy-squaresz source-code-pro terminus ubuntu-mono \
+all: cascadia-code courier-prime dejavu fira-code  \
+	liberation-mono proggy-vector proggy-squaresz \
+	source-code-pro ubuntu-mono \
 	index package
 	
