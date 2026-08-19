@@ -3,8 +3,6 @@ name: Binaries Windows (windows-msys2)
 on:
   workflow_dispatch:
     branches: [ devel ]
-  push:
-    branches: [ devel ]
 jobs:
   build:
     runs-on: ${{ matrix.runs-on }}
