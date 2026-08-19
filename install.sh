@@ -47,7 +47,6 @@ check_installed() {
         new_num="${VERSION}b9"
     fi
     echo "Existing version: ${existing_code}, Latest version: ${VERSION}"
-    echo "Existing num: '${existing_num}', Latest num: '${new_num}'"    
     if [[ "${existing_num}" > "${new_num}" || "${existing_num}" == "${new_num}" ]] 2> /dev/null; then
         echo "Installed version ${existing_code} is up to date (>= ${VERSION}). Skipping installation."
         exit 0
@@ -293,7 +292,7 @@ function install_update_script {
 SELF_UPDATE="https://github.com/mittelmark/microemacs/releases/latest/download/install.sh"
 UPDATER_VERSION="20091226b4"
 
-os=$(uname -o)
+os=$(uname -o | sed -E 's/GNU.//')
 machine=$(uname -m)
 kernel=$(uname -r | grep -Eo '^[0-9]+')
 if [ "$(uname -s | grep -o CYGWIN)" = "CYGWIN" ]; then
@@ -333,7 +332,6 @@ check_installed() {
         new_num="${version}b9"
     fi
     echo "Existing version: ${existing_code}, Latest version: ${version}"
-    echo "Existing version: '${existing_num}', Latest version: '${new_num}'"
     if [[ "$existing_num" > "$new_num" || "$existing_num" == "$new_num" ]] 2>/dev/null; then
         echo "Installed version ${existing_code} is up to date (>= ${version}). Nothing to do."
         exit 0

@@ -28,10 +28,20 @@ __MicroEmacs: Lightweight but powerful extensible terminal and GUI text editor w
 
 Here in short the single file install command using a shell script for Unix systems and Windows Cygwin or Windows Msys2:
 
-```
+```bash
 bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
 source ~/.bashrc ## for the current session update the PATH settings
 mecb -V
+```
+
+If you install the `mecb` and `mewb`  executables you at the same time install
+an update script `mecb-update` which can be called to check for updates. Here a typical output:
+
+```bash
+$ mecb-update 
+Found local mecb at: /home/dgroth/.local/bin/mecb
+Existing version: 091226b4, Latest version: 091226b4
+Installed version 091226b4 is up to date (>= 091226b4). Nothing to do.
 ```
 
 And here the commands for a Windows  Powershell  window  (Please note that you
