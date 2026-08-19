@@ -59,6 +59,10 @@ The  executables  `mewb` and `mecb` are then in a folder belonging to the PATH v
 window or after pressing the Win-r combination and then typing mewb in the run
 command line. There should be as well a start menu entry for the "MicroEmacs 09" executable.
 
+Further  since version 26-beta4 you can as well on windows call the Batch script
+`update-microemacs.bat` from a terminal session.
+
+
 ## Table of Contents
 
 - [Executable Types](#Types)
