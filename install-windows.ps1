@@ -1,6 +1,7 @@
 # MicroEmacs Windows Installer/Updater Script
 # This script installs or updates MicroEmacs on Windows
 # It can be used both for initial installation and for checking/updating to newer versions
+# The script will be copied to %LOCALAPPDATA%\bin for easy future updates
 
 $ErrorActionPreference = "Continue"
 
@@ -110,14 +111,31 @@ function Ensure-PathFolder {
 
     # Check if folder is in user PATH
     $userPath = [Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
-    if ($userPath -notlike "*$destFolder*") {
+    $systemPath = [Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+    
+    $pathExists = $userPath -like "*$destFolder*" -or $systemPath -like "*$destFolder*"
+    
+    if (-not $pathExists) {
         Write-Host "Adding $destFolder to user PATH..."
+        if (-not $userPath) { $userPath = "" }
         if ($userPath -and -not $userPath.EndsWith(";")) {
             $userPath += ";"
         }
         $userPath += $destFolder
-        [Environment]::SetEnvironmentVariable("Path", $userPath, [System.EnvironmentVariableTarget]::User)
-        Write-Host "PATH updated. You may need to restart your terminal for changes to take effect."
+        
+        try {
+            [Environment]::SetEnvironmentVariable("Path", $userPath, [System.EnvironmentVariableTarget]::User)
+            Write-Host "User PATH updated successfully."
+            
+            # Also update current session PATH so binaries are accessible immediately
+            $env:Path = $userPath + ";" + $systemPath
+            Write-Host "Current session PATH updated."
+        } catch {
+            Write-Host "Warning: Could not update PATH: $_"
+            Write-Host "Please add $destFolder to your PATH manually."
+        }
+    } else {
+        Write-Host "Folder is already in PATH."
     }
 
     return $destFolder
@@ -183,6 +201,47 @@ function Create-Shortcut ($destFolder) {
     }
 }
 
+# Download and save the installer script itself for future updates
+function Install-UpdateScript ($destFolder) {
+    $scriptUrl = "https://raw.githubusercontent.com/mittelmark/microemacs/master/install-windows.ps1"
+    $scriptPath = Join-Path $destFolder "install-windows.ps1"
+    
+    Write-Host "Downloading installer script for future updates..."
+    try {
+        Invoke-WebRequest -Uri $scriptUrl -OutFile $scriptPath -ErrorAction Stop
+        Write-Host "  Saved to: $scriptPath"
+        return $true
+    } catch {
+        Write-Host "  Warning: Could not download installer script: $_"
+        return $false
+    }
+}
+
+# Create a batch wrapper for easy command-line updates
+function Create-UpdateBatch ($destFolder) {
+    $batchPath = Join-Path $destFolder "update-microemacs.bat"
+    $scriptPath = Join-Path $destFolder "install-windows.ps1"
+    
+    # Create a batch file that runs the PowerShell script
+    $batchContent = @"
+@echo off
+REM MicroEmacs Update Batch Wrapper
+REM This batch file allows easy updates from command line or PowerShell
+
+PowerShell -NoProfile -ExecutionPolicy Bypass -File "$scriptPath"
+pause
+"@
+    
+    try {
+        Set-Content -Path $batchPath -Value $batchContent -Encoding ASCII
+        Write-Host "Update batch file created: $batchPath"
+        return $true
+    } catch {
+        Write-Host "Warning: Could not create update batch file: $_"
+        return $false
+    }
+}
+
 # Main installation/update logic
 Write-Host ""
 Write-Host "=================================================="
@@ -232,6 +291,9 @@ $latestNum = Version-To-Num $latestVersion
 
 if ($installedNum -ge $latestNum -and $installedVersion) {
     Write-Host "Installed version is already up to date. No action needed."
+    Write-Host ""
+    Write-Host "To check for updates again, run this script:"
+    Write-Host "  powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$mecbPath`""
     exit 0
 }
 
@@ -301,7 +363,16 @@ if ($downloadSuccess) {
         Write-Host ""
         Write-Host "Installation folder: $destFolder"
         Write-Host ""
-        Write-Host "To update in the future, simply run this script again."
+        
+        # Install the installer script itself for future updates
+        Install-UpdateScript $destFolder
+        Create-UpdateBatch $destFolder
+        
+        Write-Host ""
+        Write-Host "To update in the future, you can:"
+        Write-Host "  1. Run the batch file: $destFolder\update-microemacs.bat"
+        Write-Host "  2. Or run PowerShell: powershell -ExecutionPolicy Bypass -File `"$destFolder\install-windows.ps1`""
+        Write-Host "  3. Or simply run: & '$destFolder\install-windows.ps1'"
         Write-Host ""
         
         # Try to create shortcut
