@@ -294,7 +294,7 @@ if ($installedNum -ge $latestNum -and $installedVersion) {
     Write-Host ""
     Write-Host "To check for updates again, run this script:"
     Write-Host "  powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$mecbPath`""
-    exit 0
+    #exit 0
 }
 
 # Reconstruct release tag from version string (e.g., 091226b4 -> v09.12.26.beta4)
@@ -392,9 +392,9 @@ if ($downloadSuccess) {
         }
     } else {
         Write-Host "Installation failed: binaries were not extracted properly"
-        exit 1
+        #exit 1
     }
 } else {
     Write-Host "Installation failed: could not download binaries"
-    exit 1
+    #exit 1
 }
