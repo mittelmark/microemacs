@@ -93,9 +93,10 @@ function install-source-code-pro {
 
 function install-ubuntu-mono {
     echo "install ubuntu-mono into ~/.local/share/fonts"
-    wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu-bold.ttf -O ~/.local/share/fonts/ubuntu-mono-bold.ttf
-    wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/ubuntu.ttf    -O ~/.local/share/fonts/ubuntu-mono-medium.ttf    
-    wget https://github.com/braver/programmingfonts/raw/gh-pages/fonts/resources/ubuntu/license.txt -O ~/.local/share/fonts/ubuntu-license.txt
+    wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-Bold.ttf -O ~/.local/share/fonts/ubuntu-mono-bold.ttf
+    wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-Regular.ttf  -O ~/.local/share/fonts/ubuntu-mono-medium.ttf    
+    wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-SemiBold.ttf -O ~/.local/share/fonts/ubuntu-mono-semibold.ttf
+    wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/LICENCE.txt -O ~/.local/share/fonts/ubuntu-license.txt
 }
 
 function install-courier-prime {

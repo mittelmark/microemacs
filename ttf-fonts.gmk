@@ -64,7 +64,7 @@ ubuntu-mono: ubuntu-mono-medium.ttf
 ubuntu-mono-medium.ttf:
 	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-Bold.ttf -O ubuntu-mono-bold.ttf
 	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-Regular.ttf  -O ubuntu-mono-medium.ttf    
-	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/blob/main/fonts/ttf/UbuntuSansMono-SemiBold.ttf -o ubuntu-mono-semibold.ttf
+	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/fonts/ttf/UbuntuSansMono-SemiBold.ttf -O ubuntu-mono-semibold.ttf
 	wget https://github.com/canonical/Ubuntu-Sans-Mono-fonts/raw/refs/heads/main/LICENCE.txt -O ubuntu-license.txt
 
 index:
