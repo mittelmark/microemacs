@@ -60,7 +60,29 @@ window or after pressing the Win-r combination and then typing mewb in the run
 command line. There should be as well a start menu entry for the "MicroEmacs 09" executable.
 
 Further  since version 26-beta4 you can as well on windows call the Batch script
-`update-microemacs.bat` from a terminal session.
+`update-microemacs.bat` from a terminal session. Here an example session.
+
+```
+C:\Users\user> update-microemacs.bat
+
+==================================================
+MicroEmacs Windows Installer/Updater
+==================================================
+
+Detected: 64-bit Windows 10+ (ucrt64 runtime)
+Folder is already in PATH.
+Installation folder: C:\Users\user\AppData\Local\bin
+
+Installed version: 091226b4
+Latest version: 091226b4
+
+Installed version is already up to date. No action needed.
+
+To check for updates again, run this script:
+  & 'C:\Users\user\AppData\Local\bin\install-windows.ps1'
+
+Press any key . . .
+```
 
 
 ## Table of Contents
