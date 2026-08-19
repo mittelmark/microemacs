@@ -6,11 +6,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
      
     - name: install font toolsmake bfs binary
       run:  |
@@ -94,7 +94,7 @@ jobs:
         bash ../fonts/ttf2bdf.sh "ubuntu mono" ubuntu-bold.ttf "ubuntu-mono-bold"
         cd ..
     - name: Upload BDF fonts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with: 
         name: bdf-fonts
         path: bdf-fonts
