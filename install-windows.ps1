@@ -1,20 +1,52 @@
-
 # Detect latest version from GitHub releases
 function Get-MeVersion {
-    # Follow redirect from /releases/latest to get the actual tag
-    $request = [System.Net.WebRequest]::Create("https://github.com/mittelmark/microemacs/releases/latest")
+    $url = "https://github.com/mittelmark/microemacs/releases/latest"
+    $request = [System.Net.WebRequest]::Create($url)
     $request.AllowAutoRedirect = $false
+    # set a UserAgent to be safe
+    try { $request.UserAgent = "PowerShell/Install-Script" } catch { }
+
     try {
         $resp = $request.GetResponse()
+        $httpResp = [System.Net.HttpWebResponse]$resp
+
+        # Try Location header first (for 3xx responses)
+        $location = $httpResp.Headers['Location']
+        if (-not $location -and $httpResp.ResponseUri -ne $null) {
+            # fallback to the final response URI (if no Location header)
+            $location = $httpResp.ResponseUri.AbsoluteUri
+        }
+
+        if ($location) {
+            $tag = ($location -split '/')[-1]
+            # Convert v09.12.26.beta3 -> 091226b3
+            $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+            $resp.Close()
+            return $version
+        }
+
         $resp.Close()
     } catch [System.Net.WebException] {
-        $redirectUrl = $_.Exception.Response.Headers["Location"]
-        # redirectUrl is like /mittelmark/microemacs/releases/tag/v09.12.26.beta3
-        $tag = $redirectUrl -replace '.+/', ''
-        # Convert v09.12.26.beta3 -> 091226b3
-        $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
-        return $version
+        # Some environments throw; handle the redirect there too.
+        $weResp = $_.Exception.Response
+        if ($weResp -is [System.Net.HttpWebResponse]) {
+            $location = $weResp.Headers['Location']
+            if ($location) {
+                $tag = ($location -split '/')[-1]
+                $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+                return $version
+            }
+            if ($weResp.ResponseUri -ne $null) {
+                $tag = $weResp.ResponseUri.AbsoluteUri -split '/'
+                $tag = $tag[-1]
+                $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+                return $version
+            }
+        }
+    } catch {
+        # ignore other errors and fall back
     }
+
     return "091226b3"  # fallback
 }
 
@@ -88,12 +120,18 @@ function Install-Me ($me) {
     Write-Host "Detected MicroEmacs version: $version"
     Write-Host "Detected subsystem: $subsystem"
 
-    # Reconstruct tag: 091226b3 -> v09.12.26.beta3
-    $year = $version.Substring(0, 4)
-    $month = $version.Substring(4, 2)
-    $day = $version.Substring(6, 2)
-    $beta = $version.Substring(8) -replace 'b', 'beta'
-    $tag = "v$year.$month.$day.$beta"
+    # Reconstruct tag from version string. Version format: YYMMDD or YYMMDDbN
+    $yy = $version.Substring(0,2)
+    $mm = $version.Substring(2,2)
+    $rest = $version.Substring(4)
+    if ($rest -match '^(.*?)(b\d+)$') {
+        $dd = $Matches[1]
+        $beta = $Matches[2] -replace '^b','beta'
+        $tag = "v$yy.$mm.$dd.$beta"
+    } else {
+        $dd = $rest
+        $tag = "v$yy.$mm.$dd"
+    }
     $baseUrl = "https://github.com/mittelmark/microemacs/releases/download/$tag"
 
     $zipUrl = "$baseUrl/windows-mingw-$subsystem-microemacs-$version-$me.zip"
@@ -186,17 +224,47 @@ function Version-To-Num ($v) {
 
 # Detect latest version from GitHub releases
 function Get-MeVersion {
-    $request = [System.Net.WebRequest]::Create("https://github.com/mittelmark/microemacs/releases/latest")
+    $url = "https://github.com/mittelmark/microemacs/releases/latest"
+    $request = [System.Net.WebRequest]::Create($url)
     $request.AllowAutoRedirect = $false
+    try { $request.UserAgent = "PowerShell/Install-Script" } catch { }
+
     try {
         $resp = $request.GetResponse()
+        $httpResp = [System.Net.HttpWebResponse]$resp
+
+        $location = $httpResp.Headers['Location']
+        if (-not $location -and $httpResp.ResponseUri -ne $null) {
+            $location = $httpResp.ResponseUri.AbsoluteUri
+        }
+
+        if ($location) {
+            $tag = ($location -split '/')[-1]
+            $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+            $resp.Close()
+            return $version
+        }
+
         $resp.Close()
     } catch [System.Net.WebException] {
-        $redirectUrl = $_.Exception.Response.Headers["Location"]
-        $tag = $redirectUrl -replace '.+/', ''
-        $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
-        return $version
+        $weResp = $_.Exception.Response
+        if ($weResp -is [System.Net.HttpWebResponse]) {
+            $location = $weResp.Headers['Location']
+            if ($location) {
+                $tag = ($location -split '/')[-1]
+                $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+                return $version
+            }
+            if ($weResp.ResponseUri -ne $null) {
+                $tag = $weResp.ResponseUri.AbsoluteUri -split '/'
+                $tag = $tag[-1]
+                $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+                return $version
+            }
+        }
+    } catch {
     }
+
     return "091226b3"
 }
 
@@ -251,12 +319,18 @@ if (-not (Check-Installed $mecbPath $latestVersion)) {
     exit 0
 }
 
-# Reconstruct tag: 091226b3 -> v09.12.26.beta3
-$year = $latestVersion.Substring(0, 4)
-$month = $latestVersion.Substring(4, 2)
-$day = $latestVersion.Substring(6, 2)
-$beta = $latestVersion.Substring(8) -replace 'b', 'beta'
-$tag = "v$year.$month.$day.$beta"
+# Reconstruct tag from version string. Version format: YYMMDD or YYMMDDbN
+$yy = $latestVersion.Substring(0,2)
+$mm = $latestVersion.Substring(2,2)
+$rest = $latestVersion.Substring(4)
+if ($rest -match '^(.*?)(b\d+)$') {
+    $dd = $Matches[1]
+    $beta = $Matches[2] -replace '^b','beta'
+    $tag = "v$yy.$mm.$dd.$beta"
+} else {
+    $dd = $rest
+    $tag = "v$yy.$mm.$dd"
+}
 $baseUrl = "https://github.com/mittelmark/microemacs/releases/download/$tag"
 
 foreach ($me in @("mecb", "mewb")) {
