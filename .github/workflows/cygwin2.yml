@@ -1,4 +1,4 @@
-name: Binaries Windows-Cygwin2
+name: Binaries Windows (windows-cygwin)
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Binaries MacOS-14,15 (macos-gcc)
+name: Binaries MacOS (macos-gcc)
 
 on:
   workflow_dispatch:

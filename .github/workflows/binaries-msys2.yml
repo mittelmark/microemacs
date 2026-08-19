@@ -1,4 +1,4 @@
-name: Binaries Windows-Msys2
+name: Binaries Windows (windows-msys2)
 
 on:
   workflow_dispatch:

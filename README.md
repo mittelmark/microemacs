@@ -7,10 +7,11 @@
 ![Downloads All](https://img.shields.io/github/downloads/mittelmark/microemacs/total)
 ![Commits](https://img.shields.io/github/commits-since/mittelmark/microemacs/latest)
 
-![Ubuntu](https://github.com/mittelmark/microemacs/workflows/Binaries%20Ubuntu%2022,24%20(linux-gcc)/badge.svg)
-![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS-14,15%20(macos-gcc)/badge.svg)
-![Windows](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
-![Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows-Cygwin2/badge.svg)
+![Ubuntu](https://github.com/mittelmark/microemacs/workflows/Binaries%20Ubuntu%20(linux-gcc)/badge.svg)
+![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS%20(macos-gcc)/badge.svg)
+![Windows Winlibs](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
+![Windows Msys](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-msys2)/badge.svg)
+![Windows Cygwin](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-cygwin)/badge.svg)
 
 __MicroEmacs: Lightweight but powerful extensible terminal and GUI text editor with Emacs like keybindings providing menu support and having an extensible macro language.__
 
