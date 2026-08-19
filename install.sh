@@ -38,7 +38,7 @@ check_installed() {
     fi
     echo "Found local mecb at: ${mecb_path}"
     local existing_date
-    existing_date=$("$mecb_path" -V 2>/dev/null | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
+    existing_date=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
     if [ -z "$existing_date" ]; then
         echo "Could not determine existing mecb version, proceeding with installation."
         return 0
@@ -51,7 +51,7 @@ check_installed() {
     existing_num=$(version_to_num "$existing_code")
     new_num=$(version_to_num "$VERSION")
     echo "Existing version: ${existing_code}, Latest version: ${VERSION}"
-    if [ "$existing_num" -ge "$new_num" ] 2>/dev/null; then
+    if [ "$existing_num" -ge "$new_num" ] 2> /dev/null; then
         echo "Installed version ${existing_code} is up to date (>= ${VERSION}). Skipping installation."
         exit 0
     fi
@@ -324,7 +324,7 @@ check_installed() {
     fi
     echo "Found local mecb at: ${mecb_path}"
     local existing_date
-    existing_date=$("$mecb_path" -V 2>/dev/null | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
+    existing_date=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
     if [ -z "$existing_date" ]; then
         echo "Could not determine existing mecb version, performing full install."
         return 0
