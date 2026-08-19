@@ -70,7 +70,7 @@ if [ "`which curl 2>/dev/null`" = "" ]; then
     exit
 fi
 if [ $OS = "Msys" ]; then
-    MECB="windows-msysunix-ucrt64 -microemacs-${VERSION}-mecb"  # true msys build
+    MECB="windows-msysunix-ucrt64-microemacs-${VERSION}-mecb"  # true msys build
     MEWB="windows-msys-ucrt64-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
