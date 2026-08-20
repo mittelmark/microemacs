@@ -63,7 +63,7 @@ jobs:
            y
            "@ | powershell.exe .\install-windows.ps1
            dir
-           mecb -V
+           & C:\Users\runneradmin\AppData\Local\bin\mecb.exe -V
   cygwin-x64:
     runs-on: windows-latest
     name: Test on Cygwin (x86_64)
