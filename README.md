@@ -28,10 +28,21 @@ __MicroEmacs: Lightweight but powerful extensible terminal and GUI text editor w
 
 Here in short the single file install command using a shell script for Unix systems and Windows Cygwin or Windows Msys2:
 
-```
+```bash
 bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
 source ~/.bashrc ## for the current session update the PATH settings
 mecb -V
+mewb -V
+```
+
+If you install the `mecb` and `mewb`  executables you at the same time install
+an update script `mecb-update` which can be called to check for updates. Here a typical output:
+
+```bash
+$ mecb-update 
+Found local mecb at: /home/dgroth/.local/bin/mecb
+Existing version: 091226b4, Latest version: 091226b4
+Installed version 091226b4 is up to date (>= 091226b4). Nothing to do.
 ```
 
 And here the commands for a Windows  Powershell  window  (Please note that you
@@ -41,13 +52,39 @@ machine for the same user as they are using the same folder for the configuratio
 ```
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
-mewb -V
 mecb -V
+mewb -V
 ```
 
 The  executables  `mewb` and `mecb` are then in a folder belonging to the PATH variable, in `$env:LOCALAPPDATA` and you can run it from any terminal
 window or after pressing the Win-r combination and then typing mewb in the run
 command line. There should be as well a start menu entry for the "MicroEmacs 09" executable.
+
+Further  since version 26-beta4 you can as well on windows call the Batch script
+`mecb-update.bat` from a terminal session. Here an example session.
+
+```
+C:\Users\user> mecb-update.bat
+
+==================================================
+MicroEmacs Windows Installer/Updater
+==================================================
+
+Detected: 64-bit Windows 10+ (ucrt64 runtime)
+Folder is already in PATH.
+Installation folder: C:\Users\user\AppData\Local\bin
+
+Installed version: 091226b4
+Latest version: 091226b4
+
+Installed version is already up to date. No action needed.
+
+To check for updates again, run this script:
+  & 'C:\Users\user\AppData\Local\bin\install-windows.ps1'
+
+Press any key . . .
+```
+
 
 ## Table of Contents
 

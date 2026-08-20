@@ -7,25 +7,13 @@ if [ "`uname -s | grep -o CYGWIN`" = "CYGWIN" ] ; then
     KERNEL=`uname -r | grep -Eo '^[1-9].[0-9]'`
     OS="cygwin"
 fi
-BASEURL=`curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
-VERSION=`echo ${BASEURL} | sed -E 's/.+v//' | sed -E 's/\.//g' | sed -E 's/beta/b/'`
-
+#BASEURL=`curl -sLI https://github.com/mittelmark/microemacs/releases/latest -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
+BASEURL=`curl -sLI https://github.com/mittelmark/microemacs/releases/latest  -w '%{url_effective}' | grep -E '^https' | sed -E 's/tag/download/'`
+VERSION=`echo ${BASEURL} | sed -E 's/.*v//' | sed -E 's/\.//g' | sed -E 's/beta/b/' | sed -E 's/[^0-9b]+//'`
 # Convert version string (e.g. 091226b4) to a comparable integer.
 # Format: YYMMDDbN → YY*1000000 + MM*10000 + DD*100 + N
 # A version without a 'b' suffix (final release) gets beta=100, ensuring
 # it ranks higher than any beta of the same date (e.g. 091226 > 091226b4).
-version_to_num() {
-    local v="$1"
-    local yy="${v:0:2}"
-    local mm="${v:2:2}"
-    local rest="${v:4}"
-    local dd="${rest%%b*}"
-    local beta="${rest##*b}"
-    if [ "$beta" = "$rest" ]; then
-        beta=100
-    fi
-    echo $(( 10#${yy} * 1000000 + 10#${mm} * 10000 + 10#${dd} * 100 + 10#${beta} ))
-}
 
 # Check if a local mecb is already installed and up to date.
 # If so, skip installation and exit.
@@ -35,7 +23,7 @@ check_installed() {
     if [ -z "$mecb_path" ]; then
         echo "No local mecb found in PATH, proceeding with installation."
         return 0
-    fi
+    fi 
     echo "Found local mecb at: ${mecb_path}"
     local existing_date
     existing_date=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
@@ -48,10 +36,18 @@ check_installed() {
     existing_code=$(echo "$existing_date" | sed 's/^20//; s/\///g')
     local existing_num
     local new_num
-    existing_num=$(version_to_num "$existing_code")
-    new_num=$(version_to_num "$VERSION")
+    if [[ $existing_code =~ b ]]; then
+        existing_num="$existing_code"
+    else 
+        existing_num="${existing_code}b9"
+    fi
+    if [[ $VERSION =~ b ]]; then
+        new_num="$VERSION"
+    else 
+        new_num="${VERSION}b9"
+    fi
     echo "Existing version: ${existing_code}, Latest version: ${VERSION}"
-    if [ "$existing_num" -ge "$new_num" ] 2> /dev/null; then
+    if [[ "${existing_num}" > "${new_num}" || "${existing_num}" == "${new_num}" ]] 2> /dev/null; then
         echo "Installed version ${existing_code} is up to date (>= ${VERSION}). Skipping installation."
         exit 0
     fi
@@ -70,7 +66,7 @@ if [ "`which curl 2>/dev/null`" = "" ]; then
     exit
 fi
 if [ $OS = "Msys" ]; then
-    MECB="windows-msysunix-ucrt64 -microemacs-${VERSION}-mecb"  # true msys build
+    MECB="windows-msysunix-ucrt64-microemacs-${VERSION}-mecb"  # true msys build
     MEWB="windows-msys-ucrt64-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
@@ -85,7 +81,7 @@ elif [ $OS = "cygwin" ]; then
         echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
         exit
     fi
-    echo "installing for cygwin version $CYGVERSION ..."
+    echo "installing for cygwin version '$KERNEL' '$MACHINE' '${VERSION}'..."
     MECB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mecb"
     MEWB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mewb"
     EXE=".exe"
@@ -190,12 +186,12 @@ else
     fi
 fi
 
-function install-fonts {
+function install_fonts() {
     if [ ! -d ~/.local/share/fonts ]; then
         mkdir -p ~/.local/share/jasspa/fonts
-        curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip --output /tmp/ttf-files.zip 
-        unzip -j -q -d ~/.local/share/fonts /tmp/ttf-files.zip
-        rm /tmp/ttf-files.zip
+        curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip --output ttf-files.zip 
+        unzip -j -q -d ~/.local/share/fonts ttf-files.zip
+        rm ttf-files.zip
     fi  
     XSET=`which xset 2>/dev/null`
     if [ "$XSET" = "" ]; then
@@ -217,7 +213,7 @@ function install-fonts {
     fi
 }
 
-function install-me {
+function install_me {
     if [ ! -d ~/.local/bin ]; then
         mkdir -p ~/.local/bin
     fi
@@ -252,33 +248,38 @@ function install-me {
 
     # Download the dummy.sh script from the internet
     URL=${BASEURL}/${MECB}
-    echo "fetching ${URL}.zip into /tmp"
-    if [ -f "/tmp/${MECB}.zip" ]; then
-        rm "/tmp/${MECB}.zip"
+    echo "fetching ${URL}.zip into ${MECB}.zip"
+    if [ -f "${MECB}.zip" ]; then
+        rm "${MECB}.zip"
     fi
-    curl  -fsSL "${URL}.zip" --output /tmp/${MECB}.zip 
-    unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
+    curl  -fsSL "${URL}.zip" --output "${MECB}.zip"
+    unzip -p "${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
     URL=${BASEURL}/${MEWB}
-    echo "fetching ${URL}.zip into /tmp"
-    if [ -f "/tmp/${MEWB}.zip" ]; then
-        rm "/tmp/${MEWB}.zip"
+    echo "fetching ${URL}.zip into ${MEWB}.zip"
+    if [ -f "${MEWB}.zip" ]; then
+        rm "${MEWB}.zip"
     fi
-    curl -fsSL "${URL}.zip" --output /tmp/${MEWB}.zip 
-    unzip -p "/tmp/${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
+    curl -fsSL "${URL}.zip" --output ${MEWB}.zip 
+    unzip -p "${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
     if [ "$EXE" = "" ]; then
-        unzip -p "/tmp/${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
+        unzip -p "${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
         chmod 755 ~/.local/bin/mecu
         chmod 755 ~/.local/bin/mecb
         chmod 755 ~/.local/bin/mewb
     fi
+    if [ "$OS" == "cygwin" ]; then
+        echo "Doing chmod on cygwin!"
+        chmod 755 ~/.local/bin/mecb.exe
+        chmod 755 ~/.local/bin/mewb.exe
+    fi
     # cleanup
-    rm "/tmp/${MECB}.zip"
-    rm "/tmp/${MEWB}.zip"           
+    rm "${MECB}.zip"
+    rm "${MEWB}.zip" 
     # Make the script executable
     echo "Installation complete."
 }
 
-function install-update-script {
+function install_update_script {
     if [ ! -d ~/.local/bin ]; then
         mkdir -p ~/.local/bin
     fi
@@ -291,7 +292,7 @@ function install-update-script {
 SELF_UPDATE="https://github.com/mittelmark/microemacs/releases/latest/download/install.sh"
 UPDATER_VERSION="20091226b4"
 
-os=$(uname -o)
+os=$(uname -o | sed -E 's/GNU.//')
 machine=$(uname -m)
 kernel=$(uname -r | grep -Eo '^[0-9]+')
 if [ "$(uname -s | grep -o CYGWIN)" = "CYGWIN" ]; then
@@ -299,21 +300,9 @@ if [ "$(uname -s | grep -o CYGWIN)" = "CYGWIN" ]; then
     os="cygwin"
 fi
 
-baseurl=$(curl https://github.com/mittelmark/microemacs/releases/latest -s -L -I -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/')
-version=$(echo "${baseurl}" | sed -E 's/.+v//' | sed -E 's/\.//g' | sed -E 's/beta/b/')
+baseurl=`curl -sLI https://github.com/mittelmark/microemacs/releases/latest  -w '%{url_effective}' | grep -E '^https' | sed -E 's/tag/download/'`
+version=`echo ${baseurl} | sed -E 's/.*v//' | sed -E 's/\.//g' | sed -E 's/beta/b/' | sed -E 's/[^0-9b]+//'`
 
-version_to_num() {
-    local v="$1"
-    local yy="${v:0:2}"
-    local mm="${v:2:2}"
-    local rest="${v:4}"
-    local dd="${rest%%b*}"
-    local beta="${rest##*b}"
-    if [ "$beta" = "$rest" ]; then
-        beta=100
-    fi
-    echo $(( 10#${yy} * 1000000 + 10#${mm} * 10000 + 10#${dd} * 100 + 10#${beta} ))
-}
 
 check_installed() {
     local mecb_path
@@ -332,10 +321,18 @@ check_installed() {
     local existing_code
     existing_code=$(echo "$existing_date" | sed 's/^20//; s/\///g')
     local existing_num new_num
-    existing_num=$(version_to_num "$existing_code")
-    new_num=$(version_to_num "$version")
+    if [[ $existing_code =~ b ]]; then
+        existing_num="$existing_code"
+    else 
+        existing_num="${existing_code}b9"
+    fi
+    if [[ $version =~ b ]]; then
+        new_num="$version"
+    else 
+        new_num="${version}b9"
+    fi
     echo "Existing version: ${existing_code}, Latest version: ${version}"
-    if [ "$existing_num" -ge "$new_num" ] 2>/dev/null; then
+    if [[ "$existing_num" > "$new_num" || "$existing_num" == "$new_num" ]] 2>/dev/null; then
         echo "Installed version ${existing_code} is up to date (>= ${version}). Nothing to do."
         exit 0
     fi
@@ -441,38 +438,39 @@ if [ ! -d ~/.local/bin ]; then
     mkdir -p ~/.local/bin
 fi
 
-echo "Fetching ${baseurl}/${mecb}.zip into /tmp"
-rm -f "/tmp/${mecb}.zip"
-curl -fsSL "${baseurl}/${mecb}.zip" --output "/tmp/${mecb}.zip"
-unzip -p "/tmp/${mecb}.zip" "${mecb}/bin/mecb${exe}" > ~/.local/bin/mecb${exe}
+echo "Fetching ${baseurl}/${mecb}.zip into local folder `pwd`"
+rm -f "${mecb}.zip"
+curl -fsSL "${baseurl}/${mecb}.zip" --output "${mecb}.zip"
+unzip -p "${mecb}.zip" "${mecb}/bin/mecb${exe}" > ~/.local/bin/mecb${exe}
 
-echo "Fetching ${baseurl}/${mewb}.zip into /tmp"
-rm -f "/tmp/${mewb}.zip"
-curl -fsSL "${baseurl}/${mewb}.zip" --output "/tmp/${mewb}.zip"
-unzip -p "/tmp/${mewb}.zip" "${mewb}/bin/mewb${exe}" > ~/.local/bin/mewb${exe}
+echo "Fetching ${baseurl}/${mewb}.zip into local folder `pwd`"
+rm -f "${mewb}.zip"
+curl -fsSL "${baseurl}/${mewb}.zip" --output "${mewb}.zip"
+unzip -p "${mewb}.zip" "${mewb}/bin/mewb${exe}" > ~/.local/bin/mewb${exe}
 
 if [ "$exe" = "" ]; then
-    unzip -p "/tmp/${mecb}.zip" "${mecb}/bin/mecu" > ~/.local/bin/mecu
+    unzip -p "${mecb}.zip" "${mecb}/bin/mecu" > ~/.local/bin/mecu
     chmod 755 ~/.local/bin/mecu
 fi
 chmod 755 ~/.local/bin/mecb
 chmod 755 ~/.local/bin/mewb
-rm -f "/tmp/${mecb}.zip" "/tmp/${mewb}.zip"
+rm -f "${mecb}.zip" "${mewb}.zip"
 
 echo "Update complete."
 echo "Installed and checking: ~/.local/bin/mecb"
 ~/.local/bin/mecb -V
-echo "Installed and checking: ~/.local/bin/mewb"
-~/.local/bin/mewb -V
+echo "Installed: ~/.local/bin/mewb"
+echo "Check with: ~/.local/bin/mewb -V"
 UPDATESCRIPT
     chmod 755 ~/.local/bin/mecb-update
     echo "mecb-update script installed to ~/.local/bin/mecb-update"
+    echo "You can run it at any time with: mecb-update"
 }
 
 ## install desktop file
 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
-install-me
-install-update-script
+install_me
+install_update_script
 if [ "`which mecb 2>/dev/null`" != "" ]; then
     echo "Installed and checking: ~/.local/bin/mecb"
     if [ ! -x ~/.local/bin/mecb ]; then
@@ -487,7 +485,7 @@ if [ "`which mecb 2>/dev/null`" != "" ]; then
     ~/.local/bin/mewb -V
 fi
 if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ] || [ "$OS" = "cygwin" ]; then
-    install-fonts
+    install_fonts
 fi
 
 #if [[ $1 == "-w" ]]; then
