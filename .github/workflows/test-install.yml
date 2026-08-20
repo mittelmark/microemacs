@@ -62,9 +62,10 @@ jobs:
       - name: Check install mec (console)
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+           mkdir -p ~/.local/share/fonts
            bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
            source ~/.bashrc ## for the current session update the PATH settings
-           mecb -V
+           ~/.local/bin/mecb -V
 
   windows-winlibs:
     runs-on: windows-2022
