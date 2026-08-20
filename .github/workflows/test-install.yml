@@ -47,6 +47,22 @@ jobs:
            source ~/.bashrc ## for the current session update the PATH settings
            tail ~/.bashrc
            ~/.local/bin/mecb -V
+  windows-pwsh:
+    runs-on: windows-latest
+    name: Test on Windows (Powershell)
+    steps:
+      - uses: actions/checkout@v6
+      - name: Ckeck install mec (console)
+        shell: pwsh
+        run: |
+           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+           Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 > install-windows.ps1
+           @"
+           y
+           y
+           y
+           "| powershell install-windows.ps1
+           mecb -V
   cygwin-x64:
     runs-on: windows-latest
     name: Test on Cygwin (x86_64)
