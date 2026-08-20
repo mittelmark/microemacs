@@ -39,7 +39,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: mingw64
-          install: mingw-w64-x86_64-gcc make
+          install: make unzip zip
       - name: Ckeck install mec (console)
         shell: msys2 {0}
         run: |
