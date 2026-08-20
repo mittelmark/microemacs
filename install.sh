@@ -459,11 +459,12 @@ rm -f "${mecb}.zip" "${mewb}.zip"
 echo "Update complete."
 echo "Installed and checking: ~/.local/bin/mecb"
 ~/.local/bin/mecb -V
-echo "Installed and checking: ~/.local/bin/mewb"
-~/.local/bin/mewb -V
+echo "Installed: ~/.local/bin/mewb"
+echo "Check with: ~/.local/bin/mewb -V"
 UPDATESCRIPT
     chmod 755 ~/.local/bin/mecb-update
     echo "mecb-update script installed to ~/.local/bin/mecb-update"
+    echo "You can run it at any time with: mecb-update"
 }
 
 ## install desktop file
