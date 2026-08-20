@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Test on Linux
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -24,7 +24,7 @@ jobs:
     runs-on: macos-latest
     name: Test on macOS
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Ckeck install mec (console)
         run: |
            bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
@@ -34,7 +34,7 @@ jobs:
     runs-on: windows-latest
     name: Test on Windows (MinGW64)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
@@ -51,7 +51,7 @@ jobs:
     runs-on: windows-latest
     name: Test on Cygwin (x86_64)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
@@ -71,7 +71,7 @@ jobs:
     runs-on: windows-2022
     name: Test on Windows (mingw-ucrt)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Check install mec (console)
         shell: pwsh
         run: |
