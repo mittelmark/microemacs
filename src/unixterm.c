@@ -4166,48 +4166,89 @@ TTsetWaylandClipboard(void)
 static int
 TTgetWaylandClipboard(void)
 {
-    FILE *fp;
+    int pipefd[2];
+    pid_t pid;
     meUByte buff[1024];
     meUByte *tmpbuf = NULL;
     size_t cap = 0, len = 0;
-    size_t nread;
+    ssize_t nread;
     int ll, ret = meFALSE;
+    struct timeval tv;
+    fd_set rfds;
+    int timeout_ms = 2000;
 
-    fp = popen((char *)wlPastePath, "r");
-    if(fp == NULL)
+    if(pipe(pipefd) < 0)
         return meFALSE;
 
-    while((nread = fread(buff, 1, sizeof(buff), fp)) > 0)
+    pid = meFork();
+    if(pid == 0)
     {
-        if(len + nread + 1 > cap)
+        /* Child: close read end, redirect stdout to pipe */
+        close(pipefd[0]);
+        if(pipefd[1] != STDOUT_FILENO)
         {
-            cap = (len + nread + 1) * 2;
-            meUByte *next = meRealloc(tmpbuf, cap);
-            if(next == NULL)
-            {
-                pclose(fp);
-                meFree(tmpbuf);
-                return meFALSE;
-            }
-            tmpbuf = next;
+            dup2(pipefd[1], STDOUT_FILENO);
+            close(pipefd[1]);
         }
-        meUByte *dd = buff;
-        while(nread--)
-        {
-            unsigned char cc = *dd++;
-            if(cc == '\n')
-                ll = 0;
-            else if(ll == 0xfff0)
-            {
-                tmpbuf[len++] = '\n';
-                ll = 1;
-            }
-            else
-                ll++;
-            tmpbuf[len++] = cc;
-        }
+        execlp((char *)wlPastePath, (char *)wlPastePath, NULL);
+        _exit(1);
     }
-    pclose(fp);
+    else if(pid < 0)
+    {
+        close(pipefd[0]);
+        close(pipefd[1]);
+        return meFALSE;
+    }
+
+    /* Parent: close write end, read with timeout using select */
+    close(pipefd[1]);
+
+    while(timeout_ms > 0)
+    {
+        FD_ZERO(&rfds);
+        FD_SET(pipefd[0], &rfds);
+        tv.tv_sec = 0;
+        tv.tv_usec = timeout_ms * 1000;
+
+        int pr = select(pipefd[0] + 1, &rfds, NULL, NULL, &tv);
+        if(pr <= 0)
+            break;
+
+        nread = read(pipefd[0], buff, sizeof(buff));
+        if(nread > 0)
+        {
+            if(len + nread + 1 > cap)
+            {
+                cap = (len + nread + 1) * 2;
+                meUByte *next = meRealloc(tmpbuf, cap);
+                if(next == NULL)
+                    break;
+                tmpbuf = next;
+            }
+            meUByte *dd = buff;
+            while(nread--)
+            {
+                unsigned char cc = *dd++;
+                if(cc == '\n')
+                    ll = 0;
+                else if(ll == 0xfff0)
+                {
+                    tmpbuf[len++] = '\n';
+                    ll = 1;
+                }
+                else
+                    ll++;
+                tmpbuf[len++] = cc;
+            }
+        }
+        else
+            break;
+    }
+    close(pipefd[0]);
+
+    /* Reap child */
+    waitpid(pid, NULL, WNOHANG);
+
     tmpbuf[len] = '\0';
 
     /* Strip trailing newlines from Wayland clipboard paste */

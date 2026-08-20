@@ -48,6 +48,7 @@
 
 meUByte evalResult[meTOKENBUF_SIZE_MAX];    /* resulting string */
 static meUByte machineName[]=meSYSTEM_NAME;    /* resulting string */
+static int clipStartupSkip = 1;                /* skip clipboard load on first yank */
 
 #if MEOPT_TIMSTMP
 extern meUByte time_stamp[];   /* Time stamp string */
@@ -1605,7 +1606,9 @@ getval(meUByte *tkn)   /* find the value of a token */
             else
             {
 #ifdef _CLIPBRD
-                TTgetClipboard() ;
+                if(!clipStartupSkip)
+                    TTgetClipboard() ;
+                clipStartupSkip = 0 ;
 #endif
                 kl = klhead ;
             }
