@@ -61,7 +61,7 @@ jobs:
            y
            y
            y
-           "| powershell install-windows.ps1
+           "@ | powershell install-windows.ps1
            mecb -V
   cygwin-x64:
     runs-on: windows-latest
