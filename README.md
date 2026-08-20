@@ -32,6 +32,7 @@ Here in short the single file install command using a shell script for Unix syst
 bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
 source ~/.bashrc ## for the current session update the PATH settings
 mecb -V
+mewb -V
 ```
 
 If you install the `mecb` and `mewb`  executables you at the same time install
@@ -51,8 +52,8 @@ machine for the same user as they are using the same folder for the configuratio
 ```
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
-mewb -V
 mecb -V
+mewb -V
 ```
 
 The  executables  `mewb` and `mecb` are then in a folder belonging to the PATH variable, in `$env:LOCALAPPDATA` and you can run it from any terminal
