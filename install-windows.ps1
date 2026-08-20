@@ -219,7 +219,7 @@ function Install-UpdateScript ($destFolder) {
 
 # Create a batch wrapper for easy command-line updates
 function Create-UpdateBatch ($destFolder) {
-    $batchPath = Join-Path $destFolder "update-microemacs.bat"
+    $batchPath = Join-Path $destFolder "mecb-update.bat"
     $scriptPath = Join-Path $destFolder "install-windows.ps1"
     
     # Create a batch file that runs the PowerShell script
@@ -372,7 +372,7 @@ if ($downloadSuccess) {
         
         Write-Host ""
         Write-Host "To update in the future, you can:"
-        Write-Host "  1. Run the batch file: $destFolder\update-microemacs.bat"
+        Write-Host "  1. Run the batch file: $destFolder\mecb-update.bat"
         Write-Host "  2. Or run PowerShell: powershell -ExecutionPolicy Bypass -File `"$destFolder\install-windows.ps1`""
         Write-Host "  3. Or simply run: & '$destFolder\install-windows.ps1'"
         Write-Host ""
