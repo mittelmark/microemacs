@@ -45,7 +45,8 @@ jobs:
         run: |
            bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
            source ~/.bashrc ## for the current session update the PATH settings
-           mecb -V
+           tail ~/.bashrc
+           ~/.local/bin/mecb -V
   cygwin-x64:
     runs-on: windows-latest
     name: Test on Cygwin (x86_64)
