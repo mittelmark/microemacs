@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-08-19 15:51
+date: 2026-08-20 07:51
 ---
 
 ## Introduction
@@ -53,3 +53,19 @@ opencode run --model .... "question"
 - Gravity https://github.com/marcobambini/gravity - class based
 - Snek: https://sneklang.org/ - Python like
 - mquickjs https://github.com/bellard/mquickjs - JavaScript like
+
+## Ticket 7: Windows builds - Fixing mec windows terminal size
+
+Windows: After  fixing  the  resize  issue the mecb  terminal  window is usually  after
+resizing using one row and one column to small.
+
+## Ticket 8: Default Windows Font
+
+After an  install  there is no  default  available  Font, on Windows 11 and 10
+probably  it would be nice to use  Cascadia  Code as  default  or as  fallback
+Courier New.
+
+## Ticket 9: Windows MEPATH issue
+
+WE should probably have a subfolder in the AppData/Roaming  folder may be called
+me09 or mexb for placing the users macro files.
