@@ -7,7 +7,7 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260808.0150>
+>  Last Modified : <260821.1232>
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
@@ -47,6 +47,16 @@
              key (/history/edituser). Changed &reg default from "1" to
              "0" so user.emf is not opened by default when unchecked.
 
+  [260820] - Adding mecb-update and mecb-update.bat scripts for install
+  
+  [260819] - Fixing font install issues.
+  
+  [260818] - Release 091226.beta4
+  
+  [260813] - Adding msysunix buld for terminal mec with Msys2 path support.
+  
+  [260811] - Scheme Nord added.
+  
   [260807] - Added mouse support for Windows terminal version (mec32.exe).
              Native Win32 MOUSE_EVENT for console mode, SGR VT mouse via
              stdin/stdout for pipe mode (mintty). Supports click, drag,
