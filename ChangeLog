@@ -12,6 +12,31 @@
 
 ## 2026
 
+  [260821] - Fixed Wayland clipboard crash in help browser and macros.
+             Separated clipboard from kill-buffer: copy-region now only
+             updates kill buffer; new copy-region-clipboard command wraps
+             both. Added clexec guard to TTgetClipboard() (GUI and
+             console) to prevent clipboard fork during macro execution.
+
+  [260821] - Added temporary clipboard access on Unix via C-c c (copy),
+             C-c x (cut), C-c v (paste). clipboard-temp-operation macro
+             temporarily enables clipboard mode, performs the operation,
+             then restores the original state. Requires $allow-clip-exec
+             variable to bypass clexec guard.
+
+  [260821] - Fixed X11 clipboard duplication: after explicit copy, mouse
+             selection no longer overwrites CLIPBOARD. Added
+             CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
+             only.
+
+  [260821] - Added clipboard tool availability warnings in user-setup and
+             startup when clipboard is enabled but no external tool
+             (xclip, wl-copy, pbcopy) is found.
+
+  [260821] - Consolidated clipboard documentation (x11-clipboard.md,
+             wayland-clipboard.md, help-copy-fix.md) into
+             clipboard-support.md.
+
   [260807] - Fixed terminal resize crash: WINDOW_BUFFER_SIZE_EVENT handler
              now uses meFrameChangeWidth/meFrameChangeDepth for proper
              bounds checking and buffer reallocation. Added pipe mode guard
