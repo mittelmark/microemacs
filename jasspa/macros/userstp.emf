@@ -140,6 +140,18 @@ set-variable %user-misc-cmd  "|alias-path-setup|cc-setup|cvs-setup|mail-setup|fi
         !if &equ &abs @# 0x400
             user-setup-backups
         !endif
+        ; Warn if clipboard just enabled but no display available
+        !if &band @# 0x2000000
+            !if &band $system 0x2000000
+                !if &not &band $system 0x01
+                    !if &not &exi $DISPLAY
+                        !if &not &exi $WAYLAND_DISPLAY
+                            3000 ml-write "Warning: No DISPLAY set - clipboard will not work. Requires xclip, wl-clipboard, or a graphical session"
+                        !endif
+                    !endif
+                !endif
+            !endif
+        !endif
     !elif &not &band #l0 @#
         !abort
     !endif

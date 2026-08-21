@@ -122,6 +122,16 @@ define-macro-file jeany jeany-bindings
 set-variable %platform &cat $platform &cond &band $system 0x01 "c" ""
 set-variable $system &bor &band $system &bnot 0x30f000 &band 0x30f000 &reg "/history/system" 0x007000
 set-variable $system &bor &band $system &bnot 0x2000010 &band 0x2000010 &reg &spr "/history/%s/system" %platform 0x040010
+; Warn if clipboard is enabled but no display or required tools available (Linux/FreeBSD/Cygwin)
+!if &band $system 0x2000000
+    !if &not &band $system 0x01
+        !if &not &exi $DISPLAY
+            !if &not &exi $WAYLAND_DISPLAY
+                3000 ml-write "Warning: Clipboard enabled but no DISPLAY set - clipboard will not work over SSH"
+            !endif
+        !endif
+    !endif
+!endif
 !if &not &band $system 0x01
 !endif
 set-variable $mouse &reg &spr "/history/%s/mouse" %platform $mouse
