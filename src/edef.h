@@ -99,6 +99,7 @@ extern  meUByte    quietMode ;          /* quiet mode (0=bell)          */
 extern  meUByte    scrollFlag ;         /* horiz/vert scrolling method  */
 extern  meUByte    sgarbf;              /* State of screen unknown      */
 extern  meUByte    clexec;              /* command line execution flag  */
+extern  meUByte    allowClipExec;      /* allow clipboard exec in macros */
 extern  meUByte    mcStore;             /* storing text to macro flag   */
 extern  meUByte    cmdstatus;           /* last command status          */
 extern  meUByte    kbdmode;             /* current keyboard macro mode  */
@@ -612,6 +613,7 @@ meUByte   quietMode = 1 ;               /* quiet mode (0=bell)          */
 meUByte   scrollFlag = 1 ;              /* horiz/vert scrolling method  */
 meUByte   sgarbf = meTRUE;              /* meTRUE if screen is garbage  */
 meUByte   clexec = meFALSE;             /* command line execution flag  */
+meUByte   allowClipExec = meFALSE;     /* allow clipboard exec in macros */
 meUByte   mcStore = meFALSE;            /* storing text to macro flag   */
 #if MEOPT_DEBUGM
 meUByte   macbug = 0 ;                  /* macro debuging flag          */

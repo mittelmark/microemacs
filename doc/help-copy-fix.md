@@ -56,12 +56,14 @@ even if clipboard fetch is somehow triggered, it won't hang.
 |------|--------|
 | `src/region.c` | Removed `TTsetClipboard()` from `copyRegion()`, added `copyRegionClipboard()` wrapper |
 | `src/eextrn.h` | Added `copyRegionClipboard()` declaration |
+| `src/edef.h` | Added `allowClipExec` global variable |
 | `src/efunc.def` | Added `copy-region-clipboard` command entry |
 | `src/ebind.def` | Bound Esc w → `copy-region-clipboard` (was `copy-region`) |
 | `src/efunc.h` | Added `CK_CPYCLIP` to hash table |
-| `src/eval.c` | Added `CK_CPYCLIP` to `meCFKILL` flag case |
-| `src/unixterm.c` | Added `clexec` check to `TTgetClipboard()`, rewrote `TTgetWaylandClipboard()` with fork+timeout |
-| `jasspa/macros/unixterm.emf` | Removed conflicting `copy-region-clipboard` macro (C command handles it) |
+| `src/eval.c` | Added `CK_CPYCLIP` to `meCFKILL` flag case, added `$allow-clip-exec` variable handler |
+| `src/evar.def` | Added `allow-clip-exec` environment variable definition |
+| `src/unixterm.c` | Added `clexec` + `allowClipExec` check to `TTgetClipboard()`, rewrote `TTgetWaylandClipboard()` with fork+timeout |
+| `jasspa/macros/unixterm.emf` | Removed conflicting macro, added `clipboard-temp-operation` macro and C-c c/x/v bindings |
 
 ## How It Works
 
@@ -80,6 +82,30 @@ After (fixed):
   User presses Esc w
     → copyRegionClipboard() → copyRegion() + TTsetClipboard() → clipboard updated
 ```
+
+### 4. Temporary Clipboard Access (C-c c/x/v)
+
+When clipboard mode is not permanently enabled (the "Use Clipboard" checkbox
+in user-setup is unchecked), users can still access the system clipboard
+on-demand via `C-c c` (copy), `C-c x` (cut), and `C-c v` (paste).
+
+The `clipboard-temp-operation` macro temporarily sets the CLIPBOARD bit in
+`$system`, clears the NOCLIPBRD bit, sets `$allow-clip-exec` to bypass the
+`clexec` guard in `TTgetClipboard()`, performs the operation, then restores
+the original state.
+
+| Key | Action | Description |
+|-----|--------|-------------|
+| `C-c c` | copy-region-clipboard | Copy selected text to system clipboard |
+| `C-c x` | 1 kill-region | Cut selected text to system clipboard |
+| `C-c v` | yank | Paste from system clipboard |
+
+Available on all Unix platforms (X11 and Wayland). On console (mec), requires
+an external clipboard tool (`xclip`, `wl-copy`, `pbcopy`, etc.).
+
+The `$allow-clip-exec` variable (`src/edef.h`, `src/evar.def`) allows macros
+to bypass the `clexec` guard in `TTgetClipboard()` for intentional clipboard
+access.
 
 ## Menu/Binding Updates
 

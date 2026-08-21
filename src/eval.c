@@ -429,6 +429,9 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
         status = biChopFindString(nn,14,envars,NEVARS) ;
         switch(status)
         {
+        case EVALLOWCLIPEXEC:
+            allowClipExec = (meUByte) meAtoi(vvalue);
+            break;
         case EVAUTOTIME:
             autoTime = meAtoi(vvalue);
             break;
@@ -1128,6 +1131,7 @@ gtenv(meUByte *vname)   /* vname   name of environment variable to retrieve */
     switch(ii)
     {
         /* Fetch the appropriate value */
+    case EVALLOWCLIPEXEC: return meItoa(allowClipExec);
     case EVAUTOTIME:    return meItoa(autoTime);
 #if MEOPT_MOUSE
     case EVDELAYTIME:   return meItoa(delayTime);

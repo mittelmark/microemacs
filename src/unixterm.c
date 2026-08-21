@@ -4337,7 +4337,7 @@ TTgetClipboard(void)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if(clexec)
+    if(clexec && !allowClipExec)
         return ;
     
     if((meSystemCfg & meSYSTEM_CLIPBOARD) && TTisWaylandSession() && TTcheckWaylandClipboard())
@@ -6242,7 +6242,7 @@ TTgetClipboard(void)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if(clexec)
+    if(clexec && !allowClipExec)
         return ;
 
     TTdetectClipTool();

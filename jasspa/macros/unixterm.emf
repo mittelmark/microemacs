@@ -362,4 +362,47 @@ set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
 ; copy-region-clipboard is now a C-level command (copyRegionClipboard)
 ; that wraps copy-region + TTsetClipboard(). Bound to Esc w by default.
 ; Users can also bind it manually: global-bind-key copy-region-clipboard "C-c c"
-  
+
+; Temporary clipboard operations for Unix systems.
+; When clipboard mode is not permanently enabled (meSYSTEM_CLIPBOARD bit 0x2000000),
+; these allow explicit access to the system clipboard via C-c c/x/v.
+; The clipboard bit is set before the operation and restored afterward.
+; On console (mec), requires an external tool (xclip, wl-copy, pbcopy, etc.).
+
+!if &not &seq $platform "windows"
+    ; Not Windows - define temporary clipboard operations
+
+    0 define-macro clipboard-temp-operation
+        set-variable #l0 @#  ; 0=copy, 1=cut, 2=paste
+        ; Save current clipboard bits: CLIPBOARD (0x2000000) and NOCLIPBRD (0x800000)
+        set-variable #l1 &band $system 0x2000000
+        set-variable #l2 &band $system 0x800000
+        ; Enable clipboard: set CLIPBOARD bit, clear NOCLIPBRD bit
+        set-variable $system &bor $system 0x2000000
+        set-variable $system &band $system &bnot 0x800000
+        ; Allow clipboard access during this macro (bypasses clexec guard)
+        set-variable $allow-clip-exec 1
+        !if &equal #l0 0
+            copy-region-clipboard
+        !elif &equal #l0 1
+            1 kill-region
+        !elif &equal #l0 2
+            yank
+        !endif
+        ; Disable clipboard access override
+        set-variable $allow-clip-exec 0
+        ; Restore clipboard state
+        !if &not #l1
+            set-variable $system &band $system &bnot 0x2000000
+        !endif
+        !if #l2
+            set-variable $system &bor $system 0x800000
+        !endif
+    !emacro
+
+    ; Bind temporary clipboard operations to C-c c/x/v
+    0 global-bind-key clipboard-temp-operation "C-c c"  ; Copy to clipboard
+    1 global-bind-key clipboard-temp-operation "C-c x"  ; Cut to clipboard
+    2 global-bind-key clipboard-temp-operation "C-c v"  ; Paste from clipboard
+
+!endif

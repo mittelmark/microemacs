@@ -1,20 +1,20 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-08-20 17:21
+date: 2026-08-21 12:05
 ---
 
 ## Introduction
 
 This document contains a collection of feature ideas and bugfixes for the development of MicroEmacs 09
 
-## Ticket 1: FR - ml-write for missing clipboard tool
+## Ticket 1: FR - ml-write for missing clipboard tool (DONE)
 
 If the user  selects  the  clipboard  checkbox on Unix  platforms  should be a
 message  line for 1000 ms or so stating that the  clipboard  tool xclip (X11),
 wl-clipboard (Wayland) or pbpaste (macOS) should be installed.
 
-## Ticket 2: FR - temporary clipboard access
+## Ticket 2: FR - temporary clipboard access (DONE)
 
 If the user does not like to use the clipboard all the time there shoould be two little macros like.
 
@@ -70,7 +70,7 @@ Courier New.
 We should probably have a subfolder in the AppData/Roaming  folder may be called
 me09 or mexb for placing the users macro files.
 
-## Ticket 10: BUG - Help Browser Issue
+## Ticket 10: BUG - Help Browser Issue (DONE)
 
 If in mewb clipboard is enabled and some text is in the clipboard the
 help browser tries all the time to load a help page using the text in the clipboard instead of the actual link.

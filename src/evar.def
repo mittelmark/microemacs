@@ -32,6 +32,7 @@
  *     algorithm is used and the message line auto-complete relies on this.
  */
 
+DEFVAR ("allow-clip-exec",     EVALLOWCLIPEXEC) /* allow clipboard access in macros */
 DEFVAR ("auto-time",           EVAUTOTIME)      /* auto save buffer time */
 DEFVAR ("box-chars",           EVBOXCHRS)       /* Box character set */
 DEFVAR ("buffer-backup",       EVCBUFBACKUP)    /* current buffer backup name */

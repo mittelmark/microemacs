@@ -40,22 +40,20 @@ After explicit copy (`ESC-w`), on pure X11 with xclip installed, runs `xclip -se
 
 ## Macro Implementation
 
-**File**: `jasspa/macros/unixterm.emf`, lines 362–459
+**File**: `jasspa/macros/unixterm.emf`, lines 362–411
 
-`copy-region-clipboard` macro provides clipboard support via shell commands:
+`clipboard-temp-operation` macro provides on-demand clipboard access on
+non-Windows Unix systems. Binds `C-c c` (copy), `C-c x` (cut), `C-c v`
+(paste).
 
-1. Copies region to kill buffer
-2. Writes kill buffer to temp file
-3. Detects clipboard tool by priority:
-   - **clip.exe** (WSL/Cygwin) → `clip.exe < tempfile`
-   - **wl-copy** → `wl-copy < tempfile`
-   - **xclip** → `xclip -selection clipboard -i < tempfile`
-   - **xsel** → `xsel --clipboard --input < tempfile`
-   - **pbcopy** → `pbcopy < tempfile`
-4. Pipes temp file to the detected tool via `shell-command`
-5. Cleans up temp file
+1. Saves current CLIPBOARD and NOCLIPBRD bits from `$system`
+2. Enables clipboard: sets CLIPBOARD bit, clears NOCLIPBRD bit
+3. Sets `$allow-clip-exec = 1` to bypass `clexec` guard in `TTgetClipboard()`
+4. Calls `copy-region-clipboard`, `kill-region`, or `yank`
+5. Restores original clipboard state
 
-**Note**: The keybinding (`C-c c`) is currently commented out at line 459.
+Works on both GUI (mew) and console (mec) builds. On console, requires an
+external clipboard tool (`xclip`, `wl-copy`, `pbcopy`, etc.).
 
 ## Design Decisions
 
@@ -64,3 +62,5 @@ After explicit copy (`ESC-w`), on pure X11 with xclip installed, runs `xclip -se
 3. **Fork-based**: C implementation uses `meFork()` + `pipe()` instead of `system()` for the GUI path to reduce flickering
 4. **Wayland dual clipboard**: GUI writes to both X11 CLIPBOARD and Wayland clipboard for maximum compatibility
 5. **Mouse vs explicit copy**: Mouse selections target PRIMARY; `M-w`/`C-x r o` target CLIPBOARD (with xclip hand-off on X11)
+6. **`$allow-clip-exec` guard**: `TTgetClipboard()` is normally blocked during macro execution (`clexec` flag) to prevent help browser crashes. The `$allow-clip-exec` variable lets intentional clipboard macros bypass this guard.
+7. **Temporary clipboard mode**: `clipboard-temp-operation` temporarily enables clipboard bits in `$system` so clipboard commands work without permanently enabling clipboard mode.
