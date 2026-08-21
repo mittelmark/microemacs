@@ -1786,7 +1786,7 @@ meGetConsoleMessage(MSG *msg, int mode)
         /* Tell micro-emacs about it using proper change functions
          * which handle bounds checking and buffer reallocation */
         meFrameChangeWidth(frameCur, size.X) ;
-        meFrameChangeDepth(frameCur, size.Y-1) ;
+        meFrameChangeDepth(frameCur, size.Y) ;
         meFrameSetWindowSize(frameCur) ;
     }
     else if (ir.EventType == FOCUS_EVENT)
