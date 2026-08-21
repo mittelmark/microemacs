@@ -255,7 +255,13 @@ copyRegionClipboard(int f, int n)
     ret = copyRegion(f, n) ;
 #ifdef _CLIPBRD
     if(ret == meTRUE)
+    {
+        /* Clear mouse pending flag so we always use CLIPBOARD for explicit copy.
+         * CLIP_MOUSE_PENDING may be set from a prior mouse click, which would
+         * divert TTsetClipboard() to use PRIMARY instead of CLIPBOARD. */
+        clipState &= ~CLIP_MOUSE_PENDING ;
         TTsetClipboard() ;
+    }
     {
         static int xclipChecked = 0;
         static int xclipAvailable = 0;
