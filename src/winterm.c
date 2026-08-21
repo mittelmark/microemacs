@@ -2674,6 +2674,8 @@ WinKillToClipboard (void)
 void
 TTsetClipboard (void)
 {
+    if(clexec && !allowClipExec)
+        return ;
     if(clipState & CLIP_MOUSE_PENDING)
         clipState &= ~CLIP_MOUSE_PENDING ;
     /* We aquire the clipboard and flush it under the following conditions;
@@ -2709,6 +2711,9 @@ TTgetClipboard(void)
     meUByte cc;                           /* Local character buffer */
     meUByte *dd, *tp;                     /* Pointers to the data areas */
 
+    /* Block clipboard access during macro execution unless allowed */
+    if(clexec && !allowClipExec)
+        return ;
     /* Check the standard clipboard status, if owner or it has
      * been disabled then there's nothing to do */
     if((clipState & (CLIP_OWNER|CLIP_DISABLED)) || (kbdmode == mePLAY) ||
