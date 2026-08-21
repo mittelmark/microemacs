@@ -1247,3 +1247,13 @@ Git commands are available via `jasspa/macros/git.emf`:
 - `M-x git-blame` - Show git blame
 - `M-x git-log` - Show git log
 - `M-x git-diff` - Show git diff
+
+## Agent Workflow Rules
+
+### Commit Policy
+
+**Never commit without explicit user permission.** Before running `git commit`,
+always ask the user for approval. Present the staged changes and proposed commit
+message, then wait for confirmation.
+
+This allows the user to review changes before they are committed to the repository.
