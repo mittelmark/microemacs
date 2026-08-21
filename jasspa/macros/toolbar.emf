@@ -305,7 +305,7 @@
     set-variable $delay-time 500
     set-variable $scroll .mouse-event.scroll
     !force 1 goto-position "\x82"
-    !force copy-region
+    !force copy-region-clipboard
     goto-position "\x84"
 !emacro
 

@@ -39,7 +39,7 @@ define-macro jeany-bindings
     ; edit commands
     global-bind-key  undo              "C-j C-z"
     global-bind-key  kill-region       "C-j C-x"
-    global-bind-key  copy-region       "C-j C-c"
+    global-bind-key  copy-region-clipboard       "C-j C-c"
     global-bind-key  yank              "C-j C-v" ; paste 
     global-bind-key  reyank            "C-j V"   ; walk through the paste buffer
     global-bind-key  jeany-select-all  "C-j C-a"
@@ -63,7 +63,7 @@ define-macro jeany-osd
     ; edit menu
     osd 2 10  ""  "\HUndo                C-j C-z"   1 osd-undo       ; Undo the last command
     osd 2 50  ""  "Cu\Ht                 C-j C-x"   f kill-region    ; Kill off the region
-    osd 2 60  ""  "\HCopy                C-j C-c"   f copy-region    ; Copy the region
+    osd 2 60  ""  "\HCopy                C-j C-c"   f copy-region-clipboard    ; Copy the region
     osd 2 70  ""  "\HPaste               C-j C-v"   f yank           ; Paste text
     osd 2 100 ""  "\HSelect All          C-j C-a"   f jeany-select-all     ; Select all text
     ;osd 2 110 "D"
@@ -88,7 +88,7 @@ define-macro jeany-osd-undo
     osd 2 10  ""  "\HUndo                C-x u"      1 osd-undo      ; Undo the last command
     osd 2 20  ""  "Redo                         "                    ; Re-do the last osd-undo
     osd 2 50  ""  "\HSet Mark            esc space"  f set-mark
-    osd 2 60  ""  "\HCopy Region         esc w"      f copy-region
+    osd 2 60  ""  "\HCopy Region         esc w"      f copy-region-clipboard
     osd 2 70  ""  "\HKill Region         C-w"        f kill-region
     osd 2 80  ""  "\HDelete Region"                 -1 kill-region
     osd 2 90  ""  "\HPaste Region        C-y"        f yank

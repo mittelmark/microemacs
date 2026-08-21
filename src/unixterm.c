@@ -4337,6 +4337,8 @@ TTgetClipboard(void)
         return ;
     if(kbdmode == mePLAY)
         return ;
+    if(clexec)
+        return ;
     
     if((meSystemCfg & meSYSTEM_CLIPBOARD) && TTisWaylandSession() && TTcheckWaylandClipboard())
     {

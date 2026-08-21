@@ -370,6 +370,7 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
                         break ;
                     case CK_DELWBAK:
                     case CK_CPYREG:
+                    case CK_CPYCLIP:
                     case CK_DELFWRD:
                     case CK_KILEOL:
 #if MEOPT_WORDPRO

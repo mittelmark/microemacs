@@ -88,7 +88,7 @@ osd 25 2 "" "Toggle \HWidth"   0x001 osd-25-scroll-bars
 ; NOTE Any item number changes may effect mouse-osd-multi
 osd 27 0  "bB"
 osd 27 10  ""  "Set \HMark"         f set-mark
-osd 27 15  ""  "\HCopy Region"      f copy-region
+osd 27 15  ""  "\HCopy Region"      f copy-region-clipboard
 osd 27 20  ""  "\HKill Region"      f kill-region
 osd 27 25  ""  "\HDelete Region"   -1 kill-region
 osd 27 30  ""  "\HPaste Region"     f yank

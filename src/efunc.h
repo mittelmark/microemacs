@@ -188,7 +188,7 @@ meCommand  *cmdHash[cmdHashSize] =
     NULL,                       &__cmdArray[CK_BINDKEY],    &__cmdArray[CK_FILTBUF],    NULL,                       NULL,
     NULL,                       NULL,                       &__cmdArray[CK_OSD],        NULL,                       NULL,
     &__cmdArray[CK_FORLIN],     NULL,                       NULL,                       &__cmdArray[CK_HILIGHT],    &__cmdArray[CK_SORTLNS],
-    NULL,                       NULL,                       NULL,                       &__cmdArray[CK_KILRECT],    NULL,
+    NULL,                       NULL,                       &__cmdArray[CK_CPYCLIP],    &__cmdArray[CK_KILRECT],    NULL,
     &__cmdArray[CK_KILREG],     NULL,                       NULL,                       NULL,                       NULL,
     NULL,                       NULL,                       &__cmdArray[CK_SETPOS],     NULL,                       NULL,
     &__cmdArray[CK_DEFHELP],    NULL,                       NULL,                       NULL,                       &__cmdArray[CK_FLHOOK],

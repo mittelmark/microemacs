@@ -24,7 +24,7 @@ osd 1 210 ""  "E\Hxit            C-q"   f save-buffers-exit-emacs
 osd 2 10  ""  "\HUndo                C-z"    1 osd-undo
 osd 2 50  ""  "\HSet Mark"                   f set-mark
 osd 2 60  ""  "Cu\Ht                 C-x"    f kill-region
-osd 2 70  ""  "\HCopy                C-c"    f copy-region
+osd 2 70  ""  "\HCopy                C-c"    f copy-region-clipboard
 osd 2 80  ""  "\HPaste               C-v"    f yank
 osd 2 90  ""  "Pa\Hste Col           A-C-v"  f yank-rectangle
 osd 2 100 ""  "Cl\Hear"                     -1 kill-region

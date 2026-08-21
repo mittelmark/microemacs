@@ -8,94 +8,90 @@ X11 is not affected.
 
 ### Root Cause
 
-The help browser macro `ehf-process-link` (in `jasspa/macros/hkehf.emf`) uses
-`copy-region` and `-1 yank` to extract link text from help pages. When
-clipboard is enabled on Wayland, `copy-region` triggers a fork to `wl-copy`
-to update the system clipboard. This fork operation inside the help browser
-crashes the application.
+Two separate crash paths existed:
 
-Additionally, `TTgetWaylandClipboard()` used `popen("wl-paste")` which could
-block indefinitely if the Wayland compositor hung or `wl-paste` stalled.
+1. **`copy-region` in macros** — The C-level `copyRegion()` always called
+   `TTsetClipboard()`, which on Wayland forks `wl-copy`. When macros like
+   `ehf-process-link` called `copy-region` to extract link text, this fork
+   crashed the application.
 
-## Changes Made
+2. **`yank` in macros** — The C-level yank evaluation called `TTgetClipboard()`,
+   which on Wayland forks `wl-paste`. When macros called `-1 yank` to restore
+   the kill buffer, this fork could crash or hang.
 
-### 1. `src/eval.c` — Skip clipboard load on first yank
+## Solution
 
-A static flag `clipStartupSkip` skips the `TTgetClipboard()` call on the very
-first `-1 yank` after ME starts up. This prevents the help browser's initial
-link processing from loading clipboard content into the kill buffer.
+### 1. Separating Clipboard from Kill-Buffer Operations
 
-```c
-static int clipStartupSkip = 1;                /* skip clipboard load on first yank */
-// ...
-if(!clipStartupSkip)
-    TTgetClipboard() ;
-clipStartupSkip = 0 ;
-```
+`copy-region` in C no longer calls `TTsetClipboard()`. A new command
+`copy-region-clipboard` wraps both operations:
 
-**Effect**: The first yank (used by the help browser) reads from the kill
-buffer directly without fetching system clipboard content. Subsequent
-user-initiated yanks (`C-y`) work normally and do fetch the clipboard.
+| Command | Kill Buffer | System Clipboard | Safe for Macros |
+|---------|:-----------:|:----------------:|:---------------:|
+| `copy-region` | Yes | No | Yes |
+| `copy-region-clipboard` | Yes | Yes | No (user only) |
 
-### 2. `src/unixterm.c` — Fork-based `wl-paste` with timeout
+Esc w is now bound to `copy-region-clipboard`.
 
-Rewrote `TTgetWaylandClipboard()` to avoid blocking `popen()`:
+### 2. Suppressing Clipboard Fetch in Macros
 
-- Uses `meFork()` to run `wl-paste` as a child process
-- Reads output via pipe with `select()` and a **2-second timeout**
-- Reaps child with `waitpid(WNOHANG)` to prevent zombies
-- Returns `meFALSE` if timeout expires
+Added `clexec` check to `TTgetClipboard()`. When any ME macro executes
+(including the help browser), clipboard fetch is skipped entirely. This
+prevents `wl-paste` fork during macro-executed yank operations.
 
 ```c
-pid = meFork();
-if(pid == 0) {
-    /* child: execlp("wl-paste") */
-}
-/* parent: select() loop with 2s timeout */
+if(clexec)
+    return ;
 ```
 
-**Effect**: Prevents the application from hanging if `wl-paste` stalls.
+### 3. Fork-based `wl-paste` with Timeout
 
-## What Was NOT Changed
-
-### `jasspa/macros/hkehf.emf`
-
-Attempts were made to temporarily disable clipboard during help link
-processing by saving/restoring `$system` or using a new `$help-clipboard`
-variable. Both approaches had issues:
-
-1. **Modifying `$system`**: The variable is shared across macro calls and
-   the restoration was unreliable — the clipboard bit would sometimes not
-   be restored properly, requiring manual re-enabling via `user-setup`.
-
-2. **New `$help-clipboard` variable**: This approach was implemented but
-   testing showed the crash still occurred, suggesting the issue may lie
-   elsewhere in the call chain (possibly in the `copy-region` C code or
-   in how `wl-copy` interacts with the help window).
-
-## Current Status
-
-The crash **still occurs** on Wayland with clipboard enabled when clicking
-help links. The changes reduce the risk of hangs (via the timeout) and
-prevent clipboard content from corrupting the first yank, but the underlying
-cause of the Wayland-specific crash remains unresolved.
-
-### Possible Next Steps
-
-1. Run with `valgrind` to identify the exact crash point:
-   ```bash
-   valgrind --tool=memcheck ./src/.linux32gcc-release-mecw/mewb
-   ```
-
-2. Investigate whether `wl-copy` in `copy-region` (not just `wl-paste` in
-   `TTgetWaylandClipboard`) is the culprit.
-
-3. Consider disabling clipboard operations entirely in help mode via a
-   different mechanism (e.g., a global flag checked in `copyRegion()`).
+Rewrote `TTgetWaylandClipboard()` to use `fork()` + `pipe()` + `select()`
+with a 2-second timeout instead of blocking `popen()`. Defense in depth —
+even if clipboard fetch is somehow triggered, it won't hang.
 
 ## Files Modified
 
 | File | Change |
 |------|--------|
-| `src/eval.c` | Added `clipStartupSkip` to skip first yank clipboard load |
-| `src/unixterm.c` | Rewrote `TTgetWaylandClipboard()` with fork+pipe+select timeout |
+| `src/region.c` | Removed `TTsetClipboard()` from `copyRegion()`, added `copyRegionClipboard()` wrapper |
+| `src/eextrn.h` | Added `copyRegionClipboard()` declaration |
+| `src/efunc.def` | Added `copy-region-clipboard` command entry |
+| `src/ebind.def` | Bound Esc w → `copy-region-clipboard` (was `copy-region`) |
+| `src/efunc.h` | Added `CK_CPYCLIP` to hash table |
+| `src/eval.c` | Added `CK_CPYCLIP` to `meCFKILL` flag case |
+| `src/unixterm.c` | Added `clexec` check to `TTgetClipboard()`, rewrote `TTgetWaylandClipboard()` with fork+timeout |
+| `jasspa/macros/unixterm.emf` | Removed conflicting `copy-region-clipboard` macro (C command handles it) |
+
+## How It Works
+
+```
+Before (broken):
+  Macro calls "copy-region"
+    → copyRegion() → TTsetClipboard() → fork("wl-copy") → CRASH
+  Macro calls "-1 yank"
+    → TTgetClipboard() → TTgetWaylandClipboard() → fork("wl-paste") → CRASH
+
+After (fixed):
+  Macro calls "copy-region"
+    → copyRegion() → kill buffer only, NO clipboard integration
+  Macro calls "-1 yank"
+    → clexec is true → TTgetClipboard() skipped entirely
+  User presses Esc w
+    → copyRegionClipboard() → copyRegion() + TTsetClipboard() → clipboard updated
+```
+
+## Menu/Binding Updates
+
+User-facing menus and key bindings now use `copy-region-clipboard` when
+clipboard is enabled (`$system & 0x2000000`). When clipboard is disabled,
+they fall back to `copy-region` (kill buffer only).
+
+Updated in: `osd.emf`, `osdnedit.emf`, `mouseosd.emf`, `jeany.emf`,
+`menedit.emf`, `mecua.emf`, `toolbar.emf`.
+
+## Known Issues
+
+- `kill-region` (C-w), `kill-line` (C-k), and `kill-rectangle` (C-x R) still
+  call `TTsetClipboard()` directly. These could be split into kill-buffer-only
+  + clipboard variants in the future, following the same pattern.

@@ -838,6 +838,7 @@ extern  int     setCursorToMouse(int f, int n) ;
 extern	int	getregion(meRegion *rp);
 extern	int	killRegion(int f, int n);
 extern	int	copyRegion(int f, int n);
+extern	int	copyRegionClipboard(int f, int n);
 extern	int	lowerRegion(int f, int n);
 extern	int	upperRegion(int f, int n);
 #if MEOPT_EXTENDED

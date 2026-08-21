@@ -65,7 +65,7 @@ define-macro cut
 !emacro
 define-macro copy
     3 cua-get-region
-    copy-region
+    copy-region-clipboard
     goto-position "\x81"
     show-region
 !emacro

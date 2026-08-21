@@ -77,7 +77,7 @@ global-bind-key newline "return"
 
 global-bind-key select-all "C-/"
 
-global-bind-key copy-region "C-c"
+global-bind-key copy-region-clipboard "C-c"
 global-bind-key osd-goto-line "C-l"
 1 global-bind-key osd-search "C-f"
 global-bind-key help "C-h"

@@ -340,7 +340,7 @@ osd 2 20  ""  "Redo"                                             ; Re-do the las
 osd 2 30  ""  "Undo \HAll"                       0 osd-undo      ; Undo all changes to last save
 osd 2 40  "-"
 osd 2 50  ""  "\HSet Mark            esc space"  f set-mark
-osd 2 60  ""  "\HCopy Region         esc w"      f copy-region
+osd 2 60  ""  "\HCopy Region         esc w"      f copy-region-clipboard
 osd 2 70  ""  "\HKill Region         C-w"        f kill-region
 osd 2 80  ""  "\HDelete Region"                 -1 kill-region
 osd 2 90  ""  "\HPaste Region        C-y"        f yank

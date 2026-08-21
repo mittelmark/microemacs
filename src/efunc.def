@@ -98,6 +98,7 @@ DEFFUNC ("command-wait",		0x42, commandWait,	CK_CMDWAIT, &__cmdArray[CK_CMDWAIT+
 DEFFUNC ("compare-windows",		0x42, cmpBuffers,	CK_CMPBUF, &__cmdArray[CK_CMPBUF+1], 0)
 #endif
 DEFFUNC ("copy-region",			0x39, copyRegion,	CK_CPYREG, &__cmdArray[CK_CPYREG+1], 0)
+DEFFUNC ("copy-region-clipboard",	0x39, copyRegionClipboard, CK_CPYCLIP, &__cmdArray[CK_CPYCLIP+1], 0)
 #if MEOPT_CMDHASH || MEOPT_WORDPRO
 DEFFUNC ("count-words",			0x42, countWords,	CK_WRDCNT, &__cmdArray[CK_WRDCNT+1], 0)
 #endif

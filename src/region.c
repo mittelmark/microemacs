@@ -224,8 +224,38 @@ add_newline:
     thisflag = meCFKILL ;
     ret = meTRUE ;
 
+copy_region_exit:
+
+#if MEOPT_NARROW
+    if(expandNarrows)
+    {
+        meBufferCollapseNarrowAll(frameCur->bufferCur) ;
+        frameCur->windowCur->dotLine = dotLine ;
+        frameCur->windowCur->dotLineNo = dotLineNo ;
+        frameCur->windowCur->dotOffset = dotOffset ;
+        frameCur->windowCur->markLine = markLine ;
+        frameCur->windowCur->markLineNo = markLineNo ;
+        frameCur->windowCur->markOffset = markOffset ;
+    }
+#endif
+    return ret ;
+}
+
+/*
+ * copyRegionClipboard - Copy region to kill buffer and set system clipboard.
+ * This is the user-facing version of copy-region that should be bound to
+ * key shortcuts (e.g., Esc w). The plain copyRegion() only copies to the
+ * kill buffer without touching the system clipboard, making it safe for
+ * macro-internal use (e.g., copy-region + @y + -1 yank pattern).
+ */
+int
+copyRegionClipboard(int f, int n)
+{
+    int ret ;
+    ret = copyRegion(f, n) ;
 #ifdef _CLIPBRD
-    TTsetClipboard() ;
+    if(ret == meTRUE)
+        TTsetClipboard() ;
     {
         static int xclipChecked = 0;
         static int xclipAvailable = 0;
@@ -235,7 +265,7 @@ add_newline:
          * instead of ME, so subsequent mouse selections don't affect clipboard.
          * Only run on pure X11 (not Wayland, not console) AND only when
          * clipboard is enabled. */
-        if(meSystemCfg & meSYSTEM_CLIPBOARD)
+        if(ret == meTRUE && (meSystemCfg & meSYSTEM_CLIPBOARD))
         {
             if(!xclipChecked)
             {
@@ -306,21 +336,6 @@ add_newline:
 #endif
             }
         }
-    }
-#endif
-
-copy_region_exit:
-
-#if MEOPT_NARROW
-    if(expandNarrows)
-    {
-        meBufferCollapseNarrowAll(frameCur->bufferCur) ;
-        frameCur->windowCur->dotLine = dotLine ;
-        frameCur->windowCur->dotLineNo = dotLineNo ;
-        frameCur->windowCur->dotOffset = dotOffset ;
-        frameCur->windowCur->markLine = markLine ;
-        frameCur->windowCur->markLineNo = markLineNo ;
-        frameCur->windowCur->markOffset = markOffset ;
     }
 #endif
     return ret ;
