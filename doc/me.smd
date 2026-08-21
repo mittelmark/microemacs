@@ -5109,6 +5109,41 @@
 
 ## Development History 
 
+  - [260821] - Fixed Wayland clipboard crash in help browser and macros.
+               Separated clipboard from kill-buffer: copy-region now only
+               updates kill buffer; new copy-region-clipboard command wraps
+               both. Added clexec guard to TTgetClipboard() (GUI and
+               console) to prevent clipboard fork during macro execution.
+
+  - [260821] - Added temporary clipboard access on Unix via C-c c (copy),
+               C-c x (cut), C-c v (paste). clipboard-temp-operation macro
+               temporarily enables clipboard mode, performs the operation,
+               then restores the original state. Requires $allow-clip-exec
+               variable to bypass clexec guard.
+
+  - [260821] - Fixed X11 clipboard duplication: after explicit copy, mouse
+               selection no longer overwrites CLIPBOARD. Added
+              CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
+               only.
+
+  - [260821] - Added clipboard tool availability warnings in user-setup and
+              startup when clipboard is enabled but no external tool
+              (xclip, wl-copy, pbcopy) is found.
+
+  - [260821] - Consolidated clipboard documentation (x11-clipboard.md,
+               wayland-clipboard.md, help-copy-fix.md) into
+               clipboard-support.md.
+
+  - [260820] - Adding mecb-update and mecb-update.bat scripts for install
+  
+  - [260819] - Fixing font install issues.
+  
+  - [260818] - Release 091226.beta4
+  
+  - [260813] - Adding msysunix buld for terminal mec with Msys2 path support.
+  
+  - [260811] - Scheme Nord added.
+
   - [260807] - Fixed terminal resize crash: WINDOW_BUFFER_SIZE_EVENT handler
                now uses meFrameChangeWidth/meFrameChangeDepth for proper
                bounds checking and buffer reallocation. Added pipe mode guard
@@ -13455,7 +13490,7 @@ $a
 ## SYNOPSIS
 
 
-  _n_ __copy-region__ (__esc w__)
+  _n_ __copy-region__
 
 
 ## DESCRIPTION
@@ -13503,22 +13538,23 @@ $a
   windowing kill buffer allowing data to be moved between windowing
   applications (_cut buffer_ and _clipboard_, respectively). Within these
   environments MicroEmacs 2009 automatically interacts with the windowing
-  systems kill buffer, the last MicroEmacs 2009 __copy-region__ entry is
-  immediately available for a paste operation into another windowing
-  application.
+  systems kill buffer. However, __copy-region__ only updates the internal kill
+  buffer, not the system clipboard. To update the system clipboard, use
+  [copy-region-clipboard(2)](copy-region-clipboard(2)) (__Esc w__) or the temporary clipboard
+  keybinding __C-c c__.
 
   ### X11 and Wayland Clipboard Support
 
   On X11/XWayland systems, MicroEmacs uses two X11 selections:
   - __X11 PRIMARY__: Set by mouse text selection, used for middle-click paste
-  - __X11 CLIPBOARD__: Set by __copy-region__ (M-w), used for Ctrl+V paste
+  - __X11 CLIPBOARD__: Set by [copy-region-clipboard(2)](copy-region-clipboard(2)) (Esc w), used for Ctrl+V paste
 
   On Wayland systems (including XWayland), MicroEmacs also writes to the
   Wayland clipboard via `wl-copy` when available:
-  - __copy-region__ (M-w) updates both X11 CLIPBOARD and Wayland clipboard
+  - [copy-region-clipboard(2)](copy-region-clipboard(2)) (Esc w) updates both X11 CLIPBOARD and Wayland clipboard
   - Mouse selection only updates X11 PRIMARY (for middle-click compatibility)
 
-  The `yank` (C-y) tries Wayland clipboard first on Wayland systems,
+  The [yank(2)](yank(2)) (C-y) tries Wayland clipboard first on Wayland systems,
   falling back to X11 CLIPBOARD if needed.
 
   On WSL and Cygwin, `clip.exe` provides clipboard access to the Windows
@@ -13541,7 +13577,60 @@ $a
 ## SEE ALSO
 
 
-  [exchange-point-and-mark(2)](exchange-point-and-mark(2)), [kill-region(2)](kill-region(2)), [narrow-buffer(2)](narrow-buffer(2)), [set-mark(2)](set-mark(2)),
+  [copy-region-clipboard(2)](copy-region-clipboard(2)), [exchange-point-and-mark(2)](exchange-point-and-mark(2)), [kill-region(2)](kill-region(2)), [narrow-buffer(2)](narrow-buffer(2)), [set-mark(2)](set-mark(2)),
+  [yank(2)](yank(2)).
+!! me-id: m2cmd022a
+! 2 copy-region-clipboard
+## NAME
+
+
+  copy-region-clipboard - Copy a region of the buffer to the system clipboard
+$a
+
+
+## SYNOPSIS
+
+
+  _n_ __copy-region-clipboard__ (__esc w__)
+
+
+## DESCRIPTION
+
+
+  __copy-region-clipboard__ copies all the characters between the cursor and the mark set
+  with the [set-mark(2)](set-mark(2)) command into both the kill buffer and the system
+  clipboard (so they can later be [yanked](yank(2)) elsewhere or pasted into
+  external applications).
+
+  If the last command also entered text into the kill buffer (or the [@cl(4)](@cl(4))
+  variable is set to one of these commands) the __copy-region-clipboard__ text is appended
+  to the last kill.
+
+  The numeric argument _n_ determines how the copy operates when a narrow
+  region, defined by [narrow-buffer(2)](narrow-buffer(2)), is encountered. The default
+  operation, when the number argument is `1`, is to copy all of the text
+  contained within the narrowed region. When the numeric argument is `0` then
+  narrowed region is NOT copied and the text is copied as it appears in the
+  buffer.
+
+
+## NOTES
+
+
+  __copy-region-clipboard__ is the recommended command for copying text to external
+  applications. The regular [copy-region(2)](copy-region(2)) command only updates the internal
+  kill buffer, not the system clipboard.
+
+  On X11/XWayland systems, __copy-region-clipboard__ updates the X11 CLIPBOARD
+  selection. On Wayland, it also writes to the Wayland clipboard via `wl-copy`
+  when available. See the X11 and Wayland Clipboard Support notes in
+  [copy-region(2)](copy-region(2)) for more details.
+
+
+## SEE ALSO
+
+
+  [copy-region(2)](copy-region(2)), [exchange-point-and-mark(2)](exchange-point-and-mark(2)), [kill-region(2)](kill-region(2)), [narrow-buffer(2)](narrow-buffer(2)), [set-mark(2)](set-mark(2)),
   [yank(2)](yank(2)).
 !! me-id: m2cmd023
 ! 2 count-words
@@ -19826,15 +19915,15 @@ $a
   windowing kill buffer allowing data to be moved between windowing
   applications (_cut buffer_ and _clipboard_, respectively). Within these
   environments MicroEmacs 2009 automatically interacts with the windowing
-  systems kill buffer, the last MicroEmacs 2009 __kill-region__ entry is
-  immediately available for a paste operation into another windowing
-  application.
+  systems kill buffer. However, __kill-region__ only updates the internal kill
+  buffer, not the system clipboard. To cut text and update the system clipboard,
+  use the temporary clipboard keybinding __C-c x__.
 
 
 ## SEE ALSO
 
 
-  [backward-kill-word(2)](backward-kill-word(2)), [copy-region(2)](copy-region(2)), [forward-kill-word(2)](forward-kill-word(2)), [kill-line(2)](kill-line(2)),
+  [backward-kill-word(2)](backward-kill-word(2)), [copy-region(2)](copy-region(2)), [copy-region-clipboard(2)](copy-region-clipboard(2)), [forward-kill-word(2)](forward-kill-word(2)), [kill-line(2)](kill-line(2)),
   [kill-paragraph(2)](kill-paragraph(2)), [kill-rectangle(2)](kill-rectangle(2)), [narrow-buffer(2)](narrow-buffer(2)), [reyank(2)](reyank(2)),
   [set-mark(2)](set-mark(2)), [undo(2)](undo(2)), [yank(2)](yank(2)).
 !! me-id: m2cmd082
@@ -24732,12 +24821,11 @@ $a
   windowing kill buffer allowing data to be moved between windowing
   applications (_cut buffer_ and _clipboard_, respectively). Within these
   environments MicroEmacs 2009 automatically interacts with the windowing
-  systems kill buffer, the last MicroEmacs 2009 kill buffer entry is
-  immediately available for a _paste_ operation into another application
-  (regardless of how it was inserted into the kill buffer). Conversely, data
-  placed in the windowing kill buffer is available to MicroEmacs 2009, via
-  __yank__, until a new item has been inserted into the kill buffer (the data
-  may still be available via [reyank(2)](reyank(2))).
+  systems kill buffer. When clipboard mode is enabled (via "Use Clipboard" in
+  user-setup or the `$system` variable), __yank__ will in this case also paste from the
+  system clipboard. When clipboard mode is not enabled, __yank__ only pastes
+  from the internal kill buffer. To paste from the system clipboard on-demand,
+  use the temporary clipboard keybinding __C-c v__.
 
   ### X11 and Wayland Clipboard Support
 
@@ -25787,6 +25875,10 @@ $a
   placed at the same column. The process is then repeated for the second
   line of text in the kill buffer etc.
 
+  __kill-rectangle__ only updates the internal kill buffer, not the system
+  clipboard. To cut a rectangle and update the system clipboard, use the
+  temporary clipboard keybinding __C-c x__ after selecting the rectangle.
+
 
 ## SEE ALSO
 
@@ -26236,7 +26328,7 @@ $a
   `esc t` [find-tag](find-tag(2)) Find a tag.  
   `esc u` [upper-case-word](capitalize-word(2)) Uppercase word.  
   `esc v` [scroll-down](scroll-down(2)) Move to the previous screen.  
-  `esc w` [copy-region](copy-region(2)) Copy region to the kill buffer.  
+  `esc w` [copy-region-clipboard](copy-region-clipboard(2)) Copy region to the kill buffer and system clipboard.  
   `esc x` [execute-named-command](execute-named-command(2)) Execute the named command.  
   `esc y` [reyank](reyank(2)) Kill current yank data and restore previous kill buffer data.  
   `esc z` [quick-exit](quick-exit(2)) Save all buffers and exit.  
@@ -26342,6 +26434,21 @@ $a
   `C-h C-c` [help-command](help(2)) Display command help information.  
   `C-h C-i` [help-item](help(2)) Display item help information.  
   `C-h C-v` [help-variable](help(2)) Display variable help information.  
+
+## C-c Prefix Sequences 
+
+  The `C-c` prefix is used for user-defined commands and mode-specific bindings.
+  The following default bindings are available:
+
+  `C-c c` [clipboard-temp-operation](clipboard-temp-operation(3)) Copy to system clipboard (temporary mode).  
+  `C-c x` [clipboard-temp-operation](clipboard-temp-operation(3)) Cut to system clipboard (temporary mode).  
+  `C-c v` [clipboard-temp-operation](clipboard-temp-operation(3)) Paste from system clipboard (temporary mode).  
+
+  Note: The `C-c c/x/v` keybindings are only active when clipboard mode is
+  not permanently enabled. When "Use Clipboard" is enabled in user-setup,
+  the standard copy/cut/paste commands (`M-w`, `C-w`, `C-y`) are used
+  instead.
+
 !! me-id: m2cmd201
 ! 2 Compatibility
 ## COMPATIBILITY
@@ -45418,11 +45525,25 @@ $a
      clipboard, allowing mouse-select/middle-click-paste to work independently
      of explicit copy/paste.
 
-  >  Note: The console version (mec) uses the same clipboard tools via the
-     `_CLIPBRD` feature flag, enabling clipboard support even without an X or
-     Wayland display server.
+   >  Note: The console version (mec) uses the same clipboard tools via the
+      `_CLIPBRD` feature flag, enabling clipboard support even without an X or
+      Wayland display server.
 
-  `Draw White Spaces`
+   >  When clipboard mode is not permanently enabled, the following
+      temporary clipboard keybindings are available on all Unix platforms
+      (both GUI and console). These provide on-demand clipboard access by
+      temporarily enabling clipboard mode for a single operation:
+
+   > >  `C-c c` - Copy selected region to clipboard (copy-region-clipboard)
+   > >  `C-c x` - Cut selected region to clipboard (kill-region with clipboard)
+   > >  `C-c v` - Paste from clipboard (yank from clipboard)
+
+   >  These keybindings call the `clipboard-temp-operation` macro which
+      temporarily sets the CLIPBOARD bit, performs the operation, and then
+      restores the original clipboard state. This allows occasional clipboard
+      use without permanently enabling clipboard integration.
+
+   `Draw White Spaces`
   
   >  Enables the drawing of visible white spaces, i.e. space, tab and
      new-line characters. This indirectly sets bit `0x80000` of the
@@ -45535,14 +45656,16 @@ $a
   
   >  See __Platform UNIX Setup__ above.
 
-  `Use Clipboard`
-  
-  >  See __Platform UNIX Setup__ above. In the console (mec), clipboard
-     support is provided via external tools (`clip.exe` for WSL/Cygwin,
-     `xclip`/`xsel` for X11, `wl-copy`/`wl-paste` for Wayland, or
-     `pbcopy`/`pbpaste` for macOS) using the `_CLIPBRD` feature flag.
+   `Use Clipboard`
+   
+   >  See __Platform UNIX Setup__ above. In the console (mec), clipboard
+      support is provided via external tools (`clip.exe` for WSL/Cygwin,
+      `xclip`/`xsel` for X11, `wl-copy`/`wl-paste` for Wayland, or
+      `pbcopy`/`pbpaste` for macOS) using the `_CLIPBRD` feature flag.
+      Temporary clipboard keybindings (`C-c c/x/v`) are also available
+      when clipboard mode is not permanently enabled.
 
-  `Draw White Spaces`
+   `Draw White Spaces`
   
   >  See __Platform UNIX Setup__ above.
 

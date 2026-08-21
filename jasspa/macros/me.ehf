@@ -5185,6 +5185,41 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260821] - Fixed Wayland clipboard crash in help browser and macros.
+                 Separated clipboard from kill-buffer: copy-region now only
+                 updates kill buffer; new copy-region-clipboard command wraps
+                 both. Added clexec guard to TTgetClipboard() (GUI and
+                 console) to prevent clipboard fork during macro execution.
+
+    - [260821] - Added temporary clipboard access on Unix via C-c c (copy),
+                 C-c x (cut), C-c v (paste). clipboard-temp-operation macro
+                 temporarily enables clipboard mode, performs the operation,
+                 then restores the original state. Requires $allow-clip-exec
+                 variable to bypass clexec guard.
+
+    - [260821] - Fixed X11 clipboard duplication: after explicit copy, mouse
+                 selection no longer overwrites CLIPBOARD. Added
+                CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
+                 only.
+
+    - [260821] - Added clipboard tool availability warnings in user-setup and
+                startup when clipboard is enabled but no external tool
+                (xclip, wl-copy, pbcopy) is found.
+
+    - [260821] - Consolidated clipboard documentation (x11-clipboard.md,
+                 wayland-clipboard.md, help-copy-fix.md) into
+                 clipboard-support.md.
+
+    - [260820] - Adding mecb-update and mecb-update.bat scripts for install
+    
+    - [260819] - Fixing font install issues.
+    
+    - [260818] - Release 091226.beta4
+    
+    - [260813] - Adding msysunix buld for terminal mec with Msys2 path support.
+    
+    - [260811] - Scheme Nord added.
+
     - [260807] - Fixed terminal resize crash: WINDOW_BUFFER_SIZE_EVENT handler
                  now uses meFrameChangeWidth/meFrameChangeDepth for proper
                  bounds checking and buffer reallocation. Added pipe mode guard
@@ -13419,7 +13454,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDcopy-regioncA (cDesc wcA)
+    cCncA cDcopy-regioncA
 
 
 cEDESCRIPTION cA
@@ -13467,22 +13502,23 @@ $a
     windowing kill buffer allowing data to be moved between windowing
     applications (cCcut buffercA and cCclipboardcA, respectively). Within these
     environments MicroEmacs 2009 automatically interacts with the windowing
-    systems kill buffer, the last MicroEmacs 2009 cDcopy-regioncA entry is
-    immediately available for a paste operation into another windowing
-    application.
+    systems kill buffer. However, cDcopy-regioncA only updates the internal kill
+    buffer, not the system clipboard. To update the system clipboard, use
+    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (cDEsc wcA) or the temporary clipboard
+    keybinding cDC-c ccA.
 
     ### X11 and Wayland Clipboard Support
 
     On X11/XWayland systems, MicroEmacs uses two X11 selections:
     - cDX11 PRIMARYcA: Set by mouse text selection, used for middle-click paste
-    - cDX11 CLIPBOARDcA: Set by cDcopy-regioncA (M-w), used for Ctrl+V paste
+    - cDX11 CLIPBOARDcA: Set by lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (Esc w), used for Ctrl+V paste
 
     On Wayland systems (including XWayland), MicroEmacs also writes to the
     Wayland clipboard via cGwl-copycA when available:
-    - cDcopy-regioncA (M-w) updates both X11 CLIPBOARD and Wayland clipboard
+    - lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (Esc w) updates both X11 CLIPBOARD and Wayland clipboard
     - Mouse selection only updates X11 PRIMARY (for middle-click compatibility)
 
-    The cGyankcA (C-y) tries Wayland clipboard first on Wayland systems,
+    The lsyank(2)lmyank(2)le (C-y) tries Wayland clipboard first on Wayland systems,
     falling back to X11 CLIPBOARD if needed.
 
     On WSL and Cygwin, cGclip.execA provides clipboard access to the Windows
@@ -13505,7 +13541,59 @@ $a
 cESEE ALSO cA
 
 
-    lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le, lskill-region(2)lmkill-region(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsset-mark(2)lmset-mark(2)le,
+    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le, lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le, lskill-region(2)lmkill-region(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsset-mark(2)lmset-mark(2)le,
+    lsyank(2)lmyank(2)le.
+! 2 copy-region-clipboard
+cEcENAME cEcA
+
+
+    copy-region-clipboard - Copy a region of the buffer to the system clipboard
+$a
+
+
+cESYNOPSIS cA
+
+
+    cCncA cDcopy-region-clipboardcA (cDesc wcA)
+
+
+cEDESCRIPTION cA
+
+
+    cDcopy-region-clipboardcA copies all the characters between the cursor and the mark set
+    with the lsset-mark(2)lmset-mark(2)le command into both the kill buffer and the system
+    clipboard (so they can later be lsyank(2)lmyankedle elsewhere or pasted into
+    external applications).
+
+    If the last command also entered text into the kill buffer (or the ls@cl(4)lm@cl(4)le
+    variable is set to one of these commands) the cDcopy-region-clipboardcA text is appended
+    to the last kill.
+
+    The numeric argument cCncA determines how the copy operates when a narrow
+    region, defined by lsnarrow-buffer(2)lmnarrow-buffer(2)le, is encountered. The default
+    operation, when the number argument is cG1cA, is to copy all of the text
+    contained within the narrowed region. When the numeric argument is cG0cA then
+    narrowed region is NOT copied and the text is copied as it appears in the
+    buffer.
+
+
+cENOTES cA
+
+
+    cDcopy-region-clipboardcA is the recommended command for copying text to external
+    applications. The regular lscopy-region(2)lmcopy-region(2)le command only updates the internal
+    kill buffer, not the system clipboard.
+
+    On X11/XWayland systems, cDcopy-region-clipboardcA updates the X11 CLIPBOARD
+    selection. On Wayland, it also writes to the Wayland clipboard via cGwl-copycA
+    when available. See the X11 and Wayland Clipboard Support notes in
+    lscopy-region(2)lmcopy-region(2)le for more details.
+
+
+cESEE ALSO cA
+
+
+    lscopy-region(2)lmcopy-region(2)le, lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le, lskill-region(2)lmkill-region(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsset-mark(2)lmset-mark(2)le,
     lsyank(2)lmyank(2)le.
 ! 2 count-words
 cEcENAME cEcA
@@ -19655,15 +19743,15 @@ $a
     windowing kill buffer allowing data to be moved between windowing
     applications (cCcut buffercA and cCclipboardcA, respectively). Within these
     environments MicroEmacs 2009 automatically interacts with the windowing
-    systems kill buffer, the last MicroEmacs 2009 cDkill-regioncA entry is
-    immediately available for a paste operation into another windowing
-    application.
+    systems kill buffer. However, cDkill-regioncA only updates the internal kill
+    buffer, not the system clipboard. To cut text and update the system clipboard,
+    use the temporary clipboard keybinding cDC-c xcA.
 
 
 cESEE ALSO cA
 
 
-    lsbackward-kill-word(2)lmbackward-kill-word(2)le, lscopy-region(2)lmcopy-region(2)le, lsforward-kill-word(2)lmforward-kill-word(2)le, lskill-line(2)lmkill-line(2)le,
+    lsbackward-kill-word(2)lmbackward-kill-word(2)le, lscopy-region(2)lmcopy-region(2)le, lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le, lsforward-kill-word(2)lmforward-kill-word(2)le, lskill-line(2)lmkill-line(2)le,
     lskill-paragraph(2)lmkill-paragraph(2)le, lskill-rectangle(2)lmkill-rectangle(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsreyank(2)lmreyank(2)le,
     lsset-mark(2)lmset-mark(2)le, lsundo(2)lmundo(2)le, lsyank(2)lmyank(2)le.
 ! 2 kill-line
@@ -24467,12 +24555,11 @@ $a
     windowing kill buffer allowing data to be moved between windowing
     applications (cCcut buffercA and cCclipboardcA, respectively). Within these
     environments MicroEmacs 2009 automatically interacts with the windowing
-    systems kill buffer, the last MicroEmacs 2009 kill buffer entry is
-    immediately available for a cCpastecA operation into another application
-    (regardless of how it was inserted into the kill buffer). Conversely, data
-    placed in the windowing kill buffer is available to MicroEmacs 2009, via
-    cDyankcA, until a new item has been inserted into the kill buffer (the data
-    may still be available via lsreyank(2)lmreyank(2)le).
+    systems kill buffer. When clipboard mode is enabled (via "Use Clipboard" in
+    user-setup or the cG$systemcA variable), cDyankcA will in this case also paste from the
+    system clipboard. When clipboard mode is not enabled, cDyankcA only pastes
+    from the internal kill buffer. To paste from the system clipboard on-demand,
+    use the temporary clipboard keybinding cDC-c vcA.
 
     ### X11 and Wayland Clipboard Support
 
@@ -25501,6 +25588,10 @@ $a
     placed at the same column. The process is then repeated for the second
     line of text in the kill buffer etc.
 
+    cDkill-rectanglecA only updates the internal kill buffer, not the system
+    clipboard. To cut a rectangle and update the system clipboard, use the
+    temporary clipboard keybinding cDC-c xcA after selecting the rectangle.
+
 
 cESEE ALSO cA
 
@@ -25941,7 +26032,7 @@ $a
     cGesc tcA lsfind-tag(2)lmfind-tagle Find a tag.  
     cGesc ucA lscapitalize-word(2)lmupper-case-wordle Uppercase word.  
     cGesc vcA lsscroll-down(2)lmscroll-downle Move to the previous screen.  
-    cGesc wcA lscopy-region(2)lmcopy-regionle Copy region to the kill buffer.  
+    cGesc wcA lscopy-region-clipboard(2)lmcopy-region-clipboardle Copy region to the kill buffer and system clipboard.  
     cGesc xcA lsexecute-named-command(2)lmexecute-named-commandle Execute the named command.  
     cGesc ycA lsreyank(2)lmreyankle Kill current yank data and restore previous kill buffer data.  
     cGesc zcA lsquick-exit(2)lmquick-exitle Save all buffers and exit.  
@@ -26047,6 +26138,21 @@ $a
     cGC-h C-ccA lshelp(2)lmhelp-commandle Display command help information.  
     cGC-h C-icA lshelp(2)lmhelp-itemle Display item help information.  
     cGC-h C-vcA lshelp(2)lmhelp-variablele Display variable help information.  
+
+cEC-c Prefix Sequences  cA
+
+    The cGC-ccA prefix is used for user-defined commands and mode-specific bindings.
+    The following default bindings are available:
+
+    cGC-c ccA lsclipboard-temp-operation(3)lmclipboard-temp-operationle Copy to system clipboard (temporary mode).  
+    cGC-c xcA lsclipboard-temp-operation(3)lmclipboard-temp-operationle Cut to system clipboard (temporary mode).  
+    cGC-c vcA lsclipboard-temp-operation(3)lmclipboard-temp-operationle Paste from system clipboard (temporary mode).  
+
+    Note: The cGC-c c/x/vcA keybindings are only active when clipboard mode is
+    not permanently enabled. When "Use Clipboard" is enabled in user-setup,
+    the standard copy/cut/paste commands (cGM-wcA, cGC-wcA, cGC-ycA) are used
+    instead.
+
 ! 2 Compatibility
 cEcECOMPATIBILITY cEcA
 
@@ -44813,11 +44919,25 @@ $a
        clipboard, allowing mouse-select/middle-click-paste to work independently
        of explicit copy/paste.
 
-       Note: The console version (mec) uses the same clipboard tools via the
-       cG_CLIPBRDcA feature flag, enabling clipboard support even without an X or
-       Wayland display server.
+     >  Note: The console version (mec) uses the same clipboard tools via the
+        `_CLIPBRD` feature flag, enabling clipboard support even without an X or
+        Wayland display server.
 
-    `Draw White Spaces`
+     >  When clipboard mode is not permanently enabled, the following
+        temporary clipboard keybindings are available on all Unix platforms
+        (both GUI and console). These provide on-demand clipboard access by
+        temporarily enabling clipboard mode for a single operation:
+
+     > >  `C-c c` - Copy selected region to clipboard (copy-region-clipboard)
+     > >  `C-c x` - Cut selected region to clipboard (kill-region with clipboard)
+     > >  `C-c v` - Paste from clipboard (yank from clipboard)
+
+     >  These keybindings call the `clipboard-temp-operation` macro which
+        temporarily sets the CLIPBOARD bit, performs the operation, and then
+        restores the original clipboard state. This allows occasional clipboard
+        use without permanently enabling clipboard integration.
+
+     `Draw White Spaces`
     
        Enables the drawing of visible white spaces, i.e. space, tab and
        new-line characters. This indirectly sets bit cG0x80000cA of the
@@ -44930,14 +45050,16 @@ $a
     
        See cDPlatform UNIX SetupcA above.
 
-    `Use Clipboard`
-    
-       See cDPlatform UNIX SetupcA above. In the console (mec), clipboard
-       support is provided via external tools (cGclip.execA for WSL/Cygwin,
-       cGxclipcA/cGxselcA for X11, cGwl-copycA/cGwl-pastecA for Wayland, or
-       cGpbcopycA/cGpbpastecA for macOS) using the cG_CLIPBRDcA feature flag.
+     `Use Clipboard`
+     
+     >  See cDPlatform UNIX SetupcA above. In the console (mec), clipboard
+        support is provided via external tools (`clip.exe` for WSL/Cygwin,
+        `xclip`/`xsel` for X11, `wl-copy`/`wl-paste` for Wayland, or
+        `pbcopy`/`pbpaste` for macOS) using the `_CLIPBRD` feature flag.
+        Temporary clipboard keybindings (`C-c c/x/v`) are also available
+        when clipboard mode is not permanently enabled.
 
-    `Draw White Spaces`
+     `Draw White Spaces`
     
        See cDPlatform UNIX SetupcA above.
 
