@@ -6242,6 +6242,8 @@ TTgetClipboard(void)
         return ;
     if(kbdmode == mePLAY)
         return ;
+    if(clexec)
+        return ;
 
     TTdetectClipTool();
 
