@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-08-21 12:05
+date: 2026-08-22 15:14
 ---
 
 ## Introduction
@@ -24,20 +24,38 @@ again.
 
 ## Ticket 3: FR - mdview markdown browser
 
-Similar  like `r-doc` and the `help` macro there should be a read-only  buffer
-*mdview* which allow to browse a set of Markdown files. Support could be first just basic, converting 
-headers, italic, bold and typewriter text to highlightes text as well as changing links like
+Similar  like `info`, `r-doc` and the `help` macro there should be a read-only  buffer
+`*mdview*` which allow to browse a set of Markdown files. Support could be first just basic, converting 
+headers, italic, bold and typewriter text to highlighted text as well as changing links like
 
 ```
 [link text](link.md) 
 ```
 
-to a _link text_ which can be clicked.
+to a _link text_ which can be clicked and then the content of the file 'link.md' is displayed.
 
-## Ticket 4: embedding luit functionality
+Files  to  consider:  @jasspa/macros/hkinfo.emd  implementing  an info  manual
+browser,   @jasspa/macros/hkehf.emf   implementing   the   ehf   browser   and
+@jasspa/macros/rtools.emf implementing the r-doc (R help browser) browser
 
-Mimic luit  functionality  to allow ME to run on UTF8  terminals with extendend
-character sets.x
+## Ticket 4: FR: embedding luit functionality
+
+Mimic luit  functionality  to allow ME to run on UTF8 terminals with extendend
+character  sets. Luit is a terminal  application  which allows other  terminal
+applications  which  do not  (yet)  support  UTF-8  character  sets  on  UTF-8
+terminals. The  application  starts like `luit  -encoding  ISO-8859-1  appname
+appargs` and in the background the conversion  between UTF-8 and ISO-8859-1 is
+done so that the user can as well  enter  extended  characters  beyond the 128
+limit.
+
+Goal: mimic luit functionality directly within MicroEmacs so that the user can
+enter characters higher then 128 bytes from the extended character set of a specific encoding
+
+1. Just support ISO-8859-1 for instance testing German Umlauts
+2. Implement CP1252 - extended Windows encoding
+3. Other ISO encodings
+4. Display non-endable characters with special symbol first later as \u1234 codes so that during writing they can be back converted
+5. Catch copy and paste operations to convert between the different character sets.
 
 ## Ticket 5: FR - simple api call to opencode
 
@@ -58,6 +76,8 @@ opencode run --model .... "question"
 
 Windows: After  fixing  the  resize  issue the mecb  terminal  window is usually  after
 resizing using one row and one column to small.
+
+Partially fixed, probably width can be still one character wider.
 
 ## Ticket 8: FR - Default Windows Font
 
