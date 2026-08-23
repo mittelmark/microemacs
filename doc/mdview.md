@@ -106,11 +106,12 @@ The implementation follows established ME patterns from:
 
 ### Navigation History
 
-- `.mdview.history-N` (N=0,1,2,...) stores absolute paths of visited files (buffer-local)
-- `.mdview.history-pos` tracks current position in history
-- `.mdview.history-count` tracks total entries
-- `.mdview.history-nav` flag prevents re-recording when navigating back/forward
-- `.mdview.source` stores the currently viewed file path
+- `.mdview.history` — pipe-separated list of visited file paths (buffer-local)
+- `.mdview.history-pos` — current position in history (0-based)
+- `.mdview.history-nav` — flag to prevent re-recording during back/forward
+- `.mdview.source` — directory of current file (for relative link resolution)
+- `.mdview.file` — full path of current file (for quit-to-editor)
+- History managed via `&llen`, `&lget`, `&linsert` list functions
 - Navbar rendered as markdown links before `mdview-render` processes them into
   `\els`/`\elm`/`\ele` clickable regions
 

@@ -1,0 +1,28 @@
+; -!- emf -!-
+; Copyright (C) 2026 Detlef Groth, Unversity of Potsdam
+;
+; Synopsis:    Browse Markdown pages in MicroEmacs
+; Authors:     Detlef Groth
+;
+; Usage:       mec @mdview <file.md>   - Markdown browsing for <file.md>
+;              mec @mdvie              - Prompt for filename
+;
+0 define-macro start-up
+  execute-file "me"
+  delete-other-windows
+  set-variable #l0 0
+  !while &not &seq $buffer-bname "*scratch*"
+    !force file-exists $buffer-fname
+    !if &equ $result 1
+      mdview $buffer-fname
+      delete-other-windows
+      set-variable #l0 1
+      !goto end
+    !endif
+  !done
+*end
+  !if &equ #l0 0
+    mdview
+    delete-other-windows
+  !endif
+!emacro

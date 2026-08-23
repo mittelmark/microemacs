@@ -97,16 +97,15 @@ define-macro mdview
     popup-window #l1
   !else
     find-buffer #l1
-    ; Initialize history variables in *mdview* buffer on first creation
-    set-variable .mdview.history-count 0
-    set-variable .mdview.history-pos -1
+    ; Initialize history in *mdview* buffer on first creation
+    set-variable .mdview.history "|"
+    set-variable .mdview.history-pos 0
     set-variable .mdview.history-nav "0"
   !endif
   ; Add to history unless navigating via history-back/forward
   !if &not &seq .mdview.history-nav "1"
-    set-variable .mdview.history-pos &add .mdview.history-pos 1
-    set-variable &ind &cat ".mdview.history-" .mdview.history-pos #l0
-    set-variable .mdview.history-count &add .mdview.history-pos 1
+    set-variable .mdview.history &linsert .mdview.history -1 #l0
+    set-variable .mdview.history-pos &llen .mdview.history
   !endif
   set-variable .mdview.history-nav "0"
   ; Clear buffer content (must disable view mode to allow modifications)
@@ -235,25 +234,23 @@ define-macro mdview
   -1 buffer-mode "view"
   beginning-of-buffer
   ; Build nav bar using markdown link syntax (mdview-render will process it)
+  ; History pos is 1-based, &lget uses 1-based index
   ; Home = first file in history (show when we have at least one entry)
-  !if &gre .mdview.history-count 0
+  !if &gre &llen .mdview.history 0
     insert-string "[Home]("
-    insert-string .mdview.history-0
+    insert-string &lget .mdview.history 1
     insert-string ")"
   !endif
   ; Prev = previous file in history (only if there IS a prev entry)
-  !if &gre .mdview.history-pos 0
+  !if &gre .mdview.history-pos 1
     insert-string " | [< Prev]("
-    set-variable #l1 &ind &cat ".mdview.history-" &sub .mdview.history-pos 1
-    insert-string #l1
+    insert-string &lget .mdview.history &sub .mdview.history-pos 1
     insert-string ")"
   !endif
   ; Next = next file in history (only if there IS a next entry)
-  set-variable #l2 &sub .mdview.history-count 1
-  !if &less .mdview.history-pos #l2
+  !if &less .mdview.history-pos &llen .mdview.history
     insert-string " | [Next >]("
-    set-variable #l1 &ind &cat ".mdview.history-" &add .mdview.history-pos 1
-    insert-string #l1
+    insert-string &lget .mdview.history &add .mdview.history-pos 1
     insert-string ")"
   !endif
   insert-newline
@@ -321,9 +318,15 @@ define-macro mdview
     !endif
   !endif
 
-  ; Check if file exists and open it
+  ; Check if file exists
   file-exists #l0
   !if &equ $result 1
+    ; If file is already in history, just move cursor (don't append)
+    set-variable #l1 &lfind .mdview.history #l0
+    !if &gre #l1 0
+      set-variable .mdview.history-pos #l1
+      set-variable .mdview.history-nav "1"
+    !endif
     -1 buffer-mode "view"
     1 buffer-mode "edit"
     mdview #l0
@@ -367,25 +370,23 @@ define-macro mdview
 ; ========================
 
 0 define-macro mdview-history-back
-  !if &les .mdview.history-pos 0
+  !if &les .mdview.history-pos 1
     ml-write "Already at beginning of history!"
     !abort
   !endif
   set-variable .mdview.history-pos &sub .mdview.history-pos 1
-  set-variable #l1 &ind &cat ".mdview.history-" .mdview.history-pos
   set-variable .mdview.history-nav "1"
-  mdview #l1
+  mdview &lget .mdview.history .mdview.history-pos
 !emacro
 
 0 define-macro mdview-history-forward
-  !if &gre .mdview.history-pos &sub .mdview.history-count 2
+  !if &gre .mdview.history-pos &llen .mdview.history
     ml-write "Already at end of history!"
     !abort
   !endif
   set-variable .mdview.history-pos &add .mdview.history-pos 1
-  set-variable #l1 &ind &cat ".mdview.history-" .mdview.history-pos
   set-variable .mdview.history-nav "1"
-  mdview #l1
+  mdview &lget .mdview.history .mdview.history-pos
 !emacro
 
 ; ========================
