@@ -7,7 +7,15 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260821.1232>
+>  Last Modified : <260823.1000>
+>
+>  [260823] - Added mdview Markdown viewer browser (Ticket 3).
+>            New command `mdview` opens a read-only *mdview* buffer with
+>            rendered Markdown. Supports headers, bold, italic, inline code,
+>            links [text](url), blockquotes, horizontal rules, lists, images,
+>            and strikethrough. Link navigation via Return, Tab/Shift-Tab,
+>            and mouse click. Relative link resolution from source directory.
+>            Files: jasspa/macros/hkmdview.emf, jasspa/macros/me.emf
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026

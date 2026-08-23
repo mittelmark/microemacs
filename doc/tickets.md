@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-08-22 15:14
+date: 2026-08-23 08:35
 ---
 
 ## Introduction
@@ -22,7 +22,7 @@ If the user does not like to use the clipboard all the time there shoould be two
 which  temporarly set the clipboard  active do the copy and then inactivate it
 again. 
 
-## Ticket 3: FR - mdview markdown browser
+## Ticket 3: FR - mdview markdown browser (WIP)
 
 Similar  like `info`, `r-doc` and the `help` macro there should be a read-only  buffer
 `*mdview*` which allow to browse a set of Markdown files. Support could be first just basic, converting 
