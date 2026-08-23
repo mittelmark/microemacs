@@ -32,11 +32,11 @@ define-macro fhook-mdview
 set-variable .fhook-mdview.name "Markdown Viewer"
 set-variable .fhook-mdview.setup &reg "/history/fhook/mdview" "ghijmopwx"
 set-variable .fhook-mdview.setup-mask "aeghijkopstuwx1"
-set-variable .fhook-mdview.command-flag  "|th|th|th|th|th|"
-set-variable .fhook-mdview.command-name  "|mdview-process-link|mdview-backward-link|mdview-forward-link|scroll-down|mdview-quit|"
-set-variable .fhook-mdview.command-nbind "|0|||||"
-set-variable .fhook-mdview.command-kbind "|||||"
-set-variable .fhook-mdview.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move to \HNext Link|Page Down|Quit Viewer|"
+set-variable .fhook-mdview.command-flag  "|th|th|th|th|th|th|th|"
+set-variable .fhook-mdview.command-name  "|mdview-process-link|mdview-backward-link|mdview-forward-link|scroll-down|mdview-quit|mdview-history-back|mdview-history-forward|"
+set-variable .fhook-mdview.command-nbind "|0||||||"
+set-variable .fhook-mdview.command-kbind "||||||"
+set-variable .fhook-mdview.command-desc  "|\HGoto Link|Move to \HPrevious Link|Move to \HNext Link|Page Down|Quit Viewer|\HBack in History|\HForward in History|"
 ; Enable hilight by default
 set-variable .fhook-mdview.setup "ghijmophwx"
 
@@ -52,17 +52,17 @@ set-variable .fhook-mdview.setup "ghijmophwx"
 
     0 hilight .hilight.mdview 2 50                     $global-scheme
     ; Formatting markers inserted by mdview-render
-    hilight .hilight.mdview 0x44 "\ecE" "" "\\}\e" "" "" .scheme.header   ; headers
-    hilight .hilight.mdview 0x44 "\ecD" "" "\\}\e" "" "" .scheme.bold     ; bold
-    hilight .hilight.mdview 0x44 "\ecC" "" "\\}\e" "" "" .scheme.italic   ; italic
-    hilight .hilight.mdview 0x44 "\ecG" "" "\\}\e" "" "" .scheme.keyword  ; inline code
-    hilight .hilight.mdview 0x44 "\ecF" "" "\\}\e" "" "" .scheme.comment  ; code fence markers
-    hilight .hilight.mdview 0x44 "\ecB" "" "\\}\e" "" "" .scheme.string   ; code blocks
-    hilight .hilight.mdview 0x44 "\ecH" "" "\\}\e" "" "" .scheme.quote    ; blockquotes
-    hilight .hilight.mdview 0x44 "\ecI" "" "\\}\e" "" "" .scheme.hidden   ; horizontal rules
-    hilight .hilight.mdview 0x44 "\ecJ" "" "\\}\e" "" "" .scheme.string   ; images
+    hilight .hilight.mdview 0x44 "\ecE" "" "\ecA" "" "" .scheme.header   ; headers
+    hilight .hilight.mdview 0x44 "\ecD" "" "\ecA" "" "" .scheme.bold     ; bold
+    hilight .hilight.mdview 0x44 "\ecC" "" "\ecA" "" "" .scheme.italic   ; italic
+    hilight .hilight.mdview 0x44 "\ecG" "" "\ecA" "" "" .scheme.keyword  ; inline code
+    hilight .hilight.mdview 0x44 "\ecF" "" "\ecA" "" "" .scheme.comment  ; code fence markers
+    hilight .hilight.mdview 0x44 "\ecB" "" "\ecA" "" "" .scheme.string   ; code blocks
+    hilight .hilight.mdview 0x44 "\ecH" "" "\ecA" "" "" .scheme.quote    ; blockquotes
+    hilight .hilight.mdview 0x44 "\ecI" "" "\ecA" "" "" .scheme.hidden   ; horizontal rules
+    hilight .hilight.mdview 0x44 "\ecJ" "" "\ecA" "" "" .scheme.string   ; images
     ; Link markers
-    hilight .hilight.mdview 0x80 "\els" "" .hilight.mdviewL $global-scheme
+    hilight .hilight.mdview 0xc0 "\els" "" .hilight.mdviewL $global-scheme
     hilight .hilight.mdview 0x44 "\elm" "" "\el." "" ""  .scheme.link
     hilight .hilight.mdview 0x44 "\eln" "" "\ele" "" ""  .scheme.link
     ; Sub-hilight for link regions
@@ -76,53 +76,69 @@ set-variable .fhook-mdview.setup "ghijmophwx"
 ; ========================
 
 define-macro mdview
-    ; Check if invoked with argument first
-    !force set-variable #l0 @1
-    !if &not $status
-        ; No argument - check if current buffer is a markdown file
-        set-variable #l1 $buffer-fhook
-        !if &or &seq #l1 "fhook-md" &seq #l1 "fhook-mdview"
-            set-variable #l0 $buffer-file-name
-        !else
-            set-variable #l0 @ml00 "View markdown file"
-        !endif
-    !endif
-    !if &seq #l0 ""
-        !return
-    !endif
-    ; Create or reuse *mdview* buffer
-    set-variable #l1 "*mdview*"
-    !force 0 find-buffer #l1
-    !if $status
-        popup-window #l1
+  ; Check if invoked with argument first
+  !force set-variable #l0 @1
+  !if &not $status
+    ; No argument - check if current buffer is a markdown file
+    set-variable #l1 $buffer-fhook
+    !if &or &seq #l1 "fhook-md" &seq #l1 "fhook-mdview"
+      set-variable #l0 $buffer-fname
     !else
-        find-buffer #l1
+      set-variable #l0 @ml04 "View markdown file"
     !endif
-    ; Clear buffer content
-    -1 buffer-mode "undo"
-    -1 buffer-mode "edit"
-    1 buffer-mode "magic"
-    beginning-of-buffer
-    set-mark
-    end-of-buffer
-    kill-region
-    ; Load file
-    !force insert-file #l0
-    !if &not $status
-        ml-write &spr "Error: Cannot open file '%s'" #l0
-        !return
-    !endif
-    ; Store source file path for relative link resolution
-    set-variable %mdview-source #l0
-    beginning-of-buffer
-    ; Transform Markdown -> ME formatting markers
-    mdview-render
-    ; Set view mode
-    -1 buffer-mode "edit"
-    1 buffer-mode "view"
-    set-variable $buffer-fhook "fhook-mdview"
-    beginning-of-buffer
-    ml-write &spr "Markdown viewer: %s" &lef #l0 &rsin "/" #l0
+  !endif
+  !if &seq #l0 ""
+    !return
+  !endif
+  ; Create or reuse *mdview* buffer FIRST (all .mdview.* ops must be in this buffer)
+  set-variable #l1 "*mdview*"
+  !force 0 find-buffer #l1
+  !if $status
+    popup-window #l1
+  !else
+    find-buffer #l1
+    ; Initialize history variables in *mdview* buffer on first creation
+    set-variable .mdview.history-count 0
+    set-variable .mdview.history-pos -1
+    set-variable .mdview.history-nav "0"
+  !endif
+  ; Add to history unless navigating via history-back/forward
+  !if &not &seq .mdview.history-nav "1"
+    set-variable .mdview.history-pos &add .mdview.history-pos 1
+    set-variable &ind &cat ".mdview.history-" .mdview.history-pos #l0
+    set-variable .mdview.history-count &add .mdview.history-pos 1
+  !endif
+  set-variable .mdview.history-nav "0"
+  ; Clear buffer content (must disable view mode to allow modifications)
+  -1 buffer-mode "view"
+  -1 buffer-mode "undo"
+  1 buffer-mode "magic"
+  beginning-of-buffer
+  set-mark
+  end-of-buffer
+  kill-region
+  ; Load file
+  !force insert-file #l0
+  !if &not $status
+    ml-write &spr "Error: Cannot open file '%s'" #l0
+    !return
+  !endif
+  ; Store source directory for relative link resolution
+  set-variable .mdview.source &lef #l0 &rsin "/" #l0
+  ; Store full path for quit-to-editor
+  set-variable .mdview.file #l0
+  beginning-of-buffer
+  ; Insert navigation bar first (before rendering)
+  mdview-insert-navbar
+  ; Transform Markdown -> ME formatting markers
+  mdview-render
+  ; Set view mode
+  -1 buffer-mode "edit"
+  1 buffer-mode "view"
+  set-variable $buffer-fhook "fhook-mdview"
+  
+  beginning-of-buffer
+  ml-write &spr "Markdown viewer: %s" &lef #l0 &rsin "/" #l0
 !emacro
 
 ; ========================
@@ -166,49 +182,81 @@ define-macro mdview
     replace-string "^# \\(.*\\)$"          "\ecE\\1\ecA"
     ; --- Bold and Italic ---
     beginning-of-buffer
-    replace-string "\\*\\*\\([^*]+\\)\\*\\*" "\\ecD\\1\ecA"
+    replace-string "\\*\\*\\([^*]+\\)\\*\\*" "\ecD\\1\ecA"
     beginning-of-buffer
-    replace-string "__\\([^_]+\\)__"          "\\ecD\\1\ecA"
+    replace-string "__\\([^_]+\\)__"          "\ecD\\1\ecA"
     beginning-of-buffer
-    replace-string "\\*\\([^*]+\\)\\*"        "\\ecC\\1\ecA"
+    replace-string "\\*\\([^*]+\\)\\*"        "\ecC\\1\ecA"
     beginning-of-buffer
-    replace-string "_\\([^_]+\\)_"            "\\ecC\\1\ecA"
+    replace-string "_\\([^_]+\\)_"            "\ecC\\1\ecA"
     ; --- Inline Code ---
     beginning-of-buffer
-    replace-string "`\\([^`]+\\)`"            "\\ecG\\1\ecA"
+    replace-string "`\\([^`]+\\)`"            "\ecG\\1\ecA"
     ; --- Links [text](url) -> \els\elm\ele ---
     beginning-of-buffer
-    replace-string "\\[\\([^]]+\\)](\\([^)]+\\))" "\\els\\2\\elm\\1\\ele"
+    replace-string "\\[\\([^]]+\\)](\\([^)]+\\))" "\els\\2\elm\\1\ele"
     ; --- Standalone URLs <url> or bare (url) ---
     beginning-of-buffer
-    replace-string "<\\(http[^>]+\\)>"       "\\els\\1\\elm\\1\\ele"
+    replace-string "<\\(http[^>]+\\)>"       "\els\\1\elm\\1\ele"
     ; --- Images ![alt](url) ---
     beginning-of-buffer
-    replace-string "!\\[\\([^]]*\\)](\\([^)]+\\))" "\\ecJ[Image: \\1]\ecA"
+    replace-string "!\\[\\([^]]*\\)](\\([^)]+\\))" "\ecJ[Image: \\1]\ecA"
     ; --- Blockquotes ---
     beginning-of-buffer
-    replace-string "^> \\(.*\\)$"            "\\ecH> \\1\ecA"
+    replace-string "^> \\(.*\\)$"            "\ecH> \\1\ecA"
     ; --- Horizontal rules ---
     beginning-of-buffer
-    replace-string "^---$"                   "\\ecI────────────────────────────────\ecA"
+    replace-string "^---$"                   "\ecE---\ecA"
     beginning-of-buffer
-    replace-string "^\\*\\*\\*$"             "\\ecI────────────────────────────────\ecA"
+    replace-string "^\\*\\*\\*$"             "\ecI---\ecA"
     ; --- Unordered lists (basic) ---
     beginning-of-buffer
-    replace-string "^  \\* "                 "    • "
+    replace-string "^  \\* "                 "    \ecE* \ecA• "
     beginning-of-buffer
-    replace-string "^\\* "                   "  • "
+    replace-string "^\\* "                   "\ecE*\ecA"
     beginning-of-buffer
-    replace-string "^  - "                   "    – "
+    replace-string "^  - "                   "  \ecE-\ecA"
     beginning-of-buffer
-    replace-string "^- "                     "  – "
+    replace-string "^- "                     "\ecE-\ecA "
     ; --- Ordered lists (basic) ---
     beginning-of-buffer
     replace-string "^[0-9]+\\. "             "  1. "
     ; --- Strikethrough ---
     beginning-of-buffer
-    replace-string "~~\\([^~]+\\)~~"         "\\ecG\\1\ecA"
+    replace-string "~~\\([^~]+\\)~~"         "\ecG\\1\ecA"
     -1 buffer-mode "view"
+!emacro
+
+; ========================
+; Navigation bar
+; ========================
+
+0 define-macro mdview-insert-navbar
+  -1 buffer-mode "view"
+  beginning-of-buffer
+  ; Build nav bar using markdown link syntax (mdview-render will process it)
+  ; Home = first file in history (show when we have at least one entry)
+  !if &gre .mdview.history-count 0
+    insert-string "[Home]("
+    insert-string .mdview.history-0
+    insert-string ")"
+  !endif
+  ; Prev = previous file in history (only if there IS a prev entry)
+  !if &gre .mdview.history-pos 0
+    insert-string " | [< Prev]("
+    set-variable #l1 &ind &cat ".mdview.history-" &sub .mdview.history-pos 1
+    insert-string #l1
+    insert-string ")"
+  !endif
+  ; Next = next file in history (only if there IS a next entry)
+  set-variable #l2 &sub .mdview.history-count 1
+  !if &less .mdview.history-pos #l2
+    insert-string " | [Next >]("
+    set-variable #l1 &ind &cat ".mdview.history-" &add .mdview.history-pos 1
+    insert-string #l1
+    insert-string ")"
+  !endif
+  insert-newline
 !emacro
 
 ; ========================
@@ -216,68 +264,72 @@ define-macro mdview
 ; ========================
 
 0 define-macro mdview-process-link
-    set-variable #l0 $window-col
-    set-variable #l1 $window-line
-    ; Try \els ... \ele link markers first
-    !force -5 search-forward "\ele"
-    !if $status
-        !force -5 search-backward "\els"
-        !if &and $status &or &les $window-line #l1 &and &equ $window-line #l1 &not &gre $window-col #l0
-            3 forward-char
-            set-mark
-            -1 search-forward "\elm"
-            3 backward-char
-            copy-region
-            set-variable #l2 @y
-            -1 yank
-            !if &seq #l2 ""
-                3 forward-char
-                set-mark
-                -1 search-forward "\ele"
-                3 backward-char
-                copy-region
-                set-variable #l2 @y
-                -1 yank
-            !endif
-            mdview-follow-link #l2
-            !return
-        !endif
-    !endif
-    ; Try markdown [[link]] syntax
-    !force -1 search-forward "]]"
-    !if $status
-        2 backward-char
+  set-variable #l0 $window-col
+  set-variable #l1 $window-line
+  ; Try \els ... \ele link markers first
+  !force -5 search-forward "\ele"
+  !if $status
+    !force -5 search-backward "\els"
+    !if &and $status &or &les $window-line #l1 &and &equ $window-line #l1 &not &gre $window-col #l0
+      3 forward-char
+      set-mark
+      -1 search-forward "\elm"
+      3 backward-char
+      copy-region
+      set-variable #l2 @y
+      -1 yank
+      !if &seq #l2 ""
+        3 forward-char
         set-mark
-        -1 search-backward "\\[\\["
-        !if $status
-            2 forward-char
-            copy-region
-            set-variable #l0 @y
-            -1 yank
-            mdview-follow-link #l0
-            !return
-        !endif
+        -1 search-forward "\ele"
+        3 backward-char
+        copy-region
+        set-variable #l2 @y
+        -1 yank
+      !endif
+      mdview-follow-link #l2
+      !return
     !endif
-    ml-write "Not on a link!"
-    !abort
+  !endif
+  ; Try markdown [[link]] syntax
+  !force -1 search-forward "]]"
+  !if $status
+    2 backward-char
+    set-mark
+    -1 search-backward "\\[\\["
+    !if $status
+      2 forward-char
+      copy-region
+      set-variable #l0 @y
+      -1 yank
+      mdview-follow-link #l0
+      !return
+    !endif
+  !endif
+  ml-write "Not on a link!"
+  !abort
 !emacro
 
 0 define-macro mdview-follow-link
-    set-variable #l0 @1
-    ; Resolve relative path
-    !if &not &seq &lef #l0 4 "http"
-        !if &not &seq &lef #l0 1 "/"
-            ; Relative path - resolve from source file directory
-            set-variable #l1 &lef %mdview-source &rsin "/" %mdview-source
-            set-variable #l0 &cat #l1 #l0
-        !endif
+  set-variable #l0 @1
+
+  ; Resolve relative path
+  !if &not &seq &lef #l0 4 "http"
+    !if &not &seq &lef #l0 1 "/"
+      ; Relative path - resolve from source file directory
+      set-variable #l0 &cat .mdview.source #l0
     !endif
-    ; Check if file exists and open it
-    !if &not &seq &which #l0 ""
-        mdview #l0
-    !else
-        ml-write &spr "File not found: %s" #l0
-    !endif
+  !endif
+
+  ; Check if file exists and open it
+  file-exists #l0
+  !if &equ $result 1
+    -1 buffer-mode "view"
+    1 buffer-mode "edit"
+    mdview #l0
+  !else
+    ml-write &spr "File not found: %s" #l0
+  !endif
 !emacro
 
 ; ========================
@@ -311,13 +363,44 @@ define-macro mdview
 !emacro
 
 ; ========================
+; History navigation
+; ========================
+
+0 define-macro mdview-history-back
+  !if &les .mdview.history-pos 0
+    ml-write "Already at beginning of history!"
+    !abort
+  !endif
+  set-variable .mdview.history-pos &sub .mdview.history-pos 1
+  set-variable #l1 &ind &cat ".mdview.history-" .mdview.history-pos
+  set-variable .mdview.history-nav "1"
+  mdview #l1
+!emacro
+
+0 define-macro mdview-history-forward
+  !if &gre .mdview.history-pos &sub .mdview.history-count 2
+    ml-write "Already at end of history!"
+    !abort
+  !endif
+  set-variable .mdview.history-pos &add .mdview.history-pos 1
+  set-variable #l1 &ind &cat ".mdview.history-" .mdview.history-pos
+  set-variable .mdview.history-nav "1"
+  mdview #l1
+!emacro
+
+; ========================
 ; Quit viewer
 ; ========================
 
 0 define-macro mdview-quit
     !if &seq $buffer-bname "*mdview*"
+        !force set-variable #l0 .mdview.file
         !force delete-buffer "*mdview*"
+        !if &and $status &not &seq #l0 "" &not &seq #l0 "ERROR"
+            find-file #l0
+        !endif
     !endif
 !emacro
 
 buffer-init-fhook "mdview"
+add-file-hook "*mdview*" fhook-mdview
