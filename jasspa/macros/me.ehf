@@ -392,7 +392,8 @@ Miscellaneous Information
     position) and the cDmarkcA defined by lsset-mark(2)lmset-markle.
 
     lscopy-rectangle(3)lmcopy-rectangle(3)le Copy a rectangular region of text  
-    lscopy-region(2)lmcopy-region(2)le (esc w) Copy a region of the buffer  
+    lscopy-region(2)lmcopy-region(2)le Copy a region of the buffer  
+    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (esc w) Copy a region of the buffer to the system clipboard  
     lscount-words(2)lmcount-words(2)le (esc C-c) Count the number of words in a region  
     lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le (C-x C-x) Exchange the cursor and marked
     position  
@@ -523,6 +524,7 @@ Miscellaneous Information
     lsjavatags(3f)lmjavatags(3f)le Generate a C tags file from Java sources  
     lsjstags(3f)lmjstags(3f)le Generate a Javascript tags file  
     lsluatags(3f)lmluatags(3f)le Generate a Lua tags file  
+    lsmdview(3f)lmmdview(3f)le Markdown browser of MicroEmacs  
     lsntags(3f)lmntags(3f)le Generate a nroff tags file  
     lsperltags(3f)lmperltags(3f)le Generate a Perl tags file  
     lsphptags(3f)lmphptags(3f)le Generate a PHP tags file    
@@ -1173,6 +1175,7 @@ Miscellaneous Information
     lsinfo-goto-link(3)lminfo-goto-link(3)le Display Info on a given link  
     lsinfo-on(3)lminfo-on(3)le Display Info on a given topic  
     lslist-buffers(2)lmlist-buffers(2)le (C-x C-b) List all buffers and show their status  
+    lsmdview(3)lmmdview(3)le Display Markdown files in a Markdown browser  
     lsosd-help(3)lmosd-help(3)le GUI based on-line help  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
     lsr-doc(3)lmr-doc(3)le Display R function and package manual pages  
@@ -1925,7 +1928,8 @@ Miscellaneous Information
     lscompare-windows-exact(3)lmcompare-windows-exact(3)le Compare buffer windows, with whitespace  
     lscompile(3)lmcompile(3)le Start a compilation process  
     lscopy-rectangle(3)lmcopy-rectangle(3)le Copy a rectangular region of text  
-    lscopy-region(2)lmcopy-region(2)le (esc w) Copy a region of the buffer  
+    lscopy-region(2)lmcopy-region(2)le Copy a region of the buffer  
+    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (esc w) Copy a region of the buffer to the system clipboard    
     lscopy-registry(3)lmcopy-registry(3)le Recursive copy of registry subtree  
     lscount-words(2)lmcount-words(2)le (esc C-c) Count the number of words in a region  
     lscreate-callback(2)lmcreate-callback(2)le Create a timer callback  
@@ -2118,6 +2122,7 @@ Miscellaneous Information
     lsman(3)lmman(3)le UNIX manual page viewer  
     lsman-clean(3)lmman-clean(3)le Clean UNIX manual page  
     lsmark-registry(2)lmmark-registry(2)le Modify the operating mode of a registry node  
+    lsmdview(3)lmmdview(3)le Display Markdown files in a Markdown browser    
     lsml-bind-key(2)lmml-bind-key(2)le Create key binding for message line  
     lsml-unbind-key(2)lmml-unbind-key(2)le Remove key binding from message line  
     lsml-write(2)lmml-write(2)le Write message on message line  
@@ -2366,7 +2371,8 @@ Miscellaneous Information
     lscommand-apropos(2)lmcommand-apropos(2)le (C-h a) List commands involving a concept  
     lscommand-wait(2)lmcommand-wait(2)le Conditional wait command  
     lscompare-windows(2)lmcompare-windows(2)le Compare buffer windows, ignore whitespace  
-    lscopy-region(2)lmcopy-region(2)le (esc w) Copy a region of the buffer  
+    lscopy-region(2)lmcopy-region(2)le Copy a region of the buffer 
+    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (esc w) Copy a region of the buffer to the system clipboard    
     lscount-words(2)lmcount-words(2)le (esc C-c) Count the number of words in a region  
     lscreate-callback(2)lmcreate-callback(2)le Create a timer callback  
     lscreate-frame(2)lmcreate-frame(2)le (C-x 5 1, C-x 5 2) Create a new frame  
@@ -2695,6 +2701,7 @@ Miscellaneous Information
     lsmajor-mode-setup(3)lmmajor-mode-setup(3)le Configures the current buffer settings  
     lsman(3)lmman(3)le UNIX manual page viewer  
     lsman-clean(3)lmman-clean(3)le Clean UNIX manual page  
+    lsmdview(3)lmmdview(3)le Display Markdown files in a Markdown browser    
     lsnarrow-search-backward(3)lmnarrow-search-backward(3)le (C-c r) Search for a string in the backward direction  
     lsnarrow-search-forward(3)lmnarrow-search-forward(3)le (C-c s) Search for a string in the forward direction    
     lsnormal-tab(3)lmnormal-tab(3)le Insert a normal tab  
@@ -3527,7 +3534,8 @@ Miscellaneous Information
     lscompare-windows-exact(3)lmcompare-windows-exact(3)le Compare buffer windows, with whitespace  
     lscompile(3)lmcompile(3)le Start a compilation process  
     lscopy-rectangle(3)lmcopy-rectangle(3)le Copy a rectangular region of text  
-    lscopy-region(2)lmcopy-region(2)le (esc w) Copy a region of the buffer  
+    lscopy-region(2)lmcopy-region(2)le Copy a region of the buffer  
+    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (esc w) Copy a region of the buffer to the system clipboard  
     lscopy-registry(3)lmcopy-registry(3)le Recursive copy of registry subtree  
     lscount-words(2)lmcount-words(2)le (esc C-c) Count the number of words in a region  
     lscpp(9)lmcpp(9)le C++ programming language  
@@ -3836,6 +3844,7 @@ Miscellaneous Information
     lsman-clean(3)lmman-clean(3)le Clean UNIX manual page  
     lsmark-registry(2)lmmark-registry(2)le Modify the operating mode of a registry node  
     lsmd(9)lmmd(9)le Markdown Markup File  
+    lsmdview(3)lmmdview(3)le Display Markdown files in a Markdown browser    
     lsme(1)lmme(1)le MicroEmacs 2009 text editor  
     lsme32.ini(8)lmme32.ini(8)le Microsoft Window's Initialization (ini) File  
     lsmemsdev(1)lmmemsdev(1)le Microsoft Developer Studio Add-in for MicroEmacs 2009  
@@ -5185,6 +5194,23 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [260824] - Added mdview navigation history and wiki-style link creation.
+                 History tracks visited files with Start/Prev/Next navigation.
+                 History view lists all visited files as clickable links.
+                 Missing files prompt user to create them (wiki-style).
+                 Added Help page with key binding reference.
+                 Added Index/Home links if index.md/home.md exist.
+                 Added File:filename display in navigation bar.
+                 Added doc/mdview.md, doc/me-functions.md (ME function cheat sheet).
+
+    - [260823] - Added mdview Markdown viewer browser (Ticket 3).
+                 New command 'mdview' opens a read-only *mdview* buffer with
+                 rendered Markdown. Supports headers, bold, italic, inline code,
+                 links lsurllmtextle, blockquotes, horizontal rules, lists, images,
+                 and strikethrough. Link navigation via Return, Tab/Shift-Tab,
+                 and mouse click. Relative link resolution from source directory.
+                 Files: jasspa/macros/hkmdview.emf, jasspa/macros/me.emf
+
     - [260821] - Fixed Wayland clipboard crash in help browser and macros.
                  Separated clipboard from kill-buffer: copy-region now only
                  updates kill buffer; new copy-region-clipboard command wraps
@@ -5199,12 +5225,12 @@ Miscellaneous Information
 
     - [260821] - Fixed X11 clipboard duplication: after explicit copy, mouse
                  selection no longer overwrites CLIPBOARD. Added
-                CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
+                 CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
                  only.
 
     - [260821] - Added clipboard tool availability warnings in user-setup and
-                startup when clipboard is enabled but no external tool
-                (xclip, wl-copy, pbcopy) is found.
+                 startup when clipboard is enabled but no external tool
+                 (xclip, wl-copy, pbcopy) is found.
 
     - [260821] - Consolidated clipboard documentation (x11-clipboard.md,
                  wayland-clipboard.md, help-copy-fix.md) into
@@ -13444,17 +13470,22 @@ $a
 
     ls$mouse-pos(5)lm$mouse-pos(5)le, ls$scroll-bar(5)lm$scroll-bar(5)le, lsset-cursor-to-mouse(2)lmset-cursor-to-mouse(2)le.
 ! 2 copy-region
+! 2 copy-region-clipboard
 cEcENAME cEcA
 
 
-    copy-region - Copy a region of the buffer
+    copy-region - Copy a region of the buffer  
+    copy-region-clipboard - Copy a region of the buffer to the system clipboard
+$a
+
 $a
 
 
 cESYNOPSIS cA
 
 
-    cCncA cDcopy-regioncA
+    cCncA cDcopy-regioncA  
+    cCncA cDcopy-region-clipboardcA (cDesc wcA)
 
 
 cEDESCRIPTION cA
@@ -13466,6 +13497,22 @@ $a
 
     If the last command also entered text into the kill buffer (or the ls@cl(4)lm@cl(4)le
     variable is set to one of these commands) the cDcopy-regioncA text is appended
+    to the last kill.
+
+    The numeric argument cCncA determines how the copy operates when a narrow
+    region, defined by lsnarrow-buffer(2)lmnarrow-buffer(2)le, is encountered. The default
+    operation, when the number argument is cG1cA, is to copy all of the text
+    contained within the narrowed region. When the numeric argument is cG0cA then
+    narrowed region is NOT copied and the text is copied as it appears in the
+    buffer.
+
+    cDcopy-region-clipboardcA copies all the characters between the cursor and the mark set
+    with the lsset-mark(2)lmset-mark(2)le command into both the kill buffer and the system
+    clipboard (so they can later be lsyank(2)lmyankedle elsewhere or pasted into
+    external applications).
+
+    If the last command also entered text into the kill buffer (or the ls@cl(4)lm@cl(4)le
+    variable is set to one of these commands) the cDcopy-region-clipboardcA text is appended
     to the last kill.
 
     The numeric argument cCncA determines how the copy operates when a narrow
@@ -13507,7 +13554,7 @@ $a
     lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le (cDEsc wcA) or the temporary clipboard
     keybinding cDC-c ccA.
 
-    ### X11 and Wayland Clipboard Support
+    cDX11 and Wayland Clipboard SupportcA
 
     On X11/XWayland systems, MicroEmacs uses two X11 selections:
     - cDX11 PRIMARYcA: Set by mouse text selection, used for middle-click paste
@@ -13537,51 +13584,7 @@ $a
 
     The numeric argument cCncA was introduced in the '04 release.
 
-
-cESEE ALSO cA
-
-
-    lscopy-region-clipboard(2)lmcopy-region-clipboard(2)le, lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le, lskill-region(2)lmkill-region(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsset-mark(2)lmset-mark(2)le,
-    lsyank(2)lmyank(2)le.
-! 2 copy-region-clipboard
-cEcENAME cEcA
-
-
-    copy-region-clipboard - Copy a region of the buffer to the system clipboard
-$a
-
-
-cESYNOPSIS cA
-
-
-    cCncA cDcopy-region-clipboardcA (cDesc wcA)
-
-
-cEDESCRIPTION cA
-
-
-    cDcopy-region-clipboardcA copies all the characters between the cursor and the mark set
-    with the lsset-mark(2)lmset-mark(2)le command into both the kill buffer and the system
-    clipboard (so they can later be lsyank(2)lmyankedle elsewhere or pasted into
-    external applications).
-
-    If the last command also entered text into the kill buffer (or the ls@cl(4)lm@cl(4)le
-    variable is set to one of these commands) the cDcopy-region-clipboardcA text is appended
-    to the last kill.
-
-    The numeric argument cCncA determines how the copy operates when a narrow
-    region, defined by lsnarrow-buffer(2)lmnarrow-buffer(2)le, is encountered. The default
-    operation, when the number argument is cG1cA, is to copy all of the text
-    contained within the narrowed region. When the numeric argument is cG0cA then
-    narrowed region is NOT copied and the text is copied as it appears in the
-    buffer.
-
-
-cENOTES cA
-
-
-    cDcopy-region-clipboardcA is the recommended command for copying text to external
-    applications. The regular lscopy-region(2)lmcopy-region(2)le command only updates the internal
+ The regular lscopy-region(2)lmcopy-region(2)le command only updates the internal
     kill buffer, not the system clipboard.
 
     On X11/XWayland systems, cDcopy-region-clipboardcA updates the X11 CLIPBOARD
@@ -13590,10 +13593,11 @@ $a
     lscopy-region(2)lmcopy-region(2)le for more details.
 
 
+
 cESEE ALSO cA
 
 
-    lscopy-region(2)lmcopy-region(2)le, lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le, lskill-region(2)lmkill-region(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsset-mark(2)lmset-mark(2)le,
+    lsexchange-point-and-mark(2)lmexchange-point-and-mark(2)le, lskill-region(2)lmkill-region(2)le, lsnarrow-buffer(2)lmnarrow-buffer(2)le, lsset-mark(2)lmset-mark(2)le,
     lsyank(2)lmyank(2)le.
 ! 2 count-words
 cEcENAME cEcA
@@ -24561,7 +24565,7 @@ $a
     from the internal kill buffer. To paste from the system clipboard on-demand,
     use the temporary clipboard keybinding cDC-c vcA.
 
-    ### X11 and Wayland Clipboard Support
+    cDX11 and Wayland Clipboard SupportcA
 
     On Wayland systems (including XWayland), the cDyankcA command tries the
     Wayland clipboard first, falling back to the X11 CLIPBOARD selection if
@@ -34141,6 +34145,98 @@ $a
 
     lsme(1)lmme(1)le, lsstart-up(3)lmstart-up(3)le, lsinfo(3)lminfo(3)le, 
     lspy-doc(3)lmpy-doc(3)le, lsr-doc(3)lmr-doc(3)le.
+! 3fmdview
+cEcENAME cEcA
+
+
+    mdview - Markdown viewer browser
+
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmecA "@mdview" cC<file.md>cA
+    cDM-xcA cDmdviewcA cC<file.md>cA
+
+
+cEDESCRIPTION cA
+
+
+    The cDmdviewcA command opens a Markdown file in a read-only viewer buffer
+    (*mdview*) with rendered formatting. Markdown syntax is transformed into
+    colored display markers for headers, bold, italic, inline code, links,
+    blockquotes, horizontal rules, lists, images, and strikethrough.
+
+    The viewer provides a navigation bar at the top of each page with links
+    to cCStartcA - first file in history, cCHistorycA - visited files list,
+    cCHelpcA - key bindings listening, and optionally cCIndexcA - link to index.md
+    and  cCHomecA - link to cChome.mdcA if those files exist in the source directory. 
+    The current filename is displayed at the end of the navigation bar.
+
+
+cEKey Bindings cA
+
+
+    The following key bindings are active in cDmdviewcA mode:
+
+    cDReturncA
+    
+       Follow the link under the cursor. Internal links open the target
+       file in the viewer. Links to non-existing files prompt the user to
+       create them (wiki-style).
+
+    cDTabcA
+    
+       Move to the next link in the document.
+
+    cDShift-TabcA
+    
+       Move to the previous link in the document.
+
+    cDSpacecA
+    
+       Scroll down one page.
+
+    cDbcA
+    
+       Jump to the beginning of the buffer.
+
+    cDqcA
+    
+       Quit the viewer and open the current file in the editor for
+       modification.
+
+
+cENavigation History cA
+
+
+    The viewer maintains a session history of visited files. The navigation
+    bar provides [Start] (first file), [History] (all visited files as a
+    clickable list), [\< Prev] and [Next \>] for history navigation, and
+    [Help] for key binding reference.
+
+cEEXAMPLE cA
+
+
+    You can directly run ME as Markdown file browser like this:
+
+
+        mecb @mdview file.md    
+
+cENOTES cA
+
+
+    cDmdviewcA is a macro implemented in file cGhkmdview.emfcA and the startup file
+    is cGmdview.emfcA.
+
+
+
+cESEE ALSO cA
+
+
+    lsstart-up(3)lmstart-up(3)le.
 ! 3 compile
 cEcENAME cEcA
 
@@ -44566,6 +44662,42 @@ $a
 
 
     lsuser-setup(3)lmuser-setup(3)le, ls$system(5)lm$system(5)le, lsadd-color-scheme(2)lmadd-color-scheme(2)le.
+! 3 mdview
+cEcENAME cEcA
+
+
+|mdview
+    mdview - View a Markdown file in browser mode  
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDmdviewcA
+
+    cDmdviewcA cCfilename.mdcA
+
+
+
+cEDESCRIPTION cA
+
+
+    cDmdviewcA starts an interactive browser for the current Markdown file, or
+    if the currently active file is not a Markdown user prompts the user for 
+    a filename.
+
+
+cENOTES cA
+
+
+    cDmdviewcA is a macro implemented in file cGhkmdview.emfcA.
+
+
+cESEE ALSO cA
+
+
+    lsMarkdown(9)lmMarkdown(9)le, lsmdview(3f)lmmdview(3f)le.
 ! 3 user-setup
 cEcENAME cEcA
 
@@ -63652,7 +63784,7 @@ $a
     lsabbrev-list(3)lmabbrev-list(3)le, lsexpand-abbrev-handle(3)lmexpand-abbrev-handlele, 
     lsbuffer-setup(3)lmbuffer-setup(3)le, lsspell-buffer(3)lmspell-buffer(3)le,
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le, 
-    lsitem-list(3)lmitem-list(3)le.
+    lsitem-list(3)lmitem-list(3)le, lsmdview(3f)lmmdview(3f)le.
 ! 9 MetaFont
 ! 9 mp
 ! 9 mf

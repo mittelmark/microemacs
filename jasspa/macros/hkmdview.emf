@@ -233,21 +233,39 @@ define-macro mdview
 0 define-macro mdview-insert-navbar
   -1 buffer-mode "view"
   beginning-of-buffer
+  mdview-insert-navbar-start
   ; Build nav bar using markdown link syntax (mdview-render will process it)
   ; History pos is 1-based, &lget uses 1-based index
-  set-variable #l3 0  ; flag: have we inserted anything yet?
+  ; Prev = previous file in history (only if there IS a prev entry)
+  !if &gre .mdview.history-pos 1
+    insert-string " | [< Prev]("
+    insert-string &lget .mdview.history &sub .mdview.history-pos 1
+    insert-string ")"
+  !endif
+  ; Next = next file in history (only if there IS a next entry)
+  !if &less .mdview.history-pos &llen .mdview.history
+    insert-string " | [Next >]("
+    insert-string &lget .mdview.history &add .mdview.history-pos 1
+    insert-string ")"
+  !endif
+  ; Show current filename at the end
+  insert-string " | _File:"
+  insert-string &cat &rig .mdview.file &rsin "/" .mdview.file "_"
+  insert-newline
+!emacro
+
+0 define-macro mdview-insert-navbar-start
+    set-variable #l3 0  ; flag: have we inserted anything yet?
   ; Check for index.md and home.md in source directory
   set-variable #l0 &cat .mdview.source "index.md"
-  file-exists #l0
-  !if &equ $result 1
+  !if &seq &lget &stat "i" #l0 2 "R" ;#&equ $result 1
     insert-string "[Index]("
     insert-string #l0
     insert-string ")"
     set-variable #l3 1
   !endif
   set-variable #l0 &cat .mdview.source "home.md"
-  file-exists #l0
-  !if &equ $result 1
+  !if &seq &lget &stat "i" #l0 2 "R" 
     !if #l3
       insert-string " | "
     !endif
@@ -268,24 +286,7 @@ define-macro mdview
     insert-string " | [Help](macro:mdview-help)"
     set-variable #l3 1
   !endif
-  ; Prev = previous file in history (only if there IS a prev entry)
-  !if &gre .mdview.history-pos 1
-    insert-string " | [< Prev]("
-    insert-string &lget .mdview.history &sub .mdview.history-pos 1
-    insert-string ")"
-  !endif
-  ; Next = next file in history (only if there IS a next entry)
-  !if &less .mdview.history-pos &llen .mdview.history
-    insert-string " | [Next >]("
-    insert-string &lget .mdview.history &add .mdview.history-pos 1
-    insert-string ")"
-  !endif
-  ; Show current filename at the end
-  insert-string " | _File:"
-  insert-string &cat &rig .mdview.file &rsin "/" .mdview.file "_"
-  insert-newline
 !emacro
-
 ; ========================
 ; History listing
 ; ========================
@@ -303,12 +304,12 @@ define-macro mdview
   end-of-buffer
   1 kill-region
   ; Insert navigation bar (same as regular view but with *History* filename)
-  insert-string "[Start]("
-  !if &gre &llen .mdview.history 0
-    insert-string &lget .mdview.history 1
+  mdview-insert-navbar-start  
+  !if &gre .mdview.history-pos 0
+    insert-string " | [< Back]("
+    insert-string &lget .mdview.history .mdview.history-pos
+    insert-string ")"
   !endif
-  insert-string ") | [History](macro:mdview-history)"
-  insert-string " | [Help](macro:mdview-help)"
   insert-string " | File:*History*"
   insert-newline
   insert-newline
@@ -355,14 +356,13 @@ define-macro mdview
   set-mark
   end-of-buffer
   1 kill-region
-  ; Navigation bar
-  insert-string "[Start]("
-  !if &gre &llen .mdview.history 0
-    insert-string &lget .mdview.history 1
+  mdview-insert-navbar-start    
+  !if &gre .mdview.history-pos 0
+    insert-string " | [< Back]("
+    insert-string &lget .mdview.history .mdview.history-pos
+    insert-string ")"
   !endif
-  insert-string ") | [History](macro:mdview-history)"
-  insert-string " | [Help](macro:mdview-help)"
-  insert-string " | File:*Help*\n\n"
+  insert-string " | _File:Help_\n\n"
   ; Help content
   insert-string "# MicroEmacs Markdown Viewer Help\n\n"
   insert-string "## Navigation\n\n"
@@ -457,8 +457,7 @@ define-macro mdview
   !endif
 
   ; Check if file exists
-  file-exists #l0
-  !if &equ $result 1
+  !if &seq &lget &stat "i" #l0 2 "R" 
     ; If file is already in history, just move cursor (don't append)
     set-variable #l1 &lfind .mdview.history #l0
     !if &gre #l1 0

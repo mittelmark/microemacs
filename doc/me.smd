@@ -281,7 +281,8 @@
   position) and the __mark__ defined by [set-mark](set-mark(2)).
 
   [copy-rectangle(3)](copy-rectangle(3)) Copy a rectangular region of text  
-  [copy-region(2)](copy-region(2)) (esc w) Copy a region of the buffer  
+  [copy-region(2)](copy-region(2)) Copy a region of the buffer  
+  [copy-region-clipboard(2)](copy-region-clipboard(2)) (esc w) Copy a region of the buffer to the system clipboard  
   [count-words(2)](count-words(2)) (esc C-c) Count the number of words in a region  
   [exchange-point-and-mark(2)](exchange-point-and-mark(2)) (C-x C-x) Exchange the cursor and marked
   position  
@@ -415,6 +416,7 @@
   [javatags(3f)](javatags(3f)) Generate a C tags file from Java sources  
   [jstags(3f)](jstags(3f)) Generate a Javascript tags file  
   [luatags(3f)](luatags(3f)) Generate a Lua tags file  
+  [mdview(3f)](mdview(3f)) Markdown browser of MicroEmacs  
   [ntags(3f)](ntags(3f)) Generate a nroff tags file  
   [perltags(3f)](perltags(3f)) Generate a Perl tags file  
   [phptags(3f)](phptags(3f)) Generate a PHP tags file    
@@ -1079,6 +1081,7 @@
   [info-goto-link(3)](info-goto-link(3)) Display Info on a given link  
   [info-on(3)](info-on(3)) Display Info on a given topic  
   [list-buffers(2)](list-buffers(2)) (C-x C-b) List all buffers and show their status  
+  [mdview(3)](mdview(3)) Display Markdown files in a Markdown browser  
   [osd-help(3)](osd-help(3)) GUI based on-line help  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
   [r-doc(3)](r-doc(3)) Display R function and package manual pages  
@@ -1841,7 +1844,8 @@
   [compare-windows-exact(3)](compare-windows-exact(3)) Compare buffer windows, with whitespace  
   [compile(3)](compile(3)) Start a compilation process  
   [copy-rectangle(3)](copy-rectangle(3)) Copy a rectangular region of text  
-  [copy-region(2)](copy-region(2)) (esc w) Copy a region of the buffer  
+  [copy-region(2)](copy-region(2)) Copy a region of the buffer  
+  [copy-region-clipboard(2)](copy-region-clipboard(2)) (esc w) Copy a region of the buffer to the system clipboard    
   [copy-registry(3)](copy-registry(3)) Recursive copy of registry subtree  
   [count-words(2)](count-words(2)) (esc C-c) Count the number of words in a region  
   [create-callback(2)](create-callback(2)) Create a timer callback  
@@ -2034,6 +2038,7 @@
   [man(3)](man(3)) UNIX manual page viewer  
   [man-clean(3)](man-clean(3)) Clean UNIX manual page  
   [mark-registry(2)](mark-registry(2)) Modify the operating mode of a registry node  
+  [mdview(3)](mdview(3)) Display Markdown files in a Markdown browser    
   [ml-bind-key(2)](ml-bind-key(2)) Create key binding for message line  
   [ml-unbind-key(2)](ml-unbind-key(2)) Remove key binding from message line  
   [ml-write(2)](ml-write(2)) Write message on message line  
@@ -2283,7 +2288,8 @@
   [command-apropos(2)](command-apropos(2)) (C-h a) List commands involving a concept  
   [command-wait(2)](command-wait(2)) Conditional wait command  
   [compare-windows(2)](compare-windows(2)) Compare buffer windows, ignore whitespace  
-  [copy-region(2)](copy-region(2)) (esc w) Copy a region of the buffer  
+  [copy-region(2)](copy-region(2)) Copy a region of the buffer 
+  [copy-region-clipboard(2)](copy-region-clipboard(2)) (esc w) Copy a region of the buffer to the system clipboard    
   [count-words(2)](count-words(2)) (esc C-c) Count the number of words in a region  
   [create-callback(2)](create-callback(2)) Create a timer callback  
   [create-frame(2)](create-frame(2)) (C-x 5 1, C-x 5 2) Create a new frame  
@@ -2612,6 +2618,7 @@
   [major-mode-setup(3)](major-mode-setup(3)) Configures the current buffer settings  
   [man(3)](man(3)) UNIX manual page viewer  
   [man-clean(3)](man-clean(3)) Clean UNIX manual page  
+  [mdview(3)](mdview(3)) Display Markdown files in a Markdown browser    
   [narrow-search-backward(3)](narrow-search-backward(3)) (C-c r) Search for a string in the backward direction  
   [narrow-search-forward(3)](narrow-search-forward(3)) (C-c s) Search for a string in the forward direction    
   [normal-tab(3)](normal-tab(3)) Insert a normal tab  
@@ -3447,7 +3454,8 @@
   [compare-windows-exact(3)](compare-windows-exact(3)) Compare buffer windows, with whitespace  
   [compile(3)](compile(3)) Start a compilation process  
   [copy-rectangle(3)](copy-rectangle(3)) Copy a rectangular region of text  
-  [copy-region(2)](copy-region(2)) (esc w) Copy a region of the buffer  
+  [copy-region(2)](copy-region(2)) Copy a region of the buffer  
+  [copy-region-clipboard(2)](copy-region-clipboard(2)) (esc w) Copy a region of the buffer to the system clipboard  
   [copy-registry(3)](copy-registry(3)) Recursive copy of registry subtree  
   [count-words(2)](count-words(2)) (esc C-c) Count the number of words in a region  
   [cpp(9)](cpp(9)) C++ programming language  
@@ -3756,6 +3764,7 @@
   [man-clean(3)](man-clean(3)) Clean UNIX manual page  
   [mark-registry(2)](mark-registry(2)) Modify the operating mode of a registry node  
   [md(9)](md(9)) Markdown Markup File  
+  [mdview(3)](mdview(3)) Display Markdown files in a Markdown browser    
   [me(1)](me(1)) MicroEmacs 2009 text editor  
   [me32.ini(8)](me32.ini(8)) Microsoft Window's Initialization (ini) File  
   [memsdev(1)](memsdev(1)) Microsoft Developer Studio Add-in for MicroEmacs 2009  
@@ -5118,6 +5127,14 @@
                Added File:filename display in navigation bar.
                Added doc/mdview.md, doc/me-functions.md (ME function cheat sheet).
 
+  - [260823] - Added mdview Markdown viewer browser (Ticket 3).
+               New command 'mdview' opens a read-only *mdview* buffer with
+               rendered Markdown. Supports headers, bold, italic, inline code,
+               links [text](url), blockquotes, horizontal rules, lists, images,
+               and strikethrough. Link navigation via Return, Tab/Shift-Tab,
+               and mouse click. Relative link resolution from source directory.
+               Files: jasspa/macros/hkmdview.emf, jasspa/macros/me.emf
+
   - [260821] - Fixed Wayland clipboard crash in help browser and macros.
                Separated clipboard from kill-buffer: copy-region now only
                updates kill buffer; new copy-region-clipboard command wraps
@@ -5132,12 +5149,12 @@
 
   - [260821] - Fixed X11 clipboard duplication: after explicit copy, mouse
                selection no longer overwrites CLIPBOARD. Added
-              CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
+               CLIP_MOUSE_PENDING flag to route mouse selections to PRIMARY
                only.
 
   - [260821] - Added clipboard tool availability warnings in user-setup and
-              startup when clipboard is enabled but no external tool
-              (xclip, wl-copy, pbcopy) is found.
+               startup when clipboard is enabled but no external tool
+               (xclip, wl-copy, pbcopy) is found.
 
   - [260821] - Consolidated clipboard documentation (x11-clipboard.md,
                wayland-clipboard.md, help-copy-fix.md) into
@@ -13489,17 +13506,22 @@ $a
   [$mouse-pos(5)]($mouse-pos(5)), [$scroll-bar(5)]($scroll-bar(5)), [set-cursor-to-mouse(2)](set-cursor-to-mouse(2)).
 !! me-id: m2cmd022
 ! 2 copy-region
+! 2 copy-region-clipboard
 ## NAME
 
 
-  copy-region - Copy a region of the buffer
+  copy-region - Copy a region of the buffer  
+  copy-region-clipboard - Copy a region of the buffer to the system clipboard
+$a
+
 $a
 
 
 ## SYNOPSIS
 
 
-  _n_ __copy-region__
+  _n_ __copy-region__  
+  _n_ __copy-region-clipboard__ (__esc w__)
 
 
 ## DESCRIPTION
@@ -13511,6 +13533,22 @@ $a
 
   If the last command also entered text into the kill buffer (or the [@cl(4)](@cl(4))
   variable is set to one of these commands) the __copy-region__ text is appended
+  to the last kill.
+
+  The numeric argument _n_ determines how the copy operates when a narrow
+  region, defined by [narrow-buffer(2)](narrow-buffer(2)), is encountered. The default
+  operation, when the number argument is `1`, is to copy all of the text
+  contained within the narrowed region. When the numeric argument is `0` then
+  narrowed region is NOT copied and the text is copied as it appears in the
+  buffer.
+
+  __copy-region-clipboard__ copies all the characters between the cursor and the mark set
+  with the [set-mark(2)](set-mark(2)) command into both the kill buffer and the system
+  clipboard (so they can later be [yanked](yank(2)) elsewhere or pasted into
+  external applications).
+
+  If the last command also entered text into the kill buffer (or the [@cl(4)](@cl(4))
+  variable is set to one of these commands) the __copy-region-clipboard__ text is appended
   to the last kill.
 
   The numeric argument _n_ determines how the copy operates when a narrow
@@ -13582,52 +13620,7 @@ $a
 
   The numeric argument _n_ was introduced in the '04 release.
 
-
-## SEE ALSO
-
-
-  [copy-region-clipboard(2)](copy-region-clipboard(2)), [exchange-point-and-mark(2)](exchange-point-and-mark(2)), [kill-region(2)](kill-region(2)), [narrow-buffer(2)](narrow-buffer(2)), [set-mark(2)](set-mark(2)),
-  [yank(2)](yank(2)).
-!! me-id: m2cmd022a
-! 2 copy-region-clipboard
-## NAME
-
-
-  copy-region-clipboard - Copy a region of the buffer to the system clipboard
-$a
-
-
-## SYNOPSIS
-
-
-  _n_ __copy-region-clipboard__ (__esc w__)
-
-
-## DESCRIPTION
-
-
-  __copy-region-clipboard__ copies all the characters between the cursor and the mark set
-  with the [set-mark(2)](set-mark(2)) command into both the kill buffer and the system
-  clipboard (so they can later be [yanked](yank(2)) elsewhere or pasted into
-  external applications).
-
-  If the last command also entered text into the kill buffer (or the [@cl(4)](@cl(4))
-  variable is set to one of these commands) the __copy-region-clipboard__ text is appended
-  to the last kill.
-
-  The numeric argument _n_ determines how the copy operates when a narrow
-  region, defined by [narrow-buffer(2)](narrow-buffer(2)), is encountered. The default
-  operation, when the number argument is `1`, is to copy all of the text
-  contained within the narrowed region. When the numeric argument is `0` then
-  narrowed region is NOT copied and the text is copied as it appears in the
-  buffer.
-
-
-## NOTES
-
-
-  __copy-region-clipboard__ is the recommended command for copying text to external
-  applications. The regular [copy-region(2)](copy-region(2)) command only updates the internal
+ The regular [copy-region(2)](copy-region(2)) command only updates the internal
   kill buffer, not the system clipboard.
 
   On X11/XWayland systems, __copy-region-clipboard__ updates the X11 CLIPBOARD
@@ -13636,10 +13629,11 @@ $a
   [copy-region(2)](copy-region(2)) for more details.
 
 
+
 ## SEE ALSO
 
 
-  [copy-region(2)](copy-region(2)), [exchange-point-and-mark(2)](exchange-point-and-mark(2)), [kill-region(2)](kill-region(2)), [narrow-buffer(2)](narrow-buffer(2)), [set-mark(2)](set-mark(2)),
+  [exchange-point-and-mark(2)](exchange-point-and-mark(2)), [kill-region(2)](kill-region(2)), [narrow-buffer(2)](narrow-buffer(2)), [set-mark(2)](set-mark(2)),
   [yank(2)](yank(2)).
 !! me-id: m2cmd023
 ! 2 count-words
@@ -34518,84 +34512,6 @@ $a
 
 
   [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [lua(9)](lua(9)).
-!! me-id: m3fcl018b
-! 3fmdview
-## NAME
-
-
-  mdview - Markdown viewer browser
-
-$a
-
-
-## SYNOPSIS
-
-
-  __me__ "@mdview" _<file.md>_
-  __M-x__ __mdview__ _<file.md>_
-
-
-## DESCRIPTION
-
-
-  The __mdview__ command opens a Markdown file in a read-only viewer buffer
-  (*mdview*) with rendered formatting. Markdown syntax is transformed into
-  colored display markers for headers, bold, italic, inline code, links,
-  blockquotes, horizontal rules, lists, images, and strikethrough.
-
-  The viewer provides a navigation bar at the top of each page with links
-  to [Start](first file in history), [History](visited files list),
-  [Help](key bindings), and optionally [Index](index.md) and
-  [Home](home.md) if those files exist in the source directory. The
-  current filename is displayed at the end of the navigation bar.
-
-
-## Key Bindings
-
-
-  The following key bindings are active in __mdview__ mode:
-
-  __Return__
-  
-  >  Follow the link under the cursor. Internal links open the target
-     file in the viewer. Links to non-existing files prompt the user to
-     create them (wiki-style).
-
-  __Tab__
-  
-  >  Move to the next link in the document.
-
-  __Shift-Tab__
-  
-  >  Move to the previous link in the document.
-
-  __Space__
-  
-  >  Scroll down one page.
-
-  __b__
-  
-  >  Jump to the beginning of the buffer.
-
-  __q__
-  
-  >  Quit the viewer and open the current file in the editor for
-     modification.
-
-
-## Navigation History
-
-
-  The viewer maintains a session history of visited files. The navigation
-  bar provides [Start] (first file), [History] (all visited files as a
-  clickable list), [\< Prev] and [Next \>] for history navigation, and
-  [Help] for key binding reference.
-
-
-## SEE ALSO
-
-
-  [start-up(3)](start-up(3)).
 !! me-id: m3fcl018
 ! 3finfo
 ! 3fpydoc
@@ -34653,6 +34569,99 @@ $a
 
   [me(1)](me(1)), [start-up(3)](start-up(3)), [info(3)](info(3)), 
   [py-doc(3)](py-doc(3)), [r-doc(3)](r-doc(3)).
+!! me-id: m3fcl019
+! 3fmdview
+## NAME
+
+
+  mdview - Markdown viewer browser
+
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@mdview" _<file.md>_
+  __M-x__ __mdview__ _<file.md>_
+
+
+## DESCRIPTION
+
+
+  The __mdview__ command opens a Markdown file in a read-only viewer buffer
+  (*mdview*) with rendered formatting. Markdown syntax is transformed into
+  colored display markers for headers, bold, italic, inline code, links,
+  blockquotes, horizontal rules, lists, images, and strikethrough.
+
+  The viewer provides a navigation bar at the top of each page with links
+  to _Start_ - first file in history, _History_ - visited files list,
+  _Help_ - key bindings listening, and optionally _Index_ - link to index.md
+  and  _Home_ - link to _home.md_ if those files exist in the source directory. 
+  The current filename is displayed at the end of the navigation bar.
+
+
+## Key Bindings
+
+
+  The following key bindings are active in __mdview__ mode:
+
+  __Return__
+  
+  >  Follow the link under the cursor. Internal links open the target
+     file in the viewer. Links to non-existing files prompt the user to
+     create them (wiki-style).
+
+  __Tab__
+  
+  >  Move to the next link in the document.
+
+  __Shift-Tab__
+  
+  >  Move to the previous link in the document.
+
+  __Space__
+  
+  >  Scroll down one page.
+
+  __b__
+  
+  >  Jump to the beginning of the buffer.
+
+  __q__
+  
+  >  Quit the viewer and open the current file in the editor for
+     modification.
+
+
+## Navigation History
+
+
+  The viewer maintains a session history of visited files. The navigation
+  bar provides [Start] (first file), [History] (all visited files as a
+  clickable list), [\< Prev] and [Next \>] for history navigation, and
+  [Help] for key binding reference.
+
+## EXAMPLE
+
+
+  You can directly run ME as Markdown file browser like this:
+
+
+      mecb @mdview file.md    
+
+## NOTES
+
+
+  __mdview__ is a macro implemented in file `hkmdview.emf` and the startup file
+  is `mdview.emf`.
+
+
+
+## SEE ALSO
+
+
+  [start-up(3)](start-up(3)).
 !! me-id: m3mac000
 ! 3 compile
 ## NAME
@@ -45258,6 +45267,43 @@ $a
 
 
   [user-setup(3)](user-setup(3)), [$system(5)]($system(5)), [add-color-scheme(2)](add-color-scheme(2)).
+!! me-id: m3mac106
+! 3 mdview
+## NAME
+
+
+|mdview
+  mdview - View a Markdown file in browser mode  
+$a
+
+
+## SYNOPSIS
+
+
+  __mdview__
+
+  __mdview__ _filename.md_
+
+
+
+## DESCRIPTION
+
+
+  __mdview__ starts an interactive browser for the current Markdown file, or
+  if the currently active file is not a Markdown user prompts the user for 
+  a filename.
+
+
+## NOTES
+
+
+  __mdview__ is a macro implemented in file `hkmdview.emf`.
+
+
+## SEE ALSO
+
+
+  [Markdown(9)](Markdown(9)), [mdview(3f)](mdview(3f)).
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME
@@ -64688,7 +64734,7 @@ $a
   [abbrev-list(3)](abbrev-list(3)), [expand-abbrev-handle](expand-abbrev-handle(3)), 
   [buffer-setup(3)](buffer-setup(3)), [spell-buffer(3)](spell-buffer(3)),
   [collapse-all(3)](collapse-all(3)), [collapse-current(3)](collapse-current(3)), 
-  [item-list(3)](item-list(3)).
+  [item-list(3)](item-list(3)), [mdview(3f)](mdview(3f)).
 !! me-id: m9typ035
 ! 9 MetaFont
 ! 9 mp
