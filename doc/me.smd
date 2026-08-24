@@ -5109,6 +5109,15 @@
 
 ## Development History 
 
+  - [260824] - Added mdview navigation history and wiki-style link creation.
+               History tracks visited files with Start/Prev/Next navigation.
+               History view lists all visited files as clickable links.
+               Missing files prompt user to create them (wiki-style).
+               Added Help page with key binding reference.
+               Added Index/Home links if index.md/home.md exist.
+               Added File:filename display in navigation bar.
+               Added doc/mdview.md, doc/me-functions.md (ME function cheat sheet).
+
   - [260821] - Fixed Wayland clipboard crash in help browser and macros.
                Separated clipboard from kill-buffer: copy-region now only
                updates kill buffer; new copy-region-clipboard command wraps
@@ -13543,7 +13552,7 @@ $a
   [copy-region-clipboard(2)](copy-region-clipboard(2)) (__Esc w__) or the temporary clipboard
   keybinding __C-c c__.
 
-  ### X11 and Wayland Clipboard Support
+  __X11 and Wayland Clipboard Support__
 
   On X11/XWayland systems, MicroEmacs uses two X11 selections:
   - __X11 PRIMARY__: Set by mouse text selection, used for middle-click paste
@@ -24827,7 +24836,7 @@ $a
   from the internal kill buffer. To paste from the system clipboard on-demand,
   use the temporary clipboard keybinding __C-c v__.
 
-  ### X11 and Wayland Clipboard Support
+  __X11 and Wayland Clipboard Support__
 
   On Wayland systems (including XWayland), the __yank__ command tries the
   Wayland clipboard first, falling back to the X11 CLIPBOARD selection if
@@ -34509,6 +34518,84 @@ $a
 
 
   [find-tag(2)](find-tag(2)), [start-up(3)](start-up(3)), [lua(9)](lua(9)).
+!! me-id: m3fcl018b
+! 3fmdview
+## NAME
+
+
+  mdview - Markdown viewer browser
+
+$a
+
+
+## SYNOPSIS
+
+
+  __me__ "@mdview" _<file.md>_
+  __M-x__ __mdview__ _<file.md>_
+
+
+## DESCRIPTION
+
+
+  The __mdview__ command opens a Markdown file in a read-only viewer buffer
+  (*mdview*) with rendered formatting. Markdown syntax is transformed into
+  colored display markers for headers, bold, italic, inline code, links,
+  blockquotes, horizontal rules, lists, images, and strikethrough.
+
+  The viewer provides a navigation bar at the top of each page with links
+  to [Start](first file in history), [History](visited files list),
+  [Help](key bindings), and optionally [Index](index.md) and
+  [Home](home.md) if those files exist in the source directory. The
+  current filename is displayed at the end of the navigation bar.
+
+
+## Key Bindings
+
+
+  The following key bindings are active in __mdview__ mode:
+
+  __Return__
+  
+  >  Follow the link under the cursor. Internal links open the target
+     file in the viewer. Links to non-existing files prompt the user to
+     create them (wiki-style).
+
+  __Tab__
+  
+  >  Move to the next link in the document.
+
+  __Shift-Tab__
+  
+  >  Move to the previous link in the document.
+
+  __Space__
+  
+  >  Scroll down one page.
+
+  __b__
+  
+  >  Jump to the beginning of the buffer.
+
+  __q__
+  
+  >  Quit the viewer and open the current file in the editor for
+     modification.
+
+
+## Navigation History
+
+
+  The viewer maintains a session history of visited files. The navigation
+  bar provides [Start] (first file), [History] (all visited files as a
+  clickable list), [\< Prev] and [Next \>] for history navigation, and
+  [Help] for key binding reference.
+
+
+## SEE ALSO
+
+
+  [start-up(3)](start-up(3)).
 !! me-id: m3fcl018
 ! 3finfo
 ! 3fpydoc

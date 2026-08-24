@@ -235,11 +235,38 @@ define-macro mdview
   beginning-of-buffer
   ; Build nav bar using markdown link syntax (mdview-render will process it)
   ; History pos is 1-based, &lget uses 1-based index
-  ; Home = first file in history (show when we have at least one entry)
-  !if &gre &llen .mdview.history 0
+  set-variable #l3 0  ; flag: have we inserted anything yet?
+  ; Check for index.md and home.md in source directory
+  set-variable #l0 &cat .mdview.source "index.md"
+  file-exists #l0
+  !if &equ $result 1
+    insert-string "[Index]("
+    insert-string #l0
+    insert-string ")"
+    set-variable #l3 1
+  !endif
+  set-variable #l0 &cat .mdview.source "home.md"
+  file-exists #l0
+  !if &equ $result 1
+    !if #l3
+      insert-string " | "
+    !endif
     insert-string "[Home]("
+    insert-string #l0
+    insert-string ")"
+    set-variable #l3 1
+  !endif
+  ; Show Start link (first entry in history) and History
+  !if &gre &llen .mdview.history 0
+    !if #l3
+      insert-string " | "
+    !endif
+    insert-string "[Start]("
     insert-string &lget .mdview.history 1
     insert-string ")"
+    insert-string " | [History](macro:mdview-history)"
+    insert-string " | [Help](macro:mdview-help)"
+    set-variable #l3 1
   !endif
   ; Prev = previous file in history (only if there IS a prev entry)
   !if &gre .mdview.history-pos 1
@@ -253,12 +280,113 @@ define-macro mdview
     insert-string &lget .mdview.history &add .mdview.history-pos 1
     insert-string ")"
   !endif
+  ; Show current filename at the end
+  insert-string " | _File:"
+  insert-string &cat &rig .mdview.file &rsin "/" .mdview.file "_"
   insert-newline
+!emacro
+
+; ========================
+; History listing
+; ========================
+
+0 define-macro mdview-history
+  set-variable #l1 "*mdview*"
+  !force 0 find-buffer #l1
+  !if &not $status
+    find-buffer #l1
+  !endif
+  -1 buffer-mode "view"
+  1 buffer-mode "edit"
+  beginning-of-buffer
+  set-mark
+  end-of-buffer
+  1 kill-region
+  ; Insert navigation bar (same as regular view but with *History* filename)
+  insert-string "[Start]("
+  !if &gre &llen .mdview.history 0
+    insert-string &lget .mdview.history 1
+  !endif
+  insert-string ") | [History](macro:mdview-history)"
+  insert-string " | [Help](macro:mdview-help)"
+  insert-string " | File:*History*"
+  insert-newline
+  insert-newline
+  insert-string "# Visited Files"
+  insert-newline
+  insert-newline
+  ; List each history entry as a clickable link, 1-based indexing
+  set-variable #l2 0
+  !while &les #l2 &llen .mdview.history
+    set-variable #l0 &lget .mdview.history &add #l2 1
+    ; Highlight current entry
+    !if &equ #l2 .mdview.history-pos
+      insert-string "**> "
+    !else
+      insert-string "    "
+    !endif
+    insert-string "["
+    insert-string #l0
+    insert-string "]("
+    insert-string #l0
+    insert-string ")"
+    insert-newline
+    set-variable #l2 &add #l2 1
+  !done
+  beginning-of-buffer
+  mdview-render
+  beginning-of-buffer
+  1 buffer-mode "view"
 !emacro
 
 ; ========================
 ; Link navigation
 ; ========================
+
+0 define-macro mdview-help
+  set-variable #l1 "*mdview*"
+  !force 0 find-buffer #l1
+  !if &not $status
+    find-buffer #l1
+  !endif
+  -1 buffer-mode "view"
+  1 buffer-mode "edit"
+  beginning-of-buffer
+  set-mark
+  end-of-buffer
+  1 kill-region
+  ; Navigation bar
+  insert-string "[Start]("
+  !if &gre &llen .mdview.history 0
+    insert-string &lget .mdview.history 1
+  !endif
+  insert-string ") | [History](macro:mdview-history)"
+  insert-string " | [Help](macro:mdview-help)"
+  insert-string " | File:*Help*\n\n"
+  ; Help content
+  insert-string "# MicroEmacs Markdown Viewer Help\n\n"
+  insert-string "## Navigation\n\n"
+  insert-string "- **Click** or **Return** - Follow link (open file or execute macro)\n"
+  insert-string "- **Tab** - Jump to next link\n"
+  insert-string "- **Shift-Tab** - Jump to previous link\n\n"
+  insert-string "## Viewing\n\n"
+  insert-string "- **Space** - Page down\n"
+  insert-string "- **b** - Jump to beginning of file\n\n"
+  insert-string "## Editing\n\n"
+  insert-string "- **q** - Quit viewer, open file in editor\n\n"
+  insert-string "## Navigation Bar\n\n"
+  insert-string "- **Start** - First file in session history\n"
+  insert-string "- **History** - Show all visited files\n"
+  insert-string "- **Index** - Open index.md (if exists)\n"
+  insert-string "- **Home** - Open home.md (if exists)\n\n"
+  insert-string "## Links\n\n"
+  insert-string "- Links for existing files open in the viewer\n"
+  insert-string "- Missing files can be created (prompted)\n\n"
+  beginning-of-buffer
+  mdview-render
+  beginning-of-buffer
+  1 buffer-mode "view"
+!emacro
 
 0 define-macro mdview-process-link
   set-variable #l0 $window-col
@@ -310,12 +438,22 @@ define-macro mdview
 0 define-macro mdview-follow-link
   set-variable #l0 @1
 
+  ; Handle macro: links
+  !if &seq &lef #l0 6 "macro:"
+    set-variable #l0 &rig #l0 6
+    !force execute-named-command #l0
+    !return
+  !endif
+
+  ; Handle http/https links - open in browser
+  !if &seq &lef #l0 4 "http"
+    ml-write &spr "External link (not supported): %s" #l0
+    !return
+  !endif
+
   ; Resolve relative path
-  !if &not &seq &lef #l0 4 "http"
-    !if &not &seq &lef #l0 1 "/"
-      ; Relative path - resolve from source file directory
-      set-variable #l0 &cat .mdview.source #l0
-    !endif
+  !if &not &seq &lef #l0 1 "/"
+    set-variable #l0 &cat .mdview.source #l0
   !endif
 
   ; Check if file exists
@@ -331,7 +469,13 @@ define-macro mdview
     1 buffer-mode "edit"
     mdview #l0
   !else
-    ml-write &spr "File not found: %s" #l0
+    ; File not found - offer to create it (wiki-style)
+    set-variable #l1 @mc5 &spr "Create new file: %s ? (yn) " #l0 "yYnN" "(Y)es create file, (N)o ? "
+    !if &iseq #l1 "y"
+      find-file #l0
+    !else
+      ml-write &spr "File not found: %s" #l0
+    !endif
   !endif
 !emacro
 
@@ -398,7 +542,8 @@ define-macro mdview
         !force set-variable #l0 .mdview.file
         !force delete-buffer "*mdview*"
         !if &and $status &not &seq #l0 "" &not &seq #l0 "ERROR"
-            find-file #l0
+          find-file #l0
+          reread-file
         !endif
     !endif
 !emacro

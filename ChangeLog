@@ -16,6 +16,16 @@
 >            and strikethrough. Link navigation via Return, Tab/Shift-Tab,
 >            and mouse click. Relative link resolution from source directory.
 >            Files: jasspa/macros/hkmdview.emf, jasspa/macros/me.emf
+>
+>  [260824] - Added mdview navigation history and wiki-style link creation.
+>            History tracks visited files with Start/Prev/Next navigation.
+>            History view lists all visited files as clickable links.
+>            Missing files prompt user to create them (wiki-style).
+>            Added Help page with key binding reference.
+>            Added Index/Home links if index.md/home.md exist.
+>            Added File:filename display in navigation bar.
+>            Added doc/mdview.md, doc/me-functions.md (ME function cheat sheet).
+>            Files: jasspa/macros/hkmdview.emf, jasspa/macros/mdview.emf
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026

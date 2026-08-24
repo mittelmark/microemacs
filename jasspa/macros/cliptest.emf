@@ -6,7 +6,7 @@
     ; Run xclip commands and show in a buffer
     !if &not &exi "*clip-test*"
         find-file "*clip-test*"
-        erase-buffer
+        delete-buffer
         set-variable $buffer-kill nil
     !endif
     beginning-of-buffer
