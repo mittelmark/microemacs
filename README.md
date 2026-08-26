@@ -23,7 +23,7 @@ __MicroEmacs: Lightweight but powerful extensible terminal and GUI text editor w
 > Currently FreeBSD, Linux 32 bit, Linux kernel 4 builds are only  available  for
 > MicroEmacs 09, so the binaries for this project here which you find below.
 
-> [!ATTENTION]
+> [!CAUTION]
 > New features since 2026 are coded using AI tools like Opencode and models like Pick Pickle and MiMo 2.5.
 > The changes are carefully reviewed an a lot of manual editing of problematic model outputs is still done.
 
