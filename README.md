@@ -119,11 +119,15 @@ __Main features - Pros:__
 - menu entries for all main functions (Esc = in Terminal mode for menu, if mouse is disabled)
 - Windows, Windows Cygwin, Linux, macOS and FreeBSD versions all working the same file
 - inbuild help system
-- single file installs possible (2.5MB-4MB file size)
+- single file install (2.5MB-4MB file size)
 - Emacs like (default) or CUA key bindings available
 - extensible programming language
 - themes, customizations, templates, snippets menu or GUI accessible
 - for its size the text editor with most features without being bloated
+
+__DEMO (mdview command for browsing and editing Markdown files):__
+
+[![asciicast](https://asciinema.org/a/m9Pjw4BD2JsZrGht.svg)](https://asciinema.org/a/m9Pjw4BD2JsZrGht)
 
 __Main Cons:__
 
@@ -535,6 +539,8 @@ This release provides the following new features in comparison to v09.12.26b4:
 - adding new command `mdview` a Markdown browser, switching between view and edit (using 'q')
 - add new bindings `C-c c` (copy region to system clipboard), `C-c y` (yank from system clipboard)
   and `C-c x` (kill region to clipboard)
+
+[![asciicast](https://asciinema.org/a/m9Pjw4BD2JsZrGht.svg)](https://asciinema.org/a/m9Pjw4BD2JsZrGht)
 
 It further contains the following new features in comparison the v09.12.25 (2025) release.
 
