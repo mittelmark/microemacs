@@ -1,0 +1,8 @@
+Hei maailma! Tämä on testitiedosto koodauksessa ISO-8859-10.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Suomi aakkoset: A B C D E F G H I J K L M N O P R S T U V Y Ä Ö
+Pienet: a b c d e f g h i j k l m n o p r s t u v y ä ö
+
+Norja: Æ Ð Ø Å  æ ð ø å
+Islandi: Ð Þ Æ Ö  ð þ æ ö

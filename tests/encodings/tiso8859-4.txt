@@ -1,0 +1,9 @@
+Tere maailm! See on testifail kodeeringus ISO-8859-4.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Eesti tähestik: A B C D E F G H I J K L M N O P R S © Z T U V ® Ä Ö Ü
+Väikesed: a b c d e f g h i j k l m n o p r s ¹ z t u v ¾ ä ö ü
+
+Läti: À ª Ï Ò Þ  à º ï ò þ
+Leedu: ¡ Ì Ç Ù Þ  ± ì ç ù þ
+Läänemeresoome: Õ Ä Ö Ü

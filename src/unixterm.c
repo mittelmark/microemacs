@@ -20,6 +20,8 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+
+#include "me-encoding.h"
 /*
  * Created:     1993
  * Synopsis:    Unix X-Term and Termcap support routines.
@@ -60,6 +62,89 @@
 #include <sys/pstat.h>
 #include <sys/param.h>
 #endif
+
+/*
+ * Output a single character to the terminal, converting from internal
+ * encoding (CP1252) to the terminal encoding (typically UTF-8).
+ */
+void
+TTputConvChar(meUByte c)
+{
+    meConv conv;
+    unsigned char in[1], out[4];
+    int outLen;
+
+    in[0] = c;
+
+    if (meInternalEnc == ME_ENC_UTF8)
+    {
+        /* Internal is already UTF-8, just output directly */
+        putchar(c);
+        return;
+    }
+
+    /* Luit model: always convert from internal encoding to UTF-8 */
+    meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8);
+
+    outLen = meConvChar(&conv, in, 1, out, sizeof(out));
+    if (outLen > 0)
+    {
+        int i;
+        for (i = 0; i < outLen; i++)
+            putchar(out[i]);
+    }
+    else
+    {
+        putchar('?');
+    }
+}
+
+/*
+ * Convert a string from internal encoding (CP1252) to UTF-8.
+ * Returns number of bytes written to dst (not including null terminator).
+ */
+int
+meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize)
+{
+    meConv conv;
+    int outLen;
+
+    if (meInternalEnc == ME_ENC_UTF8)
+    {
+        /* Internal is already UTF-8, just copy as-is */
+        if (srcLen >= dstSize)
+            srcLen = dstSize - 1;
+        meStrncpy(dst, src, srcLen);
+        dst[srcLen] = '\0';
+        return srcLen;
+    }
+
+    /* Luit model: always convert from internal encoding to UTF-8 */
+    if (meInternalEnc == ME_ENC_UTF8)
+    {
+        /* Internal is already UTF-8, just copy as-is */
+        if (srcLen >= dstSize)
+            srcLen = dstSize - 1;
+        meStrncpy(dst, src, srcLen);
+        dst[srcLen] = '\0';
+        return srcLen;
+    }
+
+    meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8);
+
+    outLen = meConvString(&conv, src, srcLen, dst, dstSize - 1);
+    if (outLen < 0)
+    {
+        /* Conversion failed - copy as-is */
+        if (srcLen >= dstSize)
+            srcLen = dstSize - 1;
+        meStrncpy(dst, src, srcLen);
+        dst[srcLen] = '\0';
+        return srcLen;
+    }
+    dst[outLen] = '\0';
+    return outLen;
+}
 
 #ifdef _USG                     /* System V */
 /* We need this stuff to do the pipes properly. */
@@ -1769,6 +1854,18 @@ meXEventHandler(void)
 
             ss = event.xkey.state ;
             XLookupString(&event.xkey,keyStr,20,&keySym,NULL);
+            
+            /* Convert UTF-8 input to internal encoding if needed.
+             * Only convert printable characters without control/alt modifiers,
+             * as modified keys are handled by the existing key processing below. */
+            if(keySym <= 0xff && keyStr[0] != '\0' &&
+               !(ss & (ControlMask|Mod1Mask)))
+            {
+                meUShort converted = convertUtf8Input(keyStr, strlen(keyStr));
+                if(converted != 0)
+                    keySym = converted;
+            }
+            
             /* printf("#1 got key %x, ss=%x \n",(unsigned int) keySym, ss) ;*/
             /* keyStr[19] = '\0' ;*/
             /* printf("got key %x, ss=%x [%s]\n",(unsigned int) keySym, ss, keyStr) ;*/
@@ -3263,6 +3360,18 @@ XTERMsetFont(char *fontName)
     mecm.fontFlag[0] = 1;
     mecm.fontId = font->fid ;
 
+    /* Detect font encoding: check if the font supports UTF-8 (iso10646).
+     * For iso8859-1 fonts, CP1252 bytes can be passed directly.
+     * For iso10646 (Unicode) fonts, we must convert CP1252 to UTF-8. */
+    mecm.fontIsUtf8 = 0 ;
+    if(fontName != NULL)
+    {
+        /* Check font name pattern for Unicode fonts */
+        if(strstr(fontName, "iso10646") != NULL)
+            mecm.fontIsUtf8 = 1 ;
+        /* "fixed" and common bitmap fonts are iso8859-1 */
+    }
+
     XFreeFontInfo(NULL,font,1) ;
 
     if(mecm.fontName != NULL)
@@ -4725,6 +4834,35 @@ TTahead(void)
                      * translation. */
                     if (cc == '\0')
                         addKeyToBuffer (ME_CONTROL|' ');
+                    else if(meInternalEnc != ME_ENC_UTF8 && cc >= 0xC0)
+                    {
+                        /* UTF-8 multi-byte input: collect bytes, convert to
+                         * internal encoding, then add result to key buffer. */
+                        int utflen = (cc < 0xE0) ? 2 : (cc < 0xF0) ? 3 : 4 ;
+                        unsigned char utf8buf[8] ;
+                        meConv conv ;
+                        unsigned char outbuf[4] ;
+                        int ii, outLen ;
+                        utf8buf[0] = cc ;
+                        for(ii = 1 ; ii < utflen ; ii++)
+                        {
+                            if(read(meStdin, &utf8buf[ii], 1) <= 0)
+                                break ;
+                        }
+                        utflen = meUtf8ValidSeqLen(utf8buf) ;
+                        meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
+                        outLen = meConvChar(&conv, utf8buf, utflen, outbuf, sizeof(outbuf)) ;
+                        if(outLen > 0)
+                        {
+                            for(ii = 0 ; ii < outLen ; ii++)
+                                addKeyToBuffer(outbuf[ii]) ;
+                        }
+                        else
+                        {
+                            for(ii = 0 ; ii < utflen ; ii++)
+                                addKeyToBuffer(utf8buf[ii]) ;
+                        }
+                    }
                     else
                         addKeyToBuffer(cc) ;
                 }

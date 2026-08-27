@@ -55,6 +55,11 @@ define-macro start-up
     insert-string $system
     insert-newline
 
+    ; Test 9: Test encoding variable
+    insert-string "TEST:encoding="
+    insert-string $encoding
+    insert-newline
+
     ; All tests complete
     insert-string "TEST:all-tests=complete"
     insert-newline

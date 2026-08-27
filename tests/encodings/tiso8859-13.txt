@@ -1,0 +1,8 @@
+Sveiki pasauli! Ðis ir testa fails kodçjumâ ISO-8859-13.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Latvieðu alfabçts: A Â B C È D E Ç F G Ì H I Î J K Í L Ï M N Ò O P R S Ð T U Û V Z Þ
+Mazie: a â b c è d e ç f g ì h i î j k í l ï m n ò o p r s ð t u û v z þ
+
+Lietuviø: A À C È E Æ Ë F G H I Á Y J K L M N O P R S Ð T U Ø Û V Z Þ
+Mazie: a à c è e æ ë f g h i á y j k l m n o p r s ð t u ø û v z þ

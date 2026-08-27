@@ -1,0 +1,8 @@
+Bonvenu! Tiu æi estas testdosiero en kodado ISO-8859-3.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Esperanto: A B C Æ D E F G Ø H ¦ I J ¬ K L M N O P R S Þ T U Ý V Z
+Malgrandaj: a b c æ d e f g ø h ¶ i j ¼ k l m n o p r s þ t u Ý v z
+
+Malta: Å Õ ¡ Õ ¯ å õ ± õ ¿
+Turka (malnovversiona): «Iª

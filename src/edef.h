@@ -376,6 +376,8 @@ extern int      disLineSize ;           /* interal display buffer size  */
 /* uninitialized global external declarations */
 extern meUByte    resultStr[meBUF_SIZE_MAX] ;   /* $result variable             */
 extern meUByte    evalResult[meTOKENBUF_SIZE_MAX] ;/* Result string from functions */
+extern meUByte    termEncoding[32] ;       /* Terminal encoding name (e.g., "utf-8") */
+extern int        meInternalEnc ;          /* Internal encoding (default CP1252) */
 extern int        curgoal;              /* Goal for C-P, C-N            */
 extern meBuffer  *bheadp;               /* Head of list of buffers      */
 #if MEOPT_ABBREV

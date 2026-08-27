@@ -84,6 +84,7 @@ DEFVAR ("debug",               EVDEBUG)         /* macro debugging */
 #if MEOPT_MOUSE
 DEFVAR ("delay-time",          EVDELAYTIME)     /* mouse-time delay time (msec) */
 #endif
+DEFVAR ("encoding",            EVENCODING)      /* terminal encoding (utf-8, iso8859-1, cp1252, ascii) */
 #if MEOPT_EXTENDED
 DEFVAR ("file-ignore",         EVFILEIGNORE)    /* file extension ignore list*/
 DEFVAR ("file-names",          EVFNAMES)        /* file names access variable*/
@@ -119,6 +120,7 @@ DEFVAR ("home",                EVHOMEDIR)       /* Home directory */
 DEFVAR ("idle-time",           EVIDLETIME)      /* idle-time time period (msec)*/
 #endif
 DEFVAR ("indent-width",        EVINDWIDTH)      /* Indent Width - space substitution */
+DEFVAR ("internal-encoding",   EVINTENC)        /* internal encoding for Luit conversion */
 #if MEOPT_EXTENDED
 DEFVAR ("kept-versions",       EVKEPTVERS)      /* Number of backup files */
 DEFVAR ("line-flags",          EVLINEFLAGS)     /* current line flags */

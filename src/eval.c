@@ -28,6 +28,9 @@
 #define __EVALC 1       /* Define program name */
 
 #include "emain.h"
+
+#define ME_ENCODING_IMPLEMENT
+#include "me-encoding.h"
 #include "evar.h"
 #include "efunc.h"
 #include "eskeys.h"
@@ -47,6 +50,8 @@
 #endif
 
 meUByte evalResult[meTOKENBUF_SIZE_MAX];    /* resulting string */
+meUByte termEncoding[32] = "utf-8";        /* Terminal encoding name */
+int meInternalEnc = ME_ENC_CP1252 ;        /* Internal encoding for Luit conversion */
 static meUByte machineName[]=meSYSTEM_NAME;    /* resulting string */
 static int clipStartupSkip = 1;                /* skip clipboard load on first yank */
 
@@ -1006,6 +1011,17 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
         case EVQUIET:
             quietMode = (meUByte) meAtoi(vvalue) ;
             break;
+        case EVENCODING:
+            meStrncpy(termEncoding, vvalue, sizeof(termEncoding)-1) ;
+            termEncoding[sizeof(termEncoding)-1] = '\0' ;
+            break;
+        case EVINTENC:
+            {
+                meEncoding enc = meEncodingFromName((char *)vvalue) ;
+                if(enc >= 0)
+                    meInternalEnc = enc ;
+            }
+            break;
 #if MEOPT_EXTENDED
         case EVFILEIGNORE:
             meStrrep(&fileIgnore,vvalue) ;
@@ -1147,6 +1163,8 @@ gtenv(meUByte *vname)   /* vname   name of environment variable to retrieve */
     case EVCURSORX:     return meItoa(frameCur->mainColumn);
     case EVCURSORY:     return meItoa(frameCur->mainRow);
     case EVSYSTEM:      return meItoa(meSystemCfg);
+    case EVENCODING:    return termEncoding;
+    case EVINTENC:      return (meUByte *) meEncodingName(meInternalEnc) ;
 #if MEOPT_WORDPRO
     case EVBUFFILLCOL:  return meItoa(frameCur->bufferCur->fillcol) ;
     case EVBUFFILLMODE:

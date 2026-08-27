@@ -35,6 +35,7 @@
 #include "emain.h"
 #include "eskeys.h"		/* External Defintions */
 #include "evers.h"                      /* Version information */
+#include "me-encoding.h"                /* UTF-8/CP1252 conversion */
 
 #ifdef _STDARG
 #include <stdarg.h>		/* Variable Arguments */
@@ -345,6 +346,9 @@ showRegion(int f, int n)
 }
 #endif
 
+/* Forward declaration for UTF-8 helper */
+static int meUtf8SeqLen(meUByte c) ;
+
 void
 windCurLineOffsetEval(meWindow *wp)
 {
@@ -380,18 +384,53 @@ windCurLineOffsetEval(meWindow *wp)
             wp->dotLine->text[wp->dotLine->length] = '\0' ;
         }
 #endif
-        while((cc=*ss++) != 0)
+        while((cc=*ss) != 0)
         {
-            if(isDisplayable(cc))
+            if(cc >= 0xC0)
+            {
+                /* Validate UTF-8 sequence: check lead byte AND continuation bytes.
+                 * If not valid UTF-8, treat as single CP1252 byte (width 1). */
+                int utflen = meUtf8ValidSeqLen(ss) ;
                 ii = 1 ;
+                *off++ = (meUByte) ii ;
+                pos += ii ;
+                ss++ ;
+                /* Mark continuation bytes as width 0 */
+                while(--utflen > 0)
+                {
+                    *off++ = 0 ;
+                    ss++ ;
+                }
+            }
+            else if(isDisplayable(cc))
+            {
+                ii = 1 ;
+                *off++ = (meUByte) ii ;
+                pos += ii ;
+                ss++ ;
+            }
             else if(cc == meCHAR_TAB)
+            {
                 ii = get_tab_pos(pos,wp->buffer->tabWidth) + 1;
+                *off++ = (meUByte) ii ;
+                pos += ii ;
+                ss++ ;
+            }
             else if (cc < 0x20)
+            {
                 ii = 2 ;
+                *off++ = (meUByte) ii ;
+                pos += ii ;
+                ss++ ;
+            }
             else
+            {
+                /* Non-displayable byte >= 0x20 (e.g. C1 control) */
                 ii = 4 ;
-            *off++ = (meUByte) ii ;
-            pos += ii ;
+                *off++ = (meUByte) ii ;
+                pos += ii ;
+                ss++ ;
+            }
         }
         *off = 0 ;
     }
@@ -528,6 +567,20 @@ static char drawno = 'A';
 #endif
 
 /*
+ * meUtf8SeqLen - Get UTF-8 sequence length from lead byte.
+ * Returns 1 for ASCII, 2-4 for multi-byte, 1 for invalid bytes.
+ */
+static int
+meUtf8SeqLen(meUByte c)
+{
+    if(c < 0x80) return 1;
+    if((c & 0xE0) == 0xC0) return 2;
+    if((c & 0xF0) == 0xE0) return 3;
+    if((c & 0xF8) == 0xF0) return 4;
+    return 1;
+}
+
+/*
  * renderLine
  * This function renders a non-hilighted text line.
  */
@@ -547,9 +600,30 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
             s2 = disLineBuff + wid ;
         }
-        cc = *s1++ ;
-        if(isDisplayable(cc))
+        cc = *s1 ;
+        if(meInternalEnc != ME_ENC_UTF8 && cc >= 0x80)
         {
+            /* Non-UTF-8 internal encoding: raw encoding byte, pass through
+             * to disLineBuff. TTputConvChar will convert to UTF-8 at output. */
+            *s2++ = cc ;
+            s1++ ;
+            wid++ ;
+        }
+        else if(cc >= 0xC0)
+        {
+            /* UTF-8 multi-byte sequence (internal encoding is UTF-8).
+             * Copy the multi-byte sequence directly. */
+            int utflen = meUtf8SeqLen(cc) ;
+            int ii ;
+            for(ii = 0 ; ii < utflen && ii < len+1 ; ii++)
+                *s2++ = s1[ii] ;
+            s1 += utflen ;
+            len -= (utflen - 1) ;
+            wid++ ;
+        }
+        else if(isDisplayable(cc))
+        {
+            s1++ ;
             wid++ ;
             if(cc == ' ')
                 *s2++ = displaySpace ;
@@ -562,6 +636,7 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         {
             int ii=get_tab_pos(wid,bp->tabWidth) ;
 
+            s1++ ;
             wid += ii+1 ;
             *s2++ = displayTab ;
             while(--ii >= 0)
@@ -569,6 +644,7 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         }
         else if(cc < 0x20)
         {
+            s1++ ;
             wid += 2 ;
             *s2++ = '^' ;
             *s2++ = cc ^ 0x40 ;
@@ -576,6 +652,7 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         else
         {
             /* Its a nasty character */
+            s1++ ;
             wid += 4 ;
             *s2++ = '\\' ;
             *s2++ = 'x' ;

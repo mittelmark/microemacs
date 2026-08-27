@@ -1,0 +1,13 @@
+Grüß Gott! Dies ist eine Testdatei in Kodierung Windows-1252.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Die drei Merkmale der deutschen Sprache sind: Alphabet, Aussprache und Grammatik.
+
+Deutsches Alphabet: A Ä B C D E F G H I J K L M N O Ö P Q R S T U Ü V W X Y Z
+Klein: a ä b c d e f g h i j k l m n o ö p q r s t u ü v w x y z
+
+Zeichen: À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ñ Ò Ó Ô Õ Ö Ø Ù Ú Û Ü Ý Þ ß
+Sonderzeichen: € ‚ „ … † ‡ ‰ ‹ › « » ´ ¨ ¸ ¹ ² ³ ´ µ ¶ · ¹ º » ¼ ½ ¾
+
+Zahlen: 0 1 2 3 4 5 6 7 8 9
+Symbole: ! @ # $ % ^ & * ( ) - _ = + [ ] { } ; : ' " , . < > / ? | \

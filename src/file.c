@@ -34,6 +34,7 @@
 #include "emain.h"
 #include "efunc.h"
 #include "esearch.h"
+#include "me-encoding.h"
 #if (defined _UNIX) || (defined _DOS) || (defined _WIN32)
 #include <errno.h>
 #include <limits.h>                     /* Constant limit definitions */
@@ -1518,6 +1519,26 @@ readin(register meBuffer *bp, meUByte *fname)
         mlwrite(MWCURSOR|MWCLEXEC,(meUByte *)"[Reading %s%s]",fn,
                 meModeTest(bp->mode,MDVIEW) ? " (readonly)" : "");
     }
+
+    /* Auto-detect file encoding: if encoding is still "utf-8" (default),
+     * read the first 4KB and check if it's valid UTF-8. If not, switch
+     * to CP1252 which is a superset of ISO-8859-1 for common characters. */
+    if(meStrcmp(termEncoding, "utf-8") == 0)
+    {
+        FILE *detectFp;
+        if((detectFp = fopen((char *)fn, "rb")) != NULL)
+        {
+            unsigned char detectBuf[4096];
+            size_t detectLen = fread(detectBuf, 1, sizeof(detectBuf), detectFp);
+            fclose(detectFp);
+            if(detectLen > 0 && !meUtf8IsValid(detectBuf, detectLen))
+            {
+                /* File is not valid UTF-8 - auto-detect encoding */
+                meStrcpy(termEncoding, "cp1252");
+            }
+        }
+    }
+
     ss = ffReadFile(fn,0,bp,bp->baseLine,0,0,0) ;
 
     /*

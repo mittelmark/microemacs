@@ -33,6 +33,7 @@
 #define	__HILIGHTC				/* Name file */
 
 #include "emain.h"
+#include "me-encoding.h"                /* UTF-8/CP1252 conversion */
 
 #if MEOPT_HILIGHT
 
@@ -1429,6 +1430,20 @@ findToken(meHilight *root, meUByte *text, meUByte mode,
     return NULL ;
 }
 
+/*
+ * meUtf8SeqLen - Get UTF-8 sequence length from lead byte.
+ * Returns 1 for ASCII, 2-4 for multi-byte, 1 for invalid bytes.
+ */
+static int
+meUtf8SeqLen(meUByte c)
+{
+    if(c < 0x80) return 1;
+    if((c & 0xE0) == 0xC0) return 2;
+    if((c & 0xF0) == 0xE0) return 3;
+    if((c & 0xF8) == 0xF0) return 4;
+    return 1;
+}
+
 #define __hilCopyChar(dstPos,cc,tw)                                          \
 do                                                                           \
 {                                                                            \
@@ -1583,16 +1598,55 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
         srcPos = hd->srcPos;
         while((cc = *srcText++) != '\0')
         {
-            if (hd->srcOff <= srcPos)
-                (hd->hfunc)(dstPos, hd);
-            __hilCopyChar(dstPos,cc,hd->tabWidth);
-            srcPos++;
+            if(meInternalEnc != ME_ENC_UTF8 && cc >= 0x80)
+            {
+                /* Non-UTF-8 internal: raw encoding byte, pass through */
+                if (hd->srcOff <= srcPos)
+                    (hd->hfunc)(dstPos, hd);
+                disLineBuff[dstPos++] = cc ;
+                srcPos++ ;
+            }
+            else if(cc >= 0xC0)
+            {
+                /* UTF-8 multi-byte sequence */
+                int utflen = meUtf8SeqLen(cc) ;
+                int ii ;
+                if (hd->srcOff <= srcPos)
+                    (hd->hfunc)(dstPos, hd);
+                for(ii = 0 ; ii < utflen && srcText[ii] != '\0' ; ii++)
+                    disLineBuff[dstPos++] = srcText[ii] ;
+                srcText += utflen - 1 ;
+                srcPos++ ;
+            }
+            else
+            {
+                if (hd->srcOff <= srcPos)
+                    (hd->hfunc)(dstPos, hd);
+                __hilCopyChar(dstPos,cc,hd->tabWidth);
+                srcPos++;
+            }
         }
     }
     else
     {
         while((cc = *srcText++) != '\0')
-            __hilCopyChar(dstPos,cc,hd->tabWidth);
+        {
+            if(meInternalEnc != ME_ENC_UTF8 && cc >= 0x80)
+            {
+                /* Non-UTF-8 internal: raw encoding byte, pass through */
+                disLineBuff[dstPos++] = cc ;
+            }
+            else if(cc >= 0xC0)
+            {
+                int utflen = meUtf8SeqLen(cc) ;
+                int ii ;
+                for(ii = 0 ; ii < utflen && srcText[ii] != '\0' ; ii++)
+                    disLineBuff[dstPos++] = srcText[ii] ;
+                srcText += utflen - 1 ;
+            }
+            else
+                __hilCopyChar(dstPos,cc,hd->tabWidth);
+        }
     }
     return dstPos ;
 }
@@ -1611,12 +1665,35 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
         srcPos = hd->srcPos;
         while (--len >= 0)
         {
-            if (hd->srcOff <= srcPos)
-                (hd->hfunc)(dstPos, hd);
-            
             cc = *srcText++ ;
-            __hilCopyChar(dstPos,cc,hd->tabWidth);
-            srcPos++;
+            if(meInternalEnc != ME_ENC_UTF8 && cc >= 0x80)
+            {
+                /* Non-UTF-8 internal: raw encoding byte, pass through */
+                if (hd->srcOff <= srcPos)
+                    (hd->hfunc)(dstPos, hd);
+                disLineBuff[dstPos++] = cc ;
+                srcPos++ ;
+            }
+            else if(cc >= 0xC0)
+            {
+                /* UTF-8 multi-byte sequence */
+                int utflen = meUtf8SeqLen(cc) ;
+                int ii ;
+                if (hd->srcOff <= srcPos)
+                    (hd->hfunc)(dstPos, hd);
+                for(ii = 0 ; ii < utflen ; ii++)
+                    disLineBuff[dstPos++] = srcText[ii] ;
+                srcText += utflen - 1 ;
+                len -= (utflen - 1) ;
+                srcPos++ ;
+            }
+            else
+            {
+                if (hd->srcOff <= srcPos)
+                    (hd->hfunc)(dstPos, hd);
+                __hilCopyChar(dstPos,cc,hd->tabWidth);
+                srcPos++;
+            }
         }
     }
     else
@@ -1624,7 +1701,22 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
         while(len--)
         {
             cc = *srcText++ ;
-            __hilCopyChar(dstPos,cc,hd->tabWidth);
+            if(meInternalEnc != ME_ENC_UTF8 && cc >= 0x80)
+            {
+                /* Non-UTF-8 internal: raw encoding byte, pass through */
+                disLineBuff[dstPos++] = cc ;
+            }
+            else if(cc >= 0xC0)
+            {
+                int utflen = meUtf8SeqLen(cc) ;
+                int ii ;
+                for(ii = 0 ; ii < utflen ; ii++)
+                    disLineBuff[dstPos++] = srcText[ii] ;
+                srcText += utflen - 1 ;
+                len -= (utflen - 1) ;
+            }
+            else
+                __hilCopyChar(dstPos,cc,hd->tabWidth);
         }
     }
     return dstPos ;
@@ -2017,7 +2109,9 @@ hiline_exit:
 #define hilOffsetChar(off,dstPos,dstJmp,cc,tw)                               \
 {                                                                            \
     int ii ;                                                                 \
-    if(isDisplayable(cc))                                                    \
+    if(cc >= 0xC0)                                                           \
+        ii = 1 ; /* High byte (UTF-8 lead or CP1252): caller handles skip */ \
+    else if(isDisplayable(cc))                                               \
         ii = 1 ;                                                             \
     else if(cc == meCHAR_TAB)                                                \
         ii = get_tab_pos(dstPos,tw) + 1 ;                                    \
@@ -2042,6 +2136,16 @@ hiline_exit:
     {                                                                        \
         hilOffsetChar(off,dstPos,dstJmp,__cc,tw)                             \
         lastcc = __cc ;                                                      \
+        /* Skip UTF-8 continuation bytes */                                  \
+        if(__cc >= 0xC0)                                                     \
+        {                                                                    \
+            int _utflen = meUtf8ValidSeqLen(__ss - 1) - 1 ;                  \
+            while(_utflen-- > 0 && *__ss != '\0')                            \
+            {                                                                \
+                *off++ = 0 ;                                                 \
+                __ss++ ;                                                     \
+            }                                                                \
+        }                                                                    \
     }                                                                        \
 }
 
@@ -2053,6 +2157,16 @@ hiline_exit:
     {                                                                        \
         lastcc = *__ss++ ;                                                   \
         hilOffsetChar(off,dstPos,dstJmp,lastcc,tw)                           \
+        /* Skip UTF-8 continuation bytes */                                  \
+        if(lastcc >= 0xC0)                                                   \
+        {                                                                    \
+            int _utflen = meUtf8ValidSeqLen(__ss - 1) - 1 ;                  \
+            while(_utflen-- > 0 && __ll-- > 0)                               \
+            {                                                                \
+                *off++ = 0 ;                                                 \
+                __ss++ ;                                                     \
+            }                                                                \
+        }                                                                    \
     }                                                                        \
 }
 

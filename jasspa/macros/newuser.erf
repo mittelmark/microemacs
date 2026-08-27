@@ -51,6 +51,7 @@
 "linux" {
  "ext-char-set" = "1"
  "file-ignore" = "~ ./"
+ "font" = "-*-dejavu sans mono-*-r-*-*-17-*-*-*-*-*-iso8859-1"
  "scheme" = "schemebc"
  "scroll-bar" = "0x1be"
 }
