@@ -1855,17 +1855,6 @@ meXEventHandler(void)
             ss = event.xkey.state ;
             XLookupString(&event.xkey,keyStr,20,&keySym,NULL);
             
-            /* Convert UTF-8 input to internal encoding if needed.
-             * Only convert printable characters without control/alt modifiers,
-             * as modified keys are handled by the existing key processing below. */
-            if(keySym <= 0xff && keyStr[0] != '\0' &&
-               !(ss & (ControlMask|Mod1Mask)))
-            {
-                meUShort converted = convertUtf8Input(keyStr, strlen(keyStr));
-                if(converted != 0)
-                    keySym = converted;
-            }
-            
             /* printf("#1 got key %x, ss=%x \n",(unsigned int) keySym, ss) ;*/
             /* keyStr[19] = '\0' ;*/
             /* printf("got key %x, ss=%x [%s]\n",(unsigned int) keySym, ss, keyStr) ;*/
