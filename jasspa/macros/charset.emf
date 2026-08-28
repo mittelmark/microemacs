@@ -18,9 +18,9 @@
     ;set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
     ;set-variable %charset-names  "|ISO-8859|ISO-8859 with box chars|Windows ANSI (cp1252)|Windows OEM|Windows Greek|Windows Turkish|Windows Central Europe (cp1250)|Windows Cyrillic (cp1251)|DOS LatinUS CP437|DOS Latin1 CP850|DOS Cyrillic CP866|Cyrillic koi8-r|Plain Text|"
     ;set-variable %charset-value  "||ISO-box|Win-ANSI|Win-OEM|Win-GREEK|Win-TURK|Win-CENTEUR|Win-CYR|PC-437|PC-850|PC-866|koi8-r|plain-text|"
-    set-variable %charset-names  "|ISO-W-EUR  (ISO 8859-1)|ISO-C-EUR  (ISO 8859-2)|ISO-S-EUR  (ISO 8859-3)|ISO-N-EUR  (ISO 8859-4)|ISO-CYR    (ISO 8859-5)|ISO-GREEK  (ISO 8859-7)|ISO-TURK   (ISO 8859-9)|ISO-NORTH  (ISO 8859-10)|ISO-BALT   (ISO 8859-13)|ISO-W-EURO (ISO 8859-15)|ISO-SO-EURO(ISO 8859-16)|WIN CP1250 (C-EUR)|WIN CP1251 (CYR) |WIN CP1252 (WEST)|WIN CP1253 (GREEK)|WIN CP1254 (TURK)|CYRILLIC   (koi8-r)|plain-text (ASCII-0)|"
-    set-variable %charset-value "|iso8859-1|iso8859-2|iso8859-3|iso8859-4|iso8859-5|iso8859-7|iso-8859-9|iso-8859-10|is8859-13|iso8859-15|iso8859-16|microsoft-cp1250|microsoft-cp1251|microsoft-cp1252|microsoft-cp1253|microsoft-cp1254|koi8-r|ascii-0|"
-    set-variable %charset-types "||||||||||0|||"
+    set-variable %charset-names  "|ISO-W-EUR  (ISO 8859-1)|ISO-C-EUR  (ISO 8859-2)|ISO-S-EUR  (ISO 8859-3)|ISO-N-EUR  (ISO 8859-4)|ISO-CYR    (ISO 8859-5)|ISO-GREEK  (ISO 8859-7)|ISO-TURK   (ISO 8859-9)|ISO-NORTH  (ISO 8859-10)|ISO-BALT   (ISO 8859-13)|ISO-W-EURO (ISO 8859-15)|ISO-SO-EURO(ISO 8859-16)|WIN CP1250 (C-EUR)|WIN CP1251 (CYR) |WIN CP1252 (WEST)|WIN CP1253 (GREEK)|WIN CP1254 (TURK)|CYRILLIC   (koi8-r)|DOS CP437  (PC-437)|DOS CP850  (PC-850)|DOS CP866  (PC-866)|plain-text (ASCII-0)|"
+    set-variable %charset-value "|iso8859-1|iso8859-2|iso8859-3|iso8859-4|iso8859-5|iso8859-7|iso-8859-9|iso-8859-10|is8859-13|iso8859-15|iso8859-16|microsoft-cp1250|microsoft-cp1251|microsoft-cp1252|microsoft-cp1253|microsoft-cp1254|koi8-r|PC-437|PC-850|PC-866|ascii-0|"
+    set-variable %charset-types "|||||||||||||||||||0"
     ; the windows font type
     ;set-variable %charset-types  "|||0|255|161|162|238|204|||||"
     !return
@@ -41,12 +41,12 @@ set-variable .change-font.type 0
   set-variable #l1 0
 !elif &seq #l0 "microsoft-cp1252"
   set-char-mask "M" ""
-  set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"
+  set-char-mask "dp" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
   ;set-char-mask "M" ""
 !elif &seq #l0 "Win-OEM"
-    set-char-mask "M" "£œª¦«®¬ª®©°§±ñ²ý³ü´îµæ¶õ·ú¸ý¹û»¯¼¬½«¾ó¿¨À·ÁÂŠÃ²ÄŽÆ’Ç€ÈÔÉÊÒËÑÌÞÍÖÎ×ÏØÐÑÑ¥ÒãÓàÔâÕåÖ™×žØÙëÚéÛêÜšÝìÞçßÿà…á âƒä„å†æ‘ç‡èŠé‚êˆë‰ìí¡îŒï‹ñ¤ò•ó¢ô“õäö”÷öø›ù—ú£û–üýìþèÿ˜"
-    set-variable $box-chars "³Ú¿ÀÙÂÃÅ´ÁÄ"
-    set-variable $window-chars "=-#*%=\C^± ±\C_\CD==\C^\C^±±  ±±\C_\C_\C[\CZ|\CQ± ±\CP\CD||\CQ\CQ±±  ±±\CP\CP\C[\CZ x* \CP \CQ\xaf\xfb\xfa$$\\"
+    set-char-mask "M" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÂŠÃ²ÄŽÆ’Ç€ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö™×žØï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üšï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+    set-variable $box-chars "ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½Å´ï¿½ï¿½"
+    set-variable $window-chars "=-#*%=\C^ï¿½ ï¿½\C_\CD==\C^\C^ï¿½ï¿½  ï¿½ï¿½\C_\C_\C[\CZ|\CQï¿½ ï¿½\CP\CD||\CQ\CQï¿½ï¿½  ï¿½ï¿½\CP\CP\C[\CZ x* \CP \CQ\xaf\xfb\xfa$$\\"
     set-variable $system &band $system &bnot 0x10000
     set-variable .change-font.type 255
     set-variable #l1 0
@@ -58,44 +58,44 @@ set-variable .change-font.type 0
     set-variable .change-font.type 162
 !elif &seq #l0 "microsoft-cp1250"
     ; map iso8859-2 -> win32 cp1250 
-    set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"
+    set-char-mask "dp" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     ;set-char-mask "M" "\xA1\xA5\xA5\xBC\xA6\x8C\xA9\x8A\xAB\x8D\xAC\x8F\xAE\x8E\xB1\xB9\xB5\xBE\xB6\x9C\xB7\xA1\xB9\x9A\xBB\x9D\xBC\x9F\xBE\x9E"
     set-variable .change-font.type 238
 !elif &seq #l0 "microsoft-cp1251"
     ; map ISO8859-5 -> win32 cp1251
     set-char-mask "M" ""
-    set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ"
-    ;set-char-mask "M" "°À±Á²Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ÏÀÐÁÑÂÒÃÓÄÔÅÕÆÖÇ×ÈØÉÙÊÚËÛÌÜÍÝÎÞÏß¡¨ÐàÑáÒâÓãÔäÕåÖæ×çØèÙéÚêÛëÜìÝíÞîßïàðáñâòãóäôåõæöç÷èøéùêúëûìüíýîþïÿñ¸"
+    set-char-mask "dp" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+    ;set-char-mask "M" "ï¿½ï¿½ï¿½ï¿½ï¿½Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     set-variable .change-font.type 204
 !elif &seq #l0 "microsoft-cp1253"
     ; map ISO8859-5 -> win32 cp1251
     set-char-mask "M" ""
-    set-char-mask "dp" "€‚ƒ„…†‡‰‹’“”•–—™›"
-    ;set-char-mask "M" "°À±Á²Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ÏÀÐÁÑÂÒÃÓÄÔÅÕÆÖÇ×ÈØÉÙÊÚËÛÌÜÍÝÎÞÏß¡¨ÐàÑáÒâÓãÔäÕåÖæ×çØèÙéÚêÛëÜìÝíÞîßïàðáñâòãóäôåõæöç÷èøéùêúëûìüíýîþïÿñ¸"
+    set-char-mask "dp" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+    ;set-char-mask "M" "ï¿½ï¿½ï¿½ï¿½ï¿½Â³Ã´ÄµÅ¶Æ·Ç¸È¹ÉºÊ»Ë¼Ì½Í¾Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     set-variable .change-font.type 204
 !elif &seq #l0 "microsoft-cp1254"
   set-char-mask "M" ""
-  set-char-mask "dp" "€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ"
+  set-char-mask "dp" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 !elif &seq #l0 "PC-437"
-    set-char-mask "M" "£œª¦«®¬ª°ø±ñ²ýµæ·ú»¯¼¬½«¿¨ÀAÁAÂAÃAÄŽÅÆ’AAÇ€ÈEÉÊEËEEEÌIÍIÎIÏIIIÑ¥ÒOÓOÔOÕOÖ™OOÙUÚUÛUÜšUUÝYßáà…á âƒãaä„åaæ‘aaç‡èŠé‚êˆë‰ìí¡îŒï‹ñ¤ò•ó¢ô“õoö”÷öøoooù—ú£û–üuuýyÿ˜yy"
-    set-variable $box-chars "³Ú¿ÀÙÂÃÅ´ÁÄ"
-    set-variable $window-chars "=-#*%=\C^± ±\C_\CD==\C^\C^±±  ±±\C_\C_\C[\CZ|\CQ± ±\CP\CD||\CQ\CQ±±  ±±\CP\CP\C[\CZ x* \CP \CQ>\\.$$\\"
+    set-char-mask "M" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Aï¿½Aï¿½AÄŽÅÆ’AAÇ€ï¿½EÉï¿½Eï¿½EEEï¿½Iï¿½Iï¿½Iï¿½IIIÑ¥ï¿½Oï¿½Oï¿½Oï¿½OÖ™OOï¿½Uï¿½Uï¿½UÜšUUï¿½Yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½aï¿½ï¿½aï¿½aaï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½oooï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½uuï¿½yï¿½ï¿½yy"
+    set-variable $box-chars "ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½Å´ï¿½ï¿½"
+    set-variable $window-chars "=-#*%=\C^ï¿½ ï¿½\C_\CD==\C^\C^ï¿½ï¿½  ï¿½ï¿½\C_\C_\C[\CZ|\CQï¿½ ï¿½\CP\CD||\CQ\CQï¿½ï¿½  ï¿½ï¿½\CP\CP\C[\CZ x* \CP \CQ>\\.$$\\"
     set-variable $system &band $system &bnot 0x10000
     set-variable #l1 0
 !elif &seq #l0 "PC-850"
-    set-char-mask "M" "£œª¦«®¬ª®©°§±ñ²ý³ü´îµæ¶õ·ú¸ý¹û»¯¼¬½«¾ó¿¨À·ÁÂŠÃ²ÄŽÆ’Ç€ÈÔÉÊÒËÑÌÞÍÖÎ×ÏØÐÑÑ¥ÒãÓàÔâÕåÖ™×žØÙëÚéÛêÜšÝìÞçßÿà…á âƒä„å†æ‘ç‡èŠé‚êˆë‰ìí¡îŒï‹ñ¤ò•ó¢ô“õäö”÷öø›ù—ú£û–üýìþèÿ˜"
-    set-variable $box-chars "³Ú¿ÀÙÂÃÅ´ÁÄ"
-    set-variable $window-chars "=-#*%=\C^± ±\C_\CD==\C^\C^±±  ±±\C_\C_\C[\CZ|\CQ± ±\CP\CD||\CQ\CQ±±  ±±\CP\CP\C[\CZ x* \CP \CQ>\\.$$\\"
+    set-char-mask "M" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÂŠÃ²ÄŽÆ’Ç€ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö™×žØï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üšï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+    set-variable $box-chars "ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½Å´ï¿½ï¿½"
+    set-variable $window-chars "=-#*%=\C^ï¿½ ï¿½\C_\CD==\C^\C^ï¿½ï¿½  ï¿½ï¿½\C_\C_\C[\CZ|\CQï¿½ ï¿½\CP\CD||\CQ\CQï¿½ï¿½  ï¿½ï¿½\CP\CP\C[\CZ x* \CP \CQ>\\.$$\\"
     set-variable $system &band $system &bnot 0x10000
     set-variable #l1 0
 !elif &seq #l0 "PC-866"
-    set-char-mask "M" "°\x80±\x81²\x82³\x83´\x84µ\x85¶\x86·\x87¸\x88¹\x89º\x8A»\x8B¼\x8C½\x8D¾\x8E¿\x8FÀ\x90Á\x91Â\x92Ã\x93Ä\x94Å\x95Æ\x96Ç\x97È\x98É\x99Ê\x9AË\x9BÌ\x9CÍ\x9DÎ\x9EÏ\x9F¡\xF0Ð\xA0Ñ\xA1Ò\xA2Ó\xA3Ô\xA4Õ\xA5Ö\xA6×\xA7Ø\xA8Ù\xA9Ú\xAAÛ\xABÜ\xACÝ\xADÞ\xAEß\xAFà\xE0á\xE1â\xE2ã\xE3ä\xE4å\xE5æ\xE6ç\xE7è\xE8é\xE9ê\xEAë\xEBì\xECí\xEDî\xEEï\xEFð\xFCñ\xF1"
+    set-char-mask "M" "ï¿½\x80ï¿½\x81ï¿½\x82ï¿½\x83ï¿½\x84ï¿½\x85ï¿½\x86ï¿½\x87ï¿½\x88ï¿½\x89ï¿½\x8Aï¿½\x8Bï¿½\x8Cï¿½\x8Dï¿½\x8Eï¿½\x8Fï¿½\x90ï¿½\x91ï¿½\x92ï¿½\x93ï¿½\x94ï¿½\x95ï¿½\x96ï¿½\x97ï¿½\x98ï¿½\x99ï¿½\x9Aï¿½\x9Bï¿½\x9Cï¿½\x9Dï¿½\x9Eï¿½\x9Fï¿½\xF0ï¿½\xA0ï¿½\xA1ï¿½\xA2ï¿½\xA3ï¿½\xA4ï¿½\xA5ï¿½\xA6ï¿½\xA7ï¿½\xA8ï¿½\xA9ï¿½\xAAï¿½\xABï¿½\xACï¿½\xADï¿½\xAEï¿½\xAFï¿½\xE0ï¿½\xE1ï¿½\xE2ï¿½\xE3ï¿½\xE4ï¿½\xE5ï¿½\xE6ï¿½\xE7ï¿½\xE8ï¿½\xE9ï¿½\xEAï¿½\xEBï¿½\xECï¿½\xEDï¿½\xEEï¿½\xEFï¿½\xFCï¿½\xF1"
     set-variable .change-font.type 204
 !elif &seq #l0 "koi8-r"
-    set-char-mask "M" "°á±â²÷³ç´äµå¶ö·ú¸é¹êºë»ì¼í½î¾ï¿ðÀòÁóÂôÃõÄæÅèÆãÇþÈûÉýÊÿËùÌøÍüÎàÏñ¡³ÐÁÑÂÒ×ÓÇÔÄÕÅÖÖ×ÚØÉÙÊÚËÛÌÜÍÝÎÞÏßÐàÒáÓâÔãÕäÆåÈæÃçÞèÛéÝêßëÙìØíÜîÀïÑñ£"
+    set-char-mask "M" "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
     set-variable .change-font.type 204
 !elif &seq #l0 "plain-text"
-    set-char-mask "M" "ÀAÁAÂAÃAÄAÇCÈEÉEÊEËEÌIÍIÎIÏIÑNÒOÓOÔOÕOÖO×xØOÙUÚUÛUÜUÝYßBàaáaâaäaåaçcèeéeêeëeìiíiîiïiñnòoóoôoõoöoøoùuúuûuüuýyþbÿy"
+    set-char-mask "M" "ï¿½Aï¿½Aï¿½Aï¿½Aï¿½Aï¿½Cï¿½Eï¿½Eï¿½Eï¿½Eï¿½Iï¿½Iï¿½Iï¿½Iï¿½Nï¿½Oï¿½Oï¿½Oï¿½Oï¿½Oï¿½xï¿½Oï¿½Uï¿½Uï¿½Uï¿½Uï¿½Yï¿½Bï¿½aï¿½aï¿½aï¿½aï¿½aï¿½cï¿½eï¿½eï¿½eï¿½eï¿½iï¿½iï¿½iï¿½iï¿½nï¿½oï¿½oï¿½oï¿½oï¿½oï¿½oï¿½uï¿½uï¿½uï¿½uï¿½yï¿½bï¿½y"
 !endif
 
 !if &reg &spr "/history/%s/ext-char-set" %platform "0"

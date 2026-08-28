@@ -35,7 +35,7 @@
 #include "emain.h"
 #include "eskeys.h"		/* External Defintions */
 #include "evers.h"                      /* Version information */
-#include "me-encoding.h"                /* UTF-8/CP1252 conversion */
+#include "encoding.h"                /* UTF-8/CP1252 conversion */
 
 #ifdef _STDARG
 #include <stdarg.h>		/* Variable Arguments */

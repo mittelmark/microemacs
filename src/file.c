@@ -34,7 +34,7 @@
 #include "emain.h"
 #include "efunc.h"
 #include "esearch.h"
-#include "me-encoding.h"
+#include "encoding.h"
 #if (defined _UNIX) || (defined _DOS) || (defined _WIN32)
 #include <errno.h>
 #include <limits.h>                     /* Constant limit definitions */

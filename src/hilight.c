@@ -33,7 +33,7 @@
 #define	__HILIGHTC				/* Name file */
 
 #include "emain.h"
-#include "me-encoding.h"                /* UTF-8/CP1252 conversion */
+#include "encoding.h"                /* UTF-8/CP1252 conversion */
 
 #if MEOPT_HILIGHT
 

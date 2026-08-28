@@ -29,8 +29,7 @@
 
 #include "emain.h"
 
-#define ME_ENCODING_IMPLEMENT
-#include "me-encoding.h"
+#include "encoding.h"
 #include "evar.h"
 #include "efunc.h"
 #include "eskeys.h"
