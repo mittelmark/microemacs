@@ -51,6 +51,7 @@ DEFVAR ("buffer-fill-mode",    EVBUFFILLMODE)   /* buffer Justify mode */
 #endif
 DEFVAR ("buffer-fmod",         EVBUFFMOD)       /* file mod or attributes */
 DEFVAR ("buffer-fname",        EVCFNAME)        /* current file name */
+DEFVAR ("buffer-encoding",    EVBUFENC)        /* buffer file encoding */
 #if MEOPT_HILIGHT
 DEFVAR ("buffer-hilight",      EVBUFHIL)        /* Buffers hilight scheme */
 DEFVAR ("buffer-indent",       EVBUFIND)        /* Buffers indent scheme */

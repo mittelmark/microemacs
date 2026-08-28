@@ -1125,7 +1125,12 @@ int meConvString(meConv *conv, const unsigned char *in, size_t in_len,
 }
 
 meEncoding meDetectBOM(const unsigned char *data, size_t len) {
-    (void)data; (void)len;
+    if(len >= 3 && data[0] == 0xEF && data[1] == 0xBB && data[2] == 0xBF)
+        return ME_ENC_UTF8;
+    if(len >= 2 && data[0] == 0xFE && data[1] == 0xFF)
+        return ME_ENC_UTF8;  /* UTF-16 BE - treat as UTF-8 for now */
+    if(len >= 2 && data[0] == 0xFF && data[1] == 0xFE)
+        return ME_ENC_UTF8;  /* UTF-16 LE - treat as UTF-8 for now */
     return ME_ENC_UTF8;
 }
 

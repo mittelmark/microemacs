@@ -798,6 +798,7 @@ typedef struct  meBuffer {
 #endif
     meUByte            tabWidth;                /* Virtual tab size             */
     meUByte            indentWidth;             /* Real tab size                */
+    meUByte            encoding;                /* Per-buffer encoding (meEncoding) */
 } meBuffer ;
 
 

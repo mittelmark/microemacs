@@ -27,6 +27,8 @@
 
 #define	__FILEIOC			/* Define program name */
 
+#include "encoding.h"
+
 #ifdef _WIN32
 /* winsock2.h must be included before POSIX select.h to avoid conflicts */
 /* The POSIX sys/select.h defines select with struct timeval *
@@ -2706,7 +2708,7 @@ ffWriteFile(meUByte *fname, meUInt flags, meBuffer *bp)
             if(ffnewFile)
                 mlwrite(MWCLEXEC,(meUByte *)"[New file %s, Wrote %d lines]",fname,noLines);
             else
-                mlwrite(MWCLEXEC,(meUByte *)"[Wrote %d lines]",noLines);
+                mlwrite(MWCLEXEC,(meUByte *)"[Wrote %d lines]",fname,noLines);
             return meTRUE ;
         }
     }

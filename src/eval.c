@@ -29,6 +29,7 @@
 
 #include "emain.h"
 
+#define ME_ENCODING_IMPLEMENT
 #include "encoding.h"
 #include "evar.h"
 #include "efunc.h"
@@ -51,6 +52,7 @@
 meUByte evalResult[meTOKENBUF_SIZE_MAX];    /* resulting string */
 meUByte termEncoding[32] = "utf-8";        /* Terminal encoding name */
 int meInternalEnc = ME_ENC_CP1252 ;        /* Internal encoding for Luit conversion */
+int meInternalEncExplicit = 0 ;            /* 1 if -E flag was used */
 static meUByte machineName[]=meSYSTEM_NAME;    /* resulting string */
 static int clipStartupSkip = 1;                /* skip clipboard load on first yank */
 
@@ -786,6 +788,16 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
             meStrrep(&frameCur->bufferCur->fileName,vvalue);
             frameAddModeToWindows(WFMODE) ;
             break;
+        case EVBUFENC:
+            {
+                meEncoding enc = meEncodingFromName((const char *) vvalue) ;
+                if((int)enc >= 0)
+                {
+                    frameCur->bufferCur->encoding = (meUByte) enc ;
+                    frameAddModeToWindows(WFMODE) ;
+                }
+            }
+            break ;
 #if MEOPT_DEBUGM
         case EVDEBUG:
             macbug = (meByte) meAtoi(vvalue);
@@ -1016,9 +1028,10 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
             break;
         case EVINTENC:
             {
-                meEncoding enc = meEncodingFromName((char *)vvalue) ;
-                if(enc >= 0)
-                    meInternalEnc = enc ;
+                meEncoding enc = meEncodingFromName((const char *)vvalue) ;
+                if(enc == (meEncoding) -1)
+                    break ;  /* Ignore invalid encoding name */
+                meInternalEnc = enc ;
             }
             break;
 #if MEOPT_EXTENDED
@@ -1326,6 +1339,7 @@ handle_namesvar:
     case EVBUFFMOD:     return meItoa((((meInt) frameCur->bufferCur->fileFlag) << 16) | ((meInt) frameCur->bufferCur->stats.stmode));
     case EVGLOBFMOD:    return meItoa(meUmask);
     case EVCFNAME:      return mePtos(frameCur->bufferCur->fileName) ;
+    case EVBUFENC:      return (meUByte *) meEncodingName((meEncoding) frameCur->bufferCur->encoding) ;
 #if MEOPT_DEBUGM
     case EVDEBUG:       return meItoa(macbug);
 #endif

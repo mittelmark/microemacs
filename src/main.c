@@ -1570,23 +1570,21 @@ missing_arg:
                                     argv[0]) ;
                             meExit(1) ;
                         }
-                        enc = meEncodingFromName((char *)argv[carg]) ;
+                        enc = meEncodingFromName((const char *)argv[carg]) ;
                         encName = (meUByte *) argv[carg] ;
                     }
                     else
                     {
-                        enc = meEncodingFromName((char *)argv[carg]+2) ;
+                        enc = meEncodingFromName((const char *)argv[carg]+2) ;
                         encName = (meUByte *) argv[carg]+2 ;
                     }
-                    if((int)enc < 0)
+                    if(enc == (meEncoding) -1)
                     {
                         fprintf(stderr,"%s: Error: Unknown encoding '%s'\n",argv[0],encName) ;
                         meExit(1) ;
                     }
                     meInternalEnc = enc ;
-                    /* Force terminal encoding to UTF-8 so output converts correctly */
-                    meStrncpy(termEncoding, "utf-8", sizeof(termEncoding)-1) ;
-                    termEncoding[sizeof(termEncoding)-1] = '\0' ;
+                    meInternalEncExplicit = 1 ;
                     break ;
                 }
 

@@ -63,9 +63,37 @@
 #include <sys/param.h>
 #endif
 
+#ifdef _ME_WINDOW
+/*
+ * Convert UTF-8 input string to the specified internal encoding.
+ * Returns the converted character as a meUShort for the key buffer.
+ * Returns 0 if the character cannot be encoded (caller should beep/reject).
+ */
+static meUShort
+convertUtf8Input(const char *utf8Str, int len, meEncoding toEnc)
+{
+    meConv conv;
+    unsigned char out[4];
+    int outLen;
+    
+    meConvInit(&conv, ME_ENC_UTF8, toEnc);
+    
+    outLen = meConvChar(&conv, (const unsigned char *)utf8Str, len, out, sizeof(out));
+    if (outLen <= 0)
+        return 0;
+    
+    /* For single-byte output, return directly */
+    if (outLen == 1)
+        return (meUShort)out[0];
+    
+    /* For multi-byte, we need to handle differently */
+    return 0;
+}
+#endif /* _ME_WINDOW */
+
 /*
  * Output a single character to the terminal, converting from internal
- * encoding (CP1252) to the terminal encoding (typically UTF-8).
+ * encoding to the terminal encoding (typically UTF-8).
  */
 void
 TTputConvChar(meUByte c)
@@ -76,15 +104,42 @@ TTputConvChar(meUByte c)
 
     in[0] = c;
 
-    if (meInternalEnc == ME_ENC_UTF8)
+    /* If internal encoding matches terminal encoding, pass through */
+    if(meInternalEnc == ME_ENC_UTF8 && meStrcmp(termEncoding, "utf-8") == 0)
     {
-        /* Internal is already UTF-8, just output directly */
         putchar(c);
         return;
     }
 
-    /* Luit model: always convert from internal encoding to UTF-8 */
-    meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8);
+    if (meStrcmp(termEncoding, "utf-8") == 0)
+    {
+        /* Convert from internal encoding to UTF-8 */
+        meConvInit(&conv, meInternalEnc, ME_ENC_UTF8);
+    }
+    else if (meStrcmp(termEncoding, "iso8859-1") == 0)
+    {
+        if(meInternalEnc == ME_ENC_ISO8859_1)
+        {
+            putchar(c);
+            return;
+        }
+        meConvInit(&conv, meInternalEnc, ME_ENC_ISO8859_1);
+    }
+    else if (meStrcmp(termEncoding, "cp1252") == 0)
+    {
+        if(meInternalEnc == ME_ENC_CP1252)
+        {
+            putchar(c);
+            return;
+        }
+        meConvInit(&conv, meInternalEnc, ME_ENC_CP1252);
+    }
+    else
+    {
+        /* ASCII or unknown - just output as-is */
+        putchar(c);
+        return;
+    }
 
     outLen = meConvChar(&conv, in, 1, out, sizeof(out));
     if (outLen > 0)
@@ -95,23 +150,35 @@ TTputConvChar(meUByte c)
     }
     else
     {
+        /* Conversion failed - output replacement */
         putchar('?');
     }
 }
 
 /*
- * Convert a string from internal encoding (CP1252) to UTF-8.
+ * Convert a string from internal encoding to the terminal encoding (UTF-8).
  * Returns number of bytes written to dst (not including null terminator).
  */
 int
 meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize)
 {
     meConv conv;
+    meEncoding termEnc;
     int outLen;
 
-    if (meInternalEnc == ME_ENC_UTF8)
+    /* Determine terminal encoding */
+    if (meStrcmp(termEncoding, "iso8859-1") == 0)
+        termEnc = ME_ENC_ISO8859_1;
+    else if (meStrcmp(termEncoding, "cp1252") == 0)
+        termEnc = ME_ENC_CP1252;
+    else if (meStrcmp(termEncoding, "ascii") == 0)
+        termEnc = ME_ENC_ASCII;
+    else
+        termEnc = ME_ENC_UTF8;  /* default */
+
+    /* If internal encoding matches terminal encoding, copy as-is */
+    if (meInternalEnc == termEnc)
     {
-        /* Internal is already UTF-8, just copy as-is */
         if (srcLen >= dstSize)
             srcLen = dstSize - 1;
         meStrncpy(dst, src, srcLen);
@@ -119,18 +186,8 @@ meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize)
         return srcLen;
     }
 
-    /* Luit model: always convert from internal encoding to UTF-8 */
-    if (meInternalEnc == ME_ENC_UTF8)
-    {
-        /* Internal is already UTF-8, just copy as-is */
-        if (srcLen >= dstSize)
-            srcLen = dstSize - 1;
-        meStrncpy(dst, src, srcLen);
-        dst[srcLen] = '\0';
-        return srcLen;
-    }
-
-    meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8);
+    /* Initialize converter: internal encoding → terminal encoding */
+    meConvInit(&conv, meInternalEnc, termEnc);
 
     outLen = meConvString(&conv, src, srcLen, dst, dstSize - 1);
     if (outLen < 0)
@@ -1854,6 +1911,23 @@ meXEventHandler(void)
 
             ss = event.xkey.state ;
             XLookupString(&event.xkey,keyStr,20,&keySym,NULL);
+            
+            /* Convert UTF-8 input to buffer encoding if needed.
+             * Only convert printable characters without control/alt modifiers,
+             * as modified keys are handled by the existing key processing below. */
+            if(keySym <= 0xff && keyStr[0] != '\0' &&
+               !(ss & (ControlMask|Mod1Mask)))
+            {
+                meEncoding bufEnc = (meEncoding) frameCur->windowCur->buffer->encoding;
+                meUShort converted = convertUtf8Input(keyStr, strlen(keyStr), bufEnc);
+                if(converted != 0)
+                    keySym = converted;
+                else if(keyStr[0] != '\0' && keyStr[0] >= 0x20)
+                {
+                    /* Character not encodable in buffer encoding - reject with beep */
+                    TTbell();
+                }
+            }
             
             /* printf("#1 got key %x, ss=%x \n",(unsigned int) keySym, ss) ;*/
             /* keyStr[19] = '\0' ;*/

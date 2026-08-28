@@ -372,12 +372,15 @@ extern meFrame *frameCur ;
 
 extern meUByte *disLineBuff ;           /* interal display buffer array */
 extern int      disLineSize ;           /* interal display buffer size  */
+extern meUByte *disLineByteOff ;        /* display col -> byte offset in disLineBuff */
+extern int      disLineByteOffSize ;    /* size of disLineByteOff array */
 
 /* uninitialized global external declarations */
 extern meUByte    resultStr[meBUF_SIZE_MAX] ;   /* $result variable             */
 extern meUByte    evalResult[meTOKENBUF_SIZE_MAX] ;/* Result string from functions */
 extern meUByte    termEncoding[32] ;       /* Terminal encoding name (e.g., "utf-8") */
-extern int        meInternalEnc ;          /* Internal encoding (default CP1252) */
+extern int        meInternalEnc ;          /* Internal encoding (intermediate for display/keyboard) */
+extern int        meInternalEncExplicit ;  /* 1 if -E flag was used */
 extern int        curgoal;              /* Goal for C-P, C-N            */
 extern meBuffer  *bheadp;               /* Head of list of buffers      */
 #if MEOPT_ABBREV
@@ -473,7 +476,7 @@ meInt     styleTableSize=2 ;            /* Size of the style table      */
 meSchemeSet *hilBlock;                  /* Hilighting style change      */
 meInt     cursorState=0 ;               /* Current state of cursor      */
 meUByte  *meProgName=NULL ;               /* the program name (argv[0])   */
-meUByte   orgModeLineStr[]="%s%r%u " ME_SHORTNAME " (%e) - %l %b (%f) ";
+meUByte   orgModeLineStr[]="%s%r%u " ME_SHORTNAME " (%e) %E - %l %b (%f) ";
 meUByte  *modeLineStr=orgModeLineStr;   /* current modeline format      */
 meInt     autoTime=300 ;                /* auto save time in seconds    */
 #if MEOPT_WORDPRO
@@ -820,6 +823,8 @@ meFrame *frameCur=NULL ;
 
 meUByte   *disLineBuff=NULL ;           /* interal display buffer array */
 int        disLineSize=512 ;            /* interal display buffer size  */
+meUByte   *disLineByteOff=NULL ;        /* display col -> byte offset in disLineBuff */
+int        disLineByteOffSize=0 ;       /* size of disLineByteOff array */
 
 int       curgoal;                      /* Goal for C-P, C-N            */
 meBuffer   *bheadp;                     /* Head of list of buffers      */

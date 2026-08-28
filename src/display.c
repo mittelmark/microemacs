@@ -386,7 +386,15 @@ windCurLineOffsetEval(meWindow *wp)
 #endif
         while((cc=*ss) != 0)
         {
-            if(cc >= 0xC0)
+            if(wp->buffer->encoding != ME_ENC_UTF8 && cc >= 0x80)
+            {
+                /* Non-UTF-8 buffer: raw encoding byte = 1 display column */
+                ii = 1 ;
+                *off++ = (meUByte) ii ;
+                pos += ii ;
+                ss++ ;
+            }
+            else if(cc >= 0xC0)
             {
                 /* Validate UTF-8 sequence: check lead byte AND continuation bytes.
                  * If not valid UTF-8, treat as single CP1252 byte (width 1). */
@@ -590,35 +598,92 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
     register meUByte cc;
     register meUByte *s2;
 
-    s2 = disLineBuff + wid;
+    /* Ensure disLineByteOff is allocated and large enough */
+    if(wid >= disLineByteOffSize)
+    {
+        int need = wid + 512 ;
+        disLineByteOff = meRealloc(disLineByteOff, need) ;
+        disLineByteOffSize = need ;
+    }
+    /* Use byte offset mapping for correct positioning in disLineBuff.
+     * When multi-byte UTF-8 is present, wid (display column) != byte offset. */
+    s2 = disLineBuff + disLineByteOff[wid] ;
     while(len-- > 0)
     {
-        /* the largest character size is a tab which is user definable */
-        if (wid >= disLineSize)
+        meInt bytePos = s2 - disLineBuff ;
+        /* Ensure disLineByteOff has room for this column */
+        if(wid >= disLineByteOffSize)
+        {
+            int need = wid + 512 ;
+            disLineByteOff = meRealloc(disLineByteOff, need) ;
+            disLineByteOffSize = need ;
+        }
+        /* Record byte offset for this display column */
+        disLineByteOff[wid] = bytePos ;
+        /* Ensure disLineBuff has room */
+        if(bytePos >= disLineSize)
         {
             disLineSize += 512 ;
             disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
-            s2 = disLineBuff + wid ;
+            s2 = disLineBuff + bytePos ;
         }
         cc = *s1 ;
-        if(meInternalEnc != ME_ENC_UTF8 && cc >= 0x80)
+        if(bp->encoding != ME_ENC_UTF8 && cc >= 0x80)
         {
-            /* Non-UTF-8 internal encoding: raw encoding byte, pass through
-             * to disLineBuff. TTputConvChar will convert to UTF-8 at output. */
-            *s2++ = cc ;
+            /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding for display.
+             * Uses meConvChar to convert from buffer encoding → internal encoding. */
+            meConv conv ;
+            unsigned char outbyte ;
+            meConvInit(&conv, (meEncoding) bp->encoding, (meEncoding) meInternalEnc) ;
+            if(meConvChar(&conv, s1, 1, &outbyte, 1) > 0)
+            {
+                *s2++ = outbyte ;
+            }
+            else
+            {
+                /* Conversion failed - show as replacement */
+                *s2++ = '?' ;
+            }
             s1++ ;
             wid++ ;
         }
         else if(cc >= 0xC0)
         {
-            /* UTF-8 multi-byte sequence (internal encoding is UTF-8).
-             * Copy the multi-byte sequence directly. */
+            /* Could be a UTF-8 multi-byte sequence or a raw high byte.
+             * When internal encoding is UTF-8 and buffer is UTF-8,
+             * copy bytes directly. Otherwise try UTF-8→internal conversion. */
             int utflen = meUtf8SeqLen(cc) ;
-            int ii ;
-            for(ii = 0 ; ii < utflen && ii < len+1 ; ii++)
-                *s2++ = s1[ii] ;
-            s1 += utflen ;
-            len -= (utflen - 1) ;
+            if(meInternalEnc == ME_ENC_UTF8)
+            {
+                /* Internal is UTF-8: copy multi-byte sequence directly */
+                int ii ;
+                for(ii = 0 ; ii < utflen && ii < len+1 ; ii++)
+                    *s2++ = s1[ii] ;
+                s1 += utflen ;
+                len -= (utflen - 1) ;
+            }
+            else
+            {
+                meConv conv ;
+                unsigned char outBuf[8] ;
+                int outLen ;
+                meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
+                outLen = meConvChar(&conv, s1, utflen, outBuf, sizeof(outBuf)) ;
+                if(outLen > 0)
+                {
+                    int ii ;
+                    for(ii = 0 ; ii < outLen ; ii++)
+                        *s2++ = outBuf[ii] ;
+                    s1 += utflen ;
+                    len -= (utflen - 1) ;
+                }
+                else
+                {
+                    /* Not valid UTF-8 — treat as raw byte */
+                    *s2++ = cc ;
+                    s1++ ;
+                }
+            }
             wid++ ;
         }
         else if(isDisplayable(cc))
@@ -660,6 +725,14 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             *s2++ = hexdigits[cc%0x10] ;
         }
     }
+    /* Record byte offset for the end position (used by next renderLine call) */
+    if(wid >= disLineByteOffSize)
+    {
+        int need = wid + 512 ;
+        disLineByteOff = meRealloc(disLineByteOff, need) ;
+        disLineByteOffSize = need ;
+    }
+    disLineByteOff[wid] = s2 - disLineBuff ;
     return wid;
 }
 
@@ -675,6 +748,14 @@ updateline(register int row, register meVideoLine *vp1, meWindow *window)
     meUShort noColChng;         /* Number of colour changes */
     meUShort scol;              /* Lines starting column */
     meUShort ncol;              /* Lines number of columns */
+
+    /* Ensure disLineByteOff is allocated */
+    if(disLineByteOff == NULL)
+    {
+        disLineByteOffSize = 512 ;
+        disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+    }
+    disLineByteOff[0] = 0 ;
 
     /* Get column size/offset */
     s1 = vp1->line->text;
@@ -834,7 +915,8 @@ hideLineJump:
                  * we do not insert a dollar where not required. */
                 if (blkp->column > 0)
                 {
-                    s1 += scroll ;
+                    /* Use byte offset mapping to advance s1 past scrolled columns */
+                    s1 = disLineBuff + disLineByteOff[scroll] ;
                     while((blkp->column <= scroll))
                     {
                         if(noColChng == 1)
@@ -869,7 +951,19 @@ hideLineJump:
                 /* remove the fonts as these can effect the next char which will probably be the scroll bar */
                 scheme = meSchemeSetNoFont(scheme) ;
             }
-            s1[ncol-1] = windowChars[WCDISPTXTRIG] ;
+            /* Use byte offset: ncol-1 is a display column from the visible start,
+             * which is the same as from the line start since scroll has been
+             * subtracted from all blkp->column values. The byte position in
+             * disLineBuff is disLineByteOff[ncol-1]. */
+            disLineBuff[disLineByteOff[ncol-1]] = windowChars[WCDISPTXTRIG] ;
+            /* Ensure disLineByteOff[ncol] is set for the extra column that
+             * follows the truncation marker. The TCAP loop reads byteNext = disLineByteOff[col+1]. */
+            if(ncol >= disLineByteOffSize)
+            {
+                disLineByteOffSize = ncol + 512 ;
+                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+            }
+            disLineByteOff[ncol] = disLineByteOff[ncol-1] + 1 ;
             blkp[noColChng].column = ncol ;
             blkp[noColChng].scheme = scheme | (blkp[noColChng-1].scheme & (meSCHEME_CURRENT|meSCHEME_SELECT)) ;
             noColChng++ ;
@@ -878,10 +972,24 @@ hideLineJump:
         {
             /* An extra space is added to the last column so that
              * the cursor will be the right colour */
-            if(vp1->line != window->buffer->baseLine)
-                s1[blkp[noColChng-1].column] = displayNewLine ;
-            else
-                s1[blkp[noColChng-1].column] = ' ' ;
+            /* Use byte offset mapping for correct position in disLineBuff */
+            {
+                meInt lastCol = blkp[noColChng-1].column ;
+                if(vp1->line != window->buffer->baseLine)
+                    disLineBuff[disLineByteOff[lastCol]] = displayNewLine ;
+                else
+                    disLineBuff[disLineByteOff[lastCol]] = ' ' ;
+                /* The extra column (end-of-line marker) is a single byte at
+                 * disLineByteOff[lastCol]. Ensure disLineByteOff[lastCol+1]
+                 * is set so the TCAP loop can read byteNext correctly when
+                 * blkp->column is incremented below. */
+                if(lastCol + 1 >= disLineByteOffSize)
+                {
+                    disLineByteOffSize = lastCol + 512 ;
+                    disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+                }
+                disLineByteOff[lastCol + 1] = disLineByteOff[lastCol] + 1 ;
+            }
             if(meSchemeTestStyleHasFont(blkp[noColChng-1].scheme))
             {
                 /* remove the fonts as these can effect the next char which will probably be the scroll bar */
@@ -906,6 +1014,7 @@ hideLineJump:
     }
     else
     {
+        meInt ii ;
         blkp = hilBlock ;
         blkp->column = vp1->line->length ;
         noColChng = 1 ;
@@ -917,6 +1026,24 @@ hideLineJump:
 #endif
         else
             blkp->scheme = mlScheme;
+        /* Modeline/menu: copy text to disLineBuff so TCAP loop can use
+         * disLineByteOff[] mapping. Set up identity byte offset mapping
+         * (1 byte = 1 display column for ASCII modeline text). */
+        if((int) blkp->column >= disLineByteOffSize)
+        {
+            disLineByteOffSize = blkp->column + 512 ;
+            disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+        }
+        for(ii = 0 ; ii <= (meInt) blkp->column ; ii++)
+            disLineByteOff[ii] = ii ;
+        /* Ensure disLineBuff is large enough and copy line text */
+        if((int) vp1->line->length >= disLineSize)
+        {
+            disLineSize = vp1->line->length + 512 ;
+            disLineBuff = meRealloc(disLineBuff, disLineSize + 32) ;
+        }
+        memcpy(disLineBuff, vp1->line->text, vp1->line->length) ;
+        s1 = disLineBuff ;
     }
 
     /* Get the frame store colour and text pointers */
@@ -946,12 +1073,23 @@ hideLineJump:
             TCAPschemeSet(scheme) ;
 
             /* Output the character in the specified colour.
-             * Maintain the frame store */
-            for(ii = blkp->column ; col<ii ; col++)
+             * Maintain the frame store.
+             * When internal encoding is UTF-8, disLineBuff contains multi-byte
+             * UTF-8 sequences but blkp->column stores display width (1 per char).
+             * Use disLineByteOff[] to convert display columns to byte offsets. */
+            while(col < (int)blkp->column)
             {
-                *fssp++ = scheme;
-                *fstp++ = *s1;
-                TCAPputc(*s1++) ;
+                meInt byteStart = disLineByteOff[col] ;
+                meInt byteNext = disLineByteOff[col + 1] ;
+                meInt b ;
+                meUByte cc = disLineBuff[byteStart] ;
+                /* Store lead byte in frame store (one per display column) */
+                *fssp++ = scheme ;
+                *fstp++ = cc ;
+                /* Output all bytes of this character to the terminal */
+                for(b = byteStart ; b < byteNext ; b++)
+                    TCAPputc(disLineBuff[b]) ;
+                col++ ;
             }
             blkp++;
         }
@@ -1000,11 +1138,10 @@ hideLineJump:
             meUByte cc, *sfstp=fstp;
             meInt spFlag = 0, ccol=col;
             do {
+                meInt col_d ;
                 scheme = blkp->scheme ;
                 meFrameXTermSetScheme(frameCur,scheme) ;
                 ii = blkp->column ;
-                ii -= col;
-                len = ii ;
                 blkp++ ;
                 ccol = col ;
                 spFlag = 0 ;
@@ -1013,44 +1150,49 @@ hideLineJump:
                  * copy a space in place of special chars, they are
                  * drawn separately after the XDraw, the spaces are
                  * replaced with the correct chars */
-                while (--len >= 0)
+                for(col_d = col ; col_d < ii ; col_d++)
                 {
                     *fssp++ = scheme;
-                    if(((cc=s1[col++]) & 0xe0) == 0)
+                    cc = disLineBuff[disLineByteOff[col_d]] ;
+                    if((cc & 0xe0) == 0)
                     {
                         cc = ' ' ;
                         spFlag++ ;
                     }
                     *fstp++ = cc ;
                 }
-                meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)sfstp+ccol,ii);
+                meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)sfstp+ccol,ii-col);
                 while(--spFlag >= 0)
                 {
-                    while (((cc=s1[ccol]) & 0xe0) != 0)
+                    while (((cc=disLineBuff[disLineByteOff[ccol]]) & 0xe0) != 0)
                         ccol++ ;
                     sfstp[ccol] = cc ;
                     meFrameXTermDrawSpecialChar(frameCur,colToClient(scol+ccol),row-mecm.ascent,cc) ;
                     ccol++ ;
                 }
+                col = ii ;
             } while(++cno < noColChng) ;
         }
         else
         {
             do {
+                meInt byteStart, byteEnd, col_d ;
                 scheme = blkp->scheme ;
                 meFrameXTermSetScheme(frameCur,scheme) ;
                 ii = blkp->column ;
-                len = ii-col;
-                meFrameXTermDrawString(frameCur,colToClient(scol+col),row,(char *)s1+col,len);
+                byteStart = disLineByteOff[col] ;
+                byteEnd = disLineByteOff[ii] ;
+                meFrameXTermDrawString(frameCur,colToClient(scol+col),row,(char *)disLineBuff+byteStart,byteEnd-byteStart);
                 blkp++ ;
 
                 /* Maintain the frame store and copy the string into
                  * the frame store with the colour information */
-                while (--len >= 0)
+                for(col_d = col ; col_d < ii ; col_d++)
                 {
                     *fssp++ = scheme;
-                    *fstp++ = s1[col++];
+                    *fstp++ = disLineBuff[disLineByteOff[col_d]];
                 }
+                col = ii ;
             } while(++cno < noColChng) ;
         }
         if (meStyleCmpBColor(meSchemeGetStyle(vp1->eolScheme),meSchemeGetStyle(scheme)))
@@ -1539,6 +1681,11 @@ updateModeLine(meWindow *wp)
                     goto model_copys ;
                 }
                 break ;
+
+            case 'E':
+                /* Buffer encoding indicator */
+                ss = (meUByte *) meEncodingName((meEncoding) bp->encoding) ;
+                goto model_copys ;
 
             case 'l':
                 ss = meItoa(wp->dotLineNo+1);

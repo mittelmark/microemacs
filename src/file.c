@@ -1520,10 +1520,11 @@ readin(register meBuffer *bp, meUByte *fname)
                 meModeTest(bp->mode,MDVIEW) ? " (readonly)" : "");
     }
 
-    /* Auto-detect file encoding: if encoding is still "utf-8" (default),
-     * read the first 4KB and check if it's valid UTF-8. If not, switch
-     * to CP1252 which is a superset of ISO-8859-1 for common characters. */
-    if(meStrcmp(termEncoding, "utf-8") == 0)
+    /* Auto-detect file encoding: read the first 4KB and check if it's
+     * valid UTF-8. If not, assume internal encoding (default CP1252).
+     * Also check for explicit encoding declarations in the first few lines.
+     * Only update meInternalEnc if -E flag was NOT explicitly set. */
+    bp->encoding = 0 ; /* ME_ENC_UTF8 default */
     {
         FILE *detectFp;
         if((detectFp = fopen((char *)fn, "rb")) != NULL)
@@ -1531,10 +1532,151 @@ readin(register meBuffer *bp, meUByte *fname)
             unsigned char detectBuf[4096];
             size_t detectLen = fread(detectBuf, 1, sizeof(detectBuf), detectFp);
             fclose(detectFp);
-            if(detectLen > 0 && !meUtf8IsValid(detectBuf, detectLen))
+            if(detectLen > 0)
             {
-                /* File is not valid UTF-8 - auto-detect encoding */
-                meStrcpy(termEncoding, "cp1252");
+                if(!meUtf8IsValid(detectBuf, detectLen))
+                {
+                    /* File is not valid UTF-8 - assume internal encoding */
+                    bp->encoding = (meUByte) meInternalEnc ;
+                }
+
+                /* Check for explicit encoding declaration in first few lines.
+                 * Patterns: # -*- coding: utf-8 -*-
+                 *           # coding: utf-8
+                 *           # coding=utf-8
+                 *           <!-- coding: utf-8 -->
+                 */
+                if(detectLen > 0)
+                {
+                    meUByte *p = detectBuf;
+                    meUByte *end = detectBuf + detectLen;
+                    int lineNum = 0;
+
+                    while(p < end && lineNum < 5)
+                    {
+                        meUByte *lineStart = p;
+                        meUByte *lineEnd = p;
+
+                        /* Find end of line */
+                        while(lineEnd < end && *lineEnd != '\n' && *lineEnd != '\r')
+                            lineEnd++;
+
+                        /* Look for "coding:" or "coding=" pattern */
+                        {
+                            meUByte *cp = lineStart;
+                            meUByte *cpe = lineEnd - 7; /* need room for "coding:" */
+
+                            while(cp < cpe)
+                            {
+                                if((cp[0] == 'c' || cp[0] == 'C') &&
+                                   (cp[1] == 'o' || cp[1] == 'O') &&
+                                   (cp[2] == 'd' || cp[2] == 'D') &&
+                                   (cp[3] == 'i' || cp[3] == 'I') &&
+                                   (cp[4] == 'n' || cp[4] == 'N') &&
+                                   (cp[5] == 'g' || cp[5] == 'G') &&
+                                   (cp[6] == ':' || cp[6] == '='))
+                                {
+                                    /* Found coding: or coding= - extract encoding name */
+                                    meUByte encName[32];
+                                    meUByte *enp = cp + 7;
+                                    meUByte *ene = encName;
+
+                                    /* Skip whitespace */
+                                    while(enp < lineEnd && (*enp == ' ' || *enp == '\t'))
+                                        enp++;
+
+                                    /* Copy encoding name (until whitespace, '*', or end) */
+                                    while(enp < lineEnd && ene < encName + 31 &&
+                                          *enp != ' ' && *enp != '\t' &&
+                                          *enp != ';' && *enp != '*')
+                                    {
+                                        *ene++ = *enp++;
+                                    }
+                                    *ene = '\0';
+
+                                    /* Convert to meEncoding */
+                                    {
+                                        meEncoding declEnc = meEncodingFromName((const char *)encName);
+                                        if(declEnc != (meEncoding) -1)
+                                        {
+                                            /* Only apply encoding declaration if file is NOT valid UTF-8.
+                                             * If file is valid UTF-8, ignore non-UTF-8 declarations
+                                             * to prevent double-encoding of UTF-8 bytes. */
+                                            if(bp->encoding != 0 || declEnc == ME_ENC_UTF8)
+                                                bp->encoding = (meUByte) declEnc;
+                                        }
+                                    }
+                                    goto encoding_found;
+                                }
+                                cp++;
+                            }
+                        }
+
+                        /* Skip to next line */
+                        p = lineEnd;
+                        if(p < end && *p == '\r')
+                            p++;
+                        if(p < end && *p == '\n')
+                            p++;
+                        lineNum++;
+                    }
+                }
+            }
+        }
+    }
+encoding_found:
+    /* If file encoding is non-UTF-8 and different from internal encoding,
+     * auto-set internal encoding to match the file. This allows Greek, Russian,
+     * Turkish etc. text to be displayed correctly without manual switching.
+     * If file IS UTF-8, reset internal encoding to UTF-8 (unless -E was used). */
+    if(bp->encoding != ME_ENC_UTF8 && bp->encoding != (meUByte) meInternalEnc)
+    {
+        meInternalEnc = (int) bp->encoding ;
+    }
+    else if(bp->encoding == ME_ENC_UTF8 && !meInternalEncExplicit)
+    {
+        meInternalEnc = ME_ENC_UTF8 ;
+    }
+
+    /* If file is UTF-8 but internal encoding is CP1252, check if all
+     * characters can be mapped without loss. Warn if not. */
+    if(bp->encoding == ME_ENC_UTF8 && meInternalEnc == ME_ENC_CP1252)
+    {
+        FILE *checkFp;
+        if((checkFp = fopen((char *)fn, "rb")) != NULL)
+        {
+            unsigned char checkBuf[4096];
+            size_t checkLen = fread(checkBuf, 1, sizeof(checkBuf), checkFp);
+            fclose(checkFp);
+            if(checkLen > 0)
+            {
+                meConv conv;
+                int unmappable = 0;
+                size_t i = 0;
+                meConvInit(&conv, ME_ENC_UTF8, ME_ENC_CP1252);
+                conv.strict = 1;
+                while(i < checkLen)
+                {
+                    unsigned char outbyte;
+                    unsigned char c = checkBuf[i];
+                    int consumed;
+                    if(c < 0x80)
+                    {
+                        i++;
+                        continue;
+                    }
+                    consumed = meUtf8ValidSeqLen(checkBuf + i);
+                    if(meConvChar(&conv, checkBuf + i, consumed, &outbyte, 1) < 0)
+                        unmappable++;
+                    i += consumed;
+                }
+                if(unmappable > 0)
+                {
+                    mlwrite(MWABORT|(meInt)MWCLEXEC,
+                            (meUByte *)"[Warning: %d character%s cannot be represented in CP1252]",
+                            unmappable, unmappable == 1 ? "" : "s");
+                    meModeSet(bp->mode, MDEDIT) ;
+                }
             }
         }
     }
