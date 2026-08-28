@@ -1128,10 +1128,10 @@ meEncoding meDetectBOM(const unsigned char *data, size_t len) {
     if(len >= 3 && data[0] == 0xEF && data[1] == 0xBB && data[2] == 0xBF)
         return ME_ENC_UTF8;
     if(len >= 2 && data[0] == 0xFE && data[1] == 0xFF)
-        return ME_ENC_UTF8;  /* UTF-16 BE - treat as UTF-8 for now */
+        return (meEncoding) -1;  /* UTF-16 BE - not supported yet */
     if(len >= 2 && data[0] == 0xFF && data[1] == 0xFE)
-        return ME_ENC_UTF8;  /* UTF-16 LE - treat as UTF-8 for now */
-    return ME_ENC_UTF8;
+        return (meEncoding) -1;  /* UTF-16 LE - not supported yet */
+    return (meEncoding) -1;  /* No BOM found */
 }
 
 const char *meEncodingName(meEncoding enc) {

@@ -1534,6 +1534,14 @@ readin(register meBuffer *bp, meUByte *fname)
             fclose(detectFp);
             if(detectLen > 0)
             {
+                /* Check for BOM (Byte Order Mark) first */
+                meEncoding bomEnc = meDetectBOM(detectBuf, detectLen);
+                if(bomEnc != (meEncoding) -1)
+                {
+                    bp->encoding = (meUByte) bomEnc;
+                    goto encoding_found;
+                }
+                
                 if(!meUtf8IsValid(detectBuf, detectLen))
                 {
                     /* File is not valid UTF-8 - assume internal encoding */
@@ -1625,17 +1633,20 @@ readin(register meBuffer *bp, meUByte *fname)
         }
     }
 encoding_found:
-    /* If file encoding is non-UTF-8 and different from internal encoding,
-     * auto-set internal encoding to match the file. This allows Greek, Russian,
-     * Turkish etc. text to be displayed correctly without manual switching.
-     * If file IS UTF-8, reset internal encoding to UTF-8 (unless -E was used). */
-    if(bp->encoding != ME_ENC_UTF8 && bp->encoding != (meUByte) meInternalEnc)
+    /* Only auto-switch internal encoding if -E was NOT explicitly used.
+     * When -E is used, it forces the encoding and prevents auto-switching
+     * when other files are opened. This allows users to set a specific
+     * encoding for a session without it being overridden. */
+    if(!meInternalEncExplicit)
     {
-        meInternalEnc = (int) bp->encoding ;
-    }
-    else if(bp->encoding == ME_ENC_UTF8 && !meInternalEncExplicit)
-    {
-        meInternalEnc = ME_ENC_UTF8 ;
+        if(bp->encoding != ME_ENC_UTF8 && bp->encoding != (meUByte) meInternalEnc)
+        {
+            meInternalEnc = (int) bp->encoding ;
+        }
+        else if(bp->encoding == ME_ENC_UTF8)
+        {
+            meInternalEnc = ME_ENC_UTF8 ;
+        }
     }
 
     /* If file is UTF-8 but internal encoding is CP1252, check if all
