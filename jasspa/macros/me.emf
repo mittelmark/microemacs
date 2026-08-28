@@ -474,3 +474,5 @@ add-next-line "*grep*" "%f:%l:"
 !if &reg &spr "/history/%s/mail-check" $platform "0"
     60000 create-callback mail-check
 !endif
+
+screen-update
