@@ -39,7 +39,7 @@
 #define	maindef		/* Make main defintions - cannot define this at the top
                          * because all the main defs are needed to init edef's vars */
 
-#include "me-encoding.h"  /* Encoding tables and conversion functions */
+#include "encoding.h"  /* Encoding tables and conversion functions */
 #include "efunc.h"	/* function declarations and name table	*/
 #include "eskeys.h"     /* Special key names - Must include before edef.h & ebind.h */
 #include "edef.h"	/* The main global variables		*/

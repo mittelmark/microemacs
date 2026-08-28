@@ -21,7 +21,7 @@
  * 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include "me-encoding.h"
+#include "encoding.h"
 /*
  * Created:     1993
  * Synopsis:    Unix X-Term and Termcap support routines.
