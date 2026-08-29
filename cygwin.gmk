@@ -27,7 +27,7 @@ mewb: bfs/bin mew
 	./bfs/bfs -a ./src/.cygwin-release-mew/mew.exe -o "$(RELEASE)-mewb.exe" ./jasspa
 
 mecwb: bfs/bin mecw
-	./bfs/bfs -a ./src/mecw -o "$(RELEASE)-mecwb.exe" ./jasspa
+	./bfs/bfs -a ./src/.cygwin-release-mecw/mecw.exe -o "$(RELEASE)-mecwb.exe" ./jasspa
 
 release: $(app)
 	make -f release.gmk app="$(app)" "RELEASE=$(RELEASE)" ext=exe
