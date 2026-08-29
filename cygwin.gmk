@@ -12,10 +12,10 @@ default:
 bfs/bin:
 	cd bfs && make
 mec:
-	cd src && make -f cygwin.gmk mec
+	cd src && make -f cygwin.gmk BTYP=c
 
 mew:
-	cd src && make -f cygwin.gmk mew
+	cd src && make -f cygwin.gmk BTYP=w
 
 mecw:
 	cd src && make -f cygwin.gmk mecw
