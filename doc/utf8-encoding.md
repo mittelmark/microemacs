@@ -1,14 +1,13 @@
-# UTF-8 Encoding Implementation Summary
+# UTF-8 Encoding Implementation
 
 ## Overview
 
-MicroEmacs 2009 (v09.12.26b6) has been extended with **native UTF-8 support**
-using a byte-offset mapping approach. Multi-byte UTF-8 sequences are stored
-directly in the internal buffer when the encoding is detected as UTF-8, and a
+MicroEmacs 2009 has been extended with **native UTF-8 support** using a
+byte-offset mapping approach. Multi-byte UTF-8 sequences are stored directly
+in the internal buffer when the encoding is detected as UTF-8, and a
 `disLineByteOff[]` array maps display columns to byte offsets during rendering.
 
-This replaces the earlier CP1252-only conversion approach. The editor now
-operates in two modes:
+The editor operates in two modes:
 
 - **Native UTF-8** (`meInternalEnc == ME_ENC_UTF8`): Multi-byte sequences stored
   and rendered directly. Full Unicode support within the BMP for display/edit/save.
@@ -37,7 +36,7 @@ operates in two modes:
         +-- UTF-8 mode: copy multi-byte sequences directly
         |   (1 display column = 1-4 bytes)
         |
-        +-- Legacy mode: convert UTF-8 → internal encoding
+        +-- Legacy mode: convert UTF-8 -> internal encoding
         |   (1 display column = 1 byte)
         |
         v
@@ -53,13 +52,13 @@ operates in two modes:
 
 When a file is opened:
 
-1. **UTF-8 validation** — the file content is checked for valid UTF-8 sequences.
-2. **PEP 263 coding line** — `# -*- coding: <encoding> -*-` in the first two
+1. **UTF-8 validation** -- the file content is checked for valid UTF-8 sequences.
+2. **PEP 263 coding line** -- `# -*- coding: <encoding> -*-` in the first five
    lines is parsed. A UTF-8 file with a non-UTF-8 coding line is treated as UTF-8
    (to prevent double-encoding).
-3. **`meInternalEnc` reset** — when a UTF-8 file is opened and no `-E` flag was
+3. **`meInternalEnc` reset** -- when a UTF-8 file is opened and no `-E` flag was
    used, `meInternalEnc` is set to `ME_ENC_UTF8`, enabling native mode.
-4. **Unmappable character warning** — if the file is UTF-8 but `meInternalEnc` is
+4. **Unmappable character warning** -- if the file is UTF-8 but `meInternalEnc` is
    CP1252, the first 4KB is scanned for characters outside CP1252 and a warning
    is shown.
 
@@ -108,7 +107,7 @@ After `renderLine()` returns, the code adds an extra column for the end-of-line
 marker (or truncation marker). This column is a single byte at
 `disLineByteOff[lastCol]`, but the TCAP loop reads `disLineByteOff[col+1]` to
 determine byte boundaries. Without setting `disLineByteOff[lastCol+1]`, the loop
-reads stale data → garbage bytes → diamond question mark artifacts.
+reads stale data resulting in garbage bytes and diamond question mark artifacts.
 
 **Fix** (two locations in `updateline()`):
 
@@ -124,7 +123,7 @@ disLineByteOff[ncol] = disLineByteOff[ncol-1] + 1;
 
 `convertUtf8Input()` converts X11 UTF-8 key strings to the internal encoding:
 
-- **Printable characters** (no Control/Alt modifier): UTF-8 → internal encoding
+- **Printable characters** (no Control/Alt modifier): UTF-8 to internal encoding
   via `meConvChar()`
 - **Control/Alt combinations**: passed through unchanged (existing key processing
   handles them)
@@ -133,14 +132,14 @@ disLineByteOff[ncol] = disLineByteOff[ncol-1] + 1;
 
 ### 5. Terminal Output (`src/unixterm.c`)
 
-`TTputConvChar()` converts internal encoding → UTF-8 for terminal output when
+`TTputConvChar()` converts internal encoding to UTF-8 for terminal output when
 `termEncoding="utf-8"`. For iso8859-1 and cp1252 terminals, bytes are passed
 through directly.
 
 When `meInternalEnc == ME_ENC_UTF8`, `TTputConvChar()` is a no-op since the
 buffer already contains valid UTF-8.
 
-## Internal Encoding
+## Internal Encoding Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -153,46 +152,14 @@ buffer already contains valid UTF-8.
 
 ```
 File opened
-  → UTF-8 validation pass
-  → PEP 263 coding line check
-  → bp->encoding set (ME_ENC_UTF8 or detected)
-  → if UTF-8 and !meInternalEncExplicit:
-      meInternalEnc = ME_ENC_UTF8     ← enables native mode
-  → if non-UTF-8 and different from meInternalEnc:
-      meInternalEnc = bp->encoding    ← switches to legacy mode
+  -> UTF-8 validation pass
+  -> PEP 263 coding line check
+  -> bp->encoding set (ME_ENC_UTF8 or detected)
+  -> if UTF-8 and !meInternalEncExplicit:
+      meInternalEnc = ME_ENC_UTF8     <- enables native mode
+  -> if non-UTF-8 and different from meInternalEnc:
+      meInternalEnc = bp->encoding    <- switches to legacy mode
 ```
-
-## Modified Files
-
-### C Source
-
-| File | Change | Purpose |
-|------|--------|---------|
-| `src/display.c` | `renderLine()` byte-offset mapping, TCAP/X11 flush loops, end-of-line fix | Core display rendering for multi-byte UTF-8 |
-| `src/edef.h` | `disLineByteOff`, `disLineByteOffSize` globals | Byte-offset mapping array declarations |
-| `src/hilight.c` | `hilCopyString()`/`hilCopyLenString()` outLen fix | Syntax highlighting byte-offset correctness |
-| `src/encoding.c` | Conversion tables, `meConvChar()` | UTF-8/CP1252/ISO-8859-x/ASCII conversion |
-| `src/encoding.h` | `meEncoding` enum, `meConv` struct | Encoding types and converter API |
-| `src/estruct.h` | Buffer `encoding` field | Per-buffer encoding storage |
-| `src/eval.c` | `ME_ENCODING_IMPLEMENT`, `termEncoding`, globals | Encoding library instantiation |
-| `src/evar.def` | `$encoding` variable | User-accessible encoding variable |
-| `src/file.c` | PEP 263 detection, UTF-8 validation, `meInternalEnc` reset | File encoding auto-detection |
-| `src/fileio.c` | Small encoding-related change | File I/O support |
-| `src/buffer.c` | Small change | Buffer management |
-| `src/main.c` | `-E` flag handling, `meInternalEnc` reset | Command-line encoding override |
-| `src/unixterm.c` | `convertUtf8Input()`, `TTputConvChar()`, `#ifdef _ME_WINDOW` guard | X11 input and terminal output conversion |
-
-### Macro Files
-
-| File | Change | Purpose |
-|------|--------|---------|
-| `jasspa/macros/me.emf` | Clipboard initialization fix | Registry load timing fix |
-
-### Test Files
-
-| File | Purpose |
-|------|---------|
-| `tests/encodings/tutf8.txt` | UTF-8 test file with German umlauts, eszett, accented chars, currency symbols |
 
 ## Supported Encodings
 
@@ -226,7 +193,7 @@ the entire pipeline (line storage, frame store, etc.), `disLineByteOff[]`
 provides a translation layer at the rendering boundary.
 
 The array is populated during `renderLine()` and consumed by the TCAP/X11 flush
-code. It's allocated once (512 entries) and grown as needed.
+code. It is allocated once (512 entries) and grown as needed.
 
 ### 3. Auto-Detection on File Open
 
@@ -248,9 +215,9 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 ### What Works
 
 - **UTF-8 display**: All characters render correctly:
-  - 2-byte: `ä ö ü Ä Ö Ü ß`
-  - 3-byte: `© ® ™ € ¥ £`
-  - Mixed: `Straße Über Größe München Köln Zürich café résumé naïve`
+  - 2-byte: a-umlaut o-umlaut u-umlaut eszett
+  - 3-byte: copyright registered trademark euro yen pound
+  - Mixed: German text with umlauts, French accents, etc.
 - **Save/reload cycle**: Files open, edit, and save with correct encoding
 - **Console (mec)**: Full UTF-8 display and input
 - **X11 (mecw)**: UTF-8 display, keyboard input works
@@ -261,17 +228,43 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 ### Known Limitations
 
-1. **`meInternalEnc` is global** — switching to a non-UTF-8 file changes the
+1. **`meInternalEnc` is global** -- switching to a non-UTF-8 file changes the
    encoding for all buffers. Only one encoding mode can be active at a time.
 2. **X11 fonts**: Uses `fixed` (iso8859-1) font by default; full Unicode would
-   require TrueType font support (libxft/HarfBuzz — future project).
+   require TrueType font support (libxft/HarfBuzz -- future project).
 3. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
 4. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
    with `?` when in legacy mode.
 5. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
    `disLineByteOff[]`, but `renderLine()` overwrites in most code paths.
 
-## Build Commands
+## Modified Files
+
+### C Source
+
+| File | Change | Purpose |
+|------|--------|---------|
+| `src/display.c` | `renderLine()` byte-offset mapping, TCAP/X11 flush loops, end-of-line fix | Core display rendering for multi-byte UTF-8 |
+| `src/edef.h` | `disLineByteOff`, `disLineByteOffSize` globals | Byte-offset mapping array declarations |
+| `src/encoding.c` | Conversion tables, `meConvChar()` | UTF-8/CP1252/ISO-8859-x/ASCII conversion |
+| `src/encoding.h` | `meEncoding` enum, `meConv` struct | Encoding types and converter API |
+| `src/estruct.h` | Buffer `encoding` field | Per-buffer encoding storage |
+| `src/eval.c` | `termEncoding`, `meInternalEnc` globals | Encoding library instantiation |
+| `src/evar.def` | `$encoding`, `$internal-encoding` variables | User-accessible encoding variables |
+| `src/file.c` | PEP 263 detection, UTF-8 validation, `meInternalEnc` reset | File encoding auto-detection |
+| `src/hilight.c` | `hilCopyString()`/`hilCopyLenString()` outLen fix | Syntax highlighting byte-offset correctness |
+| `src/main.c` | `-E` flag handling, `meInternalEnc` reset | Command-line encoding override |
+| `src/unixterm.c` | `convertUtf8Input()`, `TTputConvChar()` | X11 input and terminal output conversion |
+
+### Test Files
+
+| File | Purpose |
+|------|---------|
+| `tests/encodings/tutf8.txt` | UTF-8 test file with German umlauts, eszett, accented chars, currency symbols |
+
+## Build and Testing
+
+### Build Commands
 
 ```bash
 cd src
@@ -279,8 +272,6 @@ make -f linux32gcc.gmk BTYP=cw   # mecw (console + X11)
 make -f linux32gcc.gmk BTYP=c    # mec (console only)
 make -f linux32gcc.gmk BTYP=w    # mew (X11 only)
 ```
-
-## Testing
 
 ### Automated Tests
 
@@ -301,13 +292,55 @@ DISPLAY=:0 MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew tests/encoding
 
 ### What to Check
 
-1. Open `tests/encodings/tutf8.txt` — all German/Unicode characters render
-   correctly as single-width characters
+1. Open `tests/encodings/tutf8.txt` -- all characters render correctly as
+   single-width characters
 2. No diamond question marks at end of lines or on empty lines
-3. Edit a line, save, reopen — content preserved
+3. Edit a line, save, reopen -- content preserved
 4. Modeline shows correct filename, encoding (`u` for UTF-8), and cursor position
-5. Horizontal scroll with long UTF-8 lines — truncation marker appears correctly
-6. Cursor movement through multi-byte characters — no jumps or misalignment
+5. Horizontal scroll with long UTF-8 lines -- truncation marker appears correctly
+6. Cursor movement through multi-byte characters -- no jumps or misalignment
+
+## Implementation History
+
+### Approach Considered: Luit On-the-fly Translation
+
+An initial analysis considered using luit (a character encoding filter) to
+convert between UTF-8 and single-byte encodings at the terminal I/O boundary.
+This approach was rejected because:
+
+- Limited to 256 characters (Western European only)
+- No CJK or emoji support
+- Lossy conversion for characters outside the internal encoding
+- Terminal dependency
+
+### Failed Experiment: Direct UTF-8 Passthrough
+
+A branch (`utf8-escape`, now deleted) attempted to store raw UTF-8 bytes
+without proper display width handling. This failed because ME's line structure
+uses byte counts, not character counts:
+
+```c
+typedef struct meLine {
+    struct meLine     *next;
+    struct meLine     *prev;
+    meUShort           length;      // Used size in bytes
+    meLineFlag         flag;
+    meUByte            unused;
+    meUByte            text[1];     // Character data (bytes)
+} meLine;
+```
+
+With UTF-8, a line containing `a-umlaut` (2 bytes) would be stored as 2 bytes
+but displayed as 2 columns instead of 1, causing extra trailing whitespace.
+
+### Chosen Solution: Byte-Offset Mapping
+
+The `disLineByteOff[]` approach was chosen because it:
+
+- Preserves ME's byte-oriented architecture
+- Requires minimal changes to core data structures
+- Supports both UTF-8 and legacy encodings
+- Can be implemented incrementally
 
 ## Future Improvements
 

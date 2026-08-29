@@ -2,7 +2,10 @@
 
 ## Overview
 
-**JASSPA MicroEmacs 2009** (with 2023-2026 extensions by Detlef Groth / mittelmark) is an OS-independent, extensible text editor with both terminal (`mec`) and GUI/X11 (`mew`) variants. The interface is implemented in ME macro language (`.emf` files). Licensed under **GPLv2**.
+**JASSPA  MicroEmacs  2009**  (with  2023-2026  extensions  by Detlef  Groth /
+mittelmark) is an  OS-independent,  extensible  text editor with both terminal
+(`mec`) and GUI/X11 (`mew`) variants. The interface is implemented in ME macro
+language (`.emf` files). Licensed under **GPLv2**.
 
 Current version: **v09.12.26b3** (defined in `src/evers.h`).
 
@@ -22,12 +25,17 @@ Current version: **v09.12.26b3** (defined in `src/evers.h`).
 ### Linux/Unix Build
 
 ```bash
-make mec-bin       # Build console (termcap) executable
-make mew-bin       # Build X11/Windows executable  
-make me-bin        # Build both versions
+cd src 
+make -f <platform>.mak mec    # Build console (termcap) executable
+make -f <platform>.mak mew    # Build X11/Windows executable  
+make -f <platform>.mak mecw   # Build both versions
 ```
 
+There can be Gnu makefiles ending with gmk as well.
+
 ### Using the Build Script
+
+Probably that is outdated?
 
 ```bash
 cd src
@@ -140,6 +148,7 @@ The macro is used in `main.c` to trace execution flow at key points:
 - Input loop (lines 1134, 1136, 1149, 1151)
 
 Example debug build command:
+
 ```bash
 make -f winmingwgcc.mak BDIST=msys2unix BTYP=c BCFG=debug all
 ```
@@ -147,6 +156,7 @@ make -f winmingwgcc.mak BDIST=msys2unix BTYP=c BCFG=debug all
 Output: `.ucrt64unix-debug-mec/mec32.exe`
 
 When run, this creates `me_dbgtrace.txt` with entries like:
+
 ```
 5a: After TTstart
 90: exitEmacs called
@@ -188,11 +198,11 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 | `linux32gcc.gmk` | Linux gcc (primary, 150 lines) |
 | `linuxmingwgcc.mak` | Cross-compile from Linux to Windows |
 | `cygwin.gmk` | Cygwin |
-| `darwin.gmk` | macOS |
+| `macos32gcc.gmk` | macOS |
 | `freebsd.mak` | FreeBSD |
-| `openbsd.gmk` | OpenBSD |
+| `openbsd.gmk` | OpenBSD (not actual) |
 | `winmingwgcc.mak` | MSYS2 native Windows |
-| `win32v8.mak` | Windows MSVC v8 |
+| `win32v8.mak` | Windows MSVC v8 (not actual)|
 | `win32winlibs.mak` | Windows WinLibs |
 
 ### CMake Support
@@ -344,7 +354,7 @@ These are included by headers to generate lookup tables:
 |------|---------|
 | `ebind.def` | Initial key-to-command bindings (314 lines) |
 | `efunc.def` | Command name table with DEFFUNC macros (399 lines) |
-| `evar.def` | Environment variable names |
+| `evar.def` | Environment variable names (**CRITICAL: DEFVAR entries must be alphabetically sorted** — ME uses binary chop lookup; misordering breaks variable resolution silently) |
 | `emode.def` | Mode name definitions |
 | `eskeys.def` | Special key name definitions |
 | `eprint.def` | Print format definitions |

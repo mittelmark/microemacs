@@ -2616,16 +2616,18 @@ TCAPstart(void)
     {
         const char *colorterm = meGetenv("COLORTERM");
         int hasColorterm = (colorterm != NULL) && (colorterm[0] != '\0');
-        
+        int numColors = tcaptab[TCAPcolors].code.value;
+
         if ((tcaptab[TCAPsetaf].code.str != NULL) || (tcaptab[TCAPsetab].code.str != NULL))
         {
             meSystemCfg |= meSYSTEM_ANSICOLOR ;
-            
+
             if ((strstr(tv_stype, "256color") != NULL) ||
                 (strstr(tv_stype, "256-colour") != NULL) ||
                 (strncmp(tv_stype, "alacritty", 9) == 0) ||
                 (strncmp(tv_stype, "linux", 5) == 0) ||
-                hasColorterm)
+                hasColorterm ||
+                (numColors >= 16))
             {
                 meSystemCfg |= meSYSTEM_XANSICOLOR ;
             }
@@ -2636,7 +2638,17 @@ TCAPstart(void)
                  (strncmp(tv_stype, "tmux", 4) == 0))
         {
             meSystemCfg |= meSYSTEM_ANSICOLOR ;
-            if (hasColorterm || (strstr(tv_stype, "256color") != NULL))
+            if (hasColorterm ||
+                (strstr(tv_stype, "256color") != NULL) ||
+                (numColors >= 16))
+                meSystemCfg |= meSYSTEM_XANSICOLOR ;
+        }
+        else if (numColors >= 8)
+        {
+            /* Fallback: trust the termcap 'colors' capability for unknown
+             * terminal types (e.g. mintty, cygwin) */
+            meSystemCfg |= meSYSTEM_ANSICOLOR ;
+            if (numColors >= 16)
                 meSystemCfg |= meSYSTEM_XANSICOLOR ;
         }
     }
