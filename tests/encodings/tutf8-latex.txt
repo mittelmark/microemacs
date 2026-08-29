@@ -1,0 +1,100 @@
+# MicroEmacs – Konfigurationsbeispiel mit LaTeX
+
+## Dokumentklasse
+
+```latex
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{MicroEmacs -- Einleitung in die Benutzung}
+\author{D. Groth}
+\date{\today}
+```
+
+## Matheformeln
+
+### Grundlagen
+
+Die eulersche Identität verbindet die wichtigsten Konstanten:
+
+$$e^{i\pi} + 1 = 0$$
+
+### Summen und Integrale
+
+Die Partialsumme der harmonischen Reihe:
+
+$$\sum_{k=1}^{n} \frac{1}{k} \approx \ln(n) + \gamma$$
+
+wobei γ ≈ 0,5772 die Euler-Mascheroni-Konstante ist.
+
+Das Certain-Integral:
+
+$$\int_{0}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$$
+
+### Differentialgleichungen
+
+$$\frac{d^2y}{dt^2} + 2\zeta\omega_0 \frac{dy}{dt} + \omega_0^2 y = 0$$
+
+Lösung für ζ < 1 (unterdämpfter Fall):
+
+$$y(t) = Ae^{-\zeta\omega_0 t} \cos(\omega_d t + \varphi)$$
+
+mit ω_d = ω_0√(1 - ζ²)
+
+## Tabellen
+
+### Meilensteine der Emacs-Entwicklung
+
+| Jahr | Ereignis                              |
+|------|---------------------------------------|
+| 1976 | GNU Emacs Start (R. Stallman)         |
+| 1985 | MicroEmacs von JASSPA                 |
+| 2000 | XEmacs-Abspaltung                     |
+| 2009 | MicroEmacs 2009 (letztes Release)     |
+| 2023 | Fork mit UTF-8-Support                |
+
+### Tastaturkürzel-Referenz
+
+| Taste     | Funktion            | Kategorie     |
+|-----------|---------------------|---------------|
+| C-x C-f   | Datei öffnen        | Navigation    |
+| C-x C-s   | Speichern           | Datei         |
+| C-s       | Suchen vorwärts     | Suche         |
+| C-r       | Suchen rückwärts    | Suche         |
+| C-a       | Zeilenanfang        | Navigation    |
+| C-e       | Zeilenende          | Navigation    |
+| M-w       | Kopieren            | Bearbeitung   |
+| C-y       | Einfügen            | Bearbeitung   |
+| C-x u     | Rückgängig          | Bearbeitung   |
+| C-x C-c   | Beenden             | Programm      |
+
+## Code-Beispiel: Elisp-Konfiguration
+
+```elisp
+;; MicroEmacs Benutzerkonfiguration
+;; ~/.jasspa/$LOGNAME/$LOGNAME.emf
+
+; Farbschema laden
+load-library "scheme-dracula"
+
+; Schriftgröße setzen (X11)
+set-variable $font-name "Source Code Pro-12"
+
+; Zeilennummern anzeigen
+set-variable $display-line-numbers 1
+
+; Einrückung auf 4 Leerzeichen
+set-variable $tab-size 4
+
+; Auto-Einrückung aktivieren
+set-variable $smart-indent 1
+```
+
+## Schlussfolgerung
+
+MicroEmacs 2009 mit UTF-8-Support eignet sich hervorragend für die
+Erstellung technischer Dokumente, insbesondere in Kombination mit
+LaTeX und anderen Markup-Sprachen.

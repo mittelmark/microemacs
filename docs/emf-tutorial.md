@@ -801,6 +801,20 @@ BTW: There is as well a macro recorder "Ctrl-x
 (" to start the  recorder  and  "Ctrl-x )" to end a macro,  and  "Ctrl-x e" to
 execute the last recorded macro.
 
+## Formal Grammar Reference
+
+For a formal BNF (Backus-Naur Form) grammar of the EMF macro language, see
+[doc/emf-bnf.md](../doc/emf-bnf.md). The grammar specifies the complete syntax
+including token types, expressions, directives, and block structure.
+
+Key grammar rules:
+- Programs are sequences of lines (blank, comment, command, directive, or label)
+- Every line is self-contained (no line continuation with `\`)
+- Prefix notation: functions appear before arguments (`&add 1 2`)
+- All values are strings; numeric conversion happens automatically
+- Comments start with `;` and extend to end of line
+- Labels start with `*` at beginning of line
+
 ## Document generation
 
 This document was generated using pandoc and the pantcl filter like this:

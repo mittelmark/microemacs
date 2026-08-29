@@ -1,0 +1,63 @@
+# MicroEmacs – Tastaturkürzel und Navigation
+
+## Grundlegende Tastaturkürzel
+
+MicroEmacs verwendet klassische Emacs-Tastaturkürzel. Hier eine Übersicht:
+
+| Tastenkombination | Befehl              | Beschreibung            |
+|-------------------|---------------------|-------------------------|
+| C-x C-f           | find-file           | Datei öffnen            |
+| C-x C-s           | save-buffer         | Buffer speichern        |
+| C-x C-c           | exit-emacs          | Programm beenden        |
+| C-s               | search-forward      | Vorwärts suchen         |
+| C-r               | search-backward     | Rückwärts suchen        |
+| C-a               | beginning-of-line   | Zeilenanfang            |
+| C-e               | end-of-line         | Zeilenende              |
+
+## Die – story – Szene
+
+In Deutschland sagt man: „Das ist eine ganze – story –!" wenn etwas
+kompliziert ist. Die Anführungszeichen und der Gedankenstrich sind
+wichtige typografische Elemente.
+
+### Aufzählung mit Sonderzeichen
+
+- ★ Stern: MikroEmacs ist sternhagelvoll von Funktionen.
+- ♥ Herz: Wir lieben Texteditoren.
+- ♠ Pik: Karten spielen mit Emacs? Warum nicht!
+- ♦ Karo: Diamanten gehören in Editor-Konfigurationen.
+
+## Zeichenkodierungs-Beispiele
+
+### Lateinisch erweitert (CP1252-kompatibel)
+
+- Ångström (Å) – Einheit der Länge
+- Ñ/ñ – Spanischer Buchstabe
+- Ö/ö/Ü/ü – Deutsche Umlaute
+- ß – Eszett / scharfes S
+- Ç/ç – Französisches Cedilla
+
+### Mathematische Operatoren
+
+Wenn man die Gleichung x² + y² = z² betrachtet, erkennt man sofort
+den Satz des Pythagoras. Weitere Beispiele:
+
+- 2³ = 8
+- √16 = 4
+- ∑(1..10) = 55
+- ∞ (Unendlichkeit) ist keinzahlbar
+- ≠ (ungleich) und ≈ (ungefähr gleich) sind verschiedene Zeichen
+
+### Währungen und Handel
+
+1 USD = 0,92 EUR (Stand: 2025)
+1 GBP = 1,17 USD
+1 JPY = 0,0067 EUR
+
+Das €-Zeichen wurde 1999 eingeführt und ist seit 2002 Bargeld.
+
+## Schlussfolgerung
+
+Die korrekte Darstellung von Sonderzeichen ist essenziell für einen
+Texteditor. MicroEmacs 2009 mit UTF-8-Support bewältigt diese Aufgabe
+mit Bravour.
