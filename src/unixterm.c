@@ -594,13 +594,19 @@ meSetupPathsAndUser(char *progname)
             ll = mePathAddSearchPath(ll,evalResult,buff,&gotUserPath) ;
         }
 
-        /* also check for directories in the same location as the binary */
+        /* also check for directories in the same location as the binary.
+         * Skip adding the current working directory ('.') to the search
+         * path - it should not be used as a macro search path entry.
+         * This prevents accidentally picking up unrelated user directories
+         * when the binary is invoked from the project root (e.g. on
+         * Cygwin/MSYS where execFilename may not resolve via /proc). */
         if((meProgName != NULL) && ((ss=meStrrchr(meProgName,DIR_CHAR)) != NULL))
         {
             ii = (((size_t) ss) - ((size_t) meProgName)) ;
             meStrncpy(buff,meProgName,ii) ;
             buff[ii] = '\0' ;
-            ll = mePathAddSearchPath(ll,evalResult,buff,&gotUserPath) ;
+            if(!(buff[0] == '.' && buff[1] == '\0'))
+                ll = mePathAddSearchPath(ll,evalResult,buff,&gotUserPath) ;
         }
         
 #if MEOPT_BINFS
