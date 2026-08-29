@@ -180,7 +180,7 @@ jobs:
             zlib-devel
             libXt-devel
             libncurses-devel
-            screen
+            util-linux
           install-dir: C:\cygwin
           platform: x86
       - name: Build mec (console)
@@ -192,9 +192,7 @@ jobs:
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           cd $GITHUB_WORKSPACE
-          screen -dmS mectest bash -c 'MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics 2>/dev/null'
-          sleep 10
-          screen -S mectest -X quit 2>/dev/null || true
+          script -q -c "MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
