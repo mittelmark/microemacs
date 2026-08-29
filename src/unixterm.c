@@ -661,6 +661,21 @@ meSetupPathsAndUser(char *progname)
        (((ss = meGetenv("HOME")) != NULL) && (ss[0] != '\0')))
         fileNameSetHome(ss) ;
 
+    /* Validate homedir: if getpwuid() returned a path that can't be stat'd
+     * (e.g. a Windows-style path on Cygwin/MSYS), clear it and retry with
+     * $HOME. This handles the common Cygwin/MSYS issue where getpwuid()
+     * returns a Windows path like "C:\Users\user" instead of a Unix path. */
+    if(homedir != NULL)
+    {
+        struct stat homedirStat ;
+        if(stat((char *) homedir, &homedirStat) != 0)
+        {
+            meNullFree(homedir) ;
+            if(((ss = meGetenv("HOME")) != NULL) && (ss[0] != '\0'))
+                fileNameSetHome(ss) ;
+        }
+    }
+
     if(((ss = meGetenv ("MEUSERPATH")) != NULL) && (ss[0] != '\0'))
         meUserPath = meStrdup(ss) ;
 
@@ -701,6 +716,11 @@ meSetupPathsAndUser(char *progname)
         {
             meStrcpy(buff,homedir) ;
             meStrcat(buff,".jasspa") ;
+            /* Ensure .jasspa exists under homedir so the search path
+             * includes the user's configuration directory. On Cygwin/MSYS,
+             * the directory may not exist yet on a fresh install. */
+            if(getFileStats(buff,0,NULL,NULL) != meFILETYPE_DIRECTORY)
+                mkdir((char *) buff, 0777) ;
             if(((ll = mePathAddSearchPath(ll,evalResult,buff,&gotUserPath)) > 0) && !gotUserPath)
                 /* as this is the user's area, use this directory unless we find
                  * a .../<$user-name>/ directory */
