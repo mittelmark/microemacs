@@ -475,4 +475,9 @@ add-next-line "*grep*" "%f:%l:"
     60000 create-callback mail-check
 !endif
 
-screen-update
+!if &band $system 0x01
+  ; Not using X
+  !if &seq $platform "cygwin"
+    screen-update
+  !endif
+!endif
