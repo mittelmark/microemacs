@@ -145,7 +145,7 @@ jobs:
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           cd $GITHUB_WORKSPACE
-          script -q -c "MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
+          script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
@@ -192,7 +192,7 @@ jobs:
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           cd $GITHUB_WORKSPACE
-          script -q -c "MEPATH=jasspa/macros ./src/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
+          script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
