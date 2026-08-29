@@ -1,0 +1,53 @@
+# MicroEmacs – Zeichenkodierung und Symbole
+
+## Überblick
+
+MicroEmacs unterstützt verschiedene Zeichenkodierungen, darunter UTF-8, CP1252
+und andere. Die folgenden Symbole stammen aus dem CP1252-Bereich:
+
+- Gedankenstrich (–): Er wird häufig in deutschen Texten verwendet.
+- Anführungszeichen („…"): Typografische Anführungszeichen nach deutschem Stil.
+- Copyright-Zeichen © und Markenzeichen ™
+- Euro-Zeichen € und Pfund-Zeichen £
+
+## Matematische Symbole
+
+Die griechischen Buchstaben Alpha (Α), Beta (Β) und Gamma (Γ) sind wichtig
+in der Mathematik. Das Sigma (Σ) steht für die Summe, Pi (π) für die
+Kreiszahl.
+
+| Symbol | Name    | Bedeutung        |
+|--------|---------|------------------|
+| α      | Alpha   | Winkel, Konstante|
+| β      | Beta    | Verhältnis       |
+| γ      | Gamma   | Dämpfungsfaktor  |
+| δ      | Delta   | Änderung         |
+| ε      | Epsilon | Kleiner Wert     |
+| Σ      | Sigma   | Summe            |
+| π      | Pi      | 3,14159…         |
+| ω      | Omega   | Winkelgeschwind. |
+
+## Technische Symbole
+
+- Pfeile: ← → ↑ ↓ ↔ ⇔ ⇒
+- Währungen: $ € ¥ £ ₹
+- Aufzählungszeichen: • ◦ ‣ ▪
+- Mathematik: ± × ÷ ≠ ≤ ≥ ∞ √
+- Sonderzeichen: § ¶ † ‡ … ‰
+
+## Besondere Zeichen (jenseits von CP1252)
+
+Diese Zeichen sind NICHT in CP1252 enthalten, aber in UTF-8:
+
+- Chinesisches Zeichen: 中文
+- Katakana: アイウエオ
+- Arabische Schrift: عربي
+- Devanagari: नमस्ते
+- Koreanisch: 한글
+
+## Schlussfolgerung
+
+MicroEmacs 2009 mit UTF-8-Unterstützung kann all diese Zeichen korrekt
+darstellen und bearbeiten. Die Kombination aus Terminal-Version (mec) und
+X11-Version (mew) bietet eine flexible Plattform für Benutzer, die mit
+mehreren Zeichenkodierungen arbeiten müssen.

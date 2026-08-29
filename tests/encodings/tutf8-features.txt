@@ -1,0 +1,82 @@
+# MicroEmacs – Farbschemata und Benutzeroberfläche
+
+## Einführung
+
+MicroEmacs bietet über 45 Farbschemata, darunter:
+
+- Dracula (dunkles Schema)
+- Solarized Dark / Light
+- Ayu Dark / Mirage / Light
+- Monokai
+- Nord
+
+## Emoji und Sonderzeichen in Dokumentation
+
+### Statussymbole
+
+- ✅ Test bestanden
+- ❌ Test fehlgeschlagen
+- ⚠️ Warnung
+- ℹ️ Information
+- 🔧 In Bearbeitung
+- 📌 Wichtig
+
+### Pfeile und Verweise
+
+→ Weiterleitung: Siehe Abschnitt 3.2
+← Zurück: Kapitel 1
+↑ Hoch: Inhaltsverzeichnis
+↔ Verbindung zwischen Konzepten A und B
+
+### Technische Symbole
+
+- # Hash / Number-Sign
+- § Paragraf (Rechtstext)
+- ¶ Pilcrow (Absatzzeichen)
+- † Kreuz (Tote)
+- ‡ Doppelkreuz
+- … Ellipsis (drei Punkte)
+- – Halbgeviertstrich
+— Geviertstrich
+- ‰ Promille
+
+## Tabellen mit Sonderzeichen
+
+### Pseudo-Legende
+
+| Code | Zeichen | Name          | Unicode |
+|------|---------|---------------|---------|
+| U+00A0 |      | geschütztes   | NO-BREAK SPACE |
+| U+00AD | soft  | bedingter     | SOFT HYPHEN |
+| U+2010 | –    | Bindestrich   | HYPHEN |
+| U+2011 | –    | geschützt     | NON-BREAKING HYPHEN |
+| U+2012 | –    | Ziffer        | FIGURE DASH |
+| U+2013 | –    | Halbgeviert   | EN DASH |
+| U+2014 | —    | Geviert       | EM DASH |
+| U+2015 | —    | Horizontale   | HORIZONTAL BAR |
+
+### Sprachbeispiele
+
+Deutsch: Äpfel über Öfen sind Üblich.
+Franzisch: Être ou ne pas être – voilà la question!
+Spanisch: ¿Cómo estás? ¡Muy bien, gracias!
+Italienisch: L'Italia è un paese magnifico.
+
+## Code-Beispiele in Dokumentation
+
+```python
+# Python: Umlaute in Variablennamen (nicht empfohlen, aber legal)
+Übersetzung = "translation"
+Straße = "street"
+```
+
+```javascript
+// JavaScript: Unicode-Escapes
+const german = "Über die Ästhetik von Öfen";
+console.log(german.length); // 31 Zeichen
+```
+
+## Schlussfolgerung
+
+MicroEmacs 2009 mit Farbschema-Unterstützung und UTF-8-Kodierung bietet
+eine erstklassige Umgebung für vielseitige Textbearbeitung.
