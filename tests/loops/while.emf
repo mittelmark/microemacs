@@ -1,0 +1,64 @@
+; -!- emf -!-
+; Copyright (C) 2026 $COMPANY_REF$.
+;
+; $COMPANY_LICENSE:75$ δόδί
+;
+; Last Modified : <260830.0933>
+;
+; Synopsis:    
+; Authors:     Delf Groth
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+execute-file "me"
+define-macro t-while
+  set-variable #l0 1
+  -1 ml-write "hello"
+  !while &les #l0 5
+    set-variable #l1 1
+    !while &les #l1 3
+        200 ml-write &spr "while: #l0 is: %d # #l1 is: %d" #l0 #l1 
+        set-variable #l1 &add #l1 1
+    !done
+    set-variable #l0 &add #l0 1
+  !done
+  
+!emacro
+
+define-macro t-repeat
+  set-variable #l0 1
+  -1 ml-write "hello"
+  !repeat
+    set-variable #l1 1
+    !repeat
+        200 ml-write &spr "repeat: #l0 is: %d # #l1 is: %d" #l0 #l1 
+        set-variable #l1 &add #l1 1
+    !until  &gre #l1 3
+    set-variable #l0 &add #l0 1
+  !until &gre #l0 5
+!emacro
+
+define-macro t-mix
+  set-variable #l0 1
+  -1 ml-write "hello"
+  !repeat
+    set-variable #l1 1
+    !repeat
+      set-variable #l2 1
+      !while &les #l2 4
+        200 ml-write &spr "mix: #l0 is: %d # #l1 is: %d # #l2 is: %d" #l0 #l1 #l2
+        set-variable #l2 &add #l2 1
+      !done
+      set-variable #l1 &add #l1 1
+    !until  &gre #l1 3
+    set-variable #l0 &add #l0 1
+  !until &gre #l0 5
+!emacro
+
+t-while
+t-repeat
+t-mix
+
+exit-emacs
+
+
