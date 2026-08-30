@@ -32654,13 +32654,13 @@ $a
  
       ls!while(4)lm!whilele defines a conditional loop that is tested before entry to the
        loop, the ls!while(4)lm!continuele statement within the loop allows the loop to be
-       broken. cD!whilecA loops may not be nested, but may be contained within a
+       broken. cD!whilecA loops may be nested only once, but may be contained within a
       ls!repeat(4)lm!repeat/!untille construct.
 
     cD!repeat/!untilcA
 
       ls!repeat(4)lm!repeatle defines a conditional loop that is tested on exit from the
-       loop. cD!repeatcA loops may not be nested, but may be contained within a
+       loop. cD!repeatcA loops may be nested only once, but may be contained within a
       ls!while(4)lm!while/!donele construct.
 
     cDdefine-macro/!emacrocA
@@ -50656,11 +50656,11 @@ $a
     A cD!continuecA may be used in the loop, this immediately returns control to
     the cD!whilecA statement and skips the rest of the section.
 
-    cD!while statement may not be nested.cA That is, only one cD!whilecA statement may
+    cD!while statement may be nested only once.cA That is, only two cD!whilecA statement may
     be outstanding at a time, a ls!repeat(4)lm!repeat(4)le statement may be used within the
-    cD!whilecA to create an inner loop if required. Alternatively the ls!goto(4)lm!goto(4)le
+    cD!whilecA to create a third inner loop if required. Alternatively the ls!goto(4)lm!goto(4)le
     used in conjunction with the ls!if(4)lm!if(4)le statement may be used to construct
-    loops.
+    even more nested loops.
 
 
 cEEXAMPLE cA
@@ -50678,6 +50678,28 @@ $a
               ml-write "You wont see me if %example = 1"
           !done
 
+sA
+    Here an other example where we can print some chessboard coordinates
+    to the terminal:
+    
+sB
+          define-macro t-chessboard
+            set-variable .l 1
+            set-variable .letters "|A|B|C|D|E|F|G|H|"
+            set-variable .n 8
+            set-variable .numbers "|1|2|3|4|5|6|7|8|"
+            !while &gre .n 0
+              set-variable .line ""
+              set-variable .l 1
+              !while &les .l 9
+                set-variable .line &spr "%s %s%d " .line &lget .letters .l &lget .numbers .n
+                set-variable .l &add .l 1
+              !done
+              set-variable .n  &sub .n 1
+              -1 ml-write .line
+            !done
+            -1 ml-write "t-chessboard finished"
+          !emacro
 sA
 cESEE ALSO cA
 
@@ -50704,8 +50726,10 @@ $a
 
     The cD!repeatcA command operates in a similar fashion to ls!while(4)lm!while/!donele except
     the condition is tested at the end. Control finishes if the condition is
-    met. As with the ls!while(4)lm!while(4)le there is no nesting of multiple cD!repeatcA
-    statements.
+    met. As with the ls!while(4)lm!while(4)le there is only a single nested repeat cD!repeatcA
+    statement possible. So in other words there can be only one cD!repeatcA statement within
+    an outer cD!repeatcA if you need more deeply nested loops you might use
+    cD!whilecA loops within these cD!repeatcA loops.
 
 
 cEEXAMPLE cA
