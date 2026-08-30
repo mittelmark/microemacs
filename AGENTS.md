@@ -7,7 +7,7 @@ mittelmark) is an  OS-independent,  extensible  text editor with both terminal
 (`mec`) and GUI/X11 (`mew`) variants. The interface is implemented in ME macro
 language (`.emf` files). Licensed under **GPLv2**.
 
-Current version: **v09.12.26b3** (defined in `src/evers.h`).
+Current version: **v09.12.26b5** (defined in `src/evers.h`).
 
 ### Key Characteristics
 
@@ -26,16 +26,16 @@ Current version: **v09.12.26b3** (defined in `src/evers.h`).
 
 ```bash
 cd src 
-make -f <platform>.mak mec    # Build console (termcap) executable
-make -f <platform>.mak mew    # Build X11/Windows executable  
-make -f <platform>.mak mecw   # Build both versions
+make -f <platform>.mak BTYP=c    # Build console (termcap) executable
+make -f <platform>.mak BTYP=w    # Build X11/Windows executable  
+make -f <platform>.mak BTYP=cw   # Build both versions
 ```
 
-There can be Gnu makefiles ending with gmk as well.
+There can be GNU makefiles ending with gmk as well.
 
 ### Using the Build Script
 
-Probably that is outdated?
+That build script is outdated.
 
 ```bash
 cd src
@@ -53,11 +53,14 @@ The build script may fail on some systems. Use make directly:
 
 ```bash
 cd src
-make -f linux32gcc.gmk       # Build both console and window version
-make -f linux32gcc.gmk clean # Clean build
+make -f linux32gcc.gmk         # Build both console and window version
+make -f linux32gcc.gmk clean   # Clean build
+make .f linux32gcc.gmk BTYP=c  # Console build
+make -f linux32gcc.gmk BTYP=w  # X11 build
+make -f linux32gcc.gmk BTYP=cw # Combined terminal and X11 build
 ```
 
-Output: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
+Output e.g.: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
 
 ### MinGW/MSYS2 Windows Build
 
@@ -105,8 +108,8 @@ Output: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
 ### Build Output
 
 - Executable: `src/.linux32gcc-release-mec/mec` (console)
-- Executable: `src/.linux32gcc-release-mecw/mecw` (both)
 - Executable: `src/.linux32gcc-release-mew/mew` (X11)
+- Executable: `src/.linux32gcc-release-mecw/mecw` (both)
 
 ### Build Options
 
@@ -207,13 +210,15 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 
 ### CMake Support
 
+Probably outdated:
+
 A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Windows, and macOS with optional GUI.
 
 ### Install Scripts
 
 | File | Purpose |
 |------|---------|
-| `install.sh` | Unix curl-based installer (downloads latest release) |
+| `install.sh` | Unix curl-based installer (downloads latest release) for Linux, MaxOS, Cygwin/Windows and Msys/Windows|
 | `install-windows.ps1` | Windows PowerShell installer |
 | `install-fonts.sh` | X11 font installer |
 | `install-dict.sh` | Spelling dictionary installer |
@@ -343,7 +348,7 @@ functionName(int arg)
 | `edef.h` | Global variable definitions (839 lines) |
 | `efunc.h` | Function declarations |
 | `eterm.h` | Terminal interface API (664 lines) |
-| `evers.h` | Version definition (v09.12.26b3) |
+| `evers.h` | Version definition (v09.12.26b5) |
 | `eopt.h` | Optional feature flags |
 
 ### Definition Files (`.def`)
@@ -398,17 +403,22 @@ These are included by headers to generate lookup tables:
 ### ME Macro Language Details
 
 **Variable Types:**
-- `$name` - Global variables (e.g., `$system`, `$buffer-bname`)
+
+- `$name` - Global variables (e.g., `$system`, `$buffer-bname`, should be not changed by user macros)
 - `#l0-#l9` - Local register variables (per macro scope)
-- `%name` - Macro variables (temporary, within current execution)
+- `%name` - Global macro variables 
+- `.name` - Local macro variables  if macro name is test variale can be access from the outside, see next line
+- `.mname.name` - Namespace like variables, an, possibly empty, macro `.mname` is required
 
 **Control Flow:**
-- `!if`, `!else`, `!endif` - Conditional execution
-- `!while`, `!done` - While loops
-- `!repeat`, `!until` - Repeat-until loops
+
+- `!if`, `!elif`, `!else`, `!endif` - Conditional execution
+- `!while`, `!done` - While loops (maximal two nested loops)
+- `!repeat`, `!until` - Repeat-until loops (maximal two nested loops)
 - `!force` - Ignore errors in next command
 
 **File Types:**
+
 | Extension | Purpose |
 |-----------|---------|
 | `.emf` | Macro files (executable ME macros, configuration) |
@@ -418,6 +428,7 @@ These are included by headers to generate lookup tables:
 | `.edf` | Dictionary files (spelling) |
 
 **Naming Patterns:**
+
 - `hk*.emf` - File hooks (syntax highlighting for languages)
 - `scheme*.emf` - Color theme/scheme files (45+ themes)
 - `*.ehf` - Compiled help files (binary format)
@@ -438,10 +449,12 @@ These are included by headers to generate lookup tables:
 - `fonts/` - TTF font packages (Source Code Pro, Ubuntu Mono, etc.)
 - `tests/` - Sample source files in 42+ programming languages
 - `user/` - Example/test user macro files
-- `~/.jasspa/USERNAME/` - User-specific configuration directory
-- `~/.jasspa/USERNAME/USERNAME.emf` - User startup macro file
-- `~/.jasspa/USERNAME/USERNAME.erf` - User registry (persistent settings)
-- `~/.jasspa/USERNAME/USERNAME.edf` - Personal spelling dictionary
+- `~/.jasspa/` - User-specific configuration directory
+- `~/.jasspa/USERNAME.emf` - User startup macro file
+- `~/.jasspa/USERNAME.erf` - User registry (persistent settings)
+- `~/.jasspa/USERNAME.esf` - User session file (loaded files and line numbers)
+- `~/.jasspa/USERNAME.eff` - User favorite file (loaded files and line numbers)
+- `~/.jasspa/USERNAME.edf` - Personal spelling dictionary
 
 ## Important System Flags (src/edef.h)
 
@@ -459,20 +472,26 @@ These are included by headers to generate lookup tables:
 ## X-Windows Clipboard Support (mew)
 
 ### Overview
+
 The X-Window version (mew) supports two X11 selections:
 - **PRIMARY** (`XA_PRIMARY`) - Default, used for mouse select/middle-click paste
 - **CLIPBOARD** (`XA_CLIPBOARD`) - Used by Ctrl+C/Ctrl+V in most apps
 
 ### Current Limitation
+
 By default, mew uses the **PRIMARY** selection which only works with:
+
 - Mouse selection within mew
 - Middle-click paste in X11 apps
 
-This means copy/paste with external apps like Firefox, VS Code, etc. (which use CLIPBOARD) won't work by default. Users must enable CLIPBOARD selection for full compatibility.
+This means  copy/paste  with  external apps like Firefox, VS Code, etc. (which
+use CLIPBOARD)  won't work by default. Users must enable  CLIPBOARD  selection
+for full compatibility.
 
 ### Enabling CLIPBOARD Selection
 
 **Option 1: User Setup GUI (recommended)**
+
 - Run `M-x user-setup` in mew
 - In the Platform tab, check "Use Clipboard" below "Use Fonts"
 - Click OK to save
@@ -480,11 +499,13 @@ This means copy/paste with external apps like Firefox, VS Code, etc. (which use 
 **Option 2: Manual configuration**
 
 In user startup file (default: `~/.jasspa/USERNAME/USERNAME.emf`):
+
 ```me
 set-variable $system &bor $system 0x2000000
 ```
 
 Or in ME macro at runtime:
+
 ```me
 !if &not &band $system 0x2000000
     set-variable $system &bor $system 0x2000000
@@ -492,16 +513,19 @@ Or in ME macro at runtime:
 ```
 
 ### Key Bindings
+
 - **C-y** - Paste (yank) from clipboard
 - **M-w** (Esc then w) - Copy (kill-ring-save) to clipboard
 
 ### Implementation Details
+
 - `src/unixterm.c:2047-2235` - X11 selection handling
 - `src/edef.h:243-249` - Clipboard state flags (CLIP_OWNER_PRIMARY, CLIP_OWNER_CLIPBOARD)
 
 ## User-Setup GUI Development
 
 ### Testing Changes
+
 To test changes to userstp.emf:
 1. Open userstp.emf in ME
 2. Execute the buffer with `M-x execute-buffer` (or load with `M-x load-library`)
@@ -510,12 +534,15 @@ To test changes to userstp.emf:
 The GUI will reflect your changes immediately.
 
 ### Debugging OSD Layout
+
 The user-setup Platform tab uses OSD (On-Screen Display) with position codes:
+
 - Position numbers (10, 50, 300, 330, 350, etc.) control vertical placement
 - The `fh` (fixed horizontal) elements add horizontal spacing
 - Use `osd .osd.user-plat <pos> "fh" "<spaces>"` to add horizontal space
 
 Example adjustment:
+
 ```me
 osd .osd.user-plat 330 "Ctfxph" &cat .osd.checkbox-chars "\\} \\HExtend Char Set" 2 user-set-cpfcheckbox
 osd .osd.user-plat 335 "fh" "        "    ; 8 spaces horizontal offset
@@ -523,6 +550,7 @@ osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\\} Use \\HFonts" 0x10 
 ```
 
 ### Key Files
+
 - `jasspa/macros/userstp.emf` - User setup dialog definitions
 - Branch structure: `!if &band $system 0x01` (terminal) vs `!else` (GUI/X11)
 
@@ -550,9 +578,14 @@ TERM=xterm-256color MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-m
 MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
 ```
 
+HInt: The user files are then inside the jasspa/macros folder and should be deleted from time to time.
+
 ### Automated Startup Test with `user/simple.emf`
 
-For automated testing (e.g., verifying startup behavior or clipboard stats), use the startup macro file `user/simple.emf`. This file loads the standard ME startup (`execute-file "me"`) and then defines a `start-up` macro that displays a message and immediately exits:
+For automated  testing (e.g., verifying  startup behavior or clipboard stats),
+use the  startup  macro  files  like  `user/simple.emf`.  This file  loads the
+standard ME startup  (`execute-file "me"`) and then defines a `start-up` macro
+that displays a message and immediately exits:
 
 ```me
 ; -!- emf -!-
@@ -570,7 +603,10 @@ Run it with:
 MENAME=temp MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./user/simple
 ```
 
-The `@./user/simple` argument tells ME to execute `user/simple.emf` as the startup file. The `start-up` macro runs automatically after all initialization, prints "Hello Emacs", and exits. This provides a clean, non-interactive way to verify that ME starts correctly.
+The  `@./user/simple`  argument tells ME to execute  `user/simple.emf`  as the
+startup   file.  The   `start-up`   macro   runs   automatically   after   all
+initialization,  prints  "Hello  Emacs",  and exits.  This  provides  a clean,
+non-interactive way to verify that ME starts correctly.
 
 To test with clipboard enabled, set the clipboard bit in `$system` before `execute-file`:
 
@@ -601,7 +637,11 @@ Tool IDs: 0=none, 1=xclip, 2=wl-copy/wl-paste, 3=pbcopy, 4=clip.exe(WSL), 5=clip
 
 ### Automated CI Testing with `tests/test-basics.emf`
 
-The file `tests/test-basics.emf` provides a comprehensive automated test that verifies ME compiles and runs correctly. It tests core functionality by writing results to a file, then exits cleanly. This approach works on all platforms including Windows (MSYS2, MinGW64, Cygwin) where terminal output may not work in non-interactive mode.
+The file `tests/test-basics.emf`  provides a comprehensive automated test that
+verifies  ME  compiles  and runs  correctly.  It tests core  functionality  by
+writing  results to a file, then exits  cleanly.  This  approach  works on all
+platforms including Windows (MSYS2, MinGW64, Cygwin) where terminal output may
+not work in non-interactive mode.
 
 #### How It Works
 
@@ -614,7 +654,7 @@ The file `tests/test-basics.emf` provides a comprehensive automated test that ve
 
 ```bash
 # Linux
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics
+MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./tests/test-basics
 cat tests/test-output.txt
 
 # macOS
@@ -627,15 +667,17 @@ cat tests/test-output.txt
 ```
 
 **Key points:**
-- Use `@tests/test-basics` — no `.emf` extension, no `-p` flag
+
+- Use `@tests/test-basics` - no `.emf` extension, no `-p` flag
 - The `start-up` macro is called automatically after ME initialization
 - `save-buffer` (not `save-file`) saves the output file
-- `exit-emacs` terminates the process — required for clean exit
+- `exit-emacs` terminates the process - required for clean exit
 - Use `MENAME=ci-test` to avoid loading user config files
 
 #### Test Output Format
 
 Each test writes a `TEST:key=value` line. The test passes if all expected keys are present:
+
 
 ```
 TEST:version=20091226b3
@@ -696,7 +738,7 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 
 #### Platform Notes
 
-- **Windows console builds** (MinGW64, MSYS2, Cygwin): Use file-based output, not `ml-write -1` (stdout may not work in ConPTY/pipe mode)
+- **Windows console builds** (MinGW64, MSYS2, Cygwin): Use file-based output, not `-1 ml-write` (stdout may not work in ConPTY/pipe mode)
 - **MSYS2 builds**: Get pipe handles from mintty, not real console handles. The `@file` approach works because `start-up` runs before the input loop
 - **MinGW64 builds**: Get real console via ConPTY from mintty. Both `@file` and pipe mode work
 - **Linux/macOS**: Full terminal support, both approaches work
@@ -705,7 +747,7 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 
 - Source: `doc/me.smd` (Markdown-like format)
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
-- HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm`
+- HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm` -  but needs update file list
 - Links section at top of me.smd for cross-references
 
 Additional reference documentation:
@@ -715,6 +757,9 @@ Additional reference documentation:
 | `doc/install.md` | Installation and update logic (`install.sh`, `mecb-update`, version encoding, platform matrix) |
 | `doc/clipboard-support.md` | Clipboard implementation — C source, macro fallback, xclip hand-off, Wayland dual-clipboard |
 | `doc/mingw-build.md` | MinGW/MSYS2 cross-compilation setup and known issues |
+| `doc/emf-bnf.md` | Back-Naur-Form defintion for ME macro files |
+| `doc/utf8-encoding.md` | Describes the support strategy for UTF encoded files which are mapped to CP1252 |
+| `docs/emf-tutorial.md` | Tutorial about the emf macro language |
 
 ## Branch Strategy
 
@@ -735,6 +780,7 @@ feature branches (msys-fix, clipboard-x11wayland, etc.)
 | `feature/*` | New development | Optional local CI | Into `devel` when ready |
 
 **Workflow:**
+
 1. Create feature branch from `devel`
 2. Develop and test locally
 3. Push to feature branch (optional CI)
@@ -743,6 +789,7 @@ feature branches (msys-fix, clipboard-x11wayland, etc.)
 6. Periodically merge `devel` into `master` for releases
 
 **CI triggers** (`.github/workflows/`):
+
 - `push` → `devel` only
 - `pull_request` → `devel` and `master`
 - `workflow_dispatch` → `devel`
@@ -775,6 +822,7 @@ gh release create v09.12.26.beta3 --title "v09.12.26.beta3" --notes "Release not
 - Stable: `v09.12.26` (no beta suffix)
 
 **After release, clean up merged feature branches:**
+
 ```bash
 git branch -d featurebranch
 git push origin --delete featurebranch
@@ -832,88 +880,6 @@ meSystemCfg ^= meSYSTEM_ANSICOLOR;
 ```
 
 ## Known Issues
-
-### Startup Flickering with Clipboard Enabled
-
-**Problem**: When "Use Clipboard" is enabled in user-setup, the GUI versions (mew/mecw) exhibit flickering during startup with many "default file hook loaded" messages.
-
-**Root Cause**: The clipboard initialization code in `TTsetClipboard` was being called during startup before `CLIP_DISABLED` was cleared. This caused X11 clipboard operations to be attempted before the X server was ready.
-
-**Fix** (in `src/unixterm.c`):
-```c
-void TTsetClipboard(void)
-{
-    if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
-        return ;
-    if(clipState & (CLIP_RECEIVING|CLIP_DISABLED))  // Added CLIP_DISABLED
-        return ;
-    ...
-}
-```
-
-**Files Modified**:
-- `src/unixterm.c:4131` - Added CLIP_DISABLED check
-- `jasspa/macros/me.emf` - Removed redundant clipboard re-application code
-
-### Wayland Clipboard Flickering
-
-**Problem**: Even with the startup fix, there is still minor flickering when using ESC-w (copy-region) or C-y (yank) when Wayland clipboard tools are invoked.
-
-**Current Status**: Minor flickering remains for Wayland operations. The copy (ESC-w) uses background fork to reduce impact, but paste (C-y) still runs synchronously as it needs to return data.
-
-**Potential Future Improvements**:
-- Run wl-paste in background and read from temp file (more complex)
-- Use async I/O for pipe operations
-
-### Clipboard Checkbox Not Applied on Startup
-
-**Problem**: The "Use Clipboard" checkbox in user-setup (Platform tab) doesn't take effect on first run after enabling it in the registry. The checkbox value is correctly saved to registry, but the X11 clipboard selection uses PRIMARY instead of CLIPBOARD on startup.
-
-**Root Cause**: The order of initialization is incorrect:
-
-1. `main.c:148` - `TTstart()` -> `XTERMstart()` creates the X window
-2. `main.c:1702` - `execFile("me.emf")` loads me.emf which applies registry settings
-3. Later - First clipboard operation calls `TTsetClipboard()` which checks `meSystemCfg`
-
-Since the registry is loaded AFTER the X window is created, the clipboard selection is set with the default PRIMARY (because `meSystemCfg` doesn't have the CLIPBOARD bit set yet). The checkbox value in the registry is correct, but it's applied too late.
-
-**Affected Files**:
-- `src/unixterm.c` - `TTsetClipboard()`, `TTgetClipboard()` - these functions check `meSystemCfg` for CLIPBOARD bit
-- `src/main.c:148` - `TTstart()` called before macro loading
-- `jasspa/macros/me.emf:123` - registry loading sets `$system` variable
-
-**Possible Fixes**:
-1. Re-set the clipboard selection owner after registry is loaded - add `TTsetClipboard()` call in me.emf after line 124 where `$system` is set from registry
-2. Move registry loading before `TTstart()` (complex - would require significant refactoring)
-3. Add a flag to force re-evaluation of clipboard selection on first clipboard operation after startup
-
-**Proposed Fix** (Option 1):
-In `jasspa/macros/me.emf` after line 124 (registry loading), add:
-```me
-!if &not &band $system 0x01
-    set-variable #l0 &ttype &cond &band $system 0x2000000 "clipboard" "primary"
-    !if &seq #l0 "clipboard"
-        ; Re-apply clipboard selection after registry load
-        ; This fixes the issue where checkbox value is saved but not applied on startup
-        set-variable $system &bor $system 0x2000000
-    !endif
-!endif
-```
-
-Or simply call an internal function to re-initialize clipboard:
-```me
-; After $system is set from registry (line 124), re-initialize clipboard selection
-!if &band $system 0x2000000
-    ; Force clipboard selection when CLIPBOARD bit is set in registry
-!endif
-```
-
-**Current Workaround**: 
-- User must open user-setup, toggle the checkbox, and click Apply. This forces the correct value to be applied.
-- Or add to user startup file (`~/.jasspa/USERNAME/USERNAME.emf`):
-  ```me
-  set-variable $system &bor $system 0x2000000
-  ```
 
 ### Wayland Clipboard Support (IMPLEMENTED)
 
@@ -1193,15 +1159,16 @@ The `tests/` directory contains sample source files in 42+ programming languages
 
 ```
 ~/.jasspa/
-  $LOGNAME/                    # or $MENAME/
-    $LOGNAME.emf               # User startup macros
-    $LOGNAME.erf               # User registry (persistent settings)
-    $LOGNAME.edf               # Personal spelling dictionary
+    $MENAME.emf               # User startup macros
+    $MENAME.erf               # User registry (persistent settings)
+    $MENAME.edf               # Personal spelling dictionary
 ```
 
 ### User Startup File
 
-The user startup file (`~/.jasspa/USERNAME/USERNAME.emf`) is executed after `me.emf` during startup. Use it to customize keybindings, set variables, or load additional macros.
+The user startup file  (`~/.jasspa/USERNAME.emf`)  is executed  after `me.emf`
+during  startup.  Use it to  customize  keybindings,  set  variables,  or load
+additional macros.
 
 Example:
 ```me
@@ -1217,7 +1184,9 @@ load-library "my-keybinds"
 
 ### User Registry
 
-The user registry (`~/.jasspa/USERNAME/USERNAME.erf`) stores persistent settings saved by the User Setup GUI (`M-x user-setup`). It contains key-value pairs for editor configuration.
+The user registry  (`~/.jasspa/USERNAME.erf`) stores persistent settings saved
+by the User Setup GUI (`M-x  user-setup`).  It  contains  key-value  pairs for
+editor configuration.
 
 ## Color Themes
 
@@ -1228,6 +1197,7 @@ The user registry (`~/.jasspa/USERNAME/USERNAME.erf`) stores persistent settings
 3. Select a theme and click Apply
 
 Or load manually:
+
 ```me
 load-library "scheme-dracula"   ; Dracula theme
 load-library "scheme-solarized-dark"  ; Solarized Dark
