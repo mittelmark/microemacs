@@ -3,7 +3,7 @@
 ;
 ; $COMPANY_LICENSE:75$ δόδί
 ;
-; Last Modified : <260830.0933>
+; Last Modified : <260830.1004>
 ;
 ; Synopsis:    
 ; Authors:     Delf Groth
@@ -17,12 +17,12 @@ define-macro t-while
   !while &les #l0 5
     set-variable #l1 1
     !while &les #l1 3
-        200 ml-write &spr "while: #l0 is: %d # #l1 is: %d" #l0 #l1 
+        100 ml-write &spr "while: #l0 is: %d # #l1 is: %d" #l0 #l1 
         set-variable #l1 &add #l1 1
     !done
     set-variable #l0 &add #l0 1
   !done
-  
+  -1 ml-write "t-while finished"
 !emacro
 
 define-macro t-repeat
@@ -31,11 +31,12 @@ define-macro t-repeat
   !repeat
     set-variable #l1 1
     !repeat
-        200 ml-write &spr "repeat: #l0 is: %d # #l1 is: %d" #l0 #l1 
+        100 ml-write &spr "repeat: #l0 is: %d # #l1 is: %d" #l0 #l1 
         set-variable #l1 &add #l1 1
     !until  &gre #l1 3
     set-variable #l0 &add #l0 1
   !until &gre #l0 5
+  -1 ml-write "t-repeat finished"
 !emacro
 
 define-macro t-mix
@@ -46,19 +47,38 @@ define-macro t-mix
     !repeat
       set-variable #l2 1
       !while &les #l2 4
-        200 ml-write &spr "mix: #l0 is: %d # #l1 is: %d # #l2 is: %d" #l0 #l1 #l2
+        100 ml-write &spr "mix: #l0 is: %d # #l1 is: %d # #l2 is: %d" #l0 #l1 #l2
         set-variable #l2 &add #l2 1
       !done
       set-variable #l1 &add #l1 1
     !until  &gre #l1 3
     set-variable #l0 &add #l0 1
   !until &gre #l0 5
+  -1 ml-write "t-mix finished"
+!emacro
+
+define-macro t-chessboard
+  set-variable .l 1
+  set-variable .letters "|A|B|C|D|E|F|G|H|"
+  set-variable .n 8
+  set-variable .numbers "|1|2|3|4|5|6|7|8|"
+  !while &gre .n 0
+    set-variable .line ""
+    set-variable .l 1
+    !while &les .l 9
+      set-variable .line &spr "%s %s%d " .line &lget .letters .l &lget .numbers .n
+      set-variable .l &add .l 1
+    !done
+    set-variable .n  &sub .n 1
+    -1 ml-write .line
+  !done
+  -1 ml-write "t-chessboard finished"
 !emacro
 
 t-while
 t-repeat
 t-mix
-
+t-chessboard
 exit-emacs
 
 
