@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-08-23 08:35
+date: 2026-08-30 13:25
 ---
 
 ## Introduction
@@ -22,7 +22,7 @@ If the user does not like to use the clipboard all the time there shoould be two
 which  temporarly set the clipboard  active do the copy and then inactivate it
 again. 
 
-## Ticket 3: FR - mdview markdown browser (WIP)
+## Ticket 3: FR - mdview markdown browser (DONE)
 
 Similar  like `info`, `r-doc` and the `help` macro there should be a read-only  buffer
 `*mdview*` which allow to browse a set of Markdown files. Support could be first just basic, converting 
@@ -38,7 +38,7 @@ Files  to  consider:  @jasspa/macros/hkinfo.emd  implementing  an info  manual
 browser,   @jasspa/macros/hkehf.emf   implementing   the   ehf   browser   and
 @jasspa/macros/rtools.emf implementing the r-doc (R help browser) browser
 
-## Ticket 4: FR: embedding luit functionality
+## Ticket 4: FR: embedding luit functionality (WIP)
 
 Mimic luit  functionality  to allow ME to run on UTF8 terminals with extendend
 character  sets. Luit is a terminal  application  which allows other  terminal
@@ -57,6 +57,11 @@ enter characters higher then 128 bytes from the extended character set of a spec
 4. Display non-endable characters with special symbol first later as \u1234 codes so that during writing they can be back converted
 5. Catch copy and paste operations to convert between the different character sets.
 
+**Observed Issues:**
+
+- in UTF-8 mode umlauts are written correctly but delete needs two steps
+
+
 ## Ticket 5: FR - simple api call to opencode
 
 configure a generic application call getting some user input which then translates to
@@ -72,7 +77,7 @@ opencode run --model .... "question"
 - Snek: https://sneklang.org/ - Python like
 - mquickjs https://github.com/bellard/mquickjs - JavaScript like
 
-## Ticket 7: BUG - Windows builds - Fixing mec windows terminal size
+## Ticket 7: BUG - Windows builds - Fixing mec windows terminal size (WIP)
 
 Windows: After  fixing  the  resize  issue the mecb  terminal  window is usually  after
 resizing using one row and one column to small.

@@ -1,6 +1,6 @@
 ---
 title: Jasspa MicroEmacs EMF Macro Language - Formal BNF Grammar
-author: Detlef Groth, Caputh-Schwielowsee, Germany
+author: Detlef Groth, Caputh-Schwielowsee, Germany, MiMo 2.5
 date: 2026-08-29
 abstract: >
     This document provides a formal BNF (Backus-Naur Form) grammar specification 
@@ -11,7 +11,9 @@ abstract: >
 
 ## Overview
 
-MicroEmacs macro language uses **prefix notation** (Polish notation) - operators appear before their arguments. Every line is self-contained (no line continuation). The first character of a token determines its type.
+MicroEmacs  macro  language  uses  **prefix  notation**  (Polish  notation)  -
+operators appear before their arguments. Every line is self-contained (no line
+continuation). The first character of a token determines its type.
 
 ## Token Types
 
