@@ -42,6 +42,7 @@
 #define DRTESTFAIL   0x80
 
 #define DRUNTILF     (DRUNTIL|DRTESTFAIL)
+#define DRWHILEF     (DRWHILE|DRTESTFAIL)
 
 #define DRRCONTIN    0x60
 #define DRRDONE      0x61
@@ -890,6 +891,8 @@ dobuf(meLine *hlp)
     meLine *lp;                   /* pointer to line to execute */
     meLine *wlp;                  /* line to while */
     meLine *rlp;                  /* line to repeat */
+    meLine *wlpSaved;             /* saved outer while line (for nesting) */
+    meLine *rlpSaved;             /* saved outer repeat line (for nesting) */
     
     clexec = meTRUE;                      /* in cline execution */
     execstr = NULL ;
@@ -898,6 +901,8 @@ dobuf(meLine *hlp)
     /* starting at the beginning of the buffer */
     wlp = NULL;
     rlp = NULL;
+    wlpSaved = NULL;
+    rlpSaved = NULL;
     lp = hlp->next;
     while (lp != hlp)
     {
@@ -1035,18 +1040,20 @@ loop_round:
                     break;
                 }
             case DRREPEAT:                      /* REPEAT */
-                if (rlp == NULL)
+                if (rlp != lp)
                 {
-                    rlp = lp;               /* Save line */
+                    rlpSaved = rlp;             /* Save outer repeat line */
+                    rlp = lp;                   /* Set current repeat line */
                     status = meTRUE;
                 }
                 else
-                    status = mlwrite(MWABORT|MWWAIT,(meUByte *)"Nested Repeat");
+                    status = meTRUE;
                 break;
             case DRUNTIL:                       /* meTRUE UNTIL */
                 if (rlp != NULL)
                 {
-                    rlp = NULL;
+                    rlp = rlpSaved;             /* Restore outer repeat line */
+                    rlpSaved = NULL;
                     status = meTRUE;
                 }
                 else
@@ -1074,14 +1081,27 @@ loop_round:
                 if (wlp != NULL)
                 {
                     lp = wlp;
-                    wlp = NULL;
                     continue;
                 }
                 status = mlwrite(MWABORT|MWWAIT,(meUByte *)"No while");
                 break;
                 
             case DRWHILE:                       
-                wlp = lp;
+                if (wlp != lp)
+                {
+                    wlpSaved = wlp;             /* Save outer while line */
+                    wlp = lp;                   /* Set current while line */
+                }
+                status = meTRUE;
+                break;
+                
+            case DRWHILEF:
+                /* While condition failed on re-entry - restore outer wlp */
+                if (wlp == lp)
+                {
+                    wlp = wlpSaved;
+                    wlpSaved = NULL;
+                }
                 status = meTRUE;
                 break;
                 
