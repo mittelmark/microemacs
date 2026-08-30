@@ -33059,13 +33059,13 @@ $a
  
   > [!while](!while(4)) defines a conditional loop that is tested before entry to the
      loop, the [!continue](!while(4)) statement within the loop allows the loop to be
-     broken. __!while__ loops may not be nested, but may be contained within a
+     broken. __!while__ loops may be nested only once, but may be contained within a
     [!repeat/!until](!repeat(4)) construct.
 
   __!repeat/!until__
 
   > [!repeat](!repeat(4)) defines a conditional loop that is tested on exit from the
-     loop. __!repeat__ loops may not be nested, but may be contained within a
+     loop. __!repeat__ loops may be nested only once, but may be contained within a
     [!while/!done](!while(4)) construct.
 
   __define-macro/!emacro__
@@ -51330,11 +51330,11 @@ $a
   A __!continue__ may be used in the loop, this immediately returns control to
   the __!while__ statement and skips the rest of the section.
 
-  __!while statement may not be nested.__ That is, only one __!while__ statement may
+  __!while statement may be nested only once.__ That is, only two __!while__ statement may
   be outstanding at a time, a [!repeat(4)](!repeat(4)) statement may be used within the
-  __!while__ to create an inner loop if required. Alternatively the [!goto(4)](!goto(4))
+  __!while__ to create a third inner loop if required. Alternatively the [!goto(4)](!goto(4))
   used in conjunction with the [!if(4)](!if(4)) statement may be used to construct
-  loops.
+  even more nested loops.
 
 
 ## EXAMPLE
@@ -51352,6 +51352,29 @@ $a
             ml-write "You wont see me if %example = 1"
         !done
 
+```
+
+  Here an other example where we can print some chessboard coordinates
+  to the terminal:
+  
+```{.emf}
+        define-macro t-chessboard
+          set-variable .l 1
+          set-variable .letters "|A|B|C|D|E|F|G|H|"
+          set-variable .n 8
+          set-variable .numbers "|1|2|3|4|5|6|7|8|"
+          !while &gre .n 0
+            set-variable .line ""
+            set-variable .l 1
+            !while &les .l 9
+              set-variable .line &spr "%s %s%d " .line &lget .letters .l &lget .numbers .n
+              set-variable .l &add .l 1
+            !done
+            set-variable .n  &sub .n 1
+            -1 ml-write .line
+          !done
+          -1 ml-write "t-chessboard finished"
+        !emacro
 ```
 
 ## SEE ALSO
@@ -51380,8 +51403,10 @@ $a
 
   The __!repeat__ command operates in a similar fashion to [!while/!done](!while(4)) except
   the condition is tested at the end. Control finishes if the condition is
-  met. As with the [!while(4)](!while(4)) there is no nesting of multiple __!repeat__
-  statements.
+  met. As with the [!while(4)](!while(4)) there is only a single nested repeat __!repeat__
+  statement possible. So in other words there can be only one __!repeat__ statement within
+  an outer __!repeat__ if you need more deeply nested loops you might use
+  __!while__ loops within these __!repeat__ loops.
 
 
 ## EXAMPLE
