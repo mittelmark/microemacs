@@ -34,6 +34,7 @@
 #define	__BASICC			/* Define program */ 
 
 #include "emain.h"
+#include "encoding.h"                /* UTF-8 character handling */
 
 /*
  * Move the cursor to the beginning of the current line. Trivial.
@@ -86,7 +87,17 @@ meWindowBackwardChar(register meWindow *wp, register int n)
         }
         else
         {
-            wp->dotOffset-- ;
+            /* Move back to start of UTF-8 sequence */
+            while (wp->dotOffset > 0)
+            {
+                wp->dotOffset--;
+                meUByte c = meLineGetChar(wp->dotLine, wp->dotOffset);
+                if ((c & 0xC0) != 0x80)
+                {
+                    /* Found a lead byte (not a continuation byte) */
+                    break;
+                }
+            }
             wp->updateFlags |= WFMOVEC ;
         }
     }
@@ -109,7 +120,8 @@ meWindowForwardChar(register meWindow *wp, register int n)
         } 
         else
         {
-            wp->dotOffset++;
+            /* Move forward by UTF-8 character length */
+            wp->dotOffset += meUtf8ValidSeqLen(&wp->dotLine->text[wp->dotOffset]);
             wp->updateFlags |= WFMOVEC ;
         }
     }

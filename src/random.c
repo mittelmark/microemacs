@@ -30,6 +30,7 @@
 #include "emain.h"
 #include "efunc.h"
 #include "eskeys.h"
+#include "encoding.h"                /* UTF-8 character handling */
 
 #if (defined _UNIX) || (defined _DOS)
 #include <sys/types.h>
@@ -1082,9 +1083,9 @@ forwDelChar(int f, int n)
     else
         keep = 2 ;
     
-    /* Always make ldelete save the deleted stuff in a kill buffer
-     * unless only one character and not in letter kill mode. */
-    return ldelete(n,keep) ;
+    /* Calculate bytes to delete for UTF-8 character */
+    int bytesToDelete = meUtf8ValidSeqLen(&frameCur->windowCur->dotLine->text[frameCur->windowCur->dotOffset]);
+    return ldelete(bytesToDelete, keep) ;
 }
 
 /* backward-delete-char. Normally bound to C-h */
