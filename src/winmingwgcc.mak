@@ -292,22 +292,24 @@ endif
 
 all: $(PRGLIBS) $(OUTDIR)/$(PRGFILE)
 
-$(OUTDIR)/%.o : %.c
+$(OUTDIR)/%.o : %.c | $(OUTDIR)
 	$(CC) $(CCDEFS) $(CCPROF) $(BCOR_CDF) $(BTYP_CDF) $(CCFLAGS) -c -o $@ $<
 
-# win32dir.o and access.o are only needed for Windows GUI builds (not msys2unix console)
+# win32dir.o and access.o are only needed for Windows builds (not msys2unix console)
+# NOTE: $(OUTDIR) is order-only (|) so directory mtime changes (files added)
+# do not force win32dir.o/access.o (and PRGFILE link) to rebuild every time.
 ifneq "$(BDIST)-$(BTYP)" "msys2unix-c"
-$(OUTDIR)/win32dir.o : $(OUTDIR) ../bfs/win32/src/win32dir.c
+$(OUTDIR)/win32dir.o : ../bfs/win32/src/win32dir.c | $(OUTDIR)
 	$(CC) $(CCDEFS) $(CCPROF) $(CCFLAGS) -c -o $@ ../bfs/win32/src/win32dir.c
 
-$(OUTDIR)/access.o : $(OUTDIR) ../bfs/win32/src/access.c
+$(OUTDIR)/access.o : ../bfs/win32/src/access.c | $(OUTDIR)
 	$(CC) $(CCDEFS) $(CCPROF) $(CCFLAGS) -c -o $@ ../bfs/win32/src/access.c
 endif
 
-$(OUTDIR)/%.coff : %.rc
+$(OUTDIR)/%.coff : %.rc | $(OUTDIR)
 	$(RC) $(RCFLAGS) -o $@ -i $<
 
-$(OUTDIR)/$(PRGFILE): $(OUTDIR) $(PRGOBJS) $(PRGLIBS)
+$(OUTDIR)/$(PRGFILE): $(PRGOBJS) $(PRGLIBS) | $(OUTDIR)
 	-$(RM) $@
 	$(LD) $(LDDEFS) $(LDPROF) $(BTYP_LDF) $(LDFLAGS) -o $@ $(PRGOBJS) $(PRGLIBS) $(LDLIBS)
 	$(STRIP) $@

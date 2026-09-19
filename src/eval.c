@@ -2273,6 +2273,58 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                 evalResult[1] = '\0' ;
             return evalResult ;
         }
+    case UFECHAR:
+        {
+            /* winterm-utf8: encode-char <charset> <code> - return the UTF-8
+             * string for byte <code> in charset <charset> (e.g. &echar
+             * "microsoft-cp1252" "128" gives the euro sign). Used by
+             * insert-symbol so glyph previews honour the user-setup
+             * charset selection instead of always showing latin-1.
+             * Unknown charsets, ASCII codes and unmappable bytes fall
+             * back to the raw byte (historic behaviour). */
+            meEncoding enc = meEncodingFromName((const char *) arg1) ;
+            int code = meAtoi(arg2) ;
+            if(code < 0)
+                code = 0 ;
+            else if(code > 255)
+                code = 255 ;
+            if(((int) enc < 0) || (code < 0x80) ||
+               (enc == ME_ENC_UTF8) || (enc == ME_ENC_ASCII))
+            {
+                evalResult[0] = (meUByte) code ;
+                if(code == meCHAR_LEADER)
+                {
+                    evalResult[1] = meCHAR_TRAIL_LEADER ;
+                    evalResult[2] = '\0' ;
+                }
+                else
+                    evalResult[1] = '\0' ;
+            }
+            else
+            {
+                meConv conv ;
+                unsigned char in[1], out[4] ;
+                int outLen, ii ;
+                in[0] = (unsigned char) code ;
+                meConvInit(&conv, enc, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, in, 1, out, sizeof(out)) ;
+                if((outLen <= 0) ||
+                   ((outLen == 1) && (out[0] == '\0')))
+                {
+                    /* Unmappable (table gap) or NUL result - raw byte
+                     * fallback, never emit NUL into macro strings */
+                    evalResult[0] = (meUByte) code ;
+                    evalResult[1] = '\0' ;
+                }
+                else
+                {
+                    for(ii = 0 ; ii < outLen ; ii++)
+                        evalResult[ii] = out[ii] ;
+                    evalResult[outLen] = '\0' ;
+                }
+            }
+            return evalResult ;
+        }
 #endif
     case UFCAT:
         {

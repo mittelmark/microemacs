@@ -38,6 +38,7 @@
 
 #if MEOPT_OSD
 
+#include "encoding.h"                     /* UTF-8 helpers (winterm-utf8) */
 #include "efunc.h"                      /* Define the command identifiers */
 #include "eskeys.h"                     /* Define the key definitions */
 #include "eterm.h"
@@ -808,11 +809,28 @@ menuRenderArea(int x, int y, int len, int dep)
             textp = frameCur->store[y].text + x ;
             ii = len ;
             xx = x ;
-            while(--ii >= 0)
+            while(ii > 0)
             {
-                scheme = *schmp++ ;
+                int n = 1 ;
+                scheme = *schmp ;
                 cc = (WORD) TTschemeSet(scheme) ;
-                ConsoleDrawString (textp++, cc, xx++, y, 1);
+                /* winterm-utf8: dialog text may hold multi-byte UTF-8
+                 * (e.g. insert-symbol glyph previews). Draw whole chars
+                 * (1 column each), keeping text/scheme advancing together.
+                 * ASCII behaviour unchanged. Never overrun the region. */
+                if(*textp >= 0x80)
+                {
+                    n = meUtf8ValidSeqLen(textp) ;
+                    if(n > ii)
+                        n = ii ;
+                    if(n < 1)
+                        n = 1 ;
+                }
+                ConsoleDrawString (textp, cc, xx, y, 1);
+                textp += n ;
+                schmp += n ;
+                ii -= n ;
+                xx++ ;
             }
             y++ ;
         }
@@ -986,6 +1004,12 @@ osdDisplaySnapshotRestore(osdDISPLAY *md)
         memcpy (flp->scheme+xx,colp, width*sizeof(meScheme));
         memcpy (flp->text+xx,text, width*sizeof(meUByte));
     }
+    /* winterm-utf8: frame store holds one byte per column (lead byte only
+     * for UTF-8), so menuRenderArea redraw from frame store corrupts
+     * multi-byte chars (shows ? until manual screen-update). Force a full
+     * redraw so updateline re-renders from buffers via disLineBuff with
+     * correct disLineByteOff mapping. Harmless on other platforms. */
+    sgarbf = meTRUE ;
 }
 
 static void

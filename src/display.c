@@ -1325,6 +1325,18 @@ hideLineJump:
         meScheme scheme;
         meInt ll, ii, ccol;
         WORD  cc;
+        /* winterm-utf8: disLineBuff holds UTF-8 bytes, blkp->column counts
+         * display columns. Derive byte positions via disLineByteOff[] plus
+         * the horizontal scroll base (s1 was already advanced to the
+         * visible start). Frame store keeps the lead byte per column. */
+        meInt scrollBase = 0 ;
+        if(window != NULL)
+        {
+            if(flag & VFCURRL)
+                scrollBase = window->horzScroll ;
+            else
+                scrollBase = window->horzScrollRest ;
+        }
 
         ccol = 0 ;
         do {
@@ -1336,12 +1348,18 @@ hideLineJump:
              * frame store with the colour information */
             ii = blkp->column;
             ll = ii - ccol ;
-            ConsoleDrawString (s1, cc, scol+ccol, row, ll);
-            ccol = ii ;
-            while(--ll >= 0)
             {
-                *fssp++ = scheme ;
-                *fstp++ = *s1++;
+                meInt absStart = scrollBase + ccol ;
+                meInt absEnd = scrollBase + ii ;
+                meUByte *ssBlock = disLineBuff + disLineByteOff[absStart] ;
+                meInt col ;
+                ConsoleDrawString (ssBlock, cc, scol+ccol, row, ll);
+                ccol = ii ;
+                for(col = absStart ; col < absEnd ; col++)
+                {
+                    *fssp++ = scheme ;
+                    *fstp++ = disLineBuff[disLineByteOff[col]] ;
+                }
             }
             blkp++;
         } while(--noColChng) ;
@@ -2761,8 +2779,24 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
          * MS-WINDOWS                                                       *
          ********************************************************************/
         {
-            while(len--)
+            /* winterm-utf8: str may hold multi-byte UTF-8 (e.g. umlauts in
+             * message-line text). ConsoleDrawString takes display columns,
+             * so advance by whole UTF-8 chars (1 column each), keeping the
+             * per-byte scheme array aligned. ASCII behaviour unchanged. */
+            while(len > 0)
             {
+                int n = 1 ;
+                /* winterm-utf8: advance by whole UTF-8 chars (1 column
+                 * each). Done outside the console ifdef so GUI builds
+                 * cannot loop forever. */
+                if(*str >= 0x80)
+                {
+                    n = meUtf8ValidSeqLen(str) ;
+                    if(n > len)
+                        n = len ;
+                    if(n < 1)
+                        n = 1 ;
+                }
                 schm = *scheme++ ;
                 if((schm == meCHAR_LEADER) && ((schm = *scheme++) == meCHAR_TRAIL_NULL))
                     schm = 0 ;
@@ -2778,9 +2812,16 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
                 {
                     WORD att ;
                     att = (WORD) TTschemeSet(schm) ;
-                    ConsoleDrawString(str++, att, col++, row, 1);
+                    ConsoleDrawString(str, att, col, row, 1);
                 }
 #endif /* _ME_CONSOLE */
+                /* Keep the per-byte scheme array aligned with the byte
+                 * string (no-op for ASCII). */
+                if(n > 1)
+                    scheme += (n-1) ;
+                str += n ;
+                len -= n ;
+                col++ ;
             }
         }
 #endif /* _WIN32 */
@@ -2901,8 +2942,30 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
 #endif /* _ME_WINDOW */
             {
                 WORD att ;
+                meUByte *pp = str ;
+                meUByte *end = str + len ;
+                meInt cols = 0 ;
+                /* winterm-utf8: str may hold multi-byte UTF-8 (e.g. umlauts
+                 * in message-line text). ConsoleDrawString takes display
+                 * columns, not bytes - count columns with the same rules as
+                 * the console decoder (validated UTF-8 sequence = 1 column).
+                 * Never read past the truncated byte length. */
                 att = (WORD) TTschemeSet(schm) ;
-                ConsoleDrawString (str, att, col, row, len);
+                while(pp < end && *pp != '\0')
+                {
+                    int n ;
+                    if(*pp < 0x80)
+                        n = 1 ;
+                    else
+                    {
+                        n = meUtf8ValidSeqLen(pp) ;
+                        if(pp + n > end)
+                            break ;
+                    }
+                    pp += n ;
+                    cols++ ;
+                }
+                ConsoleDrawString (str, att, col, row, cols);
             }
 #endif /* _ME_CONSOLE */
             /* Update the frame store colours */

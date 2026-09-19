@@ -61,24 +61,58 @@ osd .osd.symbol 0 "bnatcHsI" 2 3 75 0 -1 -1 620 .scheme.osd-title "Insert Symbol
 osd .osd.symbol 1 ""
 osd .osd.symbol 2 "" "   D  X C   D  X C   D  X C   D  X C   D  X C   D  X C   D  X C   D  X C"
 osd .osd.symbol 3 ""
-
-set-variable #l0 255
-!repeat
-    set-variable #l1 &spr "%3d %2x %s" #l0 #l0 &itoa #l0
-    set-variable #l1 &spr "%s%n" #l1 &sub 8 &len #l1 " "
-    !if &equ &band #l0 7 7
-        osd .osd.symbol &add &mul #l0 2 11 "f"  #l1 #l0 symbol-insert
-    !else
-        osd .osd.symbol &add &mul #l0 2 11 "hf" #l1 #l0 symbol-insert
-    !endif
-    osd .osd.symbol &add &mul #l0 2 10 "hf" " "
-!until &not &pdec #l0 1
 !endif
 osd .osd.symbol 600 ""
 osd .osd.symbol 610 ""
 osd .osd.symbol 620 "BcfH" .scheme.osd-ebtt " Cancel " f void
 
 define-macro insert-symbol
+    ; winterm-utf8: glyph previews honour the user-setup charset
+    ; selection (registry /history/<platform>/char-set) via &echar,
+    ; instead of always showing latin-1. Empty/unknown selection keeps
+    ; historic raw-byte glyphs. The grid is rebuilt on every open so a
+    ; changed selection takes effect immediately. The inserted byte is
+    ; unchanged (&itoa @# in symbol-insert).
+    set-variable #l2 ""
+    !if &opt "ext"
+        set-variable #l2 &reg &spr "/history/%s/char-set" %platform ""
+    !endif
+    set-variable #l0 255
+    !repeat
+        !if &seq #l2 ""
+            set-variable #l3 &itoa #l0
+        !else
+            set-variable #l3 &echar #l2 #l0
+        !endif
+        set-variable #l1 &spr "%3d %2x %s" #l0 #l0 #l3
+        ; winterm-utf8: no padding - "%3d %2x %s" is always 8 bytes for
+        ; single-byte glyphs and every glyph is one display column, so
+        ; cells align without filler.
+        ; winterm-utf8: rows break every 8 codes (0-7, 8-15, ...) as
+        ; before - codes below 32 stay in the grid showing the special
+        ; interface characters (box drawing etc. via char masks). NOTE:
+        ; multi-byte glyph previews make those rows wider than 72 bytes,
+        ; so the dialog stretches to fit them; that is inherent to
+        ; showing one column per code with correct glyphs.
+        ; winterm-utf8: no separator items between cells - the "%3d"
+        ; leading space already separates 2-digit codes and dropping
+        ; all 8 separators per row makes the dialog ~8 columns narrower.
+        !if &equ &band #l0 7 7
+            osd .osd.symbol &add &mul #l0 2 11 "f"  #l1 #l0 symbol-insert
+        !else
+            osd .osd.symbol &add &mul #l0 2 11 "hf" #l1 #l0 symbol-insert
+        !endif
+    !until &not &pdec #l0 1
+    ; the loop above ends at code 1 - add code 0 explicitly so the
+    ; first line is 0..7 (its glyph is empty, dec/hex still select it)
+    set-variable #l0 0
+    !if &seq #l2 ""
+        set-variable #l3 &itoa #l0
+    !else
+        set-variable #l3 &echar #l2 #l0
+    !endif
+    set-variable #l1 &spr "%3d %2x %s" #l0 #l0 #l3
+    osd .osd.symbol &add &mul #l0 2 11 "hf"  #l1 #l0 symbol-insert
     .osd.symbol osd
 !emacro
 

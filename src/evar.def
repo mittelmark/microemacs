@@ -248,6 +248,7 @@ DEFFUN (UFCOND,     "con", FUN_TRINAMIC)    /* conditional */
 DEFFUN (UFDEC,      "dec", FUN_DYNAMIC|FUN_SETVAR|FUN_GETVAR)     /* decrement variable and set */
 #endif
 DEFFUN (UFDIV,      "div", FUN_DYNAMIC)     /* division */
+DEFFUN (UFECHAR,    "ech", FUN_DYNAMIC)     /* charset byte to UTF-8 i.e. "cp1252" "128" to euro */
 DEFFUN (UFEQUAL,    "equ", FUN_DYNAMIC)     /* logical equality check */
 #if MEOPT_EXTENDED
 DEFFUN (UFEXIST,    "exi", FUN_MONAMIC|FUN_SETVAR) /* does the var/command exist */
