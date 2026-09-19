@@ -388,7 +388,10 @@ windCurLineOffsetEval(meWindow *wp)
         {
             if(wp->buffer->encoding != ME_ENC_UTF8 && cc >= 0x80)
             {
-                /* Non-UTF-8 buffer: raw encoding byte = 1 display column */
+                /* Single-byte buffer: every raw byte is 1 display column
+                 * (renderLine converts each to exactly 1 terminal glyph).
+                 * Must not UTF-8-validate here - e.g. CP1252 0xC3 0xBC
+                 * are two columns, not one sequence (utf8-mec). */
                 ii = 1 ;
                 *off++ = (meUByte) ii ;
                 pos += ii ;
