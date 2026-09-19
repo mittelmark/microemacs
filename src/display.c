@@ -630,14 +630,29 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         cc = *s1 ;
         if(bp->encoding != ME_ENC_UTF8 && cc >= 0x80)
         {
-            /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding for display.
-             * Uses meConvChar to convert from buffer encoding → internal encoding. */
+            /* Per-buffer rendering (utf8-mec Phase 1): convert raw encoding
+             * byte to terminal UTF-8 directly, independent of the global
+             * meInternalEnc, so ISO/CP1252 and UTF-8 buffers can share
+             * the same screen. disLineBuff then holds terminal-ready
+             * bytes (UTF-8 when termEncoding is utf-8). */
             meConv conv ;
-            unsigned char outbyte ;
-            meConvInit(&conv, (meEncoding) bp->encoding, (meEncoding) meInternalEnc) ;
-            if(meConvChar(&conv, s1, 1, &outbyte, 1) > 0)
+            unsigned char outBuf[8] ;
+            int outLen ;
+            meConvInit(&conv, (meEncoding) bp->encoding, ME_ENC_UTF8) ;
+            outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
+            if(outLen > 0)
             {
-                *s2++ = outbyte ;
+                int ii ;
+                /* Ensure room for multi-byte output */
+                while((s2 - disLineBuff) + outLen >= disLineSize)
+                {
+                    meInt bytePos2 = s2 - disLineBuff ;
+                    disLineSize += 512 ;
+                    disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
+                    s2 = disLineBuff + bytePos2 ;
+                }
+                for(ii = 0 ; ii < outLen ; ii++)
+                    *s2++ = outBuf[ii] ;
             }
             else
             {
@@ -649,11 +664,11 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         }
         else if(cc >= 0xC0)
         {
-            /* Could be a UTF-8 multi-byte sequence or a raw high byte.
-             * When internal encoding is UTF-8 and buffer is UTF-8,
-             * copy bytes directly. Otherwise try UTF-8→internal conversion. */
+            /* Per-buffer rendering: UTF-8 buffer content is copied
+             * directly (it is already terminal-ready UTF-8). This no
+             * longer depends on the global meInternalEnc. */
             int utflen = meUtf8SeqLen(cc) ;
-            if(meInternalEnc == ME_ENC_UTF8)
+            if(bp->encoding == ME_ENC_UTF8)
             {
                 /* Internal is UTF-8: copy multi-byte sequence directly */
                 int ii ;
@@ -664,22 +679,24 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             }
             else
             {
+                /* Non-UTF-8 buffer reaching here (should be rare since the
+                 * first branch handles cc >= 0x80): treat as single raw
+                 * byte and convert to UTF-8. */
                 meConv conv ;
                 unsigned char outBuf[8] ;
                 int outLen ;
-                meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                outLen = meConvChar(&conv, s1, utflen, outBuf, sizeof(outBuf)) ;
+                meConvInit(&conv, (meEncoding) bp->encoding, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
                 if(outLen > 0)
                 {
                     int ii ;
                     for(ii = 0 ; ii < outLen ; ii++)
                         *s2++ = outBuf[ii] ;
-                    s1 += utflen ;
-                    len -= (utflen - 1) ;
+                    s1++ ;
                 }
                 else
                 {
-                    /* Not valid UTF-8 — treat as raw byte */
+                    /* Not convertible — treat as raw byte */
                     *s2++ = cc ;
                     s1++ ;
                 }
@@ -1063,6 +1080,11 @@ hideLineJump:
          ********************************************************************/
         meInt ii, col, cno;
         meScheme scheme;
+        /* utf8-mec Phase 1: disLineBuff now holds terminal-ready bytes
+         * (UTF-8 when termEncoding is utf-8), converted per-buffer in
+         * renderLine(). Output raw to avoid a second global
+         * meInternalEnc-based conversion corrupting multi-byte sequences. */
+        int termIsUtf8 = (meStrcmp(termEncoding, "utf-8") == 0) ;
 
         TCAPmove(row,scol);	/* Go to start of line. */
 
@@ -1074,8 +1096,8 @@ hideLineJump:
 
             /* Output the character in the specified colour.
              * Maintain the frame store.
-             * When internal encoding is UTF-8, disLineBuff contains multi-byte
-             * UTF-8 sequences but blkp->column stores display width (1 per char).
+             * disLineBuff contains multi-byte UTF-8 sequences but
+             * blkp->column stores display width (1 per char).
              * Use disLineByteOff[] to convert display columns to byte offsets. */
             while(col < (int)blkp->column)
             {
@@ -1088,7 +1110,12 @@ hideLineJump:
                 *fstp++ = cc ;
                 /* Output all bytes of this character to the terminal */
                 for(b = byteStart ; b < byteNext ; b++)
-                    TCAPputc(disLineBuff[b]) ;
+                {
+                    if(termIsUtf8)
+                        putchar(disLineBuff[b]) ;
+                    else
+                        TCAPputc(disLineBuff[b]) ;
+                }
                 col++ ;
             }
             blkp++;

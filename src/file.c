@@ -1633,64 +1633,38 @@ readin(register meBuffer *bp, meUByte *fname)
         }
     }
 encoding_found:
-    /* Only auto-switch internal encoding if -E was NOT explicitly used.
-     * When -E is used, it forces the encoding and prevents auto-switching
-     * when other files are opened. This allows users to set a specific
-     * encoding for a session without it being overridden. */
-    if(!meInternalEncExplicit)
+    /* utf8-mec Phase 1 (per-buffer rendering): do NOT auto-switch the global
+     * meInternalEnc when files are opened. Each buffer keeps its own
+     * bp->encoding and renderLine()/hilight convert per-buffer to the
+     * terminal encoding, so ISO/CP1252 and UTF-8 buffers can share the
+     * same screen. meInternalEnc remains only as the default guess for
+     * files without detectable encoding (see above) and for the -E
+     * override / $internal-encoding variable. */
+
+    /* utf8-mec: detection finalizes bp->encoding here, but a window may
+     * already show this buffer (session restore, re-read, argv flows paint
+     * early). Force a full redraw of every window on this buffer so rows
+     * render with the detected encoding instead of stale bytes. */
     {
-        if(bp->encoding != ME_ENC_UTF8 && bp->encoding != (meUByte) meInternalEnc)
+        meWindow *wp ;
+        meFrameLoopBegin() ;
+        wp = loopFrame->windowList ;
+        while(wp != NULL)
         {
-            meInternalEnc = (int) bp->encoding ;
+            if(wp->buffer == bp)
+                wp->updateFlags |= WFMODE|WFREDRAW ;
+            wp = wp->next ;
         }
-        else if(bp->encoding == ME_ENC_UTF8)
-        {
-            meInternalEnc = ME_ENC_UTF8 ;
-        }
+        meFrameLoopEnd() ;
     }
 
-    /* If file is UTF-8 but internal encoding is CP1252, check if all
-     * characters can be mapped without loss. Warn if not. */
-    if(bp->encoding == ME_ENC_UTF8 && meInternalEnc == ME_ENC_CP1252)
-    {
-        FILE *checkFp;
-        if((checkFp = fopen((char *)fn, "rb")) != NULL)
-        {
-            unsigned char checkBuf[4096];
-            size_t checkLen = fread(checkBuf, 1, sizeof(checkBuf), checkFp);
-            fclose(checkFp);
-            if(checkLen > 0)
-            {
-                meConv conv;
-                int unmappable = 0;
-                size_t i = 0;
-                meConvInit(&conv, ME_ENC_UTF8, ME_ENC_CP1252);
-                conv.strict = 1;
-                while(i < checkLen)
-                {
-                    unsigned char outbyte;
-                    unsigned char c = checkBuf[i];
-                    int consumed;
-                    if(c < 0x80)
-                    {
-                        i++;
-                        continue;
-                    }
-                    consumed = meUtf8ValidSeqLen(checkBuf + i);
-                    if(meConvChar(&conv, checkBuf + i, consumed, &outbyte, 1) < 0)
-                        unmappable++;
-                    i += consumed;
-                }
-                if(unmappable > 0)
-                {
-                    mlwrite(MWABORT|(meInt)MWCLEXEC,
-                            (meUByte *)"[Warning: %d character%s cannot be represented in CP1252]",
-                            unmappable, unmappable == 1 ? "" : "s");
-                    meModeSet(bp->mode, MDEDIT) ;
-                }
-            }
-        }
-    }
+    /* utf8-mec Phase 1: the old "cannot be represented in CP1252" blocking
+     * warning (mlwrite MWABORT + MDEDIT flag) is removed. It assumed the
+     * global meInternalEnc had to hold the file content, which is no longer
+     * true: each buffer keeps its own bp->encoding and rendering converts
+     * per-buffer, so no information is lost and no prompt is needed. The
+     * blocking prompt also hung batch startup scripts (@file with stdin
+     * /dev/null) whenever a UTF-8 file was opened. */
 
     ss = ffReadFile(fn,0,bp,bp->baseLine,0,0,0) ;
 

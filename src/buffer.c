@@ -33,6 +33,7 @@
 
 #include "emain.h"
 #include "efunc.h"
+#include "encoding.h"                /* UTF-8/single-byte conversion */
 #include "esearch.h"
 
 int
@@ -1805,6 +1806,63 @@ int
 bufferMode(int f, int n)        /* prompt and set an editor mode */
 {
     return adjustMode(frameCur->bufferCur,(f) ? n:0) ;
+}
+
+/* set-buffer-encoding - prompt for a file encoding and reinterpret the
+ * current buffer in it (utf8-mec). Single-byte buffers store raw bytes, so
+ * switching interpretation is lossless; rendering, input and yank all key
+ * off bp->encoding from then on, allowing e.g. an ISO-8859-5 file (which
+ * auto-detection can only guess as the default single-byte encoding) to be
+ * displayed side-by-side with UTF-8 buffers. In a macro the encoding name
+ * is taken as the next argument, e.g. set-buffer-encoding iso-8859-5
+ */
+int
+setBufferEncoding(int f, int n)
+{
+    meUByte encName[64] ;
+    meEncoding enc ;
+    meBuffer *bp ;
+    meWindow *wp ;
+    int s ;
+    /* Completion list over all supported encodings (TAB lists them).
+     * Built once from the canonical meEncodingName() strings. */
+    static meUByte *encCompList[ME_ENC_ASCII+1] ;
+    static int encCompCount = 0 ;
+
+    bp = frameCur->bufferCur ;
+    if(encCompCount == 0)
+    {
+        meEncoding ee ;
+        for(ee = ME_ENC_UTF8 ; ee <= ME_ENC_ASCII ; ee++)
+            encCompList[encCompCount++] = (meUByte *) meEncodingName(ee) ;
+    }
+    mlgsStrList = encCompList ;
+    mlgsStrListSize = encCompCount ;
+    if((s = meGetString((meUByte *)"Buffer encoding", MLUSER|MLINSENSCASE, 0,
+                        encName, sizeof(encName))) <= 0)
+        return s ;
+    if(encName[0] == '\0')
+        return mlwrite(0, (meUByte *)"[Current buffer encoding is \"%s\"]",
+                       (meUByte *) meEncodingName((meEncoding) bp->encoding)) ;
+    if((enc = meEncodingFromName((const char *) encName)) == (meEncoding) -1)
+        return mlwrite(MWABORT, (meUByte *)"[Unknown encoding \"%s\"]", encName) ;
+    if((meUByte) enc == bp->encoding)
+        return mlwrite(0, (meUByte *)"[Buffer encoding is already \"%s\"]",
+                       (meUByte *) meEncodingName(enc)) ;
+    bp->encoding = (meUByte) enc ;
+    /* refresh the mode line and force a full redraw of every window
+     * showing this buffer (all frames) */
+    meFrameLoopBegin() ;
+    wp = loopFrame->windowList ;
+    while(wp != NULL)
+    {
+        if(wp->buffer == bp)
+            wp->updateFlags |= WFMODE|WFREDRAW ;
+        wp = wp->next ;
+    }
+    meFrameLoopEnd() ;
+    return mlwrite(0, (meUByte *)"[Buffer encoding set to \"%s\"]",
+                   (meUByte *) meEncodingName(enc)) ;
 }
 
 int     

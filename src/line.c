@@ -42,6 +42,7 @@
 
 #include "emain.h"
 #include "efunc.h"
+#include "encoding.h"                /* UTF-8/CP1252 conversion */
 
 #if (defined _UNIX) || (defined _DOS) || (defined _WIN32)
 #include <sys/types.h>
@@ -864,6 +865,10 @@ killSave(void)
     thiskl->next = klhead ;
     klhead = thiskl ;
     thiskl->kill = NULL ;
+    /* utf8-mec Phase 3: record source buffer encoding so yank can convert
+     * when pasting into a buffer with a different encoding. */
+    thiskl->encoding = (frameCur != NULL && frameCur->bufferCur != NULL) ?
+        frameCur->bufferCur->encoding : (meUByte) ME_ENC_UTF8 ;
     currkill = &(thiskl->kill) ;
 
     return meTRUE ;
@@ -1408,6 +1413,12 @@ yankfrom(struct meKill *pklist)
 {
     int len=0 ;
     meKillNode *killp ;
+    /* utf8-mec Phase 3: convert kill text from its source encoding to the
+     * current buffer encoding when they differ, so cross-buffer yank
+     * (e.g. UTF-8 -> CP1252) pastes convertible text instead of raw bytes. */
+    meEncoding dstEnc = (frameCur != NULL && frameCur->bufferCur != NULL) ?
+        (meEncoding) frameCur->bufferCur->encoding : ME_ENC_UTF8 ;
+    meEncoding srcEnc = (meEncoding) pklist->encoding ;
 
 #if MEOPT_EXTENDED
     if(meLineGetFlag(frameCur->windowCur->dotLine) & meLINE_PROTECT)
@@ -1422,9 +1433,42 @@ yankfrom(struct meKill *pklist)
     }
 #endif
     killp = pklist->kill;
+    if(srcEnc == dstEnc)
+    {
+        while (killp != NULL)
+        {
+            len += bufferInsertText(killp->data,0) ;
+            killp = killp->next;
+        }
+        return len ;
+    }
     while (killp != NULL)
     {
-        len += bufferInsertText(killp->data,0) ;
+        meInt chunkLen = (meInt) meStrlen(killp->data) ;
+        meUByte *convBuf ;
+        meConv conv ;
+        int outLen ;
+        /* Worst case expansion (single-byte -> UTF-8) is 2x; use 4x margin */
+        if((convBuf = (meUByte *) meMalloc(chunkLen*4+1)) == NULL)
+        {
+            len += bufferInsertText(killp->data,0) ;
+            killp = killp->next ;
+            continue ;
+        }
+        meConvInit(&conv, srcEnc, dstEnc) ;
+        outLen = meConvString(&conv, killp->data, chunkLen, convBuf, chunkLen*4) ;
+        if(outLen < 0)
+        {
+            /* Conversion failed - insert raw text rather than lose it */
+            meFree(convBuf) ;
+            len += bufferInsertText(killp->data,0) ;
+        }
+        else
+        {
+            convBuf[outLen] = '\0' ;
+            len += bufferInsertText(convBuf,0) ;
+            meFree(convBuf) ;
+        }
         killp = killp->next;
     }
     return len ;

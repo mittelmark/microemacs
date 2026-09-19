@@ -1,7 +1,8 @@
-Γεια σου κόσμε! Αυτό είναι ένα αρχείο δοκιμής σε κωδικοσελίδα ISO-8859-7.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Ελληνικό αλφάβητο: Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-Μικρά: α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-
-Διαφορές από ISO-8859-1: ά έ ή ί ό ύ ώ Ά Έ Ή Ί Ό Ύ Ώ
+# -*- coding: iso-8859-7 -*-
+Καλώς ήρθατε! Αυτό είναι ένα αρχείο δοκιμής σε κωδικοποίηση ISO-8859-7.
+Με αυτό το αρχείο μπορείτε να ελέγξετε τα ελληνικά γράμματα:
+ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ αβγδεζηθικλμνξοπρστυφχψω.
+Λορεμ ιψουμ ντολορ σιτ αμετ, consectetur adipiscing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ουτ ενιμ αντ μινιμ
+βενιαμ, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat. Ντουις αουτε ιρουρε.

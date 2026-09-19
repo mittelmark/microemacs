@@ -150,6 +150,7 @@ extern	int	zotbuf(meBuffer *bp, int silent);
 extern	int	adjustMode(meBuffer *bp, int nn);
 extern	int	bufferMode(int f, int n);
 extern	int	globalMode(int f, int n);
+extern	int	setBufferEncoding(int f, int n);
 extern  int     addLine(register meLine *ilp, meUByte *text) ;
 #define addLineToBob(bp,text) (bp->lineCount += addLine(bp->dotLine,text))
 #define addLineToEob(bp,text) (bp->lineCount += addLine(bp->baseLine,text))

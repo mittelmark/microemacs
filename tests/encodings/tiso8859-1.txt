@@ -1,6 +1,7 @@
 This is a text which contains umlauts.
 
-Üִײüהצß.
+Üִײüהצß. Üִײüהצß. Üִײüהצß. this is some text and some more text הצü
+Üִײüהצß. Üִײüהצß. Üִײüהצß. this is some text and some more text הצü
 
 thats the end.
 
@@ -8,4 +9,4 @@ thats the end.
 הצüß\^`'  this is some text.
 צהüß\qwertz
 צהüßawer
-צהüß
+צהüßצהüßµ^²³µ€

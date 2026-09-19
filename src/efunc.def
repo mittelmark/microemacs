@@ -333,6 +333,7 @@ DEFFUNC ("search-backward",		0x00, searchBack,	CK_BAKSRCH, &__cmdArray[CK_BAKSRC
 DEFFUNC ("search-buffer",		0x00, searchBuffer,	CK_SRCHBUF, &__cmdArray[CK_SRCHBUF+1], 0)
 DEFFUNC ("search-forward",		0x00, searchForw,	CK_FORSRCH, &__cmdArray[CK_FORSRCH+1], 0)
 DEFFUNC	("set-alpha-mark",		0x42, setAlphaMark,	CK_SETAMRK, &__cmdArray[CK_SETAMRK+1], 0)
+DEFFUNC ("set-buffer-encoding",		0x00, setBufferEncoding,	CK_SETBENC, &__cmdArray[CK_SETBENC+1], &__cmdArray[CK_BAKCHR])
 #if MEOPT_CMDHASH || MEOPT_EXTENDED
 DEFFUNC ("set-char-mask",		0x00, setCharMask,	CK_STCHRMK, &__cmdArray[CK_STCHRMK+1], 0)
 #endif

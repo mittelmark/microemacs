@@ -1,8 +1,9 @@
-Bonvenu! Tiu æi estas testdosiero en kodado ISO-8859-3.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Esperanto: A B C Æ D E F G Ø H ¦ I J ¬ K L M N O P R S Þ T U Ý V Z
-Malgrandaj: a b c æ d e f g ø h ¶ i j ¼ k l m n o p r s þ t u Ý v z
-
-Malta: Å Õ ¡ Õ ¯ å õ ± õ ¿
-Turka (malnovversiona): «Iª
+# -*- coding: iso-8859-3 -*-
+Bonvenon! Tiu estas testdosiero en kodado ISO-8859-3 (Latina-3).
+Per tiu dosiero oni povas provi supersignajn literojn: Ææ Øø ¦¶ ¬¼ Þþ Ýý.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse cillum dolore eu fugiat nulla pariatur.
+Æu la redaktoro montras øuste æiujn signojn? ¦aoso kaj ¼azo malaperu!

@@ -159,7 +159,7 @@ meCommand  *cmdHash[cmdHashSize] =
     &__cmdArray[CK_REDREGY],    &__cmdArray[CK_HIWRD],      &__cmdArray[CK_GOFNC],      NULL,                       NULL,
     NULL,                       NULL,                       NULL,                       &__cmdArray[CK_SUSPEND],    &__cmdArray[CK_WDWWDTH],
     NULL,                       &__cmdArray[CK_BUFMOD],     &__cmdArray[CK_INSFLNM],    NULL,                       NULL,
-    &__cmdArray[CK_BAKCHR],     NULL,                       NULL,                       &__cmdArray[CK_YANK],       NULL,
+    &__cmdArray[CK_SETBENC],    NULL,                       NULL,                       &__cmdArray[CK_YANK],       NULL,
     &__cmdArray[CK_BUFPOS],     NULL,                       NULL,                       &__cmdArray[CK_ONLYWND],    &__cmdArray[CK_REDFILE],
     &__cmdArray[CK_PRTBUF],     &__cmdArray[CK_SWNDH],      &__cmdArray[CK_CRTCLBK],    &__cmdArray[CK_APPBUF],     NULL,
     NULL,                       &__cmdArray[CK_IPIPWRT],    NULL,                       &__cmdArray[CK_GOTOPOS],    &__cmdArray[CK_SETMRK],
