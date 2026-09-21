@@ -57,6 +57,7 @@ extern	int	windowGotoEol(int f, int n);
 extern	int	meErrorEob(void) ;
 extern	int	meErrorBob(void) ;
 extern	int	meWindowBackwardChar(register meWindow *wp, register int n) ;
+extern	int	meWindowBackwardBytes(register meWindow *wp, register int n) ;
 extern	int	meWindowForwardChar(register meWindow *wp, register int n) ;
 extern	int	windowBackwardChar(int f, int n);
 extern	int	windowForwardChar(int f, int n);

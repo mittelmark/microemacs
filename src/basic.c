@@ -104,6 +104,42 @@ meWindowBackwardChar(register meWindow *wp, register int n)
     return meTRUE ;
 }
 
+/* Move dot backwards by n BYTES (not characters). Unlike
+ * meWindowBackwardChar (UTF-8 character aware), this mirrors the
+ * byte-based undo/mldelete accounting so undo of multi-byte inserts
+ * removes exactly the recorded bytes - character motion overshoots
+ * (e.g. undo of a 2-byte insert steps back a whole character but
+ * only deletes one byte, leaving a stray trail byte). A crossed
+ * newline counts as one, matching mldelete(). */
+int
+meWindowBackwardBytes(register meWindow *wp, register int n)
+{
+    while(n > 0)
+    {
+        if(wp->dotOffset == 0)
+        {
+            meLine *lp ;
+            if((lp = meLineGetPrev(wp->dotLine)) == wp->buffer->baseLine)
+                return meFALSE ;
+            wp->dotLineNo-- ;
+            wp->dotLine = lp ;
+            wp->dotOffset = meLineGetLength(lp) ;
+            wp->updateFlags |= WFMOVEL ;
+            n-- ;   /* the newline */
+        }
+        else
+        {
+            meInt back = wp->dotOffset ;
+            if(back > n)
+                back = n ;
+            wp->dotOffset -= (meUShort) back ;
+            wp->updateFlags |= WFMOVEC ;
+            n -= back ;
+        }
+    }
+    return meTRUE ;
+}
+
 int
 meWindowForwardChar(register meWindow *wp, register int n)
 {

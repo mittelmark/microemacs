@@ -196,8 +196,17 @@ bufferSetEdit(void)
         if(meModeTest(frameCur->bufferCur->mode,MDUNDO))
         {
             meUndoNode        *uu ;
+            meUInt            contSave ;
 
+            /* The SET_EDIT marker must not sync the continuation flag
+             * (meUndoCreateNode side effect) - otherwise the first
+             * content node after it spuriously carries CONTINUE and
+             * later bytes/chars fail to coalesce with it, fragmenting
+             * undo (e.g. the two bytes of a typed umlaut land in two
+             * nodes and undo peels them one by one). */
+            contSave = frameCur->bufferCur->undoContFlag ;
             uu = meUndoCreateNode(sizeof(meUndoNode)) ;
+            frameCur->bufferCur->undoContFlag = contSave ;
             uu->type |= meUNDO_SPECIAL|meUNDO_SET_EDIT ;
             /* Add and narrows, must get the right order */
         }
@@ -293,9 +302,11 @@ lineMakeSpace(int n)
                                lp_old,lp_new,0,0) ;
         cp1 = lp_new->text ;	/* Return pointer */
         doto = 0 ;
-#if MEOPT_UNDO
-        meUndoAddInsChar() ;
-#endif
+        /* NOTE: no undo record here - callers (insertChar etc.)
+         * record after insertion with the correct post-advance
+         * offset. Recording here used a stale doto and duplicated
+         * the caller's record, corrupting undo at buffer end
+         * (multi-byte inserts undid stray bytes). */
     }
     else
     {

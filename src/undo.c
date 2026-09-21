@@ -70,6 +70,14 @@ meUndoAddInsChar(void)
 
         if(frameCur->bufferCur->undoContFlag == undoContFlag)
             type |= meUNDO_CONTINUE ;
+#ifndef NDEBUG
+        fprintf(stderr,"ADDINSCHAR type=%02x head=%02x/%d/%ld doto=%d line=%d ubuf=%d cont=%u\n",
+                type, frameCur->bufferCur->undoHead ? frameCur->bufferCur->undoHead->type : 255,
+                frameCur->bufferCur->undoHead ? frameCur->bufferCur->undoHead->doto : -1,
+                frameCur->bufferCur->undoHead ? (long)frameCur->bufferCur->undoHead->count : -1L,
+                frameCur->windowCur->dotOffset, frameCur->windowCur->dotLineNo,
+                frameCur->bufferCur->undoContFlag, undoContFlag) ;
+#endif
 
         if(((nn = frameCur->bufferCur->undoHead) != NULL) && (nn->type == type) &&
            (nn->udata.dotp == frameCur->windowCur->dotLineNo) &&
@@ -611,9 +619,40 @@ meUndo(int f, int n)
             }
             else
                 count = ccount ;
+#ifndef NDEBUG
+            fprintf(stderr,"UNDO-STEP ntype=%02x count=%d ccount=%d cdoto=%d dot=%d\n",
+                    cun->type, (int)count, (int)ccount, (int)cdoto,
+                    frameCur->windowCur->dotOffset) ;
+#endif
             if(cun->type & meUNDO_INSERT)
             {
-                meWindowBackwardChar(frameCur->windowCur,count) ;
+                /* Undo counts and mldelete() are byte-based, but a
+                 * single step removes a whole character so multi-byte
+                 * UTF-8 sequences come out together - capped at what
+                 * this node recorded so isolated bytes of a split
+                 * sequence still peel byte-wise. Replace nodes stay
+                 * byte-based: overwrite replaces byte for byte. */
+                if(!(cun->type & (meUNDO_DELETE|meUNDO_REPLACE)) &&
+                   (cun->type & meUNDO_SINGLE))
+                {
+                    /* Byte length of the character ending at dot (same
+                     * step-back logic as meWindowBackwardChar): one lead
+                     * byte plus any continuation bytes before it. */
+                    meUByte *tp = frameCur->windowCur->dotLine->text ;
+                    meInt off = frameCur->windowCur->dotOffset, len ;
+                    if(off > 0)
+                    {
+                        do { off-- ; } while(off > 0 && ((tp[off] & 0xC0) == 0x80)) ;
+                    }
+                    len = frameCur->windowCur->dotOffset - off ;
+                    if(len < 1)
+                        len = 1 ;
+                    count = len ;
+                    if(count > ccount + 1)
+                        count = ccount + 1 ;
+                    ccount -= (count - 1) ;
+                }
+                meWindowBackwardBytes(frameCur->windowCur,count) ;
                 if((count == 1))
                     meUndoAddDelChar() ;
                 else
@@ -655,7 +694,7 @@ meUndo(int f, int n)
                 if(cun->type & meUNDO_FORWARD)
                     cdoto++ ;
                 else if(cun->type & meUNDO_INSERT)
-                    cdoto-- ;
+                    cdoto -= count ;
             }
             else if(cun->type & meUNDO_REPLACE)
             {
