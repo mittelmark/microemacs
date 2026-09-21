@@ -824,6 +824,36 @@ meWinWCharToUtf8(WCHAR wc, meUByte *out)
     return (int) n ;
 }
 
+/* Convert one raw byte from meInternalEnc to a console WCHAR cell
+ * (cf. unixterm.c TTputConvChar, which converts to terminal bytes).
+ * The insert-symbol dialog temp-sets $internal-encoding to the source
+ * table so each cell byte previews in that charset; otherwise this is
+ * the historic raw behaviour. Control box codes map to ASCII art as
+ * the console has no font support for them. */
+static WCHAR
+meWinInternalToWChar(meUByte c)
+{
+    if(c < TTSPECCHARS)
+        return (WCHAR) ttSpeChars[c] ;
+    if(c < 0x80)
+        return (WCHAR) c ;
+    {
+        meConv conv ;
+        unsigned char in[1], out[4] ;
+        int outLen ;
+        int32_t cp ;
+        in[0] = c ;
+        meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8) ;
+        outLen = meConvChar(&conv, in, 1, out, sizeof(out)) ;
+        if(outLen <= 0)
+            return (WCHAR) c ;  /* unmappable - raw fallback */
+        cp = meUtf8Decode(out) ;
+        if(cp <= 0 || cp > 0xffff)
+            return (WCHAR) c ;  /* NUL/astral - raw fallback, never NUL cell */
+        return (WCHAR) cp ;
+    }
+}
+
 /*
  * ConsolePaint
  * Paint to the console window the updated region of text from the virtual
@@ -974,6 +1004,41 @@ ConsoleDrawString(meUByte *ss, WORD wAttribute, int x, int y, int len)
             consolePaintArea.Left = x ;
         if (r > consolePaintArea.Right)
             consolePaintArea.Right = r ;
+    }
+}
+
+/* Draw one raw frame-store byte to the console buffer, converting from
+ * meInternalEnc (see meWinInternalToWChar). Used for OSD dialog cells
+ * as opposed to ConsoleDrawString which takes terminal-ready UTF-8. */
+void
+ConsoleDrawRawByte(meUByte cc, WORD wAttribute, int x, int y)
+{
+    CHAR_INFO *pCI ;     /* Pointer to current screen buffer location */
+    WCHAR wc ;
+
+    if(ciScreenBuffer == NULL)
+    {
+        ME_DBGTRACE("11a: ConsoleDrawRawByte - ciScreenBuffer is NULL!") ;
+        return ;
+    }
+
+    /* Get pointer to correct location in screen buffer */
+    pCI = &ciScreenBuffer[(y * frameCur->width) + x];
+
+    wc = meWinInternalToWChar(cc) ;
+    if ((wc != pCI->Char.UnicodeChar) ||
+        (wAttribute != pCI->Attributes))
+    {
+        pCI->Char.UnicodeChar = wc ;
+        pCI->Attributes = wAttribute;
+        if (y < consolePaintArea.Top)
+            consolePaintArea.Top = y ;
+        if (y > consolePaintArea.Bottom)
+            consolePaintArea.Bottom = y ;
+        if (x < consolePaintArea.Left)
+            consolePaintArea.Left = x ;
+        if ((x+1) > consolePaintArea.Right)
+            consolePaintArea.Right = x+1 ;
     }
 }
 

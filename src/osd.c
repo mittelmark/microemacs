@@ -809,28 +809,15 @@ menuRenderArea(int x, int y, int len, int dep)
             textp = frameCur->store[y].text + x ;
             ii = len ;
             xx = x ;
-            while(ii > 0)
+            while(--ii >= 0)
             {
-                int n = 1 ;
-                scheme = *schmp ;
+                scheme = *schmp++ ;
                 cc = (WORD) TTschemeSet(scheme) ;
-                /* winterm-utf8: dialog text may hold multi-byte UTF-8
-                 * (e.g. insert-symbol glyph previews). Draw whole chars
-                 * (1 column each), keeping text/scheme advancing together.
-                 * ASCII behaviour unchanged. Never overrun the region. */
-                if(*textp >= 0x80)
-                {
-                    n = meUtf8ValidSeqLen(textp) ;
-                    if(n > ii)
-                        n = ii ;
-                    if(n < 1)
-                        n = 1 ;
-                }
-                ConsoleDrawString (textp, cc, xx, y, 1);
-                textp += n ;
-                schmp += n ;
-                ii -= n ;
-                xx++ ;
+                /* winterm-utf8: frame store holds single bytes in
+                 * meInternalEnc (insert-symbol temp-sets $internal-
+                 * encoding to the source table) - convert per byte
+                 * like unixterm.c TTputConvChar */
+                ConsoleDrawRawByte(*textp++, cc, xx++, y) ;
             }
             y++ ;
         }
