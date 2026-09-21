@@ -113,3 +113,13 @@ set-variable .change-font.type 0
         set-variable $system &band $system &bnot 0x10000
     !endif
 !endif
+; winterm-utf8: Windows console (PowerShell/cmd, %platform == "win32c")
+; has no font support for OEM/control box and window chars (dialog
+; borders show inverse ? marks, title shows > and odd glyphs instead
+; of the Cygwin look). Use ASCII (-, |, +, ^, v, x) like Cygwin/Msys
+; unixterm does.
+!if &seq %platform "win32c"
+    set-variable $box-chars "|+++++++++-"
+    set-variable $window-chars "=-#*%=^   v*==^^      vv**|<   >*||<<      >>** x* > <>\\.$$\\"
+    set-variable $system &band $system &bnot 0x10000
+!endif

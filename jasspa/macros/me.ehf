@@ -1543,6 +1543,7 @@ Miscellaneous Information
     ls&slower(4)lm&slower(4)le Return the string converted to lower case  
     ls&sprintf(4)lm&sprintf(4)le Formatted string construction  
     ls&supper(4)lm&supper(4)le Return the string converted to upper case  
+    ls&tchar(4)lm&tchar(4)le Transcode a character between charsets  
     ls&trboth(4)lm&trboth(4)le Return string trimmed of white chars on both sides  
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
@@ -1596,6 +1597,7 @@ Miscellaneous Information
     ls&set(4)lm&set(4)le In-line macro variable assignment  
     ls&sin(4)lm&sin(4)le Test for string in string  
     ls&stat(4)lm&stat(4)le Retrieve a file statistic  
+    ls&tchar(4)lm&tchar(4)le Transcode a character between charsets  
     ls&which(4)lm&which(4)le Find a program on the path  
     ls&xirep(4)lm&xirep(4)le Regex case insensitive Replace string in string  
     ls&xrep(4)lm&xrep(4)le Regex replace string in string  
@@ -3031,6 +3033,7 @@ Miscellaneous Information
     ls&stat(4)lm&stat(4)le Retrieve a file statistic  
     ls&sub(4)lm&sub(4)le Subtract two numbers  
     ls&supper(4)lm&supper(4)le Return the string converted to upper case  
+    ls&tchar(4)lm&tchar(4)le Transcode a character between charsets  
     ls&trboth(4)lm&trboth(4)le Return string trimmed of white chars on both sides  
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
@@ -3354,6 +3357,7 @@ Miscellaneous Information
     ls&stat(4)lm&stat(4)le Retrieve a file statistic  
     ls&sub(4)lm&sub(4)le Subtract two numbers  
     ls&supper(4)lm&supper(4)le Return the string converted to upper case  
+    ls&tchar(4)lm&tchar(4)le Transcode a character between charsets  
     ls&trboth(4)lm&trboth(4)le Return string trimmed of white chars on both sides  
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
@@ -50029,10 +50033,11 @@ $a
 ! 4 &inword
 ! 4 &itoa
 ! 4 &nbmode
+! 4 &tchar
 cEcENAME cEcA
 
 
-    &ato, &gmod, &bmo, &ind, &inw, &exi - Miscellaneous functions
+    &ato, &gmod, &bmo, &ind, &inw, &exi, &tch - Miscellaneous functions
 
 
 cESYNOPSIS cA
@@ -50049,6 +50054,8 @@ $a
     cD&indirectcA cCstrcA  
 
     cD&existcA cCstrcA  
+
+    cD&tcharcA cCfromcA cCcodecA cCtocA  
 
 
 cEDESCRIPTION cA
@@ -50107,6 +50114,21 @@ $a
        Tests for the existance of cCstrcA which may be a variable or a
        command/macro name, returning cGTRUEcA if the variable or command does
        currently exist. Abbreviated command is cD&exicA.
+
+    cD&tcharcA cCfromcA cCcodecA cCtocA
+    
+       Transcodes byte cCcodecA in charset cCfromcA to charset cCtocA and returns
+       the result (e.g. cG&tchar "microsoft-cp1252" "128" "UTF-8"cA returns
+       the Euro sign). Charset names accept the canonical encoding names
+       (as reported by cD$buffer-encodingcA) as well as common aliases
+       (cGPC-850cA, cGkoi8-rcA, ...). Codes below cG0x80cA, unknown source
+       charsets and identical charsets return the raw byte (historic
+       behaviour); unknown targets fall back to UTF-8 and unmappable
+       targets yield cG?cA (never NUL, macro strings are NUL terminated).
+       A single-byte result equal to the leader char is escaped.
+       Abbreviated command is cD&tchcA. Used by
+       lsinsert-symbol(3)lminsert-symbol(3)le so the inserted bytes match
+       the current buffer encoding.
 
 
 cEEXAMPLE cA

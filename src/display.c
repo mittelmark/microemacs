@@ -388,7 +388,10 @@ windCurLineOffsetEval(meWindow *wp)
         {
             if(wp->buffer->encoding != ME_ENC_UTF8 && cc >= 0x80)
             {
-                /* Non-UTF-8 buffer: raw encoding byte = 1 display column */
+                /* Single-byte buffer: every raw byte is 1 display column
+                 * (renderLine converts each to exactly 1 terminal glyph).
+                 * Must not UTF-8-validate here - e.g. CP1252 0xC3 0xBC
+                 * are two columns, not one sequence (utf8-mec). */
                 ii = 1 ;
                 *off++ = (meUByte) ii ;
                 pos += ii ;
@@ -630,14 +633,29 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         cc = *s1 ;
         if(bp->encoding != ME_ENC_UTF8 && cc >= 0x80)
         {
-            /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding for display.
-             * Uses meConvChar to convert from buffer encoding → internal encoding. */
+            /* Per-buffer rendering (utf8-mec Phase 1): convert raw encoding
+             * byte to terminal UTF-8 directly, independent of the global
+             * meInternalEnc, so ISO/CP1252 and UTF-8 buffers can share
+             * the same screen. disLineBuff then holds terminal-ready
+             * bytes (UTF-8 when termEncoding is utf-8). */
             meConv conv ;
-            unsigned char outbyte ;
-            meConvInit(&conv, (meEncoding) bp->encoding, (meEncoding) meInternalEnc) ;
-            if(meConvChar(&conv, s1, 1, &outbyte, 1) > 0)
+            unsigned char outBuf[8] ;
+            int outLen ;
+            meConvInit(&conv, (meEncoding) bp->encoding, ME_ENC_UTF8) ;
+            outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
+            if(outLen > 0)
             {
-                *s2++ = outbyte ;
+                int ii ;
+                /* Ensure room for multi-byte output */
+                while((s2 - disLineBuff) + outLen >= disLineSize)
+                {
+                    meInt bytePos2 = s2 - disLineBuff ;
+                    disLineSize += 512 ;
+                    disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
+                    s2 = disLineBuff + bytePos2 ;
+                }
+                for(ii = 0 ; ii < outLen ; ii++)
+                    *s2++ = outBuf[ii] ;
             }
             else
             {
@@ -649,11 +667,11 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         }
         else if(cc >= 0xC0)
         {
-            /* Could be a UTF-8 multi-byte sequence or a raw high byte.
-             * When internal encoding is UTF-8 and buffer is UTF-8,
-             * copy bytes directly. Otherwise try UTF-8→internal conversion. */
+            /* Per-buffer rendering: UTF-8 buffer content is copied
+             * directly (it is already terminal-ready UTF-8). This no
+             * longer depends on the global meInternalEnc. */
             int utflen = meUtf8SeqLen(cc) ;
-            if(meInternalEnc == ME_ENC_UTF8)
+            if(bp->encoding == ME_ENC_UTF8)
             {
                 /* Internal is UTF-8: copy multi-byte sequence directly */
                 int ii ;
@@ -664,22 +682,24 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             }
             else
             {
+                /* Non-UTF-8 buffer reaching here (should be rare since the
+                 * first branch handles cc >= 0x80): treat as single raw
+                 * byte and convert to UTF-8. */
                 meConv conv ;
                 unsigned char outBuf[8] ;
                 int outLen ;
-                meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                outLen = meConvChar(&conv, s1, utflen, outBuf, sizeof(outBuf)) ;
+                meConvInit(&conv, (meEncoding) bp->encoding, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
                 if(outLen > 0)
                 {
                     int ii ;
                     for(ii = 0 ; ii < outLen ; ii++)
                         *s2++ = outBuf[ii] ;
-                    s1 += utflen ;
-                    len -= (utflen - 1) ;
+                    s1++ ;
                 }
                 else
                 {
-                    /* Not valid UTF-8 — treat as raw byte */
+                    /* Not convertible — treat as raw byte */
                     *s2++ = cc ;
                     s1++ ;
                 }
@@ -1063,6 +1083,11 @@ hideLineJump:
          ********************************************************************/
         meInt ii, col, cno;
         meScheme scheme;
+        /* utf8-mec Phase 1: disLineBuff now holds terminal-ready bytes
+         * (UTF-8 when termEncoding is utf-8), converted per-buffer in
+         * renderLine(). Output raw to avoid a second global
+         * meInternalEnc-based conversion corrupting multi-byte sequences. */
+        int termIsUtf8 = (meStrcmp(termEncoding, "utf-8") == 0) ;
 
         TCAPmove(row,scol);	/* Go to start of line. */
 
@@ -1074,8 +1099,8 @@ hideLineJump:
 
             /* Output the character in the specified colour.
              * Maintain the frame store.
-             * When internal encoding is UTF-8, disLineBuff contains multi-byte
-             * UTF-8 sequences but blkp->column stores display width (1 per char).
+             * disLineBuff contains multi-byte UTF-8 sequences but
+             * blkp->column stores display width (1 per char).
              * Use disLineByteOff[] to convert display columns to byte offsets. */
             while(col < (int)blkp->column)
             {
@@ -1088,7 +1113,12 @@ hideLineJump:
                 *fstp++ = cc ;
                 /* Output all bytes of this character to the terminal */
                 for(b = byteStart ; b < byteNext ; b++)
-                    TCAPputc(disLineBuff[b]) ;
+                {
+                    if(termIsUtf8)
+                        putchar(disLineBuff[b]) ;
+                    else
+                        TCAPputc(disLineBuff[b]) ;
+                }
                 col++ ;
             }
             blkp++;
@@ -1295,6 +1325,18 @@ hideLineJump:
         meScheme scheme;
         meInt ll, ii, ccol;
         WORD  cc;
+        /* winterm-utf8: disLineBuff holds UTF-8 bytes, blkp->column counts
+         * display columns. Derive byte positions via disLineByteOff[] plus
+         * the horizontal scroll base (s1 was already advanced to the
+         * visible start). Frame store keeps the lead byte per column. */
+        meInt scrollBase = 0 ;
+        if(window != NULL)
+        {
+            if(flag & VFCURRL)
+                scrollBase = window->horzScroll ;
+            else
+                scrollBase = window->horzScrollRest ;
+        }
 
         ccol = 0 ;
         do {
@@ -1306,12 +1348,18 @@ hideLineJump:
              * frame store with the colour information */
             ii = blkp->column;
             ll = ii - ccol ;
-            ConsoleDrawString (s1, cc, scol+ccol, row, ll);
-            ccol = ii ;
-            while(--ll >= 0)
             {
-                *fssp++ = scheme ;
-                *fstp++ = *s1++;
+                meInt absStart = scrollBase + ccol ;
+                meInt absEnd = scrollBase + ii ;
+                meUByte *ssBlock = disLineBuff + disLineByteOff[absStart] ;
+                meInt col ;
+                ConsoleDrawString (ssBlock, cc, scol+ccol, row, ll);
+                ccol = ii ;
+                for(col = absStart ; col < absEnd ; col++)
+                {
+                    *fssp++ = scheme ;
+                    *fstp++ = disLineBuff[disLineByteOff[col]] ;
+                }
             }
             blkp++;
         } while(--noColChng) ;
@@ -2731,8 +2779,24 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
          * MS-WINDOWS                                                       *
          ********************************************************************/
         {
-            while(len--)
+            /* winterm-utf8: str may hold multi-byte UTF-8 (e.g. umlauts in
+             * message-line text). ConsoleDrawString takes display columns,
+             * so advance by whole UTF-8 chars (1 column each), keeping the
+             * per-byte scheme array aligned. ASCII behaviour unchanged. */
+            while(len > 0)
             {
+                int n = 1 ;
+                /* winterm-utf8: advance by whole UTF-8 chars (1 column
+                 * each). Done outside the console ifdef so GUI builds
+                 * cannot loop forever. */
+                if(*str >= 0x80)
+                {
+                    n = meUtf8ValidSeqLen(str) ;
+                    if(n > len)
+                        n = len ;
+                    if(n < 1)
+                        n = 1 ;
+                }
                 schm = *scheme++ ;
                 if((schm == meCHAR_LEADER) && ((schm = *scheme++) == meCHAR_TRAIL_NULL))
                     schm = 0 ;
@@ -2748,9 +2812,16 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
                 {
                     WORD att ;
                     att = (WORD) TTschemeSet(schm) ;
-                    ConsoleDrawString(str++, att, col++, row, 1);
+                    ConsoleDrawString(str, att, col, row, 1);
                 }
 #endif /* _ME_CONSOLE */
+                /* Keep the per-byte scheme array aligned with the byte
+                 * string (no-op for ASCII). */
+                if(n > 1)
+                    scheme += (n-1) ;
+                str += n ;
+                len -= n ;
+                col++ ;
             }
         }
 #endif /* _WIN32 */
@@ -2871,8 +2942,30 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
 #endif /* _ME_WINDOW */
             {
                 WORD att ;
+                meUByte *pp = str ;
+                meUByte *end = str + len ;
+                meInt cols = 0 ;
+                /* winterm-utf8: str may hold multi-byte UTF-8 (e.g. umlauts
+                 * in message-line text). ConsoleDrawString takes display
+                 * columns, not bytes - count columns with the same rules as
+                 * the console decoder (validated UTF-8 sequence = 1 column).
+                 * Never read past the truncated byte length. */
                 att = (WORD) TTschemeSet(schm) ;
-                ConsoleDrawString (str, att, col, row, len);
+                while(pp < end && *pp != '\0')
+                {
+                    int n ;
+                    if(*pp < 0x80)
+                        n = 1 ;
+                    else
+                    {
+                        n = meUtf8ValidSeqLen(pp) ;
+                        if(pp + n > end)
+                            break ;
+                    }
+                    pp += n ;
+                    cols++ ;
+                }
+                ConsoleDrawString (str, att, col, row, cols);
             }
 #endif /* _ME_CONSOLE */
             /* Update the frame store colours */

@@ -38,6 +38,7 @@
 
 #if MEOPT_OSD
 
+#include "encoding.h"                     /* UTF-8 helpers (winterm-utf8) */
 #include "efunc.h"                      /* Define the command identifiers */
 #include "eskeys.h"                     /* Define the key definitions */
 #include "eterm.h"
@@ -812,7 +813,11 @@ menuRenderArea(int x, int y, int len, int dep)
             {
                 scheme = *schmp++ ;
                 cc = (WORD) TTschemeSet(scheme) ;
-                ConsoleDrawString (textp++, cc, xx++, y, 1);
+                /* winterm-utf8: frame store holds single bytes in
+                 * meInternalEnc (insert-symbol temp-sets $internal-
+                 * encoding to the source table) - convert per byte
+                 * like unixterm.c TTputConvChar */
+                ConsoleDrawRawByte(*textp++, cc, xx++, y) ;
             }
             y++ ;
         }
@@ -860,8 +865,28 @@ menuRenderArea(int x, int y, int len, int dep)
             {
                 scheme = *schmp++ ;
                 TCAPschemeSet(scheme) ;
-                cc = *textp++ ;
+                cc = *textp ;
+                /* utf8-mec: frame store may hold intact UTF-8 sequences
+                 * (e.g. dialog glyph previews). Emit valid sequences raw
+                 * on UTF-8 terminals instead of double-converting them
+                 * byte-wise via TTputConvChar (which assumes single-byte
+                 * content); lone bytes keep the historic conversion.
+                 * ASCII behaviour unchanged. */
+                if(cc >= 0x80 && meStrcmp(termEncoding, "utf-8") == 0)
+                {
+                    meUByte *rowEnd = frameCur->store[y-1].text + frameCur->width ;
+                    int n = meUtf8ValidSeqLen(textp) ;
+                    if(n > 1 && (textp + n) <= rowEnd)
+                    {
+                        int k ;
+                        for(k = 0 ; k < n ; k++)
+                            putchar(*textp++) ;
+                        schmp += (n - 1) ;
+                        continue ;
+                    }
+                }
                 TCAPputc(cc) ;
+                textp++ ;
             }
         }
         TCAPschemeReset() ;
@@ -986,6 +1011,12 @@ osdDisplaySnapshotRestore(osdDISPLAY *md)
         memcpy (flp->scheme+xx,colp, width*sizeof(meScheme));
         memcpy (flp->text+xx,text, width*sizeof(meUByte));
     }
+    /* winterm-utf8: frame store holds one byte per column (lead byte only
+     * for UTF-8), so menuRenderArea redraw from frame store corrupts
+     * multi-byte chars (shows ? until manual screen-update). Force a full
+     * redraw so updateline re-renders from buffers via disLineBuff with
+     * correct disLineByteOff mapping. Harmless on other platforms. */
+    sgarbf = meTRUE ;
 }
 
 static void
@@ -1106,6 +1137,17 @@ menuSetItemLength (osdDIALOG *rp, osdITEM *mp)
                 clen++ ;
             else if(cc == meCHAR_TRAIL_HOTKEY)
                 mp->key = *p ;
+        }
+        else if(cc >= 0x80)
+        {
+            /* utf8-mec: a validated multi-byte sequence occupies one
+             * display column (e.g. dialog glyph previews); lone bytes
+             * keep historic single-column counting so single-byte
+             * content and ASCII are unaffected */
+            int n = meUtf8ValidSeqLen(p-1) ;
+            if(n > 1)
+                p += (n-1) ;
+            clen++ ;
         }
         else
             clen++;
@@ -1643,7 +1685,15 @@ osdRenderEntryLine(meUByte *txtp, meUByte *ss, int len, int cpos, int ww)
     len -= start ;
     if(len > ww)
     {
-        memcpy(txtp,s1,ww) ;
+        /* utf8-mec: never split a UTF-8 sequence on truncation - back
+         * off to a character boundary so dialogs show spaces worst
+         * case instead of a lone lead byte (Ã on winterm). ASCII text
+         * is unaffected (no ASCII byte matches 10xxxxxx). */
+        int take = ww ;
+        while(take > 0 && (s1[take] & 0xC0) == 0x80)
+            take-- ;
+        memcpy(txtp,s1,take) ;
+        memset(txtp+take,' ',ww-take) ;
         txtp[ww] = '$' ;
     }
     else
@@ -5613,6 +5663,24 @@ osd (int f, int n)
             for(ii=0, jj=0 ; ii < txtlen ; )
             {
                 cc = txtbuf[ii++] ;
+                /* utf8-mec: pass intact UTF-8 sequences through (e.g.
+                 * dialog glyph previews like the euro sign) - filtering
+                 * them byte-wise turns continuations 0x80-0x9F into '.'
+                 * and lone leads into Ã on winterm. Lone/invalid bytes
+                 * keep the historic pokable filtering. ASCII (incl.
+                 * meCHAR_LEADER escapes below) is unaffected. */
+                if(cc >= 0x80)
+                {
+                    int n = meUtf8ValidSeqLen(txtbuf+ii-1) ;
+                    if(n > 1 && (ii-1+n) <= txtlen)
+                    {
+                        int k ;
+                        for(k = 0 ; k < n ; k++)
+                            dd[jj++] = txtbuf[ii-1+k] ;
+                        ii += (n-1) ;
+                        continue ;
+                    }
+                }
                 if(cc == meCHAR_LEADER)
                 {
                     cc = txtbuf[ii++] ;

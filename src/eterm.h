@@ -412,6 +412,7 @@ extern int TTopen(void) ;
 #ifdef _ME_CONSOLE
 extern BOOL ConsolePaint(void) ;
 extern void ConsoleDrawString(meUByte *s, WORD wAttribute, int x, int y, int len) ;
+extern void ConsoleDrawRawByte(meUByte cc, WORD wAttribute, int x, int y) ;
 #define TTcolorSet(f,b) ((f) | ((b) << 4))
 #define TTschemeSet(scheme) \
 TTcolorSet(colTable[meStyleGetFColor(meSchemeGetStyle(scheme))], \

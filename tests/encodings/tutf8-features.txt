@@ -58,7 +58,7 @@ MicroEmacs bietet über 45 Farbschemata, darunter:
 ### Sprachbeispiele
 
 Deutsch: Äpfel über Öfen sind Üblich.
-Franzisch: Être ou ne pas être – voilà la question!
+Französisch: Être ou ne pas être – voilà la question!
 Spanisch: ¿Cómo estás? ¡Muy bien, gracias!
 Italienisch: L'Italia è un paese magnifico.
 

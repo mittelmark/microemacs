@@ -10,7 +10,7 @@ und andere. Die folgenden Symbole stammen aus dem CP1252-Bereich:
 - Copyright-Zeichen © und Markenzeichen ™
 - Euro-Zeichen € und Pfund-Zeichen £
 
-## Matematische Symbole
+## Mathematische Symbole
 
 Die griechischen Buchstaben Alpha (Α), Beta (Β) und Gamma (Γ) sind wichtig
 in der Mathematik. Das Sigma (Σ) steht für die Summe, Pi (π) für die

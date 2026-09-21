@@ -30,6 +30,7 @@
 #include "emain.h"
 #include "efunc.h"
 #include "eskeys.h"
+#include "encoding.h"                /* UTF-8 character handling */
 
 #if (defined _UNIX) || (defined _DOS)
 #include <sys/types.h>
@@ -1082,9 +1083,42 @@ forwDelChar(int f, int n)
     else
         keep = 2 ;
     
-    /* Always make ldelete save the deleted stuff in a kill buffer
-     * unless only one character and not in letter kill mode. */
-    return ldelete(n,keep) ;
+    /* Sum the byte lengths of n UTF-8 characters so multi-byte
+     * characters (e.g. Greek, CJK, emoji) are deleted whole and a
+     * numeric argument deletes n characters, not n bytes. A newline
+     * counts as a single character, matching the old byte behaviour. */
+    {
+        meLine *lp = frameCur->windowCur->dotLine ;
+        meInt off = frameCur->windowCur->dotOffset ;
+        meInt len = meLineGetLength(lp) ;
+        int bytesToDelete = 0 ;
+        int charsLeft = n ;
+        while(charsLeft > 0)
+        {
+            if(off >= len)
+            {
+                if(lp == frameCur->bufferCur->baseLine)
+                    break ;
+                lp = meLineGetNext(lp) ;
+                if(lp == frameCur->bufferCur->baseLine)
+                    break ;
+                bytesToDelete++ ;          /* the newline */
+                off = 0 ;
+                len = meLineGetLength(lp) ;
+                charsLeft-- ;
+            }
+            else
+            {
+                int cl = meUtf8ValidSeqLen(&lp->text[off]) ;
+                if(off + cl > len)
+                    cl = (int)(len - off) ;  /* truncated tail: delete rest of line */
+                off += cl ;
+                bytesToDelete += cl ;
+                charsLeft-- ;
+            }
+        }
+        return ldelete(bytesToDelete, keep) ;
+    }
 }
 
 /* backward-delete-char. Normally bound to C-h */

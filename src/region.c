@@ -31,6 +31,7 @@
 #define	__REGIONC			/* Define filename */
 
 #include "emain.h"
+#include "encoding.h"                /* UTF-8/single-byte conversion */
 
 /*
  * This routine figures out the
@@ -489,8 +490,13 @@ killRectangle(int f, int n)
         windowSwapDotAndMark(0,1) ;
     slno = frameCur->windowCur->dotLineNo ;
     elno = frameCur->windowCur->markLineNo ;
-    /* calculate the maximum length */
-    size = (elno - slno + 1) * (llen + 1) ;
+    /* calculate the maximum length: single-byte columns need llen+1 bytes
+     * per line; UTF-8 additionally stores continuation bytes (up to 4 bytes
+     * per column) plus padding (utf8-mec) */
+    if(frameCur->windowCur->buffer->encoding == ME_ENC_UTF8)
+        size = (elno - slno + 1) * (llen*5 + 1) ;
+    else
+        size = (elno - slno + 1) * (llen + 1) ;
     
     /* sort out the kill buffer */
     if((lastflag != meCFKILL) && (thisflag != meCFKILL))
@@ -559,7 +565,24 @@ killRectangle(int f, int n)
                         while(--ll > 0) ;
                     }
                     else
+                    {
                         *kstr++ = cc ;
+                        if(frameCur->windowCur->buffer->encoding == ME_ENC_UTF8 &&
+                           cc >= 0xC0)
+                        {
+                            /* UTF-8 lead byte: also store its continuation
+                             * bytes (display width 0, skipped by the main
+                             * loop) so the kill buffer keeps valid
+                             * sequences (utf8-mec) */
+                            meUByte nc ;
+                            while((jj+1) < kk &&
+                                  (((nc = meLineGetChar(frameCur->windowCur->dotLine,jj+1)) & 0xC0) == 0x80))
+                            {
+                                *kstr++ = nc ;
+                                jj++ ;
+                            }
+                        }
+                    }
                 }
                 jj++ ;
             }
@@ -617,11 +640,49 @@ yankRectangleKill(struct meKill *pklist, int soff, int notLast)
     meUByte *off, *ss, *tt, *dd=NULL, cc ;
     int ii, jj, kk, lsspc, lespc, ldel, linsc, coff ;
     meKillNode *killp ;
-    
+    /* utf8-mec: convert kill text from its source encoding to the target
+     * buffer encoding when they differ (as yankfrom does for stream kills) */
+    meEncoding srcEnc = (meEncoding) pklist->encoding ;
+    meEncoding dstEnc ;
+    if(frameCur != NULL && frameCur->bufferCur != NULL)
+        dstEnc = (meEncoding) frameCur->bufferCur->encoding ;
+    else if(frameCur != NULL && frameCur->windowCur != NULL &&
+            frameCur->windowCur->buffer != NULL)
+        dstEnc = (meEncoding) frameCur->windowCur->buffer->encoding ;
+    else
+        dstEnc = ME_ENC_UTF8 ;
+
     killp = pklist->kill ;
     while (killp != NULL)
     {
+        meUByte *convBuf = NULL ;
         ss = killp->data ;
+        if(srcEnc != dstEnc)
+        {
+            /* '\n' maps to itself in all supported encodings, so segment
+             * boundaries survive; every character converts to exactly one
+             * character, preserving the rectangle column geometry */
+            size_t segLen = meStrlen(killp->data) ;
+            convBuf = (meUByte *) meMalloc(segLen*4+1) ;
+            if(convBuf != NULL)
+            {
+                meConv conv ;
+                int outLen ;
+                meConvInit(&conv, srcEnc, dstEnc) ;
+                outLen = meConvString(&conv, killp->data, segLen, convBuf, segLen*4) ;
+                if(outLen >= 0)
+                {
+                    convBuf[outLen] = '\0' ;
+                    ss = convBuf ;
+                }
+                else
+                {
+                    /* Conversion failed - paste raw text rather than lose it */
+                    meFree(convBuf) ;
+                    convBuf = NULL ;
+                }
+            }
+        }
         while(*ss != '\0')
         {
             tt = ss ;
@@ -690,6 +751,8 @@ yankRectangleKill(struct meKill *pklist, int soff, int notLast)
             frameCur->windowCur->dotLine  = meLineGetNext(frameCur->windowCur->dotLine);
             frameCur->windowCur->dotOffset  = 0;
         }
+        if(convBuf != NULL)
+            meFree(convBuf) ;
         killp = killp->next;
     }
     if((dd != NULL) && !notLast)

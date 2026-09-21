@@ -1945,7 +1945,17 @@ meXEventHandler(void)
                !(ss & (ControlMask|Mod1Mask)))
             {
                 meEncoding bufEnc = (meEncoding) frameCur->windowCur->buffer->encoding;
-                meUShort converted = convertUtf8Input(keyStr, strlen(keyStr), bufEnc);
+                meUShort converted ;
+                if(bufEnc == ME_ENC_UTF8 && (keyStr[0] & 0x80))
+                {
+                    /* UTF-8 buffer: queue raw UTF-8 bytes (utf8-mec Phase 2,
+                     * per-buffer input) and skip single-value conversion. */
+                    char *kp = keyStr;
+                    while(*kp != '\0')
+                        addKeyToBuffer((meUShort)(unsigned char)*kp++);
+                    goto ignore_key;
+                }
+                converted = convertUtf8Input(keyStr, strlen(keyStr), bufEnc);
                 if(converted != 0)
                     keySym = converted;
                 else if(keyStr[0] != '\0' && keyStr[0] >= 0x20)
@@ -4933,12 +4943,21 @@ TTahead(void)
                      * horrible character to translate so we do it here before we
                      * enter the system. There is not an easy way to add this
                      * translation. */
+                    meEncoding dstEnc ;
+                    if(frameCur != NULL && frameCur->windowCur != NULL &&
+                       frameCur->windowCur->buffer != NULL)
+                        dstEnc = (meEncoding) frameCur->windowCur->buffer->encoding ;
+                    else
+                        dstEnc = (meEncoding) meInternalEnc ;
                     if (cc == '\0')
                         addKeyToBuffer (ME_CONTROL|' ');
-                    else if(meInternalEnc != ME_ENC_UTF8 && cc >= 0xC0)
+                    else if(cc >= 0xC0)
                     {
-                        /* UTF-8 multi-byte input: collect bytes, convert to
-                         * internal encoding, then add result to key buffer. */
+                        /* Possible UTF-8 multi-byte input from the terminal:
+                         * collect the bytes, then store per current-buffer
+                         * encoding (utf8-mec Phase 2). UTF-8 buffers keep the
+                         * raw bytes, single-byte buffers get a UTF-8 to
+                         * buffer-encoding conversion. */
                         int utflen = (cc < 0xE0) ? 2 : (cc < 0xF0) ? 3 : 4 ;
                         unsigned char utf8buf[8] ;
                         meConv conv ;
@@ -4951,17 +4970,27 @@ TTahead(void)
                                 break ;
                         }
                         utflen = meUtf8ValidSeqLen(utf8buf) ;
-                        meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                        outLen = meConvChar(&conv, utf8buf, utflen, outbuf, sizeof(outbuf)) ;
-                        if(outLen > 0)
+                        if(utflen <= 1)
                         {
-                            for(ii = 0 ; ii < outLen ; ii++)
-                                addKeyToBuffer(outbuf[ii]) ;
+                            /* Not a valid multi-byte sequence - keep lead byte */
+                            addKeyToBuffer(cc) ;
                         }
-                        else
+                        else if(dstEnc == ME_ENC_UTF8)
                         {
                             for(ii = 0 ; ii < utflen ; ii++)
                                 addKeyToBuffer(utf8buf[ii]) ;
+                        }
+                        else
+                        {
+                            meConvInit(&conv, ME_ENC_UTF8, dstEnc) ;
+                            outLen = meConvChar(&conv, utf8buf, utflen, outbuf, sizeof(outbuf)) ;
+                            if(outLen > 0)
+                            {
+                                for(ii = 0 ; ii < outLen ; ii++)
+                                    addKeyToBuffer(outbuf[ii]) ;
+                            }
+                            else
+                                TTbell() ;  /* Not representable - drop */
                         }
                     }
                     else

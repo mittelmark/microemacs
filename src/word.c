@@ -75,6 +75,7 @@
 #define	__WORDC			/* Define filename */
 
 #include "emain.h"
+#include "encoding.h"                /* UTF-8 character handling */
 
 /*
  * Move the cursor backward by "n" words. All of the details of motion are
@@ -149,7 +150,8 @@ upperWord(int f, int n)
         while (inWord() != meFALSE)
         {
             c = meLineGetChar(frameCur->windowCur->dotLine, frameCur->windowCur->dotOffset);
-            if (isLower(c))
+            /* Only convert ASCII characters to avoid corrupting UTF-8 sequences */
+            if (c < 0x80 && isLower(c))
             {
                 lineSetChanged(WFMAIN);
 #if MEOPT_UNDO
@@ -189,7 +191,8 @@ lowerWord(int f, int n)
         while (inWord() != meFALSE)
         {
             c = meLineGetChar(frameCur->windowCur->dotLine, frameCur->windowCur->dotOffset);
-            if (isUpper(c))
+            /* Only convert ASCII characters to avoid corrupting UTF-8 sequences */
+            if (c < 0x80 && isUpper(c))
             {
                 lineSetChanged(WFMAIN);
 #if MEOPT_UNDO

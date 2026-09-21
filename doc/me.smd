@@ -1455,6 +1455,7 @@
   [&slower(4)](&slower(4)) Return the string converted to lower case  
   [&sprintf(4)](&sprintf(4)) Formatted string construction  
   [&supper(4)](&supper(4)) Return the string converted to upper case  
+  [&tchar(4)](&tchar(4)) Transcode a character between charsets  
   [&trboth(4)](&trboth(4)) Return string trimmed of white chars on both sides  
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
@@ -1508,6 +1509,7 @@
   [&set(4)](&set(4)) In-line macro variable assignment  
   [&sin(4)](&sin(4)) Test for string in string  
   [&stat(4)](&stat(4)) Retrieve a file statistic  
+  [&tchar(4)](&tchar(4)) Transcode a character between charsets  
   [&which(4)](&which(4)) Find a program on the path  
   [&xirep(4)](&xirep(4)) Regex case insensitive Replace string in string  
   [&xrep(4)](&xrep(4)) Regex replace string in string  
@@ -2950,6 +2952,7 @@
   [&stat(4)](&stat(4)) Retrieve a file statistic  
   [&sub(4)](&sub(4)) Subtract two numbers  
   [&supper(4)](&supper(4)) Return the string converted to upper case  
+  [&tchar(4)](&tchar(4)) Transcode a character between charsets  
   [&trboth(4)](&trboth(4)) Return string trimmed of white chars on both sides  
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
@@ -3274,6 +3277,7 @@
   [&stat(4)](&stat(4)) Retrieve a file statistic  
   [&sub(4)](&sub(4)) Subtract two numbers  
   [&supper(4)](&supper(4)) Return the string converted to upper case  
+  [&tchar(4)](&tchar(4)) Transcode a character between charsets  
   [&trboth(4)](&trboth(4)) Return string trimmed of white chars on both sides  
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
@@ -50683,10 +50687,11 @@ $a
 ! 4 &inword
 ! 4 &itoa
 ! 4 &nbmode
+! 4 &tchar
 ## NAME
 
 
-  &ato, &gmod, &bmo, &ind, &inw, &exi - Miscellaneous functions
+  &ato, &gmod, &bmo, &ind, &inw, &exi, &tch - Miscellaneous functions
 
 
 ## SYNOPSIS
@@ -50703,6 +50708,8 @@ $a
   __&indirect__ _str_  
 
   __&exist__ _str_  
+
+  __&tchar__ _from_ _code_ _to_  
 
 
 ## DESCRIPTION
@@ -50761,6 +50768,21 @@ $a
   >  Tests for the existance of _str_ which may be a variable or a
      command/macro name, returning `TRUE` if the variable or command does
      currently exist. Abbreviated command is __&exi__.
+
+  __&tchar__ _from_ _code_ _to_
+  
+  >  Transcodes byte _code_ in charset _from_ to charset _to_ and returns
+     the result (e.g. `&tchar "microsoft-cp1252" "128" "UTF-8"` returns
+     the Euro sign). Charset names accept the canonical encoding names
+     (as reported by __$buffer-encoding__) as well as common aliases
+     (`PC-850`, `koi8-r`, ...). Codes below `0x80`, unknown source
+     charsets and identical charsets return the raw byte (historic
+     behaviour); unknown targets fall back to UTF-8 and unmappable
+     targets yield `?` (never NUL, macro strings are NUL terminated).
+     A single-byte result equal to the leader char is escaped.
+     Abbreviated command is __&tch__. Used by
+     [insert-symbol(3)](insert-symbol(3)) so the inserted bytes match
+     the current buffer encoding.
 
 
 ## EXAMPLE

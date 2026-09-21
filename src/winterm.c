@@ -85,6 +85,7 @@
 
 /* Emacs standard headers */
 #include "emain.h"
+#include "encoding.h"                    /* UTF-8 conversion helpers */
 #include "commdlg.h"                    /* Common dialogs */
 #include "cderr.h"                      /* Common dialoge errors */
 #include "evers.h"                      /* Version information */
@@ -224,6 +225,7 @@ MainWndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) ;
 static HANDLE hInput, hOutput;			/* Handles to console I/O */
 static char chConsoleTitle[256];		/* Preserve the title of the console. */
 static DWORD ConsoleMode, OldConsoleMode;	/* Current and old console modes */
+static UINT OldConsoleOutputCP=0, OldConsoleCP=0; /* Saved console code pages for UTF-8 */
 static SMALL_RECT consolePaintArea={0};		/* Update area for console */
 static int ciScreenSize = 0 ;			/* Size of screen buffer memory */
 static CHAR_INFO *ciScreenBuffer = NULL;	/* Copy of screen buffer memory */
@@ -296,6 +298,17 @@ meUByte vtMouseEnabled = 0;  /* VT mouse input is active */
 meUByte sgrPushbackBuf[SGR_PUSHBACK_SIZE];
 int sgrPushbackLen = 0;
 int sgrPushbackIdx = 0;
+
+/* Raw-byte UTF-8 assembly for pipe/mintty input (winterm-utf8).
+ * The pipe fallback delivers raw terminal bytes (UTF-8), not WCHAR
+ * codepoints - one WM_CHAR per byte. A lead byte must wait for its
+ * continuations before converting once to the buffer encoding
+ * (mirrors unixterm.c console input). Real-console KEY_EVENT input
+ * is already a complete WCHAR and skips assembly (ttPipeRawChar==0). */
+static int ttPipeRawChar = 0 ;      /* Last WM_CHAR came from pipe raw bytes */
+static meUByte ttRawUtf8Buf[4] ;    /* Pending sequence bytes */
+static int ttRawUtf8Len = 0 ;       /* Bytes collected so far */
+static int ttRawUtf8Want = 0 ;      /* Total bytes wanted */
 
 #ifdef _ME_WINDOW
 #define mouseHide() ((mouseState & MOUSE_STATE_VISIBLE) ? (SetCursor(NULL),(mouseState &= ~MOUSE_STATE_VISIBLE)):0)
@@ -746,6 +759,101 @@ TTsendClientServer(meUByte *line)
  *
  ****************************************************************************/
 
+/****************************************************************************
+ *
+ * WINDOWS CONSOLE UTF-8 HELPERS (winterm-utf8)
+ *
+ * disLineBuff holds terminal-ready UTF-8 (see display.c:renderLine).
+ * The console screen buffer stores one WCHAR per display column in
+ * CHAR_INFO.UnicodeChar and is flushed with WriteConsoleOutputW.
+ * Pipe/mintty mode re-encodes UnicodeChar back to UTF-8 bytes.
+ *
+ ****************************************************************************/
+
+/* Decode one UTF-8 char at s -> WCHAR. Returns WCHAR, sets *pSeqLen to
+ * bytes consumed (1-4). Control box codes (<0x20) map via ttSpeChars to
+ * ASCII (-, |, +) since the console has no font support for them.
+ * Invalid single bytes map 1:1 to U+0080-U+00FF so modeline/raw paths
+ * still show something. Astral (>U+FFFF) maps to '?' as console cell
+ * is a single WCHAR (no surrogate pair). */
+static WCHAR
+meWinUtf8ToWChar(meUByte *s, int *pSeqLen)
+{
+    meUByte c = s[0] ;
+    if(c < TTSPECCHARS)
+    {
+        /* Box/line-drawing control codes -> ASCII fallback (-, |, +).
+         * Matches Unix TCAP behaviour (termio.c:ttSpeChars). */
+        if(pSeqLen) *pSeqLen = 1 ;
+        return (WCHAR) ttSpeChars[c] ;
+    }
+    if(c < 0x80)
+    {
+        if(pSeqLen) *pSeqLen = 1 ;
+        return (WCHAR) c ;
+    }
+    {
+        int seqlen = meUtf8ValidSeqLen(s) ;
+        if(seqlen > 1)
+        {
+            int32_t cp = meUtf8Decode(s) ;
+            if(pSeqLen) *pSeqLen = seqlen ;
+            if(cp <= 0xffff)
+                return (WCHAR) cp ;
+            return (WCHAR) '?' ;
+        }
+    }
+    if(pSeqLen) *pSeqLen = 1 ;
+    return (WCHAR) c ;
+}
+
+/* Encode WCHAR -> UTF-8 bytes in out (size >=4). Returns byte count. */
+static int
+meWinWCharToUtf8(WCHAR wc, meUByte *out)
+{
+    unsigned char buf[4] ;
+    size_t n = meUtf8Encode((int32_t)(unsigned short)wc, buf) ;
+    int ii ;
+    if(n == 0)
+    {
+        out[0] = '?' ;
+        return 1 ;
+    }
+    for(ii=0 ; ii<(int)n ; ii++)
+        out[ii] = buf[ii] ;
+    return (int) n ;
+}
+
+/* Convert one raw byte from meInternalEnc to a console WCHAR cell
+ * (cf. unixterm.c TTputConvChar, which converts to terminal bytes).
+ * The insert-symbol dialog temp-sets $internal-encoding to the source
+ * table so each cell byte previews in that charset; otherwise this is
+ * the historic raw behaviour. Control box codes map to ASCII art as
+ * the console has no font support for them. */
+static WCHAR
+meWinInternalToWChar(meUByte c)
+{
+    if(c < TTSPECCHARS)
+        return (WCHAR) ttSpeChars[c] ;
+    if(c < 0x80)
+        return (WCHAR) c ;
+    {
+        meConv conv ;
+        unsigned char in[1], out[4] ;
+        int outLen ;
+        int32_t cp ;
+        in[0] = c ;
+        meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8) ;
+        outLen = meConvChar(&conv, in, 1, out, sizeof(out)) ;
+        if(outLen <= 0)
+            return (WCHAR) c ;  /* unmappable - raw fallback */
+        cp = meUtf8Decode(out) ;
+        if(cp <= 0 || cp > 0xffff)
+            return (WCHAR) c ;  /* NUL/astral - raw fallback, never NUL cell */
+        return (WCHAR) cp ;
+    }
+}
+
 /*
  * ConsolePaint
  * Paint to the console window the updated region of text from the virtual
@@ -801,6 +909,8 @@ ConsolePaint (void)
                 {
                     CHAR_INFO *pCI = &ciScreenBuffer[(row * frameCur->width) + col];
                     WORD attr = pCI->Attributes;
+                    meUByte utf8out[4] ;
+                    int ulen, ii ;
 
                     if (attr != lastAttr)
                     {
@@ -811,7 +921,11 @@ ConsolePaint (void)
                         fwrite(buf, 1, len, stdout);
                         lastAttr = attr;
                     }
-                    putchar(pCI->Char.AsciiChar);
+                    /* ciScreenBuffer holds UnicodeChar (one per column);
+                     * re-encode to UTF-8 bytes for the ANSI terminal. */
+                    ulen = meWinWCharToUtf8(pCI->Char.UnicodeChar, utf8out) ;
+                    for(ii=0 ; ii<ulen ; ii++)
+                        putchar(utf8out[ii]) ;
                 }
             }
             fflush(stdout);
@@ -829,8 +943,9 @@ ConsolePaint (void)
             coordUpdateBegin.X = consolePaintArea.Left ;
             coordUpdateBegin.Y = consolePaintArea.Top ;
 
-            /* Write to console */
-            WriteConsoleOutput(hOutput, ciScreenBuffer, coordBufferSize,
+            /* Write to console - W version uses UnicodeChar (UTF-8 in,
+             * one WCHAR per display column, see ConsoleDrawString) */
+            WriteConsoleOutputW(hOutput, ciScreenBuffer, coordBufferSize,
                                coordUpdateBegin, &consolePaintArea);
         }
 
@@ -841,13 +956,16 @@ ConsolePaint (void)
     return 1 ;
 }
 
-/* Draw string to console buffer */
+/* Draw string to console buffer - ss is terminal-ready UTF-8
+ * (see display.c:renderLine), len is display columns (one WCHAR cell
+ * per column). Decodes each UTF-8 sequence to UnicodeChar. */
 void
 ConsoleDrawString(meUByte *ss, WORD wAttribute, int x, int y, int len)
 {
     CHAR_INFO *pCI;     /* Pointer to current screen buffer location */
     BOOL bAny = meFALSE;  /* Anything to refresh? */
-    meUByte cc ;
+    WCHAR wc ;
+    int seqlen ;
     int r=x+len ;
 
     if(ciScreenBuffer == NULL)
@@ -859,16 +977,19 @@ ConsoleDrawString(meUByte *ss, WORD wAttribute, int x, int y, int len)
     /* Get pointer to correct location in screen buffer */
     pCI = &ciScreenBuffer[(y * frameCur->width) + x];
 
-    /* Copy the string to the screen buffer memory, and flag any changes */
+    /* Copy the string to the screen buffer memory, and flag any changes.
+     * One display column == one WCHAR cell; advance ss by UTF-8 seq len. */
     while (--len >= 0)
     {
-        if (((cc=*ss++) != pCI->Char.AsciiChar) ||
+        wc = meWinUtf8ToWChar(ss, &seqlen) ;
+        if ((wc != pCI->Char.UnicodeChar) ||
             (wAttribute != pCI->Attributes))
         {
             bAny = meTRUE;
-            pCI->Char.AsciiChar = cc ;
+            pCI->Char.UnicodeChar = wc ;
             pCI->Attributes = wAttribute;
         }
+        ss += seqlen ;
         pCI++;
     }
 
@@ -883,6 +1004,41 @@ ConsoleDrawString(meUByte *ss, WORD wAttribute, int x, int y, int len)
             consolePaintArea.Left = x ;
         if (r > consolePaintArea.Right)
             consolePaintArea.Right = r ;
+    }
+}
+
+/* Draw one raw frame-store byte to the console buffer, converting from
+ * meInternalEnc (see meWinInternalToWChar). Used for OSD dialog cells
+ * as opposed to ConsoleDrawString which takes terminal-ready UTF-8. */
+void
+ConsoleDrawRawByte(meUByte cc, WORD wAttribute, int x, int y)
+{
+    CHAR_INFO *pCI ;     /* Pointer to current screen buffer location */
+    WCHAR wc ;
+
+    if(ciScreenBuffer == NULL)
+    {
+        ME_DBGTRACE("11a: ConsoleDrawRawByte - ciScreenBuffer is NULL!") ;
+        return ;
+    }
+
+    /* Get pointer to correct location in screen buffer */
+    pCI = &ciScreenBuffer[(y * frameCur->width) + x];
+
+    wc = meWinInternalToWChar(cc) ;
+    if ((wc != pCI->Char.UnicodeChar) ||
+        (wAttribute != pCI->Attributes))
+    {
+        pCI->Char.UnicodeChar = wc ;
+        pCI->Attributes = wAttribute;
+        if (y < consolePaintArea.Top)
+            consolePaintArea.Top = y ;
+        if (y > consolePaintArea.Bottom)
+            consolePaintArea.Bottom = y ;
+        if (x < consolePaintArea.Left)
+            consolePaintArea.Left = x ;
+        if ((x+1) > consolePaintArea.Right)
+            consolePaintArea.Right = x+1 ;
     }
 }
 
@@ -950,6 +1106,12 @@ TTend (void)
             /* Restore the console mode and title */
             if(hInput != INVALID_HANDLE_VALUE)
                 SetConsoleMode(hInput, OldConsoleMode);
+
+            /* winterm-utf8: restore saved code pages */
+            if(OldConsoleOutputCP != 0)
+                SetConsoleOutputCP(OldConsoleOutputCP) ;
+            if(OldConsoleCP != 0)
+                SetConsoleCP(OldConsoleCP) ;
 
             /* Show the cursor */
             GetConsoleCursorInfo (hOutput, &CursorInfo);
@@ -1173,11 +1335,11 @@ meGetConsoleMessage(MSG *msg, int mode)
         clipState &= ~CLIP_OWNER;
     }
 
-    /* Get the next keyboard/mouse/resize event */
-    if(ReadConsoleInput(hInput, &ir, 1, &dwCount) == 0)
+    /* Get the next keyboard/mouse/resize event - W version for UnicodeChar */
+    if(ReadConsoleInputW(hInput, &ir, 1, &dwCount) == 0)
     {
-        ME_DBGTRACE("95: ReadConsoleInput FAILED") ;
-        /* ReadConsoleInput failed - this happens when hInput is a pipe
+        ME_DBGTRACE("95: ReadConsoleInputW FAILED") ;
+        /* ReadConsoleInputW failed - this happens when hInput is a pipe
          * handle (e.g. MSYS2/mintty). Fall back to reading raw bytes
          * and parsing ANSI escape sequences for terminal input. */
         {
@@ -1189,7 +1351,7 @@ meGetConsoleMessage(MSG *msg, int mode)
             if(pipeBufLen == 0)
             {
                 /* MSYS2/Cygwin: GetStdHandle returns a pipe, not a console.
-                 * ReadConsoleInput fails and ReadFile blocks on Cygwin pipes.
+                 * ReadConsoleInputW fails and ReadFile blocks on Cygwin pipes.
                  * Use fread(stdin) which works via the C runtime layer. */
                 bytesRead = (DWORD) fread(rawBuf, 1, sizeof(rawBuf)-1, stdin) ;
                 if(bytesRead > 0)
@@ -1546,9 +1708,11 @@ meGetConsoleMessage(MSG *msg, int mode)
                 }
                 else if(c & 0x80)
                 {
-                    /* High bit set - extended char */
+                    /* High bit set - extended char (raw terminal byte,
+                     * assembled in WinKeyboard, see ttPipeRawChar) */
                     msg->message = WM_CHAR ;
                     msg->wParam = c ;
+                    ttPipeRawChar = 1 ;
                 }
                 else
                 {
@@ -1563,9 +1727,10 @@ meGetConsoleMessage(MSG *msg, int mode)
                     }
                     else
                     {
-                        /* Printable character */
+                        /* Printable character (raw byte) */
                         msg->message = WM_CHAR ;
                         msg->wParam = c ;
+                        ttPipeRawChar = 1 ;
                     }
                 }
 
@@ -1579,11 +1744,12 @@ meGetConsoleMessage(MSG *msg, int mode)
     {
         KEY_EVENT_RECORD *kr = &ir.Event.KeyEvent;
 
-        /* Make message a la windows GUI */
+        /* Make message a la windows GUI - W version prefers UnicodeChar
+         * (winterm-utf8) so PowerShell/cmd UTF-8 symbols arrive as Unicode. */
         msg->lParam = 0;
         /* SWP - 8/5/99 another odd one from bill, the cursor keys on win9? seem
          * to come through with an AsciiChar value of -32 or 224 instead of 0... Why? */
-        if ((kr->uChar.AsciiChar == 0) || (((meUByte) kr->uChar.AsciiChar) == 224))
+        if ((kr->uChar.UnicodeChar == 0) || (kr->uChar.UnicodeChar == 224))
         {
             /* WM_KEYDOWN of WM_KEYUP */
             if (kr->bKeyDown)
@@ -1603,20 +1769,24 @@ meGetConsoleMessage(MSG *msg, int mode)
         }
         else if (kr->bKeyDown)
         {
-            meUByte cc = (meUByte) kr->uChar.AsciiChar;
+            WCHAR wcc = kr->uChar.UnicodeChar ;
+            meUByte ccAscii = (meUByte)(wcc & 0xff) ;
+            /* Real console delivers complete WCHAR codepoints, never raw
+             * pipe bytes (see ttPipeRawChar). */
+            ttPipeRawChar = 0 ;
 #if MEOPT_MOUSE
             /* Check for pushback characters from SGR mouse parser */
             if(sgrPushbackIdx < sgrPushbackLen)
             {
-                cc = sgrPushbackBuf[sgrPushbackIdx++];
+                wcc = sgrPushbackBuf[sgrPushbackIdx++];
                 if(sgrPushbackIdx >= sgrPushbackLen)
                     sgrPushbackIdx = sgrPushbackLen = 0;
                 /* Re-inject this character as a normal key */
                 msg->message = WM_CHAR;
-                msg->wParam = cc;
+                msg->wParam = wcc;
             }
-            /* Try to parse as SGR mouse sequence */
-            else if(meParseSGRMouseChar(msg, cc))
+            /* Try to parse as SGR mouse sequence (ASCII only) */
+            else if(ccAscii < 0x80 && meParseSGRMouseChar(msg, ccAscii))
             {
                 /* SGR parser consumed the char and filled in msg */
                 ttmodif = 0;
@@ -1632,7 +1802,7 @@ meGetConsoleMessage(MSG *msg, int mode)
 #endif /* MEOPT_MOUSE */
             {
                 msg->message = WM_CHAR;
-                msg->wParam = cc;
+                msg->wParam = (WPARAM) wcc;
             }
         }
         else
@@ -1641,18 +1811,28 @@ meGetConsoleMessage(MSG *msg, int mode)
         /* if we filled in a message, then success! */
         if (msg->message != 0)
         {
-            /* Set up the modifier key state */
+            /* Set up the modifier key state.
+             * winterm-utf8: AltGr (e.g. German keyboard AltGr+? = '\')
+             * arrives as Ctrl+RightAlt without LeftAlt. This is the AltGr
+             * level-shift key, not Control/Alt modifiers - the console has
+             * already translated the key to the final char, so suppress
+             * both modifiers (keep Shift). Explicit Ctrl+LeftAlt
+             * combinations still set modifiers as before. */
+            DWORD ckState = kr->dwControlKeyState ;
+            int isAltGr = ((ckState & RIGHT_ALT_PRESSED) &&
+                           !(ckState & LEFT_ALT_PRESSED) &&
+                           (ckState & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED))) ;
             ttmodif = 0;
-            if(kr->dwControlKeyState & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED))
+            if(!isAltGr && (ckState & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED)))
             {
                 msg->lParam |= 1<<29;
                 ttmodif |= ME_ALT;
             }
-            if(kr->dwControlKeyState & SHIFT_PRESSED)
+            if(ckState & SHIFT_PRESSED)
                 ttmodif |= ME_SHIFT;
-            if(kr->dwControlKeyState & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED))
+            if(!isAltGr && (ckState & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED)))
                 ttmodif |= ME_CONTROL;
-            if(kr->dwControlKeyState & ENHANCED_KEY)
+            if(ckState & ENHANCED_KEY)
                 msg->lParam |= 0x01000000 ;
             return meTRUE ;
         }
@@ -4328,6 +4508,159 @@ do_keydown:
 #endif
         }
         cc = wParam;
+        /* winterm-utf8: pipe/mintty input arrives as raw UTF-8 bytes (one
+         * WM_CHAR per byte, ttPipeRawChar==1), not WCHAR codepoints.
+         * Assemble a full sequence before converting once to the buffer
+         * encoding (mirrors unixterm.c). Queuing raw lead bytes through
+         * the WCHAR path below would double-encode them. Control/Alt
+         * combos and ASCII bytes keep legacy handling. */
+        if(ttPipeRawChar && !(ttmodif & (ME_CONTROL|ME_ALT)) && (cc >= 0x80))
+        {
+            if(ttRawUtf8Len == 0)
+            {
+                int want = (cc < 0xE0) ? 2 : (cc < 0xF0) ? 3 : (cc < 0xF8) ? 4 : 0 ;
+                if(want == 0)
+                {
+                    /* Stray continuation/invalid byte - queue raw */
+                    ttPipeRawChar = 0 ;
+                    addKeyToBuffer(cc) ;
+                    mouseHide() ;
+                    break ;
+                }
+                ttRawUtf8Buf[0] = (meUByte) cc ;
+                ttRawUtf8Len = 1 ;
+                ttRawUtf8Want = want ;
+                ttPipeRawChar = 0 ;
+                break ;  /* wait for continuation bytes */
+            }
+            if(((cc & 0xC0) == 0x80) && (ttRawUtf8Len < ttRawUtf8Want))
+            {
+                meEncoding bufEnc ;
+                int vlen, ii ;
+                ttRawUtf8Buf[ttRawUtf8Len++] = (meUByte) cc ;
+                if(ttRawUtf8Len < ttRawUtf8Want)
+                {
+                    ttPipeRawChar = 0 ;
+                    break ;  /* still incomplete - wait for more */
+                }
+                /* Sequence complete - validate then convert */
+                vlen = meUtf8ValidSeqLen(ttRawUtf8Buf) ;
+                if(frameCur != NULL && frameCur->windowCur != NULL &&
+                   frameCur->windowCur->buffer != NULL)
+                    bufEnc = (meEncoding) frameCur->windowCur->buffer->encoding ;
+                else
+                    bufEnc = ME_ENC_UTF8 ;
+                if((vlen <= 1) || (bufEnc == ME_ENC_UTF8))
+                {
+                    /* Invalid sequence or UTF-8 buffer: keep raw bytes
+                     * (matches unixterm.c fallback) */
+                    for(ii = 0 ; ii < ttRawUtf8Len ; ii++)
+                        addKeyToBuffer((meUShort) ttRawUtf8Buf[ii]) ;
+                }
+                else
+                {
+                    meConv conv ;
+                    unsigned char out[4] ;
+                    int outLen ;
+                    meConvInit(&conv, ME_ENC_UTF8, bufEnc) ;
+                    outLen = meConvChar(&conv, ttRawUtf8Buf, ttRawUtf8Len, out, sizeof(out)) ;
+                    if(outLen >= 1)
+                    {
+                        for(ii = 0 ; ii < outLen ; ii++)
+                            addKeyToBuffer((meUShort) out[ii]) ;
+                    }
+                    else
+                        TTbell() ;  /* Not representable - drop */
+                }
+                ttRawUtf8Len = 0 ;
+                ttRawUtf8Want = 0 ;
+                ttPipeRawChar = 0 ;
+                mouseHide() ;
+                break ;
+            }
+            /* Expected a continuation byte, got something else: flush the
+             * pending bytes raw, then handle cc as fresh input below. */
+            {
+                int ii ;
+                for(ii = 0 ; ii < ttRawUtf8Len ; ii++)
+                    addKeyToBuffer((meUShort) ttRawUtf8Buf[ii]) ;
+                mouseHide() ;
+                ttRawUtf8Len = 0 ;
+                ttRawUtf8Want = 0 ;
+                /* fall through: cc is reprocessed as fresh raw input */
+                if(cc < 0x80)
+                {
+                    ttPipeRawChar = 0 ;
+                    /* ASCII - continue to normal handling below */
+                }
+                else
+                {
+                    int want = (cc < 0xE0) ? 2 : (cc < 0xF0) ? 3 : (cc < 0xF8) ? 4 : 0 ;
+                    if(want == 0)
+                    {
+                        ttPipeRawChar = 0 ;
+                        addKeyToBuffer(cc) ;
+                        mouseHide() ;
+                        break ;
+                    }
+                    ttRawUtf8Buf[0] = (meUByte) cc ;
+                    ttRawUtf8Len = 1 ;
+                    ttRawUtf8Want = want ;
+                    ttPipeRawChar = 0 ;
+                    break ;
+                }
+            }
+        }
+        ttPipeRawChar = 0 ;
+        /* winterm-utf8: Unicode input -> buffer encoding. wParam is the
+         * WCHAR codepoint from ReadConsoleInputW. Keys are 16-bit with
+         * modifier flags in high bits, so codepoints >0xFF must be
+         * converted to buffer-encoding bytes (never queued directly).
+         * Control/Alt combos keep legacy single-byte handling. */
+        if(cc >= 0x80 && !(ttmodif & (ME_CONTROL|ME_ALT)))
+        {
+            if(frameCur != NULL && frameCur->windowCur != NULL &&
+               frameCur->windowCur->buffer != NULL)
+            {
+                meEncoding bufEnc =
+                    (meEncoding) frameCur->windowCur->buffer->encoding ;
+                unsigned char utf8buf[4] ;
+                size_t utflen = meUtf8Encode((int32_t) cc, utf8buf) ;
+                if(utflen > 0)
+                {
+                    if(bufEnc == ME_ENC_UTF8)
+                    {
+                        size_t ii ;
+                        for(ii=0 ; ii<utflen ; ii++)
+                            addKeyToBuffer((meUShort) utf8buf[ii]) ;
+                        mouseHide() ;
+                        break ;
+                    }
+                    else
+                    {
+                        meConv conv ;
+                        unsigned char out[4] ;
+                        int outLen ;
+                        meConvInit(&conv, ME_ENC_UTF8, bufEnc) ;
+                        outLen = meConvChar(&conv, utf8buf, utflen, out, sizeof(out)) ;
+                        if(outLen == 1)
+                        {
+                            addKeyToBuffer((meUShort) out[0]) ;
+                            mouseHide() ;
+                            break ;
+                        }
+                        TTbell() ;
+                        break ;
+                    }
+                }
+            }
+            /* Fall through to legacy handling if no buffer context */
+            if(cc > 0xff)
+            {
+                TTbell() ;
+                break ;
+            }
+        }
         if (cc == 0x20)
         {
             if((ttmodif == ME_ALT) && !(meSystemCfg & meSYSTEM_CTCHASPC))
@@ -4958,19 +5291,33 @@ meFrameHideCursor(meFrame *frame)
         {
             meFrameLine *flp;                     /* Frame store line pointer */
             meScheme schm;                      /* Current colour */
-            meUByte cc ;                          /* Current cchar  */
             WORD dcol;
 
             flp  = frame->store + frame->cursorRow ;
-            cc   = flp->text[frame->cursorColumn] ;          /* Get char under cursor */
             schm = flp->scheme[frame->cursorColumn] ;        /* Get colour under cursor */
 
             dcol = (WORD) TTschemeSet(schm) ;
-            ConsoleDrawString (&cc, dcol, frame->cursorColumn, frame->cursorRow, 1);
+            /* winterm-utf8: frame store holds one byte per column (lead byte
+             * only for multi-byte UTF-8). Redrawing that byte would corrupt
+             * the cell (e.g. cursor on ä draws Ã). The cell char is already
+             * correct from updateline - swap attributes only. */
+            if(ciScreenBuffer != NULL)
+            {
+                CHAR_INFO *pCI = &ciScreenBuffer[(frame->cursorRow * frameCur->width) + frame->cursorColumn] ;
+                if(dcol != pCI->Attributes)
+                {
+                    pCI->Attributes = dcol ;
+                    if(frame->cursorRow < consolePaintArea.Top)
+                        consolePaintArea.Top = frame->cursorRow ;
+                    if(frame->cursorRow > consolePaintArea.Bottom)
+                        consolePaintArea.Bottom = frame->cursorRow ;
+                    if(frame->cursorColumn < consolePaintArea.Left)
+                        consolePaintArea.Left = frame->cursorColumn ;
+                    if((frame->cursorColumn+1) > consolePaintArea.Right)
+                        consolePaintArea.Right = frame->cursorColumn+1 ;
+                }
+            }
         }
-#ifdef _ME_WINDOW
-        else if(!meFrameGetWinPaintAll(frame))
-#endif /* _ME_WINDOW */
 #else
         if(!meFrameGetWinPaintAll(frame))
 #endif /* _ME_CONSOLE */
@@ -5031,21 +5378,33 @@ meFrameShowCursor(meFrame *frame)
         {
             meFrameLine *flp;                     /* Frame store line pointer */
             meScheme schm;                      /* Current colour */
-            meUByte cc ;                          /* Current cchar  */
             WORD dcol;
 
             flp  = frame->store + frame->cursorRow ;
-            cc   = flp->text[frame->cursorColumn] ;          /* Get char under cursor */
             schm = flp->scheme[frame->cursorColumn] ;        /* Get colour under cursor */
 
             dcol = (WORD) TTcolorSet(colTable[meStyleGetBColor(meSchemeGetStyle(schm))],
                                      colTable[cursorColor]) ;
 
-            ConsoleDrawString (&cc, dcol, frame->cursorColumn, frame->cursorRow, 1);
+            /* winterm-utf8: see meFrameHideCursor - swap attributes only,
+             * never redraw the (possibly multi-byte) cell char. */
+            if(ciScreenBuffer != NULL)
+            {
+                CHAR_INFO *pCI = &ciScreenBuffer[(frame->cursorRow * frameCur->width) + frame->cursorColumn] ;
+                if(dcol != pCI->Attributes)
+                {
+                    pCI->Attributes = dcol ;
+                    if(frame->cursorRow < consolePaintArea.Top)
+                        consolePaintArea.Top = frame->cursorRow ;
+                    if(frame->cursorRow > consolePaintArea.Bottom)
+                        consolePaintArea.Bottom = frame->cursorRow ;
+                    if(frame->cursorColumn < consolePaintArea.Left)
+                        consolePaintArea.Left = frame->cursorColumn ;
+                    if((frame->cursorColumn+1) > consolePaintArea.Right)
+                        consolePaintArea.Right = frame->cursorColumn+1 ;
+                }
+            }
         }
-#ifdef _ME_WINDOW
-        else if(!meFrameGetWinPaintAll(frame))
-#endif /* _ME_WINDOW */
 #else
         if(!meFrameGetWinPaintAll(frame))
 #endif /* _ME_CONSOLE */
@@ -5719,6 +6078,14 @@ TTstart (void)
             /* save the original console mode to restore on exit */
             GetConsoleMode(hInput, &OldConsoleMode);
 
+            /* winterm-utf8: save code pages and switch to UTF-8 so the
+             * PowerShell/cmd console renders UnicodeChar cells correctly
+             * and any byte-level I/O uses UTF-8. Restored in TTend. */
+            OldConsoleOutputCP = GetConsoleOutputCP() ;
+            OldConsoleCP = GetConsoleCP() ;
+            SetConsoleOutputCP(CP_UTF8) ;
+            SetConsoleCP(CP_UTF8) ;
+
             /* and reset this to what MicroEMACS needs */
             ConsoleMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_EXTENDED_FLAGS;
             SetConsoleMode(hInput, ConsoleMode);
@@ -5826,7 +6193,7 @@ TTahead (void)
                 }
                 else
                 {
-                    if((PeekConsoleInput(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
+                    if((PeekConsoleInputW(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
                         hasInput = 1 ;
                 }
             }
@@ -5975,7 +6342,7 @@ TTaheadFlush (void)
                 }
                 else
                 {
-                    if((PeekConsoleInput(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
+                    if((PeekConsoleInputW(hInput, &ir, 1, &dwCount) != meFALSE) && (dwCount > 0))
                         hasInput = 1 ;
                 }
             }

@@ -56,11 +56,11 @@ When a file is opened:
 2. **PEP 263 coding line** -- `# -*- coding: <encoding> -*-` in the first five
    lines is parsed. A UTF-8 file with a non-UTF-8 coding line is treated as UTF-8
    (to prevent double-encoding).
-3. **`meInternalEnc` reset** -- when a UTF-8 file is opened and no `-E` flag was
-   used, `meInternalEnc` is set to `ME_ENC_UTF8`, enabling native mode.
-4. **Unmappable character warning** -- if the file is UTF-8 but `meInternalEnc` is
-   CP1252, the first 4KB is scanned for characters outside CP1252 and a warning
-   is shown.
+3. **No global switch** -- `meInternalEnc` is deliberately left alone;
+   each buffer keeps its own `bp->encoding` and rendering converts
+   per-buffer, so no information is lost and no prompt is needed (the old
+   blocking "cannot be represented" warning was removed; it also hung
+   batch startup scripts).
 
 ### 2. Byte-Offset Mapping (`src/display.c`)
 
@@ -143,27 +143,28 @@ buffer already contains valid UTF-8.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `meInternalEnc` | `ME_ENC_CP1252` | Active internal encoding. Reset to `ME_ENC_UTF8` when UTF-8 file opened. |
-| `meInternalEncExplicit` | `0` | Set to `1` if `-E` flag was used (prevents auto-reset). |
+| `meInternalEnc` | `ME_ENC_CP1252` | Default guess for files without detectable encoding; intermediate for display/keyboard conversion. Not auto-switched on file open. |
+| `meInternalEncExplicit` | `0` | Set to `1` if `-E` flag was used. |
 | `termEncoding` | `"utf-8"` | Terminal output encoding. Controls `TTputConvChar()` behavior. |
-| `bp->encoding` | per-file | Buffer encoding. Set by detection or `-E` flag. |
+| `bp->encoding` (`$buffer-encoding`) | per-file | Buffer encoding. Set by detection, `coding:` line, `set-buffer-encoding`, or `-E` default. Rendering converts per-buffer, so mixed encodings share one screen. |
+| `$internal-encoding` | `meEncodingName(meInternalEnc)` | Readable and settable from macros (invalid names ignored). |
 
-**Encoding auto-detection flow:**
+**Encoding auto-detection flow (`src/file.c`):**
 
 ```
 File opened
-  -> UTF-8 validation pass
-  -> PEP 263 coding line check
-  -> bp->encoding set (ME_ENC_UTF8 or detected)
-  -> if UTF-8 and !meInternalEncExplicit:
-      meInternalEnc = ME_ENC_UTF8     <- enables native mode
-  -> if non-UTF-8 and different from meInternalEnc:
-      meInternalEnc = bp->encoding    <- switches to legacy mode
+  -> BOM check
+  -> UTF-8 validation pass (first 4KB)
+     -> valid: bp->encoding = ME_ENC_UTF8
+     -> invalid: bp->encoding = meInternalEnc (default guess)
+  -> PEP 263 coding line check (first 5 lines, coding:/coding=)
+     -> applied unless file is valid UTF-8 with non-UTF-8 declaration
+  -> windows showing the buffer are fully redrawn with detected encoding
 ```
 
 ## Supported Encodings
 
-The `meEncoding` enum (`encoding.h`) supports 20 encodings:
+The `meEncoding` enum (`encoding.h`) supports 21 encodings:
 
 | Encoding | Description |
 |----------|-------------|
@@ -173,7 +174,45 @@ The `meEncoding` enum (`encoding.h`) supports 20 encodings:
 | `ME_ENC_KOI8_R` | Russian |
 | `ME_ENC_CP437` | DOS Latin US |
 | `ME_ENC_CP866` | DOS Russian |
+| `ME_ENC_CP850` | DOS Latin-1 (Western European) |
 | `ME_ENC_ASCII` | US ASCII |
+
+### Conversion Tables (`src/encoding.c`)
+
+Each single-byte encoding has a `xxx_to_unicode[]` table plus a linear
+reverse lookup (`unicode_to_xxx_byte()`), driven through `meConvChar()`
+(`meConv` context: `from`, `to`, `strict`, `replacement`).
+
+- Unmappable characters yield `replacement` (`?` by default, `-1` in
+  strict mode); NUL results are never emitted into macro strings.
+- Undefined bytes of the Windows codepages map to C1 controls
+  (U+0080-U+009F). These must never reach the terminal raw (e.g. U+0090
+  is DCS and swallows output), so UI previews show a `.` placeholder
+  for them while insertion still carries the real byte.
+- Macro access: `&echar <charset> <code>` returns the UTF-8 preview
+  (C1 collapsed to `.`), `&tchar <from> <code> <to>` transcodes a byte
+  between charsets (no-op when both match, `?` when unmappable).
+  Canonical names come from `meEncodingName()` (`$buffer-encoding`,
+  `$internal-encoding`); common aliases (`PC-850`, `microsoft-cp1252`,
+  `koi8-r`, ...) are accepted everywhere.
+
+### Insert-Symbol Dialog (`jasspa/macros/osdmisc.emf`)
+
+The OSD frame store holds one byte per display column, so glyph previews
+stay raw single bytes (multi-byte UTF-8 previews would overflow cells).
+The table source is hybrid:
+
+- current buffer encoding when it is a real single-byte encoding
+  (WYSIWYG -- the picked byte is what the buffer holds),
+- else the user-setup charset (`/history/<platform>/char-set`), so
+  UTF-8/ASCII buffers still get a useful table.
+
+While the dialog is open, `$internal-encoding` (cell rendering) and the
+POKABLE mask for `0x80-0x9F` (OSD filter) are temporarily switched to the
+source -- but only for charsets defining glyphs there (Windows-125x,
+KOI8-R, CP437/866/850). ISO-8859/ASCII keep C1 dotted. Both are restored
+afterwards (also on C-g dismissal). Insertion always goes through
+`&tchar` from the dialog source into `$buffer-encoding`.
 
 ## Key Design Decisions
 
@@ -228,8 +267,10 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 ### Known Limitations
 
-1. **`meInternalEnc` is global** -- switching to a non-UTF-8 file changes the
-   encoding for all buffers. Only one encoding mode can be active at a time.
+1. **`meInternalEnc` is global** -- it is only the default guess for new
+   files and the intermediate for display/keyboard conversion. Buffer
+   content rendering is per-buffer (`bp->encoding`), so mixed encodings
+   share one screen; OSD dialogs and keyboard input still use the global.
 2. **X11 fonts**: Uses `fixed` (iso8859-1) font by default; full Unicode would
    require TrueType font support (libxft/HarfBuzz -- future project).
 3. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
@@ -250,7 +291,7 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 | `src/encoding.h` | `meEncoding` enum, `meConv` struct | Encoding types and converter API |
 | `src/estruct.h` | Buffer `encoding` field | Per-buffer encoding storage |
 | `src/eval.c` | `termEncoding`, `meInternalEnc` globals | Encoding library instantiation |
-| `src/evar.def` | `$encoding`, `$internal-encoding` variables | User-accessible encoding variables |
+| `src/evar.def` | `$buffer-encoding`, `$internal-encoding` variables | User-accessible encoding variables |
 | `src/file.c` | PEP 263 detection, UTF-8 validation, `meInternalEnc` reset | File encoding auto-detection |
 | `src/hilight.c` | `hilCopyString()`/`hilCopyLenString()` outLen fix | Syntax highlighting byte-offset correctness |
 | `src/main.c` | `-E` flag handling, `meInternalEnc` reset | Command-line encoding override |
@@ -261,6 +302,8 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 | File | Purpose |
 |------|---------|
 | `tests/encodings/tutf8.txt` | UTF-8 test file with German umlauts, eszett, accented chars, currency symbols |
+| `tests/encodings/tcp850.txt` | CP850 test file (`# -*- coding: cp850 -*-` first line), German text, box drawing |
+| `tests/encodings/tcp1252.txt`, `tiso8859-*.txt`, ... | Single-byte fixtures per encoding |
 
 ## Build and Testing
 

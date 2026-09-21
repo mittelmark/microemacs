@@ -896,6 +896,7 @@ typedef struct meKillNode {
 typedef struct meKill {
     meKillNode        *kill ;                   /* pointer to kill chunk                   */
     struct meKill     *next ;                   /* link to next list element, NULL if last */
+    meUByte            encoding ;               /* source buffer encoding (meEncoding)     */
 } meKill;
 
 

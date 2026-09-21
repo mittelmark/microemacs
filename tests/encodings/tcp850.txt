@@ -1,0 +1,14 @@
+# -*- coding: cp850 -*-
+Grá Gott! Dies ist eine Testdatei in Kodierung CP850.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Die drei Merkmale der deutschen Sprache sind: Alphabet, Aussprache und Grammatik.
+
+Deutsches Alphabet: A  B C D E F G H I J K L M N O ™ P Q R S T U š V W X Y Z
+Klein: a „ b c d e f g h i j k l m n o ” p q r s t u  v w x y z
+
+Zeichen: À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ğ Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü İ Ş ß
+Sonderzeichen: €  ‚ ‡   š ™ ° ± ² Û Ü ß á ö  Ÿ ¤ ¥ æ õ
+
+Zahlen: 0 1 2 3 4 5 6 7 8 9
+Symbole: ! @ # $ % ^ & * ( ) - _ = + [ ] { } ; : ' " , . < > / ? | \

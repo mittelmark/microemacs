@@ -66,6 +66,17 @@ typedef struct HILDATA {
     meUShort flag;                      /* Video structure flag */
     meUByte colno;                      /* Color number */
     meUByte tabWidth;                   /* The current tab width */
+    meUByte bufEnc;                     /* Buffer encoding (meEncoding) of the
+                                         * window being rendered - must be the
+                                         * window's buffer, NOT bufferCur, so
+                                         * side-by-side windows with different
+                                         * encodings each convert correctly */
+    int bytePos;                        /* Byte write cursor into disLineBuff.
+                                         * dstPos counts DISPLAY columns while
+                                         * bytePos counts output bytes; the
+                                         * two differ for multi-byte output.
+                                         * disLineByteOff[] maps columns to
+                                         * byte offsets (as in renderLine). */
 } HILDATA;    
 
 #define meHIL_TEST_BACKREF 0x00
@@ -1444,44 +1455,85 @@ meUtf8SeqLen(meUByte c)
     return 1;
 }
 
-#define __hilCopyChar(dstPos,cc,tw)                                          \
+/* NOTE: __hilCopyChar was replaced by the bytePos-aware version below
+ * (utf8-mec display columns). Call sites use __hilCopyChar(hd,dstPos,cc). */
+
+/* utf8-mec display columns: ensure disLineBuff/disLineByteOff have room.
+ * nb = bytes needed at hd->bytePos, nc = display column about to be set. */
+static void
+hilEnsureRoom(HILDATA *hd, int nb, int nc)
+{
+    while(hd->bytePos + nb >= disLineSize)
+    {
+        disLineSize += 512 ;
+        disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
+    }
+    while(nc >= disLineByteOffSize)
+    {
+        disLineByteOffSize += 512 ;
+        disLineByteOff = meRealloc(disLineByteOff,disLineByteOffSize) ;
+    }
+}
+
+/* __hilCopyByte - write already-encoded bytes for ONE display column.
+ * Records the column->byte mapping (as renderLine does) and advances
+ * hd->bytePos by nbytes and dstPos (display column) by 1. */
+#define __hilCopyByte(hd,dstPos,bbuf,nbytes)                                \
+    do { hilEnsureRoom(hd,nbytes,(dstPos)+1) ;                               \
+         disLineByteOff[dstPos] = (meUByte) (hd)->bytePos ;                  \
+         { int _ii ; for(_ii = 0 ; _ii < (nbytes) ; _ii++)                    \
+             disLineBuff[(hd)->bytePos++] = (bbuf)[_ii] ; }                   \
+         (dstPos) += 1 ; } while(0)
+
+#define __hilCopyChar(hd,dstPos,cc)                                         \
 do                                                                           \
 {                                                                            \
-    /* the largest character size is a tab which is user definable */        \
-    if(dstPos >= disLineSize)                                                \
+    /* widths: display columns advanced (bytes written are identical here) */\
+    int _wd = 1 ;                                                            \
+    meUByte *_db ;                                                           \
+    if(!(isDisplayable(cc)))                                                 \
     {                                                                        \
-        disLineSize += 512 ;                                                 \
-        disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;                \
+        if((cc) == meCHAR_TAB)                                               \
+            _wd = get_tab_pos(dstPos,(hd)->tabWidth)+1 ;                     \
+        else if((cc) < 0x20)                                                 \
+            _wd = 2 ;                                                        \
+        else                                                                 \
+            _wd = 4 ;                                                        \
     }                                                                        \
+    hilEnsureRoom(hd,_wd,(dstPos)+1) ;                                       \
+    disLineByteOff[dstPos] = (meUByte)(hd)->bytePos ;                        \
+    _db = disLineBuff + (hd)->bytePos ;                                      \
     if(isDisplayable(cc))                                                    \
     {                                                                        \
         if(cc == ' ')                                                        \
-            disLineBuff[dstPos++] = displaySpace ;                           \
+            *_db++ = displaySpace ;                                          \
         else if(cc == meCHAR_TAB)                                            \
-            disLineBuff[dstPos++] = displayTab ;                             \
+            *_db++ = displayTab ;                                            \
         else                                                                 \
-            disLineBuff[dstPos++] = cc ;                                     \
+            *_db++ = cc ;                                                    \
     }                                                                        \
     else if(cc == meCHAR_TAB)                                                \
     {                                                                        \
-        int ii=get_tab_pos(dstPos,tw) ;                                      \
-        disLineBuff[dstPos++] = displayTab ;                                 \
+        int ii=get_tab_pos(dstPos,(hd)->tabWidth) ;                          \
+        *_db++ = displayTab ;                                                \
         while(--ii >= 0)                                                     \
-            disLineBuff[dstPos++] = ' ' ;                                    \
+            *_db++ = ' ' ;                                                   \
     }                                                                        \
     else if(cc < 0x20)                                                       \
     {                                                                        \
-        disLineBuff[dstPos++] = '^' ;                                        \
-        disLineBuff[dstPos++] = cc ^ 0x40 ;                                  \
+        *_db++ = '^' ;                                                       \
+        *_db++ = cc ^ 0x40 ;                                                 \
     }                                                                        \
     else                                                                     \
     {                                                                        \
         /* Its a nasty character */                                          \
-        disLineBuff[dstPos++] = '\\' ;                                       \
-        disLineBuff[dstPos++] = 'x' ;                                        \
-        disLineBuff[dstPos++] = hexdigits[cc/0x10] ;                         \
-        disLineBuff[dstPos++] = hexdigits[cc%0x10] ;                         \
+        *_db++ = '\\' ;                                                      \
+        *_db++ = 'x' ;                                                       \
+        *_db++ = hexdigits[cc/0x10] ;                                        \
+        *_db++ = hexdigits[cc%0x10] ;                                        \
     }                                                                        \
+    (hd)->bytePos += _wd ;                                                   \
+    (dstPos) += _wd ;                                                        \
 }                                                                            \
 while(0)
 
@@ -1522,14 +1574,41 @@ hilSchemeChange (meHilight *node, HILDATA *hd)
     hd->blkp = blkp;
 }
 
+/* hilCopyConvChar - copy one source character, converting a non-UTF-8
+ * buffer's high bytes to terminal UTF-8 (utf8-mec per-buffer rendering).
+ * UTF-8 buffers and ASCII keep the exact historical behaviour.
+ * Returns the new dstPos; *consumed is set to source bytes used (always 1
+ * here - single-byte source encodings advance one byte per character).
+ */
 static int
-hilCopyChar(register int dstPos, register meUByte cc, HILDATA *hd)
+hilCopyConvChar(register int dstPos, register meUByte *src, HILDATA *hd,
+                int *consumed)
 {
-    /* Change the selection hilight if required. */
+    meUByte cc = src[0] ;
+    meEncoding bufEnc = (meEncoding) hd->bufEnc ;
+
+    /* Change the selection hilight if required (as hilCopyChar). */
     if ((hd->srcOff != 0xffff) && (hd->srcPos >= hd->srcOff))
         hd->hfunc (dstPos, hd);
-    /* Copy the character. */
-    __hilCopyChar(dstPos,cc,hd->tabWidth);
+    if(bufEnc != ME_ENC_UTF8 && cc >= 0x80)
+    {
+        meConv conv ;
+        unsigned char outBuf[8] ;
+        int outLen, ii ;
+        meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+        outLen = meConvChar(&conv, src, 1, outBuf, sizeof(outBuf)) ;
+        if(outLen <= 0)
+        {
+            outBuf[0] = '?' ;
+            outLen = 1 ;
+        }
+        __hilCopyByte(hd,dstPos,outBuf,outLen) ;
+        *consumed = 1 ;
+        return dstPos ;
+    }
+    /* Copy the character (historical behaviour). */
+    __hilCopyChar(hd,dstPos,cc);
+    *consumed = 1 ;
     return dstPos ;
 }
 
@@ -1579,7 +1658,7 @@ hilCopyReplaceString(int sDstPos, register meUByte *srcText,
             else
                 hoff = 0x7fffffff ;
         }
-        __hilCopyChar(dstPos,cc,hd->tabWidth);
+        __hilCopyChar(hd,dstPos,cc);
     }
     /* This is not quite right - but will have to do for present. Change
      * the hilighting according to the ammount of text used. */
@@ -1590,7 +1669,7 @@ static int
 hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
 {
     meUByte cc ;
-    meEncoding bufEnc = frameCur->bufferCur->encoding ;
+    meEncoding bufEnc = (meEncoding) hd->bufEnc ;
     /* Handle the selection hilighting if enabled. */
     if (hd->srcOff != 0xffff)
     {
@@ -1603,14 +1682,18 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
             {
                 /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding */
                 meConv conv ;
-                unsigned char outbyte ;
+                unsigned char outBuf[8] ;
+                int outLen ;
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
-                meConvInit(&conv, bufEnc, (meEncoding) meInternalEnc) ;
-                if(meConvChar(&conv, srcText - 1, 1, &outbyte, 1) > 0)
-                    disLineBuff[dstPos++] = outbyte ;
-                else
-                    disLineBuff[dstPos++] = '?' ;
+                meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                if(outLen <= 0)
+                {
+                    outBuf[0] = '?' ;
+                    outLen = 1 ;
+                }
+                __hilCopyByte(hd,dstPos,outBuf,outLen) ;
                 srcPos++ ;
             }
             else if(cc >= 0xC0)
@@ -1619,12 +1702,19 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
                 int utflen = meUtf8SeqLen(cc) ;
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
-                if(meInternalEnc == ME_ENC_UTF8)
+                if(bufEnc == ME_ENC_UTF8)
                 {
-                    /* Internal is UTF-8: copy multi-byte sequence directly */
-                    int ii ;
-                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' ; ii++)
-                        disLineBuff[dstPos++] = srcText[ii] ;
+                    /* UTF-8 buffer: copy sequence directly, 1 display column */
+                    unsigned char mbuf[8] ;
+                    int ii, n = 0 ;
+                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' && n < 8 ; ii++)
+                        mbuf[n++] = srcText[ii] ;
+                    if(n == 0)
+                    {
+                        mbuf[0] = '?' ;
+                        n = 1 ;
+                    }
+                    __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
                 }
                 else
@@ -1632,19 +1722,15 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
                     meConv conv ;
                     unsigned char outBuf[8] ;
                     int outLen ;
-                    meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                    outLen = meConvChar(&conv, srcText - 1, utflen, outBuf, sizeof(outBuf)) ;
-                    if(outLen > 0)
+                    /* Non-UTF-8 buffer: raw byte -> UTF-8 (per-buffer rendering) */
+                    meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                    outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                    if(outLen <= 0)
                     {
-                        int ii ;
-                        for(ii = 0 ; ii < outLen ; ii++)
-                            disLineBuff[dstPos++] = outBuf[ii] ;
-                        srcText += utflen - 1 ;
+                        outBuf[0] = '?' ;
+                        outLen = 1 ;
                     }
-                    else
-                    {
-                        disLineBuff[dstPos++] = cc ;
-                    }
+                    __hilCopyByte(hd,dstPos,outBuf,outLen) ;
                 }
                 srcPos++ ;
             }
@@ -1652,7 +1738,7 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
             {
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
-                __hilCopyChar(dstPos,cc,hd->tabWidth);
+                __hilCopyChar(hd,dstPos,cc);
                 srcPos++;
             }
         }
@@ -1665,17 +1751,21 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
             {
                 /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding */
                 meConv conv ;
-                unsigned char outbyte ;
-                meConvInit(&conv, bufEnc, (meEncoding) meInternalEnc) ;
-                if(meConvChar(&conv, srcText - 1, 1, &outbyte, 1) > 0)
-                    disLineBuff[dstPos++] = outbyte ;
-                else
-                    disLineBuff[dstPos++] = '?' ;
+                unsigned char outBuf[8] ;
+                int outLen ;
+                    meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                    outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                    if(outLen <= 0)
+                    {
+                        outBuf[0] = '?' ;
+                        outLen = 1 ;
+                    }
+                    __hilCopyByte(hd,dstPos,outBuf,outLen) ;
             }
             else if(cc >= 0xC0)
             {
                 int utflen = meUtf8SeqLen(cc) ;
-                if(meInternalEnc == ME_ENC_UTF8)
+                if(bufEnc == ME_ENC_UTF8)
                 {
                     int ii ;
                     for(ii = 0 ; ii < utflen && srcText[ii] != '\0' ; ii++)
@@ -1687,23 +1777,19 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
                     meConv conv ;
                     unsigned char outBuf[8] ;
                     int outLen ;
-                    meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                    outLen = meConvChar(&conv, srcText - 1, utflen, outBuf, sizeof(outBuf)) ;
-                    if(outLen > 0)
+                    /* Non-UTF-8 buffer: raw byte -> UTF-8 (per-buffer rendering) */
+                    meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                    outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                    if(outLen <= 0)
                     {
-                        int ii ;
-                        for(ii = 0 ; ii < outLen ; ii++)
-                            disLineBuff[dstPos++] = outBuf[ii] ;
-                        srcText += utflen - 1 ;
+                        outBuf[0] = '?' ;
+                        outLen = 1 ;
                     }
-                    else
-                    {
-                        disLineBuff[dstPos++] = cc ;
-                    }
+                    __hilCopyByte(hd,dstPos,outBuf,outLen) ;
                 }
             }
             else
-                __hilCopyChar(dstPos,cc,hd->tabWidth);
+                __hilCopyChar(hd,dstPos,cc);
         }
     }
     return dstPos ;
@@ -1714,7 +1800,7 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
                  register int len, HILDATA *hd)
 {
     meUByte cc ;
-    meEncoding bufEnc = frameCur->bufferCur->encoding ;
+    meEncoding bufEnc = (meEncoding) hd->bufEnc ;
     
     /* Handle the selection hilighting if enabled. */
     if ((hd->srcOff != 0xffff) && ((hd->srcOff - hd->srcPos) < len))
@@ -1729,14 +1815,18 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
             {
                 /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding */
                 meConv conv ;
-                unsigned char outbyte ;
+                unsigned char outBuf[8] ;
+                int outLen ;
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
-                meConvInit(&conv, bufEnc, (meEncoding) meInternalEnc) ;
-                if(meConvChar(&conv, srcText - 1, 1, &outbyte, 1) > 0)
-                    disLineBuff[dstPos++] = outbyte ;
-                else
-                    disLineBuff[dstPos++] = '?' ;
+                meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                if(outLen <= 0)
+                {
+                    outBuf[0] = '?' ;
+                    outLen = 1 ;
+                }
+                __hilCopyByte(hd,dstPos,outBuf,outLen) ;
                 srcPos++ ;
             }
             else if(cc >= 0xC0)
@@ -1745,11 +1835,19 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
                 int utflen = meUtf8SeqLen(cc) ;
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
-                if(meInternalEnc == ME_ENC_UTF8)
+                if(bufEnc == ME_ENC_UTF8)
                 {
-                    int ii ;
-                    for(ii = 0 ; ii < utflen ; ii++)
-                        disLineBuff[dstPos++] = srcText[ii] ;
+                    /* UTF-8 buffer: copy sequence directly, 1 display column */
+                    unsigned char mbuf[8] ;
+                    int ii, n = 0 ;
+                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' && n < 8 ; ii++)
+                        mbuf[n++] = srcText[ii] ;
+                    if(n == 0)
+                    {
+                        mbuf[0] = '?' ;
+                        n = 1 ;
+                    }
+                    __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
                     len -= (utflen - 1) ;
                 }
@@ -1758,20 +1856,15 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
                     meConv conv ;
                     unsigned char outBuf[8] ;
                     int outLen ;
-                    meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                    outLen = meConvChar(&conv, srcText - 1, utflen, outBuf, sizeof(outBuf)) ;
-                    if(outLen > 0)
+                    /* Non-UTF-8 buffer: raw byte -> UTF-8 (per-buffer rendering) */
+                    meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                    outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                    if(outLen <= 0)
                     {
-                        int ii ;
-                        for(ii = 0 ; ii < outLen ; ii++)
-                            disLineBuff[dstPos++] = outBuf[ii] ;
-                        srcText += utflen - 1 ;
-                        len -= (utflen - 1) ;
+                        outBuf[0] = '?' ;
+                        outLen = 1 ;
                     }
-                    else
-                    {
-                        disLineBuff[dstPos++] = cc ;
-                    }
+                    __hilCopyByte(hd,dstPos,outBuf,outLen) ;
                 }
                 srcPos++ ;
             }
@@ -1779,7 +1872,7 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
             {
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
-                __hilCopyChar(dstPos,cc,hd->tabWidth);
+                __hilCopyChar(hd,dstPos,cc);
                 srcPos++;
             }
         }
@@ -1793,21 +1886,33 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
             {
                 /* Non-UTF-8 buffer: convert raw encoding byte to internal encoding */
                 meConv conv ;
-                unsigned char outbyte ;
-                meConvInit(&conv, bufEnc, (meEncoding) meInternalEnc) ;
-                if(meConvChar(&conv, srcText - 1, 1, &outbyte, 1) > 0)
-                    disLineBuff[dstPos++] = outbyte ;
-                else
-                    disLineBuff[dstPos++] = '?' ;
+                unsigned char outBuf[8] ;
+                int outLen ;
+                    meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                    outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                    if(outLen <= 0)
+                    {
+                        outBuf[0] = '?' ;
+                        outLen = 1 ;
+                    }
+                    __hilCopyByte(hd,dstPos,outBuf,outLen) ;
             }
             else if(cc >= 0xC0)
             {
                 int utflen = meUtf8SeqLen(cc) ;
-                if(meInternalEnc == ME_ENC_UTF8)
+                if(bufEnc == ME_ENC_UTF8)
                 {
-                    int ii ;
-                    for(ii = 0 ; ii < utflen ; ii++)
-                        disLineBuff[dstPos++] = srcText[ii] ;
+                    /* UTF-8 buffer: copy sequence directly, 1 display column */
+                    unsigned char mbuf[8] ;
+                    int ii, n = 0 ;
+                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' && n < 8 ; ii++)
+                        mbuf[n++] = srcText[ii] ;
+                    if(n == 0)
+                    {
+                        mbuf[0] = '?' ;
+                        n = 1 ;
+                    }
+                    __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
                     len -= (utflen - 1) ;
                 }
@@ -1816,24 +1921,19 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
                     meConv conv ;
                     unsigned char outBuf[8] ;
                     int outLen ;
-                    meConvInit(&conv, ME_ENC_UTF8, (meEncoding) meInternalEnc) ;
-                    outLen = meConvChar(&conv, srcText - 1, utflen, outBuf, sizeof(outBuf)) ;
-                    if(outLen > 0)
+                    /* Non-UTF-8 buffer: raw byte -> UTF-8 (per-buffer rendering) */
+                    meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
+                    outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                    if(outLen <= 0)
                     {
-                        int ii ;
-                        for(ii = 0 ; ii < outLen ; ii++)
-                            disLineBuff[dstPos++] = outBuf[ii] ;
-                        srcText += utflen - 1 ;
-                        len -= (utflen - 1) ;
+                        outBuf[0] = '?' ;
+                        outLen = 1 ;
                     }
-                    else
-                    {
-                        disLineBuff[dstPos++] = cc ;
-                    }
+                    __hilCopyByte(hd,dstPos,outBuf,outLen) ;
                 }
             }
             else
-                __hilCopyChar(dstPos,cc,hd->tabWidth);
+                __hilCopyChar(hd,dstPos,cc);
         }
     }
     return dstPos ;
@@ -1894,6 +1994,12 @@ hilightLine(meVideoLine *vp1, meUByte mode)
     hd.srcOff = 0xffff;                 /* No callback required */
     hd.blkp = hilBlock + 1;             /* block pointer */
     hd.tabWidth = vp1->wind->buffer->tabWidth;
+    /* utf8-mec: source encoding is the rendered window's buffer, not the
+     * current buffer - windows showing different encodings side-by-side
+     * must each convert from their own encoding. vp1->wind is always valid
+     * here (see tabWidth above). */
+    hd.bufEnc = vp1->wind->buffer->encoding;
+    hd.bytePos = 0 ;                    /* byte write cursor starts empty */
     
     /* Determine if we are processing a forground or hilighted line.
      * Determined by the current line flag */
@@ -2075,12 +2181,23 @@ BracketJump:
                     if((tt == '\0') || (hd.srcPos == srcWid))
                         break ;
                     ss = *s1++ ;
-                    dstPos = hilCopyChar(dstPos,ss, &hd) ;
+                    {
+                        /* Rewind: hilCopyConvChar consumes from the source
+                         * pointer and reports bytes used (utf8-mec). */
+                        int used ;
+                        s1-- ;
+                        dstPos = hilCopyConvChar(dstPos,s1,&hd,&used) ;
+                        s1 += used ;
+                    }
                     if(ss == ignore)
                     {
                         if(++hd.srcPos == srcWid)
                             break ;
-                        dstPos = hilCopyChar(dstPos,*s1++,&hd) ;
+                        {
+                            int used ;
+                            dstPos = hilCopyConvChar(dstPos,s1,&hd,&used) ;
+                            s1 += used ;
+                        }
                     }
                 }
                 if(tt != '\0')
@@ -2169,9 +2286,9 @@ BracketJump:
                     hd.blkp->column = dstPos ;
                 }
             }
-            if(dstPos)
+            if(hd.bytePos)
             {
-                cc = disLineBuff[dstPos-1] ;
+                cc = disLineBuff[hd.bytePos-1] ;
                 mode &= ~(meHIL_MODESTTLN|meHIL_MODESTART) ;
             }
             mode |= meHIL_MODETOKEND ;
@@ -2184,8 +2301,13 @@ advance_char:
             mode &= ~(meHIL_MODEMOVE|meHIL_MODESTART|meHIL_MODETOKEND) ;
             if((mode & meHIL_MODESTTLN) && !isSpace(cc))
                 mode &= ~meHIL_MODESTTLN ;
-            dstPos = hilCopyChar(dstPos,cc, &hd) ;
-            hd.srcPos++ ;
+            {
+                /* Per-character copy with per-buffer encoding conversion
+                 * (utf8-mec): single-byte sources advance one byte. */
+                int used ;
+                dstPos = hilCopyConvChar(dstPos,srcText+hd.srcPos,&hd,&used) ;
+                hd.srcPos += used ;
+            }
         }
     }
     
@@ -2220,6 +2342,10 @@ hiline_exit:
         vp1[1].hilno = hilno ;
         vp1[1].bracket = node ;
     }
+    /* utf8-mec: final column->byte sentinel for the flush loop, mirroring
+     * renderLine - dstPos counts display columns, bytePos output bytes. */
+    hilEnsureRoom(&hd, 1, dstPos) ;
+    disLineByteOff[dstPos] = (meUByte) hd.bytePos ;
     return hd.noColChng ;
 }
 
