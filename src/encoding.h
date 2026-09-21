@@ -7,7 +7,7 @@
  * - UTF-8 (terminal I/O)
  * - ISO-8859-* (Latin-1 through Latin-16)
  * - Windows-125x (CP1250 through CP1254)
- * - KOI8-R, CP437, CP866
+ * - KOI8-R, CP437, CP866, CP850
  * - ASCII
  *
  * The encoding conversion approach (storing text in a single-byte
@@ -65,6 +65,7 @@ typedef enum {
     ME_ENC_ISO8859_16,
     ME_ENC_CP437,
     ME_ENC_CP866,
+    ME_ENC_CP850,
     ME_ENC_ASCII
 } meEncoding;
 

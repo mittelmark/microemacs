@@ -54,8 +54,19 @@
 ; Macro to print up the ascii table on screen using the poke and allowing
 ; the user to select a code
 0 define-macro symbol-insert
+    ; insert the picked code, transcoded from the dialog source charset
+    ; (.symbol-insert.source, set by insert-symbol) into the current
+    ; buffer encoding. No-op when both match; empty source keeps the
+    ; historic raw insert.
+    !if &opt "ext"
+        !if &not &seq .symbol-insert.source ""
+            insert-string &tchar .symbol-insert.source @# $buffer-encoding
+            !return
+        !endif
+    !endif
     insert-string &itoa @#
 !emacro
+set-variable .symbol-insert.source ""
 
 osd .osd.symbol 0 "bnatcHsI" 2 3 75 0 -1 -1 620 .scheme.osd-title "Insert Symbol"
 osd .osd.symbol 1 ""
@@ -67,53 +78,94 @@ osd .osd.symbol 610 ""
 osd .osd.symbol 620 "BcfH" .scheme.osd-ebtt " Cancel " f void
 
 define-macro insert-symbol
-    ; winterm-utf8: glyph previews honour the user-setup charset
-    ; selection (registry /history/<platform>/char-set) via &echar,
-    ; instead of always showing latin-1. Empty/unknown selection keeps
-    ; historic raw-byte glyphs. The grid is rebuilt on every open so a
-    ; changed selection takes effect immediately. The inserted byte is
-    ; unchanged (&itoa @# in symbol-insert).
+    ; Hybrid source: the current buffer encoding when it is a real
+    ; single-byte encoding (WYSIWYG - the picked byte is what the
+    ; buffer holds), otherwise the user-setup charset selection
+    ; (/history/<platform>/char-set) so UTF-8/ASCII buffers still get
+    ; a useful table (the insert is transcoded via &tchar in
+    ; symbol-insert). Empty sources keep the historic raw behaviour.
+    ; Glyph previews stay raw single bytes (&itoa) - the OSD dialog
+    ; frame store holds one byte per display column, so multi-byte
+    ; UTF-8 previews would overflow each cell and corrupt the grid.
+    ; Each cell byte renders through $internal-encoding, so switch it
+    ; to the source while the dialog is open (unknown names, e.g.
+    ; PC-850 with no engine support, are ignored by the setter and
+    ; fall back to raw behaviour). Restored afterwards - !force keeps
+    ; the restore running when dismissed with C-g. The grid is rebuilt
+    ; on every open so encoding changes take effect immediately.
     set-variable #l2 ""
     !if &opt "ext"
-        set-variable #l2 &reg &spr "/history/%s/char-set" %platform ""
+        !if &and &not &seq $buffer-encoding "UTF-8" &not &seq $buffer-encoding "ASCII"
+            set-variable #l2 $buffer-encoding
+        !else
+            set-variable #l2 &reg &spr "/history/%s/char-set" %platform ""
+        !endif
+    !endif
+    set-variable .symbol-insert.source #l2
+    set-variable #l4 ""
+    set-variable #l5 ""
+    !if &not &seq #l2 ""
+        set-variable #l4 $internal-encoding
+        ; validate via sentinel: unknown names are ignored by the
+        ; setter, so a stale value must not leak into the check below
+        set-variable $internal-encoding "ASCII"
+        set-variable $internal-encoding #l2
+        ; the osd filter dots non-pokable bytes - the C1 range
+        ; (0x80-0x9F) is only pokable for charsets defining glyphs
+        ; there. Temp-set it for those (correct dots for ISO-8859 /
+        ; ASCII C1 controls are kept by skipping them here).
+        !if &lfi "|Windows-1250|Windows-1251|Windows-1252|Windows-1253|Windows-1254|KOI8-R|CP437|CP866|CP850|" $internal-encoding
+            set-variable #l6 128
+            !repeat
+                set-variable #l5 &cat #l5 &itoa #l6
+            !until &equ &pinc #l6 1 160
+            1 set-char-mask "p" #l5
+        !endif
     !endif
     set-variable #l0 255
     !repeat
-        !if &seq #l2 ""
-            set-variable #l3 &itoa #l0
-        !else
-            set-variable #l3 &echar #l2 #l0
+        set-variable #l3 &itoa #l0
+        ; masks are temp-set (need-list source): a byte converting to
+        ; a C1 control (e.g. undefined cp125x 0x81) would poison the
+        ; terminal (DCS/OSC swallow output) - &echar already maps those
+        ; to "." so reuse that as placeholder. Without temp masks the
+        ; filter already dots them.
+        !if &not &seq #l5 ""
+            !if &and &seq &echar #l2 #l0 "." &not &equ #l0 46
+                set-variable #l3 "."
+            !endif
         !endif
         set-variable #l1 &spr "%3d %2x %s" #l0 #l0 #l3
-        ; winterm-utf8: no padding - "%3d %2x %s" is always 8 bytes for
-        ; single-byte glyphs and every glyph is one display column, so
-        ; cells align without filler.
-        ; winterm-utf8: rows break every 8 codes (0-7, 8-15, ...) as
-        ; before - codes below 32 stay in the grid showing the special
-        ; interface characters (box drawing etc. via char masks). NOTE:
-        ; multi-byte glyph previews make those rows wider than 72 bytes,
-        ; so the dialog stretches to fit them; that is inherent to
-        ; showing one column per code with correct glyphs.
-        ; winterm-utf8: no separator items between cells - the "%3d"
-        ; leading space already separates 2-digit codes and dropping
-        ; all 8 separators per row makes the dialog ~8 columns narrower.
+        ; cell is always 8 display columns ("DDD XX G"); the " " items
+        ; between cells keep the header ("D  X C" pattern) aligned.
+        set-variable #l1 &spr "%s%n" #l1 &sub 8 &len #l1 " "
+        ; rows break every 8 codes (0-7, 8-15, ...) - codes below 32
+        ; stay in the grid showing the special interface characters
+        ; (box drawing etc. via char masks).
         !if &equ &band #l0 7 7
             osd .osd.symbol &add &mul #l0 2 11 "f"  #l1 #l0 symbol-insert
         !else
             osd .osd.symbol &add &mul #l0 2 11 "hf" #l1 #l0 symbol-insert
         !endif
+        osd .osd.symbol &add &mul #l0 2 10 "hf" " "
     !until &not &pdec #l0 1
     ; the loop above ends at code 1 - add code 0 explicitly so the
     ; first line is 0..7 (its glyph is empty, dec/hex still select it)
     set-variable #l0 0
-    !if &seq #l2 ""
-        set-variable #l3 &itoa #l0
-    !else
-        set-variable #l3 &echar #l2 #l0
-    !endif
+    set-variable #l3 &itoa #l0
     set-variable #l1 &spr "%3d %2x %s" #l0 #l0 #l3
+    ; code 0 has an empty glyph (NUL) - pad to full 8 columns like the
+    ; other cells so row 0 aligns with the rows below
+    set-variable #l1 &spr "%s%n" #l1 &sub 8 &len #l1 " "
     osd .osd.symbol &add &mul #l0 2 11 "hf"  #l1 #l0 symbol-insert
-    .osd.symbol osd
+    osd .osd.symbol &add &mul #l0 2 10 "hf" " "
+    !force .osd.symbol osd
+    !if &not &seq #l5 ""
+        -1 set-char-mask "p" #l5
+    !endif
+    !if &not &seq #l4 ""
+        set-variable $internal-encoding #l4
+    !endif
 !emacro
 
 0 define-macro buffer-setup-ms

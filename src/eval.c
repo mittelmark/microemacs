@@ -2316,12 +2316,86 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                     evalResult[0] = (meUByte) code ;
                     evalResult[1] = '\0' ;
                 }
+                else if((outLen == 2) && (out[0] == 0xC2) &&
+                        (out[1] >= 0x80) && (out[1] <= 0x9F))
+                {
+                    /* C1 control (U+0080-U+009F, e.g. iso-8859-1 codes
+                     * 128-159): invisible glyphs collapse the symbol
+                     * grid layout - show a placeholder dot instead */
+                    evalResult[0] = '.' ;
+                    evalResult[1] = '\0' ;
+                }
                 else
                 {
                     for(ii = 0 ; ii < outLen ; ii++)
                         evalResult[ii] = out[ii] ;
                     evalResult[outLen] = '\0' ;
                 }
+            }
+            return evalResult ;
+        }
+    case UFTCHAR:
+        {
+            /* winterm-utf8: transcode-char <from> <code> <to> - convert
+             * byte <code> in charset <from> to charset <to> (e.g. &tchar
+             * "microsoft-cp1252" "128" "UTF-8" gives the euro sign).
+             * Used by symbol-insert so the inserted bytes match the
+             * current buffer encoding - restores the encoding-stable
+             * behaviour where the raw byte was always right because
+             * buffers were single-byte. Unknown source charset, ASCII
+             * codes and identical charsets fall back to the raw byte
+             * (historic behaviour); unknown target falls back to UTF-8.
+             * Unmappable targets yield '?' - never NUL (macro strings
+             * are NUL terminated). Single-byte results equal to
+             * meCHAR_LEADER are escaped. */
+            meEncoding fromEnc = meEncodingFromName((const char *) arg1) ;
+            int code = meAtoi(arg2) ;
+            meEncoding toEnc = meEncodingFromName((const char *) arg3) ;
+            if(code < 0)
+                code = 0 ;
+            else if(code > 255)
+                code = 255 ;
+            if(((int) fromEnc < 0) || (code < 0x80) ||
+               (fromEnc == toEnc))
+            {
+                evalResult[0] = (meUByte) code ;
+                if(code == meCHAR_LEADER)
+                {
+                    evalResult[1] = meCHAR_TRAIL_LEADER ;
+                    evalResult[2] = '\0' ;
+                }
+                else
+                    evalResult[1] = '\0' ;
+            }
+            else
+            {
+                meConv conv ;
+                unsigned char in[1], out[8] ;
+                int outLen, ii ;
+                if((int) toEnc < 0)
+                    toEnc = ME_ENC_UTF8 ;
+                in[0] = (unsigned char) code ;
+                meConvInit(&conv, fromEnc, toEnc) ;
+                outLen = meConvChar(&conv, in, 1, out, sizeof(out)) ;
+                if(outLen <= 0)
+                {
+                    out[0] = '?' ;
+                    outLen = 1 ;
+                }
+                else if((outLen == 1) && (out[0] == '\0'))
+                {
+                    /* Never emit NUL into macro strings */
+                    out[0] = '?' ;
+                }
+                for(ii = 0 ; ii < outLen ; ii++)
+                    evalResult[ii] = out[ii] ;
+                if((outLen == 1) && (out[0] == meCHAR_LEADER))
+                {
+                    evalResult[1] = meCHAR_TRAIL_LEADER ;
+                    evalResult[2] = '\0' ;
+                }
+                else
+                    evalResult[outLen] = '\0' ;
             }
             return evalResult ;
         }

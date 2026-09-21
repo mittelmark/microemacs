@@ -7,11 +7,21 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260824.0836>
+>  Last Modified : <260921.0836>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260921] - Encoding-aware insert-symbol dialog and CP850 support.
+              The symbol table follows the buffer encoding for single-byte
+              buffers, else the user-setup charset selection. Glyphs render
+              via a temporary $internal-encoding switch with temp POKABLE
+              masks, C1 controls shown as dots to protect the terminal.
+              Added CP850 (DOS Latin-1) conversion engine with test file
+              tests/encodings/tcp850.txt.
+              Files: jasspa/macros/osdmisc.emf, src/encoding.c,
+              src/encoding.h, tests/encodings/tcp850.txt
 
   [260824] - Added mdview navigation history and wiki-style link creation.
              History tracks visited files with Start/Prev/Next navigation.
