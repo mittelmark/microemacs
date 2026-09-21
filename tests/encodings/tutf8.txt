@@ -1,0 +1,12 @@
+# UTF-8 test file with Western European characters
+# German umlauts and special characters
+
+# Uppercase umlauts: Ä Ö Ü
+# Lowercase umlauts: ä ö ü
+# Eszett: ß
+
+Straße  Über  Größe
+München  Köln  Zürich
+café  résumé  naïve
+# Copyright © registered ® trademark ™
+# currency: € ¥ £

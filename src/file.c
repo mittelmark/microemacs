@@ -34,6 +34,7 @@
 #include "emain.h"
 #include "efunc.h"
 #include "esearch.h"
+#include "encoding.h"
 #if (defined _UNIX) || (defined _DOS) || (defined _WIN32)
 #include <errno.h>
 #include <limits.h>                     /* Constant limit definitions */
@@ -1518,6 +1519,179 @@ readin(register meBuffer *bp, meUByte *fname)
         mlwrite(MWCURSOR|MWCLEXEC,(meUByte *)"[Reading %s%s]",fn,
                 meModeTest(bp->mode,MDVIEW) ? " (readonly)" : "");
     }
+
+    /* Auto-detect file encoding: read the first 4KB and check if it's
+     * valid UTF-8. If not, assume internal encoding (default CP1252).
+     * Also check for explicit encoding declarations in the first few lines.
+     * Only update meInternalEnc if -E flag was NOT explicitly set. */
+    bp->encoding = 0 ; /* ME_ENC_UTF8 default */
+    {
+        FILE *detectFp;
+        if((detectFp = fopen((char *)fn, "rb")) != NULL)
+        {
+            unsigned char detectBuf[4096];
+            size_t detectLen = fread(detectBuf, 1, sizeof(detectBuf), detectFp);
+            fclose(detectFp);
+            if(detectLen > 0)
+            {
+                /* Check for BOM (Byte Order Mark) first */
+                meEncoding bomEnc = meDetectBOM(detectBuf, detectLen);
+                if(bomEnc != (meEncoding) -1)
+                {
+                    bp->encoding = (meUByte) bomEnc;
+                    goto encoding_found;
+                }
+                
+                if(!meUtf8IsValid(detectBuf, detectLen))
+                {
+                    /* File is not valid UTF-8 - assume internal encoding */
+                    bp->encoding = (meUByte) meInternalEnc ;
+                }
+
+                /* Check for explicit encoding declaration in first few lines.
+                 * Patterns: # -*- coding: utf-8 -*-
+                 *           # coding: utf-8
+                 *           # coding=utf-8
+                 *           <!-- coding: utf-8 -->
+                 */
+                if(detectLen > 0)
+                {
+                    meUByte *p = detectBuf;
+                    meUByte *end = detectBuf + detectLen;
+                    int lineNum = 0;
+
+                    while(p < end && lineNum < 5)
+                    {
+                        meUByte *lineStart = p;
+                        meUByte *lineEnd = p;
+
+                        /* Find end of line */
+                        while(lineEnd < end && *lineEnd != '\n' && *lineEnd != '\r')
+                            lineEnd++;
+
+                        /* Look for "coding:" or "coding=" pattern */
+                        {
+                            meUByte *cp = lineStart;
+                            meUByte *cpe = lineEnd - 7; /* need room for "coding:" */
+
+                            while(cp < cpe)
+                            {
+                                if((cp[0] == 'c' || cp[0] == 'C') &&
+                                   (cp[1] == 'o' || cp[1] == 'O') &&
+                                   (cp[2] == 'd' || cp[2] == 'D') &&
+                                   (cp[3] == 'i' || cp[3] == 'I') &&
+                                   (cp[4] == 'n' || cp[4] == 'N') &&
+                                   (cp[5] == 'g' || cp[5] == 'G') &&
+                                   (cp[6] == ':' || cp[6] == '='))
+                                {
+                                    /* Found coding: or coding= - extract encoding name */
+                                    meUByte encName[32];
+                                    meUByte *enp = cp + 7;
+                                    meUByte *ene = encName;
+
+                                    /* Skip whitespace */
+                                    while(enp < lineEnd && (*enp == ' ' || *enp == '\t'))
+                                        enp++;
+
+                                    /* Copy encoding name (until whitespace, '*', or end) */
+                                    while(enp < lineEnd && ene < encName + 31 &&
+                                          *enp != ' ' && *enp != '\t' &&
+                                          *enp != ';' && *enp != '*')
+                                    {
+                                        *ene++ = *enp++;
+                                    }
+                                    *ene = '\0';
+
+                                    /* Convert to meEncoding */
+                                    {
+                                        meEncoding declEnc = meEncodingFromName((const char *)encName);
+                                        if(declEnc != (meEncoding) -1)
+                                        {
+                                            /* Only apply encoding declaration if file is NOT valid UTF-8.
+                                             * If file is valid UTF-8, ignore non-UTF-8 declarations
+                                             * to prevent double-encoding of UTF-8 bytes. */
+                                            if(bp->encoding != 0 || declEnc == ME_ENC_UTF8)
+                                                bp->encoding = (meUByte) declEnc;
+                                        }
+                                    }
+                                    goto encoding_found;
+                                }
+                                cp++;
+                            }
+                        }
+
+                        /* Skip to next line */
+                        p = lineEnd;
+                        if(p < end && *p == '\r')
+                            p++;
+                        if(p < end && *p == '\n')
+                            p++;
+                        lineNum++;
+                    }
+                }
+            }
+        }
+    }
+encoding_found:
+    /* Only auto-switch internal encoding if -E was NOT explicitly used.
+     * When -E is used, it forces the encoding and prevents auto-switching
+     * when other files are opened. This allows users to set a specific
+     * encoding for a session without it being overridden. */
+    if(!meInternalEncExplicit)
+    {
+        if(bp->encoding != ME_ENC_UTF8 && bp->encoding != (meUByte) meInternalEnc)
+        {
+            meInternalEnc = (int) bp->encoding ;
+        }
+        else if(bp->encoding == ME_ENC_UTF8)
+        {
+            meInternalEnc = ME_ENC_UTF8 ;
+        }
+    }
+
+    /* If file is UTF-8 but internal encoding is CP1252, check if all
+     * characters can be mapped without loss. Warn if not. */
+    if(bp->encoding == ME_ENC_UTF8 && meInternalEnc == ME_ENC_CP1252)
+    {
+        FILE *checkFp;
+        if((checkFp = fopen((char *)fn, "rb")) != NULL)
+        {
+            unsigned char checkBuf[4096];
+            size_t checkLen = fread(checkBuf, 1, sizeof(checkBuf), checkFp);
+            fclose(checkFp);
+            if(checkLen > 0)
+            {
+                meConv conv;
+                int unmappable = 0;
+                size_t i = 0;
+                meConvInit(&conv, ME_ENC_UTF8, ME_ENC_CP1252);
+                conv.strict = 1;
+                while(i < checkLen)
+                {
+                    unsigned char outbyte;
+                    unsigned char c = checkBuf[i];
+                    int consumed;
+                    if(c < 0x80)
+                    {
+                        i++;
+                        continue;
+                    }
+                    consumed = meUtf8ValidSeqLen(checkBuf + i);
+                    if(meConvChar(&conv, checkBuf + i, consumed, &outbyte, 1) < 0)
+                        unmappable++;
+                    i += consumed;
+                }
+                if(unmappable > 0)
+                {
+                    mlwrite(MWABORT|(meInt)MWCLEXEC,
+                            (meUByte *)"[Warning: %d character%s cannot be represented in CP1252]",
+                            unmappable, unmappable == 1 ? "" : "s");
+                    meModeSet(bp->mode, MDEDIT) ;
+                }
+            }
+        }
+    }
+
     ss = ffReadFile(fn,0,bp,bp->baseLine,0,0,0) ;
 
     /*

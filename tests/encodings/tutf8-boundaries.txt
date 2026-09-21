@@ -1,0 +1,66 @@
+# MicroEmacs – Grenzfälle der Zeichenkodierung
+
+## CP1252 vs. UTF-8 – Wo die Wege sich trennen
+
+Die folgenden Zeichen sind in CP1252 enthalten:
+
+- € (Euro) – CP1252: 0x80, UTF-8: U+20AC
+- ‚ (einfache Guillemet) – CP1252: 0x82, UTF-8: U+201A
+- „ (öffnende Anführungszeichen) – CP1252: 0x84, UTF-8: U+201E
+- … (Ellipse) – CP1252: 0x85, UTF-8: U+2026
+- † (Kreuz) – CP1252: 0x86, UTF-8: U+2020
+- ‡ (Doppelkreuz) – CP1252: 0x87, UTF-8: U+2021
+- • (Aufzählungszeichen) – CP1252: 0x95, UTF-8: U+2022
+– (Halbgeviertstrich) – CP1252: 0x96, UTF-8: U+2013
+— (Geviertstrich) – CP1252: 0x97, UTF-8: U+2014
+- ™ (Markenzeichen) – CP1252: 0x99, UTF-8: U+2122
+- " (geschlossene Anführungszeichen) – CP1252: 0x9D, UTF-8: U+201D
+
+## Zeichen, die NICHT in CP1252 sind
+
+Diese Zeichen funktionieren NUR in UTF-8 (oder anderen Unicode-Kodierungen):
+
+- Ω (Omega) – Griechisch, U+03A9
+- ω (kleines Omega) – Griechisch, U+03C9
+- ∞ (Unendlichkeit) – U+221E
+- ∫ (Integral) – U+222B
+- ∑ (Summe) – U+2211
+- √ (Wurzel) – U+221A
+- ≠ (ungleich) – U+2260
+- ≈ (ungefähr gleich) – U+2248
+- ≤ (kleiner gleich) – U+2264
+- ≥ (größer gleich) – U+2265
+- × (multipliziert) – U+00D7
+- ÷ (dividiert) – U+00F7
+
+### Asianische Zeichen
+
+- 中 (Chinesisch: Mitte)
+- 日 (Japanisch: Tag/Sonne)
+- 한 (Koreanisch: Koreanisch)
+- แ (Thai: Sara-Ae)
+
+## Grenzfälle beim Lesen
+
+Wenn eine Datei als CP1252 gelesen wird, aber UTF-8-Zeichen enthält,
+entstehen incorrecte Darstellungen:
+
+| UTF-8 Bytes | UTF-8 Zeichen | Als CP1252 gelesen |
+|-------------|---------------|---------------------|
+| C3 84       | Ä             | Ã„                  |
+| C3 96       | Ö             | Ã–                  |
+| C3 9C       | Ü             | Ãœ                  |
+| C3 A4       | ä             | Ã¤                  |
+| C3 B6       | ö             | Ã¶                  |
+| C3 BC       | ü             | Ã¼                  |
+| C3 9F       | ß             | ÃŸ                  |
+
+Dieses Phänomen wird als „Mojibake" bezeichnet und ist ein häufiges
+Problem bei fehlerhafter Kodierungserkennung.
+
+## Empfehlung
+
+Für MicroEmacs gilt: IMMER UTF-8 verwenden, wenn möglich. Die interne
+Darstellung erfolgt ohnehin in UTF-8. Die Konvertierung zu anderen
+Kodierungen sollte nur beim Export oder beim Arbeiten mit legacy-Systemen
+erfolgen.

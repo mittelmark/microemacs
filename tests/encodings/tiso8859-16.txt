@@ -1,0 +1,9 @@
+Buna ziua lume! Acesta este un fisier de test in codarea ISO-8859-16.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Romana: A Т У C Ч D E F G H I Ю J K L M N O д P R S T U V Z
+Mici: a т у c ч d e f g h i ю j k l m n o є p r s t u v z
+
+Magyar: С Щ Эг жек ми с щ эѓ іѕњ ќј
+Polski: Ё Х н Ѓ б г з Ќ Џ Ђ х § Г ё ѓ ї Ў П
+Differences from ISO-8859-1: euro sign, S-caron, Z-caron, Y-diaeresis

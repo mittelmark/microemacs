@@ -1,0 +1,7 @@
+Bonjour le monde! Ceci est un fichier de test en codage ISO-8859-15.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Français: A Â Ä Æ C Ç E É Ê Ë Î Ï Ô ¼ Ù Û Ü Y  à â ä æ c ç e é ê ë îï ô ½ ù û ü y
+
+Différences avec ISO-8859-1: ¤ ¦ ¨ ´ ¸ ¾
+Deutsch: Ä Ö Ü ä ö ü ß  ¤

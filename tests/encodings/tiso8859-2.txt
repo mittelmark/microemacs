@@ -1,0 +1,9 @@
+Ahoj svìte! Toto je zku¹ební soubor v kódování ISO-8859-2.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Èeská abeceda: A Á B C È D Ï E É Ì F G H Ch I Í J K L M N Ò O Ó P Q R Ø S © T « U Ú Ù V W X Y İ Z ®
+Malá písmena: a á b c è d ï e é ì f g h ch i í j k l m n ò o ó p q r ø s ¹ t » u ú ù v w x y ı z ¾
+
+Polskie: ¡ Æ Ê £ Ñ Ó ¦ ¬ ¯ ± æ ê ³ ñ ó ¶ ¼ ¿
+Wêgierskie: Á É ÍÓÖÕÚÜÛ á é íóöõúüû
+Horvát: Æ È Ğ © ® æ è ğ ¹ ¾

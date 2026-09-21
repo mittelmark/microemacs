@@ -39,6 +39,7 @@
 #define	maindef		/* Make main defintions - cannot define this at the top
                          * because all the main defs are needed to init edef's vars */
 
+#include "encoding.h"  /* Encoding tables and conversion functions */
 #include "efunc.h"	/* function declarations and name table	*/
 #include "eskeys.h"     /* Special key names - Must include before edef.h & ebind.h */
 #include "edef.h"	/* The main global variables		*/
@@ -81,6 +82,7 @@ static char meHelpPage[]=
 "  -b      : Load next file as a binary file\n"
 #if MEOPT_EXTENDED
 "  -c[name]: Continue session (default session is $user-name)\n"
+"  -E <enc>: Set internal encoding (e.g., cp1252, iso-8859-1, utf-8)\n"
 "  -f      : Don't process following arguments, set .about.arg# vars.\n"
 #endif
 "  -h      : For this help page\n"
@@ -1555,6 +1557,36 @@ missing_arg:
                 sigcatch = 0 ;
                 break;
 #endif
+
+            case 'E':
+                {
+                    meEncoding enc ;
+                    meUByte *encName ;
+                    if(argv[carg][2] == '\0')
+                    {
+                        if(++carg >= argc)
+                        {
+                            fprintf(stderr,"%s: Error: Encoding name expected with -E option\nOption -h gives further help\n",
+                                    argv[0]) ;
+                            meExit(1) ;
+                        }
+                        enc = meEncodingFromName((const char *)argv[carg]) ;
+                        encName = (meUByte *) argv[carg] ;
+                    }
+                    else
+                    {
+                        enc = meEncodingFromName((const char *)argv[carg]+2) ;
+                        encName = (meUByte *) argv[carg]+2 ;
+                    }
+                    if(enc == (meEncoding) -1)
+                    {
+                        fprintf(stderr,"%s: Error: Unknown encoding '%s'\n",argv[0],encName) ;
+                        meExit(1) ;
+                    }
+                    meInternalEnc = enc ;
+                    meInternalEncExplicit = 1 ;
+                    break ;
+                }
 
             default:
                 {

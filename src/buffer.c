@@ -1543,6 +1543,7 @@ createBuffer(register meUByte *bname)
 #endif
     bp->indentWidth = indentWidth;
     bp->tabWidth = tabWidth;
+    bp->encoding = 0 ;  /* ME_ENC_UTF8 */
 #if MEOPT_WORDPRO
     bp->fillcol = fillcol;
     bp->fillmode = fillmode;

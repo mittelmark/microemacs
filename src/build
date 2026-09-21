@@ -139,7 +139,8 @@ if [ -z "$MAKEFILE" ] ; then
             MAKEBAS="linux$KERNEL_MAJOR$KERNEL_MINOR"
             if [ ! -r $MAKEBAS.gmk ] ; then
                 MAKEBAS="linux2"
-            fi                
+            fi
+            MAKEBAS="linux32gcc.gmk"
         fi
         X11_MAKELIB=/usr/X11R6/lib
     elif [ $PLATFORM = "OpenBSD" ] ; then

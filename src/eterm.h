@@ -196,7 +196,8 @@ extern int TCAPstart(void) ;
 extern int TCAPopen(void) ;
 extern int TCAPclose(void) ;
 extern void TCAPmove(int row, int col);
-#define TCAPputc(c)    putchar(c)
+extern void TTputConvChar(meUByte c) ;
+#define TCAPputc(c)    TTputConvChar((meUByte)(c))
 #define TCAPflush()    fflush(stdout)
 extern void TCAPhideCur(void) ;
 extern void TCAPshowCur(void) ;
@@ -278,6 +279,7 @@ typedef struct
     Font      fontTbl[meFONT_MAX];      /* table of font X ids for diff styles */
     meUByte  *fontPart[meFONT_MAX];     /* pointers to parts in fontname */
     meUByte   fontFlag[meFONT_MAX];     /* Font loaded ? */
+    meUByte   fontIsUtf8;               /* Font supports UTF-8 (iso10646) */
 } meCellMetrics;                        /* The character cell metrics */
 
 extern meCellMetrics mecm ;
@@ -297,10 +299,21 @@ extern void meFrameXTermShowCursor(meFrame *frame) ;
 extern void meFrameXTermSetScheme(meFrame *frame,meScheme scheme) ;
 extern void meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int ecol) ;
 extern void meFrameXTermDrawSpecialChar(meFrame *frame, int x, int y, meUByte cc) ;
+extern int meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
 #define     meFrameXTermDrawString(frame,col,row,str,len)                            \
 do {                                                                               \
-    XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),                       \
-                     meFrameGetXGC(frame),(col),(row),(char *)(str),(len));        \
+    if(mecm.fontIsUtf8)                                                             \
+    {                                                                              \
+        meUByte _utf8buf[meBUF_SIZE_MAX];                                          \
+        int _utf8len = meConvertToUTF8((const meUByte *)(str),(len),_utf8buf,sizeof(_utf8buf)); \
+        XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),                   \
+                         meFrameGetXGC(frame),(col),(row),(char *)_utf8buf,_utf8len); \
+    }                                                                              \
+    else                                                                           \
+    {                                                                              \
+        XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),                   \
+                         meFrameGetXGC(frame),(col),(row),(char *)(str),(len));     \
+    }                                                                              \
     if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                                \
         XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),                          \
                   meFrameGetXGC(frame),(col),(row)+mecm.underline,                 \
