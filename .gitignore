@@ -9,3 +9,14 @@ bfs/*.o
 bfs/bfs
 *~
 *.o
+# Build output directories (object dirs covered above, keep binaries out)
+src/.*/
+# Release packaging output
+/linux-7*/
+# MicroEmacs session residue and batch-test outputs
+# (note: shipped jasspa/macros/*.erf printer configs stay tracked)
+jasspa/macros/*.esf
+tests/*-out.txt
+tests/*-tmp.emf
+# Generated help file (built via: cd doc && make ehf)
+doc/me.ehf
