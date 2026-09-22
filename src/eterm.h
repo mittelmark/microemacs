@@ -324,6 +324,19 @@ extern void meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int e
 extern void meFrameXTermDrawSpecialChar(meFrame *frame, int x, int y, meUByte cc) ;
 extern int meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
 extern int meFoldUtf8ToLatin1(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
+/* Env-gated Xft debug trace (ticket 12); silent unless ME_XFT_DEBUG set */
+extern int meXftDbgOn(void) ;
+extern long meXftDbgSeqNext(void) ;
+#if MEOPT_XFT
+#define MEXD_DRAW_TRACE(ff,cl,rw,ss,ll) do { \
+    if(meXftDbgOn()) { \
+        int _mdl = (ll) ; if(_mdl > 16) _mdl = 16 ; \
+        fprintf(stderr,"MEXD %ld draw x=%d y=%d len=%d [%.*s]\n", \
+            meXftDbgSeqNext(),(int)(cl),(int)(rw),(int)(ll),_mdl,(char*)(ss)) ; \
+        fflush(stderr) ; } } while(0)
+#else
+#define MEXD_DRAW_TRACE(ff,cl,rw,ss,ll)
+#endif
 #if MEOPT_XFT
 #define     meFrameXTermDrawString(frame,col,row,str,len)                            \
 do {                                                                               \
@@ -338,6 +351,7 @@ do {                                                                            
         if(_xn < 1) _xn = 1 ;                                                     \
         meFrameXftDrawBackground(frame,(col),(row),_xn) ;                         \
         meFrameXftDrawStringUtf8(frame,(col),(row),(str),(len)) ;                  \
+        MEXD_DRAW_TRACE(frame,(col),(row),(str),(len)) ;                           \
         if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                            \
             XftDrawRect(meFrameGetXftDraw(frame),meFrameGetFgColor(frame),(col),(row)+mecm.underline,colToClient(_xn),1) ; \
     }                                                                              \

@@ -2184,6 +2184,14 @@ meXEventHandler(void)
                 keyStr[1] = (char) (0x80 | (keySym & 0x3F)) ;
                 keyStr[2] = '\0' ;
             }
+#if MEOPT_XFT
+            if(meXftDbgOn())
+            {
+                fprintf(stderr,"MEXD %ld keypress sym=%lx str0=%02x\n",
+                    meXftDbgSeqNext(),(unsigned long)keySym,(unsigned)(meUByte)keyStr[0]) ;
+                fflush(stderr) ;
+            }
+#endif
 
             /* Convert UTF-8 input to buffer encoding if needed.
              * Only convert printable characters without control/alt modifiers,
@@ -4280,6 +4288,14 @@ meFrameXTermHideCursor(meFrame *frame)
                 bl = 1 ;
                 ME_DBGTRACE("DBGR: HideCursor Xft using frame store byte") ;
             }
+            if(meXftDbgOn())
+            {
+                int _mhl = bl ; if(_mhl > 8) _mhl = 8 ;
+                fprintf(stderr,"MEXD %ld hide col=%d row=%d bl=%d [%.*s] saved=%d\n",
+                    meXftDbgSeqNext(),frame->cursorColumn,frame->cursorRow,bl,
+                    _mhl,(char*)bp,(frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0)) ;
+                fflush(stderr) ;
+            }
             if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
             {
                 static char ss[1]={' '} ;
@@ -4375,6 +4391,14 @@ meFrameXTermShowCursor(meFrame *frame)
                 memcpy(xftCursorSave,bp,bl) ;
                 xftCursorSaveLen = bl ;
                 xftCursorSaveFrame = frame ;
+                if(meXftDbgOn())
+                {
+                    int _msl = bl ; if(_msl > 8) _msl = 8 ;
+                    fprintf(stderr,"MEXD %ld show col=%d row=%d bl=%d [%.*s]\n",
+                        meXftDbgSeqNext(),frame->cursorColumn,frame->cursorRow,bl,
+                        _msl,(char*)bp) ;
+                    fflush(stderr) ;
+                }
                 if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
                 {
                     static char ss[1]={' '} ;
