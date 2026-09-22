@@ -203,6 +203,56 @@ meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize)
     return outLen;
 }
 
+/*
+ * Fold a UTF-8 string to single-byte latin-1 for legacy core X fonts
+ * (e.g. iso8859-1 "fixed"). disLineBuff content is always terminal-ready
+ * UTF-8 (renderLine converts per-buffer), which such fonts cannot render.
+ * U+0000-U+00FF map directly, everything else (including truncated
+ * sequences) becomes '?'. Returns bytes written (<= dstSize).
+ */
+int
+meFoldUtf8ToLatin1(const meUByte *src, int srcLen, meUByte *dst, int dstSize)
+{
+    const meUByte *sp = src, *se = src + srcLen ;
+    meUByte *dp = dst, *de = dst + dstSize ;
+
+    while((sp < se) && (dp < de))
+    {
+        meUByte cc = *sp ;
+        if(cc < 0x80)
+        {
+            *dp++ = cc ;
+            sp++ ;
+        }
+        else if(((cc & 0xe0) == 0xc0) && (sp + 1 < se) && ((sp[1] & 0xc0) == 0x80))
+        {
+            meUInt uu = ((meUInt)(cc & 0x1f) << 6) | (meUInt)(sp[1] & 0x3f) ;
+            *dp++ = (uu <= 0xff) ? (meUByte) uu : (meUByte) '?' ;
+            sp += 2 ;
+        }
+        else if(((cc & 0xf0) == 0xe0) && (sp + 2 < se) &&
+                ((sp[1] & 0xc0) == 0x80) && ((sp[2] & 0xc0) == 0x80))
+        {
+            *dp++ = '?' ;
+            sp += 3 ;
+        }
+        else if(((cc & 0xf8) == 0xf0) && (sp + 3 < se) &&
+                ((sp[1] & 0xc0) == 0x80) && ((sp[2] & 0xc0) == 0x80) &&
+                ((sp[3] & 0xc0) == 0x80))
+        {
+            *dp++ = '?' ;
+            sp += 4 ;
+        }
+        else
+        {
+            /* Stray continuation byte or truncated sequence */
+            *dp++ = '?' ;
+            sp++ ;
+        }
+    }
+    return (int)(dp - dst) ;
+}
+
 #ifdef _USG                     /* System V */
 /* We need this stuff to do the pipes properly. */
 #ifdef _TERMIOS

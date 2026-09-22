@@ -323,6 +323,7 @@ extern void meFrameXTermSetScheme(meFrame *frame,meScheme scheme) ;
 extern void meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int ecol) ;
 extern void meFrameXTermDrawSpecialChar(meFrame *frame, int x, int y, meUByte cc) ;
 extern int meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
+extern int meFoldUtf8ToLatin1(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
 #if MEOPT_XFT
 #define     meFrameXTermDrawString(frame,col,row,str,len)                            \
 do {                                                                               \
@@ -351,8 +352,12 @@ do {                                                                            
         }                                                                          \
         else                                                                       \
         {                                                                          \
+            /* Legacy single-byte core font: disLineBuff content is UTF-8, */     \
+            /* fold U+0000-U+00FF to latin-1, '?' beyond. */                      \
+            meUByte _utf8buf[meBUF_SIZE_MAX];                                      \
+            int _utf8len = meFoldUtf8ToLatin1((const meUByte *)(str),(len),_utf8buf,sizeof(_utf8buf)); \
             XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),               \
-                             meFrameGetXGC(frame),(col),(row),(char *)(str),(len)); \
+                             meFrameGetXGC(frame),(col),(row),(char *)_utf8buf,_utf8len); \
         }                                                                          \
         if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                            \
             XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),                      \
@@ -372,8 +377,11 @@ do {                                                                            
     }                                                                              \
     else                                                                           \
     {                                                                              \
+        /* Legacy single-byte core font: fold UTF-8 to latin-1. */               \
+        meUByte _utf8buf[meBUF_SIZE_MAX];                                          \
+        int _utf8len = meFoldUtf8ToLatin1((const meUByte *)(str),(len),_utf8buf,sizeof(_utf8buf)); \
         XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),                   \
-                         meFrameGetXGC(frame),(col),(row),(char *)(str),(len));     \
+                         meFrameGetXGC(frame),(col),(row),(char *)_utf8buf,_utf8len); \
     }                                                                              \
     if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                                \
         XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),                          \

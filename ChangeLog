@@ -7,11 +7,24 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260922.0812>
+>  Last Modified : <260922.1907>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260922] - Fixed legacy X11 core-font umlaut display (ticket 12).
+               disLineBuff is always terminal-ready UTF-8, which
+               single-byte core fonts (e.g. iso8859-1 "fixed") showed
+               as raw-byte mojibake. New meFoldUtf8ToLatin1()
+               (U+0000-U+00FF direct, '?' beyond) in the core branches
+               of meFrameXTermDrawString; FONTFIX updateline branch
+               now assembles full UTF-8 bytes per column. U+00FF-range
+               chars render correctly, verified by screenshot.
+               ASCII typing delay with XFT=1 not reproducible on test
+               machine (prompt display verified at 5x zoom).
+               Files: src/unixterm.c, src/eterm.h, src/display.c,
+               doc/utf8-encoding.md, doc/tickets.md
 
   [260922] - libXft TrueType rendering for mew/mecw (branch libxft-utf8).
                Off by default, enabled with XFT=1 (separate -xft object

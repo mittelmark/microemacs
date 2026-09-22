@@ -1228,7 +1228,38 @@ hideLineJump:
                     }
                     *fstp++ = cc ;
                 }
-                meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)sfstp+ccol,ii-col);
+                /* Draw full UTF-8 bytes (not store lead-bytes) so the
+                 * core-font fold in meFrameXTermDrawString sees complete
+                 * sequences; controls were spaced above and are drawn
+                 * separately below via the spFlag loop. */
+                {
+                    meUByte cbuf[4096] ;
+                    int cblen = 0, cb_d ;
+                    for(cb_d = col ; (cb_d < ii) && (cblen < 4090) ; cb_d++)
+                    {
+                        meInt bs = disLineByteOff[cb_d] ;
+                        meInt be = disLineByteOff[cb_d+1] ;
+                        meInt bl = be - bs ;
+                        if((disLineBuff[bs] & 0xe0) == 0)
+                        {
+                            /* Control: space now, special char below */
+                            cbuf[cblen++] = ' ' ;
+                        }
+                        else
+                        {
+                            if(bl > 4)
+                                bl = 4 ;
+                            if(bl > 0)
+                            {
+                                if(cblen + bl > 4090)
+                                    break ;
+                                memcpy(cbuf+cblen,disLineBuff+bs,bl) ;
+                                cblen += bl ;
+                            }
+                        }
+                    }
+                    meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)cbuf,cblen);
+                }
 #if MEOPT_XFT
                 }
 #endif

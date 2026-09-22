@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-08-30 13:25
+date: 2026-09-22 18:30
 ---
 
 ## Introduction
@@ -109,3 +109,29 @@ v unfold dir (color
    filename.txt (color)    M (indicator)
    newname.txt (color)     A (git indicator)
    
+## Ticket 12: UTF8 symbol support
+
+- mec version Unix/Windows implemented
+- mew version
+    - Linux - using libXft 
+    - UTF8 rendering works with XFT=1 and using a font like 'monospace:size=14' in user setup
+    - TODO: typing delay for ascii characters typing 'a' just gives whitespace typing 'ab' shows 'a !' so 
+      for ascii characters the char before the cursor is only displayed if the next key is entered or return pressed
+      (STATUS 260922: not reproducible on test machine -- with Xft active
+      ('monospace:size=14', antialiasing confirmed) 'x' and 'y' typed via
+      xdotool both display promptly with cursor advance, verified at 5x
+      screenshot zoom; buffer bytes always correct. Needed from affected
+      machine: `fc-match "monospace:size=14"` output, ME build/binary,
+      X server type, minimal repro incl. typing speed.)
+    - umlauts like ��� are displayed without delay
+    - DONE 260922: broken display for the old X11 fonts -- umlauts showed
+      only raw UTF-8 bytes ('Ã¤' mojibake/boxes). disLineBuff is always
+      terminal-ready UTF-8, which legacy single-byte core fonts cannot
+      render. Fix: new meFoldUtf8ToLatin1() (U+0000-U+00FF direct, '?'
+      beyond) applied in the core branches of meFrameXTermDrawString,
+      plus full-byte assembly in the FONTFIX updateline branch (it drew
+      frame-store lead bytes only). U+00FF-range chars (äöüÄÖÜß©£)
+      now render correctly with e.g. 'fixed'; others show '?'.
+      Files: src/unixterm.c, src/eterm.h, src/display.c
+    - TODO: font selection dialog based on the code of the sister project in ../jasspa/microemacs/macros (ME 26)
+    - TODO: windows GUI version support for Unicode/UTF8

@@ -236,6 +236,23 @@ make -f linux32gcc.gmk BTYP=cw XFT=1   # X11 objects carry -xft suffix dirs
 - Without `setlocale()`, `XLookupString` returns Latin-1 for keys
   `0x80-0xFF`; these are re-encoded to UTF-8 on input.
 
+### Legacy core X fonts (fixed 260922)
+
+`renderLine()` always emits terminal-ready UTF-8 into `disLineBuff`,
+which single-byte core fonts (e.g. iso8859-1 `fixed`) cannot render --
+umlauts showed up as raw-byte mojibake (`Ã¤`) or boxes:
+
+- new `meFoldUtf8ToLatin1()` (`src/unixterm.c`): folds a UTF-8 run to
+  single latin-1 bytes (U+0000-U+00FF direct, `?` beyond, truncated
+  sequences safe), applied in both core branches of
+  `meFrameXTermDrawString` (`src/eterm.h`);
+- the FONTFIX `updateline()` branch (`src/display.c`) drew frame-store
+  lead bytes only; it now assembles full UTF-8 bytes per column (like
+  the Xft `xftbuf` loop) so the fold sees complete sequences.
+
+Result (verified by screenshot): U+00FF-range characters (äöüÄÖÜß©£)
+render correctly with legacy fonts; anything beyond shows `?`.
+
 ### Known issue: one-character display lag (open)
 
 The last entered character is not displayed until the next keystroke
@@ -247,6 +264,23 @@ Xlib buffering changes and font configuration.
 **Asymptom note:** Multi-byte UTF-8 characters (a-umlaut, o-umlaut,
 u-umlaut) display correctly, while single-byte ASCII characters
 (a, b, c) exhibit the lag.
+
+#### Status 260922 (test machine) -- NOT reproduced
+
+Draw-tracing plus 5x-zoomed screenshots show prompt display here, so
+the 1x-screenshot readings above are unreliable at single-glyph scale:
+
+- core fonts (`xft=0`): update/draw trace proves repaints are issued
+  and flushed per keystroke; zoomed crops show `252)Q` after `Q` and
+  `252)QW` after `W` -- the earlier "black block"/"?" readings were
+  misreads of `Q`+cursor at 1x scale;
+- Xft active (`monospace:size=14`, antialiasing confirmed): typed `x`
+  and `y` both display promptly with cursor advance.
+
+The lag may still be real on the affected machine (different font
+resolution, build, or X server). Needed from there: `fc-match
+"monospace:size=14"` output, exact ME binary/commit, X server type,
+and typing speed in the repro.
 
 #### What has been tried and ruled out
 
@@ -356,8 +390,9 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
    content rendering is per-buffer (`bp->encoding`), so mixed encodings
    share one screen; OSD dialogs and keyboard input still use the global.
 2. **X11 fonts**: core bitmap fonts by default; TrueType via libXft
-3. **Xft one-character lag**: with `XFT=1`, the last typed character
-   is not visible until the next keystroke (see "Known issue" above)
+3. **Xft one-character lag**: reported with `XFT=1` on one machine
+   (last typed character visible only after next keystroke), but NOT
+   reproducible on the test machine (see "Known issue" above)
 4. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
 5. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
    with `?` when in legacy mode.
@@ -473,8 +508,10 @@ The `disLineByteOff[]` approach was chosen because it:
 ## Future Improvements
 
 1. **TrueType font support**: basic libXft rendering implemented behind
-   `XFT=1` (see section above); the one-character display lag for
-   single-byte ASCII remains open -- see "Known issue" above.
+   `XFT=1` (see section above); legacy core fonts fixed via UTF-8 to
+   latin-1 fold. The one-character display lag for single-byte ASCII
+   is reported on one machine but unreproducible elsewhere -- see
+   "Known issue" above.
 2. **Per-buffer encoding**: Allow different buffers to use different internal
    encodings simultaneously
 3. **CJK/IME support**: Input Method Editor for CJK character entry
