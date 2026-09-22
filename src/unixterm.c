@@ -1225,8 +1225,8 @@ meFrameXTermSetScheme(meFrame *frame, meScheme scheme)
          * foreground) but text goes through Xft colors/fonts. */
         if(meFrameGetXftDraw(frame) == NULL)
             meFrameSetXftDraw(frame,XftDrawCreate(mecm.xdisplay,meFrameGetXWindow(frame),
-                                                  DefaultVisual(mecm.xdisplay,xscreen),
-                                                  DefaultColormap(mecm.xdisplay,xscreen))) ;
+                                                   DefaultVisual(mecm.xdisplay,xscreen),
+                                                   DefaultColormap(mecm.xdisplay,xscreen))) ;
         cc = meStyleGetFColor(meSchemeGetStyle(scheme)) ;
         meFrameSetFgColor(frame,meXftColorGet(cc)) ;
         cc = meStyleGetBColor(meSchemeGetStyle(scheme)) ;
@@ -4222,11 +4222,13 @@ meFrameXTermHideCursor(meFrame *frame)
             {
                 bp = xftCursorSave ;
                 bl = xftCursorSaveLen ;
+                ME_DBGTRACE("DBGR: HideCursor Xft using saved bytes") ;
             }
             else
             {
                 bp = cc ;
                 bl = 1 ;
+                ME_DBGTRACE("DBGR: HideCursor Xft using frame store byte") ;
             }
             if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
             {
@@ -4319,6 +4321,7 @@ meFrameXTermShowCursor(meFrame *frame)
                 /* Remember for Hide (dot will have moved by then) */
                 if(bl > 8)
                     bl = 8 ;
+                ME_DBGTRACE("DBGR: ShowCursor Xft cursorBytes") ;
                 memcpy(xftCursorSave,bp,bl) ;
                 xftCursorSaveLen = bl ;
                 xftCursorSaveFrame = frame ;

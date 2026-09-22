@@ -1212,6 +1212,7 @@ hideLineJump:
                         }
                     }
                     meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)xftbuf,xb);
+                    ME_DBGTRACE("DBGR: FONTFIX Xft drawString xb bytes") ;
                 }
                 else
                 {
@@ -1594,7 +1595,17 @@ updateWindow(meWindow *wp)
             update = 1 ;
         }
         if(update)
+        {
+            if(lp == wp->dotLine)
+                ME_DBGTRACE("DBGR: updateline called for dotLine") ;
+            else
+                ME_DBGTRACE("DBGR: updateline called for other line") ;
             updateline(row,vptr,wp);
+        }
+        else if(lp == wp->dotLine)
+        {
+            ME_DBGTRACE("DBGR: SKIPPED updateline for dotLine") ;
+        }
         row++ ;
         vptr++ ;
         if(lp == bp->baseLine)
@@ -2557,8 +2568,17 @@ update(int flag)    /* force=meTRUE update past type ahead? */
 
     ME_DBGTRACE("12: update entered") ;
     if((alarmState & meALARM_PIPED) ||
-       (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec || TTahead())))
+       (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec)))
         return meTRUE ;
+
+    /* Drain pending input events (X events, timers) but do NOT skip the
+     * screen update when type-ahead is present.  On X11/Xft, XPending()
+     * inside TTahead() may find a queued KeyPress even at moderate typing
+     * speeds; using its return value to skip rendering caused a one-
+     * character display lag (the just-typed char was never drawn until the
+     * next keystroke arrived).  We still call TTahead() for its side-
+     * effects: processing Expose/ConfigureNotify, mouse timers, etc. */
+    TTahead() ;
 
     if(screenUpdateDisabledCount)
     {
@@ -2572,6 +2592,7 @@ update(int flag)    /* force=meTRUE update past type ahead? */
     else
 #endif
         screenUpdate(1,2-sgarbf) ;
+    ME_DBGTRACE("DBGR: screenUpdate done") ;
     /* reset garbled status */
     sgarbf = meFALSE ;
 
