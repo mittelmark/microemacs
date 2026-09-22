@@ -397,6 +397,51 @@ static int disableResize = 0;           /* Flag to disable screen resize */
 Colormap xcmap ;
 int      xscreen ;
 XSizeHints sizeHints ;
+#if MEOPT_XFT
+/* Xft color cache parallel to colTable (indexed by color index).
+ * Entries are allocated lazily and re-allocated when the underlying
+ * pixel changes (scheme editor). Pixels come from colTable so the
+ * closest-match logic in XTERMaddColor is honoured. */
+static XftColor *xftColTable = NULL ;
+static int xftNoColors = 0 ;
+static XftColor *
+meXftColorGet(meColor index)
+{
+    XColor xc ;
+    if(index >= xftNoColors)
+    {
+        int nn = (int) index + 16, ii ;
+        XftColor *nt = meRealloc(xftColTable, nn * sizeof(XftColor)) ;
+        if(nt == NULL)
+            return NULL ;
+        /* Mark new entries unallocated (pixel ~0UL is never allocated) */
+        for(ii = xftNoColors ; ii < nn ; ii++)
+            nt[ii].pixel = ~0UL ;
+        xftColTable = nt ;
+        xftNoColors = nn ;
+    }
+    if((xftColTable[index].pixel == ~0UL) || (xftColTable[index].pixel != colTable[index]))
+    {
+        XRenderColor rc ;
+        if(xftColTable[index].pixel != ~0UL)
+            XftColorFree(mecm.xdisplay, DefaultVisual(mecm.xdisplay,xscreen),
+                         DefaultColormap(mecm.xdisplay,xscreen), &xftColTable[index]) ;
+        xc.pixel = colTable[index] ;
+        XQueryColor(mecm.xdisplay, xcmap, &xc) ;
+        rc.red = xc.red ;
+        rc.green = xc.green ;
+        rc.blue = xc.blue ;
+        rc.alpha = 0xffff ;
+        if(!XftColorAllocValue(mecm.xdisplay, DefaultVisual(mecm.xdisplay,xscreen),
+                               xcmap, &rc, &xftColTable[index]))
+        {
+            xftColTable[index].pixel = ~0UL ;
+            return NULL ;
+        }
+    }
+    return &xftColTable[index] ;
+}
+#endif
 int meStdin ;
 #define meATOM_WM_DELETE_WINDOW 0
 #define meATOM_WM_SAVE_YOURSELF 1
@@ -1103,12 +1148,97 @@ __XTERMfontGetId(meUByte font)
 #define XTERMfontGetId(font) \
 ((mecm.fontTbl[font] == BadName) ? __XTERMfontGetId(font):mecm.fontTbl[font])
 
+#if MEOPT_XFT
+/* Resolve the Xft font for a style (bold/italic via fontconfig suffixes,
+ * adapted from upstream). Style fonts must match the base cell metrics
+ * (fixed grid) - mismatches fall back to the base font. Results cached
+ * in ftFontTbl[]. */
+static XftFont *
+__meXftFontGet(meUByte font)
+{
+    char *fn = (char *) mecm.fontName, buff[256], *bf, *ss ;
+    XftFont *ftFont ;
+    int ll ;
+
+    if(fn == NULL)
+        return mecm.ftFontTbl[0] ;
+    ll = strlen(fn) ;
+    if(ll > 200)
+        ll = 200 ;
+    memcpy(buff,fn,ll) ;
+    bf = ss = buff+ll ;
+    if(strstr(fn,":weight=") == NULL)
+    {
+        if(font & meFONT_BOLD)
+        {
+            memcpy(ss,":weight=bold",12) ;
+            ss += 12 ;
+        }
+        else if(font & meFONT_LIGHT)
+        {
+            memcpy(ss,":weight=light",13) ;
+            ss += 13 ;
+        }
+    }
+    if(strstr(fn,":slant=") == NULL)
+    {
+        if(font & meFONT_ITALIC)
+        {
+            memcpy(ss,":slant=italic",13) ;
+            ss += 13 ;
+        }
+    }
+    *ss = '\0' ;
+    if((ss == bf) || ((ftFont = XftFontOpenName(mecm.xdisplay,xscreen,buff)) == NULL))
+        ftFont = mecm.ftFontTbl[0] ;
+    else
+    {
+        XGlyphInfo ext ;
+        ll = ftFont->ascent + ftFont->descent ;
+        if(ftFont->height < ll)
+            ll = ftFont->height ;
+        XftTextExtentsUtf8(mecm.xdisplay,ftFont,(const FcChar8 *) "W",1,&ext) ;
+        if((ext.xOff != mecm.fwidth) || (ll > mecm.fdepth))
+        {
+            /* Metrics differ - unsafe for the fixed grid, fall back */
+            XftFontClose(mecm.xdisplay,ftFont) ;
+            ftFont = mecm.ftFontTbl[0] ;
+        }
+    }
+    mecm.ftFontTbl[font] = ftFont ;
+    return ftFont ;
+}
+#define meXftFontGet(font) \
+((mecm.ftFontTbl[font] == NULL) ? __meXftFontGet(font):mecm.ftFontTbl[font])
+#endif
+
 void
 meFrameXTermSetScheme(meFrame *frame, meScheme scheme)
 {
     meUInt valueMask = 0 ;
     meUByte cc ;
 
+#if MEOPT_XFT
+    if(meXftUsed())
+    {
+        /* X11 GC keeps its colors (special chars reuse the GC
+         * foreground) but text goes through Xft colors/fonts. */
+        if(meFrameGetXftDraw(frame) == NULL)
+            meFrameSetXftDraw(frame,XftDrawCreate(mecm.xdisplay,meFrameGetXWindow(frame),
+                                                  DefaultVisual(mecm.xdisplay,xscreen),
+                                                  DefaultColormap(mecm.xdisplay,xscreen))) ;
+        cc = meStyleGetFColor(meSchemeGetStyle(scheme)) ;
+        meFrameSetFgColor(frame,meXftColorGet(cc)) ;
+        cc = meStyleGetBColor(meSchemeGetStyle(scheme)) ;
+        meFrameSetBgColor(frame,meXftColorGet(cc)) ;
+        if(meSchemeTestNoFont(scheme))
+            cc = 0 ;
+        else
+            cc = meStyleGetFont(meSchemeGetStyle(scheme)) & meFONT_MASK ;
+        meFrameSetXftFont(frame,meXftFontGet(cc)) ;
+        return ;
+    }
+#endif
     cc = meStyleGetFColor(meSchemeGetStyle(scheme)) ;
     if(meFrameGetXGCFCol(frame) != cc)
     {
@@ -1426,6 +1556,42 @@ meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int ecol)
     int tcol;                           /* Text column start */
     int length;                         /* Length of string */
 
+#if MEOPT_XFT
+    if(meXftUsed())
+    {
+        /* Frame store holds one (lead) byte per column: controls go
+         * through the special-char path, high bytes are single-byte
+         * charset previews converted like TTputConvChar, ASCII draws
+         * direct. Per-cell calls are fine here (OSD regions). */
+        meUByte cc, cvt[8] ;
+        int clen ;
+        for(flp = frame->store + srow ; srow < erow ; srow++, flp++)
+        {
+            row = rowToClient(srow) ;
+            fstp = flp->text + scol ;
+            fssp = flp->scheme + scol ;
+            for(col = scol ; col < ecol ; col++)
+            {
+                cc = *fstp++ ;
+                meFrameXTermSetScheme(frame,*fssp++) ;
+                if((cc & 0xe0) == 0)
+                {
+                    static char ssp[1] = { ' ' } ;
+                    meFrameXTermDrawString(frame,colToClient(col),row,ssp,1) ;
+                    meFrameXTermDrawSpecialChar(frame,colToClient(col),row-mecm.ascent,cc) ;
+                }
+                else if(cc < 0x80)
+                    meFrameXTermDrawString(frame,colToClient(col),row,(char *)&cc,1) ;
+                else
+                {
+                    clen = meConvertToUTF8(&cc,1,cvt,sizeof(cvt)) ;
+                    meFrameXTermDrawString(frame,colToClient(col),row,(char *)cvt,clen) ;
+                }
+            }
+        }
+        return ;
+    }
+#endif
     /* Process each row in turn until we reach the end of the line */
     if (meSystemCfg & meSYSTEM_FONTFIX)
     {
@@ -1763,6 +1929,15 @@ meXEventHandler(void)
             if (sscol == -1)            /* No historical bounding information */
             {
                 if (event.xexpose.count == 0)   /* Last of the expose events ?? */
+#if MEOPT_XFT
+                    if(meXftUsed())
+                        /* Frame store holds single lead bytes only - a
+                         * frame-store repaint would garble multi-byte
+                         * text, so force a full buffer re-render
+                         * instead (OSD dialogs are restored after). */
+                        sgarbf = meTRUE ;
+                    else
+#endif
                     meFrameXTermDraw(frame,srow, scol, erow, ecol);
                 else                    /* More to come - save bounding box */
                 {
@@ -1790,6 +1965,11 @@ meXEventHandler(void)
                  * a paint to redraw the screen. */
                 if (event.xexpose.count == 0)
                 {
+#if MEOPT_XFT
+                    if(meXftUsed())
+                        sgarbf = meTRUE ;
+                    else
+#endif
                     meFrameXTermDraw(frame,ssrow, sscol, serow, secol);
                     sscol = -1;         /* Reset the history to none */
                 }
@@ -1934,10 +2114,27 @@ meXEventHandler(void)
             meUShort ii, ss ;
             KeySym keySym ;
             char   keyStr[20];
+#ifndef NDEBUG
+            { struct timeval _tv; gettimeofday(&_tv,NULL) ;
+              fprintf(stderr,"XEVT t=%ld.%06ld\n",(long)_tv.tv_sec,(long)_tv.tv_usec) ;
+              fflush(stderr) ; }
+#endif
 
             ss = event.xkey.state ;
             XLookupString(&event.xkey,keyStr,20,&keySym,NULL);
-            
+
+            /* Without setlocale() XLookupString returns Latin-1 single
+             * bytes even on UTF-8 desktops. Latin-1 keysyms (0x80-0xFF)
+             * are Unicode codepoints, so re-encode to proper UTF-8 here
+             * - the per-buffer conversion below then works on any locale
+             * (Xft/UTF-8 editing in mew depends on this). */
+            if(keySym >= 0x80 && keySym <= 0xff)
+            {
+                keyStr[0] = (char) (0xC0 | (keySym >> 6)) ;
+                keyStr[1] = (char) (0x80 | (keySym & 0x3F)) ;
+                keyStr[2] = '\0' ;
+            }
+
             /* Convert UTF-8 input to buffer encoding if needed.
              * Only convert printable characters without control/alt modifiers,
              * as modified keys are handled by the existing key processing below. */
@@ -3380,11 +3577,156 @@ TTinitMouse(void)
  * string provided by the user (or system) and determine if there
  * are any derivatives of the font */
 static int
-XTERMsetFont(char *fontName)
+/* n controls query/apply - bit 0x01 clear queries current metrics into
+ * $result only ("||||fwidth|fdepth||size|name|", size field for Xft).
+ * Xft dry-run/validate flags: 0x02 validate without applying, 0x04 skip
+ * $result update, 0x20 cell depth quirk workaround (see below). */
+XTERMsetFont(int n, char *fontName)
 {
     int ii;
     XFontStruct *font ;
-    
+
+#if MEOPT_XFT
+    if((n & 0x01) == 0)
+    {
+        /* Query mode - mecm is initialised by XTERMstart so just report */
+        sprintf((char *) resultStr,"||||%d|%d||%d|%s|",mecm.fwidth,mecm.fdepth,
+                mecm.size,(mecm.fontName == NULL) ? "":(char *) mecm.fontName);
+        return meTRUE;
+    }
+    if((fontName != NULL) && (fontName[0] != '-') && (fontName[0] != '\0'))
+    {
+        /* Xft fontconfig name (e.g. "monospace:lang=en:size=12"). Names
+         * starting with '-' (or NULL/empty) use legacy X server fonts
+         * below, so startup (Xdefaults or fallback list) is unaffected. */
+        XftFont *ftFont;
+        char fontBuf[256], *ss;
+        int sz, jj;
+        XGlyphInfo ext;
+
+        strcpy(fontBuf,fontName);
+        if((ss=strstr(fontBuf,":size=")) == NULL)
+        {
+            /* No size given - accept trailing "-NN" and standardise it
+             * to ":size=", else pick a sane default (always present so
+             * macros can id Xft use and keep the font stable). */
+            if((ss = strchr(fontBuf,':')) == NULL)
+                ss = fontBuf + strlen(fontBuf);
+            ss--;
+            if(isDigit(ss[0]))
+            {
+                do
+                    ss--;
+                while(isDigit(ss[0]));
+                if(ss[0] == '-')
+                {
+                    /* size tacked onto the end: standardise to ":size="
+                     * plus the digits (strcpy re-terminates the string) */
+                    char *dd = fontName+(ss-fontBuf)+1;
+                    sz = atoi(dd);
+                    memcpy(ss,":size=",6);
+                    ss += 6;
+                    strcpy(ss,dd);
+                }
+                else
+                    ss = NULL;
+            }
+            else
+                ss = NULL;
+        }
+        else
+            sz = atoi(ss+6) ;   /* size already present, ss points at it */
+        if(ss == NULL)
+        {
+            /* No size specified - pick a sane default, so :size is
+             * always present and macros can id Xft use reliably. */
+            ss = fontBuf + strlen(fontBuf);
+            sz = sizeHints.max_height/95;
+            sprintf(ss,":size=%d",sz);
+        }
+        if((ftFont = XftFontOpenName(mecm.xdisplay,xscreen,fontBuf)) == NULL)
+            return meFALSE;
+        /* Cell metrics from the font: width is the "W" advance (rejects
+         * proportional fonts later at render - fixed grid is kept). */
+        jj = ftFont->ascent + ftFont->descent;
+        if(n & 0x20)
+        {
+            if(ftFont->height < jj)
+                jj = ftFont->height;
+        }
+        else if(ftFont->height > jj)
+            jj = ftFont->height;
+        XftTextExtentsUtf8(mecm.xdisplay,ftFont,(const FcChar8 *) "W",1,&ext);
+        ii = ext.xOff;
+        if((n & 0x04) == 0)
+        {
+            /* Save the values in $result (first field flags non-mono) */
+            XftTextExtentsUtf8(mecm.xdisplay,ftFont,(const FcChar8 *) " ",1,&ext);
+            sprintf((char *) resultStr,"|%c|||%d|%d||%d|%s|",((ii == ext.xOff) ? '0':'1'),ii,jj,sz,fontBuf);
+        }
+        if((n & 0x02) || (ii <= 0) || (jj <= 0))
+        {
+            /* Dry run, or unusable metrics - validate only */
+            XftFontClose(mecm.xdisplay,ftFont);
+            return meTRUE;
+        }
+        /* Font is acceptable - apply it. */
+        mecm.size = sz;
+        mecm.fwidth = ii;
+        mecm.fdepth = jj;
+        mecm.ascent = jj - ftFont->descent;
+        mecm.fhwidth = ii >> 1;
+        mecm.fhdepth = jj >> 1;
+        if((mecm.underline = mecm.ascent + 2) >= mecm.fdepth)
+            mecm.underline = mecm.fdepth - 1;
+        if((mecm.fadepth = ii+1) > jj)
+            mecm.fadepth = jj;
+        mecm.descent = ftFont->descent ;
+        sizeHints.height_inc = mecm.fdepth ;
+        sizeHints.width_inc  = mecm.fwidth ;
+        sizeHints.min_height = mecm.fdepth*4 ;
+        sizeHints.min_width  = mecm.fwidth*10 ;
+        sizeHints.base_height = mecm.fdepth ;
+        sizeHints.base_width  = mecm.fwidth ;
+        /* Unload any previous Xft fonts (core table stays active -
+         * rendering switches to Xft in a later step, so the core
+         * fonts must keep working until then). */
+        if(mecm.ftFontTbl[0] != NULL)
+        {
+            XftFont *ftOld = mecm.ftFontTbl[0] ;
+            for(ii = 0 ; ii < meFONT_MAX ; ii++)
+            {
+                if((mecm.ftFontTbl[ii] != NULL) && (mecm.ftFontTbl[ii] != ftOld))
+                    XftFontClose(mecm.xdisplay,mecm.ftFontTbl[ii]);
+                mecm.ftFontTbl[ii] = NULL ;
+            }
+            XftFontClose(mecm.xdisplay,ftOld) ;
+        }
+        /* Assign the base font. Unload the core table: fontTbl[0] == 0
+         * marks Xft use (meXftUsed()), switching all rendering over.
+         * (BadName is 15, not 0, so [0] needs an explicit zero while
+         * the rest keep BadName for lazy style resolution.) */
+        for(ii = 0 ; ii < meFONT_MAX ; ii++)
+        {
+            if(mecm.fontFlag[ii])
+                XUnloadFont(mecm.xdisplay,mecm.fontTbl[ii]);
+            mecm.fontTbl[ii] = BadName ;
+            mecm.fontFlag[ii] = 0 ;
+        }
+        mecm.fontTbl[0] = 0 ;
+        mecm.fontId = 0 ;
+        mecm.ftFontTbl[0] = ftFont;
+        if(mecm.fontName != NULL)
+            free(mecm.fontName);
+        mecm.fontName = meStrdup((meUByte *) fontBuf);
+        /* Neutralise XLFD style splitting (fontPart pointed into the
+         * freed name): empty parts fail XLoadQueryFont lookups safely
+         * back onto the still-valid core base font. */
+        for(ii = 0 ; ii < meFONT_MAX ; ii++)
+            mecm.fontPart[ii] = (meUByte *) "" ;
+        return meTRUE;
+    }
+#endif
     if (fontName != NULL)
     {
         /* Load the basic font into the server, fail if we cannot find it. */
@@ -3470,6 +3812,20 @@ XTERMsetFont(char *fontName)
     mecm.fontTbl[0] = font->fid ;
     mecm.fontFlag[0] = 1;
     mecm.fontId = font->fid ;
+#if MEOPT_XFT
+    /* Leaving Xft use - release any Xft fonts (core fontTbl[0] marks this) */
+    if(mecm.ftFontTbl[0] != NULL)
+    {
+        XftFont *ftOld = mecm.ftFontTbl[0] ;
+        for(ii = 0 ; ii < meFONT_MAX ; ii++)
+        {
+            if((mecm.ftFontTbl[ii] != NULL) && (mecm.ftFontTbl[ii] != ftOld))
+                XftFontClose(mecm.xdisplay,mecm.ftFontTbl[ii]);
+            mecm.ftFontTbl[ii] = NULL ;
+        }
+        XftFontClose(mecm.xdisplay,ftOld) ;
+    }
+#endif
 
     /* Detect font encoding: check if the font supports UTF-8 (iso10646).
      * For iso8859-1 fonts, CP1252 bytes can be passed directly.
@@ -3557,6 +3913,12 @@ XTERMcreateWindow(meUShort width, meUShort depth)
     frameData->fontId = mecm.fontId ;
     frameData->xgcv.font = mecm.fontId ;
     frameData->xgc = XCreateGC(mecm.xdisplay,frameData->xwindow,GCFont,&frameData->xgcv) ;
+#if MEOPT_XFT
+    frameData->xdraw = NULL ;
+    frameData->ftFont = NULL ;
+    frameData->xfcol = NULL ;
+    frameData->xbcol = NULL ;
+#endif
 
     /* To get the mouse positional information then we register for
      * "PointerMotionMask" events. */
@@ -3628,6 +3990,10 @@ meFrameXTermFree(meFrame *frame, meFrame *sibling)
     {
         XDestroyWindow(mecm.xdisplay,meFrameGetXWindow(frame)) ;
         XFreeGC(mecm.xdisplay,meFrameGetXGC(frame)) ;
+#if MEOPT_XFT
+        if(meFrameGetXftDraw(frame) != NULL)
+            XftDrawDestroy(meFrameGetXftDraw(frame)) ;
+#endif
         free(frame->termData) ;
     }
 }
@@ -3698,8 +4064,8 @@ XTERMstart(void)
         ss = NULL ;
 
     /* Load the font into the system */
-    if((XTERMsetFont(ss) == meFALSE) &&
-       ((ss == NULL) || (XTERMsetFont(NULL) == meFALSE)))
+    if((XTERMsetFont(1,ss) == meFALSE) &&
+       ((ss == NULL) || (XTERMsetFont(1,NULL) == meFALSE)))
         return meFALSE ;
 
     /* Set the default geometry, then look for an override */
@@ -3789,6 +4155,45 @@ XTERMstart(void)
     return meTRUE ;
 }
 
+#if MEOPT_XFT
+/* Bytes hidden under the cursor as drawn by the last Show. Hide runs
+ * after dot has moved, so the buffer position is stale then (reading
+ * it shows the NEW cell - e.g. beta over alpha, whose leads match).
+ * Saved bytes are replayed instead; a frame mismatch falls back to
+ * the single frame-store byte. */
+static meUByte xftCursorSave[8] ;
+static int xftCursorSaveLen = 0 ;
+static meFrame *xftCursorSaveFrame = NULL ;
+/* Full UTF-8 bytes for the char under the cursor (frame store holds
+ * only the lead byte). Uses the buffer when its lead byte matches the
+ * frame store (cursor tracks dot), else the single frame-store byte. */
+static meUByte *
+meXftCursorBytes(meFrame *frame, meUByte *cc, int *len)
+{
+    if(frame == frameCur)
+    {
+        meWindow *wp = frameCur->windowCur ;
+        meLine *lp = wp->dotLine ;
+        meInt off = wp->dotOffset, llen = meLineGetLength(lp) ;
+        if((off < llen) && (lp->text[off] == *cc))
+        {
+            int bl = meUtf8ValidSeqLen(&lp->text[off]) ;
+            if(off + bl > llen)
+                bl = (int)(llen - off) ;
+            if(bl > 4)
+                bl = 4 ;   /* longer runs are invalid - box either way */
+            if(bl > 0)
+            {
+                *len = bl ;
+                return &lp->text[off] ;
+            }
+        }
+    }
+    *len = 1 ;
+    return cc ;
+}
+#endif
+
 /*
  * TThideCur - hide the cursor
  */
@@ -3806,6 +4211,34 @@ meFrameXTermHideCursor(meFrame *frame)
         schm = flp->scheme[frame->cursorColumn] ;        /* Get scheme under cursor */
 
         meFrameXTermSetScheme(frame,schm) ;
+#if MEOPT_XFT
+        if(meXftUsed())
+        {
+            meUByte *bp ;
+            int bl ;
+            /* Hide replays whatever was under the cursor - dot may
+             * have moved since, so the buffer position is stale. */
+            if((frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0))
+            {
+                bp = xftCursorSave ;
+                bl = xftCursorSaveLen ;
+            }
+            else
+            {
+                bp = cc ;
+                bl = 1 ;
+            }
+            if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
+            {
+                static char ss[1]={' '} ;
+                meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
+                meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),*bp) ;
+            }
+            else
+                meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),bp,bl);
+        }
+        else
+#endif
         if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*cc) & 0xe0))
         {
             static char ss[1]={' '} ;
@@ -3819,7 +4252,7 @@ meFrameXTermHideCursor(meFrame *frame)
 
 /*
  * TTshowCur - show the cursor
- */
+  */
 void
 meFrameXTermShowCursor(meFrame *frame)
 {
@@ -3855,6 +4288,11 @@ meFrameXTermShowCursor(meFrame *frame)
                 ff = meStyleGetFont(meSchemeGetStyle(schm)) ;
                 if(meSchemeTestNoFont(schm))
                     ff &= ~(meFONT_BOLD|meFONT_ITALIC|meFONT_UNDERLINE) ;
+#if MEOPT_XFT
+                if(meXftUsed())
+                    meFrameSetXGCFont(frame,ff) ;
+                else
+#endif
                 if(meFrameGetXGCFont(frame) != ff)
                 {
                     meFrameSetXGCFont(frame,ff) ;
@@ -3868,6 +4306,33 @@ meFrameXTermShowCursor(meFrame *frame)
             }
             if(valueMask)
                 XChangeGC(mecm.xdisplay,meFrameGetXGC(frame),valueMask,&meFrameGetXGCValues(frame)) ;
+#if MEOPT_XFT
+            if(meXftUsed())
+            {
+                /* Inverted Xft colors mirroring the GC swap above */
+                meUByte *bp ;
+                int bl ;
+                meFrameSetFgColor(frame,meXftColorGet(meFrameGetXGCFCol(frame))) ;
+                meFrameSetBgColor(frame,meXftColorGet(cursorColor)) ;
+                meFrameSetXftFont(frame,meXftFontGet(meFrameGetXGCFont(frame) & meFONT_MASK)) ;
+                bp = meXftCursorBytes(frame,cc,&bl) ;
+                /* Remember for Hide (dot will have moved by then) */
+                if(bl > 8)
+                    bl = 8 ;
+                memcpy(xftCursorSave,bp,bl) ;
+                xftCursorSaveLen = bl ;
+                xftCursorSaveFrame = frame ;
+                if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
+                {
+                    static char ss[1]={' '} ;
+                    meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
+                    meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),*bp) ;
+                }
+                else
+                    meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),bp,bl);
+            }
+            else
+#endif
             if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*cc) & 0xe0))
             {
                 static char ss[1]={' '} ;
@@ -3901,14 +4366,21 @@ changeFont(int f, int n)
         /* change-font not supported on termcap */
         return notAvailable(f,n) ;
 
-    /* Get the name of the font. If it is specified as default then
-     * do not collect the remaining arguments */
-    if(meGetString((meUByte *)"Font Name", 0, 0, buff, meBUF_SIZE_MAX) == meABORT)
-        return meFALSE ;
+    /* Get the name of the font (skipped for 0 change-font query).
+     * If it is specified as default then do not collect the
+     * remaining arguments */
+    if(n & 1)
+    {
+        if(meGetString((meUByte *)"Font Name", 0, 0, buff, meBUF_SIZE_MAX) == meABORT)
+            return meFALSE ;
+    }
 
     /* Change the font */
-    if(XTERMsetFont ((char *)buff) == meFALSE)
+    if(XTERMsetFont (n,(char *)buff) == meFALSE)
         return meFALSE ;
+
+    if((n & 3) != 1)
+        return meTRUE ;   /* query (or dry run) - no window changes */
 
     /* Set up the arguments for a resize operation. Because the
      * font has changed then we need to define the new window
@@ -3923,9 +4395,15 @@ changeFont(int f, int n)
 #endif
     /* Make the current font invalid and force a complete redraw */
     meFrameSetXGCFont(loopFrame,0) ;
+#if MEOPT_XFT
+    meFrameSetXftFont(loopFrame,mecm.ftFontTbl[0]) ;
+#endif
     meFrameSetXGCFontId(loopFrame,mecm.fontId) ;
     meFrameGetXGCValues(loopFrame).font = mecm.fontId ;
-    XChangeGC(mecm.xdisplay,meFrameGetXGC(loopFrame),GCFont,&meFrameGetXGCValues(loopFrame)) ;
+#if MEOPT_XFT
+    if(!meXftUsed())
+#endif
+        XChangeGC(mecm.xdisplay,meFrameGetXGC(loopFrame),GCFont,&meFrameGetXGCValues(loopFrame)) ;
 
     /* In order for us to change the hints for a font change then the
      * X-Window has to be un-mapped. Therefore on a font change unmap the

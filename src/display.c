@@ -1180,6 +1180,42 @@ hideLineJump:
                  * copy a space in place of special chars, they are
                  * drawn separately after the XDraw, the spaces are
                  * replaced with the correct chars */
+#if MEOPT_XFT
+                if(meXftUsed())
+                {
+                    /* Full UTF-8 sequences (frame store keeps lead
+                     * bytes only, which Xft cannot render alone) */
+                    meUByte xftbuf[4096] ;
+                    int xb = 0, cb ;
+                    for(col_d = col ; col_d < ii ; col_d++)
+                    {
+                        *fssp++ = scheme;
+                        cc = disLineBuff[disLineByteOff[col_d]] ;
+                        if((cc & 0xe0) == 0)
+                        {
+                            if(xb < 4090)
+                                xftbuf[xb++] = ' ' ;
+                            *fstp++ = ' ' ;
+                            spFlag++ ;
+                        }
+                        else
+                        {
+                            cb = disLineByteOff[col_d+1] - disLineByteOff[col_d] ;
+                            if(xb + cb >= 4090)
+                                cb = 0 ;
+                            if(cb > 0)
+                            {
+                                memcpy(xftbuf+xb,disLineBuff+disLineByteOff[col_d],cb) ;
+                                xb += cb ;
+                            }
+                            *fstp++ = cc ;
+                        }
+                    }
+                    meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)xftbuf,xb);
+                }
+                else
+                {
+#endif
                 for(col_d = col ; col_d < ii ; col_d++)
                 {
                     *fssp++ = scheme;
@@ -1192,6 +1228,9 @@ hideLineJump:
                     *fstp++ = cc ;
                 }
                 meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)sfstp+ccol,ii-col);
+#if MEOPT_XFT
+                }
+#endif
                 while(--spFlag >= 0)
                 {
                     while (((cc=disLineBuff[disLineByteOff[ccol]]) & 0xe0) != 0)

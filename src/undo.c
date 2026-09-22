@@ -70,14 +70,6 @@ meUndoAddInsChar(void)
 
         if(frameCur->bufferCur->undoContFlag == undoContFlag)
             type |= meUNDO_CONTINUE ;
-#ifndef NDEBUG
-        fprintf(stderr,"ADDINSCHAR type=%02x head=%02x/%d/%ld doto=%d line=%d ubuf=%d cont=%u\n",
-                type, frameCur->bufferCur->undoHead ? frameCur->bufferCur->undoHead->type : 255,
-                frameCur->bufferCur->undoHead ? frameCur->bufferCur->undoHead->doto : -1,
-                frameCur->bufferCur->undoHead ? (long)frameCur->bufferCur->undoHead->count : -1L,
-                frameCur->windowCur->dotOffset, frameCur->windowCur->dotLineNo,
-                frameCur->bufferCur->undoContFlag, undoContFlag) ;
-#endif
 
         if(((nn = frameCur->bufferCur->undoHead) != NULL) && (nn->type == type) &&
            (nn->udata.dotp == frameCur->windowCur->dotLineNo) &&
@@ -619,11 +611,6 @@ meUndo(int f, int n)
             }
             else
                 count = ccount ;
-#ifndef NDEBUG
-            fprintf(stderr,"UNDO-STEP ntype=%02x count=%d ccount=%d cdoto=%d dot=%d\n",
-                    cun->type, (int)count, (int)ccount, (int)cdoto,
-                    frameCur->windowCur->dotOffset) ;
-#endif
             if(cun->type & meUNDO_INSERT)
             {
                 /* Undo counts and mldelete() are byte-based, but a

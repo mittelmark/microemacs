@@ -48,7 +48,12 @@ CDEBUG        =	-Wall -g
 COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized -Wno-unused-result
 CDEFS         = -D_FREEBSD -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
 CONSOLE_DEFS  = -D_ME_CONSOLE
-WINDOW_DEFS   = $(MAKEWINDEFS) -D_ME_WINDOW -I/usr/local/include
+# libXft TrueType support for mew (off by default - BSD make has no
+# conditionals here, enable manually, e.g.:
+# make -f freebsd.mak XFT_DEFS="-DMEOPT_XFT=1 `pkg-config --cflags xft`" XFT_LIBS="`pkg-config --libs xft`" mew
+# NOTE: window objects are built in-tree (.ow/.ob) - run "make clean"
+# when toggling XFT, otherwise stale MEOPT_XFT objects get linked.
+WINDOW_DEFS   = $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_WINDOW -I/usr/local/include
 NANOEMACS_DEFS= -D_NANOEMACS
 LDDEBUG       =
 LDOPTIMISE    =
@@ -56,7 +61,7 @@ LDFLAGS       =
 LIBS          = -lz
 #CONSOLE_LIBS  = -ltermcap
 CONSOLE_LIBS  = -lncurses
-WINDOW_LIBS   = $(MAKEWINLIBS) -L/usr/local/lib -lX11
+WINDOW_LIBS   = $(MAKEWINLIBS) $(XFT_LIBS) -L/usr/local/lib -lX11
 #
 # Rules
 .SUFFIXES: .c .oc .ow .ob .on .ov .oe .odc .odw .odb .odn .odv .ode

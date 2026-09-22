@@ -378,6 +378,9 @@
 #include <X11/StringDefs.h>     /* Standard Name-String definitions      */
 #include <X11/keysym.h>         /* Keyboard symbols                      */
 #include <X11/Xutil.h>
+#if MEOPT_XFT
+#include <X11/Xft/Xft.h>        /* X FreeType interface (TrueType fonts) */
+#endif
 #endif /* _XTERM */
 
 #ifdef _ME_CONSOLE
@@ -430,6 +433,9 @@
 #define MEOPT_SCROLL    1       /* enable scroll bars                    */
 #define MEOPT_HSPLIT    1       /* enable vertical window                */ 
 #define MEOPT_FRAME     1       /* enable multiple frames                */
+#ifndef MEOPT_XFT
+#define MEOPT_XFT       0       /* enable Xft TrueType fonts via XFT=1 (mew) */
+#endif
 #if MEOPT_FRAME && (defined _MULTI_WINDOW)
 #define MEOPT_MWFRAME   1       /* enable multiple window frames         */
 #else
@@ -501,6 +507,10 @@
 #define MEOPT_SCROLL    0       /* enable scroll bars                    */
 #define MEOPT_HSPLIT    0       /* enable vertical window                */ 
 #define MEOPT_FRAME     0       /* enable multiple frames                */
+#ifdef MEOPT_XFT
+#undef  MEOPT_XFT
+#endif
+#define MEOPT_XFT       0       /* Disable XFT for nanoemacs             */
 #if MEOPT_FRAME && (defined _MULTI_WINDOW)
 #define MEOPT_MWFRAME   0       /* enable multiple window frames         */
 #else

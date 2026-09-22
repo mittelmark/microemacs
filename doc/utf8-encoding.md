@@ -214,6 +214,38 @@ KOI8-R, CP437/866/850). ISO-8859/ASCII keep C1 dotted. Both are restored
 afterwards (also on C-g dismissal). Insertion always goes through
 `&tchar` from the dialog source into `$buffer-encoding`.
 
+## libXft TrueType Support (`MEOPT_XFT`, branch `libxft-utf8`)
+
+TrueType rendering for `mew`/`mecw` via libXft, off by default:
+
+```bash
+cd src
+make -f linux32gcc.gmk BTYP=cw XFT=1   # X11 objects carry -xft suffix dirs
+```
+
+- `change-font "monospace:size=14"` loads an Xft pattern; `&opt "xft"`
+  reports whether Xft is active. Without a successful `change-font`,
+  rendering silently stays on core X11 fonts.
+- Fixed grid is kept: fonts whose `W`-advance differs from the frame
+  cell width are rejected. `rowToClient()` yields the text baseline
+  (no extra ascent added); background rects cover the full cell.
+- Line paint feeds `disLineBuff[]` + `disLineByteOff[]` to
+  `XftDrawStringUtf8`; the frame store keeps lead bytes only, so the
+  cursor hide/show path saves and replays the full bytes hidden under
+  the cursor (`xftCursorSave`).
+- Without `setlocale()`, `XLookupString` returns Latin-1 for keys
+  `0x80-0xFF`; these are re-encoded to UTF-8 on input.
+
+### Known issue (open)
+
+The last entered character is currently not displayed until the next
+keystroke arrives (observed with scripted `xdotool` typing under Xvfb:
+screenshot after `Q` shows no `Q`, screenshot after `W` shows `Q` but
+no `W`, while the buffer bytes are correct). Root cause still under
+investigation -- prime suspects are the `update()` typeahead skip
+(`TTahead()`), Xlib output buffering without an explicit `XFlush`
+after `screenUpdate()`, or the frame-store comparison in `updateline()`.
+
 ## Key Design Decisions
 
 ### 1. Native UTF-8 vs. Conversion
@@ -271,8 +303,7 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
    files and the intermediate for display/keyboard conversion. Buffer
    content rendering is per-buffer (`bp->encoding`), so mixed encodings
    share one screen; OSD dialogs and keyboard input still use the global.
-2. **X11 fonts**: Uses `fixed` (iso8859-1) font by default; full Unicode would
-   require TrueType font support (libxft/HarfBuzz -- future project).
+2. **X11 fonts**: core bitmap fonts by default; TrueType via libXft
 3. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
 4. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
    with `?` when in legacy mode.
@@ -387,8 +418,9 @@ The `disLineByteOff[]` approach was chosen because it:
 
 ## Future Improvements
 
-1. **TrueType font support**: Load iso10646-1 fonts via libxft or HarfBuzz for
-   full Unicode display in X11
+1. **TrueType font support**: basic libXft rendering implemented behind
+   `XFT=1` (see section above); remaining work is HarfBuzz shaping and
+   the last-character display issue.
 2. **Per-buffer encoding**: Allow different buffers to use different internal
    encodings simultaneously
 3. **CJK/IME support**: Input Method Editor for CJK character entry

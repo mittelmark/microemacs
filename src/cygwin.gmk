@@ -92,11 +92,16 @@ BCOR_CDF =
 PRGLIBS  = -lz
 endif
 
+# libXft TrueType support for mew (off by default, enable with XFT=1)
+ifeq "$(XFT)" "1"
+XFT_DEFS = -DMEOPT_XFT=1 $(shell pkg-config --cflags xft)
+XFT_LIBS = $(shell pkg-config --libs xft)
+endif
 # Window libs - keep original paths
-WINDOW_LIBS = -L/usr/X11R6/lib -lX11 -lz $(MAKEWINLIBS)
+WINDOW_LIBS = -L/usr/X11R6/lib -lX11 -lz $(MAKEWINLIBS) $(XFT_LIBS)
 CONSOLE_LIBS  = -lncurses -lz
 CONSOLE_DEFS  = -D_ME_CONSOLE -D_USE_NCURSES -D_USETPARM
-WINDOW_DEFS   = $(MAKEWINDEFS) -D_ME_WINDOW -I/usr/X11/include
+WINDOW_DEFS   = $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_WINDOW -I/usr/X11/include
 NANOEMACS_DEFS= -D_NANOEMACS
 
 ifeq "$(BTYP)" "c"
@@ -111,7 +116,12 @@ BTYP_LIB = $(CONSOLE_LIBS) $(WINDOW_LIBS)
 BTYP     = cw
 endif
 
-OUTDIR   = $(BOUTDIR)-$(BCOR)$(BTYP)
+# XFT builds use a separate object dir - make does not track flag
+# changes, so sharing would link stale MEOPT_XFT objects on switch.
+ifeq "$(XFT)" "1"
+XFT_OUTDIR = -xft
+endif
+OUTDIR   = $(BOUTDIR)-$(BCOR)$(BTYP)$(XFT_OUTDIR)
 PRGNAME  = $(BCOR)$(BTYP)
 PRGFILE  = $(PRGNAME)$(EXE)
 PRGHDRS  = ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h \

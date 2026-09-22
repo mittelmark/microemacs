@@ -47,14 +47,21 @@ CDEBUG        =	-Wall -g
 COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized
 CDEFS         = -D_DARWIN -I.
 CONSOLE_DEFS  = -D_ME_CONSOLE
-WINDOW_DEFS   = $(MAKEWINDEFS) -D_ME_WINDOW -I/usr/X11R6/include
+# libXft TrueType support for mew (off by default, enable with XFT=1).
+# NOTE: window objects are built in-tree (.ow/.ob) - run "make clean"
+# when toggling XFT, otherwise stale MEOPT_XFT objects get linked.
+ifeq "$(XFT)" "1"
+XFT_DEFS = -DMEOPT_XFT=1 $(shell pkg-config --cflags xft)
+XFT_LIBS = $(shell pkg-config --libs xft)
+endif
+WINDOW_DEFS   = $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_WINDOW -I/usr/X11R6/include
 NANOEMACS_DEFS= -D_NANOEMACS
 LDDEBUG       =
 LDOPTIMISE    =
 LDFLAGS       =
 LIBS          = -lz
 CONSOLE_LIBS  = -ltermcap
-WINDOW_LIBS   = $(MAKEWINLIBS) -L/usr/X11R6/lib -lX11
+WINDOW_LIBS   = $(MAKEWINLIBS) $(XFT_LIBS) -L/usr/X11R6/lib -lX11
 #
 # Rules
 .SUFFIXES: .c .oc .ow .ob .on .ov .oe .odc .odw .odb .odn .odv .ode

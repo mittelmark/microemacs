@@ -242,6 +242,12 @@ typedef struct
     meUByte   bcol;                     /* Background color */
     meUByte   font;                     /* Font style */
     Font      fontId;                   /* Font X id */
+#if MEOPT_XFT
+    XftFont  *ftFont;                   /* Current style Xft font */
+    XftDraw  *xdraw;                    /* Xft draw context for window */
+    XftColor *xfcol;                    /* Current foreground Xft color */
+    XftColor *xbcol;                    /* Current background Xft color */
+#endif
     int       xmap;                     /* Frame is mapped */
 } meFrameData ;
 
@@ -256,6 +262,19 @@ typedef struct
 #define meFrameSetXGCBCol(ff,v)   (((meFrameData *) ff->termData)->bcol = (v))
 #define meFrameSetXGCFont(ff,v)   (((meFrameData *) ff->termData)->font = (v))
 #define meFrameSetXGCFontId(ff,v) (((meFrameData *) ff->termData)->fontId = (v))
+#if MEOPT_XFT
+#define meXftUsed()               (mecm.fontTbl[0] == 0)
+#define meFrameGetXftDraw(ff)     (((meFrameData *) ff->termData)->xdraw)
+#define meFrameGetFgColor(ff)     (((meFrameData *) ff->termData)->xfcol)
+#define meFrameGetBgColor(ff)     (((meFrameData *) ff->termData)->xbcol)
+#define meFrameGetXftFont(ff)     (((meFrameData *) ff->termData)->ftFont)
+#define meFrameSetXftDraw(ff,v)   (((meFrameData *) ff->termData)->xdraw = (v))
+#define meFrameSetFgColor(ff,v)   (((meFrameData *) ff->termData)->xfcol = (v))
+#define meFrameSetBgColor(ff,v)   (((meFrameData *) ff->termData)->xbcol = (v))
+#define meFrameSetXftFont(ff,v)   (((meFrameData *) ff->termData)->ftFont = (v))
+#else
+#define meXftUsed()               0
+#endif
 /* Mapped window state */
 #define meXMAP_FONT      -1             /* Unmapped and requires font change */
 #define meXMAP_UNMAP      0             /* Unmapped, no font change required */
@@ -267,6 +286,10 @@ typedef struct
 {
     Display  *xdisplay ;                /* the x display */
     Font      fontId;                   /* Font X id */
+#if MEOPT_XFT
+    XftFont  *ftFontTbl[meFONT_MAX];    /* table of XftFont pointers for diff styles */
+    int       size;                     /* Xft font size */
+#endif
     int       fwidth ;                  /* Font width in pixels */
     int       fdepth ;                  /* Font depth in pixels */
     int       fhwidth ;                 /* Font half width in pixels */
@@ -300,6 +323,44 @@ extern void meFrameXTermSetScheme(meFrame *frame,meScheme scheme) ;
 extern void meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int ecol) ;
 extern void meFrameXTermDrawSpecialChar(meFrame *frame, int x, int y, meUByte cc) ;
 extern int meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
+#if MEOPT_XFT
+#define     meFrameXTermDrawString(frame,col,row,str,len)                            \
+do {                                                                               \
+    if(meXftUsed())                                                                \
+    {                                                                              \
+        /* Xft draws text transparent - paint the background first.      */       \
+        /* str/len are terminal-ready bytes (UTF-8 on UTF-8 terminals);  */       \
+        /* background/underline widths need display COLUMNS, not bytes.  */       \
+        meUByte *_xp = (meUByte *)(str), *_xe = _xp + (len) ;                    \
+        int _xn = 0 ;                                                             \
+        while(_xp < _xe) { if((*_xp & 0xC0) != 0x80) _xn++ ; _xp++ ; }           \
+        if(_xn < 1) _xn = 1 ;                                                     \
+        meFrameXftDrawBackground(frame,(col),(row),_xn) ;                         \
+        meFrameXftDrawStringUtf8(frame,(col),(row),(str),(len)) ;                  \
+        if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                            \
+            XftDrawRect(meFrameGetXftDraw(frame),meFrameGetFgColor(frame),(col),(row)+mecm.underline,colToClient(_xn),1) ; \
+    }                                                                              \
+    else                                                                           \
+    {                                                                              \
+        if(mecm.fontIsUtf8)                                                         \
+        {                                                                          \
+            meUByte _utf8buf[meBUF_SIZE_MAX];                                      \
+            int _utf8len = meConvertToUTF8((const meUByte *)(str),(len),_utf8buf,sizeof(_utf8buf)); \
+            XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),               \
+                             meFrameGetXGC(frame),(col),(row),(char *)_utf8buf,_utf8len); \
+        }                                                                          \
+        else                                                                       \
+        {                                                                          \
+            XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),               \
+                             meFrameGetXGC(frame),(col),(row),(char *)(str),(len)); \
+        }                                                                          \
+        if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                            \
+            XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),                      \
+                      meFrameGetXGC(frame),(col),(row)+mecm.underline,             \
+                      (col)+colToClient(len)-1,(row)+mecm.underline);              \
+    }                                                                              \
+} while(0)
+#else
 #define     meFrameXTermDrawString(frame,col,row,str,len)                            \
 do {                                                                               \
     if(mecm.fontIsUtf8)                                                             \
@@ -319,6 +380,23 @@ do {                                                                            
                   meFrameGetXGC(frame),(col),(row)+mecm.underline,                 \
                   (col)+colToClient(len)-1,(row)+mecm.underline);                  \
 } while(0)
+#endif
+#if MEOPT_XFT
+/* Xft drawing helpers. Unlike upstream, our rowToClient() yields the
+ * BASELINE (not the row top), so no extra ascent is added to rw, and
+ * the background rect starts one ascent above rw to cover the cell. */
+#define meFrameXftDrawBackground(ff,cl,rw,ll)                                      \
+    XftDrawRect(meFrameGetXftDraw(ff),meFrameGetBgColor(ff),(cl),(rw)-mecm.ascent,colToClient(ll),mecm.fdepth)
+#define meFrameXftDrawStringUtf8(ff,cl,rw,ss,ll)                                   \
+    XftDrawStringUtf8(meFrameGetXftDraw(ff),meFrameGetFgColor(ff),meFrameGetXftFont(ff),(cl),(rw),(FcChar8 *)(ss),(ll))
+#define meFrameXftDrawString(ff,cl,rw,ss,ll)                                       \
+do {                                                                               \
+    meFrameXftDrawStringUtf8(ff,cl,(rw),ss,ll);                                    \
+    if(meFrameGetXGCFont(ff) & meFONT_UNDERLINE)                                   \
+        XftDrawRect(meFrameGetXftDraw(ff),meFrameGetFgColor(ff),(cl),(rw)+mecm.underline,colToClient(ll),1); \
+} while(0)
+#define meFrameXftDrawSpecialChar meFrameXTermDrawSpecialChar
+#endif
 #define XTERMstringDraw(col,row,str,len) meFrameXTermDrawString(frameCur,col,row,str,len)                                           \                                          \
 
 extern int  XTERMstart(void);

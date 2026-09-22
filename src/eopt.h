@@ -141,6 +141,9 @@ meUByte meOptionList[]=
 #if MEOPT_WORDPRO
     "wor\n"
 #endif
+#if MEOPT_XFT
+    "xft\n"
+#endif
 ;
 
 #endif /* __EOPT_H */

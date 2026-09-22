@@ -7,11 +7,24 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260921.0836>
+>  Last Modified : <260922.0812>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260922] - libXft TrueType rendering for mew/mecw (branch libxft-utf8).
+               Off by default, enabled with XFT=1 (separate -xft object
+               dirs, pkg-config xft). Fixed-grid guard, baseline
+               rowToClient, XftDrawStringUtf8 line paint from
+               disLineBuff/disLineByteOff, cursor save/replay, Latin-1
+               to UTF-8 input fix. Documented in doc/utf8-encoding.md.
+               Known issue: last entered character not displayed until
+               next keystroke (under investigation).
+               Files: src/unixterm.c, src/eterm.h, src/display.c,
+               src/emain.h, src/eopt.h, src/undo.c, src/linux32gcc.gmk,
+               src/cygwin.gmk, src/darwin.gmk, src/freebsd.mak,
+               doc/utf8-encoding.md
 
   [260921] - Encoding-aware insert-symbol dialog and CP850 support.
               The symbol table follows the buffer encoding for single-byte
