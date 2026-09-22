@@ -253,6 +253,13 @@ umlauts showed up as raw-byte mojibake (`Ã¤`) or boxes:
 Result (verified by screenshot): U+00FF-range characters (äöüÄÖÜß©£)
 render correctly with legacy fonts; anything beyond shows `?`.
 
+Follow-up: cursor show/hide painted the single frame-store lead byte,
+which the fold turned into a `?` that stuck (cursor draws do not touch
+the store, so `updateline` saw no change until a manual screen-update).
+`meLegacyCursorByte()` (`src/unixterm.c`) now resolves the full buffer
+sequence via dot when lead bytes match and folds it to one latin-1
+byte; ASCII and single-byte buffers pass through unchanged.
+
 ### Known issue: one-character display lag (open)
 
 The last entered character is not displayed until the next keystroke

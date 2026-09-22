@@ -7,11 +7,20 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260922.1907>
+>  Last Modified : <260922.2247>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260922] - Fixed stuck '?' when cursor moves over umlauts with legacy
+               X11 core fonts (ticket 12). Cursor show/hide drew the
+               single frame-store lead byte, which meFoldUtf8ToLatin1()
+               turned into '?' that persisted until manual screen-update.
+               New meLegacyCursorByte() resolves the full buffer sequence
+               via dot on lead-byte match. Verified by cursor-sweep
+               screenshot, test-basics passes.
+               Files: src/unixterm.c, doc/utf8-encoding.md, doc/tickets.md
 
   [260922] - Fixed legacy X11 core-font umlaut display (ticket 12).
                disLineBuff is always terminal-ready UTF-8, which

@@ -132,6 +132,12 @@ v unfold dir (color
       plus full-byte assembly in the FONTFIX updateline branch (it drew
       frame-store lead bytes only). U+00FF-range chars (äöüÄÖÜß©£)
       now render correctly with e.g. 'fixed'; others show '?'.
+      Follow-up fix: cursor show/hide drew the single frame-store lead
+      byte, which the fold turned into a stuck '?' (store untouched, so
+      updateline never repainted until manual screen-update). New
+      meLegacyCursorByte() resolves the full buffer sequence via dot
+      when lead bytes match and folds to one latin-1 byte; ASCII and
+      single-byte buffers pass through unchanged.
       Files: src/unixterm.c, src/eterm.h, src/display.c
     - TODO: font selection dialog based on the code of the sister project in ../jasspa/microemacs/macros (ME 26)
     - TODO: windows GUI version support for Unicode/UTF8
