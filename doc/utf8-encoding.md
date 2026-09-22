@@ -236,15 +236,67 @@ make -f linux32gcc.gmk BTYP=cw XFT=1   # X11 objects carry -xft suffix dirs
 - Without `setlocale()`, `XLookupString` returns Latin-1 for keys
   `0x80-0xFF`; these are re-encoded to UTF-8 on input.
 
-### Known issue (open)
+### Known issue: one-character display lag (open)
 
-The last entered character is currently not displayed until the next
-keystroke arrives (observed with scripted `xdotool` typing under Xvfb:
-screenshot after `Q` shows no `Q`, screenshot after `W` shows `Q` but
-no `W`, while the buffer bytes are correct). Root cause still under
-investigation -- prime suspects are the `update()` typeahead skip
-(`TTahead()`), Xlib output buffering without an explicit `XFlush`
-after `screenUpdate()`, or the frame-store comparison in `updateline()`.
+The last entered character is not displayed until the next keystroke
+arrives (observed with scripted `xdotool` typing under Xvfb: screenshot
+after `Q` shows no `Q`, screenshot after `W` shows `Q` but no `W`,
+while the buffer bytes are correct). The symptom persists across
+Xlib buffering changes and font configuration.
+
+**Asymptom note:** Multi-byte UTF-8 characters (a-umlaut, o-umlaut,
+u-umlaut) display correctly, while single-byte ASCII characters
+(a, b, c) exhibit the lag.
+
+#### What has been tried and ruled out
+
+| Attempt | Result |
+|---------|--------|
+| Force `screenUpdate(1, ...)` (always full redraw) | **Did not fix** -- lag persists with forced redraws |
+| Replace `XFlush` with `XSync` in `TTflush` | **Did not fix** -- lag persists with synchronous flush |
+| Separate `TTahead()` from early-return in `update()` | **Fixed non-ASCII display** -- multi-byte UTF-8 chars now render; but single-byte ASCII still lags |
+| Bypass Xft entirely (force `XDrawImageString`) | **Broke display** -- spaces between all GUI elements; did not fix lag |
+
+#### Current debug instrumentation
+
+Debug traces (`ME_DBGTRACE`, active with `_DEBUG`) are in place at:
+
+- `update()` entry/exit and after `screenUpdate()`
+- `updateWindow()` -- traces which lines trigger `updateline()` and
+  which skip the dotLine
+- FONTFIX Xft path in `updateline()` -- confirms `XftDrawStringUtf8`
+  is called with the correct `xftbuf` bytes
+- `meFrameXTermHideCursor()` / `meFrameXTermShowCursor()` -- traces
+  whether saved bytes or frame-store bytes are used
+
+Build with debug traces:
+```bash
+make -f linux32gcc.gmk BTYP=w BCFG=debug XFT=1
+```
+
+Trace output goes to `me_dbgtrace.txt` in the current directory.
+
+#### Remaining hypotheses
+
+1. **Xft rendering position or font metrics** -- `XftDrawStringUtf8`
+   may be drawing at coordinates that are correct in the Xft coordinate
+   system but produce invisible output (e.g., wrong baseline, clipped
+   by window geometry, or font ascent/descent mismatch with
+   `rowToClient()`).
+2. **Cursor hide/show overwrites the draw** -- after `updateline()`
+   renders the character via Xft, `TTmove()` calls `TThideCur()`
+   which redraws the character at the old cursor position using the
+   frame store. For FONTFIX, the frame store keeps only the lead byte;
+   `meXftCursorBytes()` reconstructs the full character from the buffer,
+   but if the old cursor position overlaps the newly drawn character,
+   the redraw may clobber it.
+3. **`lineSetChanged` / `updateFlags` interaction** -- when
+   `windowCount == 1`, `lineSetChanged()` sets `meLINE_CHANGED` on the
+   line but the window's `updateFlags` may not include enough flags to
+   trigger `updateWindow()` on every cycle.
+4. **Xft double-buffering or compositor timing** -- the Xft draw
+   succeeds at the X protocol level but the compositor delays
+   presentation until the next damage event or frame boundary.
 
 ## Key Design Decisions
 
@@ -304,10 +356,12 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
    content rendering is per-buffer (`bp->encoding`), so mixed encodings
    share one screen; OSD dialogs and keyboard input still use the global.
 2. **X11 fonts**: core bitmap fonts by default; TrueType via libXft
-3. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
-4. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
+3. **Xft one-character lag**: with `XFT=1`, the last typed character
+   is not visible until the next keystroke (see "Known issue" above)
+4. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
+5. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
    with `?` when in legacy mode.
-5. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
+6. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
    `disLineByteOff[]`, but `renderLine()` overwrites in most code paths.
 
 ## Modified Files
@@ -419,8 +473,8 @@ The `disLineByteOff[]` approach was chosen because it:
 ## Future Improvements
 
 1. **TrueType font support**: basic libXft rendering implemented behind
-   `XFT=1` (see section above); remaining work is HarfBuzz shaping and
-   the last-character display issue.
+   `XFT=1` (see section above); the one-character display lag for
+   single-byte ASCII remains open -- see "Known issue" above.
 2. **Per-buffer encoding**: Allow different buffers to use different internal
    encodings simultaneously
 3. **CJK/IME support**: Input Method Editor for CJK character entry
