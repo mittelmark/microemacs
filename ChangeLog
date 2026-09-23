@@ -13,6 +13,17 @@
 
 ## 2026
 
+  [260923] - Fixed Xft special-char (0..31) color (ticket 12). Under
+               Xft, meFrameXTermSetScheme returned early after setting
+               only Xft colors and left the X11 GC untouched; special
+               chars 0..31 still draw with XDrawLine/XFillPolygon on
+               that GC, so box borders / insert-symbol cells kept a
+               stale (often white) foreground. Xft branch now also
+               updates XGCFCol/XGCBCol and XChangeGC from the same
+               palette index as colTable. Verified insert-symbol
+               rows 0..31 black on grey (no white glyph pixels);
+               test-basics ok. Files: src/unixterm.c
+
   [260923] - Fixed mew Xft startup/core SEGV (ticket 12). Core dump
                showed XftDrawRect called with NULL XftDraw*: ShowCursor
                drew via Xft macros without SetScheme, so xdraw was never

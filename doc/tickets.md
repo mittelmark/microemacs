@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-09-22 18:30
+date: 2026-09-23 20:21
 ---
 
 ## Introduction
@@ -110,6 +110,21 @@ v unfold dir (color
    newname.txt (color)     A (git indicator)
    
 ## Ticket 12: UTF8 symbol support
+
+| OS       | me version | supported |
+|----------|------------|-----------|
+| Linux    | terminal   | yes       |
+| Linux    | XLFD       | no        |
+| Linux    | Xft        | yes       |
+| FreeBSD  | terminal   | testing   |
+| FreeBSD  | XLFD       | no        |
+| FreeBSD  | Xft        | testing   |
+| Cygwin   | terminal   | yes       |
+| Cygwin   | XLFD       | no        |
+| Cygwin   | Xft        | yes       |
+| Msys     | terminal   | yes       |
+| Windows  | terminal   | yes       |
+| Windows  | TTF        | todo      |
 
 - mec version Unix/Windows implemented
 - mew version
@@ -236,4 +251,14 @@ v unfold dir (color
       and corrected newuser.erf default font size=1 → size=14.
       Files: src/unixterm.c, src/eterm.h, jasspa/macros/unixterm.emf,
       jasspa/macros/newuser.erf
+    - DONE 260923: Xft special chars 0..31 drew white (stale GC).
+      meFrameXTermSetScheme Xft early-return updated only Xft Fg/Bg
+      colors and never touched the X11 GC; special chars 0..31 still
+      draw via XDrawLine/XFillPolygon on that GC, so box borders /
+      insert-symbol cells kept a stale (often white) foreground after
+      ShowCursor inverted the cursor colors. Xft branch now also
+      updates XGCFCol/XGCBCol + XChangeGC (same palette as colTable).
+      Screenshot: insert-symbol rows 0..31 black on grey, no white
+      glyph pixels; test-basics ok.
+      Files: src/unixterm.c
     - TODO: windows GUI version support for Unicode/UTF8

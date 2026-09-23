@@ -1271,8 +1271,10 @@ meFrameXTermSetScheme(meFrame *frame, meScheme scheme)
 #if MEOPT_XFT
     if(meXftUsed())
     {
-        /* X11 GC keeps its colors (special chars reuse the GC
-         * foreground) but text goes through Xft colors/fonts. */
+        /* Text goes through Xft colors/fonts; special chars (0..31)
+         * still draw with XDrawLine/XFillPolygon on the X11 GC, so
+         * the GC must track the scheme foreground too — otherwise
+         * box borders keep a stale (often white) color. */
         if(meFrameGetXftDraw(frame) == NULL)
         {
             XftDraw *xd = XftDrawCreate(mecm.xdisplay,meFrameGetXWindow(frame),
@@ -1283,13 +1285,27 @@ meFrameXTermSetScheme(meFrame *frame, meScheme scheme)
         }
         cc = meStyleGetFColor(meSchemeGetStyle(scheme)) ;
         meFrameSetFgColor(frame,meXftColorGet(cc)) ;
+        if(meFrameGetXGCFCol(frame) != cc)
+        {
+            meFrameSetXGCFCol(frame,cc) ;
+            meFrameGetXGCValues(frame).foreground = colTable[cc] ;
+            valueMask |= GCForeground ;
+        }
         cc = meStyleGetBColor(meSchemeGetStyle(scheme)) ;
         meFrameSetBgColor(frame,meXftColorGet(cc)) ;
+        if(meFrameGetXGCBCol(frame) != cc)
+        {
+            meFrameSetXGCBCol(frame,cc) ;
+            meFrameGetXGCValues(frame).background = colTable[cc] ;
+            valueMask |= GCBackground ;
+        }
         if(meSchemeTestNoFont(scheme))
             cc = 0 ;
         else
             cc = meStyleGetFont(meSchemeGetStyle(scheme)) & meFONT_MASK ;
         meFrameSetXftFont(frame,meXftFontGet(cc)) ;
+        if(valueMask)
+            XChangeGC(mecm.xdisplay,meFrameGetXGC(frame),valueMask,&meFrameGetXGCValues(frame)) ;
         return ;
     }
 #endif
