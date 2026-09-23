@@ -274,6 +274,38 @@ instead of resolving live (which would read the new cell: neighbor
 char or mismatched lead shown as ornamented A).
 Verified on `tests/encodings/tiso8859-1.txt` with core and Xft fonts.
 
+### Typed multi-byte lead-byte flash (fixed 260923)
+
+Interactive typing of a multi-byte UTF-8 character (e.g. ä = `C3 A4`)
+briefly painted only the lead byte as latin-1 (`Ã`) before the
+continuation byte arrived:
+
+- X11 `KeyPress` queues **both** bytes from one event into `TTkeyBuf`;
+- `doOneKey()` calls `update()` at its **start**, then reads one key,
+  inserts it, and returns;
+- the next iteration's `update()` therefore ran with only `C3` in the
+  buffer → fold/render showed `Ã` until `A4` was consumed.
+
+Macro-driven tests (`insert-string` + forced `screen-update`) bypass
+the key loop and never showed the bug -- that earlier "VERIFIED" was a
+false positive.
+
+**Fix** (`src/main.c`, `doOneKey`): after `execute()`, drain any
+already-queued continuation bytes when `buffer->encoding == ME_ENC_UTF8`
+and we are not in keyboard-macro playback (`kbdmode == mePLAY`) or
+command-line execution (`clexec`). Helpers:
+
+- `utf8IncompleteBeforeDot()` -- walks back over continuation bytes to
+  the lead and reports whether the sequence is still short;
+- `utf8NextKeyIsContinuation()` -- peeks `meGetKeyFirst` / `TTkeyBuf`
+  without consuming, tests `10xxxxxx`.
+
+CP1252/ISO single-byte buffers are unaffected (`convertUtf8Input`
+yields one byte; the drain is gated to `ME_ENC_UTF8`). One undo still
+removes the whole character (`meUndoAddInsChar` node merge +
+`contSave` in `bufferSetEdit`); verified type → `C-x u` → save leaves
+the original text with no stray `c3`/`a4`. `test-basics` passes.
+
 ### Known issue: one-character display lag (open)
 
 The last entered character is not displayed until the next keystroke

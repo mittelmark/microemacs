@@ -1124,6 +1124,60 @@ sigeat(SIGNAL_PROTOTYPE)
 #endif    /* _UNIX */
 
 int commandDepth=0 ;
+
+/*
+ * utf8IncompleteBeforeDot - true if the UTF-8 buffer has an incomplete
+ * multi-byte sequence ending just before the cursor (e.g. 0xC3 alone).
+ */
+static int
+utf8IncompleteBeforeDot(void)
+{
+    meInt off, start;
+    meUByte *text;
+    int need, have, b;
+
+    if(frameCur->windowCur->buffer->encoding != ME_ENC_UTF8)
+        return meFALSE;
+    off = frameCur->windowCur->dotOffset;
+    if(off <= 0)
+        return meFALSE;
+    text = frameCur->windowCur->dotLine->text;
+    start = off - 1;
+    while((start > 0) && ((text[start] & 0xC0) == 0x80))
+        start--;
+    b = text[start];
+    if(b < 0x80)
+        return meFALSE;
+    if((b & 0xE0) == 0xC0)
+        need = 2;
+    else if((b & 0xF0) == 0xE0)
+        need = 3;
+    else if((b & 0xF8) == 0xF0)
+        need = 4;
+    else
+        return meFALSE;
+    have = (int)(off - start);
+    return (have < need) ? meTRUE : meFALSE;
+}
+
+/*
+ * utf8NextKeyIsContinuation - peek at the next queued key (without
+ * consuming it) and test whether it is a UTF-8 continuation byte 10xxxxxx.
+ */
+static int
+utf8NextKeyIsContinuation(void)
+{
+    meUByte next;
+
+    if(meGetKeyFirst >= 0)
+        next = (meUByte)meGetKeyFirst;
+    else if(TTnoKeys)
+        next = (meUByte)TTkeyBuf[TTnextKeyIdx ? (TTnextKeyIdx - 1) : (KEYBUFSIZ - 1)];
+    else
+        return meFALSE;
+    return ((next & 0xC0) == 0x80) ? meTRUE : meFALSE;
+}
+
 void
 doOneKey(void)
 {
@@ -1237,6 +1291,25 @@ doOneKey(void)
     commandDepth++ ;
     execute(c, f, n) ;   /* Do it. */
     commandDepth-- ;
+
+    /*
+     * Drain any already-queued UTF-8 continuation bytes before returning so
+     * the next update() does not paint an incomplete multi-byte character
+     * (e.g. show an ornamented A for lead byte 0xC3 before 0xA4 of 'a-umlaut'
+     * arrives). Only interactive typing: skip keyboard-macro playback and
+     * command-line execution, which process keys one at a time by design.
+     */
+    if((kbdmode != mePLAY) && !clexec &&
+       (frameCur->windowCur->buffer->encoding == ME_ENC_UTF8))
+    {
+        while(utf8IncompleteBeforeDot() && utf8NextKeyIsContinuation())
+        {
+            c = meGetKeyFromUser(meFALSE, 1, meGETKEY_COMMAND|meGETKEY_SINGLE) ;
+            commandDepth++ ;
+            execute(c, meFALSE, 1) ;
+            commandDepth-- ;
+        }
+    }
 }
 
 void

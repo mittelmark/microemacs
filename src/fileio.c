@@ -2708,7 +2708,7 @@ ffWriteFile(meUByte *fname, meUInt flags, meBuffer *bp)
             if(ffnewFile)
                 mlwrite(MWCLEXEC,(meUByte *)"[New file %s, Wrote %d lines]",fname,noLines);
             else
-                mlwrite(MWCLEXEC,(meUByte *)"[Wrote %d lines]",fname,noLines);
+                mlwrite(MWCLEXEC,(meUByte *)"[Wrote %d lines]",noLines);
             return meTRUE ;
         }
     }

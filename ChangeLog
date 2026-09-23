@@ -7,11 +7,26 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260923.0945>
+ > Last Modified : <260923.1045>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - Drain queued UTF-8 continuation bytes in doOneKey
+               (ticket 12, typed umlaut lead-byte flash). X11 KeyPress
+               queues both bytes of ä (C3 A4); update() at the start of
+               the next doOneKey painted the incomplete lead (Ã) before
+               A4 was read. Macro-driven insert-string tests missed this
+               (they bypass the key loop). After execute(), consume
+               already-queued continuation bytes when buffer is UTF-8
+               and not in macro playback / clexec. CP1252 single-byte
+               path gated out. One C-x u still removes the whole ä
+               (undo node merge). Also fixed save-buffer message
+               format: "[Wrote %d lines]" passed fname as the int
+               (garbage line count).
+               Files: src/main.c, src/fileio.c, doc/tickets.md,
+               doc/utf8-encoding.md
 
   [260923] - insert-symbol C1 cells 128-159 always show '.' placeholder
                (ticket 12). Raw source bytes there match no display
