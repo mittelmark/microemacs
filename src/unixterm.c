@@ -4217,11 +4217,18 @@ XTERMstart(void)
 /* Bytes hidden under the cursor as drawn by the last Show. Hide runs
  * after dot has moved, so the buffer position is stale then (reading
  * it shows the NEW cell - e.g. beta over alpha, whose leads match).
- * Saved bytes are replayed instead; a frame mismatch falls back to
- * the single frame-store byte. */
+ * Saved bytes are replayed only when the frame, cell position AND the
+ * frame-store content still match what Show saw -- otherwise updateline
+ * has already repainted this cell after an edit, and replaying the old
+ * bytes would clobber the just-typed character (the one-character
+ * typing lag). On a store/pos mismatch fall back to the live store
+ * byte for ASCII, or skip for a multi-byte lead (updateline already
+ * painted the full UTF-8 sequence; a lone lead is invalid for Xft). */
 static meUByte xftCursorSave[8] ;
 static int xftCursorSaveLen = 0 ;
 static meFrame *xftCursorSaveFrame = NULL ;
+static meUByte xftCursorSaveStore = 0 ;
+static int xftCursorSaveRow = -1, xftCursorSaveCol = -1 ;
 /* Full UTF-8 bytes for the char under the cursor (frame store holds
  * only the lead byte). Uses the buffer when it matches the frame store
  * (cursor tracks dot), else the single frame-store byte. Single-byte
@@ -4373,36 +4380,59 @@ meFrameXTermHideCursor(meFrame *frame)
         {
             meUByte *bp ;
             int bl ;
-            /* Hide replays whatever was under the cursor - dot may
-             * have moved since, so the buffer position is stale. */
-            if((frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0))
+            int drawHide = meTRUE ;
+            /* Replay only if Show's cell still matches: same frame,
+             * position and store content (store check catches edits
+             * under the cursor -- updateline has already painted the
+             * new char; replaying the pre-insert save erases it). */
+            if((frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0) &&
+               (frame->cursorRow == xftCursorSaveRow) &&
+               (frame->cursorColumn == xftCursorSaveCol) &&
+               (*cc == xftCursorSaveStore))
             {
                 bp = xftCursorSave ;
                 bl = xftCursorSaveLen ;
                 ME_DBGTRACE("DBGR: HideCursor Xft using saved bytes") ;
             }
-            else
+            else if(!(*cc & 0x80))
             {
+                /* ASCII live cell (or first Show never ran): single
+                 * store byte is complete. */
                 bp = cc ;
                 bl = 1 ;
                 ME_DBGTRACE("DBGR: HideCursor Xft using frame store byte") ;
             }
+            else
+            {
+                /* Multi-byte lead after an edit: updateline already
+                 * drew the full sequence; a lone lead is invalid UTF-8
+                 * for Xft. Skip the un-invert draw. */
+                drawHide = meFALSE ;
+                bp = cc ;
+                bl = 1 ;
+                ME_DBGTRACE("DBGR: HideCursor Xft skip stale multi-byte lead") ;
+            }
             if(meXftDbgOn())
             {
                 int _mhl = bl ; if(_mhl > 8) _mhl = 8 ;
-                fprintf(stderr,"MEXD %ld hide col=%d row=%d bl=%d [%.*s] saved=%d\n",
+                fprintf(stderr,"MEXD %ld hide col=%d row=%d bl=%d [%.*s] saved=%d store=%02x live=%02x draw=%d\n",
                     meXftDbgSeqNext(),frame->cursorColumn,frame->cursorRow,bl,
-                    _mhl,(char*)bp,(frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0)) ;
+                    _mhl,(char*)bp,
+                    (frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0),
+                    xftCursorSaveStore,*cc,drawHide) ;
                 fflush(stderr) ;
             }
-            if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
+            if(drawHide)
             {
-                static char ss[1]={' '} ;
-                meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
-                meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),*bp) ;
+                if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
+                {
+                    static char ss[1]={' '} ;
+                    meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
+                    meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),*bp) ;
+                }
+                else
+                    meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),bp,bl);
             }
-            else
-                meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),bp,bl);
         }
         else
 #endif
@@ -4504,12 +4534,15 @@ meFrameXTermShowCursor(meFrame *frame)
                 memcpy(xftCursorSave,bp,bl) ;
                 xftCursorSaveLen = bl ;
                 xftCursorSaveFrame = frame ;
+                xftCursorSaveStore = *cc ;
+                xftCursorSaveRow = frame->cursorRow ;
+                xftCursorSaveCol = frame->cursorColumn ;
                 if(meXftDbgOn())
                 {
                     int _msl = bl ; if(_msl > 8) _msl = 8 ;
-                    fprintf(stderr,"MEXD %ld show col=%d row=%d bl=%d [%.*s]\n",
+                    fprintf(stderr,"MEXD %ld show col=%d row=%d bl=%d [%.*s] store=%02x\n",
                         meXftDbgSeqNext(),frame->cursorColumn,frame->cursorRow,bl,
-                        _msl,(char*)bp) ;
+                        _msl,(char*)bp,*cc) ;
                     fflush(stderr) ;
                 }
                 if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))

@@ -115,14 +115,26 @@ v unfold dir (color
 - mew version
     - Linux - using libXft 
     - UTF8 rendering works with XFT=1 and using a font like 'monospace:size=14' in user setup
-    - TODO: typing delay for ascii characters typing 'a' just gives whitespace typing 'ab' shows 'a !' so 
-      for ascii characters the char before the cursor is only displayed if the next key is entered or return pressed
-      (STATUS 260922: not reproducible on test machine -- with Xft active
-      ('monospace:size=14', antialiasing confirmed) 'x' and 'y' typed via
-      xdotool both display promptly with cursor advance, verified at 5x
-      screenshot zoom; buffer bytes always correct. Needed from affected
-      machine: `fc-match "monospace:size=14"` output, ME build/binary,
-      X server type, minimal repro incl. typing speed.)
+    - DONE 260923: one-character typing lag (issue 5 / typing delay).
+      Root cause found with focused XTEST + ME_XFT_DEBUG=1 under Xvfb
+      (prior "not reproducible" runs were unfocused -- meFRAME_NOT_FOCUS
+      skips the Xft Show save, so Hide fell back to live store and
+      looked fine). Sequence when focused: Show saves the pre-insert
+      cell (space); updateline paints the new char into the frame
+      store; TTmove then Hides at the OLD cursor cell. Xft Hide only
+      validated frame+saveLen, so it replayed the stale space over the
+      just-painted 'a'/'b' -- exactly "type 'a' shows whitespace, type
+      'ab' shows 'a'". Core-font Hide already required store-content
+      match (legCursorSaveStore); Xft did not.
+      Fix (src/unixterm.c): Show records xftCursorSaveStore/Row/Col;
+      Hide replays the save only when frame+row+col+store all match.
+      On mismatch: ASCII draws the live store byte (already painted);
+      multi-byte lead skips the draw (updateline painted full UTF-8;
+      a lone lead is invalid for Xft). MEXD traces: withoutfix hide
+      after 'a' draws stale [ ]; withfix draws live [a] then
+      draw x=0 [a]. Screenshots: withfix shows a and ab immediately.
+      Needed on affected machine only for confirmation: same build +
+      window focus + type. Files: src/unixterm.c
     - umlauts like ��� are displayed without delay
     - DONE 260923: typed umlaut lead-byte flash (issue 3). Real typing
       path, not the earlier macro-driven false positive: X11 KeyPress

@@ -7,11 +7,24 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
- > Last Modified : <260923.1045>
+ > Last Modified : <260923.1145>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - Fixed Xft one-character typing lag (ticket 12, issue 5).
+               After updateline painted the new char, TTmove's Hide
+               replayed a stale xftCursorSave (pre-insert space) over
+               the old cursor cell -- only frame+saveLen were checked.
+               Show now records store/row/col; Hide requires all four
+               to match. On mismatch: ASCII draws live store; multi-byte
+               lead skips (updateline already painted full UTF-8).
+               Reproduced with window focus + ME_XFT_DEBUG (unfocused
+               windows skip the Xft Show save, which hid the bug).
+               MEXD: withoutfix hide draws stale [ ], withfix draws
+               [a]. Screenshots show a/ab immediately. test-basics ok.
+               Files: src/unixterm.c, doc/tickets.md, doc/utf8-encoding.md
 
   [260923] - Drain queued UTF-8 continuation bytes in doOneKey
                (ticket 12, typed umlaut lead-byte flash). X11 KeyPress

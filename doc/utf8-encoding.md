@@ -306,36 +306,39 @@ removes the whole character (`meUndoAddInsChar` node merge +
 `contSave` in `bufferSetEdit`); verified type → `C-x u` → save leaves
 the original text with no stray `c3`/`a4`. `test-basics` passes.
 
-### Known issue: one-character display lag (open)
+### One-character display lag (fixed 260923)
 
-The last entered character is not displayed until the next keystroke
-arrives (observed with scripted `xdotool` typing under Xvfb: screenshot
-after `Q` shows no `Q`, screenshot after `W` shows `Q` but no `W`,
-while the buffer bytes are correct). The symptom persists across
-Xlib buffering changes and font configuration.
+**Symptom:** typed ASCII only appeared after the next keystroke —
+type `a` → blank, type `ab` → only `a`, Return → the missing char.
+Buffer bytes were always correct.
 
-**Asymptom note:** Multi-byte UTF-8 characters (a-umlaut, o-umlaut,
-u-umlaut) display correctly, while single-byte ASCII characters
-(a, b, c) exhibit the lag.
+**Root cause (confirmed with focus + `ME_XFT_DEBUG=1`):** after
+`updateline()` paints the new character, `resetCursor()` → `TTmove()`
+calls `TThideCur()` at the **old** cursor cell. The Xft Hide path
+replayed `xftCursorSave` (taken by the previous Show, when that cell
+was still a space) after only a frame-pointer check — so it **erased
+the just-typed character**. The core-font Hide already required a
+frame-store content match (`legCursorSaveStore`); Xft did not.
 
-#### Status 260922 (test machine) -- NOT reproduced
+Why earlier runs looked fine: unfocused windows
+(`meFRAME_NOT_FOCUS`) skip the solid Xft Show/save entirely, so Hide
+used the live store byte and never replayed a stale save. Prior
+"not reproducible" tests used `xdotool type --window` / no WM focus.
 
-Draw-tracing plus 5x-zoomed screenshots show prompt display here, so
-the 1x-screenshot readings above are unreliable at single-glyph scale:
+**Fix** (`src/unixterm.c`): Show records `xftCursorSaveStore`,
+`xftCursorSaveRow`, `xftCursorSaveCol`. Hide replays the save only
+when frame + row + col + store content all match. On mismatch:
 
-- core fonts (`xft=0`): update/draw trace proves repaints are issued
-  and flushed per keystroke; zoomed crops show `252)Q` after `Q` and
-  `252)QW` after `W` -- the earlier "black block"/"?" readings were
-  misreads of `Q`+cursor at 1x scale;
-- Xft active (`monospace:size=14`, antialiasing confirmed): typed `x`
-  and `y` both display promptly with cursor advance.
+- ASCII → draw the live store byte (updateline already painted it);
+- multi-byte lead → skip the draw (updateline painted the full UTF-8
+  sequence; a lone lead is invalid for Xft).
 
-The lag may still be real on the affected machine (different font
-resolution, build, or X server). Needed from there: `fc-match
-"monospace:size=14"` output, exact ME binary/commit, X server type,
-and typing speed in the repro.
+**Verified:** MEXD withoutfix after `a`: `hide ... [ ] saved=1`
+(stale space). MEXD withfix: `hide ... [a] live=61 draw=1` then
+`draw x=0 [a]`. Screenshots show `a` / `ab` immediately. `test-basics`
+passes.
 
-#### What has been tried and ruled out
+#### What has been tried and ruled out (pre-fix experiments)
 
 | Attempt | Result |
 |---------|--------|
@@ -363,27 +366,15 @@ make -f linux32gcc.gmk BTYP=w BCFG=debug XFT=1
 
 Trace output goes to `me_dbgtrace.txt` in the current directory.
 
-#### Remaining hypotheses
+#### Remaining hypotheses (all superseded by the Hide stale-save fix above)
 
-1. **Xft rendering position or font metrics** -- `XftDrawStringUtf8`
-   may be drawing at coordinates that are correct in the Xft coordinate
-   system but produce invisible output (e.g., wrong baseline, clipped
-   by window geometry, or font ascent/descent mismatch with
-   `rowToClient()`).
-2. **Cursor hide/show overwrites the draw** -- after `updateline()`
-   renders the character via Xft, `TTmove()` calls `TThideCur()`
-   which redraws the character at the old cursor position using the
-   frame store. For FONTFIX, the frame store keeps only the lead byte;
-   `meXftCursorBytes()` reconstructs the full character from the buffer,
-   but if the old cursor position overlaps the newly drawn character,
-   the redraw may clobber it.
-3. **`lineSetChanged` / `updateFlags` interaction** -- when
-   `windowCount == 1`, `lineSetChanged()` sets `meLINE_CHANGED` on the
-   line but the window's `updateFlags` may not include enough flags to
-   trigger `updateWindow()` on every cycle.
-4. **Xft double-buffering or compositor timing** -- the Xft draw
-   succeeds at the X protocol level but the compositor delays
-   presentation until the next damage event or frame boundary.
+1. ~~Xft rendering position / font metrics~~ -- draws were correct,
+   then erased by Hide.
+2. **Cursor hide/show overwrites the draw** -- **CONFIRMED and
+   fixed**: Xft Hide replayed a pre-insert `xftCursorSave` over the
+   cell `updateline` had just painted (see fix section above).
+3. ~~`lineSetChanged` / `updateFlags`~~ -- draws did reach Xft.
+4. ~~Xft double-buffering / compositor~~ -- not the cause.
 
 ## Key Design Decisions
 
