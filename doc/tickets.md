@@ -162,5 +162,12 @@ v unfold dir (color
       UTF-8 runs (ASCII runs still draw raw/unbounded). Dialog shows
       proper glyphs again (verified screenshot: àáâè...ø).
       Files: src/eterm.h, src/display.c
+    - DONE 260923: insert-symbol C1 range 128-159 showed junk/misaligned
+      cells for CP1252-like sources (raw source bytes match no
+      latin-1/UTF-8 display glyph there; nothing single-byte can show
+      them). Cells 128-159 now always show the '.' placeholder
+      (picking still inserts the real transcoded byte). Verified
+      screenshot: uniform dots, rows 160+ keep real glyphs.
+      Files: jasspa/macros/osdmisc.emf
     - TODO: font selection dialog based on the code of the sister project in ../jasspa/microemacs/macros (ME 26)
     - TODO: windows GUI version support for Unicode/UTF8

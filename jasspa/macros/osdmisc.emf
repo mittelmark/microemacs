@@ -135,6 +135,14 @@ define-macro insert-symbol
                 set-variable #l3 "."
             !endif
         !endif
+        ; codes 128-159 (C1 range) can never render as single bytes on
+        ; latin-1/UTF-8 display fonts, whatever the source charset is
+        ; (raw source bytes match no display glyph there) - always show
+        ; the dot placeholder so the cells stay readable and aligned.
+        ; Picking still inserts the real byte (transcoded via &tchar).
+        !if &and &gre #l0 127 &les #l0 160
+            set-variable #l3 "."
+        !endif
         set-variable #l1 &spr "%3d %2x %s" #l0 #l0 #l3
         ; cell is always 8 display columns ("DDD XX G"); the " " items
         ; between cells keep the header ("D  X C" pattern) aligned.

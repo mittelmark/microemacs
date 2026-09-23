@@ -7,11 +7,16 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260923.0905>
+>  Last Modified : <260923.0945>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - insert-symbol C1 cells 128-159 always show '.' placeholder
+               (ticket 12). Raw source bytes there match no display
+               font; picking still inserts the real transcoded byte.
+               Files: jasspa/macros/osdmisc.emf, doc/tickets.md
 
   [260923] - Fixed insert-symbol '?' cells (ticket 12). Macro-level
                UTF-8 fold corrupted OSD/expose store-byte draws.
