@@ -124,6 +124,14 @@ v unfold dir (color
       machine: `fc-match "monospace:size=14"` output, ME build/binary,
       X server type, minimal repro incl. typing speed.)
     - umlauts like ��� are displayed without delay
+    - VERIFIED 260923: umlaut insert shows the char at once (was: lead
+      byte until next update). Same hide-staleness root cause as the
+      cursor issue -- hide painted the raw store lead over the freshly
+      inserted char; fixed by the core cursor save/replay. Verified by
+      macro-driven insertion (`insert-string &ito 228` + forced
+      `screen-update`, then screenshot): `Thisä` at EOL and `Thisä is`
+      mid-line both correct immediately, buffer bytes verified.
+      No code change; user to confirm on affected machine.
     - DONE 260922: broken display for the old X11 fonts -- umlauts showed
       only raw UTF-8 bytes ('Ã¤' mojibake/boxes). disLineBuff is always
       terminal-ready UTF-8, which legacy single-byte core fonts cannot
