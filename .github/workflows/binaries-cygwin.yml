@@ -23,7 +23,9 @@ jobs:
           wget 
           zlib-devel 
           libncurses-devel 
-          libXt-devel 
+          libXt-devel
+          libXft-devel
+          fontconfig 
           zip 
           unzip
         install-dir: C:\cygwin
