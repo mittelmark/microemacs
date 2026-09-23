@@ -385,12 +385,12 @@ version (mecwb) which can be run both as a terminal and as a X11 application.
 
 ```bash
 ### install packages for X11 build
-sudo apt install libxt-dev
+sudo apt install libxt-dev libxft-dev
 ### builds standalone mew executable (GUI)
 make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
 make -f linux32gcc.gmk mecwb
-sudo apt install x11-utils    # xfontsel, xlsfonts - better font selection
+sudo apt install x11-utils  fontconfig  # xfontsel, xlsfonts fc-list - better font selection
 sudo apt install xfonts-utils ## mkfontscale for using ttf fonts
 sudo apt install luit ## unicode support in the terminal
 sudo apt install xclip ## for better clipboard support
@@ -414,7 +414,7 @@ make -f linux32gcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
 make -f linux32gcc.gmk mecb
 ### install X11 developer files
-sudo dnf install libXt-devel
+sudo dnf install libXt-devel libXft-devel
 ### builds standalone mew executable (GUI)
 make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)

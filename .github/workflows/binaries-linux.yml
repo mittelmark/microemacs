@@ -19,7 +19,7 @@ jobs:
       run: |
         sudo apt install build-essential
         #sudo apt install desktop-file-utils
-        sudo apt install libxt-dev
+        sudo apt install libxt-dev libxft-dev
         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
 
