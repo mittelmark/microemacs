@@ -213,5 +213,12 @@ v unfold dir (color
       (picking still inserts the real transcoded byte). Verified
       screenshot: uniform dots, rows 160+ keep real glyphs.
       Files: jasspa/macros/osdmisc.emf
-    - TODO: font selection dialog based on the code of the sister project in ../jasspa/microemacs/macros (ME 26)
+    - DONE 260923: font selection dialog ported from sister project
+      (ME 26 ../jasspa/microemacs). Xft path under &opt "xft": fc-list
+      pipe -> *xftl-tmp* -> Select FreeType Font OSD (name/style/size),
+      writes /history/<platform>/font as family:lang=…:style=…:size=N,
+      immediate change-font + save-registry (persists on mew close).
+      Core fonts button kept for non-Xft (change-font-xfontsel).
+      Platform tab: Choose Font ... wired to user-set-xftfont.
+      Files: jasspa/macros/userstp.emf
     - TODO: windows GUI version support for Unicode/UTF8

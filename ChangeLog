@@ -7,11 +7,22 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
- > Last Modified : <260923.1445>
+  > Last Modified : <260923.1500>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - Ported FreeType (Xft) font selection dialog to
+               user-setup Platform tab (ticket 12 font UI). When
+               &opt "xft", Choose Font ... runs fc-list and opens
+               Select FreeType Font (name/style/size); Select writes
+               /history/<platform>/font as family:lang=…:style=…:size=N,
+               applies change-font immediately and save-registry so the
+               font survives mew close. Core fonts button remains for
+               non-Xft builds. Sister ME 26 user-set-xcrfont not
+               portable (no LAUNCH_TO_VAR 0x400 here).
+               Files: jasspa/macros/userstp.emf, doc/tickets.md
 
   [260923] - Core-font Hide no longer overwrites just-typed umlauts
                (ticket 12, issue 3 remainder). After insert, Hide ran

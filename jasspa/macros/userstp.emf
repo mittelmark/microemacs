@@ -17,6 +17,7 @@
     set-variable .osd.user-misc &pinc .osd.next 1
     set-variable .osd.user-miscc &pinc .osd.next 1
     set-variable .osd.user-modes &pinc .osd.next 1
+    set-variable .osd.user-xft &pinc .osd.next 1
 !endif
 
 ; fence, horizontal and vertical scrolling names
@@ -427,6 +428,199 @@ set-variable .user-set-mouse.A ""
     !emacro
 !endif
 
+; FreeType (Xft) font selection - ported from sister project (ME 26)
+!if &opt "xft"
+    0 define-macro user-sel-xftfname
+        set-variable .user-set-xftfname.fl @#
+        set-variable .user-set-xftstyle.fs ""
+    !emacro
+    0 define-macro user-set-xftfname
+        !if &les @# 0
+            -1 osd .osd.tmp
+            osd .osd.tmp 0 "bs" 41 0 0 0
+            find-buffer "*xftl-tmp*"
+            beginning-of-buffer
+            !while &len @wl
+                !iif &set #l2 &sin "\x01" &set #l1 @wl  set-variable #l1 &lef #l1 &sub #l2 1
+                osd .osd.tmp $window-line "" #l1 $window-line user-sel-xftfname
+                forward-line
+            !done
+            goto-position "\x82"
+        !elif &gre .fl 0
+            find-buffer "*xftl-tmp*"
+            goto-line .fl
+            !iif &set #l2 &sin "\x01" &set $result @wl  set-variable $result &lef $result &sub #l2 1
+            goto-position "\x82"
+        !else
+            set-variable $result "Select one..."
+        !endif
+    !emacro
+    0 define-macro user-set-xftstyle
+        !if &les @# 0
+            set-variable #l1 "\x01"
+            !if &gre &set #l0 .user-set-xftfname.fl 0
+                find-buffer "*xftl-tmp*"
+                goto-line #l0
+                !iif &set #l2 &sin "\x01" @wl  set-variable #l1 &spr "\x01%s\x01" &rig @wl #l2
+                goto-position "\x82"
+            !endif
+            set-variable #l0 &slo #l1
+            -1 osd .osd.tmp
+            osd .osd.tmp 0 "bs" 23 0 0 0
+            osd .osd.tmp 1 "i" "<default>" 1 "set-variable .user-set-xftstyle.fs \"\""
+            set-variable #l9 1
+            set-variable #l2 0
+            !while &len &set #l3 &lget .s &inc #l2 1
+                set-variable #l4 0
+                !while &len &set #l5 &lget .w &inc #l4 1
+                    !if &seq "" &set #l6 &trb &cat #l5 #l3
+                    !elif &set #l6 &lfin #l0 #l6
+                        osd .osd.tmp &inc #l9 1 "i" &lget #l1 #l6 1 &spr "set-variable .user-set-xftstyle.fs \"%s\"" &lget #l1 #l6
+                        set-variable #l0 &lset #l0 #l6 ""
+                    !endif
+                !done
+            !done
+            set-variable #l2 0
+            !while &len &set #l3 &lget #l1 &inc #l2 1
+                !iif &len &lget #l0 #l2  osd .osd.tmp &inc #l9 1 "i" #l3 1 &spr "set-variable .user-set-xftstyle.fs \"%s\"" #l3
+            !done
+        !elif &len .fs
+            set-variable $result .fs
+        !else
+            set-variable $result "<default>"
+        !endif
+    !emacro
+    set-variable .user-set-xftstyle.w "|book|thin|extralight|light| |regular|medium|semibold|bold|extrabold|"
+    set-variable .user-set-xftstyle.s "| | italic| oblique|"
+
+    0 define-macro user-set-xftfsize
+        !if &equ @# -9
+            set-variable #l1 @ml2 "" .fz
+        !elif &equ @# 9
+            set-variable $result .fz
+            !return
+        !else
+            set-variable #l1 &add .fz @#
+        !endif
+        !iif &not &xse #l1 "\\d+"  !return
+        !iif &les #l1 5  set-variable #l1 5
+        !iif &equ #l1 .fz  !return
+        set-variable .fz #l1
+        -2 osd
+    !emacro
+    0 define-macro user-set-xftf
+        !if &les &set #l0 .user-set-xftfname.fl 2
+            !iif &les #l0 0 !return
+            set-variable #l1 "monospace"
+            set-variable #l2 ""
+        !else
+            find-buffer "*xftl-tmp*"
+            goto-line #l0
+            !iif &set #l2 &sin "\x01" &set #l1 @wl  set-variable #l1 &lef #l1 &sub #l2 1
+            goto-position "\x82"
+            !iif &len &set #l2 .user-set-xftstyle.fs  set-variable #l2 &cat ":style=" #l2
+        !endif
+        set-variable #l0 &spr "%s:lang=%s%s:size=%d" #l1 &lef &cat &con &exi .spell.language .spell.language "" "en" 2 #l2 .user-set-xftfsize.fz
+        set-registry &spr "/history/%s/font" %platform #l0
+        save-registry "/history" ""
+        !force change-font #l0
+    !emacro
+    0 define-macro user-set-xftfont
+        set-position "\x82"
+        !force 0 delete-buffer "*xftl-tmp*"
+        !force 66 pipe-shell-command &cat "fc-list :spacing=100:lang=" &lef &cat &con &exi .spell.language .spell.language "" "en" 2 "*xftl-tmp*"
+        !if &set #l1 $result
+            osd-dialog "User Setup Error" &spr "  Failed to run fc-list, system returned error (%d).  " #l1 "  \HOK  "
+            set-variable #l1 0
+        !else
+            find-buffer "*xftl-tmp*"
+            -1 buffer-mode "view"
+            beginning-of-buffer
+            !while &len @wc
+                set-mark
+                !if &xseq @wl "^[^:]+: *\\([^:]+\\):style=\\([^,\n]+\\)\\(,.*\\)?$"
+                    end-of-line
+                    -1 kill-region
+                    insert-string &spr "%s\x01%s" &trr @s1 &trr @s2
+                    forward-line
+                    beginning-of-line
+                !else
+                    forward-line
+                    -1 kill-region
+                !endif
+            !done
+            !if &set #l1 &gre $window-line 1
+                beginning-of-buffer
+                replace-string "^\\([^\n,\x01]+\\),\\1 [^\n,\x01]+\x01" "\\1\x01"
+                end-of-buffer
+                set-mark
+                beginning-of-buffer
+                sort-lines
+                uniq
+                !repeat
+                    set-variable #l1 $window-eline
+                    beginning-of-buffer
+                    replace-string "^\\([^\n\x01]+\x01\\)\\(.*\\)\n\\1" "\\1\\2\x01"
+                !until &equ #l1 $window-eline
+                beginning-of-buffer
+                insert-string "<default>\n"
+                set-variable #l7 0
+                set-variable #l6 11
+                set-variable #l5 ""
+                !if &seq "" &set #l2 &reg &spr "/history/%s/font" %platform ""
+                    0 change-font
+                    set-variable #l2 &lget $result 8
+                !endif
+                !if &not &seq &lef #l2 1 "-"
+                    !iif &xse #l2 ".*:size=\\(\\d+\\).*"  set-variable #l6 @s1
+                    !iif &xse #l2 ".*:style=\\([^:]+\\).*"  set-variable #l5 @s1
+                    !iif &set #l3 &sin ":" #l2  set-variable #l2 &lef #l2 &sub #l3 1
+                    !force search-buffer "mE" &spr "^%s\x01" #l2
+                    !if $status
+                        set-variable #l7 $window-line
+                    !elif &seq #l2 "monospace"
+                        set-variable #l7 1
+                    !endif
+                !endif
+            !endif
+        !endif
+        goto-position "\x82"
+        !if #l1
+            set-variable .user-set-xftfname.fl #l7
+            set-variable .user-set-xftfsize.fz #l6
+            set-variable .user-set-xftstyle.fs #l5
+            -1 osd .osd.user-xft
+            osd .osd.user-xft 0 "batcHDIs" 11 7 58 6 -1 -1 620 640 .scheme.osd-title "Select FreeType Font"
+            osd .osd.user-xft 100 ""
+            osd .osd.user-xft 110 "Sfh" "  Font \HName:  " 120
+            osd .osd.user-xft 120 "OtxmsfhHzR" .scheme.osd-entry 39 1 "" .osd.tmp user-set-xftfname
+            osd .osd.user-xft 130 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 120
+            osd .osd.user-xft 200 ""
+            osd .osd.user-xft 210 "Sfh" "  Font \HStyle: " 120
+            osd .osd.user-xft 220 "OtxmsfhHzR" .scheme.osd-entry 21 1 "" .osd.tmp user-set-xftstyle
+            osd .osd.user-xft 230 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 220
+            osd .osd.user-xft 300 ""
+            osd .osd.user-xft 310 "Sfh" "  Font Si\Hze:  " 340
+            osd .osd.user-xft 320 "BtfxHh" .scheme.osd-ebtt " \H- " -1 user-set-xftfsize
+            osd .osd.user-xft 330 "fh" "  "
+            osd .osd.user-xft 340 "EtxHfh" .scheme.osd-entry "########" 9 user-set-xftfsize
+            osd .osd.user-xft 350 "fh" "  "
+            osd .osd.user-xft 360 "BtfxH" .scheme.osd-ebtt " \H+ " 1 user-set-xftfsize
+            osd .osd.user-xft 600 ""
+            osd .osd.user-xft 620 "BtrfHh" .scheme.osd-ebtt " \HSelect " 0 user-set-xftf
+            osd .osd.user-xft 625 "fh" "   "
+            osd .osd.user-xft 630 "BtrfHh"  .scheme.osd-ebtt " \HCore fonts " f change-font-xfontsel
+            osd .osd.user-xft 635 "fh" "   "
+            osd .osd.user-xft 640 "BtrfHh"   .scheme.osd-ebtt " \HCancel " f void
+            osd .osd.user-xft 650 "f" "  "
+            !force !force .osd.user-xft osd
+        !else
+            change-font-xfontsel
+        !endif
+        !force 0 delete-buffer "*xftl-tmp*"
+    !emacro
+!endif
+
 0 define-macro user-setup-charset-set
     set-registry &spr "/history/%s/char-set" %platform &lget %charset-value @#
 !emacro
@@ -649,7 +843,10 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         osd .osd.user-plat 417 "fh" "      "
         osd .osd.user-plat 420 "Ctfxp" &cat .osd.checkbox-chars "\} Use Clipbo\Hard" 0x2000000 user-set-system
     !else
-        !if .change-font.xfontsel
+        !if &opt "xft"
+            osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
+            osd .osd.user-plat 46 "BtfxHR" .scheme.osd-ebtt " Choose Font ... " f user-set-xftfont
+        !elif .change-font.xfontsel
             osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
             osd .osd.user-plat 46 "BtfxHR" .scheme.osd-ebtt " Choose Font ... " f change-font-xfontsel
         !endif
