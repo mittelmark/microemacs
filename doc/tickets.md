@@ -152,6 +152,20 @@ v unfold dir (color
       contSave); one C-x u removes the whole ä (verified: type → undo
       → save leaves ABTest with no stray c3/a4). test-basics passes.
       Files: src/main.c
+    - DONE 260923: core-font Hide overwrote the just-typed umlaut with
+      ornamented A (`Ã` = store lead 0xC3). After insert, TTmove Hides
+      at the OLD cell: save/store no longer match (edit), so Hide fell
+      through to live `meLegacyCursorByte`, but dot already moved past
+      the char -- lead match failed, returned raw store `0xC3`, drew
+      `Ã` over the glyph updateline had just painted. Next keystroke's
+      updateline repaired the previous cell (matches report: type
+      äöü → display äöÃ; type x → äöüx). Same class as the Xft lag
+      fix: on store mismatch with a multi-byte lead, skip the Hide
+      draw (ASCII still draws the live store byte). Verified core-only
+      mew (no libXft) + XLFD `fixed` under Xvfb with window focus:
+      withoutfix last umlaut = Ã, withfix = ü; after `x` both identical.
+      Xft path already skipped on multi-byte mismatch (8fe3182).
+      Files: src/unixterm.c
     - DONE 260922: broken display for the old X11 fonts -- umlauts showed
       only raw UTF-8 bytes ('Ã¤' mojibake/boxes). disLineBuff is always
       terminal-ready UTF-8, which legacy single-byte core fonts cannot
@@ -171,7 +185,9 @@ v unfold dir (color
       Hide runs after dot has moved (TTmove), so live resolution would
       read the new cell (neighbor char / mismatched lead = ornamented
       A): Hide now replays a core cursor save (byte+frame+pos+store,
-      mirroring xftCursorSave), recorded by Show.
+      mirroring xftCursorSave), recorded by Show -- and on store
+      mismatch after an edit (dot past the char), skips the multi-byte
+      lead draw entirely (see core-font Hide / issue 3 entry above).
       Same stuck-box class fixed in the Xft cursor path
       (meXftCursorBytes converts single-byte buffers to UTF-8).
       Verified on tests/encodings/tiso8859-1.txt with core and Xft

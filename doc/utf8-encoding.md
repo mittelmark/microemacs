@@ -308,9 +308,14 @@ the original text with no stray `c3`/`a4`. `test-basics` passes.
 
 ### One-character display lag (fixed 260923)
 
-**Symptom:** typed ASCII only appeared after the next keystroke —
+**Symptom (Xft):** typed ASCII only appeared after the next keystroke —
 type `a` → blank, type `ab` → only `a`, Return → the missing char.
 Buffer bytes were always correct.
+
+**Symptom (core fonts, non-ASCII):** last typed umlaut showed as
+ornamented A (`Ã` = store lead `0xC3`); next keystroke repaired the
+previous cell (`äöü` displayed as `äöÃ` until `x`). Same Hide layer,
+different store-byte handling.
 
 **Root cause (confirmed with focus + `ME_XFT_DEBUG=1`):** after
 `updateline()` paints the new character, `resetCursor()` → `TTmove()`
@@ -325,18 +330,22 @@ Why earlier runs looked fine: unfocused windows
 used the live store byte and never replayed a stale save. Prior
 "not reproducible" tests used `xdotool type --window` / no WM focus.
 
-**Fix** (`src/unixterm.c`): Show records `xftCursorSaveStore`,
-`xftCursorSaveRow`, `xftCursorSaveCol`. Hide replays the save only
-when frame + row + col + store content all match. On mismatch:
+**Fix** (`src/unixterm.c`): Show records store/row/col. Hide replays
+the save only when frame + row + col + store content all match. On
+mismatch:
 
 - ASCII → draw the live store byte (updateline already painted it);
 - multi-byte lead → skip the draw (updateline painted the full UTF-8
-  sequence; a lone lead is invalid for Xft).
+  sequence; a lone lead is invalid for Xft / draws `Ã` via latin-1).
+
+The same skip was added to the **core-font** Hide path (issue 3):
+live `meLegacyCursorByte` after an edit fails the lead match (dot is
+past the char) and used to return raw `0xC3`.
 
 **Verified:** MEXD withoutfix after `a`: `hide ... [ ] saved=1`
-(stale space). MEXD withfix: `hide ... [a] live=61 draw=1` then
-`draw x=0 [a]`. Screenshots show `a` / `ab` immediately. `test-basics`
-passes.
+(stale space). MEXD withfix: `hide ... [a] live=61 draw=1`. Core-font
+A/B: withoutfix last umlaut `Ã`, withfix `ü`; after `x` identical.
+`test-basics` passes.
 
 #### What has been tried and ruled out (pre-fix experiments)
 

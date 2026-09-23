@@ -4438,25 +4438,36 @@ meFrameXTermHideCursor(meFrame *frame)
 #endif
         {
             /* Replay the byte Show drew here (dot has moved since, so a
-             * live resolve would read the new cell). Fall back to live
-             * resolve when the save is invalid (frame/pos/store check,
-             * the latter catching edits under the cursor). */
+             * live resolve would read the new cell). On store mismatch
+             * the cell was edited under the cursor: updateline already
+             * painted the new char -- do not draw a stale save or a
+             * live multi-byte lead (dot is past the char, so resolve
+             * fails and returns 0xC3 = ornamented A over the glyph).
+             * ASCII falls through to a live byte (same as updateline). */
             meUByte ccb ;
+            int drawHide = meTRUE ;
             if((frame == legCursorSaveFrame) &&
                (frame->cursorRow == legCursorSaveRow) &&
                (frame->cursorColumn == legCursorSaveCol) &&
                (*cc == legCursorSaveStore))
                 ccb = legCursorSave ;
-            else
+            else if(!(*cc & 0x80))
                 ccb = meLegacyCursorByte(frame,cc) ;
-            if ((meSystemCfg & meSYSTEM_FONTFIX) && !((ccb) & 0xe0))
+            else
+                drawHide = meFALSE ;
+            if(drawHide)
             {
-                static char ss[1]={' '} ;
-                meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
-                meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),ccb) ;
+                if ((meSystemCfg & meSYSTEM_FONTFIX) && !((ccb) & 0xe0))
+                {
+                    static char ss[1]={' '} ;
+                    meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
+                    meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),ccb) ;
+                }
+                else
+                    meLegacyCursorDraw(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ccb);
             }
             else
-                meLegacyCursorDraw(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ccb);
+                ME_DBGTRACE("DBGR: HideCursor legacy skip stale multi-byte lead") ;
         }
     }
 }

@@ -7,11 +7,23 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
- > Last Modified : <260923.1145>
+ > Last Modified : <260923.1445>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - Core-font Hide no longer overwrites just-typed umlauts
+               (ticket 12, issue 3 remainder). After insert, Hide ran
+               live meLegacyCursorByte at the old cell; dot had already
+               moved past the char, lead match failed, raw store 0xC3
+               (Ã) was drawn over the glyph updateline just painted.
+               Next keystroke repaired the previous cell (äöü → äöÃ).
+               On store mismatch with multi-byte lead, skip the Hide
+               draw (mirror of the Xft fix). ASCII still draws live.
+               Verified core-only mew + XLFD fixed under Xvfb: A/B
+               withoutfix=Ã / withfix=ü; after x identical. test-basics ok.
+               Files: src/unixterm.c, doc/tickets.md, doc/utf8-encoding.md
 
   [260923] - Fixed Xft one-character typing lag (ticket 12, issue 5).
                After updateline painted the new char, TTmove's Hide
