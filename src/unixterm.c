@@ -1274,9 +1274,13 @@ meFrameXTermSetScheme(meFrame *frame, meScheme scheme)
         /* X11 GC keeps its colors (special chars reuse the GC
          * foreground) but text goes through Xft colors/fonts. */
         if(meFrameGetXftDraw(frame) == NULL)
-            meFrameSetXftDraw(frame,XftDrawCreate(mecm.xdisplay,meFrameGetXWindow(frame),
-                                                   DefaultVisual(mecm.xdisplay,xscreen),
-                                                   DefaultColormap(mecm.xdisplay,xscreen))) ;
+        {
+            XftDraw *xd = XftDrawCreate(mecm.xdisplay,meFrameGetXWindow(frame),
+                                        DefaultVisual(mecm.xdisplay,xscreen),
+                                        DefaultColormap(mecm.xdisplay,xscreen)) ;
+            /* Leave NULL on failure; draw macros must tolerate that. */
+            meFrameSetXftDraw(frame,xd) ;
+        }
         cc = meStyleGetFColor(meSchemeGetStyle(scheme)) ;
         meFrameSetFgColor(frame,meXftColorGet(cc)) ;
         cc = meStyleGetBColor(meSchemeGetStyle(scheme)) ;
@@ -4492,6 +4496,14 @@ meFrameXTermShowCursor(meFrame *frame)
         {
             meUInt valueMask=0 ;
             meUByte ff ;
+#if MEOPT_XFT
+            /* Ensure Xft draw exists before any Xft rect/string call.
+             * ShowCursor does not go through SetScheme first; without
+             * this, the first Show after change-font (or before any
+             * full redraw) passes NULL to XftDrawRect and SEGV. */
+            if(meXftUsed() && (meFrameGetXftDraw(frame) == NULL))
+                meFrameXTermSetScheme(frame,schm) ;
+#endif
             ff = meStyleGetBColor(meSchemeGetStyle(schm)) ;
             if(meFrameGetXGCFCol(frame) != ff)
             {

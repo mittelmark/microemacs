@@ -221,4 +221,19 @@ v unfold dir (color
       Core fonts button kept for non-Xft (change-font-xfontsel).
       Platform tab: Choose Font ... wired to user-set-xftfont.
       Files: jasspa/macros/userstp.emf
+    - DONE 260923: mew coredump on start after font dialog / change-font.
+      gdb on core (mew, tests/encodings/tiso8859-1.txt): XftDrawRect
+      called with NULL XftDraw* (rdi=0) from meFrameXTermShowCursor.
+      ShowCursor Xft path drew via meFrameXTermDrawString without first
+      calling SetScheme (only place that creates xdraw); after changeFont
+      enables Xft, xdraw was still NULL until a full redraw. Fix: ensure
+      xdraw in ShowCursor (call SetScheme when missing); XftDrawCreate
+      failure no longer trusted; Xft draw macros in eterm.h skip when
+      xdraw/font is NULL. Also restored corrupted translate-key bytes
+      (DEL / UTF-8 replacement) lost in an earlier edit of unixterm.emf,
+      fixed &xse whole-match size parse (bare ":size=" never matches a
+      full fontconfig name → second :size= appended each resize step),
+      and corrected newuser.erf default font size=1 → size=14.
+      Files: src/unixterm.c, src/eterm.h, jasspa/macros/unixterm.emf,
+      jasspa/macros/newuser.erf
     - TODO: windows GUI version support for Unicode/UTF8

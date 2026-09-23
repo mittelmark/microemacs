@@ -352,7 +352,7 @@ do {                                                                            
         meFrameXftDrawBackground(frame,(col),(row),_xn) ;                         \
         meFrameXftDrawStringUtf8(frame,(col),(row),(str),(len)) ;                  \
         MEXD_DRAW_TRACE(frame,(col),(row),(str),(len)) ;                           \
-        if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                            \
+        if((meFrameGetXGCFont(frame) & meFONT_UNDERLINE) && (meFrameGetXftDraw(frame) != NULL)) \
             XftDrawRect(meFrameGetXftDraw(frame),meFrameGetFgColor(frame),(col),(row)+mecm.underline,colToClient(_xn),1) ; \
     }                                                                              \
     else                                                                           \
@@ -403,15 +403,22 @@ do {                                                                            
 #if MEOPT_XFT
 /* Xft drawing helpers. Unlike upstream, our rowToClient() yields the
  * BASELINE (not the row top), so no extra ascent is added to rw, and
- * the background rect starts one ascent above rw to cover the cell. */
+ * the background rect starts one ascent above rw to cover the cell.
+ * NULL xdraw (create failed or SetScheme not yet run) must not SEGV. */
 #define meFrameXftDrawBackground(ff,cl,rw,ll)                                      \
-    XftDrawRect(meFrameGetXftDraw(ff),meFrameGetBgColor(ff),(cl),(rw)-mecm.ascent,colToClient(ll),mecm.fdepth)
+do {                                                                               \
+    if(meFrameGetXftDraw(ff) != NULL)                                              \
+        XftDrawRect(meFrameGetXftDraw(ff),meFrameGetBgColor(ff),(cl),(rw)-mecm.ascent,colToClient(ll),mecm.fdepth); \
+} while(0)
 #define meFrameXftDrawStringUtf8(ff,cl,rw,ss,ll)                                   \
-    XftDrawStringUtf8(meFrameGetXftDraw(ff),meFrameGetFgColor(ff),meFrameGetXftFont(ff),(cl),(rw),(FcChar8 *)(ss),(ll))
+do {                                                                               \
+    if((meFrameGetXftDraw(ff) != NULL) && (meFrameGetXftFont(ff) != NULL))         \
+        XftDrawStringUtf8(meFrameGetXftDraw(ff),meFrameGetFgColor(ff),meFrameGetXftFont(ff),(cl),(rw),(FcChar8 *)(ss),(ll)); \
+} while(0)
 #define meFrameXftDrawString(ff,cl,rw,ss,ll)                                       \
 do {                                                                               \
     meFrameXftDrawStringUtf8(ff,cl,(rw),ss,ll);                                    \
-    if(meFrameGetXGCFont(ff) & meFONT_UNDERLINE)                                   \
+    if((meFrameGetXGCFont(ff) & meFONT_UNDERLINE) && (meFrameGetXftDraw(ff) != NULL)) \
         XftDrawRect(meFrameGetXftDraw(ff),meFrameGetFgColor(ff),(cl),(rw)+mecm.underline,colToClient(ll),1); \
 } while(0)
 #define meFrameXftDrawSpecialChar meFrameXTermDrawSpecialChar

@@ -13,6 +13,24 @@
 
 ## 2026
 
+  [260923] - Fixed mew Xft startup/core SEGV (ticket 12). Core dump
+               showed XftDrawRect called with NULL XftDraw*: ShowCursor
+               drew via Xft macros without SetScheme, so xdraw was never
+               created after change-font or before a full redraw;
+               XftDrawCreate failure was unchecked. ShowCursor now
+               creates xdraw via SetScheme when missing; SetScheme
+               tolerates XftDrawCreate failure; eterm.h Xft draw macros
+               NULL-guard draw/font. Also: unixterm.emf &xse size parse
+               fixed for WHOLE-string match (".*:size=\\(\\d+\\).*" --
+               bare ":size=..." never matches a full fontconfig name and
+               the else-branch appended a second :size= each resize step);
+               restored corrupted translate-key DEL/UTF-8 bytes; newuser
+               default font Xft size=14 (was corrupted size=1). test-basics
+               ok; mew smoke open+resize under Xvfb ok.
+               Files: src/unixterm.c, src/eterm.h,
+               jasspa/macros/unixterm.emf, jasspa/macros/newuser.erf,
+               doc/tickets.md
+
   [260923] - Ported FreeType (Xft) font selection dialog to
                user-setup Platform tab (ticket 12 font UI). When
                &opt "xft", Choose Font ... runs fc-list and opens

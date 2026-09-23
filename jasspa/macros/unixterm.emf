@@ -51,6 +51,14 @@ set-variable .change-font.xfontsel 0
       !else
         set-variable .change-font.sz-size @s2
       !endif
+    !elif &not &seq &lef #l0 1 "-"
+      ; Xft fontconfig name (e.g. family:lang=..:style=..:size=14)
+      ; &xse is WHOLE-string match - need . on both ends
+      !if &xse #l0 ".*:size=\\(\\d+\\).*"
+        set-variable .change-font.sz-size @s1
+      !elif &not &exi .change-font.sz-size
+        set-variable .change-font.sz-size 17
+      !endif
     !else
       set-variable .change-font.sz-font "-*-fixed-bold-r-*-*-%d-*-*-*-*-*-iso8859-1"
     !endif
@@ -58,12 +66,62 @@ set-variable .change-font.xfontsel 0
   set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
   !if &or &seq #l0 "iso8859-15" &seq #l0 "iso8859-16"
     translate-key "\x80" "\xa4"
-    translate-key "" ""
-    ;translate-key "�" "'"
+    translate-key "\x7f" ""
+    ;translate-key "\xef\xbf\xbd" "'"
   !endif
   
  ; might be called like this:
  define-macro change-font-size
+    ; Current font name: registry, else query
+    set-variable #l8 &reg &spr "/history/%s/font" %platform ""
+    !if &seq #l8 ""
+      0 change-font
+      set-variable #l8 &lget $result 8
+    !endif
+    ; Xft path: step size by +/- 2, rebuild :size= in the fontconfig name
+    !if &not &seq &lef #l8 1 "-"
+      ; &xse is WHOLE-string match - bare :size=... fails on a full font name
+      !if &xse #l8 ".*:size=\\(\\d+\\).*"
+        set-variable #l4 @s1
+      !else
+        0 change-font
+        set-variable #l4 &lget $result 7
+        !if &les #l4 1
+          set-variable #l4 .change-font.sz-size
+        !endif
+        ; only append when the name really has no :size= yet
+        !if &not &xse #l8 ".*:size=\\d+.*"
+          set-variable #l8 &cat #l8 &spr ":size=%d" #l4
+        !endif
+      !endif
+      set-variable #l0 2
+      !if &les @# 0
+        set-variable #l0 -2
+      !endif
+      set-variable #l5 &add #l4 #l0
+      !if &less #l5 6
+        set-variable #l5 6
+      !elif &gre #l5 72
+        set-variable #l5 72
+      !endif
+      !if &equal #l5 #l4
+        ml-write "Font was not changed"
+        !return
+      !endif
+      set-variable #l6 &spr ":size=%d" #l5
+      set-variable #l1 &xrep #l8 ":size=\\d+" #l6
+      !force change-font #l1
+      !if $status
+        500 ml-write &cat "current font: " #l1
+        set-registry &spr "/history/%s/font" %platform #l1
+        save-registry "/history" ""
+        set-variable .change-font.sz-size #l5
+      !else
+        ml-write "Font was not changed"
+      !endif
+      !return
+    !endif
+    ; Legacy XLFD path (core X server fonts), step by 1
     set-variable #l0 1
     set-variable .new-size .change-font.sz-size
     set-variable .old-size .change-font.sz-size
