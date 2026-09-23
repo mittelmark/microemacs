@@ -7,11 +7,29 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260922.2247>
+>  Last Modified : <260923.0815>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - Hide replays core cursor save (ticket 12). Hide runs after
+               dot has moved, so live byte resolution read the new cell
+               (neighbor char painted over old cell, or mismatched lead
+               as ornamented A). Core save (byte+frame+pos+store) mirrors
+               xftCursorSave, recorded by Show, validated by Hide.
+               Files: src/unixterm.c
+
+  [260923] - Fixed cursor-over-umlaut for single-byte buffers with
+               legacy and Xft fonts (ticket 12). Cursor show/hide drew
+               the frame-store lead byte: fold turned it into a stuck
+               '?' (core) or invalid-UTF-8 box (Xft). meLegacyCursorByte
+               now resolves single-byte buffers via UTF-8 lead check;
+               cursor draws bypass the fold (meLegacyCursorDraw);
+               meXftCursorBytes converts single-byte buffers. Verified
+               on tiso8859-1.txt (cursor shows proper/inverted glyph,
+               test-basics passes).
+               Files: src/unixterm.c, doc/utf8-encoding.md, doc/tickets.md
 
   [260922] - Fixed stuck '?' when cursor moves over umlauts with legacy
                X11 core fonts (ticket 12). Cursor show/hide drew the

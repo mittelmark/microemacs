@@ -4223,8 +4223,10 @@ static meUByte xftCursorSave[8] ;
 static int xftCursorSaveLen = 0 ;
 static meFrame *xftCursorSaveFrame = NULL ;
 /* Full UTF-8 bytes for the char under the cursor (frame store holds
- * only the lead byte). Uses the buffer when its lead byte matches the
- * frame store (cursor tracks dot), else the single frame-store byte. */
+ * only the lead byte). Uses the buffer when it matches the frame store
+ * (cursor tracks dot), else the single frame-store byte. Single-byte
+ * buffers are converted to UTF-8 first (renderLine emits UTF-8). */
+static meUByte xftCursorConv[8] ;
 static meUByte *
 meXftCursorBytes(meFrame *frame, meUByte *cc, int *len)
 {
@@ -4233,17 +4235,33 @@ meXftCursorBytes(meFrame *frame, meUByte *cc, int *len)
         meWindow *wp = frameCur->windowCur ;
         meLine *lp = wp->dotLine ;
         meInt off = wp->dotOffset, llen = meLineGetLength(lp) ;
-        if((off < llen) && (lp->text[off] == *cc))
+        if(off < llen)
         {
-            int bl = meUtf8ValidSeqLen(&lp->text[off]) ;
-            if(off + bl > llen)
-                bl = (int)(llen - off) ;
-            if(bl > 4)
-                bl = 4 ;   /* longer runs are invalid - box either way */
-            if(bl > 0)
+            if(((meEncoding) wp->buffer->encoding == ME_ENC_UTF8) &&
+               (lp->text[off] == *cc))
             {
-                *len = bl ;
-                return &lp->text[off] ;
+                int bl = meUtf8ValidSeqLen(&lp->text[off]) ;
+                if(off + bl > llen)
+                    bl = (int)(llen - off) ;
+                if(bl > 4)
+                    bl = 4 ;   /* longer runs are invalid - box either way */
+                if(bl > 0)
+                {
+                    *len = bl ;
+                    return &lp->text[off] ;
+                }
+            }
+            else if((meEncoding) wp->buffer->encoding != ME_ENC_UTF8)
+            {
+                meConv conv ;
+                int outLen ;
+                meConvInit(&conv, (meEncoding) wp->buffer->encoding, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, &lp->text[off], 1, xftCursorConv, sizeof(xftCursorConv)) ;
+                if((outLen > 0) && (xftCursorConv[0] == *cc))
+                {
+                    *len = outLen ;
+                    return xftCursorConv ;
+                }
             }
         }
     }
@@ -4255,33 +4273,83 @@ meXftCursorBytes(meFrame *frame, meUByte *cc, int *len)
 /* Legacy core-font cursor byte (ticket 12): the frame store holds only
  * the lead byte of multi-byte chars, which the UTF-8 to latin-1 fold
  * would turn into '?' (sticking until the next full repaint, since
- * cursor draws do not update the store). When the cursor tracks dot in
- * a UTF-8 buffer and the lead bytes match, fold the full buffer
- * sequence to a single latin-1 byte instead. Single-byte buffers and
- * ASCII pass through unchanged. */
+ * cursor draws do not update the store). When the cursor tracks dot
+ * and the bytes match, resolve the full character instead: the folded
+ * latin-1 byte for UTF-8 buffers, the raw single byte for single-byte
+ * buffers (verified by converting it to UTF-8 and comparing the lead
+ * with the store). ASCII and untracked cells pass through unchanged. */
 static meUByte
 meLegacyCursorByte(meFrame *frame, meUByte *cc)
 {
     if((*cc >= 0x80) && (frame == frameCur))
     {
         meWindow *wp = frameCur->windowCur ;
-        if(wp->buffer->encoding == ME_ENC_UTF8)
+        meLine *lp = wp->dotLine ;
+        meInt off = wp->dotOffset, llen = meLineGetLength(lp) ;
+        if(off < llen)
         {
-            meLine *lp = wp->dotLine ;
-            meInt off = wp->dotOffset, llen = meLineGetLength(lp) ;
-            if((off < llen) && (lp->text[off] == *cc))
+            if(wp->buffer->encoding == ME_ENC_UTF8)
             {
-                meUByte out ;
-                int take = (int)(llen - off) ;
-                if(take > 4)
-                    take = 4 ;
-                if(meFoldUtf8ToLatin1(&lp->text[off],take,&out,1) == 1)
-                    return out ;
+                if(lp->text[off] == *cc)
+                {
+                    meUByte out ;
+                    int take = (int)(llen - off) ;
+                    if(take > 4)
+                        take = 4 ;
+                    if(meFoldUtf8ToLatin1(&lp->text[off],take,&out,1) == 1)
+                        return out ;
+                }
+            }
+            else
+            {
+                /* Single-byte buffer: the store holds the UTF-8 lead
+                 * that renderLine produced for this byte. */
+                meConv conv ;
+                meUByte outBuf[8] ;
+                int outLen ;
+                meConvInit(&conv, (meEncoding) wp->buffer->encoding, ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv, &lp->text[off], 1, outBuf, sizeof(outBuf)) ;
+                if((outLen > 0) && (outBuf[0] == *cc))
+                    return lp->text[off] ;
             }
         }
     }
     return *cc ;
 }
+
+/* Draw a resolved single latin-1 cursor byte, bypassing the UTF-8 fold
+ * in meFrameXTermDrawString (a lone high byte looks like a truncated
+ * sequence there and would become '?'). latin-1 core fonts take the
+ * byte raw; iso10646 core fonts get its 2-byte UTF-8 form. */
+static void
+meLegacyCursorDraw(meFrame *frame, int col, int row, meUByte b)
+{
+    if(mecm.fontIsUtf8 && (b >= 0x80))
+    {
+        meUByte ub[2] ;
+        ub[0] = (meUByte)(0xC0 | (b >> 6)) ;
+        ub[1] = (meUByte)(0x80 | (b & 0x3F)) ;
+        XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),
+                         meFrameGetXGC(frame),col,row,(char *)ub,2) ;
+    }
+    else
+        XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),
+                         meFrameGetXGC(frame),col,row,(char *)&b,1) ;
+    if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)
+        XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),
+                  meFrameGetXGC(frame),col,row+mecm.underline,
+                  col+colToClient(1)-1,row+mecm.underline) ;
+}
+
+/* Bytes hidden under the core cursor as drawn by the last Show. Hide
+ * runs after dot has moved (see TTmove), so resolving the byte live
+ * would read the NEW cell (neighbor char or mismatched lead) -- replay
+ * the saved byte instead, validated by frame, position and store
+ * content (the latter catches edits under the cursor). */
+static meUByte legCursorSave = ' ' ;
+static meUByte legCursorSaveStore = 0 ;
+static meFrame *legCursorSaveFrame = NULL ;
+static int legCursorSaveRow = -1, legCursorSaveCol = -1 ;
 
 /*
  * TThideCur - hide the cursor
@@ -4339,9 +4407,18 @@ meFrameXTermHideCursor(meFrame *frame)
         else
 #endif
         {
-            /* Resolve full bytes for multibyte cells (lead byte in the
-             * store would fold to '?') */
-            meUByte ccb = meLegacyCursorByte(frame,cc) ;
+            /* Replay the byte Show drew here (dot has moved since, so a
+             * live resolve would read the new cell). Fall back to live
+             * resolve when the save is invalid (frame/pos/store check,
+             * the latter catching edits under the cursor). */
+            meUByte ccb ;
+            if((frame == legCursorSaveFrame) &&
+               (frame->cursorRow == legCursorSaveRow) &&
+               (frame->cursorColumn == legCursorSaveCol) &&
+               (*cc == legCursorSaveStore))
+                ccb = legCursorSave ;
+            else
+                ccb = meLegacyCursorByte(frame,cc) ;
             if ((meSystemCfg & meSYSTEM_FONTFIX) && !((ccb) & 0xe0))
             {
                 static char ss[1]={' '} ;
@@ -4349,7 +4426,7 @@ meFrameXTermHideCursor(meFrame *frame)
                 meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),ccb) ;
             }
             else
-                meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),&ccb,1);
+                meLegacyCursorDraw(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ccb);
         }
     }
 }
@@ -4448,8 +4525,14 @@ meFrameXTermShowCursor(meFrame *frame)
 #endif
             {
                 /* Resolve full bytes for multibyte cells (lead byte in the
-                 * store would fold to '?') */
+                 * store would fold to '?'). Remember for Hide (dot will
+                 * have moved by then, so Hide must not resolve live). */
                 meUByte ccb = meLegacyCursorByte(frame,cc) ;
+                legCursorSave = ccb ;
+                legCursorSaveStore = *cc ;
+                legCursorSaveFrame = frame ;
+                legCursorSaveRow = frame->cursorRow ;
+                legCursorSaveCol = frame->cursorColumn ;
                 if ((meSystemCfg & meSYSTEM_FONTFIX) && !((ccb) & 0xe0))
                 {
                     static char ss[1]={' '} ;
@@ -4457,7 +4540,7 @@ meFrameXTermShowCursor(meFrame *frame)
                     meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),ccb) ;
                 }
                 else
-                    meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),&ccb,1);
+                    meLegacyCursorDraw(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ccb);
             }
         }
         else

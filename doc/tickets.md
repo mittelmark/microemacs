@@ -136,8 +136,22 @@ v unfold dir (color
       byte, which the fold turned into a stuck '?' (store untouched, so
       updateline never repainted until manual screen-update). New
       meLegacyCursorByte() resolves the full buffer sequence via dot
-      when lead bytes match and folds to one latin-1 byte; ASCII and
-      single-byte buffers pass through unchanged.
+      when lead bytes match and folds to one latin-1 byte; single-byte
+      buffers verified by converting to UTF-8 and comparing the lead.
+      Cursor single-byte draws bypass the fold via meLegacyCursorDraw()
+      (raw latin-1, or 2-byte UTF-8 form for iso10646 core fonts).
+      Hide runs after dot has moved (TTmove), so live resolution would
+      read the new cell (neighbor char / mismatched lead = ornamented
+      A): Hide now replays a core cursor save (byte+frame+pos+store,
+      mirroring xftCursorSave), recorded by Show.
+      Same stuck-box class fixed in the Xft cursor path
+      (meXftCursorBytes converts single-byte buffers to UTF-8).
+      Verified on tests/encodings/tiso8859-1.txt with core and Xft
+      fonts: cursor on umlaut shows proper (inverted) glyph, neighbors
+      intact; test-basics passes.
+      Harness note: under Xvfb without WM the window has no focus --
+      use `xdotool windowfocus --sync` or cursor show never runs (hide
+      runs regardless, which is exactly the stuck-'?' mechanism).
       Files: src/unixterm.c, src/eterm.h, src/display.c
     - TODO: font selection dialog based on the code of the sister project in ../jasspa/microemacs/macros (ME 26)
     - TODO: windows GUI version support for Unicode/UTF8

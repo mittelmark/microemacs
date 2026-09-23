@@ -255,10 +255,20 @@ render correctly with legacy fonts; anything beyond shows `?`.
 
 Follow-up: cursor show/hide painted the single frame-store lead byte,
 which the fold turned into a `?` that stuck (cursor draws do not touch
-the store, so `updateline` saw no change until a manual screen-update).
-`meLegacyCursorByte()` (`src/unixterm.c`) now resolves the full buffer
-sequence via dot when lead bytes match and folds it to one latin-1
-byte; ASCII and single-byte buffers pass through unchanged.
+the store, so `updateline` saw no change until a manual screen-update;
+hide runs even without window focus, show needs focus). Two-part fix
+in `src/unixterm.c`: `meLegacyCursorByte()` resolves the full buffer
+sequence via dot (folded latin-1 byte for UTF-8 buffers; for
+single-byte buffers the raw byte, verified by converting to UTF-8 and
+comparing the lead), and cursor single-byte draws bypass the fold via
+`meLegacyCursorDraw()` (raw latin-1, or its 2-byte UTF-8 form for
+iso10646 core fonts). The same stuck-box class in the Xft cursor path
+is fixed by converting single-byte buffers in `meXftCursorBytes()`.
+Since Hide runs after dot has moved (`TTmove`), it replays a core
+cursor save (byte+frame+position+store, mirroring `xftCursorSave`)
+instead of resolving live (which would read the new cell: neighbor
+char or mismatched lead shown as ornamented A).
+Verified on `tests/encodings/tiso8859-1.txt` with core and Xft fonts.
 
 ### Known issue: one-character display lag (open)
 
