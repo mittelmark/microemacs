@@ -774,6 +774,33 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
     return wid;
 }
 
+#ifdef _XTERM
+/* Draw a terminal-ready UTF-8 run on X11 core fonts (ticket 12). The
+ * core draw macro passes single bytes raw (frame-store/OSD content is
+ * not UTF-8), so UTF-8 runs from disLineBuff are folded here to
+ * single latin-1 bytes first -- but only when the run actually holds
+ * high bytes (pure-ASCII runs draw raw and unbounded). */
+static void
+xtermDrawUtf8Run(int col, int row, meUByte *str, int len)
+{
+    if(!mecm.fontIsUtf8)
+    {
+        meUByte *sp = str, *se = str + len ;
+        while(sp < se)
+        {
+            if(*sp++ >= 0x80)
+            {
+                meUByte lat[meBUF_SIZE_MAX] ;
+                int ll = meFoldUtf8ToLatin1(str,len,lat,sizeof(lat)) ;
+                meFrameXTermDrawString(frameCur,col,row,(char *)lat,ll) ;
+                return ;
+            }
+        }
+    }
+    meFrameXTermDrawString(frameCur,col,row,(char *)str,len) ;
+}
+#endif /* _XTERM */
+
 /* row of screen to update, virtual screen image */
 static int
 updateline(register int row, register meVideoLine *vp1, meWindow *window)
@@ -1276,7 +1303,7 @@ hideLineJump:
                             }
                         }
                     }
-                    meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)cbuf,cblen);
+                    xtermDrawUtf8Run(colToClient(scol+ccol),row,cbuf,cblen);
                 }
 #if MEOPT_XFT
                 }
@@ -1301,7 +1328,7 @@ hideLineJump:
                 ii = blkp->column ;
                 byteStart = disLineByteOff[col] ;
                 byteEnd = disLineByteOff[ii] ;
-                meFrameXTermDrawString(frameCur,colToClient(scol+col),row,(char *)disLineBuff+byteStart,byteEnd-byteStart);
+                xtermDrawUtf8Run(colToClient(scol+col),row,disLineBuff+byteStart,byteEnd-byteStart);
                 blkp++ ;
 
                 /* Maintain the frame store and copy the string into

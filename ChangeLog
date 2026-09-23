@@ -7,11 +7,19 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
->  Last Modified : <260923.0815>
+>  Last Modified : <260923.0905>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260923] - Fixed insert-symbol '?' cells (ticket 12). Macro-level
+               UTF-8 fold corrupted OSD/expose store-byte draws.
+               Fold moved caller-side (xtermDrawUtf8Run, updateline
+               UTF-8 runs only); draw macro raw again. Dialog glyphs
+               verified by screenshot.
+               Files: src/eterm.h, src/display.c, doc/tickets.md,
+               doc/utf8-encoding.md
 
   [260923] - Hide replays core cursor save (ticket 12). Hide runs after
                dot has moved, so live byte resolution read the new cell

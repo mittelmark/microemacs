@@ -153,5 +153,14 @@ v unfold dir (color
       use `xdotool windowfocus --sync` or cursor show never runs (hide
       runs regardless, which is exactly the stuck-'?' mechanism).
       Files: src/unixterm.c, src/eterm.h, src/display.c
+    - DONE 260923: insert-symbol cells above 128 showed only '?'.
+      Regression from the macro-level UTF-8 fold: OSD dialogs and
+      expose repaints draw frame-store single bytes (genuine
+      single-byte source glyphs, NOT UTF-8) through the same draw
+      macro. Fix: fold moved out of meFrameXTermDrawString (raw again)
+      into caller-side xtermDrawUtf8Run(), used only by updateline's
+      UTF-8 runs (ASCII runs still draw raw/unbounded). Dialog shows
+      proper glyphs again (verified screenshot: àáâè...ø).
+      Files: src/eterm.h, src/display.c
     - TODO: font selection dialog based on the code of the sister project in ../jasspa/microemacs/macros (ME 26)
     - TODO: windows GUI version support for Unicode/UTF8

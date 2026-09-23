@@ -236,7 +236,7 @@ make -f linux32gcc.gmk BTYP=cw XFT=1   # X11 objects carry -xft suffix dirs
 - Without `setlocale()`, `XLookupString` returns Latin-1 for keys
   `0x80-0xFF`; these are re-encoded to UTF-8 on input.
 
-### Legacy core X fonts (fixed 260922)
+### Legacy core X fonts (fixed 260922, corrected 260923)
 
 `renderLine()` always emits terminal-ready UTF-8 into `disLineBuff`,
 which single-byte core fonts (e.g. iso8859-1 `fixed`) cannot render --
@@ -244,8 +244,12 @@ umlauts showed up as raw-byte mojibake (`Ã¤`) or boxes:
 
 - new `meFoldUtf8ToLatin1()` (`src/unixterm.c`): folds a UTF-8 run to
   single latin-1 bytes (U+0000-U+00FF direct, `?` beyond, truncated
-  sequences safe), applied in both core branches of
-  `meFrameXTermDrawString` (`src/eterm.h`);
+  sequences safe). It is applied caller-side by `xtermDrawUtf8Run()`
+  (`src/display.c`), used ONLY by `updateline()`'s UTF-8 runs (ASCII
+  runs still draw raw/unbounded). The draw macro itself passes single
+  bytes raw -- an earlier macro-level fold corrupted OSD dialogs and
+  expose repaints (frame-store single bytes are not UTF-8), e.g.
+  insert-symbol cells above 128 showed only `?`;
 - the FONTFIX `updateline()` branch (`src/display.c`) drew frame-store
   lead bytes only; it now assembles full UTF-8 bytes per column (like
   the Xft `xftbuf` loop) so the fold sees complete sequences.

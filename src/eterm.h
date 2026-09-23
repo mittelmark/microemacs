@@ -366,12 +366,11 @@ do {                                                                            
         }                                                                          \
         else                                                                       \
         {                                                                          \
-            /* Legacy single-byte core font: disLineBuff content is UTF-8, */     \
-            /* fold U+0000-U+00FF to latin-1, '?' beyond. */                      \
-            meUByte _utf8buf[meBUF_SIZE_MAX];                                      \
-            int _utf8len = meFoldUtf8ToLatin1((const meUByte *)(str),(len),_utf8buf,sizeof(_utf8buf)); \
+            /* Single bytes draw raw (frame-store/OSD content is NOT */          \
+            /* UTF-8 - folding it would corrupt it). UTF-8 runs are */           \
+            /* folded by the caller (xtermDrawUtf8Run in display.c). */          \
             XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),               \
-                             meFrameGetXGC(frame),(col),(row),(char *)_utf8buf,_utf8len); \
+                             meFrameGetXGC(frame),(col),(row),(char *)(str),(len)); \
         }                                                                          \
         if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                            \
             XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),                      \
@@ -391,11 +390,9 @@ do {                                                                            
     }                                                                              \
     else                                                                           \
     {                                                                              \
-        /* Legacy single-byte core font: fold UTF-8 to latin-1. */               \
-        meUByte _utf8buf[meBUF_SIZE_MAX];                                          \
-        int _utf8len = meFoldUtf8ToLatin1((const meUByte *)(str),(len),_utf8buf,sizeof(_utf8buf)); \
+        /* Single bytes draw raw (see above). */                                 \
         XDrawImageString(mecm.xdisplay,meFrameGetXWindow(frame),                   \
-                         meFrameGetXGC(frame),(col),(row),(char *)_utf8buf,_utf8len); \
+                         meFrameGetXGC(frame),(col),(row),(char *)(str),(len));     \
     }                                                                              \
     if(meFrameGetXGCFont(frame) & meFONT_UNDERLINE)                                \
         XDrawLine(mecm.xdisplay,meFrameGetXWindow(frame),                          \
