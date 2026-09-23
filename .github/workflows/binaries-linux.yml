@@ -64,8 +64,8 @@ jobs:
         mkdir $MEPATH/share/company        
         cp doc/me.1 $MEPATH/man/1/
         cp bfs/bfs $MEPATH/bin/
-        cp src/.linux32gcc-release-mecw/mecw $MEPATH/bin/
-        cp src/.linux32gcc-release-mew/mew $MEPATH/bin/
+        cp src/.linux32gcc-release-mecw-xft/mecw $MEPATH/bin/
+        cp src/.linux32gcc-release-mew-xft/mew $MEPATH/bin/
         cp src/.linux32gcc-release-mec/mec  $MEPATH/bin/
         cp linux-*me*.bin $MEPATH/bin/
         cp license.txt $MEPATH/share/jasspa/
