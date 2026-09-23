@@ -1329,7 +1329,8 @@ meGetConsoleMessage(MSG *msg, int mode)
 
         hmem = WinKillToClipboard ();
         EmptyClipboard();
-        SetClipboardData (CF_OEMTEXT, hmem);
+        /* UTF-16LE; system synthesises CF_TEXT/CF_OEMTEXT on demand */
+        SetClipboardData (CF_UNICODETEXT, hmem);
         CloseClipboard();
 
         clipState &= ~CLIP_OWNER;
@@ -2779,68 +2780,191 @@ meModifierUpdate(void)
 #endif /* _ME_WINDOW */
 
 /*
+ * WinClipWToUtf8
+ * Convert a Windows clipboard UTF-16LE string to ME UTF-8 text.
+ * Strips CR of CRLF pairs and enforces the historical 0xfff0 line
+ * length split. Returns a malloc'd NUL-terminated buffer (caller frees)
+ * or NULL on allocation failure.
+ */
+static meUByte *
+WinClipWToUtf8 (const WCHAR *ws, int wlen)
+{
+    meUByte *out;
+    int ii, oo = 0, ll = 0;
+    int cap = wlen * 3 + 2;            /* BMP: <=3 bytes/WCHAR; surrogates: 2+2 */
+
+    if((out = (meUByte *) meMalloc(cap)) == NULL)
+        return NULL;
+    for(ii = 0 ; ii < wlen ; ii++)
+    {
+        WCHAR wc = ws[ii] ;
+
+        if(wc == L'\r')
+        {
+            if(((ii + 1) < wlen) && (ws[ii + 1] == L'\n'))
+                continue ;              /* drop CR of CRLF */
+            /* lone CR falls through as a character */
+        }
+        if(wc == L'\n')
+            ll = 0 ;
+        else if(ll == 0xfff0)
+        {
+            out[oo++] = '\n' ;
+            ll = 1 ;
+        }
+        else
+            ll++ ;
+
+        /* Surrogate pair -> supplementary plane */
+        if((wc >= 0xd800) && (wc <= 0xdbff) && ((ii + 1) < wlen) &&
+           (ws[ii + 1] >= 0xdc00) && (ws[ii + 1] <= 0xdfff))
+        {
+            int32_t cp = 0x10000 + (((int32_t)(wc - 0xd800)) << 10) +
+                         (int32_t)(ws[ii + 1] - 0xdc00) ;
+            oo += (int) meUtf8Encode(cp, out + oo) ;
+            ii++ ;
+        }
+        else if(wc < 0x80)
+            out[oo++] = (meUByte) wc ;
+        else
+            oo += (int) meUtf8Encode((int32_t) wc, out + oo) ;
+    }
+    out[oo] = '\0' ;
+    return out ;
+}
+
+/*
  * WinKillToClipboard
- * Copy the data into the clipboard from the kill buffer.
+ * Copy the kill buffer to the clipboard as CF_UNICODETEXT (UTF-16LE).
+ * Kill text is in klhead->encoding; convert per character (FONTFIX
+ * specials map first so box codes become ASCII art as before). Newlines
+ * become CR/LF. Returns an HGLOBAL ready for SetClipboardData.
  */
 static HANDLE
 WinKillToClipboard (void)
 {
     HANDLE hmem;                        /* Windows global memory handle */
-    meUByte *bufp;                        /* Windows global memory pointer */
-    meKillNode *killp;                        /* Pointer to the kill data */
-    meUByte cc;                           /* Local character pointer */
-    meUByte *dd;                          /* Pointer to the kill data */
-    int killSize = 0;                   /* Number of bytes in kill buffer */
+    WCHAR *wbuf;                        /* UTF-16 build pointer */
+    meKillNode *killp;                  /* Pointer to the kill data */
+    meUByte cc;                         /* Local character buffer */
+    meUByte *dd;                        /* Pointer to the kill data */
+    meEncoding srcEnc;
+    meConv conv;
+    int convReady = 0 ;
+    int wcap = 0, wlen = 0;             /* WCHAR capacity / length */
     int noEmpty ;
 
+    srcEnc = (klhead != NULL) ? (meEncoding) klhead->encoding : ME_ENC_UTF8 ;
+
     /* Determine the size of the data in the kill buffer.
-     * Make sure that \r\n are appended to the end of each
-     * line. */
+     * Make sure that \r\n are appended to the end of each line.
+     * Worst case each byte becomes a CR/LF pair (2 WCHARs). */
     if (klhead != NULL)
     {
         for (killp = klhead->kill; killp != NULL; killp = killp->next)
         {
-            for (dd = killp->data; (cc = *dd++) != '\0'; killSize++)
-                if (cc == meCHAR_NL)
-                    killSize++; /* Add 1 for the '\r' */
+            for (dd = killp->data; (cc = *dd++) != '\0'; )
+                wcap += 2 ;
         }
     }
-    if((noEmpty = ((meSystemCfg & meSYSTEM_NOEMPTYANK) && (killSize == 0))) != 0)
-        killSize++ ;
+    if((noEmpty = ((meSystemCfg & meSYSTEM_NOEMPTYANK) && (wcap == 0))) != 0)
+        wcap = 2 ;
 
     /* Create global buffer for the data */
-    if((hmem = GlobalAlloc(GMEM_MOVEABLE, killSize + 1)) != NULL)
-    {
-        bufp = GlobalLock(hmem);
+    if((hmem = GlobalAlloc(GMEM_MOVEABLE, (wcap + 1) * sizeof(WCHAR))) == NULL)
+        return GlobalAlloc (GHND, sizeof(WCHAR));
 
-        /* Copy the data into the buffer */
-        if(noEmpty)
-            *bufp++ = ' ';
-        else if(klhead != NULL)
+    if((wbuf = (WCHAR *) GlobalLock(hmem)) == NULL)
+    {
+        GlobalFree(hmem) ;
+        return GlobalAlloc (GHND, sizeof(WCHAR));
+    }
+
+    if(noEmpty)
+        wbuf[wlen++] = L' ';
+    else if(klhead != NULL)
+    {
+        if(srcEnc != ME_ENC_UTF8)
         {
-            for (killp = klhead->kill; killp != NULL; killp = killp->next)
+            meConvInit(&conv, srcEnc, ME_ENC_UTF8) ;
+            convReady = 1 ;
+        }
+        for (killp = klhead->kill; killp != NULL && wlen < wcap; killp = killp->next)
+        {
+            dd = killp->data;
+            while(((cc = *dd) != '\0') && (wlen < wcap))
             {
-                dd = killp->data;
-                while((cc = *dd++))
+                if (cc == meCHAR_NL)
                 {
-                    /* Convert the end of line to CR/LF */
-                    if (cc == meCHAR_NL)
-                        *bufp++ = '\r';
-                    /* Convert any special characters */
-                    else if ((meSystemCfg & meSYSTEM_FONTFIX) && (cc < TTSPECCHARS))
-                        cc = ttSpeChars [cc];
-                    /* Copy in the character */
-                    *bufp++ = cc;
+                    wbuf[wlen++] = L'\r';
+                    if(wlen < wcap)
+                        wbuf[wlen++] = L'\n';
+                    dd++ ;
+                }
+                else if ((meSystemCfg & meSYSTEM_FONTFIX) && (cc < TTSPECCHARS))
+                {
+                    wbuf[wlen++] = (WCHAR) ttSpeChars [cc];
+                    dd++ ;
+                }
+                else if(srcEnc == ME_ENC_UTF8)
+                {
+                    int sl ;
+                    int32_t cp ;
+                    if(cc < 0x80)
+                    {
+                        wbuf[wlen++] = (WCHAR) cc ;
+                        dd++ ;
+                    }
+                    else
+                    {
+                        sl = meUtf8ValidSeqLen(dd) ;
+                        if(sl < 1)
+                            sl = 1 ;
+                        cp = meUtf8Decode(dd) ;
+                        dd += sl ;
+                        if((cp >= 0) && (cp <= 0xffff))
+                            wbuf[wlen++] = (WCHAR) cp ;
+                        else if((cp > 0xffff) && (cp <= 0x10ffff) && ((wlen + 1) < wcap))
+                        {
+                            int32_t u = cp - 0x10000 ;
+                            wbuf[wlen++] = (WCHAR) (0xd800 + (u >> 10)) ;
+                            wbuf[wlen++] = (WCHAR) (0xdc00 + (u & 0x3ff)) ;
+                        }
+                        else
+                            wbuf[wlen++] = L'?' ;
+                    }
+                }
+                else if(cc < 0x80)
+                {
+                    wbuf[wlen++] = (WCHAR) cc ;
+                    dd++ ;
+                }
+                else
+                {
+                    unsigned char ub[8] ;
+                    int n = convReady ? meConvChar(&conv, dd, 1, ub, sizeof(ub)) : -1 ;
+                    if(n > 0)
+                    {
+                        int32_t cp = meUtf8Decode(ub) ;
+                        dd++ ;
+                        if((cp >= 0) && (cp <= 0xffff))
+                            wbuf[wlen++] = (WCHAR) cp ;
+                        else
+                            wbuf[wlen++] = L'?' ;
+                    }
+                    else
+                    {
+                        wbuf[wlen++] = (WCHAR) cc ; /* unmappable: raw */
+                        dd++ ;
+                    }
                 }
             }
         }
-
-        /* NULL terminate the buffer and unlock */
-        *bufp = '\0';                       /* Null terminate string */
-        GlobalUnlock(hmem) ;                /* Unlock the memory region */
     }
-    else
-        hmem = GlobalAlloc (GHND, 1);
+
+    /* NULL terminate the buffer and unlock */
+    wbuf[wlen] = L'\0';
+    GlobalUnlock(hmem) ;                /* Unlock the memory region */
 
     return hmem ;
 }
@@ -2872,7 +2996,9 @@ TTsetClipboard (void)
              * will generate a WM_DESTROYCLIPBOARD to this window, ignore it! */
             clipState |= CLIP_IGNORE_DC ;
         EmptyClipboard();
-        SetClipboardData (((ttlogfont.lfCharSet == OEM_CHARSET) ? CF_OEMTEXT : CF_TEXT), NULL);
+        /* Delayed render: provide CF_UNICODETEXT (UTF-16) when asked.
+         * Windows synthesises CF_TEXT/CF_OEMTEXT from it for old apps. */
+        SetClipboardData (CF_UNICODETEXT, NULL);
         CloseClipboard ();
         clipState |= CLIP_OWNER ;
         clipState &= ~CLIP_STALE ;
@@ -2882,14 +3008,16 @@ TTsetClipboard (void)
 /*
  * TTgetClipboard.
  * Pop the contents of the clipboard into the kill buffer ready for
- * a yank. */
+ * a yank. Prefers CF_UNICODETEXT (UTF-16) and stores UTF-8 in the kill
+ * with klhead->encoding = ME_ENC_UTF8 so yankfrom() converts into the
+ * target buffer encoding. Falls back to CF_TEXT/CF_OEMTEXT via the
+ * system ANSI/OEM codepages. */
 void
 TTgetClipboard(void)
 {
     HANDLE hmem;                        /* Windows clipboard memory handle */
-    meUByte *bufp;                        /* Clipboard data pointer */
-    meUByte cc;                           /* Local character buffer */
-    meUByte *dd, *tp;                     /* Pointers to the data areas */
+    meUByte *tmpbuf = NULL;             /* UTF-8 text ready for the kill */
+    meUByte *dd;                        /* Pointer to the kill data */
 
     /* Block clipboard access during macro execution unless allowed */
     if(clexec && !allowClipExec)
@@ -2900,49 +3028,55 @@ TTgetClipboard(void)
        (meSystemCfg & meSYSTEM_NOCLIPBRD) || !OpenClipboard(baseHwnd))
         return ;
 
-    /* Get the data from the clipboard */
-    if ((hmem = GetClipboardData ((ttlogfont.lfCharSet == OEM_CHARSET) ? CF_OEMTEXT : CF_TEXT)) != NULL)
+    /* Prefer Unicode clipboard text (Windows synthesises it from CF_TEXT
+     * for apps that only offer the ANSI format). */
+    if ((hmem = GetClipboardData (CF_UNICODETEXT)) != NULL)
     {
-        int len, ll ;
-        meUByte *tmpbuf;
-
-        bufp = GlobalLock (hmem);       /* Lock global buffer */
-        len = strlen (bufp);            /* Get length of text */
-
-        /* Compute the length of the data and construct
-         * a stripped down copy of the string excluding the
-         * '\r' characters
-         */
-        if ((tmpbuf = (meUByte *) meMalloc(len+1+(len>>15))) == NULL)
-            goto do_unlock;             /* Failed memory allocation */
-
-        tp = tmpbuf;                    /* Start of the temporary buffer */
-        dd = bufp;                      /* Start of clipboard data */
-        ll = 0 ;
-        while ((cc = *dd++) !='\0')
+        const WCHAR *wbuf = (const WCHAR *) GlobalLock (hmem);
+        if(wbuf != NULL)
         {
-            if ((cc == '\r') && (*dd == '\n'))
-                len-- ;
-            else
+            int wlen = 0 ;
+            /* Clipboard Unicode strings are NUL-terminated; bound the
+             * scan by the global block size in WCHARs. */
             {
-                if(cc == '\n')
-                    ll = 0 ;
-                else if(ll == 0xfff0)
-                {
-                    *tp++ = '\n' ;
-                    len++ ;
-                    ll = 1 ;
-                }
-                else
-                    ll++ ;
-                *tp++ = cc;
+                SIZE_T bytes = GlobalSize(hmem) ;
+                int wmax = (int)(bytes / sizeof(WCHAR)) ;
+                while((wlen < wmax) && (wbuf[wlen] != L'\0'))
+                    wlen++ ;
             }
+            tmpbuf = WinClipWToUtf8(wbuf, wlen) ;
+            GlobalUnlock (hmem);
         }
-        *tp = '\0';
+    }
+    else if ((hmem = GetClipboardData ((ttlogfont.lfCharSet == OEM_CHARSET) ? CF_OEMTEXT : CF_TEXT)) != NULL)
+    {
+        /* Legacy ANSI/OEM path: transcode to UTF-8 via the codepage. */
+        const char *abuf = (const char *) GlobalLock (hmem);
+        if(abuf != NULL)
+        {
+            UINT cp = (ttlogfont.lfCharSet == OEM_CHARSET) ? CP_OEMCP : CP_ACP ;
+            int alen = (int) lstrlenA(abuf) ;
+            int wlen = MultiByteToWideChar(cp, 0, abuf, alen, NULL, 0) ;
+            if(wlen > 0)
+            {
+                WCHAR *wtmp = (WCHAR *) meMalloc((size_t) wlen * sizeof(WCHAR)) ;
+                if(wtmp != NULL)
+                {
+                    MultiByteToWideChar(cp, 0, abuf, alen, wtmp, wlen) ;
+                    tmpbuf = WinClipWToUtf8(wtmp, wlen) ;
+                    meFree (wtmp);
+                }
+            }
+            GlobalUnlock (hmem);
+        }
+    }
+
+    if(tmpbuf != NULL)
+    {
+        int len = (int) meStrlen (tmpbuf);
 
         /* Make sure that it is not the same as the current
          * save buffer head */
-
         if ((len == 0) ||
             (klhead == NULL) ||
             (klhead->kill == NULL) ||
@@ -2953,11 +3087,13 @@ TTgetClipboard(void)
             killSave();
             if ((dd = killAddNode (len+1)) != NULL)
                 memcpy (dd, tmpbuf, len+1);
+            /* Clipboard text was normalised to UTF-8 above; record that
+             * so yankfrom() converts into the current buffer encoding. */
+            if (klhead != NULL)
+                klhead->encoding = (meUByte) ME_ENC_UTF8 ;
             thisflag = meCFKILL ;
         }
         meFree (tmpbuf);                /* Relinquish temp buffer */
-do_unlock:
-        GlobalUnlock (hmem);            /* Unlock clipboard data */
     }
     CloseClipboard ();
 }
@@ -7766,7 +7902,8 @@ MainWndProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             HANDLE hmem;
             hmem = WinKillToClipboard ();
-            SetClipboardData ((ttlogfont.lfCharSet == OEM_CHARSET) ? CF_OEMTEXT : CF_TEXT, hmem);
+            /* UTF-16LE; system synthesises CF_TEXT/CF_OEMTEXT on demand */
+            SetClipboardData (CF_UNICODETEXT, hmem);
             /* Force the stale state. If another application is pulling data
              * from us while we are the clipboard owner we must force the
              * clipboard to be refreshed whenever the 'yank' buffer changes.
