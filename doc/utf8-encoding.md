@@ -1,5 +1,24 @@
 # UTF-8 Encoding Implementation
 
+**Status (2026-09-23, branch `libxft-utf8`):** core UTF-8 path and Linux Xft
+rendering are implemented and verified. XLFD (core X11 fonts) is kept as a
+**latin-1 fallback only**, not a UTF-8 target. Next major step: Windows GUI
+TTF (`winterm.c`), same fixed-grid approach as Xft. Full CJK/IME still open.
+Tracked as Ticket 12 in `doc/tickets.md`.
+
+| OS | Terminal (`mec`) | Core X11 fonts (XLFD) | libXft (`XFT=1`) |
+|----|------------------|----------------------|------------------|
+| Linux | yes | fallback only (latin-1 fold: U+0000–U+00FF; beyond → `?`) | yes |
+| FreeBSD | testing | fallback only | testing |
+| Cygwin | yes | fallback only | yes |
+| MSYS / Windows terminal | yes | — | — |
+| Windows GUI (`mew`) | — | fallback (system fonts) | TTF (planned, next) |
+
+**XLFD policy:** keep core X11 fonts as a **fallback**, not a UTF-8 target.
+Multi-encoding is per-buffer (`bp->encoding`); the core-font **paint** path
+is latin-1 by construction (see “Legacy core X fonts” below). Full BMP
+display: libXft on X11, TTF on Windows (planned).
+
 ## Overview
 
 MicroEmacs 2009 has been extended with **native UTF-8 support** using a
@@ -9,11 +28,23 @@ in the internal buffer when the encoding is detected as UTF-8, and a
 
 The editor operates in two modes:
 
-- **Native UTF-8** (`meInternalEnc == ME_ENC_UTF8`): Multi-byte sequences stored
+- **Native UTF-8** (`bp->encoding == ME_ENC_UTF8`): Multi-byte sequences stored
   and rendered directly. Full Unicode support within the BMP for display/edit/save.
-- **Legacy single-byte** (`meInternalEnc == ME_ENC_CP1252`, etc.): UTF-8 is
+- **Legacy single-byte** (`bp->encoding == ME_ENC_CP1252`, etc.): UTF-8 is
   decoded to the internal single-byte encoding on load, re-encoded on save.
   Characters outside the internal encoding are replaced with `?`.
+
+**Strategy:** keep ME's byte-oriented line/frame architecture. Encoding is
+per-buffer (`bp->encoding`); `meInternalEnc` is only the default guess for
+new files and the intermediate for keyboard/OSD conversion — opening a file
+does **not** switch it. Rendering converts per buffer, so mixed encodings
+share one screen. Display width is handled at the render boundary via
+`disLineByteOff[]`, not by changing line storage.
+
+**Font strategy:** Unicode/BMP display goes through **libXft** on X11 and
+(planned) **TTF** on Windows. Core **XLFD** fonts are kept only as a
+**fallback** when Xft is unavailable — latin-1 fold on paint, one display
+encoding by construction (see “Legacy core X fonts (XLFD)”).
 
 ## Architecture
 
@@ -25,7 +56,7 @@ The editor operates in two modes:
         |
         v
   [Set bp->encoding = ME_ENC_UTF8 (or detected encoding)]
-  [Set meInternalEnc = bp->encoding (unless -E override)]
+  [meInternalEnc unchanged unless -E / default for undetectable files]
         |
         v
   Internal buffer (UTF-8 bytes if UTF-8, or single-byte otherwise)
@@ -220,7 +251,9 @@ TrueType rendering for `mew`/`mecw` via libXft, off by default:
 
 ```bash
 cd src
-make -f linux32gcc.gmk BTYP=cw XFT=1   # X11 objects carry -xft suffix dirs
+make -f linux32gcc.gmk XFT=1 BTYP=cw   # outdirs: .linux32gcc-release-mew-xft, -mecw-xft
+make -f linux32gcc.gmk XFT=1 BTYP=w    # mew only
+make -f linux32gcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
 ```
 
 - `change-font "monospace:size=14"` loads an Xft pattern; `&opt "xft"`
@@ -235,8 +268,63 @@ make -f linux32gcc.gmk BTYP=cw XFT=1   # X11 objects carry -xft suffix dirs
   the cursor (`xftCursorSave`).
 - Without `setlocale()`, `XLookupString` returns Latin-1 for keys
   `0x80-0xFF`; these are re-encoded to UTF-8 on input.
+- Special characters 0..31 (box borders, OSD ornaments) still draw with
+  `XDrawLine`/`XFillPolygon` on the **X11 GC**, not Xft. `SetScheme`'s
+  Xft branch must therefore also update `XGCFCol`/`XGCBCol` +
+  `XChangeGC` (same `colTable[]` index) or they keep a stale
+  (often white) foreground — fixed in `eab3acc`.
+- Font UI: `user-setup` → Platform → **Choose Font ...** runs `fc-list`
+  under `&opt "xft"` and writes `/history/<platform>/font` as
+  `family:lang=…:style=…:size=N`, then `change-font` + save-registry.
 
-### Legacy core X fonts (fixed 260922, corrected 260923)
+### Xft reliability fixes (260923)
+
+| Issue | Fix commit |
+|-------|------------|
+| SEGV after `change-font` / font dialog (NULL `XftDraw*` in ShowCursor) | `e780d9e` |
+| One-character typing lag (stale `xftCursorSave` replayed by Hide) | `8fe3182` |
+| Typed multi-byte lead-byte flash (`Ã` before continuation) | `d8b78b0` |
+| Special chars 0..31 white (X11 GC not updated in Xft `SetScheme`) | `eab3acc` |
+| `&xse` size parse appended a second `:size=` on every resize | `e780d9e` |
+
+Cursor Hide must validate frame + row + col + store content before
+replaying a save; on mismatch draw the live store byte (ASCII) or skip
+(multi-byte lead — `updateline` already painted the full sequence).
+
+### Legacy core X fonts (XLFD) — kept as fallback only (policy 260923)
+
+**Policy:** keep XLFD as a **fallback** when libXft/`XFT=1` is unavailable
+(or `change-font` does not enable Xft). Do **not** invest in full Unicode
+on core fonts. Unicode display is Xft on X11 and the planned TTF path on
+Windows (`winterm.c`).
+
+**What is true:**
+
+| Layer | Core XLFD fonts | libXft |
+|-------|-----------------|--------|
+| Buffer storage (`bp->encoding`) | Per-buffer, mixed OK (UTF-8 + CP1252 on one screen) | same |
+| Keyboard / save | Unchanged (per buffer / `meInternalEnc` for new files) | same |
+| Glyphs on screen | Folded to **U+0000–U+00FF** → `?` beyond | Full BMP via UTF-8 |
+
+So a session can hold **multiple buffer encodings**. What is **not**
+multi-encoding is the **core-font paint path**: `disLineBuff` is UTF-8,
+but `meFoldUtf8ToLatin1()` must collapse that to one byte per cell that
+an iso8859-1-style XLFD can index. There is no room on that path for
+“this cell UTF-8, that cell CP437.”
+
+`iso10646-1` XLFDs exist in theory (the cursor path already has a 2-byte
+UTF-8 form for them), but ME does not use them as a real Unicode display
+backend — fixed grid + full BMP is why Xft was added. Chasing full UTF-8
+via `iso10646-1` would be high cost, poor font coverage, and would fight
+the fixed-grid design already solved with Xft.
+
+**Support matrix wording:** Linux/Cygwin/FreeBSD XLFD = *legacy / latin-1
+display only* (not a parallel UTF-8 target). Characters beyond U+00FF show
+`?` unless `XFT=1`.
+
+**One-line policy:** *XLFD = latin-1 display; one display encoding by
+construction; multi-encoding lives in buffers and in Xft, not in core
+fonts.*
 
 `renderLine()` always emits terminal-ready UTF-8 into `disLineBuff`,
 which single-byte core fonts (e.g. iso8859-1 `fixed`) cannot render --
@@ -358,40 +446,41 @@ A/B: withoutfix last umlaut `Ã`, withfix `ü`; after `x` identical.
 
 #### Current debug instrumentation
 
-Debug traces (`ME_DBGTRACE`, active with `_DEBUG`) are in place at:
+Debug traces:
 
-- `update()` entry/exit and after `screenUpdate()`
-- `updateWindow()` -- traces which lines trigger `updateline()` and
-  which skip the dotLine
-- FONTFIX Xft path in `updateline()` -- confirms `XftDrawStringUtf8`
-  is called with the correct `xftbuf` bytes
-- `meFrameXTermHideCursor()` / `meFrameXTermShowCursor()` -- traces
-  whether saved bytes or frame-store bytes are used
+- `ME_DBGTRACE` (active with `_DEBUG` / `BCFG=debug`) at `update()`,
+  `updateWindow()`, FONTFIX `updateline()`, Hide/Show cursor — writes
+  `me_dbgtrace.txt`.
+- `ME_XFT_DEBUG=1` (env, always compiled) — Xft draw/cursor traces for
+  the typing-lag hunt (`5f2f86e`).
 
 Build with debug traces:
 ```bash
 make -f linux32gcc.gmk BTYP=w BCFG=debug XFT=1
 ```
 
-Trace output goes to `me_dbgtrace.txt` in the current directory.
-
 #### Remaining hypotheses (all superseded by the Hide stale-save fix above)
 
 1. ~~Xft rendering position / font metrics~~ -- draws were correct,
    then erased by Hide.
 2. **Cursor hide/show overwrites the draw** -- **CONFIRMED and
-   fixed**: Xft Hide replayed a pre-insert `xftCursorSave` over the
-   cell `updateline` had just painted (see fix section above).
+   fixed** (`8fe3182`): Xft Hide replayed a pre-insert `xftCursorSave`
+   over the cell `updateline` had just painted (see fix section above).
 3. ~~`lineSetChanged` / `updateFlags`~~ -- draws did reach Xft.
 4. ~~Xft double-buffering / compositor~~ -- not the cause.
+
+Related typing issues (also fixed): multi-byte lead-byte flash
+(`d8b78b0`, drain continuation bytes in `doOneKey`) and core-font Hide
+drawing a lone lead as `Ã` (`136e1d5`).
 
 ## Key Design Decisions
 
 ### 1. Native UTF-8 vs. Conversion
 
-When `meInternalEnc == ME_ENC_UTF8`, multi-byte sequences are stored directly
+When `bp->encoding == ME_ENC_UTF8`, multi-byte sequences are stored directly
 in the buffer. This avoids information loss (no CP1252 fallback) but requires
-the `disLineByteOff[]` mapping for correct display.
+the `disLineByteOff[]` mapping for correct display. Rendering and save both
+follow the buffer encoding, not the global `meInternalEnc`.
 
 The alternative (always converting to CP1252) loses characters outside Western
 European. The current approach supports the full BMP for display and editing.
@@ -405,16 +494,30 @@ provides a translation layer at the rendering boundary.
 The array is populated during `renderLine()` and consumed by the TCAP/X11 flush
 code. It is allocated once (512 entries) and grown as needed.
 
-### 3. Auto-Detection on File Open
+### 3. Auto-Detection on File Open (per-buffer, not global)
 
-Opening a UTF-8 file automatically switches `meInternalEnc` to UTF-8 mode.
-This means:
+Opening a file sets **`bp->encoding`** from BOM / UTF-8 validation / PEP 263.
+`meInternalEnc` is **not** switched (deliberate: avoids a global mode flip and
+the old blocking "cannot be represented" prompt). Edits and saves use the
+buffer encoding; mixed encodings coexist. `-E` forces `meInternalEnc` as the
+default for undetectable files.
 
-- Subsequent edits and saves preserve UTF-8 encoding
-- Other buffers opened later may inherit the UTF-8 setting
-- The `-E` flag prevents this auto-switch
+### 4. XLFD as Fallback, Not a UTF-8 Target
 
-### 4. PEP 263 Priority
+Core X11 (XLFD) fonts remain supported as a **simple/fallback** path when
+Xft is off or unavailable. They are **not** a second Unicode backend:
+
+- multi-encoding is a **buffer** property (`bp->encoding`), not a session
+  or font property;
+- the core-font **paint** path is latin-1-only by design (fold + fixed
+  one-byte cells) — one display encoding by construction;
+- full BMP display goes through **libXft** (X11) and the planned **TTF**
+  path on Windows (`winterm.c`); XLFD is not extended to match.
+
+This avoids maintaining two Unicode renderers while keeping old setups
+and no-Xft builds working for ASCII/latin-1.
+
+### 5. PEP 263 Priority
 
 If a file has a `# -*- coding: <encoding> -*-` line AND is valid UTF-8, the
 UTF-8 validation wins. This prevents double-encoding when a Python file declares
@@ -433,7 +536,8 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 - **X11 (mecw)**: UTF-8 display, keyboard input works
 - **Syntax highlighting**: UTF-8 content highlighted correctly
 - **Automated tests**: All basic tests pass on both mec and mecw
-- **Encoding auto-detection**: UTF-8 files auto-switch to native mode
+- **Encoding auto-detection**: UTF-8 files set `bp->encoding` to UTF-8
+  (per-buffer; global `meInternalEnc` is not auto-switched)
 - **Modeline**: Correct filename, encoding, and cursor position display
 
 ### Known Limitations
@@ -442,15 +546,26 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
    files and the intermediate for display/keyboard conversion. Buffer
    content rendering is per-buffer (`bp->encoding`), so mixed encodings
    share one screen; OSD dialogs and keyboard input still use the global.
-2. **X11 fonts**: core bitmap fonts by default; TrueType via libXft
-3. **Xft one-character lag**: reported with `XFT=1` on one machine
-   (last typed character visible only after next keystroke), but NOT
-   reproducible on the test machine (see "Known issue" above)
-4. **Windows (winterm.c)**: UTF-8 keyboard input not yet implemented.
-5. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
-   with `?` when in legacy mode.
-6. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
+2. **X11 fonts / XLFD**: kept as **fallback** only — not a UTF-8 target.
+   Buffer encodings stay per-buffer (mixed OK); the core-font **paint**
+   path folds to one latin-1 encoding (U+0000–U+00FF; beyond → `?`).
+   Full BMP needs `XFT=1` (Linux/Cygwin) or the planned Windows TTF path.
+   See “Legacy core X fonts (XLFD) — kept as fallback only”.
+3. **Windows GUI (winterm.c)**: UTF-8 keyboard input / TTF path not yet
+   implemented (Ticket 12 todo; next major step after Linux Xft).
+   Windows **terminal** builds already work.
+4. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
+   with `?` when in legacy mode; Xft can display them in UTF-8 buffers.
+5. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
    `disLineByteOff[]`, but `renderLine()` overwrites in most code paths.
+
+**Fixed since earlier drafts of this document (do not re-open as "known"):**
+
+- Xft one-character typing lag -- fixed (`8fe3182`); prior "not
+  reproducible" runs were unfocused (`meFRAME_NOT_FOCUS` skips Show/save).
+- Xft SEGV after font dialog / `change-font` -- fixed (`e780d9e`).
+- Special chars 0..31 white under Xft -- fixed (`eab3acc`).
+- Core-font stuck `?` / ornamented `Ã` on cursor over umlauts -- fixed.
 
 ## Modified Files
 
@@ -467,8 +582,9 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 | `src/evar.def` | `$buffer-encoding`, `$internal-encoding` variables | User-accessible encoding variables |
 | `src/file.c` | PEP 263 detection, UTF-8 validation, `meInternalEnc` reset | File encoding auto-detection |
 | `src/hilight.c` | `hilCopyString()`/`hilCopyLenString()` outLen fix | Syntax highlighting byte-offset correctness |
-| `src/main.c` | `-E` flag handling, `meInternalEnc` reset | Command-line encoding override |
-| `src/unixterm.c` | `convertUtf8Input()`, `TTputConvChar()` | X11 input and terminal output conversion |
+| `src/main.c` | `-E` flag handling, `doOneKey` UTF-8 continuation drain | Command-line encoding override; typed multi-byte flash fix |
+| `src/unixterm.c` | `convertUtf8Input()`, `TTputConvChar()`, Xft SetScheme/cursor, core-font fold | Input/output conversion; Xft and legacy X11 rendering |
+| `src/eterm.h` | Xft draw macros, fold/cursor helpers | NULL-guarded Xft draw; UTF-8 run helpers |
 
 ### Test Files
 
@@ -484,16 +600,18 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 ```bash
 cd src
-make -f linux32gcc.gmk BTYP=cw   # mecw (console + X11)
-make -f linux32gcc.gmk BTYP=c    # mec (console only)
-make -f linux32gcc.gmk BTYP=w    # mew (X11 only)
+make -f linux32gcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
+make -f linux32gcc.gmk BTYP=c             # mec (console only)
+make -f linux32gcc.gmk BTYP=w             # mew (X11 only, core fonts)
+make -f linux32gcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
+make -f linux32gcc.gmk XFT=1 BTYP=w       # mew with libXft
 ```
 
 ### Automated Tests
 
 ```bash
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mecw/mecw @tests/test-basics
+MEPATH=jasspa/macros MENAME=ci-test ./src/.linux32gcc-release-mec/mec @tests/test-basics
+# expect tests/test-output.txt to contain TEST:all-tests=complete
 ```
 
 ### Visual Tests
@@ -502,9 +620,16 @@ MEPATH=jasspa/macros ./src/.linux32gcc-release-mecw/mecw @tests/test-basics
 # Console with UTF-8
 TERM=xterm-256color MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec tests/encodings/tutf8.txt
 
-# X11 with UTF-8
+# X11 core fonts
 DISPLAY=:0 MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew tests/encodings/tutf8.txt
+
+# X11 libXft (then M-x user-setup → Choose Font ... or change-font)
+DISPLAY=:0 MEPATH=jasspa/macros ./src/.linux32gcc-release-mew-xft/mew tests/encodings/tutf8.txt
 ```
+
+Headless GUI checks (no WM): start `Xvfb :97`, run `mew`, then
+`xdotool windowfocus --sync` before typing — unfocused frames skip Xft
+cursor Show and hide cursor bugs.
 
 ### What to Check
 
@@ -517,6 +642,24 @@ DISPLAY=:0 MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew tests/encoding
 6. Cursor movement through multi-byte characters -- no jumps or misalignment
 
 ## Implementation History
+
+### Ticket 12 / `libxft-utf8` (260922–260923)
+
+Chronological highlights (details in `doc/tickets.md`):
+
+| Commit | Change |
+|--------|--------|
+| `f272672` | libXft TrueType rendering behind `XFT=1` (known lag noted then) |
+| `c642d48` | Direct non-ASCII display via Xft |
+| `07e69cb` | Legacy core-font UTF-8→latin-1 fold for umlauts |
+| `ea5707d` / `e7eadf3` | Cursor save/replay over umlauts (core + single-byte buffers) |
+| `7f9df8f` / `5b7697c` | insert-symbol cells >128; C1 range always dotted |
+| `d8b78b0` | Drain UTF-8 continuation bytes in `doOneKey` (lead-byte flash) |
+| `8fe3182` | Xft one-character typing lag (Hide stale-save match) |
+| `136e1d5` | Core-font Hide skips stale multi-byte lead after edit |
+| `89c4b66` | FreeType font dialog in user-setup Platform tab |
+| `e780d9e` | Xft SEGV (NULL `XftDraw*`); `&xse` whole-match size parse |
+| `eab3acc` | Xft special chars 0..31: `SetScheme` updates X11 GC |
 
 ### Approach Considered: Luit On-the-fly Translation
 
@@ -560,13 +703,18 @@ The `disLineByteOff[]` approach was chosen because it:
 
 ## Future Improvements
 
-1. **TrueType font support**: basic libXft rendering implemented behind
-   `XFT=1` (see section above); legacy core fonts fixed via UTF-8 to
-   latin-1 fold. The one-character display lag for single-byte ASCII
-   is reported on one machine but unreproducible elsewhere -- see
-   "Known issue" above.
-2. **Per-buffer encoding**: Allow different buffers to use different internal
-   encodings simultaneously
+1. **Windows GUI UTF-8/TTF**: Ticket 12 todo and **next planned step** —
+   port the Xft fixed-grid approach (or equivalent DirectWrite/GDI+ TTF)
+   to `winterm.c`; terminal Windows already works. Same split as Linux:
+   system/core fonts as latin-1 fallback, TTF for full BMP.
+2. **FreeBSD/Cygwin Xft**: marked *testing* in the support matrix; same
+   Linux `XFT=1` code path. XLFD stays fallback only there too.
 3. **CJK/IME support**: Input Method Editor for CJK character entry
-4. **Windows keyboard input**: Implement UTF-8 keyboard input in `winterm.c`
-5. **BIDI support**: Right-to-left text rendering for Arabic/Hebrew
+   (UTF-8 buffers already display BMP glyphs under Xft).
+4. **BIDI support**: Right-to-left text rendering for Arabic/Hebrew.
+5. **Per-buffer display internals**: keyboard/OSD still read the global
+   `meInternalEnc`; could follow `$buffer-encoding` more closely.
+
+TrueType on Linux (`XFT=1`), core-font latin-1 fold (fallback), and the
+typing-lag class of bugs are **done** on `libxft-utf8` — see the Xft /
+XLFD sections above and Ticket 12 in `doc/tickets.md`.
