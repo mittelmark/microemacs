@@ -10,6 +10,20 @@ OS := macos-$(KERNEL)
 ARCH := $(shell uname -m)
 RELEASE := "macos-$(KERNEL)-$(ARCH)-microemacs-$(VERSION)"
 app=mecb
+#
+# Auto-detect libXft for mew/mecw (XQuartz + freetype/fontconfig + pkg-config).
+# Override with XFT=0 or XFT=1 on the make command line.
+#
+PKG_CONFIG ?= pkg-config
+ifneq ($(wildcard /opt/X11/lib/pkgconfig),)
+export PKG_CONFIG_PATH := /opt/X11/lib/pkgconfig:$(PKG_CONFIG_PATH)
+endif
+XFT=0
+XFTDIR=
+ifeq (0,$(shell $(PKG_CONFIG) --exists xft 2>/dev/null; echo $$? ))
+XFT=1
+XFTDIR=-xft
+endif
 bfs/bin:
 	echo "VERSION: $(VERSION)"
 	cd bfs && $(MAKE) CC=$(CC)
@@ -18,22 +32,23 @@ mec:
 	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=c
 
 mew:
-	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=w
+	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=w XFT=$(XFT)
 
 mecw:
-	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=cw
+	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=cw XFT=$(XFT)
 
 mecb: mec bfs/bin
 	./bfs/bfs -a ./src/.macos32gcc-release-mec/mec -o $(RELEASE)-mecb.bin ./jasspa
 
 mewb: mew bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mew/mew -o $(RELEASE)-mewb.bin ./jasspa
+	./bfs/bfs -a ./src/.macos32gcc-release-mew$(XFTDIR)/mew -o $(RELEASE)-mewb.bin ./jasspa
 
 mecwb: mecw bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mecw/mecw -o $(RELEASE)-mecwb.bin ./jasspa
+	./bfs/bfs -a ./src/.macos32gcc-release-mecw$(XFTDIR)/mecw -o $(RELEASE)-mecwb.bin ./jasspa
 
 version:
 	echo "VERSION: $(VERSION)"
+	echo "XFT: $(XFT)"
 
 release: $(app)
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin

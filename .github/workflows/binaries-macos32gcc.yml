@@ -26,6 +26,8 @@ jobs:
            brew install xquartz
            brew install make
            brew install coreutils
+           brew install pkg-config freetype fontconfig
+           echo "PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig:/opt/homebrew/lib/pkgconfig:/usr/local/lib/pkgconfig" >> $GITHUB_ENV
            if [[ "${{ matrix.os }}" == "macos-13" ]]; then
               export PATH=/usr/local/opt/make/libexec/gnubin/:$PATH
               export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
@@ -75,6 +77,9 @@ jobs:
               echo "VRS=$VRS" >> $GITHUB_ENV
               echo "GCC=gcc-15" >> $GITHUB_ENV
            fi
+      - name: Report libXft detection
+        run: make -f macos32gcc.gmk version CC=${GCC}
+
       - name: make bfs binary
         run: make -f macos32gcc.gmk bfs/bin CC=${GCC}
 
@@ -106,9 +111,14 @@ jobs:
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}
           mkdir MicroEmacs09-${VRS}-${{ matrix.os }}/bin
           cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
-          cp src/.macos32gcc-release-mecw/mecw MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          # Prefer Xft outdirs when libXft was detected (XFTDIR=-xft)
+          XFTDIR=""
+          if make -f macos32gcc.gmk version CC=${GCC} | grep -q "XFT: 1"; then
+            XFTDIR="-xft"
+          fi
+          cp src/.macos32gcc-release-mecw${XFTDIR}/mecw MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp src/.macos32gcc-release-mec/mec  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
-          cp src/.macos32gcc-release-mew/mew  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
+          cp src/.macos32gcc-release-mew${XFTDIR}/mew  MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp macos-*-me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}/
