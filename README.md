@@ -510,7 +510,7 @@ already included so for the compilation you install the following tools:
 
 ```bash
 sudo pkg install gcc
-sudo pkg install Xorg libX11
+sudo pkg install Xorg libX11 libXft
 ### GhostBSD as well: sudo pkg install -g 'GhostBSD*-dev'
 ```
 

@@ -20,6 +20,11 @@ XFT = 1
 XFT = 0
 .endif
 .endif
+.if defined(XFT) && ${XFT} == 1
+XFTDIR = -xft
+.else
+XFTDIR =
+.endif
 default:
 	echo "Makefile for FreeBSD systems"
 	echo "VERSION: '$(VERSION)' OS $(OS) OSVERSION $(OSVERSION) OSV $(OSV)"
@@ -31,22 +36,22 @@ default:
 bfs/bin:
 	cd bfs && make
 mec:
-	cd src && make -f freebsd.mak mec
+	cd src && make -f freebsd.mak BTYP=c
 
 mew:
-	cd src && make -f freebsd.mak mew XFT=${XFT}
+	cd src && make -f freebsd.mak BTYP=w XFT=${XFT}
 
 mecw:
-	cd src && make -f freebsd.mak mecw XFT=${XFT}
+	cd src && make -f freebsd.mak BTYP=cw XFT=${XFT}
 
 mecb: bfs/bin mec
-	./bfs/bfs -a ./src/mec -o $(RELEASE)-mecb.bin ./jasspa
+	./bfs/bfs -a ./src/.freebsd-release-mec/mec -o $(RELEASE)-mecb.bin ./jasspa
 
 mewb: bfs/bin mew
-	./bfs/bfs -a ./src/mew -o $(RELEASE)-mewb.bin ./jasspa
+	./bfs/bfs -a ./src/.freebsd-release-mew$(XFTDIR)/mew -o $(RELEASE)-mewb.bin ./jasspa
 
 mecwb: bfs/bin mecw
-	./bfs/bfs -a ./src/mecw -o $(RELEASE)-mecwb.bin ./jasspa
+	./bfs/bfs -a ./src/.freebsd-release-mecw$(XFTDIR)/mecw -o $(RELEASE)-mecwb.bin ./jasspa
 
 release: $(app)
 	gmake -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin

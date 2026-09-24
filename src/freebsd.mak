@@ -1,7 +1,7 @@
 # -!- makefile -!-
 #
 # JASSPA MicroEmacs - www.jasspa.com
-# freebsd.gmk - Make file for FreeBSD using gcc
+# freebsd.mak - Make file for FreeBSD using gcc
 #
 # Copyright (C) 2001-2009 JASSPA (www.jasspa.com)
 #
@@ -24,11 +24,19 @@
 # Created:     Sat Jan 24 1998
 # Synopsis:    Make file for FreeBSD using gcc
 # Notes:
-#	Run "make -f freebsd.gmk"      for optimised build produces ./me
-#	Run "make -f freebsd.gmk med"  for debug build produces     ./med
+#   Run "make -f freebsd.mak"            -> .freebsd-release-mecw/mecw
+#   Run "make -f freebsd.mak BTYP=c"     -> .freebsd-release-mec/mec
+#   Run "make -f freebsd.mak BTYP=w"     -> .freebsd-release-mew/mew
+#   Run "make -f freebsd.mak BTYP=cw"    -> both (default)
+#   Run "make -f freebsd.mak BCFG=debug" -> .freebsd-debug-*
+#   Run "make -f freebsd.mak BCOR=ne"    -> NanoEmacs
+#   Run "make -f freebsd.mak XFT=0|1"    -> force/disable libXft
+#                                           (auto-detect when unset)
 #
-#	Run "make -f freebsd.gmk clean"      to clean source directory
-#	Run "make -f freebsd.gmk spotless"   to clean source directory even more
+#   Legacy targets still work: mec, mew, mecw, med, medc, etc. (sub-make)
+#
+#   Run "make -f freebsd.mak clean"      -> removes .freebsd-* dirs
+#   Run "make -f freebsd.mak spotless"   -> clean even more
 #
 ##############################################################################
 #
@@ -39,6 +47,7 @@ INSTPROGFLAGS = -s -o root -g root -m 0775
 # Local Definitions
 CP            = cp
 RM            = rm -f
+RMDIR         = rm -r -f
 CC            = gcc
 LD            = $(CC)
 STRIP         =	strip
@@ -48,15 +57,28 @@ CDEBUG        =	-Wall -g
 COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized -Wno-unused-result
 CDEFS         = -D_FREEBSD -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
 CONSOLE_DEFS  = -D_ME_CONSOLE
+CONSOLE_LIBS  = -lncurses
+NANOEMACS_DEFS= -D_NANOEMACS
+LDDEBUG       =
+LDOPTIMISE    =
+LDFLAGS       =
+LIBS          = -lz
+WINDOW_X11LIB = $(MAKEWINLIBS) -L/usr/local/lib -lX11
+
+BTYP          ?= cw
+BCFG          ?= release
+BCOR          ?= me
+
+# Normalise BTYP before OUTDIR is computed
+.if ${BTYP} != c && ${BTYP} != w
+BTYP = cw
+.endif
+
 #
-# libXft TrueType support for mew/mecw - auto-detect when XFT is unset.
+# libXft TrueType support - auto-detect when XFT is unset.
 # Requires pkgconf + libXft, e.g.: pkg install pkgconf libXft
-# Override:
-#   make -f freebsd.mak XFT=0 mew    # force core XLFD fonts
-#   make -f freebsd.mak XFT=1 mew    # force Xft
-# Or set XFT_DEFS/XFT_LIBS manually as before.
-# NOTE: window objects are built in-tree (.ow/.ob) - run "make clean"
-# when toggling XFT, otherwise stale MEOPT_XFT objects get linked.
+# Override: XFT=0 (core fonts) or XFT=1 (force Xft), or set
+# XFT_DEFS/XFT_LIBS manually as before.
 #
 PKG_CONFIG   ?= pkg-config
 .if !defined(XFT) && !defined(XFT_DEFS)
@@ -67,187 +89,147 @@ XFT = 1
 XFT = 0
 .endif
 .endif
-.if defined(XFT) && ${XFT} == 1 && !defined(XFT_DEFS)
+# Xft compile/link flags only when window code is part of this build
+.if ${BTYP} != c && defined(XFT) && ${XFT} == 1 && !defined(XFT_DEFS)
 XFT_CFLAGS != ${PKG_CONFIG} --cflags xft
 XFT_LIBS   != ${PKG_CONFIG} --libs xft
 XFT_DEFS    = -DMEOPT_XFT=1 ${XFT_CFLAGS}
 .endif
 WINDOW_DEFS   = $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_WINDOW -I/usr/local/include
-NANOEMACS_DEFS= -D_NANOEMACS
-LDDEBUG       =
-LDOPTIMISE    =
-LDFLAGS       =
-LIBS          = -lz
-#CONSOLE_LIBS  = -ltermcap
-CONSOLE_LIBS  = -lncurses
-WINDOW_LIBS   = $(MAKEWINLIBS) $(XFT_LIBS) -L/usr/local/lib -lX11
-#
-# Rules
-.SUFFIXES: .c .oc .ow .ob .on .ov .oe .odc .odw .odb .odn .odv .ode
+WINDOW_LIBS   = $(WINDOW_X11LIB) $(XFT_LIBS)
 
-.c.oc:
-	$(CC) $(COPTIMISE) $(CDEFS) $(MICROEMACS_DEFS) $(CONSOLE_DEFS) $(MAKECDEFS) -o $@ -c $<
+.if ${BTYP} == c
+BTYP_CDF = $(CONSOLE_DEFS)
+BTYP_LIB = $(CONSOLE_LIBS)
+.elif ${BTYP} == w
+BTYP_CDF = $(WINDOW_DEFS)
+BTYP_LIB = $(WINDOW_LIBS)
+.else
+BTYP_CDF = $(CONSOLE_DEFS) $(WINDOW_DEFS)
+BTYP_LIB = $(CONSOLE_LIBS) $(WINDOW_LIBS)
+.endif
 
-.c.ow:
-	$(CC) $(COPTIMISE) $(CDEFS) $(MICROEMACS_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
+.if ${BCOR} == ne
+BCOR_CDF = $(NANOEMACS_DEFS)
+.else
+BCOR = me
+BCOR_CDF =
+.endif
 
-.c.ob:
-	$(CC) $(COPTIMISE) $(CDEFS) $(MICROEMACS_DEFS) $(CONSOLE_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
+.if ${BCFG} == debug
+BOUTDIR  = .freebsd-debug
+CCFLAGS  = $(CDEBUG)
+LDFLAGS  = $(LDDEBUG)
+STRIP    = - echo No strip - debug
+.else
+BOUTDIR  = .freebsd-release
+CCFLAGS  = $(COPTIMISE)
+.endif
 
-.c.on:
-	$(CC) $(COPTIMISE) $(CDEFS) $(NANOEMACS_DEFS) $(CONSOLE_DEFS) $(MAKECDEFS) -o $@ -c $<
+# Separate object dir for Xft - make does not track flag changes
+.if ${BTYP} != c && defined(XFT) && ${XFT} == 1
+XFT_OUTDIR = -xft
+.else
+XFT_OUTDIR =
+.endif
 
-.c.ov:
-	$(CC) $(COPTIMISE) $(CDEFS) $(NANOEMACS_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
+OUTDIR   = $(BOUTDIR)-$(BCOR)$(BTYP)$(XFT_OUTDIR)
+PRGNAME  = $(BCOR)$(BTYP)
+PRGFILE  = $(PRGNAME)
+PRGHDRS  = ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h \
+	   esearch.h eskeys.h estruct.h eterm.h evar.h evers.h eopt.h \
+	   ebind.def efunc.def eprint.def evar.def etermcap.def emode.def eskeys.def bfs.h
 
-.c.oe:
-	$(CC) $(COPTIMISE) $(CDEFS) $(NANOEMACS_DEFS) $(CONSOLE_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
-
-# Debug Builds
-.c.odc:
-	$(CC) $(CDEBUG) $(CDEFS) $(MICROEMACS_DEFS) $(CONSOLE_DEFS) $(MAKECDEFS) -o $@ -c $<
-
-.c.odw:
-	$(CC) $(CDEBUG) $(CDEFS) $(MICROEMACS_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
-
-.c.odb:
-	$(CC) $(CDEBUG) $(CDEFS) $(MICROEMACS_DEFS) $(CONSOLE_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
-
-.c.odn:
-	$(CC) $(CDEBUG) $(CDEFS) $(NANOEMACS_DEFS) $(CONSOLE_DEFS) $(MAKECDEFS) -o $@ -c $<
-
-.c.odv:
-	$(CC) $(CDEBUG) $(CDEFS) $(NANOEMACS_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
-
-.c.ode:
-	$(CC) $(CDEBUG) $(CDEFS) $(NANOEMACS_DEFS) $(CONSOLE_DEFS) $(WINDOW_DEFS) $(MAKECDEFS) -o $@ -c $<
-#
-# Source files
-STDHDR	= ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h \
-	  esearch.h eskeys.h estruct.h eterm.h evar.h evers.h eopt.h \
-	  ebind.def efunc.def eprint.def evar.def etermcap.def emode.def eskeys.def bfs.h
 STDSRC	= abbrev.c basic.c bind.c buffer.c crypt.c dirlist.c display.c \
 	  encoding.c eval.c exec.c file.c fileio.c frame.c hilight.c history.c input.c \
 	  isearch.c key.c line.c macro.c main.c narrow.c next.c osd.c \
 	  print.c random.c regex.c region.c registry.c search.c spawn.c \
 	  spell.c tag.c termio.c time.c undo.c window.c word.c bfs.c
-
-PLTHDR  =
 PLTSRC  = unixterm.c
-
-HEADERS = $(STDHDR) $(PLTHDR)
 SRC     = $(STDSRC) $(PLTSRC)
-#
-# Object files
-OBJ_C    = $(SRC:.c=.oc)
-OBJ_W    = $(SRC:.c=.ow)
-OBJ_B    = $(SRC:.c=.ob)
-OBJ_N    = $(SRC:.c=.on)
-OBJ_V    = $(SRC:.c=.ov)
-OBJ_E    = $(SRC:.c=.oe)
 
-# Debug Builds
-OBJ_DC   = $(SRC:.c=.odc)
-OBJ_DW   = $(SRC:.c=.odw)
-OBJ_DB   = $(SRC:.c=.odb)
-OBJ_DN   = $(SRC:.c=.odn)
-OBJ_DV   = $(SRC:.c=.odv)
-OBJ_DE   = $(SRC:.c=.ode)
 #
-# Targets
-all: me
+# Default goal must be declared before the .for rules below so that a bare
+# "make -f freebsd.mak" builds the combined binary, not the first object.
+#
+all: $(OUTDIR)/$(PRGFILE)
 
-install: me
-	$(INSTALL) $(INSTPROGFLAGS) me $(INSTDIR)
+.for _src in ${SRC:S/.c//}
+OBJS += ${OUTDIR}/${_src}.o
+.endfor
+
+.for _src in ${SRC:S/.c//}
+${OUTDIR}/${_src}.o: ${_src}.c ${PRGHDRS}
+	@mkdir -p $(OUTDIR)
+	$(CC) $(CCDEFS) $(BCOR_CDF) $(BTYP_CDF) $(CCFLAGS) -o $@ -c ${_src}.c
+.endfor
+
+$(OUTDIR)/$(PRGFILE): $(OBJS)
+	@mkdir -p $(OUTDIR)
+	$(RM) $@
+	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJS) $(PRGLIBS) $(BTYP_LIB) $(LIBS)
+	$(STRIP) $@
+
+install: $(OUTDIR)/$(PRGFILE)
+	$(INSTALL) $(INSTPROGFLAGS) $(OUTDIR)/$(PRGFILE) $(INSTDIR)/me
 	@echo "install done"
 
 clean:
+	$(RMDIR) .freebsd-release-* .freebsd-debug-*
 	$(RM) core me mec mew mecw ne nec new necw med medc medw medcw ned nedc nedw nedcw
 	$(RM) *.oc *.ow *.ob *.on *.ov *.oe
 	$(RM) *.odc *.odw *.odb *.odn *.odv *.ode
+	$(RM) *.o
 
 spotless: clean
 	$(RM) tags *~
 
-mec:	$(OBJ_C)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_C) $(CONSOLE_LIBS) $(LIBS)
-	$(STRIP) $@
+# Legacy convenience targets (sub-make; primary output is $(OUTDIR)/$(PRGFILE))
+mec:
+	${MAKE} -f freebsd.mak BTYP=c BCFG=$(BCFG) BCOR=$(BCOR) all
 
-mew:	$(OBJ_W)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_W) $(WINDOW_LIBS) $(LIBS)
-	$(STRIP) $@
+mew:
+	${MAKE} -f freebsd.mak BTYP=w BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
 
-mecw:	$(OBJ_B)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_B) $(CONSOLE_LIBS) $(WINDOW_LIBS) $(LIBS)
-	$(STRIP) $@
+mecw:
+	${MAKE} -f freebsd.mak BTYP=cw BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
 
-me:	mecw
-	$(CP) mecw $@
+me:
+	${MAKE} -f freebsd.mak BTYP=cw BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
+	$(CP) $(BOUTDIR)-$(BCOR)cw$(XFT_OUTDIR)/$(BCOR)cw \
+	      $(BOUTDIR)-$(BCOR)cw$(XFT_OUTDIR)/me
 
-nec:	$(OBJ_N)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_N) $(CONSOLE_LIBS) $(LIBS)
-	$(STRIP) $@
+# NanoEmacs legacy
+nec:
+	${MAKE} -f freebsd.mak BTYP=c BCFG=$(BCFG) BCOR=ne all
 
-new:	$(OBJ_V)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_V) $(WINDOW_LIBS) $(LIBS)
-	$(STRIP) $@
+new:
+	${MAKE} -f freebsd.mak BTYP=w BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
 
-necw:	$(OBJ_E)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDOPTIMISE) -o $@ $(OBJ_E) $(CONSOLE_LIBS) $(WINDOW_LIBS) $(LIBS)
-	$(STRIP) $@
+necw:
+	${MAKE} -f freebsd.mak BTYP=cw BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
 
-ne:	nec
-	$(CP) nec $@
+ne: nec
 
-# Debug Builds
-medc:	$(OBJ_DC)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DC) $(CONSOLE_LIBS) $(LIBS)
+# Debug legacy
+medc:
+	${MAKE} -f freebsd.mak BTYP=c BCFG=debug BCOR=$(BCOR) all
 
-medw:	$(OBJ_DW)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DW) $(WINDOW_LIBS) $(LIBS)
+medw:
+	${MAKE} -f freebsd.mak BTYP=w BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
 
-medcw:	$(OBJ_DB)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DB) $(CONSOLE_LIBS) $(WINDOW_LIBS) $(LIBS)
+medcw:
+	${MAKE} -f freebsd.mak BTYP=cw BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
 
-med:	medcw
-	$(CP) medcw $@
+med: medcw
 
-nedc:	$(OBJ_DN)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DN) $(CONSOLE_LIBS) $(LIBS)
+nedc:
+	${MAKE} -f freebsd.mak BTYP=c BCFG=debug BCOR=ne all
 
-nedw:	$(OBJ_DV)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DV) $(WINDOW_LIBS) $(LIBS)
+nedw:
+	${MAKE} -f freebsd.mak BTYP=w BCFG=debug BCOR=ne XFT=$(XFT) all
 
-nedcw:	$(OBJ_DE)
-	$(RM) $@
-	$(LD) $(LDFLAGS) $(LDDEBUG) -o $@ $(OBJ_DE) $(CONSOLE_LIBS) $(WINDOW_LIBS) $(LIBS)
+nedcw:
+	${MAKE} -f freebsd.mak BTYP=cw BCFG=debug BCOR=ne XFT=$(XFT) all
 
-ned:	nedc
-	$(CP) nedc $@
-#
-# Dependancies
-$(OBJ_C): $(HEADERS)
-$(OBJ_W): $(HEADERS)
-$(OBJ_B): $(HEADERS)
-$(OBJ_N): $(HEADERS)
-$(OBJ_V): $(HEADERS)
-$(OBJ_E): $(HEADERS)
-
-# Debug Builds
-$(OBJ_DC): $(HEADERS)
-$(OBJ_DW): $(HEADERS)
-$(OBJ_DB): $(HEADERS)
-$(OBJ_DN): $(HEADERS)
-$(OBJ_DV): $(HEADERS)
-$(OBJ_DE): $(HEADERS)
+ned: nedc
