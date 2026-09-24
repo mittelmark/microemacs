@@ -159,7 +159,7 @@ OBJS += ${OUTDIR}/${_src}.o
 .endfor
 
 .for _src in ${SRC:S/.c//}
-${OUTDIR}/${_src}.o: ${_src}.c ${PRGHDRS}
+${OUTDIR}/${_src}.o: ${_src}.c ${PRGHDRS} freebsd.mak
 	@mkdir -p $(OUTDIR)
 	$(CC) $(CCDEFS) $(BCOR_CDF) $(BTYP_CDF) $(CCFLAGS) -o $@ -c ${_src}.c
 .endfor
