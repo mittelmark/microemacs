@@ -25,16 +25,22 @@
 !if &les $version "20091226"
     5000 ml-write "[Warning: The MicroEmacs executable is not compatible with this macro release]"
 !endif
-; If <$user-name>.erf registry file isn't found under ~/.jasspa then this
-; is a new user. Note: we check ~/.jasspa specifically rather than using
-; &find (which searches the entire search-path) because a stray .erf in
-; the macros directory should not prevent the first-run setup wizard.
-!if &band $system 0x80
-    set-variable #l0 &spr "%s.jasspa/%s.erf" $home $user-name
-!else
-    set-variable #l0 &spr "%sjasspa/%s.erf" $home $user-name
-!endif
+; If <$user-name>.erf registry file isn't found then this is a new user.
+; Check $user-path first - that is where save-registry/user-setup write the
+; file (e.g. %APPDATA%/ on Windows, ~/.jasspa/ on Unix) - then fall back to
+; the legacy home locations. Note: we check these locations directly rather
+; than using &find (which searches the entire search-path) because a stray
+; .erf in the macros directory should not prevent the first-run setup wizard.
+set-variable #l0 &spr "%s%s.erf" $user-path $user-name
 set-variable #l1 &stat "t" #l0
+!if &seq #l1 "X"
+    !if &band $system 0x80
+        set-variable #l0 &spr "%s.jasspa/%s.erf" $home $user-name
+    !else
+        set-variable #l0 &spr "%sjasspa/%s.erf" $home $user-name
+    !endif
+    set-variable #l1 &stat "t" #l0
+!endif
 !if &seq #l1 "X"
     !force read-registry "/history" "newuser" "cb"
     0 define-macro-file newuser
