@@ -48,11 +48,30 @@ CDEBUG        =	-Wall -g
 COPTIMISE     =	-Wall -O3 -DNDEBUG=1 -Wno-uninitialized -Wno-unused-result
 CDEFS         = -D_FREEBSD -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
 CONSOLE_DEFS  = -D_ME_CONSOLE
-# libXft TrueType support for mew (off by default - BSD make has no
-# conditionals here, enable manually, e.g.:
-# make -f freebsd.mak XFT_DEFS="-DMEOPT_XFT=1 `pkg-config --cflags xft`" XFT_LIBS="`pkg-config --libs xft`" mew
+#
+# libXft TrueType support for mew/mecw - auto-detect when XFT is unset.
+# Requires pkgconf + libXft, e.g.: pkg install pkgconf libXft
+# Override:
+#   make -f freebsd.mak XFT=0 mew    # force core XLFD fonts
+#   make -f freebsd.mak XFT=1 mew    # force Xft
+# Or set XFT_DEFS/XFT_LIBS manually as before.
 # NOTE: window objects are built in-tree (.ow/.ob) - run "make clean"
 # when toggling XFT, otherwise stale MEOPT_XFT objects get linked.
+#
+PKG_CONFIG   ?= pkg-config
+.if !defined(XFT) && !defined(XFT_DEFS)
+XFT_OK != if ${PKG_CONFIG} --exists xft >/dev/null 2>&1; then echo 1; else echo 0; fi
+.if ${XFT_OK} == 1
+XFT = 1
+.else
+XFT = 0
+.endif
+.endif
+.if defined(XFT) && ${XFT} == 1 && !defined(XFT_DEFS)
+XFT_CFLAGS != ${PKG_CONFIG} --cflags xft
+XFT_LIBS   != ${PKG_CONFIG} --libs xft
+XFT_DEFS    = -DMEOPT_XFT=1 ${XFT_CFLAGS}
+.endif
 WINDOW_DEFS   = $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_WINDOW -I/usr/local/include
 NANOEMACS_DEFS= -D_NANOEMACS
 LDDEBUG       =

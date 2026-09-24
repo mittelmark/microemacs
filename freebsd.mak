@@ -7,19 +7,37 @@ OSVERSION="$(DIST)$(OSV)"
 MACHINE=`uname -m`
 RELEASE=freebsd-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
 app=mecb
+#
+# Auto-detect libXft for mew/mecw (pkgconf must be installed).
+# Override with XFT=0 or XFT=1 on the make command line.
+#
+PKG_CONFIG   ?= pkg-config
+.if !defined(XFT)
+XFT_OK != if ${PKG_CONFIG} --exists xft >/dev/null 2>&1; then echo 1; else echo 0; fi
+.if ${XFT_OK} == 1
+XFT = 1
+.else
+XFT = 0
+.endif
+.endif
 default:
 	echo "Makefile for FreeBSD systems"
 	echo "VERSION: '$(VERSION)' OS $(OS) OSVERSION $(OSVERSION) OSV $(OSV)"
+.if defined(XFT) && ${XFT} == 1
+	echo "libXft TrueType: enabled (XFT=1)"
+.else
+	echo "libXft TrueType: not found or disabled (XFT=0)"
+.endif
 bfs/bin:
 	cd bfs && make
 mec:
 	cd src && make -f freebsd.mak mec
 
 mew:
-	cd src && make -f freebsd.mak mew
+	cd src && make -f freebsd.mak mew XFT=${XFT}
 
 mecw:
-	cd src && make -f freebsd.mak mecw
+	cd src && make -f freebsd.mak mecw XFT=${XFT}
 
 mecb: bfs/bin mec
 	./bfs/bfs -a ./src/mec -o $(RELEASE)-mecb.bin ./jasspa
