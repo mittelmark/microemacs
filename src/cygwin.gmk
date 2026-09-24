@@ -31,7 +31,8 @@
 #   Run "make -f cygwin.gmk BTYP=c"         for console only  -> .cygwin-release-mec/mec.exe
 #   Run "make -f cygwin.gmk BTYP=w"         for window only   -> .cygwin-release-mew/mew.exe
 #   Run "make -f cygwin.gmk BTYP=cw"        for both (default)
-#   Run "make -f cygwin.gmk BCFG=debug"     for debug build   -> .cygwin-debug-mecw/
+#   Run "make -f cygwin.gmk XFT=1"          for libXft mew/mecw -> *-xft outdirs (auto at top level)
+#   Run "make -f cygwin.gmk BCFG=debug"     for debug build   -> .cygwin-debug-*
 #   Run "make -f cygwin.gmk BCOR=ne"        for NanoEmacs
 #
 #   Legacy targets still work:  mec, mew, mecw, med, medc, etc.
@@ -92,10 +93,12 @@ BCOR_CDF =
 PRGLIBS  = -lz
 endif
 
-# libXft TrueType support for mew (off by default, enable with XFT=1)
+# libXft TrueType support for mew (off by default, enable with XFT=1).
+# Auto-detection lives in the top-level cygwin.gmk and is passed in as XFT=.
+PKG_CONFIG ?= pkg-config
 ifeq "$(XFT)" "1"
-XFT_DEFS = -DMEOPT_XFT=1 $(shell pkg-config --cflags xft)
-XFT_LIBS = $(shell pkg-config --libs xft)
+XFT_DEFS = -DMEOPT_XFT=1 $(shell $(PKG_CONFIG) --cflags xft)
+XFT_LIBS = $(shell $(PKG_CONFIG) --libs xft)
 endif
 # Window libs - keep original paths
 WINDOW_LIBS = -L/usr/X11R6/lib -lX11 -lz $(MAKEWINLIBS) $(XFT_LIBS)
@@ -156,48 +159,48 @@ $(OUTDIR):
 # Note: primary output is now $(OUTDIR)/$(PRGFILE) e.g. .cygwin-release-mec/mec.exe
 # These wrappers do NOT copy to src/ root to avoid polluting the source dir.
 mec:
-	$(MAKE) -f cygwin.gmk BTYP=c BCFG=$(BCFG) BCOR=$(BCOR) all
+	$(MAKE) -f cygwin.gmk BTYP=c BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
 
 mew:
-	$(MAKE) -f cygwin.gmk BTYP=w BCFG=$(BCFG) BCOR=$(BCOR) all
+	$(MAKE) -f cygwin.gmk BTYP=w BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
 
 mecw:
-	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=$(BCFG) BCOR=$(BCOR) all
+	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
 
 me: mecw
 
 # NanoEmacs legacy
 nec:
-	$(MAKE) -f cygwin.gmk BTYP=c BCFG=$(BCFG) BCOR=ne all
+	$(MAKE) -f cygwin.gmk BTYP=c BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
 
 new:
-	$(MAKE) -f cygwin.gmk BTYP=w BCFG=$(BCFG) BCOR=ne all
+	$(MAKE) -f cygwin.gmk BTYP=w BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
 
 necw:
-	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=$(BCFG) BCOR=ne all
+	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
 
 ne: nec
 
 # Debug legacy
 medc:
-	$(MAKE) -f cygwin.gmk BTYP=c BCFG=debug BCOR=$(BCOR) all
+	$(MAKE) -f cygwin.gmk BTYP=c BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
 
 medw:
-	$(MAKE) -f cygwin.gmk BTYP=w BCFG=debug BCOR=$(BCOR) all
+	$(MAKE) -f cygwin.gmk BTYP=w BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
 
 medcw:
-	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=debug BCOR=$(BCOR) all
+	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
 
 med: medcw
 
 nedc:
-	$(MAKE) -f cygwin.gmk BTYP=c BCFG=debug BCOR=ne all
+	$(MAKE) -f cygwin.gmk BTYP=c BCFG=debug BCOR=ne XFT=$(XFT) all
 
 nedw:
-	$(MAKE) -f cygwin.gmk BTYP=w BCFG=debug BCOR=ne all
+	$(MAKE) -f cygwin.gmk BTYP=w BCFG=debug BCOR=ne XFT=$(XFT) all
 
 nedcw:
-	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=debug BCOR=ne all
+	$(MAKE) -f cygwin.gmk BTYP=cw BCFG=debug BCOR=ne XFT=$(XFT) all
 
 ned: nedc
 

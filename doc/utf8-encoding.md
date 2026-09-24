@@ -19,6 +19,70 @@ Multi-encoding is per-buffer (`bp->encoding`); the core-font **paint** path
 is latin-1 by construction (see “Legacy core X fonts” below). Full BMP
 display: libXft on X11, ExtTextOutW on Windows.
 
+## Unicode Coverage and Font Support
+
+ME guarantees **encoding round-trip** (detect → edit → save), not that
+every codepoint has a glyph. Glyph presence depends on the **active font**
+(and fontconfig fallback where available). Encoding and coverage are
+separate concerns:
+
+| Layer | Guaranteed? | Notes |
+|-------|-------------|--------|
+| Buffer storage / save (UTF-8 BMP) | yes | Valid sequences preserved |
+| Display of a codepoint | **font-dependent** | Missing glyph → blank, tofu, or fallback |
+| Core XLFD paint | latin-1 only | U+0000–U+00FF; beyond → `?` (policy) |
+| libXft / ExtTextOutW | full BMP *if font has the glyph* | CJK needs a CJK face |
+
+### Safe range (most Latin / terminal fonts)
+
+These ranges are present in typical monospace coding faces
+(Source Code Pro, DejaVu Sans Mono, Ubuntu Mono, Cascadia, Menlo, …).
+Treat them as the **practical “fully supported” scope** for UI, box
+drawing, and a future Unicode symbol picker:
+
+| Range | Content | Coverage |
+|-------|---------|----------|
+| U+0000–U+007F | ASCII | Always |
+| U+00A0–U+00FF | Latin-1 Supplement (é, ñ, £, …) | Almost always |
+| U+0100–U+017F | Latin Extended-A (ā, ą, …) | Very common |
+| U+2013–U+2014, U+2018–U+201D, U+2022 | Dashes, quotes, bullet | Common |
+| U+2190–U+2193, U+21D0–U+21D3 | Basic arrows | Common in code fonts |
+| U+2200–U+22FF | Math operators (∀ ∈ × ÷ …) | Common in code fonts |
+| U+2500–U+257F | Box drawing | Common; ME OSD uses these |
+| U+25A0–U+25FF | Geometric shapes (■ □ ● ○) | Common |
+
+**Recommended limited scope for features and docs:**  
+**U+0000–U+017F** plus a small set in **U+2000–U+206F**,
+**U+2190–U+22FF**, **U+2500–U+25FF**.  
+Optional if fonts are pinned: Greek **U+0370–U+03FF**.
+
+### Needs an explicit font (not “most fonts”)
+
+| Range | Content | Requirement |
+|-------|---------|-------------|
+| U+2E80–U+9FFF, U+3000–U+30FF, U+AC00–U+D7AF | CJK ideographs, kana, hangul | CJK face (Noto Sans CJK, Source Han, system Yu Gothic/…); pure Latin mono often blank or fallback boxes |
+| U+1F300+ | Emoji | Separate emoji font + color path |
+| U+0530+, U+0600+, … | Other scripts | Corresponding faces |
+| Historic / rare planes | — | Not guaranteed |
+
+CJK display width (double-width) and IME remain **out of scope**; even
+with a CJK font, ME currently treats BMP glyphs as single-width in the
+fixed grid (see Known Limitations). Terminal `mec` CJK depends on the
+terminal emulator’s font/fallback, not ME.
+
+**Policy one-liner:** *ME guarantees encoding; fonts guarantee glyphs.
+Supported feature range = Latin + punctuation + box/math that the
+default faces already cover; CJK/emoji need an explicit font and are
+not a release blocker.*
+
+### Unicode symbol picker (planned, limited scope)
+
+A future insert-symbol UI should stick to the safe ranges above
+(Latin-1 Supplement, arrows, math, box drawing / blocks; Greek
+optional). CJK and emoji stay out of v1 — either “insert codepoint”
+only, or behind a documented font requirement. Existing single-byte
+insert-symbol dialog (`osdmisc.emf`) remains for charset tables.
+
 ## Overview
 
 MicroEmacs 2009 has been extended with **native UTF-8 support** using a
@@ -565,7 +629,8 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
    the X11 XLFD fallback only.
 4. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
    with `?` when in legacy mode; Xft and Windows ExtTextOutW display them
-   in UTF-8 buffers (CJK double-width still out of scope).
+   in UTF-8 buffers (CJK double-width still out of scope). Glyph presence
+   is font-dependent — see “Unicode Coverage and Font Support”.
 5. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
    `disLineByteOff[]`, but `renderLine()` overwrites in most code paths.
 
@@ -727,10 +792,16 @@ The `disLineByteOff[]` approach was chosen because it:
 2. **FreeBSD/Cygwin Xft**: marked *testing* in the support matrix; same
    Linux `XFT=1` code path. XLFD stays fallback only there too.
 3. **CJK/IME support**: Input Method Editor for CJK character entry
-   (UTF-8 buffers already display BMP glyphs under Xft and Windows mew).
+   (UTF-8 buffers already display BMP glyphs under Xft and Windows mew
+   **if the font provides them** — not guaranteed with Latin-only faces).
+   Double-width grid still required for proper CJK layout.
 4. **BIDI support**: Right-to-left text rendering for Arabic/Hebrew.
 5. **Per-buffer display internals**: keyboard/OSD still read the global
    `meInternalEnc`; could follow `$buffer-encoding` more closely.
+6. **Unicode symbol picker (optional)**: OSD insert dialog limited to the
+   safe ranges in “Unicode Coverage and Font Support” (Latin-1 Supplement,
+   arrows, math, box drawing). Separate from the single-byte
+   insert-symbol dialog.
 
 TrueType on Linux (`XFT=1`), core-font latin-1 fold (fallback), Windows
 GUI full BMP (`ExtTextOutW`), clipboard CF_UNICODETEXT, and the typing-lag
