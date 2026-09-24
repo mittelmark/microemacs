@@ -188,7 +188,8 @@ typedef struct
     PaletteInfo pInfo;                  /* Emacs colour palette tables */
     meShort *cellRowPos;                /* Character cell position in Y */
     meShort *cellColPos;                /* Character cell position in X */
-    meUByte *cellColTmpPos;             /* Temporary X position */
+    meUByte *cellColTmpPos;             /* Temporary X position (ANSI) */
+    WCHAR   *cellColWPos;               /* Temporary cell BMP for ExtTextOutW */
     INT     *cellSpacing;               /* Spacing of cells */
     meShort  cellDepthCount;            /* Screen cell number of rows */
     meShort  cellWidthCount;            /* Screen cell number of columns */
@@ -752,6 +753,34 @@ TTsendClientServer(meUByte *line)
 
 #endif
 
+/* Convert one raw byte from meInternalEnc to a WCHAR cell.
+ * Shared by console helpers and the Windows GUI ExtTextOutW paint path
+ * (single-byte frame-store cells: mode line, OSD, poke high bytes).
+ * Control box codes map to ASCII art (no font support for them). */
+static WCHAR
+meWinInternalToWChar(meUByte c)
+{
+    if(c < TTSPECCHARS)
+        return (WCHAR) ttSpeChars[c] ;
+    if(c < 0x80)
+        return (WCHAR) c ;
+    {
+        meConv conv ;
+        unsigned char in[1], out[4] ;
+        int outLen ;
+        int32_t cp ;
+        in[0] = c ;
+        meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8) ;
+        outLen = meConvChar(&conv, in, 1, out, sizeof(out)) ;
+        if(outLen <= 0)
+            return (WCHAR) c ;  /* unmappable - raw fallback */
+        cp = meUtf8Decode(out) ;
+        if(cp <= 0 || cp > 0xffff)
+            return (WCHAR) c ;  /* NUL/astral - raw fallback, never NUL cell */
+        return (WCHAR) cp ;
+    }
+}
+
 #ifdef _ME_CONSOLE
 /****************************************************************************
  *
@@ -822,36 +851,6 @@ meWinWCharToUtf8(WCHAR wc, meUByte *out)
     for(ii=0 ; ii<(int)n ; ii++)
         out[ii] = buf[ii] ;
     return (int) n ;
-}
-
-/* Convert one raw byte from meInternalEnc to a console WCHAR cell
- * (cf. unixterm.c TTputConvChar, which converts to terminal bytes).
- * The insert-symbol dialog temp-sets $internal-encoding to the source
- * table so each cell byte previews in that charset; otherwise this is
- * the historic raw behaviour. Control box codes map to ASCII art as
- * the console has no font support for them. */
-static WCHAR
-meWinInternalToWChar(meUByte c)
-{
-    if(c < TTSPECCHARS)
-        return (WCHAR) ttSpeChars[c] ;
-    if(c < 0x80)
-        return (WCHAR) c ;
-    {
-        meConv conv ;
-        unsigned char in[1], out[4] ;
-        int outLen ;
-        int32_t cp ;
-        in[0] = c ;
-        meConvInit(&conv, (meEncoding) meInternalEnc, ME_ENC_UTF8) ;
-        outLen = meConvChar(&conv, in, 1, out, sizeof(out)) ;
-        if(outLen <= 0)
-            return (WCHAR) c ;  /* unmappable - raw fallback */
-        cp = meUtf8Decode(out) ;
-        if(cp <= 0 || cp > 0xffff)
-            return (WCHAR) c ;  /* NUL/astral - raw fallback, never NUL cell */
-        return (WCHAR) cp ;
-    }
 }
 
 /*
@@ -2385,36 +2384,47 @@ meFrameDrawCursor(meFrame *frame, HDC hdc)
     SetBkColor (hdc, eCellMetrics.pInfo.cPal [cursorColor].cpixel);
     SelectObject (hdc, eCellMetrics.fontdef [meStyleGetFont(style)]);
 
-    /* Output the character */
-    ExtTextOut (hdc,
-                clientCol,                /* Text start position */
-                clientRow,
-                ETO_OPAQUE|ETO_CLIPPED,   /* Fill background */
-                &rline,                   /* Background area */
-                &cc,                      /* Text string */
-                1,                        /* Length of string */
-                eCellMetrics.cellSpacing);
-
-    if(frame->flags & meFRAME_NOT_FOCUS)
+    /* Output the character (BMP via sideband or single-byte store) */
     {
-        /* on top draw the normal character but smaller, this creates the
-         * rectangle effect */
-        SetTextColor (hdc, eCellMetrics.pInfo.cPal [meStyleGetFColor(style)].cpixel);
-        SetBkColor (hdc, eCellMetrics.pInfo.cPal [meStyleGetBColor(style)].cpixel);
+        WCHAR wch;
 
-        rline.top++ ;
-        rline.bottom-- ;
-        rline.left++ ;
-        rline.right-- ;
+        if(flp->wtext != NULL && flp->wtext[frame->cursorColumn] != 0)
+            wch = (WCHAR) flp->wtext[frame->cursorColumn];
+        else if(cc >= 0x80)
+            wch = meWinInternalToWChar(cc);
+        else
+            wch = (WCHAR) cc;
 
-        ExtTextOut (hdc,
-                    clientCol,      /* Text start position */
+        ExtTextOutW (hdc,
+                    clientCol,                /* Text start position */
                     clientRow,
-                    ETO_CLIPPED,    /* Clip char to smaller rectangle */
-                    &rline,         /* Background area */
-                    &cc,            /* Text string */
-                    1,              /* Length of string */
+                    ETO_OPAQUE|ETO_CLIPPED,   /* Fill background */
+                    &rline,                   /* Background area */
+                    &wch,                     /* Text string */
+                    1,                        /* Length of string */
                     eCellMetrics.cellSpacing);
+
+        if(frame->flags & meFRAME_NOT_FOCUS)
+        {
+            /* on top draw the normal character but smaller, this creates the
+             * rectangle effect */
+            SetTextColor (hdc, eCellMetrics.pInfo.cPal [meStyleGetFColor(style)].cpixel);
+            SetBkColor (hdc, eCellMetrics.pInfo.cPal [meStyleGetBColor(style)].cpixel);
+
+            rline.top++ ;
+            rline.bottom-- ;
+            rline.left++ ;
+            rline.right-- ;
+
+            ExtTextOutW (hdc,
+                        clientCol,      /* Text start position */
+                        clientRow,
+                        ETO_CLIPPED,    /* Clip char to smaller rectangle */
+                        &rline,         /* Background area */
+                        &wch,           /* Text string */
+                        1,              /* Length of string */
+                        eCellMetrics.cellSpacing);
+        }
     }
 }
 
@@ -2555,6 +2565,8 @@ meFrameDraw(meFrame *frame)
         meScheme *fschm;
         meUByte *tbp, cc;
         meUByte *ftext;
+        unsigned short *fwtext;
+        WCHAR *wbp;
         int   length;
         int   tcol, spFlag;
 
@@ -2571,6 +2583,7 @@ meFrameDraw(meFrame *frame)
         meFrameDataGetWinPaintStartCol(fd)[srow] = frame->width ;
         meFrameDataGetWinPaintEndCol(fd)[srow] = 0 ;
         tbp = eCellMetrics.cellColTmpPos;
+        wbp = eCellMetrics.cellColWPos;
 
         /* Set up the drawing borders. */
         rline.top    = eCellMetrics.cellRowPos [srow];
@@ -2584,6 +2597,7 @@ meFrameDraw(meFrame *frame)
         col--;
 
         ftext = flp->text ;              /* Point to appropriate text block */
+        fwtext = flp->wtext ;            /* BMP sideband (may be NULL) */
         fschm = flp->scheme + col ;      /* Point to appropriate colour block  */
 
         for (;;)
@@ -2618,7 +2632,7 @@ meFrameDraw(meFrame *frame)
                  * Note that the following looks a little cumbersome and
                  * unecessary, however the compiler will reduce the first pair
                  * of expressions into a single test so we only enter the
-                 * conditional block when we need to. Both of the following
+                 * conditional block when we need to be. Both of the following
                  * are applied at the end of the line and occur infrequently. */
                 if(meSchemeTestNoFont(schm))
                 {
@@ -2649,6 +2663,14 @@ meFrameDraw(meFrame *frame)
                     cc = ' ' ;
                 }
                 tbp[col] = cc ;
+                /* BMP cell: sideband from updateline, else single-byte store
+                 * (ASCII/latin-1/OSD) via meWinInternalToWChar for high bytes. */
+                if(fwtext != NULL && fwtext[col] != 0)
+                    wbp[col] = (WCHAR) fwtext[col] ;
+                else if(cc >= 0x80)
+                    wbp[col] = meWinInternalToWChar(cc) ;
+                else
+                    wbp[col] = (WCHAR) cc ;
             } while((--col >= scol) && (*--fschm == schm)) ;
 
 	    /* Output the current text item. Set up the current left margin
@@ -2657,14 +2679,14 @@ meFrameDraw(meFrame *frame)
             col++;                      /* Move to current position */
 	    rline.left = eCellMetrics.cellColPos [col];
 
-	    /* Output regular text */
-	    ExtTextOut (ps.hdc,
+	    /* Output regular text (Unicode / full BMP) */
+	    ExtTextOutW (ps.hdc,
 			eCellMetrics.cellColPos [col], /* Text start position */
 			clientRow,
 			ETO_OPAQUE,     /* Fill background */
 			&rline,         /* Background area */
-			tbp+col,        /* Text string */
-			length,         /* Length of string */
+			wbp+col,        /* WCHAR string (one per cell) */
+			length,         /* Length in cells */
 			eCellMetrics.cellSpacing);
             col--;                      /* Restore position */
 
@@ -6694,6 +6716,8 @@ meFrameSetWindowSizeInternal(meFrame *frame)
                                              sizeof (INT) * (width + 1));
         /* Construct the temporary rendering buffer */
         eCellMetrics.cellColTmpPos = meRealloc(eCellMetrics.cellColTmpPos, width+1);
+        eCellMetrics.cellColWPos = meRealloc(eCellMetrics.cellColWPos,
+                                             sizeof(WCHAR) * (width + 1));
         eCellMetrics.cellWidthCount = width ;
     }
     /* Initialise the column cell LUT tables - this must always be done as only the font may have changed. */

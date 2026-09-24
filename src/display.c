@@ -1524,8 +1524,9 @@ hideLineJump:
 
         /* winterm-utf8: disLineBuff holds UTF-8 bytes, blkp->column counts
          * display columns (reduced by horzScroll when scrolled). Frame store
-         * keeps one folded latin-1 byte per column for ANSI ExtTextOut —
-         * never advance s1 byte-wise or multi-byte sequences desync. */
+         * keeps one UTF-8 lead byte per column; wtext[] holds the BMP
+         * codepoint for ExtTextOutW (ticket 12 full-BMP path). Never advance
+         * s1 byte-wise or multi-byte sequences desync. */
         scrollBase = 0;
         if(window != NULL)
         {
@@ -1551,7 +1552,9 @@ hideLineJump:
 
             for(acol = absStart ; acol < absEnd ; acol++)
             {
-                meUByte folded = ' ';
+                meUByte lead = ' ';
+                unsigned short wcell = ' ';
+                int storeCol = (int)(fstp - frameCur->store[row].text);
 
                 if((acol >= 0) && ((acol + 1) < disLineByteOffSize))
                 {
@@ -1559,10 +1562,28 @@ hideLineJump:
                     int blen = disLineByteOff[acol + 1] - disLineByteOff[acol];
 
                     if(blen > 0)
-                        meFoldUtf8ToLatin1(ch, blen, &folded, 1);
+                    {
+                        int32_t cp;
+
+                        lead = ch[0];
+                        cp = meUtf8Decode(ch);
+                        if(cp <= 0)
+                            wcell = (unsigned short) lead;
+                        else if(cp <= 0xffff)
+                            wcell = (unsigned short) cp;
+                        else
+                            wcell = (unsigned short) '?';
+                    }
                 }
                 *fssp++ = scheme;
-                *fstp++ = folded;
+                *fstp++ = lead;
+#if defined(_WIN32) && defined(_ME_WINDOW)
+                if(frameCur->store[row].wtext != NULL && storeCol >= 0 &&
+                   storeCol < frameCur->widthMax)
+                    frameCur->store[row].wtext[storeCol] = wcell;
+#else
+                (void) wcell;
+#endif
                 ccol++;
             }
         } while (--noColChng > 0);
@@ -1588,6 +1609,10 @@ hideLineJump:
             {
                 *fssp++ = scheme;
                 *fstp++ = ' ';
+#if defined(_WIN32) && defined(_ME_WINDOW)
+                if(frameCur->store[row].wtext != NULL)
+                    frameCur->store[row].wtext[(int)(fstp - frameCur->store[row].text) - 1] = ' ';
+#endif
             }
             while (--offset > 0);
         }
@@ -2201,6 +2226,16 @@ updateScrollBar (meWindow *wp)
                 fssp[1] = scheme;     /* Assign the scheme */
                 fstp[1] = wbase[1];   /* Assign the text */
             }
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            if(frameCur->store[row].wtext != NULL)
+            {
+                frameCur->store[row].wtext[col] =
+                    (wbase[0] < 0x80) ? wbase[0] : 0; /* paint converts high */
+                if(len > 1)
+                    frameCur->store[row].wtext[col+1] =
+                        (wbase[1] < 0x80) ? wbase[1] : 0;
+            }
+#endif
 #endif /* _WIN32 */
 
 #ifdef _UNIX
@@ -2826,6 +2861,22 @@ pokeScreen(int flags, int row, int col, meUByte *scheme,
     /* Write the text to the frame store. Note that the colour still
      * needs to be updated. */
     memcpy(frameCur->store[row].text+col,str,len) ;      /* Write text in */
+#if defined(_WIN32) && defined(_ME_WINDOW)
+    /* Poke stores one byte per cell (not display-column mapped). Zero
+     * high-byte wtext so ExtTextOutW falls back to meWinInternalToWChar
+     * rather than keeping a stale BMP codepoint from updateline. */
+    if(frameCur->store[row].wtext != NULL)
+    {
+        int ii;
+
+        for(ii = 0 ; ii < len ; ii++)
+        {
+            meUByte bb = str[ii];
+
+            frameCur->store[row].wtext[col+ii] = (bb < 0x80) ? bb : 0;
+        }
+    }
+#endif
     fssp = frameCur->store[row].scheme + col ;           /* Get the scheme pointer */
     off  = (flags >> 4) & 0x07 ;
 

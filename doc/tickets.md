@@ -125,7 +125,7 @@ v unfold dir (color
 | Msys     | terminal   | yes       |
 | Windows  | terminal   | yes       |
 | Windows  | mew system fonts | yes (latin-1 fold) |
-| Windows  | TTF        | todo      |
+| Windows  | TTF        | yes (ExtTextOutW / BMP) |
 
 - mec version Unix/Windows implemented
 - mew version
@@ -274,7 +274,17 @@ v unfold dir (color
       converts codepoints to buffer encoding (winterm.c).
       Verified: open UTF-8/ISO files, screen-update, horizontal
       scroll (scroll-right 20 → $window-x-scroll=20), mec
-      test-basics pass. Full BMP still needs TTF.
+      test-basics pass. Full BMP still needs TTF (done 260924).
       Files: src/display.c, src/encoding.c, src/encoding.h,
       src/eterm.h, src/unixterm.c
-    - TODO: windows GUI TTF path for full BMP Unicode display
+    - DONE 260924: Windows GUI full BMP via ExtTextOutW (Ticket 12 TTF).
+      WCHAR sideband meFrameLine.wtext (gated _WIN32 && _ME_WINDOW)
+      filled in updateline from meUtf8Decode (lead byte stays in
+      text[] for FONTFIX/cursor); paint uses ExtTextOutW with
+      cellColWPos dx array in meFrameDraw / meFrameDrawCursor;
+      poke/osd/mode-line writers keep wtext in sync. Supports all
+      21 charset.emf encodings + UTF-8 BMP (no CJK double-width).
+      Verified: mec+mew test-basics PASS; forced ISO-8859-2/5/7,
+      Windows-1251, KOI8-R buffers paint (probe); scroll-right 20
+      → $window-x-scroll=20. Files: src/estruct.h, src/frame.c,
+      src/display.c, src/winterm.c, src/osd.c

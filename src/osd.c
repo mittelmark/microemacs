@@ -1010,6 +1010,19 @@ osdDisplaySnapshotRestore(osdDISPLAY *md)
     {
         memcpy (flp->scheme+xx,colp, width*sizeof(meScheme));
         memcpy (flp->text+xx,text, width*sizeof(meUByte));
+#if defined(_WIN32) && defined(_ME_WINDOW)
+        if(flp->wtext != NULL)
+        {
+            int ii ;
+
+            for(ii = 0 ; ii < width ; ii++)
+            {
+                meUByte bb = text[ii] ;
+
+                flp->wtext[xx+ii] = (bb < 0x80) ? bb : 0 ;
+            }
+        }
+#endif
     }
     /* winterm-utf8: frame store holds one byte per column (lead byte only
      * for UTF-8), so menuRenderArea redraw from frame store corrupts
@@ -1065,6 +1078,19 @@ osdDisplaySnapshotDraw(osdDISPLAY *md, int sx, int sy, int nx, int ny, int drawT
     {
         memcpy (flp->scheme+sx, colp, nx*sizeof(meScheme));
         memcpy (flp->text+sx, text, nx*sizeof(meUByte));
+#if defined(_WIN32) && defined(_ME_WINDOW)
+        if(flp->wtext != NULL)
+        {
+            int jj ;
+
+            for(jj = 0 ; jj < nx ; jj++)
+            {
+                meUByte bb = text[jj] ;
+
+                flp->wtext[sx+jj] = (bb < 0x80) ? bb : 0 ;
+            }
+        }
+#endif
     }
     if(drawToScreen)
         menuRenderArea(sx,sy,nx,ny) ;

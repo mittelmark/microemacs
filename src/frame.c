@@ -102,7 +102,11 @@ meFrameChangeWidth(meFrame *frame, int ww)
             if ((fl.scheme = meMalloc(ww*(sizeof(meUByte)+sizeof(meStyle)))) == NULL)
                 return meFALSE ;
             fl.text = (meUByte *) (fl.scheme+ww) ;
-            
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            if ((fl.wtext = (unsigned short *) meMalloc(ww*sizeof(unsigned short))) == NULL)
+                return meFALSE ;
+#endif
+
             /* Data structures allocated. Copy accross the new screen
              * information and pad endings with valid data. Strictly we
              * do not need to do this for all platforms, however if it
@@ -110,16 +114,30 @@ meFrameChangeWidth(meFrame *frame, int ww)
              * infrequent operation and time is not critical here */
             memcpy(fl.text, flp->text, sizeof(meUByte) * loopFrame->widthMax);
             memcpy(fl.scheme, flp->scheme, sizeof(meScheme) * loopFrame->widthMax);
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            if(flp->wtext != NULL)
+                memcpy(fl.wtext, flp->wtext, sizeof(unsigned short) * loopFrame->widthMax);
+#endif
             jj = ww ;
             while(--jj >= loopFrame->widthMax)
             {
                 fl.text[jj] = ' ' ;
                 fl.scheme[jj] = globScheme ;
-            }                
+#if defined(_WIN32) && defined(_ME_WINDOW)
+                fl.wtext[jj] = ' ' ;
+#endif
+            }
             /* Free off old data and copy in new */
             meFree (flp->scheme);
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            if(flp->wtext != NULL)
+                meFree(flp->wtext);
+#endif
             flp->text = fl.text;
             flp->scheme = fl.scheme;
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            flp->wtext = fl.wtext;
+#endif
         }
         /* Fix up the window structures */
         memcpy(ml,loopFrame->mlLine,meLINE_SIZE+loopFrame->mlLine->length) ;
@@ -216,14 +234,21 @@ meFrameChangeDepth(meFrame *frame, int dd)
         {
             if ((flp->scheme = meMalloc(loopFrame->widthMax*(sizeof(meUByte)+sizeof(meScheme)))) == NULL)
                 return meFALSE ;
-            
+
             flp->text = (meUByte *) (flp->scheme+loopFrame->widthMax) ;
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            if ((flp->wtext = (unsigned short *) meMalloc(loopFrame->widthMax*sizeof(unsigned short))) == NULL)
+                return meFALSE ;
+#endif
             /* Initialise the data to something valid */
             jj = loopFrame->widthMax ;
             while(--jj >= 0)
             {
                 flp->text[jj] = ' ' ;
                 flp->scheme[jj] = globScheme ;
+#if defined(_WIN32) && defined(_ME_WINDOW)
+                flp->wtext[jj] = ' ' ;
+#endif
             }
         }
         loopFrame->depthMax = dd ;
@@ -417,12 +442,19 @@ meFrameInit(meFrame *sibling)
         if ((flp->scheme = meMalloc(frame->widthMax*(sizeof(meUByte)+sizeof(meStyle)))) == NULL)
             return NULL ;
         flp->text = (meUByte *) (flp->scheme+frame->widthMax) ;
+#if defined(_WIN32) && defined(_ME_WINDOW)
+        if ((flp->wtext = (unsigned short *) meMalloc(frame->widthMax*sizeof(unsigned short))) == NULL)
+            return NULL ;
+#endif
         /* Fill with data */
         jj = frame->widthMax ;
         while(--jj >= 0)
         {
             flp->text[jj] = ' ' ;
             flp->scheme[jj] = meSCHEME_NDEFAULT ;
+#if defined(_WIN32) && defined(_ME_WINDOW)
+            flp->wtext[jj] = ' ' ;
+#endif
         }
     }
     return frame ;
@@ -523,7 +555,13 @@ meFrameFree(meFrame *frame)
     }
     meFree(frame->video.lineArray);
     for(flp=frame->store,ii=0; ii<frame->depthMax; ii++, flp++)
+    {
+#if defined(_WIN32) && defined(_ME_WINDOW)
+        if(flp->wtext != NULL)
+            meFree(flp->wtext) ;
+#endif
         meFree(flp->scheme) ;
+    }
     meFree(frame->mlLine) ;
     meFree(frame->mlLineStore) ;
     meFree(frame->store) ;

@@ -1115,6 +1115,9 @@ typedef struct
 {
     meUByte           *text ;                   /* Text held on the line. */
     meScheme          *scheme ;                 /* index to the Style (fore + back + font) of each cell */
+#if defined(_WIN32) && defined(_ME_WINDOW)
+    unsigned short    *wtext ;                  /* BMP cell for ExtTextOutW (NULL unused) */
+#endif
 } meFrameLine;                                  /* Line of screen text */
 
 
