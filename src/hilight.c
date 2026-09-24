@@ -1594,7 +1594,7 @@ hilCopyConvChar(register int dstPos, register meUByte *src, HILDATA *hd,
     {
         meConv conv ;
         unsigned char outBuf[8] ;
-        int outLen, ii ;
+        int outLen ;
         meConvInit(&conv, bufEnc, ME_ENC_UTF8) ;
         outLen = meConvChar(&conv, src, 1, outBuf, sizeof(outBuf)) ;
         if(outLen <= 0)

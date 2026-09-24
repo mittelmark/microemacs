@@ -1202,7 +1202,7 @@ hideLineJump:
         /********************************************************************
          * X-WINDOWS                                                        *
          ********************************************************************/
-        register int ii, len, col, cno ;
+        register int ii, col, cno ;
         register meScheme scheme ;
 
         row = rowToClient(row) ;
@@ -2710,16 +2710,16 @@ update(int flag)    /* force=meTRUE update past type ahead? */
 #endif
 
     ME_DBGTRACE("12: update entered") ;
-    /* Informational only: compute what the old code would have skipped
-     * on (kept for the ticket-12 trace). The actual early return below
-     * deliberately does NOT skip on type-ahead anymore (c642d48): the
+    /* Informational only (Xft debug): compute what the old code would have
+     * skipped on (kept for the ticket-12 trace). The actual early return
+     * below deliberately does NOT skip on type-ahead anymore (c642d48): the
      * screen is always repainted, TTahead() is still called for its
      * side-effects (draining Expose/ConfigureNotify, mouse timers). */
+#if MEOPT_XFT
     {
         int skipAhead = 0 ;
         if(!(alarmState & meALARM_PIPED))
             skipAhead = (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec || TTahead())) ;
-#if MEOPT_XFT
         if(meXftDbgOn())
         {
             fprintf(stderr,"MEXD %ld update flag=%d sgarbf=%d alarm=%d kbdplay=%d clexec=%d ahead=%d wflags=%04x xft=%d\n",
@@ -2728,11 +2728,11 @@ update(int flag)    /* force=meTRUE update past type ahead? */
                 frameCur->windowCur->updateFlags,meXftUsed()) ;
             fflush(stderr) ;
         }
-#endif
-        if((alarmState & meALARM_PIPED) ||
-           (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec)))
-            return meTRUE ;
     }
+#endif
+    if((alarmState & meALARM_PIPED) ||
+       (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec)))
+        return meTRUE ;
 
     /* Drain pending input events (X events, timers) but do NOT skip the
      * screen update when type-ahead is present.  On X11/Xft, XPending()
