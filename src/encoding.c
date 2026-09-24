@@ -1333,3 +1333,55 @@ size_t meUtf8Encode(int32_t codepoint, unsigned char *out) {
     return (size_t)utf8_encode_one(codepoint, out);
 }
 
+/*
+ * Fold a UTF-8 string to single-byte latin-1 for legacy paint paths
+ * (Windows GDI ExtTextOut, core X11 fonts). disLineBuff content is
+ * always terminal-ready UTF-8 (renderLine converts per-buffer), which
+ * ANSI ExtTextOut / single-byte core fonts cannot render directly.
+ * U+0000-U+00FF map directly, everything else (including truncated
+ * sequences) becomes '?'. Returns bytes written (<= dstSize).
+ */
+int
+meFoldUtf8ToLatin1(const unsigned char *src, int srcLen,
+                   unsigned char *dst, int dstSize)
+{
+    const unsigned char *sp = src, *se = src + srcLen ;
+    unsigned char *dp = dst, *de = dst + dstSize ;
+
+    while((sp < se) && (dp < de))
+    {
+        unsigned char cc = *sp ;
+        if(cc < 0x80)
+        {
+            *dp++ = cc ;
+            sp++ ;
+        }
+        else if(((cc & 0xe0) == 0xc0) && (sp + 1 < se) && ((sp[1] & 0xc0) == 0x80))
+        {
+            unsigned int uu = ((unsigned int)(cc & 0x1f) << 6) | (unsigned int)(sp[1] & 0x3f) ;
+            *dp++ = (uu <= 0xff) ? (unsigned char) uu : (unsigned char) '?' ;
+            sp += 2 ;
+        }
+        else if(((cc & 0xf0) == 0xe0) && (sp + 2 < se) &&
+                ((sp[1] & 0xc0) == 0x80) && ((sp[2] & 0xc0) == 0x80))
+        {
+            *dp++ = '?' ;
+            sp += 3 ;
+        }
+        else if(((cc & 0xf8) == 0xf0) && (sp + 3 < se) &&
+                ((sp[1] & 0xc0) == 0x80) && ((sp[2] & 0xc0) == 0x80) &&
+                ((sp[3] & 0xc0) == 0x80))
+        {
+            *dp++ = '?' ;
+            sp += 4 ;
+        }
+        else
+        {
+            /* Stray continuation byte or truncated sequence */
+            *dp++ = '?' ;
+            sp++ ;
+        }
+    }
+    return (int)(dp - dst) ;
+}
+

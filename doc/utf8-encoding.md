@@ -1,18 +1,19 @@
 # UTF-8 Encoding Implementation
 
-**Status (2026-09-23, branch `libxft-utf8`):** core UTF-8 path and Linux Xft
-rendering are implemented and verified. XLFD (core X11 fonts) is kept as a
-**latin-1 fallback only**, not a UTF-8 target. Next major step: Windows GUI
-TTF (`winterm.c`), same fixed-grid approach as Xft. Full CJK/IME still open.
+**Status (2026-09-23, branch `libxft-utf8`):** core UTF-8 path, Linux Xft
+rendering, and **Windows GUI latin-1 fold** (`mew`) are implemented and
+verified. XLFD (core X11 fonts) and the Windows GUI system-font paint path
+are kept as **latin-1 fallbacks**, not UTF-8 targets. Full BMP on Windows
+GUI needs TTF (`winterm.c`, planned). Full CJK/IME still open.
 Tracked as Ticket 12 in `doc/tickets.md`.
 
-| OS | Terminal (`mec`) | Core X11 fonts (XLFD) | libXft (`XFT=1`) |
-|----|------------------|----------------------|------------------|
-| Linux | yes | fallback only (latin-1 fold: U+0000–U+00FF; beyond → `?`) | yes |
-| FreeBSD | testing | fallback only | testing |
-| Cygwin | yes | fallback only | yes |
-| MSYS / Windows terminal | yes | — | — |
-| Windows GUI (`mew`) | — | fallback (system fonts) | TTF (planned, next) |
+| OS | Terminal (`mec`) | Core X11 fonts (XLFD) | libXft (`XFT=1`) | Windows GUI (`mew`) |
+|----|------------------|----------------------|------------------|---------------------|
+| Linux | yes | fallback only (latin-1 fold: U+0000–U+00FF; beyond → `?`) | yes | — |
+| FreeBSD | testing | fallback only | testing | — |
+| Cygwin | yes | fallback only | yes | — |
+| MSYS / Windows terminal | yes | — | — | — |
+| Windows GUI (`mew`) | — | — | — | latin-1 fold (system fonts); TTF (planned, next) |
 
 **XLFD policy:** keep core X11 fonts as a **fallback**, not a UTF-8 target.
 Multi-encoding is per-buffer (`bp->encoding`); the core-font **paint** path
@@ -330,17 +331,20 @@ fonts.*
 which single-byte core fonts (e.g. iso8859-1 `fixed`) cannot render --
 umlauts showed up as raw-byte mojibake (`Ã¤`) or boxes:
 
-- new `meFoldUtf8ToLatin1()` (`src/unixterm.c`): folds a UTF-8 run to
-  single latin-1 bytes (U+0000-U+00FF direct, `?` beyond, truncated
-  sequences safe). It is applied caller-side by `xtermDrawUtf8Run()`
-  (`src/display.c`), used ONLY by `updateline()`'s UTF-8 runs (ASCII
-  runs still draw raw/unbounded). The draw macro itself passes single
-  bytes raw -- an earlier macro-level fold corrupted OSD dialogs and
-  expose repaints (frame-store single bytes are not UTF-8), e.g.
-  insert-symbol cells above 128 showed only `?`;
+- new `meFoldUtf8ToLatin1()` (`src/encoding.c`, shared): folds a UTF-8
+  run to single latin-1 bytes (U+0000-U+00FF direct, `?` beyond,
+  truncated sequences safe). On X11 it is applied caller-side by
+  `xtermDrawUtf8Run()` (`src/display.c`), used ONLY by `updateline()`'s
+  UTF-8 runs (ASCII runs still draw raw/unbounded). The draw macro
+  itself passes single bytes raw -- an earlier macro-level fold
+  corrupted OSD dialogs and expose repaints (frame-store single bytes
+  are not UTF-8), e.g. insert-symbol cells above 128 showed only `?`;
 - the FONTFIX `updateline()` branch (`src/display.c`) drew frame-store
   lead bytes only; it now assembles full UTF-8 bytes per column (like
-  the Xft `xftbuf` loop) so the fold sees complete sequences.
+  the Xft `xftbuf` loop) so the fold sees complete sequences;
+- the **Windows GUI** `updateline()` branch folds each column via
+  `disLineByteOff[]` + `scrollBase` so system fonts receive one
+  latin-1 byte per cell (same policy as XLFD).
 
 Result (verified by screenshot): U+00FF-range characters (äöüÄÖÜß©£)
 render correctly with legacy fonts; anything beyond shows `?`.
@@ -551,9 +555,13 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
    path folds to one latin-1 encoding (U+0000–U+00FF; beyond → `?`).
    Full BMP needs `XFT=1` (Linux/Cygwin) or the planned Windows TTF path.
    See “Legacy core X fonts (XLFD) — kept as fallback only”.
-3. **Windows GUI (winterm.c)**: UTF-8 keyboard input / TTF path not yet
-   implemented (Ticket 12 todo; next major step after Linux Xft).
-   Windows **terminal** builds already work.
+3. **Windows GUI (`mew`) latin-1 fold (done)**: system-font paint folds
+   UTF-8 to one latin-1 byte per cell via `meFoldUtf8ToLatin1()` in
+   `updateline()` (uses `disLineByteOff[]` + horizontal scroll base).
+   `WM_CHAR` input converts WCHAR codepoints to the buffer encoding
+   (`winterm.c` Unicode path). Full BMP display still needs TTF
+   (`winterm.c`, Ticket 12 next step). Windows **terminal** builds
+   already work.
 4. **CJK/Cyrillic**: Characters outside the internal encoding are replaced
    with `?` when in legacy mode; Xft can display them in UTF-8 buffers.
 5. **Hilight path**: `hilightLine()` writes to `disLineBuff` without updating
@@ -573,17 +581,18 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 | File | Change | Purpose |
 |------|--------|---------|
-| `src/display.c` | `renderLine()` byte-offset mapping, TCAP/X11 flush loops, end-of-line fix | Core display rendering for multi-byte UTF-8 |
+| `src/display.c` | `renderLine()` byte-offset mapping, TCAP/X11 flush loops, end-of-line fix, Win GUI `updateline` fold + scroll base | Core display rendering for multi-byte UTF-8 |
 | `src/edef.h` | `disLineByteOff`, `disLineByteOffSize` globals | Byte-offset mapping array declarations |
-| `src/encoding.c` | Conversion tables, `meConvChar()` | UTF-8/CP1252/ISO-8859-x/ASCII conversion |
-| `src/encoding.h` | `meEncoding` enum, `meConv` struct | Encoding types and converter API |
+| `src/encoding.c` | Conversion tables, `meConvChar()`, `meFoldUtf8ToLatin1()` | UTF-8/CP1252/ISO-8859-x/ASCII conversion; shared latin-1 fold |
+| `src/encoding.h` | `meEncoding` enum, `meConv` struct, fold declaration | Encoding types, converter API, fold helper |
 | `src/estruct.h` | Buffer `encoding` field | Per-buffer encoding storage |
 | `src/eval.c` | `termEncoding`, `meInternalEnc` globals | Encoding library instantiation |
 | `src/evar.def` | `$buffer-encoding`, `$internal-encoding` variables | User-accessible encoding variables |
 | `src/file.c` | PEP 263 detection, UTF-8 validation, `meInternalEnc` reset | File encoding auto-detection |
 | `src/hilight.c` | `hilCopyString()`/`hilCopyLenString()` outLen fix | Syntax highlighting byte-offset correctness |
 | `src/main.c` | `-E` flag handling, `doOneKey` UTF-8 continuation drain | Command-line encoding override; typed multi-byte flash fix |
-| `src/unixterm.c` | `convertUtf8Input()`, `TTputConvChar()`, Xft SetScheme/cursor, core-font fold | Input/output conversion; Xft and legacy X11 rendering |
+| `src/unixterm.c` | `convertUtf8Input()`, `TTputConvChar()`, Xft SetScheme/cursor, core-font fold call sites | Input/output conversion; Xft and legacy X11 rendering |
+| `src/winterm.c` | `WM_CHAR` Unicode → buffer encoding; clipboard CF_UNICODETEXT | Windows GUI input and clipboard |
 | `src/eterm.h` | Xft draw macros, fold/cursor helpers | NULL-guarded Xft draw; UTF-8 run helpers |
 
 ### Test Files
@@ -703,10 +712,9 @@ The `disLineByteOff[]` approach was chosen because it:
 
 ## Future Improvements
 
-1. **Windows GUI UTF-8/TTF**: Ticket 12 todo and **next planned step** —
-   port the Xft fixed-grid approach (or equivalent DirectWrite/GDI+ TTF)
-   to `winterm.c`; terminal Windows already works. Same split as Linux:
-   system/core fonts as latin-1 fallback, TTF for full BMP.
+1. **Windows GUI TTF**: latin-1 fold + `WM_CHAR` input are done for
+   system fonts; full BMP needs TTF port of the Xft fixed-grid approach
+   (DirectWrite/GDI+) in `winterm.c` — **next planned step**.
 2. **FreeBSD/Cygwin Xft**: marked *testing* in the support matrix; same
    Linux `XFT=1` code path. XLFD stays fallback only there too.
 3. **CJK/IME support**: Input Method Editor for CJK character entry
@@ -715,6 +723,7 @@ The `disLineByteOff[]` approach was chosen because it:
 5. **Per-buffer display internals**: keyboard/OSD still read the global
    `meInternalEnc`; could follow `$buffer-encoding` more closely.
 
-TrueType on Linux (`XFT=1`), core-font latin-1 fold (fallback), and the
-typing-lag class of bugs are **done** on `libxft-utf8` — see the Xft /
-XLFD sections above and Ticket 12 in `doc/tickets.md`.
+TrueType on Linux (`XFT=1`), core-font latin-1 fold (fallback), Windows
+GUI latin-1 fold + input, clipboard CF_UNICODETEXT, and the typing-lag
+class of bugs are **done** on `libxft-utf8` — see the Xft / XLFD /
+Windows sections above and Ticket 12 in `doc/tickets.md`.

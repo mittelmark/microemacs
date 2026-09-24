@@ -114,16 +114,17 @@ v unfold dir (color
 | OS       | me version | supported |
 |----------|------------|-----------|
 | Linux    | terminal   | yes       |
-| Linux    | XLFD       | no        |
+| Linux    | XLFD       | no (latin-1 fold fallback) |
 | Linux    | Xft        | yes       |
 | FreeBSD  | terminal   | testing   |
-| FreeBSD  | XLFD       | no        |
+| FreeBSD  | XLFD       | no (latin-1 fold fallback) |
 | FreeBSD  | Xft        | testing   |
 | Cygwin   | terminal   | yes       |
-| Cygwin   | XLFD       | no        |
+| Cygwin   | XLFD       | no (latin-1 fold fallback) |
 | Cygwin   | Xft        | yes       |
 | Msys     | terminal   | yes       |
 | Windows  | terminal   | yes       |
+| Windows  | mew system fonts | yes (latin-1 fold) |
 | Windows  | TTF        | todo      |
 
 - mec version Unix/Windows implemented
@@ -261,4 +262,19 @@ v unfold dir (color
       Screenshot: insert-symbol rows 0..31 black on grey, no white
       glyph pixels; test-basics ok.
       Files: src/unixterm.c
-    - TODO: windows GUI version support for Unicode/UTF8
+    - DONE 260923: Windows clipboard CF_UNICODETEXT (paste/copy).
+      WinClipWToUtf8 / UTF-16 paste path; klhead->encoding=UTF-8;
+      delayed render pumped via 1 command-wait. Verified: paste UTF-8,
+      copy-out exact bytes, paste ISO-8859-1. Files: src/winterm.c
+    - DONE 260923: Windows GUI latin-1 fold for system fonts.
+      meFoldUtf8ToLatin1 moved unixterm.c → encoding.c (shared);
+      updateline Win GUI branch uses disLineByteOff[] + scrollBase
+      and folds each column's UTF-8 sequence to one latin-1 byte
+      (same policy as XLFD fallback). WM_CHAR Unicode path already
+      converts codepoints to buffer encoding (winterm.c).
+      Verified: open UTF-8/ISO files, screen-update, horizontal
+      scroll (scroll-right 20 → $window-x-scroll=20), mec
+      test-basics pass. Full BMP still needs TTF.
+      Files: src/display.c, src/encoding.c, src/encoding.h,
+      src/eterm.h, src/unixterm.c
+    - TODO: windows GUI TTF path for full BMP Unicode display

@@ -1519,19 +1519,51 @@ hideLineJump:
         meScheme scheme;
         meInt offset;                     /* Offset into the line */
         meInt len;                        /* Local line column */
+        meInt scrollBase;                 /* Absolute column of screen col 0 */
+        meInt ccol;                       /* Screen-relative column cursor */
+
+        /* winterm-utf8: disLineBuff holds UTF-8 bytes, blkp->column counts
+         * display columns (reduced by horzScroll when scrolled). Frame store
+         * keeps one folded latin-1 byte per column for ANSI ExtTextOut —
+         * never advance s1 byte-wise or multi-byte sequences desync. */
+        scrollBase = 0;
+        if(window != NULL)
+        {
+            if(flag & VFCURRL)
+                scrollBase = window->horzScroll;
+            else
+                scrollBase = window->horzScrollRest;
+        }
 
         /* Iterate through the colour changes */
         len = 0;
+        ccol = 0;
         do {
+            meInt absStart, absEnd, acol;
+
             /* Set up the colour maps */
             offset = blkp->column - len;   /* Get width of coloured block */
             scheme = blkp->scheme;
+            absStart = scrollBase + ccol;
+            absEnd = scrollBase + blkp->column;
             blkp++;                     /* Next colour pair */
             len += offset;              /* Increase line length */
-            while (--offset >= 0)
+
+            for(acol = absStart ; acol < absEnd ; acol++)
             {
+                meUByte folded = ' ';
+
+                if((acol >= 0) && ((acol + 1) < disLineByteOffSize))
+                {
+                    meUByte *ch = disLineBuff + disLineByteOff[acol];
+                    int blen = disLineByteOff[acol + 1] - disLineByteOff[acol];
+
+                    if(blen > 0)
+                        meFoldUtf8ToLatin1(ch, blen, &folded, 1);
+                }
                 *fssp++ = scheme;
-                *fstp++ = *s1++;
+                *fstp++ = folded;
+                ccol++;
             }
         } while (--noColChng > 0);
 

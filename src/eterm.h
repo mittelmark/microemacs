@@ -323,7 +323,7 @@ extern void meFrameXTermSetScheme(meFrame *frame,meScheme scheme) ;
 extern void meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int ecol) ;
 extern void meFrameXTermDrawSpecialChar(meFrame *frame, int x, int y, meUByte cc) ;
 extern int meConvertToUTF8(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
-extern int meFoldUtf8ToLatin1(const meUByte *src, int srcLen, meUByte *dst, int dstSize) ;
+/* meFoldUtf8ToLatin1 is declared in encoding.h (shared by all platforms) */
 /* Env-gated Xft debug trace (ticket 12); silent unless ME_XFT_DEBUG set */
 extern int meXftDbgOn(void) ;
 extern long meXftDbgSeqNext(void) ;
