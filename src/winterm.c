@@ -2661,16 +2661,24 @@ meFrameDraw(meFrame *frame)
                 {
                     spFlag++ ;
                     cc = ' ' ;
+                    /* FONTFIX: ExtTextOutW must draw a space; WinSpecialChar
+                     * overlays the control glyph. Do not use fwtext[col]
+                     * (holds the raw control code from updateline). */
+                    tbp[col] = cc ;
+                    wbp[col] = L' ' ;
                 }
-                tbp[col] = cc ;
-                /* BMP cell: sideband from updateline, else single-byte store
-                 * (ASCII/latin-1/OSD) via meWinInternalToWChar for high bytes. */
-                if(fwtext != NULL && fwtext[col] != 0)
-                    wbp[col] = (WCHAR) fwtext[col] ;
-                else if(cc >= 0x80)
-                    wbp[col] = meWinInternalToWChar(cc) ;
                 else
-                    wbp[col] = (WCHAR) cc ;
+                {
+                    tbp[col] = cc ;
+                    /* BMP cell: sideband from updateline, else single-byte store
+                     * (ASCII/latin-1/OSD) via meWinInternalToWChar for high bytes. */
+                    if(fwtext != NULL && fwtext[col] != 0)
+                        wbp[col] = (WCHAR) fwtext[col] ;
+                    else if(cc >= 0x80)
+                        wbp[col] = meWinInternalToWChar(cc) ;
+                    else
+                        wbp[col] = (WCHAR) cc ;
+                }
             } while((--col >= scol) && (*--fschm == schm)) ;
 
 	    /* Output the current text item. Set up the current left margin
@@ -5197,9 +5205,11 @@ TTchangeFont (meUByte *fontName, int fontType, int fontWeight,
             logfont.lfItalic = 0;
         }
         else if ((fontType >= 0) &&
-                 (fontName != NULL) && (fontName[0] != '\0') &&
-                 (!((fontHeight == 0) && (fontWidth == 0))))
+                 (fontName != NULL) && (fontName[0] != '\0'))
         {
+            /* A font name is enough; CreateFont treats lfHeight/lfWidth of 0
+             * as "use defaults", so do not reject 0x0 dimensions (registry
+             * keys may be absent and default to 0 in win32.emf). */
             /* Determine the weight on the font */
             switch (fontWeight)
             {
