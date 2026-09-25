@@ -453,8 +453,11 @@ int meStdin ;
 #define meATOM_STRING           7
 #define meATOM_CLIPBOARD        8
 #define meATOM_XA_CLIPBOARD     9
+#define meATOM_UTF8_STRING      10
 static int TTdefaultPosX, TTdefaultPosY ;
-static Atom meAtoms[10]={0};
+static Atom meAtoms[11]={0};
+static Atom clipReqTarget = XA_STRING ;   /* target used by last clipboard get */
+static meUByte clipReqFailed ;            /* last clipboard get got property None */
 char *meName=ME_FULLNAME ;
 char *meIconName=ME_FULLNAME ;
 
@@ -982,8 +985,21 @@ waitForEvent(int mode)
 
                 /* if ioctl fails don't die! */
                 ii = ((ii < 0) ? 1 : x);
-#else
+#elif defined(FIORDCHK)
                 ii = ioctl(meStdin, FIORDCHK,0);
+#else
+                {
+                    /* No FIONREAD/FIORDCHK (e.g. Cygwin) - use a zero
+                     * timeout select() instead. On error assume OK so the
+                     * editor does not die (as for FIONREAD above). */
+                    fd_set rset ;
+                    struct timeval tv ;
+                    FD_ZERO(&rset) ;
+                    FD_SET(meStdin,&rset) ;
+                    tv.tv_sec = 0 ;
+                    tv.tv_usec = 0 ;
+                    ii = (select(meStdin+1,&rset,NULL,NULL,&tv) == 0) ? 0 : 1 ;
+                }
 #endif /* FIONREAD */
 #endif /* _USEPOLL */
                 if(!ii)
@@ -1570,7 +1586,7 @@ meFrameXTermDraw(meFrame *frame, int srow, int scol, int erow, int ecol)
     meFrameLine *flp;                   /* Frame store line pointer */
     meScheme  *fssp;                    /* Frame store colour pointer */
     meUByte     *fstp;                  /* Frame store text pointer */
-    meScheme   schm;                    /* Current colour */
+    meScheme  schm;                    /* Current colour */
     int col;                            /* Current column position */
     int row;                            /* Current row screen position */
     int tcol;                           /* Text column start */
@@ -2600,6 +2616,12 @@ special_bound:
                     XFree(buff) ;
                     /* always killSave, don't want to glue 'em together */
                     killSave();
+                    /* The received data encoding is that of the requested
+                     * target (ICCCM: UTF8_STRING = UTF-8, XA_STRING =
+                     * Latin-1), NOT the current buffer encoding. */
+                    if(klhead != NULL)
+                        klhead->encoding = (clipReqTarget == XA_STRING) ?
+                            (meUByte) ME_ENC_CP1252 : (meUByte) ME_ENC_UTF8 ;
                     if((dd = killAddNode(nitems)) != NULL)
                     {
                         dd[0] = '\0' ;
@@ -2613,7 +2635,8 @@ special_bound:
                         break ;
                     }
                 }
-                else if((type == XA_STRING) && (fmt == 8) && (nitems > 0))
+                else if(((type == XA_STRING) || (type == meAtoms[meATOM_UTF8_STRING])) &&
+                        (fmt == 8) && (nitems > 0))
                 {
                     if((klhead == NULL) || (klhead->kill == NULL) ||
                        (klhead->kill->next != NULL) ||
@@ -2622,6 +2645,12 @@ special_bound:
                     {
                         /* always killSave, don't want to glue 'em together */
                         killSave();
+                        /* Tag the real source encoding so yank converts
+                         * (UTF8_STRING = UTF-8, XA_STRING = Latin-1 per
+                         * ICCCM) instead of trusting the buffer encoding. */
+                        if(klhead != NULL)
+                            klhead->encoding = (type == XA_STRING) ?
+                                (meUByte) ME_ENC_CP1252 : (meUByte) ME_ENC_UTF8 ;
                         if((dd = killAddNode(nitems)) != NULL)
                         {
                             meStrncpy(dd,buff,nitems) ;
@@ -2633,6 +2662,16 @@ special_bound:
                 XFree(buff) ;
 
                 /* Always flag that we got the event */
+                clipState |= CLIP_RECEIVED ;
+            }
+            else if(((event.xselection.selection == XA_PRIMARY) ||
+                     (event.xselection.selection == meAtoms[meATOM_XA_CLIPBOARD])) &&
+                    (event.xselection.property == None))
+            {
+                /* Owner refused the conversion (e.g. it has no
+                 * UTF8_STRING) - flag it so TTgetClipboard can fall
+                 * back to an XA_STRING request. */
+                clipReqFailed = 1 ;
                 clipState |= CLIP_RECEIVED ;
             }
             else
@@ -2654,7 +2693,9 @@ special_bound:
                                      0L,0x1fffffffL,True,AnyPropertyType,
                                      &type, &fmt, &nitems, &left, &buff) ;
 
-            if((ret == Success) && (type == XA_STRING) && (fmt == 8))
+            if((ret == Success) &&
+               ((type == XA_STRING) || (type == meAtoms[meATOM_UTF8_STRING])) &&
+               (fmt == 8))
             {
                 if(nitems == 0)
                 {
@@ -4146,6 +4187,7 @@ XTERMstart(void)
             meAtoms[ii] = XInternAtom(mecm.xdisplay,meAtomNames[ii], meFALSE);
         meAtoms[ii] = XA_STRING ;
         meAtoms[meATOM_XA_CLIPBOARD] = XInternAtom(mecm.xdisplay,"CLIPBOARD", meFALSE);
+        meAtoms[meATOM_UTF8_STRING] = XInternAtom(mecm.xdisplay,"UTF8_STRING", meFALSE);
     }
 
     /* Initialise XDND */
@@ -5188,6 +5230,9 @@ TTgetWaylandClipboard(void)
        meStrcmp(klhead->kill->data, tmpbuf))
     {
         killSave();
+        /* wl-paste always emits UTF-8 */
+        if(klhead != NULL)
+            klhead->encoding = (meUByte) ME_ENC_UTF8 ;
         meUByte *dd = killAddNode(len + 1);
         if(dd != NULL)
             memcpy(dd, tmpbuf, len + 1);
@@ -5276,12 +5321,28 @@ TTgetClipboard(void)
         clipState &= ~ownClip ;
     clipState &= ~CLIP_RECEIVED ;
     clipState |= CLIP_RECEIVING ;
-    XConvertSelection(mecm.xdisplay,sel,XA_STRING,meAtoms[meATOM_COPY_TEXT],
+    clipReqFailed = 0 ;
+    clipReqTarget = (meAtoms[meATOM_UTF8_STRING] != None) ?
+        meAtoms[meATOM_UTF8_STRING] : XA_STRING ;
+    XConvertSelection(mecm.xdisplay,sel,clipReqTarget,meAtoms[meATOM_COPY_TEXT],
                       meFrameGetXWindow(frameCur),CurrentTime) ;
     XFlush(mecm.xdisplay) ;
     while(!TTahead() && !(clipState & CLIP_RECEIVED))
         waitForEvent(0) ;
+    if(clipReqFailed && (clipReqTarget != XA_STRING))
+    {
+        /* Owner refused UTF8_STRING - retry with XA_STRING (Latin-1) */
+        clipReqFailed = 0 ;
+        clipState &= ~CLIP_RECEIVED ;
+        clipReqTarget = XA_STRING ;
+        XConvertSelection(mecm.xdisplay,sel,XA_STRING,meAtoms[meATOM_COPY_TEXT],
+                          meFrameGetXWindow(frameCur),CurrentTime) ;
+        XFlush(mecm.xdisplay) ;
+        while(!TTahead() && !(clipState & CLIP_RECEIVED))
+            waitForEvent(0) ;
+    }
     clipState &= ~(CLIP_RECEIVING|CLIP_RECEIVED) ;
+    clipReqTarget = XA_STRING ;
     meClipSize=0 ;
 }
 #endif
@@ -5498,9 +5559,22 @@ TTahead(void)
                 break;                  /* ioctl failed */
             if (status <= 0)
                 break;                  /* No data pending */
-#else
+#elif defined(FIORDCHK)
             if (ioctl(meStdin, FIORDCHK,0) <= 0)
                 break;                  /* No data pending */
+#else
+            {
+                /* No FIONREAD/FIORDCHK (e.g. Cygwin) - use a zero timeout
+                 * select() instead of blocking on the read below. */
+                fd_set rset ;
+                struct timeval tv ;
+                FD_ZERO(&rset) ;
+                FD_SET(meStdin,&rset) ;
+                tv.tv_sec = 0 ;
+                tv.tv_usec = 0 ;
+                if(select(meStdin+1,&rset,NULL,NULL,&tv) <= 0)
+                    break;              /* No data pending */
+            }
 #endif /* FIONREAD */
 #endif /* _USEPOLL */
             /* There is some data present. Read it */
@@ -7267,6 +7341,9 @@ TTgetClipboard(void)
         {
             tmpbuf[total] = '\0';
             killSave();
+            /* xclip/xsel/pbpaste output UTF-8 */
+            if(klhead != NULL)
+                klhead->encoding = (meUByte) ME_ENC_UTF8 ;
             if((dd = killAddNode(total + 1)) != NULL)
                 memcpy(dd, tmpbuf, total + 1);
             thisflag = meCFKILL;

@@ -226,6 +226,17 @@ setBufferContext(meBuffer *bp)
 {
     int ii ;
     
+    if(getenv("ME_XFT_DEBUG"))
+    {
+        FILE *tf = fopen("me_dbgrender.txt", "a") ;
+        if(tf)
+        {
+            fprintf(tf, "SBC name=%s hooks=%d intFlag=0x%x\n",
+                    bp->name, (int)fileHookCount, (unsigned)bp->intFlag) ;
+            fclose(tf) ;
+        }
+    }
+
 #if MEOPT_COLOR
     /* First setup the global scheme - this can be missed by buffers loaded with -c */
     bp->scheme = globScheme;
@@ -351,6 +362,15 @@ setBufferContext(meBuffer *bp)
     }
     if(bp->fhook >= 0)
         execBufferFunc(bp,bp->fhook,meEBF_ARG_GIVEN,(bp->intFlag & BIFFILE)) ;
+    if(getenv("ME_XFT_DEBUG"))
+    {
+        FILE *tf = fopen("me_dbgrender.txt", "a") ;
+        if(tf)
+        {
+            fprintf(tf, "SBC-end name=%s fhook=%d\n", bp->name, (int)bp->fhook) ;
+            fclose(tf) ;
+        }
+    }
 }
 #endif
 

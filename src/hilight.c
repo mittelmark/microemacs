@@ -1441,20 +1441,6 @@ findToken(meHilight *root, meUByte *text, meUByte mode,
     return NULL ;
 }
 
-/*
- * meUtf8SeqLen - Get UTF-8 sequence length from lead byte.
- * Returns 1 for ASCII, 2-4 for multi-byte, 1 for invalid bytes.
- */
-static int
-meUtf8SeqLen(meUByte c)
-{
-    if(c < 0x80) return 1;
-    if((c & 0xE0) == 0xC0) return 2;
-    if((c & 0xF0) == 0xE0) return 3;
-    if((c & 0xF8) == 0xF0) return 4;
-    return 1;
-}
-
 /* NOTE: __hilCopyChar was replaced by the bytePos-aware version below
  * (utf8-mec display columns). Call sites use __hilCopyChar(hd,dstPos,cc). */
 
@@ -1471,7 +1457,7 @@ hilEnsureRoom(HILDATA *hd, int nb, int nc)
     while(nc >= disLineByteOffSize)
     {
         disLineByteOffSize += 512 ;
-        disLineByteOff = meRealloc(disLineByteOff,disLineByteOffSize) ;
+        disLineByteOff = meRealloc(disLineByteOff,disLineByteOffSize*sizeof(int)) ;
     }
 }
 
@@ -1480,7 +1466,7 @@ hilEnsureRoom(HILDATA *hd, int nb, int nc)
  * hd->bytePos by nbytes and dstPos (display column) by 1. */
 #define __hilCopyByte(hd,dstPos,bbuf,nbytes)                                \
     do { hilEnsureRoom(hd,nbytes,(dstPos)+1) ;                               \
-         disLineByteOff[dstPos] = (meUByte) (hd)->bytePos ;                  \
+         disLineByteOff[dstPos] = (hd)->bytePos ;                           \
          { int _ii ; for(_ii = 0 ; _ii < (nbytes) ; _ii++)                    \
              disLineBuff[(hd)->bytePos++] = (bbuf)[_ii] ; }                   \
          (dstPos) += 1 ; } while(0)
@@ -1488,9 +1474,9 @@ hilEnsureRoom(HILDATA *hd, int nb, int nc)
 #define __hilCopyChar(hd,dstPos,cc)                                         \
 do                                                                           \
 {                                                                            \
-    /* widths: display columns advanced (bytes written are identical here) */\
     int _wd = 1 ;                                                            \
-    meUByte *_db ;                                                           \
+    int _nb ;                                                                \
+    meUByte *_db, *_st ;                                                     \
     if(!(isDisplayable(cc)))                                                 \
     {                                                                        \
         if((cc) == meCHAR_TAB)                                               \
@@ -1499,18 +1485,40 @@ do                                                                           \
             _wd = 2 ;                                                        \
         else                                                                 \
             _wd = 4 ;                                                        \
+        _nb = _wd ;                                                          \
     }                                                                        \
-    hilEnsureRoom(hd,_wd,(dstPos)+1) ;                                       \
-    disLineByteOff[dstPos] = (meUByte)(hd)->bytePos ;                        \
-    _db = disLineBuff + (hd)->bytePos ;                                      \
+    else if((cc) >= 0x80)                                                    \
+        _nb = 3 ;                                                            \
+    else                                                                     \
+        _nb = 1 ;                                                            \
+    hilEnsureRoom(hd,_nb,(dstPos)+1) ;                                       \
+    disLineByteOff[dstPos] = (hd)->bytePos ;                                 \
+    _st = _db = disLineBuff + (hd)->bytePos ;                                \
     if(isDisplayable(cc))                                                    \
     {                                                                        \
         if(cc == ' ')                                                        \
             *_db++ = displaySpace ;                                          \
         else if(cc == meCHAR_TAB)                                            \
             *_db++ = displayTab ;                                            \
-        else                                                                 \
+        else if((cc) < 0x80)                                                 \
             *_db++ = cc ;                                                    \
+        else                                                                 \
+        {                                                                    \
+            /* Lone high byte in a UTF-8 buffer: CP1252 -> UTF-8 */          \
+            meConv conv ;                                                    \
+            unsigned char outBuf[8] ;                                        \
+            int outLen, _ii ;                                                \
+            meUByte _cc = (meUByte) (cc) ;                                   \
+            meConvInit(&conv, ME_ENC_CP1252, ME_ENC_UTF8) ;                  \
+            outLen = meConvChar(&conv, &_cc, 1, outBuf, sizeof(outBuf)) ;    \
+            if(outLen <= 0)                                                  \
+            {                                                                \
+                outBuf[0] = '?' ;                                            \
+                outLen = 1 ;                                                 \
+            }                                                                \
+            for(_ii = 0 ; _ii < outLen ; _ii++)                              \
+                *_db++ = outBuf[_ii] ;                                       \
+        }                                                                    \
     }                                                                        \
     else if(cc == meCHAR_TAB)                                                \
     {                                                                        \
@@ -1532,7 +1540,7 @@ do                                                                           \
         *_db++ = hexdigits[cc/0x10] ;                                        \
         *_db++ = hexdigits[cc%0x10] ;                                        \
     }                                                                        \
-    (hd)->bytePos += _wd ;                                                   \
+    (hd)->bytePos += (int) (_db - _st) ;                                     \
     (dstPos) += _wd ;                                                        \
 }                                                                            \
 while(0)
@@ -1576,9 +1584,11 @@ hilSchemeChange (meHilight *node, HILDATA *hd)
 
 /* hilCopyConvChar - copy one source character, converting a non-UTF-8
  * buffer's high bytes to terminal UTF-8 (utf8-mec per-buffer rendering).
- * UTF-8 buffers and ASCII keep the exact historical behaviour.
- * Returns the new dstPos; *consumed is set to source bytes used (always 1
- * here - single-byte source encodings advance one byte per character).
+ * UTF-8 buffers copy the whole validated multi-byte sequence as one display
+ * column (matching windCurLineOffsetEval()); ASCII keeps the exact historical
+ * behaviour.
+ * Returns the new dstPos; *consumed is set to source bytes used (1 for
+ * single-byte characters, 2-4 for a valid UTF-8 sequence).
  */
 static int
 hilCopyConvChar(register int dstPos, register meUByte *src, HILDATA *hd,
@@ -1605,6 +1615,34 @@ hilCopyConvChar(register int dstPos, register meUByte *src, HILDATA *hd,
         __hilCopyByte(hd,dstPos,outBuf,outLen) ;
         *consumed = 1 ;
         return dstPos ;
+    }
+    if(bufEnc == ME_ENC_UTF8 && cc >= 0xC0)
+    {
+        /* UTF-8 buffer: copy the validated sequence (1 display column), or
+         * convert an invalid byte as CP1252 so the bytes consumed here match
+         * windCurLineOffsetEval() - as hilCopyString()/hilCopyLenString(). */
+        int utflen = meUtf8ValidSeqLen(src) ;
+        if(utflen > 1)
+        {
+            __hilCopyByte(hd,dstPos,src,utflen) ;
+            *consumed = utflen ;
+            return dstPos ;
+        }
+        {
+            meConv conv ;
+            unsigned char outBuf[8] ;
+            int outLen ;
+            meConvInit(&conv, ME_ENC_CP1252, ME_ENC_UTF8) ;
+            outLen = meConvChar(&conv, src, 1, outBuf, sizeof(outBuf)) ;
+            if(outLen <= 0)
+            {
+                outBuf[0] = '?' ;
+                outLen = 1 ;
+            }
+            __hilCopyByte(hd,dstPos,outBuf,outLen) ;
+            *consumed = 1 ;
+            return dstPos ;
+        }
     }
     /* Copy the character (historical behaviour). */
     __hilCopyChar(hd,dstPos,cc);
@@ -1699,20 +1737,35 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
             else if(cc >= 0xC0)
             {
                 /* Could be UTF-8 multi-byte or raw high byte. */
-                int utflen = meUtf8SeqLen(cc) ;
+                int utflen = meUtf8ValidSeqLen(srcText - 1) ;
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
                 if(bufEnc == ME_ENC_UTF8)
                 {
-                    /* UTF-8 buffer: copy sequence directly, 1 display column */
+                    /* UTF-8 buffer: copy the validated sequence (1 display
+                     * column), or convert an invalid byte as CP1252 so the
+                     * bytes consumed here match windCurLineOffsetEval() */
                     unsigned char mbuf[8] ;
                     int ii, n = 0 ;
-                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' && n < 8 ; ii++)
-                        mbuf[n++] = srcText[ii] ;
-                    if(n == 0)
+                    if(utflen > 1)
                     {
-                        mbuf[0] = '?' ;
-                        n = 1 ;
+                        for(ii = 0 ; ii < utflen ; ii++)
+                            mbuf[n++] = srcText[ii - 1] ;
+                    }
+                    else
+                    {
+                        meConv conv ;
+                        unsigned char outBuf[8] ;
+                        int outLen ;
+                        meConvInit(&conv, ME_ENC_CP1252, ME_ENC_UTF8) ;
+                        outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                        if(outLen <= 0)
+                        {
+                            outBuf[0] = '?' ;
+                            outLen = 1 ;
+                        }
+                        for(ii = 0 ; ii < outLen ; ii++)
+                            mbuf[n++] = outBuf[ii] ;
                     }
                     __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
@@ -1764,12 +1817,37 @@ hilCopyString(register int dstPos, register meUByte *srcText,HILDATA *hd)
             }
             else if(cc >= 0xC0)
             {
-                int utflen = meUtf8SeqLen(cc) ;
+                int utflen = meUtf8ValidSeqLen(srcText - 1) ;
                 if(bufEnc == ME_ENC_UTF8)
                 {
-                    int ii ;
-                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' ; ii++)
-                        disLineBuff[dstPos++] = srcText[ii] ;
+                    /* UTF-8 buffer: copy the validated sequence (1 display
+                     * column), or convert an invalid byte as CP1252 so the
+                     * bytes consumed here match windCurLineOffsetEval().
+                     * Use __hilCopyByte (not a raw disLineBuff write) so
+                     * disLineByteOff[]/bytePos stay in step. */
+                    unsigned char mbuf[8] ;
+                    int ii, n = 0 ;
+                    if(utflen > 1)
+                    {
+                        for(ii = 0 ; ii < utflen ; ii++)
+                            mbuf[n++] = srcText[ii - 1] ;
+                    }
+                    else
+                    {
+                        meConv conv ;
+                        unsigned char outBuf[8] ;
+                        int outLen ;
+                        meConvInit(&conv, ME_ENC_CP1252, ME_ENC_UTF8) ;
+                        outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                        if(outLen <= 0)
+                        {
+                            outBuf[0] = '?' ;
+                            outLen = 1 ;
+                        }
+                        for(ii = 0 ; ii < outLen ; ii++)
+                            mbuf[n++] = outBuf[ii] ;
+                    }
+                    __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
                 }
                 else
@@ -1832,20 +1910,35 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
             else if(cc >= 0xC0)
             {
                 /* Could be UTF-8 multi-byte or raw high byte. */
-                int utflen = meUtf8SeqLen(cc) ;
+                int utflen = meUtf8ValidSeqLen(srcText - 1) ;
                 if (hd->srcOff <= srcPos)
                     (hd->hfunc)(dstPos, hd);
                 if(bufEnc == ME_ENC_UTF8)
                 {
-                    /* UTF-8 buffer: copy sequence directly, 1 display column */
+                    /* UTF-8 buffer: copy the validated sequence (1 display
+                     * column), or convert an invalid byte as CP1252 so the
+                     * bytes consumed here match windCurLineOffsetEval() */
                     unsigned char mbuf[8] ;
                     int ii, n = 0 ;
-                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' && n < 8 ; ii++)
-                        mbuf[n++] = srcText[ii] ;
-                    if(n == 0)
+                    if(utflen > 1)
                     {
-                        mbuf[0] = '?' ;
-                        n = 1 ;
+                        for(ii = 0 ; ii < utflen ; ii++)
+                            mbuf[n++] = srcText[ii - 1] ;
+                    }
+                    else
+                    {
+                        meConv conv ;
+                        unsigned char outBuf[8] ;
+                        int outLen ;
+                        meConvInit(&conv, ME_ENC_CP1252, ME_ENC_UTF8) ;
+                        outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                        if(outLen <= 0)
+                        {
+                            outBuf[0] = '?' ;
+                            outLen = 1 ;
+                        }
+                        for(ii = 0 ; ii < outLen ; ii++)
+                            mbuf[n++] = outBuf[ii] ;
                     }
                     __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
@@ -1899,18 +1992,33 @@ hilCopyLenString(register int dstPos, register meUByte *srcText,
             }
             else if(cc >= 0xC0)
             {
-                int utflen = meUtf8SeqLen(cc) ;
+                int utflen = meUtf8ValidSeqLen(srcText - 1) ;
                 if(bufEnc == ME_ENC_UTF8)
                 {
-                    /* UTF-8 buffer: copy sequence directly, 1 display column */
+                    /* UTF-8 buffer: copy the validated sequence (1 display
+                     * column), or convert an invalid byte as CP1252 so the
+                     * bytes consumed here match windCurLineOffsetEval() */
                     unsigned char mbuf[8] ;
                     int ii, n = 0 ;
-                    for(ii = 0 ; ii < utflen && srcText[ii] != '\0' && n < 8 ; ii++)
-                        mbuf[n++] = srcText[ii] ;
-                    if(n == 0)
+                    if(utflen > 1)
                     {
-                        mbuf[0] = '?' ;
-                        n = 1 ;
+                        for(ii = 0 ; ii < utflen ; ii++)
+                            mbuf[n++] = srcText[ii - 1] ;
+                    }
+                    else
+                    {
+                        meConv conv ;
+                        unsigned char outBuf[8] ;
+                        int outLen ;
+                        meConvInit(&conv, ME_ENC_CP1252, ME_ENC_UTF8) ;
+                        outLen = meConvChar(&conv, srcText - 1, 1, outBuf, sizeof(outBuf)) ;
+                        if(outLen <= 0)
+                        {
+                            outBuf[0] = '?' ;
+                            outLen = 1 ;
+                        }
+                        for(ii = 0 ; ii < outLen ; ii++)
+                            mbuf[n++] = outBuf[ii] ;
                     }
                     __hilCopyByte(hd,dstPos,mbuf,n) ;
                     srcText += utflen - 1 ;
@@ -2345,7 +2453,7 @@ hiline_exit:
     /* utf8-mec: final column->byte sentinel for the flush loop, mirroring
      * renderLine - dstPos counts display columns, bytePos output bytes. */
     hilEnsureRoom(&hd, 1, dstPos) ;
-    disLineByteOff[dstPos] = (meUByte) hd.bytePos ;
+    disLineByteOff[dstPos] = hd.bytePos ;
     return hd.noColChng ;
 }
 

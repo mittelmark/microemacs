@@ -372,7 +372,7 @@ extern meFrame *frameCur ;
 
 extern meUByte *disLineBuff ;           /* interal display buffer array */
 extern int      disLineSize ;           /* interal display buffer size  */
-extern meUByte *disLineByteOff ;        /* display col -> byte offset in disLineBuff */
+extern int     *disLineByteOff ;        /* display col -> byte offset in disLineBuff */
 extern int      disLineByteOffSize ;    /* size of disLineByteOff array */
 
 /* uninitialized global external declarations */
@@ -823,7 +823,7 @@ meFrame *frameCur=NULL ;
 
 meUByte   *disLineBuff=NULL ;           /* interal display buffer array */
 int        disLineSize=512 ;            /* interal display buffer size  */
-meUByte   *disLineByteOff=NULL ;        /* display col -> byte offset in disLineBuff */
+int        *disLineByteOff=NULL ;        /* display col -> byte offset in disLineBuff */
 int        disLineByteOffSize=0 ;       /* size of disLineByteOff array */
 
 int       curgoal;                      /* Goal for C-P, C-N            */

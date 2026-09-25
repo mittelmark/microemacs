@@ -365,7 +365,7 @@ showRegion(int f, int n)
 #endif
 
 /* Forward declaration for UTF-8 helper */
-static int meUtf8SeqLen(meUByte c) ;
+static void renderConvByte(meUByte **s2, meEncoding enc, meUByte *s1) ;
 
 void
 windCurLineOffsetEval(meWindow *wp)
@@ -596,17 +596,33 @@ static char drawno = 'A';
 #endif
 
 /*
- * meUtf8SeqLen - Get UTF-8 sequence length from lead byte.
- * Returns 1 for ASCII, 2-4 for multi-byte, 1 for invalid bytes.
+ * renderConvByte
+ * Convert one raw buffer byte to terminal encoding (UTF-8) and append it
+ * to disLineBuff at *s2. Used for single-byte (or invalid) characters so
+ * every such byte occupies exactly 1 display column.
  */
-static int
-meUtf8SeqLen(meUByte c)
+static void
+renderConvByte(meUByte **s2, meEncoding enc, meUByte *s1)
 {
-    if(c < 0x80) return 1;
-    if((c & 0xE0) == 0xC0) return 2;
-    if((c & 0xF0) == 0xE0) return 3;
-    if((c & 0xF8) == 0xF0) return 4;
-    return 1;
+    meConv conv ;
+    unsigned char outBuf[8] ;
+    int outLen, ii ;
+    meConvInit(&conv, enc, ME_ENC_UTF8) ;
+    outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
+    if(outLen <= 0)
+    {
+        outBuf[0] = '?' ;
+        outLen = 1 ;
+    }
+    if((*s2 - disLineBuff) + outLen >= disLineSize)
+    {
+        meInt bytePos = *s2 - disLineBuff ;
+        disLineSize += 512 ;
+        disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
+        *s2 = disLineBuff + bytePos ;
+    }
+    for(ii = 0 ; ii < outLen ; ii++)
+        *(*s2)++ = outBuf[ii] ;
 }
 
 /*
@@ -617,13 +633,13 @@ int
 renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
 {
     register meUByte cc;
-    register meUByte *s2;
+    meUByte *s2;
 
     /* Ensure disLineByteOff is allocated and large enough */
     if(wid >= disLineByteOffSize)
     {
         int need = wid + 512 ;
-        disLineByteOff = meRealloc(disLineByteOff, need) ;
+        disLineByteOff = meRealloc(disLineByteOff, need * sizeof(int)) ;
         disLineByteOffSize = need ;
     }
     /* Use byte offset mapping for correct positioning in disLineBuff.
@@ -636,7 +652,7 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         if(wid >= disLineByteOffSize)
         {
             int need = wid + 512 ;
-            disLineByteOff = meRealloc(disLineByteOff, need) ;
+            disLineByteOff = meRealloc(disLineByteOff, need * sizeof(int)) ;
             disLineByteOffSize = need ;
         }
         /* Record byte offset for this display column */
@@ -656,72 +672,42 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
              * meInternalEnc, so ISO/CP1252 and UTF-8 buffers can share
              * the same screen. disLineBuff then holds terminal-ready
              * bytes (UTF-8 when termEncoding is utf-8). */
-            meConv conv ;
-            unsigned char outBuf[8] ;
-            int outLen ;
-            meConvInit(&conv, (meEncoding) bp->encoding, ME_ENC_UTF8) ;
-            outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
-            if(outLen > 0)
-            {
-                int ii ;
-                /* Ensure room for multi-byte output */
-                while((s2 - disLineBuff) + outLen >= disLineSize)
-                {
-                    meInt bytePos2 = s2 - disLineBuff ;
-                    disLineSize += 512 ;
-                    disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
-                    s2 = disLineBuff + bytePos2 ;
-                }
-                for(ii = 0 ; ii < outLen ; ii++)
-                    *s2++ = outBuf[ii] ;
-            }
-            else
-            {
-                /* Conversion failed - show as replacement */
-                *s2++ = '?' ;
-            }
+            renderConvByte(&s2, (meEncoding) bp->encoding, s1) ;
             s1++ ;
             wid++ ;
         }
-        else if(cc >= 0xC0)
+        else if(bp->encoding == ME_ENC_UTF8 && cc >= 0xC0)
         {
-            /* Per-buffer rendering: UTF-8 buffer content is copied
-             * directly (it is already terminal-ready UTF-8). This no
-             * longer depends on the global meInternalEnc. */
-            int utflen = meUtf8SeqLen(cc) ;
-            if(bp->encoding == ME_ENC_UTF8)
+            /* Validate the full UTF-8 sequence: this must consume exactly
+             * the same bytes as windCurLineOffsetEval() (1 column for a
+             * valid multi-byte sequence, 1 byte + 1 column when invalid)
+             * or the disLineByteOff[] column map goes out of step and the
+             * rest of the line is dropped from the screen. An invalid (or
+             * truncated) byte is rendered as its CP1252 equivalent. */
+            int utflen = meUtf8ValidSeqLen(s1) ;
+            if(utflen > len+1)
+                utflen = 1 ;
+            if(utflen > 1)
             {
-                /* Internal is UTF-8: copy multi-byte sequence directly */
                 int ii ;
-                for(ii = 0 ; ii < utflen && ii < len+1 ; ii++)
+                for(ii = 0 ; ii < utflen ; ii++)
                     *s2++ = s1[ii] ;
                 s1 += utflen ;
                 len -= (utflen - 1) ;
             }
             else
             {
-                /* Non-UTF-8 buffer reaching here (should be rare since the
-                 * first branch handles cc >= 0x80): treat as single raw
-                 * byte and convert to UTF-8. */
-                meConv conv ;
-                unsigned char outBuf[8] ;
-                int outLen ;
-                meConvInit(&conv, (meEncoding) bp->encoding, ME_ENC_UTF8) ;
-                outLen = meConvChar(&conv, s1, 1, outBuf, sizeof(outBuf)) ;
-                if(outLen > 0)
-                {
-                    int ii ;
-                    for(ii = 0 ; ii < outLen ; ii++)
-                        *s2++ = outBuf[ii] ;
-                    s1++ ;
-                }
-                else
-                {
-                    /* Not convertible — treat as raw byte */
-                    *s2++ = cc ;
-                    s1++ ;
-                }
+                renderConvByte(&s2, ME_ENC_CP1252, s1) ;
+                s1++ ;
             }
+            wid++ ;
+        }
+        else if(bp->encoding == ME_ENC_UTF8 && cc >= 0x80 && isDisplayable(cc))
+        {
+            /* Lone continuation byte in a UTF-8 buffer: 1 column, shown
+             * as its CP1252 equivalent (matches windCurLineOffsetEval). */
+            renderConvByte(&s2, ME_ENC_CP1252, s1) ;
+            s1++ ;
             wid++ ;
         }
         else if(isDisplayable(cc))
@@ -767,10 +753,23 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
     if(wid >= disLineByteOffSize)
     {
         int need = wid + 512 ;
-        disLineByteOff = meRealloc(disLineByteOff, need) ;
+        disLineByteOff = meRealloc(disLineByteOff, need * sizeof(int)) ;
         disLineByteOffSize = need ;
     }
     disLineByteOff[wid] = s2 - disLineBuff ;
+    if(getenv("ME_XFT_DEBUG"))
+    {
+        FILE *tf = fopen("me_dbgrender.txt", "a") ;
+        if(tf)
+        {
+            int bl = (int)(s2 - disLineBuff), ti ;
+            fprintf(tf, "RL enc=%d wid=%d blen=%d: ", (int)bp->encoding, wid, bl) ;
+            for(ti = 0 ; ti < bl && ti < 160 ; ti++)
+                fprintf(tf, "%02x", disLineBuff[ti]) ;
+            fprintf(tf, "\n") ;
+            fclose(tf) ;
+        }
+    }
     return wid;
 }
 
@@ -792,6 +791,22 @@ xtermDrawUtf8Run(int col, int row, meUByte *str, int len)
             {
                 meUByte lat[meBUF_SIZE_MAX] ;
                 int ll = meFoldUtf8ToLatin1(str,len,lat,sizeof(lat)) ;
+                if(getenv("ME_XFT_DEBUG"))
+                {
+                    FILE *tf = fopen("me_dbgrender.txt", "a") ;
+                    if(tf)
+                    {
+                        int ti ;
+                        fprintf(tf, "DR in(%d)=", len) ;
+                        for(ti = 0 ; ti < len && ti < 160 ; ti++)
+                            fprintf(tf, "%02x", str[ti]) ;
+                        fprintf(tf, " fold(%d)=", ll) ;
+                        for(ti = 0 ; ti < ll && ti < 160 ; ti++)
+                            fprintf(tf, "%02x", lat[ti]) ;
+                        fprintf(tf, "\n") ;
+                        fclose(tf) ;
+                    }
+                }
                 meFrameXTermDrawString(frameCur,col,row,(char *)lat,ll) ;
                 return ;
             }
@@ -818,7 +833,7 @@ updateline(register int row, register meVideoLine *vp1, meWindow *window)
     if(disLineByteOff == NULL)
     {
         disLineByteOffSize = 512 ;
-        disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+        disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
     }
     disLineByteOff[0] = 0 ;
 
@@ -1026,7 +1041,7 @@ hideLineJump:
             if(ncol >= disLineByteOffSize)
             {
                 disLineByteOffSize = ncol + 512 ;
-                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
             }
             disLineByteOff[ncol] = disLineByteOff[ncol-1] + 1 ;
             blkp[noColChng].column = ncol ;
@@ -1051,7 +1066,7 @@ hideLineJump:
                 if(lastCol + 1 >= disLineByteOffSize)
                 {
                     disLineByteOffSize = lastCol + 512 ;
-                    disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+                    disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
                 }
                 disLineByteOff[lastCol + 1] = disLineByteOff[lastCol] + 1 ;
             }
@@ -1097,7 +1112,7 @@ hideLineJump:
         if((int) blkp->column >= disLineByteOffSize)
         {
             disLineByteOffSize = blkp->column + 512 ;
-            disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize) ;
+            disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
         }
         for(ii = 0 ; ii <= (meInt) blkp->column ; ii++)
             disLineByteOff[ii] = ii ;
