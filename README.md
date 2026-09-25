@@ -385,14 +385,14 @@ version (mecwb) which can be run both as a terminal and as a X11 application.
 
 ```bash
 ### install packages for X11 build
-sudo apt install libxt-dev libxft-dev
+sudo apt install libxt-dev libxft-dev pkgconf
 ### builds standalone mew executable (GUI)
 make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
 make -f linux32gcc.gmk mecwb
 sudo apt install x11-utils  fontconfig  # xfontsel, xlsfonts fc-list - better font selection
 sudo apt install xfonts-utils ## mkfontscale for using ttf fonts
-sudo apt install luit ## unicode support in the terminal
+sudo apt install luit ## unicode support in the terminal (not required anymore ...)
 sudo apt install xclip ## for better clipboard support
 sudo apt install wl-clipboard  ## if running Wayland desktop or window manager for copy and paste
 ```
@@ -414,7 +414,7 @@ make -f linux32gcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
 make -f linux32gcc.gmk mecb
 ### install X11 developer files
-sudo dnf install libXt-devel libXft-devel
+sudo dnf install libXt-devel libXft-devel pkgconf
 ### builds standalone mew executable (GUI)
 make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
