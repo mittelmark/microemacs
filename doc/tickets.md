@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-09-25 14:19
+date: 2026-09-25 14:55
 ---
 
 ## Introduction
@@ -303,11 +303,18 @@ v unfold dir (color
       test-basics pass. Files: jasspa/macros/userstp.emf, ChangeLog
 
 ## Ticket 13: long line editing bug
-
-We recently  introduced  in the mew version  (beta 6) a bug if we have to edit
-very long lines  which are longer  than the current  frame-width.  If the line
+~
+We recently  introduced  in the mec/mew version  a bug if we have to edit
+very long lines  which are longer  than the current  frame-width/window-width.  If the line
 exceeds the current  number of  character  the display  breaks. That  problems
 seems to be present in both versions, the XLFD and the XFT version.
 
 The line  display is not correct and some chars which are away from the cursor
 position are displayed you even do not see what you are currently editing but the chars at the beginning of the line.
+
+That bug seems to be introduced in the devel branch already as it is in devel,
+encoding-stable and libxft-utf8 branches but not in the master branch. Can you
+look into this? May be we should for the devel  branch  first or should we fix
+that in the  libxft-utf8  branch  and then, once it is fixed,  simply  replace
+devel with that branch and remove encoding  stable. The advantage if we branch
+from devel that we are not so far away from master where this still was working. 
