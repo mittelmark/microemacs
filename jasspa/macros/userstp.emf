@@ -531,7 +531,8 @@ set-variable .user-set-mouse.A ""
         !force 66 pipe-shell-command &cat "fc-list :spacing=100:lang=" &lef &cat &con &exi .spell.language .spell.language "" "en" 2 "*xftl-tmp*"
         !if &set #l1 $result
             osd-dialog "User Setup Error" &spr "  Failed to run fc-list, system returned error (%d).  " #l1 "  \HOK  "
-            set-variable #l1 0
+            ; -1 = fc-list failed (error already reported), 0 = ran but no fonts
+            set-variable #l1 -1
         !else
             find-buffer "*xftl-tmp*"
             -1 buffer-mode "view"
@@ -585,7 +586,7 @@ set-variable .user-set-mouse.A ""
             !endif
         !endif
         goto-position "\x82"
-        !if #l1
+        !if &gre #l1 0
             set-variable .user-set-xftfname.fl #l7
             set-variable .user-set-xftfsize.fz #l6
             set-variable .user-set-xftstyle.fs #l5
@@ -609,17 +610,51 @@ set-variable .user-set-mouse.A ""
             osd .osd.user-xft 600 ""
             osd .osd.user-xft 620 "BtrfHh" .scheme.osd-ebtt " \HSelect " 0 user-set-xftf
             osd .osd.user-xft 625 "fh" "   "
-            osd .osd.user-xft 630 "BtrfHh"  .scheme.osd-ebtt " \HCore fonts " f change-font-xfontsel
+            osd .osd.user-xft 630 "BtrfHh"  .scheme.osd-ebtt " \HCore fonts " f user-set-xftcore
             osd .osd.user-xft 635 "fh" "   "
             osd .osd.user-xft 640 "BtrfHh"   .scheme.osd-ebtt " \HCancel " f void
             osd .osd.user-xft 650 "f" "  "
             !force !force .osd.user-xft osd
         !else
-            change-font-xfontsel
+            ; No usable font list: #l1 = -1 (fc-list failed, dialog already
+            ; shown) or 0 (fc-list returned no fonts) - fall back to the
+            ; legacy dialog when xfontsel is installed, else explain.
+            !if .change-font.xfontsel
+                change-font-xfontsel
+            !elif &equ #l1 0
+                4000 ml-write "fc-list returned no fonts, please install fontconfig and xfontsel!"
+            !endif
         !endif
         !force 0 delete-buffer "*xftl-tmp*"
     !emacro
+    0 define-macro user-set-xftcore
+        ; Core fonts button - legacy XLFD dialog when xfontsel is installed,
+        ; otherwise explain on the message line
+        !if .change-font.xfontsel
+            change-font-xfontsel
+        !else
+            4000 ml-write "Please install xfontsel for core font selection"
+        !endif
+    !emacro
 !endif
+
+0 define-macro user-set-font
+    ; Choose Font ... button - dispatch at click time to the best available
+    ; selector, report on the message line when no tool is installed
+    !if &opt "xft"
+        !if &not &seq &which "fc-list" "ERROR"
+            user-set-xftfont
+        !elif .change-font.xfontsel
+            change-font-xfontsel
+        !else
+            4000 ml-write "No fonts selection available, please install fontconfig and xfontsel!"
+        !endif
+    !elif .change-font.xfontsel
+        change-font-xfontsel
+    !else
+        4000 ml-write "No fonts selection available, please install fontconfig and xfontsel!"
+    !endif
+!emacro
 
 0 define-macro user-setup-charset-set
     set-registry &spr "/history/%s/char-set" %platform &lget %charset-value @#
@@ -843,13 +878,11 @@ osd .osd.user-plat 821 "BdxfHR" .scheme.osd-ebtt &mid $window-chars 10 1 820
         osd .osd.user-plat 417 "fh" "      "
         osd .osd.user-plat 420 "Ctfxp" &cat .osd.checkbox-chars "\} Use Clipbo\Hard" 0x2000000 user-set-system
     !else
-        !if &opt "xft"
-            osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
-            osd .osd.user-plat 46 "BtfxHR" .scheme.osd-ebtt " Choose Font ... " f user-set-xftfont
-        !elif .change-font.xfontsel
-            osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
-            osd .osd.user-plat 46 "BtfxHR" .scheme.osd-ebtt " Choose Font ... " f change-font-xfontsel
-        !endif
+        ; Font selection dispatches at click time: FreeType dialog when
+        ; fc-list is available, else the legacy xfontsel dialog; if neither
+        ; tool is installed the message line explains what is missing.
+        osd .osd.user-plat 45 "Sfh"  "  \HSelect Font:       " 60
+        osd .osd.user-plat 46 "BtfxHR" .scheme.osd-ebtt " Choose Font ... " f user-set-font
         ;osd .osd.user-plat 47 "fh" "       "
         osd .osd.user-plat 50  "Sfh" "  \HFont Name:         " 60
         osd .osd.user-plat 60  "EtxHf" .scheme.osd-entry "################################" 1 user-set-cpfentry

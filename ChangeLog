@@ -7,11 +7,30 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <260923.1500>
+  > Last Modified : <260925.0023>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260925] - Font selection availability truth table (ticket 12
+               font UI follow-up). Platform tab "Choose Font ..." now
+               appears only when the toolchain can work: xft built-in
+               plus fc-list -> FreeType dialog, xfontsel alone ->
+               legacy dialog direct, neither tool -> button omitted
+               (was: always shown under Xft). In the FreeType dialog
+               the Core fonts button is created only when xfontsel is
+               installed, and the no-font fallback distinguishes an
+               fc-list failure (error dialog already reported, then
+               legacy dialog when available) from an empty font list
+               (explains installing fontconfig/xfontsel when neither
+               works). Success gate is &gre #l1 0 so a failed run
+               (#l1 = -1) no longer opens a half-initialized dialog.
+               Verified under Xvfb with PATH farms and fc-list shims
+               (both tools, xfontsel only, neither, empty, failing);
+               mec test-basics ok.
+               Files: jasspa/macros/userstp.emf, doc/tickets.md,
+               ChangeLog
 
   [260923] - Fixed Xft special-char (0..31) color (ticket 12). Under
                Xft, meFrameXTermSetScheme returned early after setting

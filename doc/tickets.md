@@ -288,3 +288,16 @@ v unfold dir (color
       Windows-1251, KOI8-R buffers paint (probe); scroll-right 20
       → $window-x-scroll=20. Files: src/estruct.h, src/frame.c,
       src/display.c, src/winterm.c, src/osd.c
+    - DONE 260925: font selection availability truth table (ticket 12
+      font UI follow-up). Platform tab "Choose Font ..." shown only if
+      (&opt "xft" && fc-list) || xfontsel: xft+fc-list -> FreeType
+      dialog, xfontsel only -> legacy dialog direct, neither -> button
+      omitted. FreeType dialog: "Core fonts" button created only when
+      xfontsel installed; fc-list failure vs empty result now take
+      distinct fallbacks (failure: error dialog then legacy dialog if
+      available; empty: explain install fontconfig/xfontsel when no
+      xfontsel). Gate is &gre #l1 0 so -1 does not open a
+      half-initialized dialog (&gtr does not exist in ME, &gre is
+      strict greater). Verified via Xvfb captures with PATH farms and
+      fc-list shims (both/only-xfontsel/neither/empty/failing); mec
+      test-basics pass. Files: jasspa/macros/userstp.emf, ChangeLog
