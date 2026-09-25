@@ -35,6 +35,47 @@ Kreiszahl.
 - Mathematik: ± × ÷ ≠ ≤ ≥ ∞ √
 - Sonderzeichen: § ¶ † ‡ … ‰
 
+## Swedish Text
+
+Big O-notation beskriver hur tidsåtgången eller minnesanvändningen hos en algoritm växer när mängden indata ökar.
+
+Det fokuserar på **tillväxttakten**, inte på exakt körtid. Därför bortser man vanligtvis från konstanter och mindre betydande termer.
+
+Exempel:
+
+- **O(1)** – konstant tid: tar ungefär lika lång tid oavsett indatans storlek.  
+  Exempel: hämta ett element från en array med ett index.
+
+- **O(log n)** – logaritmisk tid: växer mycket långsamt.  
+  Exempel: binärsökning i en sorterad lista.
+
+- **O(n)** – linjär tid: tiden ökar proportionellt med antalet element.  
+  Exempel: gå igenom alla element i en lista.
+
+- **O(n log n)** – vanligt för effektiva sorteringsalgoritmer.  
+  Exempel: mergesort och heapsort.
+
+- **O(n²)** – kvadratisk tid: tiden ökar ungefär med kvadraten på antalet element.  
+  Exempel: jämföra varje element med alla andra, som i en enkel bubbelsortering.
+
+Om en  algoritm  till  exempel  utför  \(3n + 10\)  operationer  skriver  man
+vanligtvis:
+
+\[
+O(n)
+\]
+
+Konstanten 3 och termen 10 ignoreras, eftersom den linjära tillväxten är det viktiga när \(n\) blir stort.
+
+En enkel tumregel är:
+
+\[
+O(1) < O(\log n) < O(n) < O(n\log n) < O(n^2) < O(2^n)
+\]
+
+Ju längre åt höger, desto sämre skalar  algoritmen  vanligtvis  för stora
+datamängder.
+
 ## Besondere Zeichen (jenseits von CP1252)
 
 Diese Zeichen sind NICHT in CP1252 enthalten, aber in UTF-8:
@@ -51,3 +92,4 @@ MicroEmacs 2009 mit UTF-8-Unterstützung kann all diese Zeichen korrekt
 darstellen und bearbeiten. Die Kombination aus Terminal-Version (mec) und
 X11-Version (mew) bietet eine flexible Plattform für Benutzer, die mit
 mehreren Zeichenkodierungen arbeiten müssen.
+
