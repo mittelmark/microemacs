@@ -234,7 +234,9 @@ v unfold dir (color
       pipe -> *xftl-tmp* -> Select FreeType Font OSD (name/style/size),
       writes /history/<platform>/font as family:lang=…:style=…:size=N,
       immediate change-font + save-registry (persists on mew close).
-      Core fonts button kept for non-Xft (change-font-xfontsel).
+      Core fonts button kept for non-Xft (change-font-xfontsel);
+      button availability was later revised by the 260925 truth
+      table below (depends on fc-list/xfontsel, not build type).
       Platform tab: Choose Font ... wired to user-set-xftfont.
       Files: jasspa/macros/userstp.emf
     - DONE 260923: mew coredump on start after font dialog / change-font.
@@ -301,6 +303,13 @@ v unfold dir (color
       strict greater). Verified via Xvfb captures with PATH farms and
       fc-list shims (both/only-xfontsel/neither/empty/failing); mec
       test-basics pass. Files: jasspa/macros/userstp.emf, ChangeLog
+    - DONE 260928: font selection dialog field-verified by the
+      maintainer on machines without fc-list and without xfontsel;
+      button availability and the message-line fallbacks behave as
+      the 260925 truth table specifies (omitted with explanation,
+      legacy dialog when only xfontsel, full dialog otherwise).
+      Ticket 12 font UI follow-up closed. Files: doc/tickets.md,
+      ChangeLog
 
 ## Ticket 13: long line editing bug (DONE)
 ~

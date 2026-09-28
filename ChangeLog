@@ -7,11 +7,23 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <260928.0754>
+  > Last Modified : <260928.0848>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260928] - Font selection dialog field-verified, ticket 12 font UI
+               follow-up closed (maintainer test). Behaves correctly
+               on machines without fc-list and without xfontsel: the
+               FreeType dialog / "Choose Font ..." button is omitted
+               with an explanatory message line, the xfontsel-only
+               core-fonts path still opens the legacy dialog, and the
+               full toolchain opens the FreeType dialog. Supersedes
+               the 260923 wording "Core fonts button remains for
+               non-Xft builds" - button availability now follows the
+               260925 toolchain truth table, not the build type.
+               Files: doc/tickets.md, ChangeLog
 
   [260928] - Fixed long-line horizontal scroll display (ticket 13).
                Root cause commit 09b0fea: disLineByteOff[] became a
@@ -91,8 +103,10 @@
                /history/<platform>/font as family:lang=…:style=…:size=N,
                applies change-font immediately and save-registry so the
                font survives mew close. Core fonts button remains for
-               non-Xft builds. Sister ME 26 user-set-xcrfont not
-               portable (no LAUNCH_TO_VAR 0x400 here).
+               non-Xft builds (wording superseded by [260925]
+               availability truth table). Sister ME 26
+               user-set-xcrfont not portable (no LAUNCH_TO_VAR
+               0x400 here).
                Files: jasspa/macros/userstp.emf, doc/tickets.md
 
   [260923] - Core-font Hide no longer overwrites just-typed umlauts
