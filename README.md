@@ -44,12 +44,12 @@ an update script `mecb-update` which can be called to check for updates. Here a 
 ```bash
 $ mecb-update 
 Found local mecb at: /home/dgroth/.local/bin/mecb
-Existing version: 091226b4, Latest version: 091226b4
-Installed version 091226b4 is up to date (>= 091226b4). Nothing to do.
+Existing version: 091226b6, Latest version: 091226b6
+Installed version 091226b6 is up to date (>= 091226b6). Nothing to do.
 ```
 
 And here the commands for a Windows  Powershell  window  (Please note that you
-should not install  MicroEmacs  26 and  MicroEmacs  09 in parallel on the same
+should not install  MicroEmacs  26 and  MicroEmacs  09 in parallel on on Windows on the same
 machine for the same user as they are using the same folder for the configuration files):
 
 ```
@@ -77,8 +77,8 @@ Detected: 64-bit Windows 10+ (ucrt64 runtime)
 Folder is already in PATH.
 Installation folder: C:\Users\user\AppData\Local\bin
 
-Installed version: 091226b4
-Latest version: 091226b4
+Installed version: 091226b6
+Latest version: 091226b6
 
 Installed version is already up to date. No action needed.
 
@@ -151,8 +151,8 @@ build is folded by the indicated three dots:
 
 <img src="images/terminal-greek-text.png" width="390px"/>&nbsp;&nbsp;<img src="images/solarized-light-rcode.png" width="400px"/>
 
-Left  Greek  Lipum text in a ME  terminal  session as well displaying the menu.  Please  note, that to use
-extended  char sets you need for  MicroEmacs 09 the luit  application.  On the
+Left  Greek  Lipsum text in a ME  terminal  session as well displaying the menu.  Please  note, that to use
+extended  char sets you need for  MicroEmacs 09 prior version 0926b6 the luit  application.  On the
 right the Solarized  Light theme showing R documentation  for the function pam
 in the cluster package.
 
@@ -165,8 +165,7 @@ in the cluster package.
 
 The bfs  executables (mecb, mewb and mecwb) have as well all macro files, the internal help file and
 the American  dictionary  embedded  (file size around  2.5-4.0Mb  depending on
-the platform). For  simplicity
-reasons all downloads on the release page are bfs-builds.
+the platform). For  simplicity reasons all downloads on the release page are bfs-builds, so single file installs.
 
 <a name="Features">New Features</a>
 
@@ -174,12 +173,14 @@ In  comparison to the version at the Jasspa  website it contains the following
 changes / extensions:
 
 * improvements in the terminal mode:
+    - UTF8 support
+    - libXft with modern font rendering (thanks to Steven Phillips)
     - mouse support
     - 16 instead of colors in terminal mode
     - clipboard support using terminal command line tools like xclip, wl-copy, pbpaste, clip.exe 
     - suspend emacs using alternative  terminal
   buffer (thanks to Steven Phillips)
-* new command `mdview` which can swithc between viewing, browsing and editing a set of Markdown files  
+* new command `mdview` which can switch between viewing, browsing and editing a set of Markdown files  
 * basic git support with commands to add, commit and get status of files etc  
 * easier addition of own user  templates with interactive  template  selection
   using the command "insert-template"
@@ -249,65 +250,11 @@ X11/Windows version with `mewb arguments`.
 On Cygwin Windows you might as well need to install `libxt6` for instance on MobaXterm you write `apt install libxt6` to
 run the `mewb` executable.
 
-To avoid  typing this and for proper  rendering of non  ISO-8859-1  characters
-using the __luit__ tool on a Unix terminal with UTF-8 support it is usually done by performing an
-alias in your `.bashrc` or your `.zshrc` like this:
+For versions before MicroEmacs 091226b6 there were a few steps required to get
+support  for  running  ME on UTF8  enabled  terminals  as well with  non-ASCII
+characters and to get better support of X11 fonts. The topics are described here:
 
-```
-alias mec="luit -encoding ISO8859-1 mecb"
-alias mew="mewb"
-```
-
-If you like to have Windows CP1252 character support you can as well use the following `mec` alias:
-
-```
-alias mec="luit -encoding CP1252 mecb"
-```
-
-<a name="x11fonts"> </a>
-**Better Font Support on X11**
-
-The  number of fonts  which  MicroEmacs  can use per  default  is a little bit
-restricted as it uses the X11 font system For a long story look here: 
-[https://www.linuxdoc.org/HOWTO/XWindow-User-HOWTO-7.html](https://www.linuxdoc.org/HOWTO/XWindow-User-HOWTO-7.html)
-
-There is as well a little  installer  script for the X11 version of MicroEmacs
-which links your already  installed  existing  monospaced  TrueType fonts into
-your personal folder `~/.config/share/fonts` and then indexes them there using
-the mkfontscale  tool. Further the script downloads a few more free fonts like
-"Source  Code Pro",  "Dejavu Sans Mono" and "Ubuntu Mono" into this folder and
-the indexes these fonts as well.
-
-You can run this script like this;
-
-```
-bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install-fonts.sh)"
-```
-
-Therafter you might update the fontpath like this;
-
-```
-xset +fp ~/.local/share/fonts
-xset fp rehash
-```
-
-To add the  fontpath  at every time you start your  system  automatically  you
-might  need  to  add  these  two  lines  as  an   autostart   entry  for  your
-desktop/window manager.
-
-Here an example on what you can add to your .bashrc to add that font path after you logged in:
-
-```
-xset q | grep -A 2 Font | grep -q /.local/share/fonts || xset +fp ~/.local/share/fonts && xset fp rehash
-```
-
-> [!TIP]
-> Unfortunately  some recent Linux systems like Red Hat  Enterprise 10 or Alma Linux 10 do not
-> allow anymore to install these old X11 tools like `xset`. Workaround: you have in this case
-> install the fonts with sudo privileges in the existing X11 font directories. On a
-> Alma  Linux 10 system  for  instance I  copied  as sudo the  indexed  fonts  (using
-> mkfontscale) into the directory /etc/X11/fontpath.d/fonts and they are then available as well
-> for other older X11 applications.
+[luit-x11-old.md](luit-x11-old.md)
 
 <a name="spelling"> </a>
 ### Install Spelling Dictionaries
@@ -323,7 +270,7 @@ bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/d
 ### Windows 10/11
 
 > [!CAUTION]
-> You can't run MicroEmacs 09 or MicroEmacs 25 currently easily on the same machine. If you installed ME 25 and it works fine,
+> You can't run MicroEmacs 09 or MicroEmacs 25 currently easily on the same machine. If you installed ME 26 and it works fine,
 > stick with it. MicroEmacs 09 is just thought as a fallback option when ME 25 does not work as expected.  In this case please fill
 > an issue item on the [ME 25 project page](https://github.com/bjasspa/jasspa). 
 > The Windows Cygwin  binaries can however be used in parallel to ME 25 Windows builds. 
@@ -343,7 +290,6 @@ mecb -V
 The  executable  mewb is then in the PATH ($env:LOCALAPPDATA) and you can run it from any terminal
 window or after pressing the Win-r combination and then typing mewb in the run
 command line. There should be as well a start menu entry for the "MicroEmacs 09" executable.
-
 
 
 ## Compilation
@@ -390,8 +336,8 @@ sudo apt install libxt-dev libxft-dev pkgconf
 make -f linux32gcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
 make -f linux32gcc.gmk mecwb
-sudo apt install x11-utils  fontconfig  # xfontsel, xlsfonts fc-list - better font selection
-sudo apt install xfonts-utils ## mkfontscale for using ttf fonts
+sudo apt install fontconfig  # fc-list - better font selection
+sudo apt install x11-utils xfonts-utils ## xfontsel mkfontscale for using ttf fonts (not required anymore)
 sudo apt install luit ## unicode support in the terminal (not required anymore ...)
 sudo apt install xclip ## for better clipboard support
 sudo apt install wl-clipboard  ## if running Wayland desktop or window manager for copy and paste
