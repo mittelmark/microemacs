@@ -1491,7 +1491,7 @@ do                                                                           \
         _nb = 3 ;                                                            \
     else                                                                     \
         _nb = 1 ;                                                            \
-    hilEnsureRoom(hd,_nb,(dstPos)+1) ;                                       \
+    hilEnsureRoom(hd,_nb,(dstPos)+_wd) ;                                      \
     disLineByteOff[dstPos] = (hd)->bytePos ;                                 \
     _st = _db = disLineBuff + (hd)->bytePos ;                                \
     if(isDisplayable(cc))                                                    \
@@ -1539,6 +1539,12 @@ do                                                                           \
         *_db++ = 'x' ;                                                       \
         *_db++ = hexdigits[cc/0x10] ;                                        \
         *_db++ = hexdigits[cc%0x10] ;                                        \
+    }                                                                        \
+    if(_wd > 1)                                                              \
+    {                                                                        \
+        int _i2 ;                                                            \
+        for(_i2 = 1 ; _i2 < _wd ; _i2++)                                     \
+            disLineByteOff[(dstPos)+_i2] = (hd)->bytePos + _i2 ;             \
     }                                                                        \
     (hd)->bytePos += (int) (_db - _st) ;                                     \
     (dstPos) += _wd ;                                                        \

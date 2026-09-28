@@ -302,7 +302,7 @@ v unfold dir (color
       fc-list shims (both/only-xfontsel/neither/empty/failing); mec
       test-basics pass. Files: jasspa/macros/userstp.emf, ChangeLog
 
-## Ticket 13: long line editing bug
+## Ticket 13: long line editing bug (DONE)
 ~
 We recently  introduced  in the mec/mew version  a bug if we have to edit
 very long lines  which are longer  than the current  frame-width/window-width.  If the line
@@ -318,3 +318,28 @@ look into this? May be we should for the devel  branch  first or should we fix
 that in the  libxft-utf8  branch  and then, once it is fixed,  simply  replace
 devel with that branch and remove encoding  stable. The advantage if we branch
 from devel that we are not so far away from master where this still was working. 
+
+    - DONE 260928: long-line horizontal scroll display fix. Root cause
+      was commit 09b0fea which rewrote disLineByteOff[] as a byte-offset
+      map of the whole rendered line while the updateline draw loops
+      still indexed it with screen-relative columns, so any horizontally
+      scrolled line read stale map entries (line start shown instead of
+      cursor context, stray bytes, spill past EOL). Fixes: (a) a
+      function-scope scrollBase computed once in updateline and added to
+      every disLineByteOff[] index in the scroll block, the truncate
+      '$'/EOL writes and the TCAP/X11/Windows draw loops; (b) the left
+      truncate '$' now collapses a multi-byte char it lands on (memmove
+      the tail left and rebase the map so the '$' takes exactly one
+      byte, otherwise the draw loop emitted a stray continuation byte);
+      (c) renderLine fills interior map entries in the tab/ctrl/nasty
+      branches; (d) hilight.c __hilCopyChar fills interior map entries
+      before advancing bytePos; (e) xtermDrawUtf8Run no longer folds
+      UTF-8 to latin-1 when Xft is active - XftDrawStringUtf8 needs raw
+      UTF-8 and silently drops the invalid folded sequences (high chars
+      vanished on the Xft build). The console vs Xft scroll offset for
+      the same cursor (195 vs 197) is correct, not a bug: marginWidth =
+      textWidth/10 + 1 gives m9 for w80 and m8 for w79. Verified: mec
+      hscroll S1-S7 + earlytab + test-basics pass; mew core-font and
+      mew Xft screenshots cell-exact for longline/utf8/tab scenarios
+      (8-cell tab gap, EOL blanks, cursor position, no spill).
+      Files: src/display.c, src/hilight.c

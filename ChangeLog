@@ -7,11 +7,34 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <260925.0023>
+  > Last Modified : <260928.0754>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [260928] - Fixed long-line horizontal scroll display (ticket 13).
+               Root cause commit 09b0fea: disLineByteOff[] became a
+               byte-offset map of the full rendered line while the
+               updateline draw loops kept indexing it with screen-
+               relative columns, so a horizontally scrolled line
+               showed the line start instead of the cursor context
+               (present in devel/encoding-stable/libxft-utf8, not
+               master). Fixes: add a function-scope scrollBase to
+               every map index (scroll block, truncate '$'/EOL
+               writes, TCAP/X11/Windows loops); make the left '$'
+               collapse a multi-byte char (memmove tail + map
+               rebase); fill interior map entries in the renderLine
+               tab/ctrl/nasty branches and in hilight
+               __hilCopyChar; skip the UTF-8 -> latin-1 fold in
+               xtermDrawUtf8Run when Xft is active (XftDrawStringUtf8
+               needs raw UTF-8, folded high bytes were dropped).
+               Console vs Xft scroll for the same cursor (195/197)
+               is correct: marginWidth = textWidth/10 + 1. Verified:
+               mec hscroll S1-S7 + earlytab + test-basics; mew
+               core-font and mew Xft screenshots cell-exact
+               (longline/utf8/tab, 8-cell tab gap, EOL blanks,
+               cursor). Files: src/display.c, src/hilight.c
 
   [260925] - Font selection availability truth table (ticket 12
                font UI follow-up). Platform tab "Choose Font ..." now

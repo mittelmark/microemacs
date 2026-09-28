@@ -724,29 +724,60 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         else if(cc == meCHAR_TAB)
         {
             int ii=get_tab_pos(wid,bp->tabWidth) ;
+            int owid = wid ;
+            int iw ;
 
             s1++ ;
             wid += ii+1 ;
             *s2++ = displayTab ;
             while(--ii >= 0)
                 *s2++ = ' ' ;
+            /* Record interior column offsets (1 byte = 1 column here) so
+             * a later scrolled draw does not read stale map entries. */
+            if(wid >= disLineByteOffSize)
+            {
+                disLineByteOffSize = wid + 512 ;
+                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
+            }
+            for(iw = owid+1 ; iw < wid ; iw++)
+                disLineByteOff[iw] = bytePos + (iw - owid) ;
         }
         else if(cc < 0x20)
         {
+            int owid = wid ;
+            int iw ;
+
             s1++ ;
             wid += 2 ;
             *s2++ = '^' ;
             *s2++ = cc ^ 0x40 ;
+            if(wid >= disLineByteOffSize)
+            {
+                disLineByteOffSize = wid + 512 ;
+                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
+            }
+            for(iw = owid+1 ; iw < wid ; iw++)
+                disLineByteOff[iw] = bytePos + (iw - owid) ;
         }
         else
         {
             /* Its a nasty character */
+            int owid = wid ;
+            int iw ;
+
             s1++ ;
             wid += 4 ;
             *s2++ = '\\' ;
             *s2++ = 'x' ;
             *s2++ = hexdigits[cc/0x10] ;
             *s2++ = hexdigits[cc%0x10] ;
+            if(wid >= disLineByteOffSize)
+            {
+                disLineByteOffSize = wid + 512 ;
+                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
+            }
+            for(iw = owid+1 ; iw < wid ; iw++)
+                disLineByteOff[iw] = bytePos + (iw - owid) ;
         }
     }
     /* Record byte offset for the end position (used by next renderLine call) */
@@ -757,19 +788,6 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
         disLineByteOffSize = need ;
     }
     disLineByteOff[wid] = s2 - disLineBuff ;
-    if(getenv("ME_XFT_DEBUG"))
-    {
-        FILE *tf = fopen("me_dbgrender.txt", "a") ;
-        if(tf)
-        {
-            int bl = (int)(s2 - disLineBuff), ti ;
-            fprintf(tf, "RL enc=%d wid=%d blen=%d: ", (int)bp->encoding, wid, bl) ;
-            for(ti = 0 ; ti < bl && ti < 160 ; ti++)
-                fprintf(tf, "%02x", disLineBuff[ti]) ;
-            fprintf(tf, "\n") ;
-            fclose(tf) ;
-        }
-    }
     return wid;
 }
 
@@ -782,7 +800,14 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
 static void
 xtermDrawUtf8Run(int col, int row, meUByte *str, int len)
 {
-    if(!mecm.fontIsUtf8)
+    int doFold = !mecm.fontIsUtf8 ;
+#if MEOPT_XFT
+    /* Xft draws via XftDrawStringUtf8 and needs raw UTF-8 - folding to
+     * latin-1 would hand it invalid sequences (high bytes vanish). */
+    if(meXftUsed())
+        doFold = 0 ;
+#endif
+    if(doFold)
     {
         meUByte *sp = str, *se = str + len ;
         while(sp < se)
@@ -791,22 +816,6 @@ xtermDrawUtf8Run(int col, int row, meUByte *str, int len)
             {
                 meUByte lat[meBUF_SIZE_MAX] ;
                 int ll = meFoldUtf8ToLatin1(str,len,lat,sizeof(lat)) ;
-                if(getenv("ME_XFT_DEBUG"))
-                {
-                    FILE *tf = fopen("me_dbgrender.txt", "a") ;
-                    if(tf)
-                    {
-                        int ti ;
-                        fprintf(tf, "DR in(%d)=", len) ;
-                        for(ti = 0 ; ti < len && ti < 160 ; ti++)
-                            fprintf(tf, "%02x", str[ti]) ;
-                        fprintf(tf, " fold(%d)=", ll) ;
-                        for(ti = 0 ; ti < ll && ti < 160 ; ti++)
-                            fprintf(tf, "%02x", lat[ti]) ;
-                        fprintf(tf, "\n") ;
-                        fclose(tf) ;
-                    }
-                }
                 meFrameXTermDrawString(frameCur,col,row,(char *)lat,ll) ;
                 return ;
             }
@@ -822,6 +831,7 @@ updateline(register int row, register meVideoLine *vp1, meWindow *window)
 {
     register meUByte *s1;       /* Text line pointer */
     register meUShort flag ;    /* Video line flag */
+    meInt scrollBase = 0;       /* Absolute line column of screen column 0 */
     meSchemeSet *blkp;             /* Style change list */
     meScheme *fssp;             /* Frame store - colour pointer */
     meUByte    *fstp;           /* Frame store - text pointer */
@@ -976,16 +986,32 @@ hideLineJump:
 
         s1 = disLineBuff ;
         {
-            meInt scroll;
+            meInt ii;
+            meInt wid;
 
-            if (flag & VFCURRL)
-                scroll = window->horzScroll ;   /* Current line scroll */
-            else
-                scroll = window->horzScrollRest ;    /* Hard window scroll */
-            if(scroll != 0)
+            /* Absolute (line-start) column of displayed screen column 0.
+             * disLineByteOff[] is indexed in absolute line columns; the
+             * blkp->column values below are made screen-relative, so every
+             * draw loop must add scrollBase when indexing the map. */
+            if(window != NULL)
             {
-                meInt ii;
-
+                if (flag & VFCURRL)
+                    scrollBase = window->horzScroll ;   /* Current line scroll */
+                else
+                    scrollBase = window->horzScrollRest ;   /* Hard window scroll */
+            }
+            if((scrollBase != 0) && (blkp->column > 0))
+            {
+                /* Never scroll past the rendered content - the byte map is
+                 * only valid up to the line width (stale entries beyond). */
+                wid = blkp[noColChng-1].column ;
+                if(scrollBase >= wid)
+                    scrollBase = (wid > 0) ? wid - 1 : 0 ;
+            }
+            else
+                scrollBase = 0 ;
+            if(scrollBase != 0)
+            {
                 /* Line is scrolled. The effect we want is if any text at all
                  * is on the line we place a dollar at the start of the line
                  * in the last highlighting colour. If the line is empty then
@@ -993,15 +1019,14 @@ hideLineJump:
                  *
                  * Only process the line if it is not empty, this ensures that
                  * we do not insert a dollar where not required. */
-                if (blkp->column > 0)
                 {
-                    /* Use byte offset mapping to advance s1 past scrolled columns */
-                    s1 = disLineBuff + disLineByteOff[scroll] ;
-                    while((blkp->column <= scroll))
+                    /* Advance s1 to the visible start (absolute byte offset) */
+                    s1 = disLineBuff + disLineByteOff[scrollBase] ;
+                    while((blkp->column <= scrollBase))
                     {
                         if(noColChng == 1)
                         {
-                            blkp->column = scroll+1 ;
+                            blkp->column = scrollBase+1 ;
                             break ;
                         }
                         blkp++ ;
@@ -1009,7 +1034,26 @@ hideLineJump:
                     }
 
                     for(ii=0 ; ii<noColChng ; ii++)
-                        blkp[ii].column -= scroll ;
+                        blkp[ii].column -= scrollBase ;
+
+                    /* If the char the '$' lands on is multi-byte (UTF-8),
+                     * replace it cleanly: shift the remaining bytes left and
+                     * rebase the map so the '$' occupies exactly one byte -
+                     * otherwise the draw loop's byteNext would run past the
+                     * '$' and emit a stray continuation byte. */
+                    {
+                        meInt b0 = disLineByteOff[scrollBase] ;
+                        meInt b1 = disLineByteOff[scrollBase+1] ;
+                        if(b1 > b0 + 1)
+                        {
+                            meInt bshift = b1 - b0 - 1 ;
+                            meInt bend = disLineByteOff[wid] ;
+                            meInt mcol ;
+                            memmove(disLineBuff + b0 + 1, disLineBuff + b1, bend - b1) ;
+                            for(mcol = scrollBase+1 ; mcol <= wid ; mcol++)
+                                disLineByteOff[mcol] -= bshift ;
+                        }
+                    }
 
                     /* set the first char to the truncate '$' and set the scheme */
                     *s1 = windowChars[WCDISPTXTLFT] ;
@@ -1031,19 +1075,19 @@ hideLineJump:
                 /* remove the fonts as these can effect the next char which will probably be the scroll bar */
                 scheme = meSchemeSetNoFont(scheme) ;
             }
-            /* Use byte offset: ncol-1 is a display column from the visible start,
-             * which is the same as from the line start since scroll has been
-             * subtracted from all blkp->column values. The byte position in
-             * disLineBuff is disLineByteOff[ncol-1]. */
-            disLineBuff[disLineByteOff[ncol-1]] = windowChars[WCDISPTXTRIG] ;
-            /* Ensure disLineByteOff[ncol] is set for the extra column that
-             * follows the truncation marker. The TCAP loop reads byteNext = disLineByteOff[col+1]. */
-            if(ncol >= disLineByteOffSize)
+            /* Use byte offset: ncol-1 is a screen-relative display column,
+             * map to the absolute line column via scrollBase to find the
+             * byte in disLineBuff. */
+            disLineBuff[disLineByteOff[scrollBase+ncol-1]] = windowChars[WCDISPTXTRIG] ;
+            /* Ensure disLineByteOff[scrollBase+ncol] is set for the extra
+             * column that follows the truncation marker. The TCAP loop reads
+             * byteNext = disLineByteOff[scrollBase+col+1]. */
+            if(scrollBase+ncol >= disLineByteOffSize)
             {
-                disLineByteOffSize = ncol + 512 ;
+                disLineByteOffSize = scrollBase + ncol + 512 ;
                 disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
             }
-            disLineByteOff[ncol] = disLineByteOff[ncol-1] + 1 ;
+            disLineByteOff[scrollBase+ncol] = disLineByteOff[scrollBase+ncol-1] + 1 ;
             blkp[noColChng].column = ncol ;
             blkp[noColChng].scheme = scheme | (blkp[noColChng-1].scheme & (meSCHEME_CURRENT|meSCHEME_SELECT)) ;
             noColChng++ ;
@@ -1056,19 +1100,20 @@ hideLineJump:
             {
                 meInt lastCol = blkp[noColChng-1].column ;
                 if(vp1->line != window->buffer->baseLine)
-                    disLineBuff[disLineByteOff[lastCol]] = displayNewLine ;
+                    disLineBuff[disLineByteOff[scrollBase+lastCol]] = displayNewLine ;
                 else
-                    disLineBuff[disLineByteOff[lastCol]] = ' ' ;
+                    disLineBuff[disLineByteOff[scrollBase+lastCol]] = ' ' ;
                 /* The extra column (end-of-line marker) is a single byte at
-                 * disLineByteOff[lastCol]. Ensure disLineByteOff[lastCol+1]
-                 * is set so the TCAP loop can read byteNext correctly when
-                 * blkp->column is incremented below. */
-                if(lastCol + 1 >= disLineByteOffSize)
+                 * disLineByteOff[scrollBase+lastCol]. Ensure
+                 * disLineByteOff[scrollBase+lastCol+1] is set so the TCAP
+                 * loop can read byteNext correctly when blkp->column is
+                 * incremented below. */
+                if(scrollBase + lastCol + 1 >= disLineByteOffSize)
                 {
-                    disLineByteOffSize = lastCol + 512 ;
+                    disLineByteOffSize = scrollBase + lastCol + 512 ;
                     disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
                 }
-                disLineByteOff[lastCol + 1] = disLineByteOff[lastCol] + 1 ;
+                disLineByteOff[scrollBase+lastCol + 1] = disLineByteOff[scrollBase+lastCol] + 1 ;
             }
             if(meSchemeTestStyleHasFont(blkp[noColChng-1].scheme))
             {
@@ -1161,11 +1206,13 @@ hideLineJump:
              * Maintain the frame store.
              * disLineBuff contains multi-byte UTF-8 sequences but
              * blkp->column stores display width (1 per char).
-             * Use disLineByteOff[] to convert display columns to byte offsets. */
+             * Use disLineByteOff[] to convert display columns to byte
+             * offsets; blkp->column is screen-relative so add scrollBase
+             * to get the absolute line column. */
             while(col < (int)blkp->column)
             {
-                meInt byteStart = disLineByteOff[col] ;
-                meInt byteNext = disLineByteOff[col + 1] ;
+                meInt byteStart = disLineByteOff[scrollBase+col] ;
+                meInt byteNext = disLineByteOff[scrollBase+col + 1] ;
                 meInt b ;
                 meUByte cc = disLineBuff[byteStart] ;
                 /* Store lead byte in frame store (one per display column) */
@@ -1250,7 +1297,7 @@ hideLineJump:
                     for(col_d = col ; col_d < ii ; col_d++)
                     {
                         *fssp++ = scheme;
-                        cc = disLineBuff[disLineByteOff[col_d]] ;
+                        cc = disLineBuff[disLineByteOff[scrollBase+col_d]] ;
                         if((cc & 0xe0) == 0)
                         {
                             if(xb < 4090)
@@ -1260,12 +1307,12 @@ hideLineJump:
                         }
                         else
                         {
-                            cb = disLineByteOff[col_d+1] - disLineByteOff[col_d] ;
+                            cb = disLineByteOff[scrollBase+col_d+1] - disLineByteOff[scrollBase+col_d] ;
                             if(xb + cb >= 4090)
                                 cb = 0 ;
                             if(cb > 0)
                             {
-                                memcpy(xftbuf+xb,disLineBuff+disLineByteOff[col_d],cb) ;
+                                memcpy(xftbuf+xb,disLineBuff+disLineByteOff[scrollBase+col_d],cb) ;
                                 xb += cb ;
                             }
                             *fstp++ = cc ;
@@ -1280,7 +1327,7 @@ hideLineJump:
                 for(col_d = col ; col_d < ii ; col_d++)
                 {
                     *fssp++ = scheme;
-                    cc = disLineBuff[disLineByteOff[col_d]] ;
+                    cc = disLineBuff[disLineByteOff[scrollBase+col_d]] ;
                     if((cc & 0xe0) == 0)
                     {
                         cc = ' ' ;
@@ -1297,8 +1344,8 @@ hideLineJump:
                     int cblen = 0, cb_d ;
                     for(cb_d = col ; (cb_d < ii) && (cblen < 4090) ; cb_d++)
                     {
-                        meInt bs = disLineByteOff[cb_d] ;
-                        meInt be = disLineByteOff[cb_d+1] ;
+                        meInt bs = disLineByteOff[scrollBase+cb_d] ;
+                        meInt be = disLineByteOff[scrollBase+cb_d+1] ;
                         meInt bl = be - bs ;
                         if((disLineBuff[bs] & 0xe0) == 0)
                         {
@@ -1325,7 +1372,7 @@ hideLineJump:
 #endif
                 while(--spFlag >= 0)
                 {
-                    while (((cc=disLineBuff[disLineByteOff[ccol]]) & 0xe0) != 0)
+                    while (((cc=disLineBuff[disLineByteOff[scrollBase+ccol]]) & 0xe0) != 0)
                         ccol++ ;
                     sfstp[ccol] = cc ;
                     meFrameXTermDrawSpecialChar(frameCur,colToClient(scol+ccol),row-mecm.ascent,cc) ;
@@ -1341,8 +1388,8 @@ hideLineJump:
                 scheme = blkp->scheme ;
                 meFrameXTermSetScheme(frameCur,scheme) ;
                 ii = blkp->column ;
-                byteStart = disLineByteOff[col] ;
-                byteEnd = disLineByteOff[ii] ;
+                byteStart = disLineByteOff[scrollBase+col] ;
+                byteEnd = disLineByteOff[scrollBase+ii] ;
                 xtermDrawUtf8Run(colToClient(scol+col),row,disLineBuff+byteStart,byteEnd-byteStart);
                 blkp++ ;
 
@@ -1351,7 +1398,7 @@ hideLineJump:
                 for(col_d = col ; col_d < ii ; col_d++)
                 {
                     *fssp++ = scheme;
-                    *fstp++ = disLineBuff[disLineByteOff[col_d]];
+                    *fstp++ = disLineBuff[disLineByteOff[scrollBase+col_d]];
                 }
                 col = ii ;
             } while(++cno < noColChng) ;
@@ -1458,16 +1505,9 @@ hideLineJump:
         WORD  cc;
         /* winterm-utf8: disLineBuff holds UTF-8 bytes, blkp->column counts
          * display columns. Derive byte positions via disLineByteOff[] plus
-         * the horizontal scroll base (s1 was already advanced to the
-         * visible start). Frame store keeps the lead byte per column. */
-        meInt scrollBase = 0 ;
-        if(window != NULL)
-        {
-            if(flag & VFCURRL)
-                scrollBase = window->horzScroll ;
-            else
-                scrollBase = window->horzScrollRest ;
-        }
+         * the horizontal scroll base (scrollBase, computed in updateline;
+         * s1 was already advanced to the visible start). Frame store keeps
+         * the lead byte per column. */
 
         ccol = 0 ;
         do {
@@ -1534,22 +1574,14 @@ hideLineJump:
         meScheme scheme;
         meInt offset;                     /* Offset into the line */
         meInt len;                        /* Local line column */
-        meInt scrollBase;                 /* Absolute column of screen col 0 */
         meInt ccol;                       /* Screen-relative column cursor */
 
         /* winterm-utf8: disLineBuff holds UTF-8 bytes, blkp->column counts
          * display columns (reduced by horzScroll when scrolled). Frame store
          * keeps one UTF-8 lead byte per column; wtext[] holds the BMP
          * codepoint for ExtTextOutW (ticket 12 full-BMP path). Never advance
-         * s1 byte-wise or multi-byte sequences desync. */
-        scrollBase = 0;
-        if(window != NULL)
-        {
-            if(flag & VFCURRL)
-                scrollBase = window->horzScroll;
-            else
-                scrollBase = window->horzScrollRest;
-        }
+         * s1 byte-wise or multi-byte sequences desync. scrollBase comes from
+         * updateline (function scope). */
 
         /* Iterate through the colour changes */
         len = 0;
