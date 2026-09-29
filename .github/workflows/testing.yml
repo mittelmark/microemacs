@@ -16,7 +16,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libxt-dev
       - name: Build mec (console)
-        run: make -f linux32gcc.gmk mec
+        run: make -f unixgcc.gmk mec
       - name: Run basic tests
         run: |
           #rm -f tests/test-output.txt
@@ -140,7 +140,7 @@ jobs:
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           cd $GITHUB_WORKSPACE/src
-          make -f cygwin.gmk mec
+          make -f unixgcc.gmk mec
       - name: Run basic tests
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
@@ -187,7 +187,7 @@ jobs:
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
           cd $GITHUB_WORKSPACE/src
-          make -f cygwin.gmk mec
+          make -f unixgcc.gmk mec
       - name: Run basic tests
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |

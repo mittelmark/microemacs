@@ -310,9 +310,9 @@ sudo apt install git build-essential libz-dev libncurses-dev
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ### builds the bfs executable for making stand-alone mecb and mewb etc
-make -f linux32gcc.gmk bfs/bin
+make -f unixgcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
-make -f linux32gcc.gmk mecb
+make -f unixgcc.gmk mecb
 ```
 
 You  should  now  have  files  like  `mec-VERSION-PLATFORM.bin`  (VERSION  and
@@ -333,9 +333,9 @@ version (mecwb) which can be run both as a terminal and as a X11 application.
 ### install packages for X11 build
 sudo apt install libxt-dev libxft-dev pkgconf
 ### builds standalone mew executable (GUI)
-make -f linux32gcc.gmk mewb
+make -f unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
-make -f linux32gcc.gmk mecwb
+make -f unixgcc.gmk mecwb
 sudo apt install fontconfig  # fc-list - better font selection
 sudo apt install x11-utils xfonts-utils ## xfontsel mkfontscale for using ttf fonts (not required anymore)
 sudo apt install luit ## unicode support in the terminal (not required anymore ...)
@@ -356,15 +356,15 @@ sudo dnf install make zip unzip gcc zlib-devel ncurses-devel git
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ### builds the bfs executable for making stand-alone mecb and mewb etc
-make -f linux32gcc.gmk bfs/bin
+make -f unixgcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
-make -f linux32gcc.gmk mecb
+make -f unixgcc.gmk mecb
 ### install X11 developer files
 sudo dnf install libXt-devel libXft-devel pkgconf
 ### builds standalone mew executable (GUI)
-make -f linux32gcc.gmk mewb
+make -f unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
-make -f linux32gcc.gmk mecwb
+make -f unixgcc.gmk mecwb
 ### for more fonts and better font selection
 sudo dnf install xorg-x11-apps ## xfontsel
 sudo dnf install xorg-x11-fonts* ## Lucidatypewriter, Adobe courier
@@ -387,14 +387,14 @@ sudo pacman -S make gcc ncurses zlib luit xorg-xfontsel ttf-fira-mono
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ### builds the bfs executable for making stand-alone mecb and mewb etc
-make -f linux32gcc.gmk bfs/bin
+make -f unixgcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
-make -f linux32gcc.gmk mecb
+make -f unixgcc.gmk mecb
 ### install X11 developer files seems not required on Manjaro
 ### builds standalone mew executable (GUI)
-make -f linux32gcc.gmk mewb
+make -f unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
-make -f linux32gcc.gmk mecwb
+make -f unixgcc.gmk mecwb
 ### for more fonts and better font selection
 sudo pacman -S xorg-xfontsel ttf-fira-mono ### xfontsel and CP1252 enabled font
 xset fp rehash ## update the fontpath settings to the current session
@@ -439,13 +439,37 @@ cd microemacs
 ## Or if git is not working or not installed (what was true for MobaXterm 25.2): 
 ## wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
 ## unzip master.zip && cd microemacs-master
-make -f cygwin.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
-make -f cygwin.gmk mecb    ## console version
-make -f cygwin.gmk mewb    ## X11 version
-make -f cygwin.gmk mecwb   ## X11 and console version
+make -f unixgcc.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
+make -f unixgcc.gmk mecb    ## console version
+make -f unixgcc.gmk mewb    ## X11 version
+make -f unixgcc.gmk mecwb   ## X11 and console version
 ## for better font support
 apt install xfontsel mkfontscale xset
 ```
+
+The  same  _unixgcc.gmk_  makefile  is  used  on  Cygwin  and  Linux,  the
+platform  is detected  automatically,  the Cygwin output folders are named
+_.cygwin-release-*_ and the Linux ones _.linux32gcc-release-*_.
+
+<a name="msys2"> </a>
+### Compilation on MSYS2 Windows
+
+In an  [MSYS2](https://www.msys2.org)  shell (UCRT64, MINGW64, CLANG64 or
+MSYS)  install  the  required  packages  and  build  with  the  same  _unixgcc.gmk_
+makefile, the terminal console version only (no X11 libraries exist for MSYS2):
+
+```bash
+pacman -S make gcc ncurses-devel zlib-devel git
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+make -f unixgcc.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
+make -f unixgcc.gmk mecb    ## console version
+```
+
+The executables are placed in a _.msysunix-release-*_ folder. For the Windows
+GUI  version  (_mewb_)  use  the  native  Windows  build  from  the  download
+section  above  or  cross-compile  it  on  Linux  with  _linuxmingwgcc.gmk_
+(see the cross-compilation section above).
 
 
 <a name="freebsd"> </a>
@@ -1210,12 +1234,14 @@ their usable letters - [https://en.wikipedia.org/wiki/ISO/IEC_8859](https://en.w
     
 ## Build
 
-I currently build on Fedora ad Ubuntu using the file _src/linux32gcc.gmk_. Other Makefiles you should take from [https://github.com/ipstone/microemacs/tree/master/src](https://github.com/ipstone/microemacs/tree/master/src)
+I currently build on Fedora ad Ubuntu using the file _src/unixgcc.gmk_ which is
+also used on Cygwin and MSYS2 (the platform is detected automatically). Other
+Makefiles you should take from [https://github.com/ipstone/microemacs/tree/master/src](https://github.com/ipstone/microemacs/tree/master/src)
 
 To build switch into the src directory and then run the Makefile for your plaform. On my Linux machine I did:
 
 ```
-cd src && make -f linux32gcc.gmk
+cd src && make -f unixgcc.gmk
 ```
 
 Which  then  produces  in the  folder  .linux32gcc-release-mecw  the  required

@@ -47,20 +47,25 @@ bash build -d                # Debug build
 bash build -D <define>       # With defines
 ```
 
-### Direct Make (Linux)
+### Direct Make (Linux/Cygwin/MSYS2)
 
 The build script may fail on some systems. Use make directly:
 
 ```bash
 cd src
-make -f linux32gcc.gmk         # Build both console and window version
-make -f linux32gcc.gmk clean   # Clean build
-make .f linux32gcc.gmk BTYP=c  # Console build
-make -f linux32gcc.gmk BTYP=w  # X11 build
-make -f linux32gcc.gmk BTYP=cw # Combined terminal and X11 build
+make -f unixgcc.gmk         # Build both console and window version
+make -f unixgcc.gmk clean   # Clean build
+make -f unixgcc.gmk BTYP=c  # Console build
+make -f unixgcc.gmk BTYP=w  # X11 build
+make -f unixgcc.gmk BTYP=cw # Combined terminal and X11 build
 ```
 
-Output e.g.: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
+The  platform  (Linux,  Cygwin,  MSYS2)  is auto-detected  via  `uname -o`.
+`linux32gcc.gmk`  remains  as a  forwarding  shim  (`include  unixgcc.gmk`)
+for backwards compatibility.
+
+Output e.g.: `src/.linux32gcc-release-mecw/mecw` (combined console+X11, Linux),
+`src/.cygwin-release-mecw/mecw.exe` (Cygwin) or `src/.msysunix-release-mec/mec.exe` (MSYS2)
 
 ### MinGW/MSYS2 Windows Build
 
@@ -113,7 +118,7 @@ Output e.g.: `src/.linux32gcc-release-mecw/mecw` (combined console+X11)
 
 ### Build Options
 
-The `src/linux32gcc.gmk` Makefile supports these variables:
+The `src/unixgcc.gmk` Makefile supports these variables:
 
 | Variable | Values | Effect |
 |----------|--------|--------|
@@ -185,9 +190,9 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 
 | File | Platform | Notes |
 |------|----------|-------|
-| `linux32gcc.gmk` | Linux (primary) | GNU Make, gcc, 32/64-bit |
+| `unixgcc.gmk` | Linux / Cygwin / MSYS2 (primary) | GNU Make, gcc, auto-detects platform via `uname -o` |
+| `linux32gcc.gmk` | Shim → `unixgcc.gmk` | Kept for backwards compatibility |
 | `linuxmingwgcc.gmk` | Linux cross-compile to Windows | MinGW `i686-w64-mingw32-gcc` |
-| `cygwin.gmk` | Cygwin Windows | GNU Make |
 | `freebsd.mak` | FreeBSD | Uses default `make` (not gmake) |
 | `macos32gcc.gmk` | macOS | GNU Make |
 | `winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
@@ -198,9 +203,9 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 
 | File | Platform |
 |------|----------|
-| `linux32gcc.gmk` | Linux gcc (primary, 150 lines) |
+| `unixgcc.gmk` | Linux / Cygwin / MSYS2 gcc (primary) |
+| `linux32gcc.gmk` | Shim → `unixgcc.gmk` |
 | `linuxmingwgcc.mak` | Cross-compile from Linux to Windows |
-| `cygwin.gmk` | Cygwin |
 | `macos32gcc.gmk` | macOS |
 | `freebsd.mak` | FreeBSD |
 | `openbsd.gmk` | OpenBSD (not actual) |
@@ -712,11 +717,11 @@ The `testing.yml` workflow runs on every push to `master`/`msys-fix` and on pull
 
 | Platform | Build Command | Shell |
 |----------|--------------|-------|
-| Linux (Ubuntu 22.04) | `make -f src/linux32gcc.gmk mec` | bash |
+| Linux (Ubuntu 22.04) | `make -f unixgcc.gmk mec` | bash |
 | macOS | `make -f src/darwin.gmk mec` | bash |
 | Windows (MinGW64) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
 | Windows (MSYS2) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
-| Windows (Cygwin) | `make -f src/cygwin.gmk mec` | cygwin |
+| Windows (Cygwin) | `make -f src/unixgcc.gmk mec` | cygwin |
 
 Each job: builds → runs `@tests/test-basics` → verifies output file → uploads as artifact.
 

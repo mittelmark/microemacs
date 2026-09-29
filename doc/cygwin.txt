@@ -132,7 +132,7 @@ BUILDING:
     From the source directory  performs a build operation.  Alternatively  the
     command:-
 
-        make -f cygwin.gmk
+        make -f unixgcc.gmk
 
     May be issued to build the  source.  Refer to  "build.txt"  in the  source
     directory for more details.
