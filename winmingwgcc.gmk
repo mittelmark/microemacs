@@ -1,5 +1,5 @@
 VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
-BDIST:="msys64"
+BDIST:="mingw64"
 MSYS := $(shell echo ${MSYSTEM} | tr '[:upper:]' '[:lower:]')
 ifeq (mingw64,$(BDIST))
 WIN=mingw
