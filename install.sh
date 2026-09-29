@@ -488,6 +488,39 @@ if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ] || [ "$OS" = "cygwin" ]; then
     install_fonts
 fi
 
+# Optional tool check: suggest missing font related tools on Linux, FreeBSD and Cygwin.
+# fc-list (fontconfig) lists TrueType fonts (used for font selection in user-setup),
+# xfontsel selects legacy X11 XLFD bitmap fonts (M-x change-font-xfontsel).
+if [ "$OSNAME" = "Linux" ] || [ "$OSNAME" = "FreeBSD" ] || echo "$OSNAME" | grep -q CYGWIN; then
+    MISSING_TOOLS=""
+    if [ "`which fc-list 2>/dev/null`" = "" ]; then
+        MISSING_TOOLS="${MISSING_TOOLS} fc-list"
+    fi
+    if [ "`which xfontsel 2>/dev/null`" = "" ]; then
+        MISSING_TOOLS="${MISSING_TOOLS} xfontsel"
+    fi
+    if [ -n "$MISSING_TOOLS" ]; then
+        echo ""
+        echo "Note: the following optional tools are not installed:${MISSING_TOOLS}"
+        echo "  fc-list  - list TrueType fonts (fontconfig), used for font selection in user-setup"
+        echo "  xfontsel - select legacy X11 XLFD bitmap fonts, used by M-x change-font-xfontsel"
+        echo "Suggested installation:"
+        if [ "$OSNAME" = "FreeBSD" ]; then
+            echo "  sudo pkg install fontconfig xfontsel"
+        elif echo "$OSNAME" | grep -q CYGWIN; then
+            echo "  apt install fontconfig xfontsel (or setup-x86_64.exe -P fontconfig,xfontsel)"
+        elif which apt-get >/dev/null 2>&1; then
+            echo "  sudo apt install fontconfig x11-utils     (Debian, Ubuntu: x11-utils provides xfontsel)"
+        elif which dnf >/dev/null 2>&1 || which yum >/dev/null 2>&1; then
+            echo "  sudo dnf install fontconfig xorg-x11-apps (Fedora, RHEL, AlmaLinux: xorg-x11-apps provides xfontsel)"
+        elif which pacman >/dev/null 2>&1; then
+            echo "  sudo pacman -S fontconfig xorg-xfontsel   (Arch, Manjaro)"
+        else
+            echo "  install the fontconfig and xfontsel packages of your distribution"
+        fi
+    fi
+fi
+
 #if [[ $1 == "-w" ]]; then
 #    shift
 #    mewb "$@"
