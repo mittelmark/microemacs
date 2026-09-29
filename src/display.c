@@ -50,24 +50,6 @@
 #include <pc.h>
 #endif
 
-/* Env-gated Xft debug trace (ticket 12 ASCII-delay hunt). Active only
- * when ME_XFT_DEBUG is set in the environment; completely silent
- * otherwise. Lives here (not unixterm.c) so all platforms link. */
-static int meXftDbgCached = -1 ;
-static long meXftDbgSeq = 0 ;
-int
-meXftDbgOn(void)
-{
-    if(meXftDbgCached < 0)
-        meXftDbgCached = (getenv("ME_XFT_DEBUG") != NULL) ;
-    return meXftDbgCached ;
-}
-long
-meXftDbgSeqNext(void)
-{
-    return ++meXftDbgSeq ;
-}
-
 /*
  * Set the virtual cursor to the specified row and column on the virtual
  * screen. There is no checking for nonsense values; this might be a good
@@ -1319,7 +1301,6 @@ hideLineJump:
                         }
                     }
                     meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)xftbuf,xb);
-                    ME_DBGTRACE("DBGR: FONTFIX Xft drawString xb bytes") ;
                 }
                 else
                 {
@@ -1776,15 +1757,7 @@ updateWindow(meWindow *wp)
         }
         if(update)
         {
-            if(lp == wp->dotLine)
-                ME_DBGTRACE("DBGR: updateline called for dotLine") ;
-            else
-                ME_DBGTRACE("DBGR: updateline called for other line") ;
             updateline(row,vptr,wp);
-        }
-        else if(lp == wp->dotLine)
-        {
-            ME_DBGTRACE("DBGR: SKIPPED updateline for dotLine") ;
         }
         row++ ;
         vptr++ ;
@@ -2757,26 +2730,7 @@ update(int flag)    /* force=meTRUE update past type ahead? */
 #endif
 
     ME_DBGTRACE("12: update entered") ;
-    /* Informational only (Xft debug): compute what the old code would have
-     * skipped on (kept for the ticket-12 trace). The actual early return
-     * below deliberately does NOT skip on type-ahead anymore (c642d48): the
-     * screen is always repainted, TTahead() is still called for its
-     * side-effects (draining Expose/ConfigureNotify, mouse timers). */
-#if MEOPT_XFT
-    {
-        int skipAhead = 0 ;
-        if(!(alarmState & meALARM_PIPED))
-            skipAhead = (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec || TTahead())) ;
-        if(meXftDbgOn())
-        {
-            fprintf(stderr,"MEXD %ld update flag=%d sgarbf=%d alarm=%d kbdplay=%d clexec=%d ahead=%d wflags=%04x xft=%d\n",
-                meXftDbgSeqNext(),flag,sgarbf,
-                ((alarmState & meALARM_PIPED) != 0),(kbdmode == mePLAY),(clexec != 0),skipAhead,
-                frameCur->windowCur->updateFlags,meXftUsed()) ;
-            fflush(stderr) ;
-        }
-    }
-#endif
+
     if((alarmState & meALARM_PIPED) ||
        (!(flag & 0x01) && ((kbdmode == mePLAY) || clexec)))
         return meTRUE ;
@@ -2802,7 +2756,6 @@ update(int flag)    /* force=meTRUE update past type ahead? */
     else
 #endif
         screenUpdate(1,2-sgarbf) ;
-    ME_DBGTRACE("DBGR: screenUpdate done") ;
     /* reset garbled status */
     sgarbf = meFALSE ;
 

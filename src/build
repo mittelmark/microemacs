@@ -98,7 +98,7 @@ if [ -z "$MAKEFILE" ] ; then
             MAKEBAS=aix4
         fi
     elif [ `echo $PLATFORM | sed -e "s/^CYGWIN.*/CYGWIN/"` = "CYGWIN" ] ; then
-        MAKEBAS=cygwin
+        MAKEBAS=unixgcc
         X11_MAKEINC=/usr/X11R6/include
         X11_MAKELIB=/usr/X11R6/lib
     elif [ $PLATFORM = "Darwin" ] ; then
@@ -140,7 +140,7 @@ if [ -z "$MAKEFILE" ] ; then
             if [ ! -r $MAKEBAS.gmk ] ; then
                 MAKEBAS="linux2"
             fi
-            MAKEBAS="linux32gcc.gmk"
+            MAKEBAS=unixgcc
         fi
         X11_MAKELIB=/usr/X11R6/lib
     elif [ $PLATFORM = "OpenBSD" ] ; then

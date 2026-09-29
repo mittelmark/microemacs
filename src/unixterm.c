@@ -2170,15 +2170,6 @@ meXEventHandler(void)
                 keyStr[1] = (char) (0x80 | (keySym & 0x3F)) ;
                 keyStr[2] = '\0' ;
             }
-#if MEOPT_XFT
-            if(meXftDbgOn())
-            {
-                fprintf(stderr,"MEXD %ld keypress sym=%lx str0=%02x\n",
-                    meXftDbgSeqNext(),(unsigned long)keySym,(unsigned)(meUByte)keyStr[0]) ;
-                fflush(stderr) ;
-            }
-#endif
-
             /* Convert UTF-8 input to buffer encoding if needed.
              * Only convert printable characters without control/alt modifiers,
              * as modified keys are handled by the existing key processing below. */
@@ -4404,7 +4395,6 @@ meFrameXTermHideCursor(meFrame *frame)
             {
                 bp = xftCursorSave ;
                 bl = xftCursorSaveLen ;
-                ME_DBGTRACE("DBGR: HideCursor Xft using saved bytes") ;
             }
             else if(!(*cc & 0x80))
             {
@@ -4412,7 +4402,6 @@ meFrameXTermHideCursor(meFrame *frame)
                  * store byte is complete. */
                 bp = cc ;
                 bl = 1 ;
-                ME_DBGTRACE("DBGR: HideCursor Xft using frame store byte") ;
             }
             else
             {
@@ -4422,17 +4411,6 @@ meFrameXTermHideCursor(meFrame *frame)
                 drawHide = meFALSE ;
                 bp = cc ;
                 bl = 1 ;
-                ME_DBGTRACE("DBGR: HideCursor Xft skip stale multi-byte lead") ;
-            }
-            if(meXftDbgOn())
-            {
-                int _mhl = bl ; if(_mhl > 8) _mhl = 8 ;
-                fprintf(stderr,"MEXD %ld hide col=%d row=%d bl=%d [%.*s] saved=%d store=%02x live=%02x draw=%d\n",
-                    meXftDbgSeqNext(),frame->cursorColumn,frame->cursorRow,bl,
-                    _mhl,(char*)bp,
-                    (frame == xftCursorSaveFrame) && (xftCursorSaveLen > 0),
-                    xftCursorSaveStore,*cc,drawHide) ;
-                fflush(stderr) ;
             }
             if(drawHide)
             {
@@ -4478,8 +4456,6 @@ meFrameXTermHideCursor(meFrame *frame)
                 else
                     meLegacyCursorDraw(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ccb);
             }
-            else
-                ME_DBGTRACE("DBGR: HideCursor legacy skip stale multi-byte lead") ;
         }
     }
 }
@@ -4561,21 +4537,12 @@ meFrameXTermShowCursor(meFrame *frame)
                 /* Remember for Hide (dot will have moved by then) */
                 if(bl > 8)
                     bl = 8 ;
-                ME_DBGTRACE("DBGR: ShowCursor Xft cursorBytes") ;
                 memcpy(xftCursorSave,bp,bl) ;
                 xftCursorSaveLen = bl ;
                 xftCursorSaveFrame = frame ;
                 xftCursorSaveStore = *cc ;
                 xftCursorSaveRow = frame->cursorRow ;
                 xftCursorSaveCol = frame->cursorColumn ;
-                if(meXftDbgOn())
-                {
-                    int _msl = bl ; if(_msl > 8) _msl = 8 ;
-                    fprintf(stderr,"MEXD %ld show col=%d row=%d bl=%d [%.*s] store=%02x\n",
-                        meXftDbgSeqNext(),frame->cursorColumn,frame->cursorRow,bl,
-                        _msl,(char*)bp,*cc) ;
-                    fflush(stderr) ;
-                }
                 if ((meSystemCfg & meSYSTEM_FONTFIX) && !((*bp) & 0xe0))
                 {
                     static char ss[1]={' '} ;
