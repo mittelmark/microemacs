@@ -1,0 +1,281 @@
+# -!- makefile -!-
+#
+# JASSPA MicroEmacs - www.jasspa.com
+# unixgcc.gmk - Unified gcc make file for Linux, Cygwin and MSYS2
+#
+# Copyright (C) 2001-2009 JASSPA (www.jasspa.com)
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+##############################################################################
+#
+# Created:     Wed Jul 28 2004 (as linux32gcc.gmk, merged with cygwin.gmk)
+# Synopsis:    Make file for unix-like systems using gcc
+#
+# Notes:
+#   The platform is auto-detected with "uname -o":
+#
+#     GNU/Linux  -> -D_LINUX -D_LINUX26   output .linux32gcc-*   (historical)
+#     Cygwin     -> -D_CYGWIN             output .cygwin-*
+#     Msys       -> -D_CYGWIN             output .msysunix-*    (MSYS2/mintty)
+#
+#   Run "make -f unixgcc.gmk"                 both console+window (BTYP=cw)
+#   Run "make -f unixgcc.gmk BTYP=c"          console only -> *-release-mec/mec[.exe]
+#   Run "make -f unixgcc.gmk BTYP=w"          window only  -> *-release-mew/mew[.exe]
+#   Run "make -f unixgcc.gmk BTYP=cw"         both         -> *-release-mecw/mecw[.exe]
+#   Run "make -f unixgcc.gmk XFT=1"           libXft window build (*-xft outdirs,
+#                                              auto-detected at the top level)
+#   Run "make -f unixgcc.gmk BCFG=debug"      debug build  -> .<buildid>-debug-*
+#   Run "make -f unixgcc.gmk BCOR=ne"         NanoEmacs
+#
+#   Legacy targets still work: mec, mew, mecw, nec, new, necw, med, medc,
+#   medw, medcw, ned, nedc, nedw, nedcw
+#
+#   Run "make -f unixgcc.gmk clean"           to clean build dirs
+#   Run "make -f unixgcc.gmk spotless"        to clean even more
+#
+##############################################################################
+#
+# Installation Directory
+INSTDIR	      = /usr/local/bin
+INSTPROGFLAGS = -s -o root -g root -m 0775
+#
+# Local Definitions
+A        = .a
+
+BTYP     ?= cw
+BCFG     ?= release
+BCOR     ?= me
+
+CC       = gcc
+MK       = make
+LD       = $(CC)
+STRIP    = strip
+AR       = ar
+CP       = cp
+RM       = rm -f
+RMDIR    = rm -r -f
+
+#
+# Platform detection - "uname -o" gives GNU/Linux, Cygwin or Msys.
+#
+UNAME_O := $(shell uname -o 2>/dev/null)
+ifneq (,$(findstring Cygwin,$(UNAME_O)))
+PLATFORM := cygwin
+else ifneq (,$(findstring Msys,$(UNAME_O)))
+PLATFORM := msys
+else
+PLATFORM := linux
+endif
+
+ifeq ($(PLATFORM),linux)
+BUILDID  = linux32gcc
+EXE      =
+CCDEFS   = -D_LINUX -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
+CCFLAGSR = -O3 -flto=auto -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-unused-result
+CCFLAGSD = -g -Wall
+LDFLAGSR = -O3 -flto=auto
+X11INC   = -I/opt/X11/include
+#
+# The Xlib are located in /usr/X11R6/lib64 on some Linux distributions like RHEL4.* .
+#
+ifeq "$(strip $(shell uname -m))" "x86_64"
+WINDOW_LIBS = $(MAKEWINLIBS) -L/usr/X11R6/lib64 -lX11
+else
+WINDOW_LIBS = $(MAKEWINLIBS) -L/usr/X11R6/lib -lX11
+endif
+CONSOLE_LIBS  = -lncurses
+CONSOLE_DEFS  = -D_USE_NCURSES -D_USETPARM
+else
+# Cygwin and MSYS2 share the Cygwin-derived platform setup (formerly in
+# cygwin.gmk, also used by winmingwgcc.mak BDIST=msys2unix).
+ifeq ($(PLATFORM),cygwin)
+BUILDID  = cygwin
+else
+BUILDID  = msysunix
+# Use the native MSYS gcc (/usr/bin/gcc, x86_64-pc-cygwin) rather than a
+# mingw gcc that may be first on $PATH: mingw headers require _WIN32, which
+# emain.h undefines for _CYGWIN builds ("Only Win32 target is supported!").
+# Same compiler the msys2unix CI job uses (pacman -S gcc ncurses-devel).
+CC       = /usr/bin/gcc
+ifeq (,$(wildcard /usr/bin/gcc))
+$(warning Native MSYS gcc not found - install with: pacman -S gcc ncurses-devel zlib-devel)
+endif
+endif
+EXE      = .exe
+CCDEFS   = -D_CYGWIN -I.
+CCFLAGSR = -O3 -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-restrict -Wno-stringop-truncation -Wno-stringop-overflow -Wno-format-overflow
+CCFLAGSD = -g -Wall -Wno-restrict -Wno-stringop-truncation -Wno-stringop-overflow -Wno-format-overflow
+LDFLAGSR =
+X11INC   = -I/usr/X11/include
+WINDOW_LIBS = -L/usr/X11R6/lib -lX11 -lz $(MAKEWINLIBS)
+CONSOLE_LIBS  = -lncurses -lz
+CONSOLE_DEFS  = -D_USE_NCURSES -D_USETPARM
+endif
+
+LDDEFS   =
+LDFLAGSD = -g
+LDLIBS   = -lm
+
+OUTDIRR  = .$(BUILDID)-release
+OUTDIRD  = .$(BUILDID)-debug
+
+ifeq "$(BCFG)" "debug"
+BOUTDIR  = $(OUTDIRD)
+CCFLAGS  = $(CCFLAGSD)
+LDFLAGS  = $(LDFLAGSD)
+STRIP    = - echo No strip - debug
+else
+BOUTDIR  = $(OUTDIRR)
+CCFLAGS  = $(CCFLAGSR)
+LDFLAGS  = $(LDFLAGSR)
+endif
+
+ifeq "$(BCOR)" "ne"
+
+BCOR_CDF = -D_NANOEMACS
+PRGLIBS  = -lz
+
+else
+
+BCOR=me
+BCOR_CDF =
+PRGLIBS  = -lz
+
+endif
+
+#
+# libXft TrueType support for mew (off by default, enable with XFT=1).
+# XFT_DEFS switches MEOPT_XFT on, XFT_LIBS links fontconfig/freetype.
+# Auto-detection lives in the top-level unixgcc.gmk and is passed in as XFT=.
+#
+PKG_CONFIG ?= pkg-config
+ifeq "$(XFT)" "1"
+XFT_DEFS = -DMEOPT_XFT=1 $(shell $(PKG_CONFIG) --cflags xft)
+XFT_LIBS = $(shell $(PKG_CONFIG) --libs xft)
+endif
+
+ifeq "$(BTYP)" "c"
+BTYP_CDF = $(CONSOLE_DEFS) -D_ME_CONSOLE
+BTYP_LIB = $(CONSOLE_LIBS)
+else ifeq "$(BTYP)" "w"
+BTYP_CDF = $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_WINDOW $(X11INC)
+BTYP_LIB = $(WINDOW_LIBS) $(XFT_LIBS)
+else
+BTYP_CDF = $(CONSOLE_DEFS) $(MAKEWINDEFS) $(XFT_DEFS) -D_ME_CONSOLE -D_ME_WINDOW $(X11INC)
+BTYP_LIB = $(CONSOLE_LIBS) $(WINDOW_LIBS) $(XFT_LIBS)
+BTYP     = cw
+endif
+
+# XFT builds use a separate object dir - make does not track flag
+# changes, so sharing would link stale MEOPT_XFT objects on switch.
+ifeq "$(XFT)" "1"
+XFT_OUTDIR = -xft
+endif
+OUTDIR   = $(BOUTDIR)-$(BCOR)$(BTYP)$(XFT_OUTDIR)
+PRGNAME  = $(BCOR)$(BTYP)
+PRGFILE  = $(PRGNAME)$(EXE)
+PRGHDRS  = ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h \
+	   esearch.h eskeys.h estruct.h eterm.h evar.h evers.h eopt.h \
+	   ebind.def efunc.def eprint.def evar.def etermcap.def emode.def eskeys.def bfs.h
+PRGOBJS  = $(OUTDIR)/abbrev.o $(OUTDIR)/basic.o $(OUTDIR)/bfs.o $(OUTDIR)/bind.o $(OUTDIR)/buffer.o $(OUTDIR)/crypt.o $(OUTDIR)/dirlist.o $(OUTDIR)/display.o \
+	   $(OUTDIR)/encoding.o $(OUTDIR)/eval.o $(OUTDIR)/exec.o $(OUTDIR)/file.o $(OUTDIR)/fileio.o $(OUTDIR)/frame.o $(OUTDIR)/hilight.o $(OUTDIR)/history.o $(OUTDIR)/input.o \
+	   $(OUTDIR)/isearch.o $(OUTDIR)/key.o $(OUTDIR)/line.o $(OUTDIR)/macro.o $(OUTDIR)/main.o $(OUTDIR)/narrow.o $(OUTDIR)/next.o $(OUTDIR)/osd.o \
+	   $(OUTDIR)/print.o $(OUTDIR)/random.o $(OUTDIR)/regex.o $(OUTDIR)/region.o $(OUTDIR)/registry.o $(OUTDIR)/search.o $(OUTDIR)/spawn.o \
+	   $(OUTDIR)/spell.o $(OUTDIR)/tag.o $(OUTDIR)/termio.o $(OUTDIR)/time.o $(OUTDIR)/undo.o $(OUTDIR)/window.o $(OUTDIR)/word.o \
+	   $(OUTDIR)/unixterm.o
+#
+# Rules
+.SUFFIXES: .c .o
+
+$(OUTDIR)/%.o : %.c
+	$(CC) $(CCDEFS) $(BCOR_CDF) $(BTYP_CDF) $(CCFLAGS) -c -o $@ $<
+
+all: $(OUTDIR)/$(PRGFILE)
+
+$(OUTDIR)/$(PRGFILE): $(OUTDIR) $(PRGOBJS)
+	$(RM) $@
+	$(LD) $(LDDEFS) $(LDFLAGS) -o $@ $(PRGOBJS) $(PRGLIBS) $(BTYP_LIB) $(LDLIBS)
+	$(STRIP) $@
+
+$(PRGOBJS): $(PRGHDRS)
+
+$(OUTDIR):
+	-mkdir $(OUTDIR)
+
+# Legacy convenience targets (still work, now via sub-make)
+# Note: primary output is now $(OUTDIR)/$(PRGFILE)
+# e.g. .linux32gcc-release-mec/mec, .cygwin-release-mec/mec.exe,
+#      .msysunix-release-mec/mec.exe
+# These wrappers do NOT copy to src/ root to avoid polluting the source dir.
+# .PHONY: a stray mec/mew binary in src/ must not shadow the target.
+.PHONY: all clean spotless \
+	mec mew mecw me nec new necw ne \
+	medc medw medcw med nedc nedw nedcw ned
+
+mec:
+	$(MAKE) -f unixgcc.gmk BTYP=c BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
+
+mew:
+	$(MAKE) -f unixgcc.gmk BTYP=w BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
+
+mecw:
+	$(MAKE) -f unixgcc.gmk BTYP=cw BCFG=$(BCFG) BCOR=$(BCOR) XFT=$(XFT) all
+
+me: mecw
+
+# NanoEmacs legacy
+nec:
+	$(MAKE) -f unixgcc.gmk BTYP=c BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
+
+new:
+	$(MAKE) -f unixgcc.gmk BTYP=w BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
+
+necw:
+	$(MAKE) -f unixgcc.gmk BTYP=cw BCFG=$(BCFG) BCOR=ne XFT=$(XFT) all
+
+ne: nec
+
+# Debug legacy
+medc:
+	$(MAKE) -f unixgcc.gmk BTYP=c BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
+
+medw:
+	$(MAKE) -f unixgcc.gmk BTYP=w BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
+
+medcw:
+	$(MAKE) -f unixgcc.gmk BTYP=cw BCFG=debug BCOR=$(BCOR) XFT=$(XFT) all
+
+med: medcw
+
+nedc:
+	$(MAKE) -f unixgcc.gmk BTYP=c BCFG=debug BCOR=ne XFT=$(XFT) all
+
+nedw:
+	$(MAKE) -f unixgcc.gmk BTYP=w BCFG=debug BCOR=ne XFT=$(XFT) all
+
+nedcw:
+	$(MAKE) -f unixgcc.gmk BTYP=cw BCFG=debug BCOR=ne XFT=$(XFT) all
+
+ned: nedc
+
+clean:
+	$(RMDIR) .$(BUILDID)-release-* .$(BUILDID)-debug-*
+	$(RM) core me$(EXE) mec$(EXE) mew$(EXE) mecw$(EXE) ne$(EXE) nec$(EXE) new$(EXE) necw$(EXE) med$(EXE) medc$(EXE) medw$(EXE) medcw$(EXE) ned$(EXE) nedc$(EXE) nedw$(EXE) nedcw$(EXE)
+	$(RM) *.oc *.ow *.ob *.on *.ov *.oe *.odc *.odw *.odb *.odn *.odv *.ode
+	$(RM) *.o
+
+spotless: clean
+	$(RM) tags *~
