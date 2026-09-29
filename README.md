@@ -497,6 +497,9 @@ make -f freebsd.mak mecb mewb mecwb
 The Makefile has the extension  `mak` as it can use the default `make`
 utility from FreeBSD and does not need the gnu-make version `gmake`.
 
+Plain  `make` in the  project  root  works  as  well,  the  root  `Makefile`
+detects  the  platform  and  forwards  the  goals  to  `freebsd.mak`.
+
 
 <a name="Downloads"> </a>
 

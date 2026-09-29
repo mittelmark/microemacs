@@ -22,6 +22,17 @@
 #
 ##############################################################################
 #
+# Guard: FreeBSD/Darwin misdetect as PLATFORM=linux via "uname -o", and
+# unixgcc.gmk needs GNU make on Linux/Cygwin/MSYS2 anyway.
+#
+UNAME_S := $(shell uname -s 2>/dev/null)
+ifeq ($(UNAME_S),FreeBSD)
+$(error FreeBSD: run "make -f freebsd.mak" (BSD make) instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
+endif
+ifeq ($(UNAME_S),Darwin)
+$(error macOS: run "make -f macos32gcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
+endif
+#
 # Platform detection - "uname -o" gives GNU/Linux, Cygwin or Msys.
 #
 UNAME_O := $(shell uname -o 2>/dev/null)

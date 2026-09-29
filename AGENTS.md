@@ -197,7 +197,7 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 | `macos32gcc.gmk` | macOS | GNU Make |
 | `winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
 | `win32winlibs.gmk` | Windows (WinLibs) | Native Windows gcc |
-| `Makefile` | Generic top-level | Release packaging, bfs build |
+| `Makefile` | Portable dispatcher | plain `make` → unixgcc.gmk / freebsd.mak / macos32gcc.gmk (BSD+GNU make parseable) |
 
 **Source Makefiles** (in `src/`):
 
