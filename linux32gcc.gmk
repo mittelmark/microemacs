@@ -1,81 +1,19 @@
 ##version=091224b1
-OS=$(shell uname -o | sed 's/GNU.Linux/linux/')
-VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
-OSV=$(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
-## check for rolling releases with no version-id
-ifeq ($(OSV),)
-  OSV=0
-endif
-KERNEL=$(shell uname -r | grep -oE '^[0-9]')
-DIST=$(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
-OSVERSION="$(DIST)$(OSV)"
-PKG_CONFIG ?= pkg-config
-XFT=0
-XFTDIR=""
-ifeq (0,$(shell $(PKG_CONFIG) --exists xft; echo $$? ))
-XFT=1
-XFTDIR="-xft"
-endif
-
-MACHINE=`uname -m`
-RELEASE=linux-$(KERNEL)-$(MACHINE)-$(DIST)-$(OSV)-microemacs-$(VERSION)
-app=mecb
-default:
-	echo "Makefile for Linux systems"
-	echo "VERSION: '$(VERSION)' OS $(OS) OSVERSION $(OSVERSION) OSV $(OSV)"
-bfs/bin:
-	cd bfs && make
-mec:
-	cd src && make -f linux32gcc.gmk BTYP=c
-
-mew:
-	cd src && make -f linux32gcc.gmk BTYP=w XFT=$(XFT)
-
-mecw:
-	cd src && make -f linux32gcc.gmk BTYP=cw XFT=$(XFT)
-
-mecb: bfs/bin mec
-	./bfs/bfs -a ./src/.linux32gcc-release-mec/mec -o $(RELEASE)-mecb.bin ./jasspa
-
-mewb: bfs/bin mew
-	./bfs/bfs -a ./src/.linux32gcc-release-mew$(XFTDIR)/mew -o $(RELEASE)-mewb.bin ./jasspa
-
-mecwb: bfs/bin mecw
-	./bfs/bfs -a ./src/.linux32gcc-release-mecw$(XFTDIR)/mecw -o $(RELEASE)-mecwb.bin ./jasspa
-
-nec:
-	cd src && make -f linux32gcc.gmk BCOR=ne BTYP=c
-
-release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
-
-app-image: bfs/bin
-	chmod 755 jme.AppDir/AppRun
-	-rm -rf jasspa-bfs
-	cp -r jasspa jasspa-bfs
-	cp -r jasspa/spelling jme.AppDir/usr/share/
-	rm -rf jasspa-bfs/contrib
-	rm -rf jasspa-bfs/company
-	rm -rf jasspa-bfs/pixmaps
-	rm -rf jasspa-bfs/spelling
-	rm -f jasspa-bfs/macros/*~
-	rm -f jasspa-bfs/macros/*.bak
-	wget https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb.zip
-	unzip -p linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb.zip "linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb/bin/mecwb" > mecw-ubuntu-18
-	./bfs/bfs -s mecw-ubuntu-18 # strip of the archive to get the latest macros
-	./bfs/bfs -a mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
-	appimagetool-x86_64.AppImage jme.AppDir
-	cp Jasspa_MicroEmacs_09-x86_64.AppImage Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage
-	./Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage -V -n
-
-brew: mecb mewb
-	mkdir -p brew-linux-$(VERSION)/bin
-	cp bin/mecu              brew-linux-$(VERSION)/bin/
-	chmod 755                brew-linux-$(VERSION)/bin/mecu  
-	cp bfs/bfs               brew-linux-$(VERSION)/bin/
-	cp $(RELEASE)-mecb.bin   brew-linux-$(VERSION)/bin/mecb
-	cp $(RELEASE)-mewb.bin   brew-linux-$(VERSION)/bin/mewb
-	cp COPYING               brew-linux-$(VERSION)/license.txt
-	cp README-standalone.md  brew-linux-$(VERSION)/README.md
-	tar cfz brew-linux-$(VERSION).tar.gz brew-linux-$(VERSION)/*
-	sha256sum brew-linux-$(VERSION).tar.gz > brew-linux-$(VERSION).sha256
+#
+# JASSPA MicroEmacs - www.jasspa.com
+# linux32gcc.gmk - Compatibility shim, renamed to unixgcc.gmk
+#
+# linux32gcc.gmk has been merged with cygwin.gmk into unixgcc.gmk, which
+# auto-detects the platform with "uname -o":
+#
+#   GNU/Linux -> -D_LINUX   output .linux32gcc-*   (historical paths used by
+#                            the CI workflows and the top-level Makefile keep
+#                            working)
+#   Cygwin    -> -D_CYGWIN  output .cygwin-*
+#   Msys      -> -D_CYGWIN  output .msysunix-*
+#
+# This shim forwards every target and variable to unixgcc.gmk. It will be
+# removed once all references (CI workflows, docs) use unixgcc.gmk directly.
+#
+##############################################################################
+include unixgcc.gmk

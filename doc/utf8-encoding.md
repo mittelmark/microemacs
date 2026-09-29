@@ -515,15 +515,14 @@ A/B: withoutfix last umlaut `Ã`, withfix `ü`; after `x` identical.
 
 Debug traces:
 
-- `ME_DBGTRACE` (active with `_DEBUG` / `BCFG=debug`) at `update()`,
-  `updateWindow()`, FONTFIX `updateline()`, Hide/Show cursor — writes
-  `me_dbgtrace.txt`.
-- `ME_XFT_DEBUG=1` (env, always compiled) — Xft draw/cursor traces for
-  the typing-lag hunt (`5f2f86e`).
+- `ME_DBGTRACE` (active with `_DEBUG` / `BCFG=debug`) at `update()` and
+  `screenUpdate()` — writes `me_dbgtrace.txt`. The temporary
+  `ME_XFT_DEBUG` env traces and `DBGR:` lines used for the typing-lag
+  hunt were removed once the fix was confirmed.
 
 Build with debug traces:
 ```bash
-make -f linux32gcc.gmk BTYP=w BCFG=debug XFT=1
+make -f unixgcc.gmk BTYP=w BCFG=debug XFT=1
 ```
 
 #### Remaining hypotheses (all superseded by the Hide stale-save fix above)

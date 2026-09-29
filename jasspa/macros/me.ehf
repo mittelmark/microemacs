@@ -30769,7 +30769,7 @@ $a
 cEBuild since 2024 cA
 
     The  version  which is on Github  should be build using the  Makefile in the
-    root folder of the github project named  linux32gcc.gmk,  macos32gcc.gmk and
+    root folder of the github project named  unixgcc.gmk,  macos32gcc.gmk and
     win32mingw.gmk  (this currently  supports  crosscompiling on Linux using the
     Mingw version of the Gcc compiler.
      
@@ -30825,11 +30825,11 @@ $a
           git clone https://github.com/mittelmark/microemacs.git
           cd microemacs
           ### build  mec terminal executable
-          make -f linux32gcc.gmk mec  
+          make -f unixgcc.gmk mec  
           ### build  bfs terminal executable
-          make -f linux32gcc.gmk bfs/bin
+          make -f unixgcc.gmk bfs/bin
           ### build  mecb terminal executable
-          make -f linux32gcc.gmk mecb
+          make -f unixgcc.gmk mecb
             
     You should then have a file like  cCmecb-0912XX-linux-KERNEL-DISTRO-VERSION.bincA
     in the current folder. The uppercase letters are replaced with the ME version
@@ -30840,7 +30840,7 @@ $a
     
     Hint: the three build steps can be as well done with one command line:
     
-          make -f linux32gcc.gmk mec bfs/bin mecb
+          make -f unixgcc.gmk mec bfs/bin mecb
           
     TODO: MacOS and Windows (with msys2) build explanations
     
@@ -30853,7 +30853,7 @@ $a
     
     You can then compile the mecw and mewb executables like this
     
-          make -f linux32gcc.gmk mew mewb
+          make -f unixgcc.gmk mew mewb
 
     You should then have a file like  cCmewb-0912XX-linux-KERNEL-DISTRO-VERSION.bincA in the
     current folder
@@ -30921,7 +30921,7 @@ $a
                   * aix5.mak IBM AIX 5.x native.
                   * aix4.gmk IBM AIX 4.x using GNU tools.
                   * aix5.gmk IBM AIX 5.x using GNU tools.
-                  * cygwin.gmk Cygwin using GNU tools under Windows.
+                  * unixgcc.gmk Linux, Cygwin and MSYS2 using GNU tools.
                   * darwin.gmk Apple Darwin (console and X-Windows).
                   * dosdj1.mak Microsoft DOS build using djgpp version 1.
                   * dosdj2.mak Microsoft DOS build using djgpp version 2.
