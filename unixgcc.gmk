@@ -105,14 +105,19 @@ mecw:
 nec:
 	cd src && make -f unixgcc.gmk BCOR=ne BTYP=c
 
+# bfs writes its output with fopen("wb+") -> mode 0666 & ~umask = 644,
+# so force the executable bit on every standalone (bfs embedded) binary.
 mecb: bfs/bin mec
 	$(BFSBIN) -a $(OUTMEC) -o "$(RELEASE)-mecb.$(OUTPUT_EXT)" ./jasspa
+	chmod 755 "$(RELEASE)-mecb.$(OUTPUT_EXT)"
 
 mewb: bfs/bin mew
 	$(BFSBIN) -a $(OUTMEW) -o "$(RELEASE)-mewb.$(OUTPUT_EXT)" ./jasspa
+	chmod 755 "$(RELEASE)-mewb.$(OUTPUT_EXT)"
 
 mecwb: bfs/bin mecw
 	$(BFSBIN) -a $(OUTMECW) -o "$(RELEASE)-mecwb.$(OUTPUT_EXT)" ./jasspa
+	chmod 755 "$(RELEASE)-mecwb.$(OUTPUT_EXT)"
 
 release: $(app)
 	make -f release.gmk app="$(app)" "RELEASE=$(RELEASE)" ext=$(OUTPUT_EXT)
@@ -132,6 +137,7 @@ app-image: bfs/bin
 	unzip -p linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb.zip "linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb/bin/mecwb" > mecw-ubuntu-18
 	./bfs/bfs -s mecw-ubuntu-18 # strip of the archive to get the latest macros
 	./bfs/bfs -a mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
+	chmod 755 jme.AppDir/usr/bin/jme
 	appimagetool-x86_64.AppImage jme.AppDir
 	cp Jasspa_MicroEmacs_09-x86_64.AppImage Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage
 	./Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage -V -n

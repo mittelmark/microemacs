@@ -57,7 +57,6 @@ jobs:
         wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg
         install apt-cyg /bin
         chmod +x /bin/apt-cyg
-        apt-cyg install nano
         
     - name: Verify Python Installation
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
