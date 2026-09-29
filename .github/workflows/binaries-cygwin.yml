@@ -2,7 +2,6 @@ name: Binaries Windows (windows-cygwin)
 
 on:
   workflow_dispatch:
-    branches: [ devel ]
 env:
    VERSION: "091226b1"
 jobs:
@@ -12,6 +11,10 @@ jobs:
       matrix:
         arch: [x86_64, x86]    
     steps:
+    # Default checkout: clones exactly the ref the workflow was dispatched on
+    # (branch selected for the run), no git clone inside Cygwin needed anymore
+    # (avoids certificate errors of a fresh Cygwin git).
+    - uses: actions/checkout@v6
     - name: Install Cygwin
       uses: cygwin/cygwin-install-action@v6
       with:
@@ -74,13 +77,15 @@ jobs:
         echo "CYGWIN_MACHINE=$CYGWIN_MACHINE" >> $GITHUB_ENV
         echo "Cygwin Machine: $CYGWIN_MACHINE"
 
-    - name: Clone MicroEmacs
+    - name: Build MicroEmacs
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       run: |
-        mkdir workspace
-        cd workspace
-        git clone -b ${{ github.ref_name }} https://github.com/mittelmark/microemacs.git
-        cd microemacs
+        # the repository was checked out before by actions/checkout,
+        # the working directory contains the branch selected for this run
+        cd $GITHUB_WORKSPACE
+        pwd
+        echo "Checked out ref: $GITHUB_REF_NAME ($GITHUB_SHA)"
+        git log -1 --oneline || echo "(git log not available, continuing)"
         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
         echo "VRS=$VRS"
@@ -100,7 +105,7 @@ jobs:
     - name: Cygwin Combined Release 
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'    
       run: |
-        cd workspace/microemacs
+        cd $GITHUB_WORKSPACE
         make -f unixgcc.gmk release app=mecb
         make -f unixgcc.gmk release app=mewb        
         make -f unixgcc.gmk release app=mecwb
@@ -111,5 +116,5 @@ jobs:
       uses: actions/upload-artifact@v6
       with: 
         name: Release-cygwin-${{ env.CYGWIN_VER }}-${{ env.CYGWIN_MACHINE }}-windows
-        path: c:\cygwin\home\runneradmin\workspace\microemacs\cygwin-*
+        path: ${{ github.workspace }}/cygwin-*
         
