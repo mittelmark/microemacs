@@ -31,7 +31,8 @@ __MicroEmacs: Lightweight but powerful extensible terminal and GUI text editor w
 ## Installation
 
 ### Unix systems<a name="unix"> </a>
-Here in short the single file install command using a shell script for Unix systems and Windows Cygwin or Windows Msys2:
+
+Here in short the single file install command using a shell script for Unix systems like Linux, MacOS or FreeBSD and for Windows Cygwin or Windows Msys2:
 
 ```bash
 bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
@@ -50,11 +51,14 @@ Existing version: 091226b6, Latest version: 091226b6
 Installed version 091226b6 is up to date (>= 091226b6). Nothing to do.
 ```
 
-You can then start  either the  terminal  version with the command `mecb arguments` or the
-X11/Windows version with `mewb arguments`.
+You can  then  start  either  the  terminal  version  with the  command  
+`mecb arguments`  or the  X11/Windows  version  with `mewb  arguments`.  
+For  better display  and UTF-8 font  support you have to install the tool  `fc-list` on X11
+systems  which should be installed  per default on many systems, if not try to
+install the `fontconfig` package on your system.
 
-On Cygwin Windows you might as well need to install `libxt6` for instance on MobaXterm you write `apt install libxt6` to
-run the `mewb` executable.
+On Cygwin Windows you might as well need to install `libxt6` for instance on MobaXterm you should execute 
+`apt install libxt6` to run the `mewb` executable.
 
 For versions before MicroEmacs 091226b6 a few workarounds (luit, xfontsel and
 XLFD fonts) were required for UTF-8 terminals and better X11 font support.
@@ -323,7 +327,7 @@ Here the steps  required to compile the editor on Arch based systems like Manjar
 
 ```bash
 ### install make, unzip, gcc
-sudo pacman -S make gcc ncurses zlib fontconfig xorg-xfontsel ttf-fira-mono
+sudo pacman -S make gcc ncurses zlib pkgconf libxft fontconfig xorg-xfontsel ttf-fira-mono
 ### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
