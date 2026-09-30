@@ -65,15 +65,6 @@ The `src/` directory contains the core C implementation of MicroEmacs, including
 - **`doc/`**: Source documentation (`.smd` files)
 - **`doc/html/`**: Generated HTML documentation
 
-### `fonts/` - Font Assets
-
-Collection of bundled fonts for UI rendering:
-- **`fonts/chivo-mono/`**
-- **`fonts/courier-prime/`**
-- **`fonts/ibm-plex/`**
-- **`fonts/source-code-pro/`**
-- **`fonts/ubuntu-mono/`**
-
 ### `tests/` - Test Suite
 
 Test files organized by language/type:

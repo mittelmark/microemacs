@@ -451,7 +451,6 @@ These are included by headers to generate lookup tables:
 - `bfs/` - Built-in File System tool (embeds macros into executables)
 - `doc/` - Documentation (me.smd → me.ehf)
 - `docs/` - EMF tutorial (emf-tutorial.md)
-- `fonts/` - TTF font packages (Source Code Pro, Ubuntu Mono, etc.)
 - `tests/` - Sample source files in 42+ programming languages
 - `user/` - Example/test user macro files
 - `~/.jasspa/` - User-specific configuration directory
