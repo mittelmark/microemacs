@@ -4,11 +4,17 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 EXEC="${HERE}/usr/bin/jme" 
 export LD_LIBRARY_PATH="${HERE}/usr/lib64"
 if [ ! -d "${HOME}/.jasspa" ]; then 
-    mkdir "${HOME}/.jasspa"
+    mkdir -p "${HOME}/.jasspa"
 fi    
 if [ ! -f  "${HOME}/.jasspa/lsdxenus.edf" ]; then
-    cp ${HERE}/usr/share/spelling/*f ~/.jasspa/
-    cp ${HERE}/usr/share/spelling/README.txt ~/.jasspa/README-spelling.txt
+    cp ${HERE}/usr/share/spelling/*f ~/.jasspa/ 2>/dev/null
+    cp ${HERE}/usr/share/spelling/README.txt ~/.jasspa/README-spelling.txt 2>/dev/null
+fi
+# appimage-builder replaces this script with its own runtime and keeps the
+# original one as AppRun.aib - hand over to it so that the bundled libraries
+# and the AppRun environment are set up correctly (see AppImageBuilder.yml).
+if [ -x "${HERE}/AppRun.aib" ]; then
+    exec "${HERE}/AppRun.aib" "$@"
 fi
 if [ "$1" == "-n" ]; then
     TERM=xterm $EXEC "${@}"
@@ -29,4 +35,3 @@ else
         TERM=xterm $EXEC -n "${0}"
     fi
 fi    
-

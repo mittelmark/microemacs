@@ -1,0 +1,40 @@
+# appimage-builder recipe - see https://appimage-builder.readthedocs.io
+#
+# Normally not called by hand but through the make file:
+#
+#   make -f unixgcc.gmk app-image
+#
+# which stages the AppDir in appimage-build/AppDir from the locally built
+# standalone binary (linux-*-mecwb.bin) and passes its location with
+# --appdir (the "path" key below is documentation only, appimage-builder
+# uses the --appdir option). The version is taken from the environment:
+#
+#   JME_VERSION=<version> appimage-builder --recipe AppImageBuilder.yml \
+#       --appdir appimage-build/AppDir
+#
+# This recipe is the distro-neutral variant, it bundles nothing and uses
+# the shared libraries (libX11, libXft, ncurses, ...) of the host. On
+# Debian/Ubuntu hosts "make -f unixgcc.gmk app-image" selects
+# AppImageBuilder.apt.yml instead which bundles those libraries from the
+# distribution packages.
+#
+version: 1
+script:
+  - test -x "$TARGET_APPDIR/usr/bin/jme" || (echo "AppDir is not staged - run 'make -f unixgcc.gmk app-image'" >&2; exit 1)
+AppDir:
+  path: appimage-build/AppDir
+  app_info:
+    id: jme
+    name: Jasspa MicroEmacs 09
+    icon: jme256
+    version: "{{JME_VERSION}}"
+    exec: usr/bin/jme
+    exec_args: "$@"
+  after_runtime: |
+    mv "$TARGET_APPDIR/AppRun" "$TARGET_APPDIR/AppRun.aib"
+    mv "$TARGET_APPDIR/AppRun.env" "$TARGET_APPDIR/AppRun.aib.env"
+    mv "$TARGET_APPDIR/AppRun.jme" "$TARGET_APPDIR/AppRun"
+    chmod 755 "$TARGET_APPDIR/AppRun" "$TARGET_APPDIR/AppRun.aib"
+AppImage:
+  arch: x86_64
+  file_name: Jasspa_MicroEmacs_{{JME_VERSION}}_x86_64.AppImage

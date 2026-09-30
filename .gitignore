@@ -13,6 +13,9 @@ bfs/bfs
 src/.*/
 # Release packaging output
 /linux-7*/
+# AppImage build output (make -f unixgcc.gmk app-image)
+/appimage-build/
+/Jasspa_MicroEmacs_*_x86_64.AppImage
 # MicroEmacs session residue and batch-test outputs
 # (note: shipped jasspa/macros/*.erf printer configs stay tracked)
 jasspa/macros/*.esf

@@ -19,6 +19,10 @@
 # Run "make -f unixgcc.gmk mecwb"    standalone both (bfs embedded)
 # Run "make -f unixgcc.gmk bfs/bin"  build the bfs tool only
 # Run "make -f unixgcc.gmk release"  package $(app) (default app=mecb)
+# Run "make -f unixgcc.gmk app-image" Linux only, AppImage from local mecwb
+#                            (AppImageBuilder.apt.yml on Debian/Ubuntu hosts,
+#                             AppImageBuilder.yml elsewhere, override with
+#                             APPIMAGE_RECIPE=<recipe>)
 #
 ##############################################################################
 #
@@ -133,25 +137,116 @@ mecwb: bfs/bin mecw
 release: $(app)
 	make -f release.gmk app="$(app)" "RELEASE=$(RELEASE)" ext=$(OUTPUT_EXT)
 
-app-image: bfs/bin
-	chmod 755 jme.AppDir/AppRun
-	-rm -rf jasspa-bfs
-	cp -r jasspa jasspa-bfs
-	cp -r jasspa/spelling jme.AppDir/usr/share/
-	rm -rf jasspa-bfs/contrib
-	rm -rf jasspa-bfs/company
-	rm -rf jasspa-bfs/pixmaps
-	rm -rf jasspa-bfs/spelling
-	rm -f jasspa-bfs/macros/*~
-	rm -f jasspa-bfs/macros/*.bak
-	wget https://github.com/mittelmark/microemacs/releases/download/v09.12.25.beta1/linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb.zip
-	unzip -p linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb.zip "linux-5-ubuntu-18-microemacs-$(VERSION)-mecwb/bin/mecwb" > mecw-ubuntu-18
-	./bfs/bfs -s mecw-ubuntu-18 # strip of the archive to get the latest macros
-	./bfs/bfs -a mecw-ubuntu-18 -o jme.AppDir/usr/bin/jme ./jasspa-bfs
-	chmod 755 jme.AppDir/usr/bin/jme
-	appimagetool-x86_64.AppImage jme.AppDir
-	cp Jasspa_MicroEmacs_09-x86_64.AppImage Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage
-	./Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage -V -n
+#
+# Build a Linux AppImage directly from the locally built standalone binary
+# "$(RELEASE)-mecwb.bin" using "appimage-builder" (https://appimage-builder
+# .readthedocs.io) instead of downloading a pre-built binary from a GitHub
+# release.
+#
+# Two recipes are available:
+#
+#   AppImageBuilder.yml      distro-neutral, uses the shared libraries of
+#                            the host (Fedora, Arch, ...) and bundles
+#                            nothing
+#   AppImageBuilder.apt.yml  Debian/Ubuntu, bundles the X11/ncurses
+#                            libraries and libc from the apt packages
+#
+# The apt recipe is used automatically when "apt-get" and a Debian/Ubuntu
+# codename in /etc/os-release are found, force one of them with
+#
+#   make -f unixgcc.gmk app-image APPIMAGE_RECIPE=AppImageBuilder.yml
+#
+# The AppDir is staged in appimage-build/AppDir so that the tracked files
+# in jme.AppDir/ stay untouched. appimage-builder generates its own AppRun
+# runtime, the staged AppRun script is kept as AppRun.aib and installed
+# again by the "after_runtime" step of the recipe (first run spelling set up
+# + hand over to the generated runtime).
+#
+APPIMAGE_APPDIR := appimage-build/AppDir
+APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage
+
+ifeq ($(PLATFORM),linux)
+#
+# Debian/Ubuntu detection from /etc/os-release. UBUNTU_CODENAME is
+# preferred over VERSION_CODENAME because Ubuntu derivatives (Linux Mint,
+# Pop!OS, ...) carry their own VERSION_CODENAME while UBUNTU_CODENAME
+# always points into the Ubuntu archive.
+#
+APT_UCODE := $(shell sed -n 's/^UBUNTU_CODENAME=//p' /etc/os-release 2>/dev/null | tr -d '"')
+APT_VCODE := $(shell sed -n 's/^VERSION_CODENAME=//p' /etc/os-release 2>/dev/null | tr -d '"')
+APT_ID    := $(shell sed -n 's/^ID=//p' /etc/os-release 2>/dev/null | tr -d '"')
+ifneq ($(APT_UCODE),)
+APT_CODENAME := $(APT_UCODE)
+APT_ARCHIVE  := http://archive.ubuntu.com/ubuntu/
+APT_COMP     := main restricted universe multiverse
+else
+APT_CODENAME := $(APT_VCODE)
+ifeq ($(APT_ID),ubuntu)
+APT_ARCHIVE  := http://archive.ubuntu.com/ubuntu/
+APT_COMP     := main restricted universe multiverse
+else
+APT_ARCHIVE  := http://deb.debian.org/debian/
+APT_COMP     := main
+endif
+endif
+ifeq ($(APT_CODENAME),)
+APT_SOURCELINE :=
+else
+APT_SOURCELINE := deb [arch=amd64] $(APT_ARCHIVE) $(APT_CODENAME) $(APT_COMP)
+endif
+
+ifeq ($(origin APPIMAGE_RECIPE), undefined)
+ifneq ($(APT_SOURCELINE),)
+ifneq ($(shell command -v apt-get 2>/dev/null),)
+APPIMAGE_RECIPE := AppImageBuilder.apt.yml
+else
+APPIMAGE_RECIPE := AppImageBuilder.yml
+endif
+else
+APPIMAGE_RECIPE := AppImageBuilder.yml
+endif
+endif
+
+APPIMAGE_ENV := JME_VERSION=$(VERSION) JME_APT_SOURCELINE='$(APT_SOURCELINE)'
+
+app-image: mecwb
+	@command -v appimage-builder >/dev/null 2>&1 || { \
+		echo "app-image: error: 'appimage-builder' not found in PATH" ; \
+		echo "app-image: install it first, e.g. 'pipx install appimage-builder'" ; \
+		exit 1 ; }
+	@test -f "$(APPIMAGE_RECIPE)" || { \
+		echo "app-image: error: recipe '$(APPIMAGE_RECIPE)' not found" ; exit 1 ; }
+	@if echo "$(APPIMAGE_RECIPE)" | grep -q apt ; then \
+		[ -n "$(APT_SOURCELINE)" ] || { \
+			echo "app-image: error: no Debian/Ubuntu codename in /etc/os-release" ; exit 1 ; } ; \
+		for tool in apt-get apt-cache apt-key dpkg-deb fakeroot ; do \
+			command -v $$tool >/dev/null 2>&1 || { \
+				echo "app-image: error: '$$tool' is required by $(APPIMAGE_RECIPE)" ; exit 1 ; } ; \
+		done ; \
+	fi
+	@echo "app-image: using recipe $(APPIMAGE_RECIPE)"
+	rm -rf $(APPIMAGE_APPDIR)
+	mkdir -p $(APPIMAGE_APPDIR)/usr/bin
+	mkdir -p $(APPIMAGE_APPDIR)/usr/share/applications
+	mkdir -p $(APPIMAGE_APPDIR)/usr/share/pixmaps
+	mkdir -p $(APPIMAGE_APPDIR)/usr/share/spelling
+	cp -a jme.AppDir/. $(APPIMAGE_APPDIR)/
+	mv $(APPIMAGE_APPDIR)/AppRun $(APPIMAGE_APPDIR)/AppRun.jme
+	chmod 644 $(APPIMAGE_APPDIR)/AppRun.jme
+	cp jme.AppDir/jme.desktop $(APPIMAGE_APPDIR)/usr/share/applications/
+	cp jme.AppDir/jme256.png $(APPIMAGE_APPDIR)/usr/share/pixmaps/
+	cp -r jasspa/spelling/. $(APPIMAGE_APPDIR)/usr/share/spelling/
+	cp "$(RELEASE)-mecwb.$(OUTPUT_EXT)" $(APPIMAGE_APPDIR)/usr/bin/jme
+	chmod 755 $(APPIMAGE_APPDIR)/usr/bin/jme
+	rm -f $(APPIMAGE_FILE)
+	$(APPIMAGE_ENV) appimage-builder --recipe $(APPIMAGE_RECIPE) --appdir $(APPIMAGE_APPDIR)
+	chmod 755 $(APPIMAGE_FILE)
+	./$(APPIMAGE_FILE) -V -n
+else
+app-image:
+	@echo "app-image: error: only supported on Linux (detected PLATFORM=$(PLATFORM))"
+	@false
+endif
 
 brew: mecb mewb
 	mkdir -p brew-linux-$(VERSION)/bin
