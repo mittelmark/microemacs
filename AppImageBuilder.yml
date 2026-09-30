@@ -12,15 +12,29 @@
 #   JME_VERSION=<version> appimage-builder --recipe AppImageBuilder.yml \
 #       --appdir appimage-build/AppDir
 #
-# This recipe is the distro-neutral variant, it bundles nothing and uses
-# the shared libraries (libX11, libXft, ncurses, ...) of the host. On
-# Debian/Ubuntu hosts "make -f unixgcc.gmk app-image" selects
-# AppImageBuilder.apt.yml instead which bundles those libraries from the
-# distribution packages.
+# Distro-neutral recipe: bundles nothing and uses the shared libraries of
+# the host. The resulting AppImage needs a host with:
+#
+#   glibc >= 2.36        (Debian 12+, Ubuntu 22.04+, Fedora 36+, Arch, ...)
+#   libX11.so.6          (libx11-6 / libX11)
+#   libXft.so.2          (libxft2 / libXft)
+#   libtinfo.so.6        (libncurses6 / ncurses-libs)
+#   libz.so.1            (zlib1g / zlib)
+#
+# which are present on any desktop Linux system that can run a GUI editor.
+#
+# Packaging uses appimage-builder with --skip-build: the AppDir is staged by
+# the makefile (see unixgcc.gmk) and packaged as-is. The tracked AppRun
+# script in jme.AppDir/AppRun stays the entry point; it runs jme through the
+# host dynamic linker /lib64/ld-linux-x86-64.so.2 and sets up spelling data.
+# (A full appimage-builder build would replace AppRun with its AppRun ELF
+# and require AppRun.env; the script approach avoids that machinery and the
+# old corrupted bundled-glibc runtime.)
 #
 version: 1
 script:
   - test -x "$TARGET_APPDIR/usr/bin/jme" || (echo "AppDir is not staged - run 'make -f unixgcc.gmk app-image'" >&2; exit 1)
+  - test -x "$TARGET_APPDIR/AppRun" || (echo "AppDir AppRun script missing" >&2; exit 1)
 AppDir:
   path: appimage-build/AppDir
   app_info:
@@ -30,11 +44,6 @@ AppDir:
     version: "{{JME_VERSION}}"
     exec: usr/bin/jme
     exec_args: "$@"
-  after_runtime: |
-    mv "$TARGET_APPDIR/AppRun" "$TARGET_APPDIR/AppRun.aib"
-    mv "$TARGET_APPDIR/AppRun.env" "$TARGET_APPDIR/AppRun.aib.env"
-    mv "$TARGET_APPDIR/AppRun.jme" "$TARGET_APPDIR/AppRun"
-    chmod 755 "$TARGET_APPDIR/AppRun" "$TARGET_APPDIR/AppRun.aib"
 AppImage:
   arch: x86_64
   file_name: Jasspa_MicroEmacs_{{JME_VERSION}}_x86_64.AppImage

@@ -1,37 +1,43 @@
 #!/bin/bash
+# AppRun for the MicroEmacs AppImage (distro-neutral recipe).
+#
+# Packaged as-is by appimage-builder --skip-build (see AppImageBuilder.yml
+# and unixgcc.gmk). The type2 AppImageKit runtime execs this script from
+# the mounted AppDir; it must not be replaced by an AppRun ELF.
+#
+# The AppDir bundles no shared libraries: jme is run against the host
+# glibc and the host's libX11/libXft/libtinfo/libz (see AppImageBuilder.yml
+# for the minimum host requirements).
+#
+# jme may have a relative PT_INTERP (lib64/ld-linux-x86-64.so.2) after some
+# packaging steps; the kernel resolves that against the process CWD, which
+# is not the AppDir root at runtime. Exec jme through the host dynamic
+# linker explicitly so the binary runs regardless of PT_INTERP.
 HERE="$(dirname "$(readlink -f "${0}")")"
-## me executuable "
-EXEC="${HERE}/usr/bin/jme" 
-export LD_LIBRARY_PATH="${HERE}/usr/lib64"
-if [ ! -d "${HOME}/.jasspa" ]; then 
+EXEC="${HERE}/usr/bin/jme"
+if [ ! -d "${HOME}/.jasspa" ]; then
     mkdir -p "${HOME}/.jasspa"
-fi    
-if [ ! -f  "${HOME}/.jasspa/lsdxenus.edf" ]; then
-    cp ${HERE}/usr/share/spelling/*f ~/.jasspa/ 2>/dev/null
-    cp ${HERE}/usr/share/spelling/README.txt ~/.jasspa/README-spelling.txt 2>/dev/null
 fi
-# appimage-builder replaces this script with its own runtime and keeps the
-# original one as AppRun.aib - hand over to it so that the bundled libraries
-# and the AppRun environment are set up correctly (see AppImageBuilder.yml).
-if [ -x "${HERE}/AppRun.aib" ]; then
-    exec "${HERE}/AppRun.aib" "$@"
+if [ ! -f "${HOME}/.jasspa/lsdxenus.edf" ]; then
+    cp "${HERE}"/usr/share/spelling/*f "${HOME}/.jasspa/" 2>/dev/null
+    cp "${HERE}/usr/share/spelling/README.txt" "${HOME}/.jasspa/README-spelling.txt" 2>/dev/null
 fi
-if [ "$1" == "-n" ]; then
-    TERM=xterm $EXEC "${@}"
-else
-    if [ -n $DISPLAY ]; then
-        #if [ ! -d ~/.jasspa/ubuntu-fonts ]; then
-        #    cp -r "${HERE}/usr/share/ubuntu-fonts" ~/.jasspa/fonts
-        #fi
-        #if [ command -v xlsfonts &> /dev/null ] && [ command -v xset &> /dev/null ]; then
-        #    res=`xlsfonts | grep -E "ubuntu mono-bold.+17"`
-        #    if [ ! "$res" != "" ]; then
-        #        xset +fp ~/.jasspa/fonts/
-        #        xset fp rehash
-        #    fi
-        #fi
-        $EXEC "${@}"
+if [ ! -x "${EXEC}" ]; then
+    echo "AppRun: error: ${EXEC} not found or not executable" >&2
+    exit 1
+fi
+LOADER=/lib64/ld-linux-x86-64.so.2
+if [ -x "${LOADER}" ]; then
+    if [ "$1" = "-n" ] || [ -z "${DISPLAY}" ]; then
+        TERM=xterm exec "${LOADER}" "${EXEC}" "${@}"
     else
-        TERM=xterm $EXEC -n "${0}"
+        exec "${LOADER}" "${EXEC}" "${@}"
     fi
-fi    
+fi
+# Fallback for systems without /lib64/ld-linux-x86-64.so.2 (should not
+# happen on glibc x86_64): hope the PT_INTERP resolves as-is.
+if [ "$1" = "-n" ] || [ -z "${DISPLAY}" ]; then
+    TERM=xterm exec "${EXEC}" "${@}"
+else
+    exec "${EXEC}" "${@}"
+fi
