@@ -159,10 +159,16 @@ release: $(app)
 # appimage-builder build rewrites PT_INTERP to a relative path and replaces
 # AppRun with its own ELF + AppRun.env.
 #
+# Optional platform tag in the AppImage file name (used by CI), e.g.:
+#   make -f unixgcc.gmk app-image APPIMAGE_PLATFORM_SUFFIX=_ubuntu-22.04
+# -> Jasspa_MicroEmacs_<version>_ubuntu-22.04_x86_64.AppImage
+# Default is empty (local builds keep the plain name).
+#
 APPIMAGE_APPDIR := appimage-build/AppDir
-APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)_x86_64.AppImage
+APPIMAGE_PLATFORM_SUFFIX ?=
+APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)$(APPIMAGE_PLATFORM_SUFFIX)_x86_64.AppImage
 APPIMAGE_RECIPE ?= AppImageBuilder.yml
-APPIMAGE_ENV    := JME_VERSION=$(VERSION)
+APPIMAGE_ENV    := JME_VERSION=$(VERSION) JME_PLATFORM_SUFFIX=$(APPIMAGE_PLATFORM_SUFFIX)
 
 ifeq ($(PLATFORM),linux)
 app-image: mecwb
@@ -173,6 +179,7 @@ app-image: mecwb
 	@test -f "$(APPIMAGE_RECIPE)" || { \
 		echo "app-image: error: recipe '$(APPIMAGE_RECIPE)' not found" ; exit 1 ; }
 	@echo "app-image: using recipe $(APPIMAGE_RECIPE)"
+	@echo "app-image: output $(APPIMAGE_FILE)"
 	rm -rf $(APPIMAGE_APPDIR)
 	mkdir -p $(APPIMAGE_APPDIR)/usr/bin
 	mkdir -p $(APPIMAGE_APPDIR)/usr/share/applications

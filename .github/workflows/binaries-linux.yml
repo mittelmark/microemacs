@@ -48,6 +48,37 @@ jobs:
     - name: make mecwb binary
       run:  make -f linux32gcc.gmk mecwb
 
+    # AppImage is x86_64 only (recipe arch + appimage-builder runtime).
+    # appimage-builder is installed user-local (~/.local/bin), not system-wide.
+    - name: Install AppImage build tools (Intel)
+      if: ${{ !endsWith(matrix.os, '-arm') }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libfuse2 fakeroot squashfs-tools
+        mkdir -p "$HOME/.local/bin"
+        wget -q -O "$HOME/.local/bin/appimage-builder" \
+          https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+        chmod +x "$HOME/.local/bin/appimage-builder"
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+    - name: Build AppImage (Intel)
+      if: ${{ !endsWith(matrix.os, '-arm') }}
+      env:
+        # Extract-and-run avoids FUSE in CI; end users still need libfuse2.
+        APPIMAGE_EXTRACT_AND_RUN: "1"
+      run: |
+        appimage-builder --version
+        make -f linux32gcc.gmk app-image \
+          APPIMAGE_PLATFORM_SUFFIX=_${{ matrix.os }}
+        ls -lh Jasspa_MicroEmacs_${VRS}_${{ matrix.os }}_x86_64.AppImage
+
+    - name: Upload AppImage
+      if: ${{ !endsWith(matrix.os, '-arm') }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: appimage-${{ matrix.os }}-${{ env.VRS }}-${{ env.BRANCH_NAME }}
+        path: Jasspa_MicroEmacs_${{ env.VRS }}_${{ matrix.os }}_x86_64.AppImage
+
     - name: make brew package
       run:  |
         make -f linux32gcc.gmk brew

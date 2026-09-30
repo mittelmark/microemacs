@@ -31,6 +31,14 @@
 # and require AppRun.env; the script approach avoids that machinery and the
 # old corrupted bundled-glibc runtime.)
 #
+# Output file name:
+#   Jasspa_MicroEmacs_<JME_VERSION><JME_PLATFORM_SUFFIX>_x86_64.AppImage
+#
+# JME_VERSION and JME_PLATFORM_SUFFIX must both be set in the environment
+# (appimage-builder errors on missing {{VAR}}). The makefile always sets
+# them; JME_PLATFORM_SUFFIX defaults to empty for local builds and is set
+# to e.g. _ubuntu-22.04 by .github/workflows/binaries-linux.yml.
+#
 version: 1
 script:
   - test -x "$TARGET_APPDIR/usr/bin/jme" || (echo "AppDir is not staged - run 'make -f unixgcc.gmk app-image'" >&2; exit 1)
@@ -46,4 +54,4 @@ AppDir:
     exec_args: "$@"
 AppImage:
   arch: x86_64
-  file_name: Jasspa_MicroEmacs_{{JME_VERSION}}_x86_64.AppImage
+  file_name: Jasspa_MicroEmacs_{{JME_VERSION}}{{JME_PLATFORM_SUFFIX}}_x86_64.AppImage
