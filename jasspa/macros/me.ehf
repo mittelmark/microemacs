@@ -32658,14 +32658,14 @@ $a
  
       ls!while(4)lm!whilele defines a conditional loop that is tested before entry to the
        loop, the ls!while(4)lm!continuele statement within the loop allows the loop to be
-       broken. cD!whilecA loops may be nested only once, but may be contained within a
-      ls!repeat(4)lm!repeat/!untille construct.
+       broken. cD!whilecA loops may be nested twice (three loops maximum), but may be
+      contained within a ls!repeat(4)lm!repeat/!untille construct.
 
     cD!repeat/!untilcA
 
       ls!repeat(4)lm!repeatle defines a conditional loop that is tested on exit from the
-       loop. cD!repeatcA loops may be nested only once, but may be contained within a
-      ls!while(4)lm!while/!donele construct.
+       loop. cD!repeatcA loops may be nested twice (three loops maximum), but may be
+      contained within a ls!while(4)lm!while/!donele construct.
 
     cDdefine-macro/!emacrocA
  
@@ -50678,9 +50678,10 @@ $a
     A cD!continuecA may be used in the loop, this immediately returns control to
     the cD!whilecA statement and skips the rest of the section.
 
-    cD!while statement may be nested only once.cA That is, only two cD!whilecA statement may
+    cD!while statement may be nested twice.cA That is, only three cD!whilecA statement may
     be outstanding at a time, a ls!repeat(4)lm!repeat(4)le statement may be used within the
-    cD!whilecA to create a third inner loop if required. Alternatively the ls!goto(4)lm!goto(4)le
+    cD!whilecA to create further inner loops if required. A fourth nested cD!whilecA
+    loop raises a cC"Too many nested !while loops"cA error. Alternatively the ls!goto(4)lm!goto(4)le
     used in conjunction with the ls!if(4)lm!if(4)le statement may be used to construct
     even more nested loops.
 
@@ -50748,10 +50749,11 @@ $a
 
     The cD!repeatcA command operates in a similar fashion to ls!while(4)lm!while/!donele except
     the condition is tested at the end. Control finishes if the condition is
-    met. As with the ls!while(4)lm!while(4)le there is only a single nested repeat cD!repeatcA
-    statement possible. So in other words there can be only one cD!repeatcA statement within
-    an outer cD!repeatcA if you need more deeply nested loops you might use
-    cD!whilecA loops within these cD!repeatcA loops.
+    met. As with the ls!while(4)lm!while(4)le up to three cD!repeatcA statements may be
+    outstanding at a time, so there can be two nested cD!repeatcA statements within an
+    outer cD!repeatcA. A fourth nested cD!repeatcA loop raises a
+    cC"Too many nested !repeat loops"cA error. If you need more deeply nested loops you
+    might use cD!whilecA loops within these cD!repeatcA loops.
 
 
 cEEXAMPLE cA

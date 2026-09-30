@@ -564,8 +564,9 @@ There are as well  `!goto`  and  `!tgoto`  directives,  which  allow  jumps to
 certain  labels  as  known  from  languages  like C,  `!tgoto`  has as  well a
 condition  and might be used in cases where nested loops are required.  Please
 have a look at the  MicroEmacs  help pages for more  information  about  these
-directives. With the new ME version the nested loop restriction is removed, so
-with this version you can as well create nested loops.
+directives. With the new ME version nested loops are supported, you can nest
+up to three `!while` or `!repeat` loops, so with this version you can as well
+create nested loops.
 
 Just for curiosity, let's create a nested loop with the old ME version:
 

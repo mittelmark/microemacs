@@ -418,8 +418,8 @@ These are included by headers to generate lookup tables:
 **Control Flow:**
 
 - `!if`, `!elif`, `!else`, `!endif` - Conditional execution
-- `!while`, `!done` - While loops (maximal two nested loops)
-- `!repeat`, `!until` - Repeat-until loops (maximal two nested loops)
+- `!while`, `!done` - While loops (maximal three nested loops)
+- `!repeat`, `!until` - Repeat-until loops (maximal three nested loops)
 - `!force` - Ignore errors in next command
 
 **File Types:**

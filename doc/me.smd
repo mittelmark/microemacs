@@ -33063,14 +33063,14 @@ $a
  
   > [!while](!while(4)) defines a conditional loop that is tested before entry to the
      loop, the [!continue](!while(4)) statement within the loop allows the loop to be
-     broken. __!while__ loops may be nested only once, but may be contained within a
-    [!repeat/!until](!repeat(4)) construct.
+     broken. __!while__ loops may be nested twice (three loops maximum), but may be
+    contained within a [!repeat/!until](!repeat(4)) construct.
 
   __!repeat/!until__
 
   > [!repeat](!repeat(4)) defines a conditional loop that is tested on exit from the
-     loop. __!repeat__ loops may be nested only once, but may be contained within a
-    [!while/!done](!while(4)) construct.
+     loop. __!repeat__ loops may be nested twice (three loops maximum), but may be
+    contained within a [!while/!done](!while(4)) construct.
 
   __define-macro/!emacro__
  
@@ -51352,9 +51352,10 @@ $a
   A __!continue__ may be used in the loop, this immediately returns control to
   the __!while__ statement and skips the rest of the section.
 
-  __!while statement may be nested only once.__ That is, only two __!while__ statement may
+  __!while statement may be nested twice.__ That is, only three __!while__ statement may
   be outstanding at a time, a [!repeat(4)](!repeat(4)) statement may be used within the
-  __!while__ to create a third inner loop if required. Alternatively the [!goto(4)](!goto(4))
+  __!while__ to create further inner loops if required. A fourth nested __!while__
+  loop raises a _"Too many nested !while loops"_ error. Alternatively the [!goto(4)](!goto(4))
   used in conjunction with the [!if(4)](!if(4)) statement may be used to construct
   even more nested loops.
 
@@ -51425,10 +51426,11 @@ $a
 
   The __!repeat__ command operates in a similar fashion to [!while/!done](!while(4)) except
   the condition is tested at the end. Control finishes if the condition is
-  met. As with the [!while(4)](!while(4)) there is only a single nested repeat __!repeat__
-  statement possible. So in other words there can be only one __!repeat__ statement within
-  an outer __!repeat__ if you need more deeply nested loops you might use
-  __!while__ loops within these __!repeat__ loops.
+  met. As with the [!while(4)](!while(4)) up to three __!repeat__ statements may be
+  outstanding at a time, so there can be two nested __!repeat__ statements within an
+  outer __!repeat__. A fourth nested __!repeat__ loop raises a
+  _"Too many nested !repeat loops"_ error. If you need more deeply nested loops you
+  might use __!while__ loops within these __!repeat__ loops.
 
 
 ## EXAMPLE

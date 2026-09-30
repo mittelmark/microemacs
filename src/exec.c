@@ -893,6 +893,8 @@ dobuf(meLine *hlp)
     meLine *rlp;                  /* line to repeat */
     meLine *wlpSaved;             /* saved outer while line (for nesting) */
     meLine *rlpSaved;             /* saved outer repeat line (for nesting) */
+    meLine *wlpSaved2;            /* saved outermost while line (3rd nesting level) */
+    meLine *rlpSaved2;            /* saved outermost repeat line (3rd nesting level) */
     
     clexec = meTRUE;                      /* in cline execution */
     execstr = NULL ;
@@ -903,6 +905,8 @@ dobuf(meLine *hlp)
     rlp = NULL;
     wlpSaved = NULL;
     rlpSaved = NULL;
+    wlpSaved2 = NULL;
+    rlpSaved2 = NULL;
     lp = hlp->next;
     while (lp != hlp)
     {
@@ -1042,6 +1046,12 @@ loop_round:
             case DRREPEAT:                      /* REPEAT */
                 if (rlp != lp)
                 {
+                    if (rlpSaved2 != NULL)
+                    {
+                        status = mlwrite(MWABORT|MWWAIT,(meUByte *)"Too many nested !repeat loops");
+                        break;
+                    }
+                    rlpSaved2 = rlpSaved;       /* Shift saved lines down */
                     rlpSaved = rlp;             /* Save outer repeat line */
                     rlp = lp;                   /* Set current repeat line */
                     status = meTRUE;
@@ -1053,7 +1063,8 @@ loop_round:
                 if (rlp != NULL)
                 {
                     rlp = rlpSaved;             /* Restore outer repeat line */
-                    rlpSaved = NULL;
+                    rlpSaved = rlpSaved2;       /* Shift saved lines up */
+                    rlpSaved2 = NULL;
                     status = meTRUE;
                 }
                 else
@@ -1089,6 +1100,12 @@ loop_round:
             case DRWHILE:                       
                 if (wlp != lp)
                 {
+                    if (wlpSaved2 != NULL)
+                    {
+                        status = mlwrite(MWABORT|MWWAIT,(meUByte *)"Too many nested !while loops");
+                        break;
+                    }
+                    wlpSaved2 = wlpSaved;       /* Shift saved lines down */
                     wlpSaved = wlp;             /* Save outer while line */
                     wlp = lp;                   /* Set current while line */
                 }
@@ -1100,7 +1117,8 @@ loop_round:
                 if (wlp == lp)
                 {
                     wlp = wlpSaved;
-                    wlpSaved = NULL;
+                    wlpSaved = wlpSaved2;       /* Shift saved lines up */
+                    wlpSaved2 = NULL;
                 }
                 status = meTRUE;
                 break;

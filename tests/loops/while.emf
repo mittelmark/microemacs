@@ -1,7 +1,7 @@
 ; -!- emf -!-
 ; Copyright (C) 2026 $COMPANY_REF$.
 ;
-; $COMPANY_LICENSE:75$ äüäß
+; $COMPANY_LICENSE:75$ ï¿½ï¿½ï¿½ï¿½
 ;
 ; Last Modified : <260830.1004>
 ;
@@ -57,6 +57,50 @@ define-macro t-mix
   -1 ml-write "t-mix finished"
 !emacro
 
+define-macro t-while3
+  set-variable #l0 1
+  set-variable #l3 0
+  !while &les #l0 3
+    set-variable #l1 1
+    !while &les #l1 3
+      set-variable #l2 1
+      !while &les #l2 3
+        set-variable #l3 &add #l3 1
+        set-variable #l2 &add #l2 1
+      !done
+      set-variable #l1 &add #l1 1
+    !done
+    set-variable #l0 &add #l0 1
+  !done
+  !if &seq #l3 "8"
+    -1 ml-write "t-while3 finished count=8 OK"
+  !else
+    -1 ml-write &spr "t-while3 FAILED count=%d" #l3
+  !endif
+!emacro
+
+define-macro t-repeat3
+  set-variable #l0 1
+  set-variable #l3 0
+  !repeat
+    set-variable #l1 1
+    !repeat
+      set-variable #l2 1
+      !repeat
+        set-variable #l3 &add #l3 1
+        set-variable #l2 &add #l2 1
+      !until &gre #l2 2
+      set-variable #l1 &add #l1 1
+    !until &gre #l1 2
+    set-variable #l0 &add #l0 1
+  !until &gre #l0 2
+  !if &seq #l3 "8"
+    -1 ml-write "t-repeat3 finished count=8 OK"
+  !else
+    -1 ml-write &spr "t-repeat3 FAILED count=%d" #l3
+  !endif
+!emacro
+
 define-macro t-chessboard
   set-variable .l 1
   set-variable .letters "|A|B|C|D|E|F|G|H|"
@@ -78,6 +122,8 @@ define-macro t-chessboard
 t-while
 t-repeat
 t-mix
+t-while3
+t-repeat3
 t-chessboard
 exit-emacs
 
