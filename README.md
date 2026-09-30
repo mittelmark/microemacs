@@ -326,8 +326,8 @@ sudo dnf install wl-clipboard # if running Wayland for copy and paste support
 Here the steps  required to compile the editor on Arch based systems like Manjaro.
 
 ```bash
-### install make, unzip, gcc
-sudo pacman -S make gcc ncurses zlib pkgconf libxft fontconfig xorg-xfontsel ttf-fira-mono
+### install make, unzip, gcc, etc
+sudo pacman -S make gcc ncurses git zlib pkgconf libxft fontconfig xorg-xfontsel ttf-fira-mono
 ### fetch repo
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
@@ -340,7 +340,7 @@ make -f unixgcc.gmk mecb
 make -f unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
 make -f unixgcc.gmk mecwb
-### for more fonts and better font selection
+### for more fonts and better font selection (not really neccessary anymore)
 xset fp rehash ## update the fontpath settings to the current session
 ```
 
