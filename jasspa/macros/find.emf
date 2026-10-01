@@ -519,7 +519,7 @@ set-variable .fhook-grep.command-desc  "|Goto \HMatch|\HRerun Grep||"
 
 0 define-macro find-proc-spawn
     !if &seq $platform "win32"
-        set-variable #l0 "mecw32"
+        set-variable #l0 "mecw"
     !else
         set-variable #l0 "me"
     !endif

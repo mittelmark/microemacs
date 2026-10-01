@@ -61,10 +61,8 @@ make -f unixgcc.gmk BTYP=cw # Combined terminal and X11 build
 ```
 
 The  platform  (Linux,  Cygwin,  MSYS2)  is auto-detected  via  `uname -o`.
-`linux32gcc.gmk`  remains  as a  forwarding  shim  (`include  unixgcc.gmk`)
-for backwards compatibility.
 
-Output e.g.: `src/.linux32gcc-release-mecw/mecw` (combined console+X11, Linux),
+Output e.g.: `src/.linuxgcc-release-mecw/mecw` (combined console+X11, Linux),
 `src/.cygwin-release-mecw/mecw.exe` (Cygwin) or `src/.msysunix-release-mec/mec.exe` (MSYS2)
 
 ### MinGW/MSYS2 Windows Build
@@ -112,9 +110,9 @@ Output e.g.: `src/.linux32gcc-release-mecw/mecw` (combined console+X11, Linux),
 
 ### Build Output
 
-- Executable: `src/.linux32gcc-release-mec/mec` (console)
-- Executable: `src/.linux32gcc-release-mew/mew` (X11)
-- Executable: `src/.linux32gcc-release-mecw/mecw` (both)
+- Executable: `src/.linuxgcc-release-mec/mec` (console)
+- Executable: `src/.linuxgcc-release-mew/mew` (X11)
+- Executable: `src/.linuxgcc-release-mecw/mecw` (both)
 
 ### Build Options
 
@@ -161,7 +159,7 @@ Example debug build command:
 make -f winmingwgcc.mak BDIST=msys2unix BTYP=c BCFG=debug all
 ```
 
-Output: `.ucrt64unix-debug-mec/mec32.exe`
+Output: `.ucrt64unix-debug-mec/mec.exe`
 
 When run, this creates `me_dbgtrace.txt` with entries like:
 
@@ -191,22 +189,20 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 | File | Platform | Notes |
 |------|----------|-------|
 | `unixgcc.gmk` | Linux / Cygwin / MSYS2 (primary) | GNU Make, gcc, auto-detects platform via `uname -o` |
-| `linux32gcc.gmk` | Shim → `unixgcc.gmk` | Kept for backwards compatibility |
 | `linuxmingwgcc.gmk` | Linux cross-compile to Windows | MinGW `i686-w64-mingw32-gcc` |
 | `freebsd.mak` | FreeBSD | Uses default `make` (not gmake) |
-| `macos32gcc.gmk` | macOS | GNU Make |
+| `macosgcc.gmk` | macOS | GNU Make |
 | `winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
 | `win32winlibs.gmk` | Windows (WinLibs) | Native Windows gcc |
-| `Makefile` | Portable dispatcher | plain `make` → unixgcc.gmk / freebsd.mak / macos32gcc.gmk (BSD+GNU make parseable) |
+| `Makefile` | Portable dispatcher | plain `make` → unixgcc.gmk / freebsd.mak / macosgcc.gmk (BSD+GNU make parseable) |
 
 **Source Makefiles** (in `src/`):
 
 | File | Platform |
 |------|----------|
 | `unixgcc.gmk` | Linux / Cygwin / MSYS2 gcc (primary) |
-| `linux32gcc.gmk` | Shim → `unixgcc.gmk` |
 | `linuxmingwgcc.mak` | Cross-compile from Linux to Windows |
-| `macos32gcc.gmk` | macOS |
+| `macosgcc.gmk` | macOS |
 | `freebsd.mak` | FreeBSD |
 | `openbsd.gmk` | OpenBSD (not actual) |
 | `winmingwgcc.mak` | MSYS2 native Windows |
@@ -576,10 +572,10 @@ No formal test suite exists. Manual testing:
 
 ```bash
 # Test console build
-TERM=xterm-256color MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec
+TERM=xterm-256color MENAME=test MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec
 
 # Test GUI build  
-MENAME=test MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
+MENAME=test MEPATH=jasspa/macros ./src/.linuxgcc-release-mew/mew
 ```
 
 HInt: The user files are then inside the jasspa/macros folder and should be deleted from time to time.
@@ -604,7 +600,7 @@ define-macro start-up
 Run it with:
 
 ```bash
-MENAME=temp MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./user/simple
+MENAME=temp MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @./user/simple
 ```
 
 The  `@./user/simple`  argument tells ME to execute  `user/simple.emf`  as the
@@ -628,7 +624,7 @@ define-macro start-up
 To check clipboard spawn stats, capture stderr when running:
 
 ```bash
-MENAME=temp MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./user/simple 2>/tmp/clip-stats.txt
+MENAME=temp MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @./user/simple 2>/tmp/clip-stats.txt
 cat /tmp/clip-stats.txt
 ```
 
@@ -658,7 +654,7 @@ not work in non-interactive mode.
 
 ```bash
 # Linux
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @./tests/test-basics
+MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @./tests/test-basics
 cat tests/test-output.txt
 
 # macOS
@@ -666,7 +662,7 @@ MEPATH=jasspa/macros ./src/.darwin-release-mec/mec @tests/test-basics
 cat tests/test-output.txt
 
 # Windows (MinGW64 or MSYS2 shell)
-MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec32.exe @tests/test-basics
+MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec.exe @tests/test-basics
 cat tests/test-output.txt
 ```
 
@@ -701,7 +697,7 @@ TEST:all-tests=complete
 
 ```bash
 rm -f tests/test-output.txt
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics 2>/dev/null
+MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-basics 2>/dev/null
 if [ -s tests/test-output.txt ] && grep -q "TEST:all-tests=complete" tests/test-output.txt; then
     echo "PASS: All tests completed"
 else
@@ -840,7 +836,7 @@ git push origin --delete featurebranch
 |----------|---------|
 | `binaries-linux.yml` | Ubuntu 22.04/24.04 (x86_64 + ARM) builds |
 | `binaries-linuxmingwgcc.yml` | Linux cross-compile to Windows |
-| `binaries-macos32gcc.yml` | macOS builds (Intel + ARM) |
+| `binaries-macosgcc.yml` | macOS builds (Intel + ARM) |
 | `binaries-winlibs.yml` | Windows native builds |
 | `binaries-msys2.yml` | MSYS2 Windows builds |
 | `binaries-fedorax86_64.yml` | Fedora-specific builds |
@@ -920,10 +916,10 @@ meSystemCfg ^= meSYSTEM_ANSICOLOR;
 **Testing on XWayland**:
 ```bash
 # Build
-cd src && make -f linux32gcc.gmk
+cd src && make -f unixgcc.gmk
 
 # Test GUI version
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
+MEPATH=jasspa/macros ./src/.linuxgcc-release-mew/mew
 
 # Enable clipboard in user-setup (M-x user-setup) -> Platform tab -> "Use Clipboard"
 
@@ -1065,10 +1061,10 @@ When `$XDG_SESSION_TYPE=wayland` and `wl-copy`/`wl-paste` are available:
 
 ```bash
 # Build
-cd src && make -f linux32gcc.gmk
+cd src && make -f unixgcc.gmk
 
 # Test GUI version
-MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew
+MEPATH=jasspa/macros ./src/.linuxgcc-release-mew/mew
 
 # Enable clipboard in user-setup (M-x user-setup) -> Platform tab -> "Use Clipboard"
 ```

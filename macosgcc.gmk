@@ -32,22 +32,22 @@ bfs/bin:
 	cd bfs && $(MAKE) CC=$(CC)
 
 mec:
-	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=c
+	cd src && $(MAKE) -f macosgcc.gmk CC=$(CC) BTYP=c
 
 mew:
-	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=w XFT=$(XFT)
+	cd src && $(MAKE) -f macosgcc.gmk CC=$(CC) BTYP=w XFT=$(XFT)
 
 mecw:
-	cd src && $(MAKE) -f macos32gcc.gmk CC=$(CC) BTYP=cw XFT=$(XFT)
+	cd src && $(MAKE) -f macosgcc.gmk CC=$(CC) BTYP=cw XFT=$(XFT)
 
 mecb: mec bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mec/mec -o $(RELEASE)-mecb.bin ./jasspa
+	./bfs/bfs -a ./src/.macosgcc-release-mec/mec -o $(RELEASE)-mecb.bin ./jasspa
 
 mewb: mew bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mew$(XFTDIR)/mew -o $(RELEASE)-mewb.bin ./jasspa
+	./bfs/bfs -a ./src/.macosgcc-release-mew$(XFTDIR)/mew -o $(RELEASE)-mewb.bin ./jasspa
 
 mecwb: mecw bfs/bin
-	./bfs/bfs -a ./src/.macos32gcc-release-mecw$(XFTDIR)/mecw -o $(RELEASE)-mecwb.bin ./jasspa
+	./bfs/bfs -a ./src/.macosgcc-release-mecw$(XFTDIR)/mecw -o $(RELEASE)-mecwb.bin ./jasspa
 
 version:
 	echo "VERSION: $(VERSION)"

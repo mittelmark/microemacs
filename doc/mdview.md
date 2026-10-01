@@ -124,8 +124,8 @@ Standard test suite passes (11 tests) - mdview changes don't affect core functio
 ### Manual Testing
 
 ```bash
-cd src && make -f linux32gcc.gmk BTYP=c
-MEPATH=../jasspa/macros ./.linux32gcc-release-mec/mec
+cd src && make -f unixgcc.gmk BTYP=c
+MEPATH=../jasspa/macros ./.linuxgcc-release-mec/mec
 
 # From a .md file buffer:
 mdview                  # Renders current file

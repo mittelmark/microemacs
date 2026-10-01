@@ -96,7 +96,7 @@ GitHub Actions workflows for automated builds and releases.
 ## Build Files
 
 - `Makefile` - Main build configuration
-- `linux32gcc.gmk` - Linux GCC build rules
+- `unixgcc.gmk` - Linux GCC build rules
 - `linuxmingwgcc.gmk` - MinGW cross-compilation rules
 - Other `.gmk`/`.mak` files for platform-specific builds
 

@@ -27,7 +27,7 @@
 # Notes:
 #   The platform is auto-detected with "uname -o":
 #
-#     GNU/Linux  -> -D_LINUX -D_LINUX26   output .linux32gcc-*   (historical)
+#     GNU/Linux  -> -D_LINUX -D_LINUX26   output .linuxgcc-*
 #     Cygwin     -> -D_CYGWIN             output .cygwin-*
 #     Msys       -> -D_CYGWIN             output .msysunix-*    (MSYS2/mintty)
 #
@@ -77,7 +77,7 @@ ifeq ($(UNAME_S),FreeBSD)
 $(error FreeBSD: run "make -f freebsd.mak" (BSD make) instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
 endif
 ifeq ($(UNAME_S),Darwin)
-$(error macOS: run "make -f macos32gcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
+$(error macOS: run "make -f macosgcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
 endif
 #
 # Platform detection - "uname -o" gives GNU/Linux, Cygwin or Msys.
@@ -92,7 +92,7 @@ PLATFORM := linux
 endif
 
 ifeq ($(PLATFORM),linux)
-BUILDID  = linux32gcc
+BUILDID  = linuxgcc
 EXE      =
 CCDEFS   = -D_LINUX -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
 CCFLAGSR = -O3 -flto=auto -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-unused-result
@@ -228,7 +228,7 @@ $(OUTDIR):
 
 # Legacy convenience targets (still work, now via sub-make)
 # Note: primary output is now $(OUTDIR)/$(PRGFILE)
-# e.g. .linux32gcc-release-mec/mec, .cygwin-release-mec/mec.exe,
+# e.g. .linuxgcc-release-mec/mec, .cygwin-release-mec/mec.exe,
 #      .msysunix-release-mec/mec.exe
 # These wrappers do NOT copy to src/ root to avoid polluting the source dir.
 # .PHONY: a stray mec/mew binary in src/ must not shadow the target.

@@ -371,7 +371,7 @@ on a Linux system. To check the executable on Linux using wine you do
 something like this:
 
 ```
-MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/path/to/mew32.exe
+MEPATH=Z:/home/username/workspace/microemacs/jasspa/macros wine ~/path/to/mew.exe
 ```
 
 You can as well create an alias to shorten the command line.
@@ -401,7 +401,7 @@ apt install xfontsel mkfontscale xset
 
 The  same  _unixgcc.gmk_  makefile  is  used  on  Cygwin  and  Linux,  the
 platform  is detected  automatically,  the Cygwin output folders are named
-_.cygwin-release-*_ and the Linux ones _.linux32gcc-release-*_.
+_.cygwin-release-*_ and the Linux ones _.linuxgcc-release-*_.
 
 <a name="msys2"> </a>
 ### Compilation on MSYS2 Windows

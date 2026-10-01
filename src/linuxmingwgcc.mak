@@ -186,7 +186,7 @@ BTYP     = w
 endif
 
 OUTDIR   = $(BOUTDIR)-$(BCOR)$(BTYP)
-PRGNAME  = $(BCOR)$(BTYP)32
+PRGNAME  = $(BCOR)$(BTYP)
 PRGFILE  = $(PRGNAME)$(EXE)
 PRGHDRS  = ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h esearch.h eskeys.h estruct.h eterm.h evar.h evers.h eopt.h \
 	   ebind.def efunc.def eprint.def evar.def etermcap.def emode.def eskeys.def bfs.h \

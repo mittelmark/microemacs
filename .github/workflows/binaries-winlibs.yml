@@ -87,8 +87,8 @@ jobs:
         mkdir MicroEmacs09-${env:VERSION}-Windows
         mkdir MicroEmacs09-${env:VERSION}-Windows/bin
         cp bfs/bfs.exe MicroEmacs09-${env:VERSION}-Windows/bin/
-        cp src/.win32winlibs-release-mew/mew32.exe MicroEmacs09-${env:VERSION}-Windows/bin/
-        cp src/.win32winlibs-release-mec/mec32.exe MicroEmacs09-${env:VERSION}-Windows/bin/        
+        cp src/.win32winlibs-release-mew/mew.exe MicroEmacs09-${env:VERSION}-Windows/bin/
+        cp src/.win32winlibs-release-mec/mec.exe MicroEmacs09-${env:VERSION}-Windows/bin/        
         cp license.txt MicroEmacs09-${env:VERSION}-Windows/
         cp COPYING MicroEmacs09-${env:VERSION}-Windows/
         cp README-standalone.md MicroEmacs09-${env:VERSION}-Windows/

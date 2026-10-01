@@ -73,7 +73,7 @@ jobs:
          make -f winmingwgcc.mak print-info
          make -f winmingwgcc.mak BTYP=c all BDIST=${{ matrix.subsystem }}64
          ls -la .*-release-mec/
-         ./.*-release-mec/mec32.exe -V
+         ./.*-release-mec/mec.exe -V
          cd ..
     - name: compile mec msys2unix executable
       if: ${{ matrix.subsystem == 'msys' && matrix.sys == 'ucrt64' }}
@@ -82,7 +82,7 @@ jobs:
          make -f winmingwgcc.mak print-info
          make -f winmingwgcc.mak BTYP=c all BDIST=msys2unix
          ls -la .*-release-mec/
-         ./.*-release-mec/mec32.exe -V
+         ./.*-release-mec/mec.exe -V
          cd ..
          make -f winmingwgcc.gmk release app=mecb BDIST=msys2unix
          ls -la *
