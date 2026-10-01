@@ -3,6 +3,9 @@
 #version=091224b1
 VERSION := $(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | paste -sd '' | sed 's/0909/09/')
 CC=gcc-11
+ifeq (,$(shell command -v gcc-11 2>/dev/null))
+CC=cc
+endif
 MAKE=make
 ##MAKE=/usr/local/opt/make/libexec/gnubin/make
 KERNEL := $(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/' | sed 's/24/15/' | sed 's/25/26/')

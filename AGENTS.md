@@ -7,7 +7,7 @@ mittelmark) is an  OS-independent,  extensible  text editor with both terminal
 (`mec`) and GUI/X11 (`mew`) variants. The interface is implemented in ME macro
 language (`.emf` files). Licensed under **GPLv2**.
 
-Current version: **v09.12.26b5** (defined in `src/evers.h`).
+Current version: **v09.12.26b6** (defined in `src/evers.h`).
 
 ### Key Characteristics
 
@@ -353,7 +353,7 @@ functionName(int arg)
 | `edef.h` | Global variable definitions (839 lines) |
 | `efunc.h` | Function declarations |
 | `eterm.h` | Terminal interface API (664 lines) |
-| `evers.h` | Version definition (v09.12.26b5) |
+| `evers.h` | Version definition (v09.12.26b6) |
 | `eopt.h` | Optional feature flags |
 
 ### Definition Files (`.def`)
@@ -684,7 +684,7 @@ Each test writes a `TEST:key=value` line. The test passes if all expected keys a
 
 
 ```
-TEST:version=20091226b3
+TEST:version=20091226b6
 TEST:frame-width=120
 TEST:frame-depth=30
 TEST:window-width=119

@@ -454,6 +454,18 @@ detects  the  platform  and  forwards  the  goals  to  `freebsd.mak`.
 
 <a name="Downloads"> </a>
 
+## Download Prebuild MicroEmacs Executables (v09.12.26b6)
+
+This release provides the following new features in comparison to v09.12.26b5:
+
+- Encodings: UTF-8 support on all platforms and for both versions (terminal and GUI).
+- Encodings: Per buffer encoding, parallel use of UTF-8, ISO and Windows encodings is possible
+- GUI-Fonts: better font rendering on Unix using libxft for TrueType fonts (requires fontconfig install).
+- Interface: Font-Dialog on Unix systems for the GUI version selecting TrueType fonts
+- AppImage: Ubuntu 22 based app images available again
+- Macro language: triple nested while and repeat loops.
+- Building: More Unified Makefile to target Linux, FreeBSD, macOS, Msys2 and Cygwin builds
+
 ## Download Prebuild MicroEmacs Executables (v09.12.26b5)
 
 
