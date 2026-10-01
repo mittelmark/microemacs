@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Test on Linux
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -37,7 +37,7 @@ jobs:
             exit 1
           fi
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: test-results-linux
@@ -47,7 +47,7 @@ jobs:
     runs-on: macos-latest
     name: Test on macOS
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build mec (console)
         run: | 
             brew install xquartz
@@ -78,7 +78,7 @@ jobs:
             exit 1
           fi
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: test-results-macos
@@ -88,11 +88,11 @@ jobs:
     runs-on: windows-latest
     name: Test on Windows (MinGW64)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: mingw64
+          msystem: ucrt64
           install: mingw-w64-x86_64-gcc make
       - name: Build mec (console)
         shell: msys2 {0}
@@ -103,7 +103,7 @@ jobs:
         shell: msys2 {0}
         run: |
           ls src/
-          MEPATH=jasspa/macros src/.mingw64win-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
+          MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: msys2 {0}
@@ -119,7 +119,7 @@ jobs:
             exit 1
           fi
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: test-results-windows-mingw
@@ -129,7 +129,7 @@ jobs:
     runs-on: windows-latest
     name: Test on Cygwin (x86_64)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
@@ -168,7 +168,7 @@ jobs:
             exit 1
           fi
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: test-results-cygwin-x64
@@ -178,7 +178,7 @@ jobs:
     runs-on: windows-latest
     name: Test on Cygwin (x86)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Cygwin
         uses: cygwin/cygwin-install-action@v6
         with:
@@ -217,7 +217,7 @@ jobs:
             exit 1
           fi
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: test-results-cygwin-x86
@@ -227,7 +227,7 @@ jobs:
     runs-on: windows-2022
     name: Test on Windows (WinLibs)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download winlibs
         shell: cmd
         run: |
@@ -259,7 +259,7 @@ jobs:
             exit /b 1
           )
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: test-results-windows-winlibs
