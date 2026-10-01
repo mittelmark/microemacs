@@ -84,9 +84,9 @@ jobs:
           name: test-results-macos
           path: tests/test-output.txt
 
-  windows-mingw:
+  windows-ucrt64:
     runs-on: windows-latest
-    name: Test on Windows (MinGW64)
+    name: Test on Windows (UCRT64)
     steps:
       - uses: actions/checkout@v6
       - name: Setup MSYS2
