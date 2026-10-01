@@ -36,28 +36,28 @@ jobs:
         echo "BDIST=${{ matrix.bdist }}" >> $GITHUB_ENV
 
     - name: Build bfs binary
-      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} bfs/bin
+      run: make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} bfs/bin
 
     - name: Build mec binary
-      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mec
+      run: make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mec
 
     - name: Build mew binary
-      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mew
+      run: make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mew
 
     - name: Build mecb bundle
-      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mecb
+      run: make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mecb
 
     - name: Build mewb bundle
-      run: make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mewb
+      run: make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} mewb
 
     - name: Create release package
       run: |
-        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mecb
-        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mewb
+        make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mecb
+        make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mewb
 
     - name: Create brew package
       run: |
-        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} brew
+        make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} brew
         mkdir -p brew-${{ matrix.label }}-${{ env.VRS }}
         cp -r brew-windows-*/* brew-${{ matrix.label }}-${{ env.VRS }}/
         zip -r brew-${{ matrix.label }}-${{ env.VRS }}.zip brew-${{ matrix.label }}-${{ env.VRS }}/*
@@ -65,7 +65,7 @@ jobs:
 
     - name: Create scoop package
       run: |
-        make -f linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} scoop
+        make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} scoop
         mkdir -p scoop-${{ matrix.label }}-${{ env.VRS }}
         cp -r mecw-scoop-*/* scoop-${{ matrix.label }}-${{ env.VRS }}/
         zip -r scoop-${{ matrix.label }}-${{ env.VRS }}.zip scoop-${{ matrix.label }}-${{ env.VRS }}/*

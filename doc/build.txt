@@ -41,7 +41,7 @@ BUILD
             *  aix5.mak IBM AIX 5.x native. 
             *  aix4.gmk IBM AIX 4.x using GNU tools. 
             *  aix5.gmk IBM AIX 5.x using GNU tools. 
-            *  unixgcc.gmk Linux, Cygwin and MSYS2 using GNU tools. 
+            *  makefiles/unixgcc.gmk Linux, Cygwin and MSYS2 using GNU tools. 
             *  darwin.gmk Apple Darwin (console and X-Windows). 
             *  dosdj1.mak Microsoft DOS build using djgpp version 1. 
             *  dosdj2.mak Microsoft DOS build using djgpp version 2. 

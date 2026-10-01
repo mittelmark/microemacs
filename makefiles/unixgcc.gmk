@@ -10,16 +10,16 @@
 #   Cygwin    -> src/unixgcc.gmk -> .cygwin-*    output
 #   Msys      -> src/unixgcc.gmk -> .msysunix-*  output (MSYS2/mintty)
 #
-# Run "make -f unixgcc.gmk"          for this help
-# Run "make -f unixgcc.gmk mec"      console build
-# Run "make -f unixgcc.gmk mew"      X11 build (libXft auto-detected)
-# Run "make -f unixgcc.gmk mecw"     both
-# Run "make -f unixgcc.gmk mecb"     standalone console (bfs embedded)
-# Run "make -f unixgcc.gmk mewb"     standalone X11 (bfs embedded)
-# Run "make -f unixgcc.gmk mecwb"    standalone both (bfs embedded)
-# Run "make -f unixgcc.gmk bfs/bin"  build the bfs tool only
-# Run "make -f unixgcc.gmk release"  package $(app) (default app=mecb)
-# Run "make -f unixgcc.gmk app-image" Linux only, AppImage from local mecwb
+# Run "make -f makefiles/unixgcc.gmk"          for this help
+# Run "make -f makefiles/unixgcc.gmk mec"      console build
+# Run "make -f makefiles/unixgcc.gmk mew"      X11 build (libXft auto-detected)
+# Run "make -f makefiles/unixgcc.gmk mecw"     both
+# Run "make -f makefiles/unixgcc.gmk mecb"     standalone console (bfs embedded)
+# Run "make -f makefiles/unixgcc.gmk mewb"     standalone X11 (bfs embedded)
+# Run "make -f makefiles/unixgcc.gmk mecwb"    standalone both (bfs embedded)
+# Run "make -f makefiles/unixgcc.gmk bfs/bin"  build the bfs tool only
+# Run "make -f makefiles/unixgcc.gmk release"  package $(app) (default app=mecb)
+# Run "make -f makefiles/unixgcc.gmk app-image" Linux only, AppImage from local mecwb
 #                            (distro-neutral AppImageBuilder.yml, host libs)
 #
 ##############################################################################
@@ -29,10 +29,10 @@
 #
 UNAME_S := $(shell uname -s 2>/dev/null)
 ifeq ($(UNAME_S),FreeBSD)
-$(error FreeBSD: run "make -f freebsd.mak" (BSD make) instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
+$(error FreeBSD: run "make -f makefiles/freebsd.mak" (BSD make) instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
 endif
 ifeq ($(UNAME_S),Darwin)
-$(error macOS: run "make -f macosgcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
+$(error macOS: run "make -f makefiles/macosgcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
 endif
 #
 # Platform detection - "uname -o" gives GNU/Linux, Cygwin or Msys.
@@ -133,7 +133,7 @@ mecwb: bfs/bin mecw
 	chmod 755 "$(RELEASE)-mecwb.$(OUTPUT_EXT)"
 
 release: $(app)
-	make -f release.gmk app="$(app)" "RELEASE=$(RELEASE)" ext=$(OUTPUT_EXT)
+	make -f makefiles/release.gmk app="$(app)" "RELEASE=$(RELEASE)" ext=$(OUTPUT_EXT)
 
 #
 # Build a Linux AppImage directly from the locally built standalone binary
@@ -160,7 +160,7 @@ release: $(app)
 # AppRun with its own ELF + AppRun.env.
 #
 # Optional platform tag in the AppImage file name (used by CI), e.g.:
-#   make -f unixgcc.gmk app-image APPIMAGE_PLATFORM_SUFFIX=_ubuntu-22.04
+#   make -f makefiles/unixgcc.gmk app-image APPIMAGE_PLATFORM_SUFFIX=_ubuntu-22.04
 # -> Jasspa_MicroEmacs_<version>_ubuntu-22.04_x86_64.AppImage
 # Default is empty (local builds keep the plain name).
 #

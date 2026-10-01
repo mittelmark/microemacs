@@ -315,9 +315,9 @@ TrueType rendering for `mew`/`mecw` via libXft, off by default:
 
 ```bash
 cd src
-make -f unixgcc.gmk XFT=1 BTYP=cw   # outdirs: .linuxgcc-release-mew-xft, -mecw-xft
-make -f unixgcc.gmk XFT=1 BTYP=w    # mew only
-make -f unixgcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
+make -f makefiles/unixgcc.gmk XFT=1 BTYP=cw   # outdirs: .linuxgcc-release-mew-xft, -mecw-xft
+make -f makefiles/unixgcc.gmk XFT=1 BTYP=w    # mew only
+make -f makefiles/unixgcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
 ```
 
 - `change-font "monospace:size=14"` loads an Xft pattern; `&opt "xft"`
@@ -522,7 +522,7 @@ Debug traces:
 
 Build with debug traces:
 ```bash
-make -f unixgcc.gmk BTYP=w BCFG=debug XFT=1
+make -f makefiles/unixgcc.gmk BTYP=w BCFG=debug XFT=1
 ```
 
 #### Remaining hypotheses (all superseded by the Hide stale-save fix above)
@@ -677,11 +677,11 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 ```bash
 cd src
-make -f unixgcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
-make -f unixgcc.gmk BTYP=c             # mec (console only)
-make -f unixgcc.gmk BTYP=w             # mew (X11 only, core fonts)
-make -f unixgcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
-make -f unixgcc.gmk XFT=1 BTYP=w       # mew with libXft
+make -f makefiles/unixgcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
+make -f makefiles/unixgcc.gmk BTYP=c             # mec (console only)
+make -f makefiles/unixgcc.gmk BTYP=w             # mew (X11 only, core fonts)
+make -f makefiles/unixgcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
+make -f makefiles/unixgcc.gmk XFT=1 BTYP=w       # mew with libXft
 ```
 
 ### Automated Tests

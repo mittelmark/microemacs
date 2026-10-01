@@ -26,7 +26,7 @@ Build Windows executables from a Linux host using MinGW-w64 cross-compiler toolc
 |------|---------|
 | `src/linuxmingwgcc.mak` | Main source build (mec/mew) |
 | `bfs/linuxmingwgcc.gmk` | BFS tool build |
-| `linuxmingwgcc.gmk` | Top-level orchestrator (calls both) |
+| `makefiles/linuxmingwgcc.gmk` | Top-level orchestrator (calls both) |
 
 ### Prerequisites
 
@@ -44,20 +44,20 @@ Two cross-compiler pairs are used:
 
 ```bash
 # Build all three targets
-make -f linuxmingwgcc.gmk BDIST=mingw64 mecb   # 64-bit, msvcrt (default)
-make -f linuxmingwgcc.gmk BDIST=ucrt64  mecb   # 64-bit, UCRT runtime
-make -f linuxmingwgcc.gmk BDIST=mingw32 mecb   # 32-bit, msvcrt
+make -f makefiles/linuxmingwgcc.gmk BDIST=mingw64 mecb   # 64-bit, msvcrt (default)
+make -f makefiles/linuxmingwgcc.gmk BDIST=ucrt64  mecb   # 64-bit, UCRT runtime
+make -f makefiles/linuxmingwgcc.gmk BDIST=mingw32 mecb   # 32-bit, msvcrt
 
 # Convenience targets
-make -f linuxmingwgcc.gmk mingw64
-make -f linuxmingwgcc.gmk ucrt64
-make -f linuxmingwgcc.gmk mingw32
+make -f makefiles/linuxmingwgcc.gmk mingw64
+make -f makefiles/linuxmingwgcc.gmk ucrt64
+make -f makefiles/linuxmingwgcc.gmk mingw32
 
 # Build all variants
-make -f linuxmingwgcc.gmk all-windows
+make -f makefiles/linuxmingwgcc.gmk all-windows
 
 # Debug builds
-make -f linuxmingwgcc.gmk BDIST=mingw64 BCFG=debug mec
+make -f makefiles/linuxmingwgcc.gmk BDIST=mingw64 BCFG=debug mec
 ```
 
 ### Output Directories
@@ -104,7 +104,7 @@ Build Windows executables from within an MSYS2 environment on Windows.
 |------|---------|
 | `src/winmingwgcc.mak` | Main source build (mec/mew) |
 | `bfs/winmingwgcc.gmk` | BFS tool build |
-| `winmingwgcc.gmk` | Top-level orchestrator |
+| `makefiles/winmingwgcc.gmk` | Top-level orchestrator |
 
 ### Build Types
 
@@ -243,7 +243,7 @@ The BFS (Built-in File System) tool embeds macro files into the final executable
 - Uses `BDIST` parameter (same values as `src/linuxmingwgcc.mak`)
 - Outputs: `.linuxmingwgcc-{mingw64,ucrt64,mingw32}-release/bfs.exe`
 - Default: `BDIST=mingw32` (i686)
-- The top-level `linuxmingwgcc.gmk` passes `BDIST` through to BFS
+- The top-level `makefiles/linuxmingwgcc.gmk` passes `BDIST` through to BFS
 
 ### Native Build (`bfs/winmingwgcc.gmk`)
 

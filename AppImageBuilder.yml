@@ -2,7 +2,7 @@
 #
 # Normally not called by hand but through the make file:
 #
-#   make -f unixgcc.gmk app-image
+#   make -f makefiles/unixgcc.gmk app-image
 #
 # which stages the AppDir in appimage-build/AppDir from the locally built
 # standalone binary (linux-*-mecwb.bin) and passes its location with
@@ -24,7 +24,7 @@
 # which are present on any desktop Linux system that can run a GUI editor.
 #
 # Packaging uses appimage-builder with --skip-build: the AppDir is staged by
-# the makefile (see unixgcc.gmk) and packaged as-is. The tracked AppRun
+# the makefile (see makefiles/unixgcc.gmk) and packaged as-is. The tracked AppRun
 # script in jme.AppDir/AppRun stays the entry point; it runs jme through the
 # host dynamic linker /lib64/ld-linux-x86-64.so.2 and sets up spelling data.
 # (A full appimage-builder build would replace AppRun with its AppRun ELF
@@ -41,7 +41,7 @@
 #
 version: 1
 script:
-  - test -x "$TARGET_APPDIR/usr/bin/jme" || (echo "AppDir is not staged - run 'make -f unixgcc.gmk app-image'" >&2; exit 1)
+  - test -x "$TARGET_APPDIR/usr/bin/jme" || (echo "AppDir is not staged - run 'make -f makefiles/unixgcc.gmk app-image'" >&2; exit 1)
   - test -x "$TARGET_APPDIR/AppRun" || (echo "AppDir AppRun script missing" >&2; exit 1)
 AppDir:
   path: appimage-build/AppDir

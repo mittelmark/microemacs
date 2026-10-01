@@ -16,7 +16,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libxt-dev
       - name: Build mec (console)
-        run: make -f unixgcc.gmk mec
+        run: make -f makefiles/unixgcc.gmk mec
       - name: Run basic tests
         run: |
           #rm -f tests/test-output.txt
@@ -58,7 +58,7 @@ jobs:
             export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
             echo "VRS=$VRS" >> $GITHUB_ENV
             echo "GCC=gcc-15" >> $GITHUB_ENV
-            make -f macosgcc.gmk mec CC=gcc-15
+            make -f makefiles/macosgcc.gmk mec CC=gcc-15
       - name: Run basic tests
         run: |
           #rm -f tests/test-output.txt
@@ -238,7 +238,7 @@ jobs:
         shell: cmd
         run: |
           gcc --version
-          mingw32-make -f win32winlibs.gmk mec
+          mingw32-make -f makefiles/win32winlibs.gmk mec
       - name: Run basic tests
         shell: cmd
         run: |

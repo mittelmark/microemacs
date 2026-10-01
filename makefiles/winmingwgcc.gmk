@@ -34,4 +34,4 @@ mewb: bfs/exe mew
 	./bfs/bfs.exe -a ./src/.$(MSYS)$(WIX)-release-mew/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
 
 release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
+	make -f makefiles/release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe

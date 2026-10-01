@@ -2,7 +2,7 @@
 # AppRun for the MicroEmacs AppImage (distro-neutral recipe).
 #
 # Packaged as-is by appimage-builder --skip-build (see AppImageBuilder.yml
-# and unixgcc.gmk). The type2 AppImageKit runtime execs this script from
+# and makefiles/unixgcc.gmk). The type2 AppImageKit runtime execs this script from
 # the mounted AppDir; it must not be replaced by an AppRun ELF.
 #
 # The AppDir bundles no shared libraries: jme is run against the host

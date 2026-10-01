@@ -16,7 +16,7 @@ src/.*/
 # Release packaging output (CI artifacts, never commit)
 /*.bin
 /*.exe
-# AppImage build output (make -f unixgcc.gmk app-image)
+# AppImage build output (make -f makefiles/unixgcc.gmk app-image)
 /appimage-build/
 /Jasspa_MicroEmacs_*_x86_64.AppImage
 # MicroEmacs session residue and batch-test outputs

@@ -54,4 +54,4 @@ mecwb: bfs/bin mecw
 	./bfs/bfs -a ./src/.freebsd-release-mecw$(XFTDIR)/mecw -o $(RELEASE)-mecwb.bin ./jasspa
 
 release: $(app)
-	gmake -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
+	gmake -f makefiles/release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
