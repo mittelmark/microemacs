@@ -63,6 +63,6 @@ brew: mecb mewb
 	cp bin/mecu              brew-macos-$(VERSION)/bin/mecu
 	chmod 755                brew-macos-$(VERSION)/bin/mecu
 	cp COPYING               brew-macos-$(VERSION)/license.txt
-	cp README-standalone.md  brew-macos-$(VERSION)/README.md
+	cp docs/README-standalone.md  brew-macos-$(VERSION)/README.md
 	tar cfz brew-macos-$(VERSION).tar.gz brew-macos-$(VERSION)/*
 	sha256sum brew-macos-$(VERSION).tar.gz > brew-macos-$(VERSION).sha256

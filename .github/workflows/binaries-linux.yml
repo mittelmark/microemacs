@@ -101,7 +101,7 @@ jobs:
         cp linux-*me*.bin $MEPATH/bin/
         cp license.txt $MEPATH/share/jasspa/
         cp COPYING $MEPATH/share/jasspa/
-        cp README-standalone.md $MEPATH/share/jasspa/
+        cp docs/README-standalone.md $MEPATH/share/jasspa/
         cp -r jasspa/macros $MEPATH/share/jasspa/
         echo "Documentation is in share/jasspa" > ${MEPATH}/readme.txt
 
@@ -115,7 +115,7 @@ jobs:
         chmod 755 ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
-        cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
+        cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
 
     - name: Make mewb release
       run: |
@@ -125,7 +125,7 @@ jobs:
         cp linux-*mewb.bin ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mewb/bin/
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mewb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mewb/
-        cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mewb/
+        cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mewb/
 
     - name: Make mecwb release
       run: |
@@ -137,7 +137,7 @@ jobs:
         sed -i -E 's/mecb/mecwb -n/' ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
-        cp README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
+        cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
 
     - name: Upload Ubuntu Release files
       uses: actions/upload-artifact@v6

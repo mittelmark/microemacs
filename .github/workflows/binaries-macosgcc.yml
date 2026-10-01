@@ -122,7 +122,7 @@ jobs:
           cp macos-*-me*.bin MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}/
-          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}/
+          cp docs/README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}/
           cd jasspa 
           zip macros.zip macros/*
           cd ..
@@ -136,7 +136,7 @@ jobs:
           cp macos-*-mecb.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
-          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
+          cp docs/README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecb/
 
       - name: Make mewb release
         run: |
@@ -146,7 +146,7 @@ jobs:
           cp macos-*-mewb.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
-          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
+          cp docs/README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mewb/
 
       - name: Make mecwb release
         run: |
@@ -156,7 +156,7 @@ jobs:
           cp macos-*-mecwb.bin MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/bin/
           cp license.txt MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
           cp COPYING MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
-          cp README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
+          cp docs/README-standalone.md MicroEmacs09-${VRS}-${{ matrix.os }}-mecwb/
 
       - name: Upload MacOS Release files
         uses: actions/upload-artifact@v6

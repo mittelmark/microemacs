@@ -46,7 +46,7 @@ default:
 	cp bin/$(mesh) $(RELEASE)/$(RELEASE)-$(app)/bin/$(meshout)
 	chmod 755 $(RELEASE)/$(RELEASE)-$(app)/bin/$(meshout)
 	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
-	cp license.txt COPYING README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
+	cp license.txt COPYING docs/README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
 	cp doc/me.1 $(RELEASE)/$(RELEASE)-$(app)/man/
 	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
 	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
@@ -64,7 +64,7 @@ macos-12:
 	cp bfs/bfs-readme.md macos-12-microemacs-091224-$(app)/share/microemacs/
 	cp bin/mecu macos-12-microemacs-091224-$(app)/bin/
 	chmod 755 bin/mecu macos-12-microemacs-091224-$(app)/bin/mecu
-	cp license.txt COPYING README-standalone.md macos-12-microemacs-091224-$(app)/share/microemacs/
+	cp license.txt COPYING docs/README-standalone.md macos-12-microemacs-091224-$(app)/share/microemacs/
 	./bfs/bfs -a macos-12-091224/$(appx) -o macos-12-microemacs-091224-$(app)/bin/$(app) ./jasspa-temp
 	zip -r macos-12-microemacs-091224-$(app).zip macos-12-microemacs-091224-$(app)/* 
 	cp macos-12-microemacs-091224-$(app).zip macos-12-microemacs-091224/
