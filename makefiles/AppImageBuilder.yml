@@ -9,7 +9,7 @@
 # --appdir (the "path" key below is documentation only, appimage-builder
 # uses the --appdir option). The version is taken from the environment:
 #
-#   JME_VERSION=<version> appimage-builder --recipe AppImageBuilder.yml \
+#   JME_VERSION=<version> appimage-builder --recipe makefiles/AppImageBuilder.yml \
 #       --appdir appimage-build/AppDir
 #
 # Distro-neutral recipe: bundles nothing and uses the shared libraries of
