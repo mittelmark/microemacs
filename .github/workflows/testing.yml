@@ -31,6 +31,7 @@ jobs:
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
             grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
             grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
+            grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -71,6 +72,7 @@ jobs:
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
             grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
             grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
+            grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -111,6 +113,7 @@ jobs:
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
             grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
             grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
+            grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -159,6 +162,7 @@ jobs:
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
             grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
             grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
+            grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -207,6 +211,7 @@ jobs:
             grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
             grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
             grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
+            grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -248,6 +253,7 @@ jobs:
             findstr /C:"TEST:version=" tests\test-output.txt >nul && echo PASS: version test || echo FAIL: version test
             findstr /C:"TEST:all-tests=complete" tests\test-output.txt >nul && echo PASS: all tests completed || echo FAIL: all tests did not complete
             findstr /C:"TEST:nested-while=64" tests\test-output.txt >nul && echo PASS: nested while test || (echo FAIL: nested while test & exit /b 1)
+            findstr /C:"TEST:unicode=" tests\test-output.txt >nul && echo PASS: unicode test || (echo FAIL: unicode test & exit /b 1)
           ) else (
             echo FAIL: No test output produced
             exit /b 1

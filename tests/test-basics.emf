@@ -79,6 +79,11 @@ define-macro start-up
     insert-string #l3
     insert-newline
 
+    ; Test 11: Unicode Greek letters round trip (UTF-8)
+    insert-string "TEST:unicode="
+    insert-string "αβγ"
+    insert-newline
+
     ; All tests complete
     insert-string "TEST:all-tests=complete"
     insert-newline
