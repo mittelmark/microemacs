@@ -7,12 +7,15 @@
 bfs/*/*.o
 bfs/*.o
 bfs/bfs
+bfs/bfs.exe
+bfs/.*/
 *~
 *.o
 # Build output directories (object dirs covered above, keep binaries out)
 src/.*/
-# Release packaging output
-/linux-7*/
+# Release packaging output (CI artifacts, never commit)
+/*.bin
+/*.exe
 # AppImage build output (make -f unixgcc.gmk app-image)
 /appimage-build/
 /Jasspa_MicroEmacs_*_x86_64.AppImage

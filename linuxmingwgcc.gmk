@@ -46,12 +46,12 @@ mewe64:
 mecb: bfs/exe mec
 	@MEC_DIR=$$(ls -d src/.linuxmingwgcc-$(BDFIX)-release-mec 2>/dev/null | head -1); \
 	if [ -z "$$MEC_DIR" ]; then echo "ERROR: no mecb build found for BDIST=$(BDIST)"; exit 1; fi; \
-	./bfs/bfs -a ./$$MEC_DIR/mec32.exe -o $(RELEASE)-mecb.exe ./jasspa
+	./bfs/bfs -a ./$$MEC_DIR/mec.exe -o $(RELEASE)-mecb.exe ./jasspa
 
 mewb: bfs/exe mew
 	@MEW_DIR=$$(ls -d src/.linuxmingwgcc-$(BDFIX)-release-mew 2>/dev/null | head -1); \
 	if [ -z "$$MEW_DIR" ]; then echo "ERROR: no mewb build found for BDIST=$(BDIST)"; exit 1; fi; \
-	./bfs/bfs -a ./$$MEW_DIR/mew32.exe -o $(RELEASE)-mewb.exe ./jasspa
+	./bfs/bfs -a ./$$MEW_DIR/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
 
 release: bfs/exe $(app)
 	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe

@@ -24,14 +24,14 @@
 # Created:     Wed Jul 28 2004
 # Synopsis:    Make file for Linux v2 Kernel 2.6 using gcc
 # Notes:
-# Run "make -f macos32gcc.mak"      for optimised build produces .macos32gcc-release-mecw/mecw
-# Run "make -f macos32gcc.mak BTYP=c"   console only  -> .macos32gcc-release-mec/mec
-# Run "make -f macos32gcc.mak BTYP=w"   window only   -> .macos32gcc-release-mew/mew
-# Run "make -f macos32gcc.mak XFT=1"    libXft (auto at top level) -> *-xft outdirs
-# Run "make -f macos32gcc.mak BCFG=debug"  debug build -> .macos32gcc-debug-*
+# Run "make -f macosgcc.mak"      for optimised build produces .macosgcc-release-mecw/mecw
+# Run "make -f macosgcc.mak BTYP=c"   console only  -> .macosgcc-release-mec/mec
+# Run "make -f macosgcc.mak BTYP=w"   window only   -> .macosgcc-release-mew/mew
+# Run "make -f macosgcc.mak XFT=1"    libXft (auto at top level) -> *-xft outdirs
+# Run "make -f macosgcc.mak BCFG=debug"  debug build -> .macosgcc-debug-*
 #
-# Run "make -f macos32gcc.mak clean"      to clean build dirs
-# Run "make -f macos32gcc.mak spotless"   to clean source directory even more
+# Run "make -f macosgcc.mak clean"      to clean build dirs
+# Run "make -f macosgcc.mak spotless"   to clean source directory even more
 #
 ##############################################################################
 #
@@ -53,7 +53,7 @@ AR       = ar
 RM       = rm -f
 RMDIR    = rm -r -f
 
-BUILDID  = macos32gcc
+BUILDID  = macosgcc
 OUTDIRR  = .$(BUILDID)-release
 OUTDIRD  = .$(BUILDID)-debug
 ## -D_LINUX26 
@@ -164,7 +164,7 @@ $(OUTDIR):
 	-mkdir $(OUTDIR)
 
 clean:
-	$(RMDIR) .macos32gcc-release-* .macos32gcc-debug-*
+	$(RMDIR) .macosgcc-release-* .macosgcc-debug-*
 
 spotless: clean
 	$(RM) *~

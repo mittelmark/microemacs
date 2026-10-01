@@ -27,7 +27,7 @@
 #       Build from the command line using nmake. 
 #
 #	Run "nmake -f win32v8.mak"      for optimised build produces ./me32.exe
-#	Run "nmake -f win32v8.mak mec"  for console support          ./mec32.exe
+#	Run "nmake -f win32v8.mak mec"  for console support          ./mec.exe
 #	Run "nmake -f win32v8.mak med"  for debug build produces     ./med32.exe
 #
 #	Run "nmake -f win32v8.mak clean"      to clean source directory
@@ -159,12 +159,12 @@ clean:
 	$(RM) $(PLTNRES)
 	$(RM) $(PLTNCRES)
 	$(RM) me32.exe
-	$(RM) mec32.exe
-	$(RM) mew32.exe
-	$(RM) mecw32.exe
+	$(RM) mec.exe
+	$(RM) mew.exe
+	$(RM) mecw.exe
 	$(RM) ne32.exe
-	$(RM) nec32.exe
-	$(RM) new32.exe
+	$(RM) nec.exe
+	$(RM) new.exe
 	$(RM) necw32.exe
 	$(RM) med32.exe
 	$(RM) medc32.exe
@@ -193,28 +193,28 @@ spotless: clean
 	$(RM) tags
 	$(RM) *~
 
-mec:	mec32.exe
-mec32.exe: $(OBJ_C) $(PLTMRES)
+mec:	mec.exe
+mec.exe: $(OBJ_C) $(PLTMRES)
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) /SUBSYSTEM:console /out:$@ $(OBJ_C) $(PLTMRES) $(CONSOLE_LIBS) $(LIBS)
 
-mew:	mew32.exe
-mew32.exe: $(OBJ_W) $(PLTMRES)
+mew:	mew.exe
+mew.exe: $(OBJ_W) $(PLTMRES)
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) /SUBSYSTEM:windows /out:$@ $(OBJ_W) $(PLTMRES) $(WINDOW_LIBS) $(LIBS)
 
-mecw:	mecw32.exe
-mecw32.exe: $(OBJ_B) $(PLTMRES)
+mecw:	mecw.exe
+mecw.exe: $(OBJ_B) $(PLTMRES)
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) /SUBSYSTEM:console /out:$@ $(OBJ_B) $(PLTMRES) $(CONSOLE_LIBS) $(WINDOW_LIBS) $(LIBS)
 
 me:	me32.exe
-me32.exe: mew32.exe
-	$(CP) mew32.exe $@
+me32.exe: mew.exe
+	$(CP) mew.exe $@
 
-nec:	nec32.exe
-nec32.exe: $(OBJ_N) $(PLTNCRES)
+nec:	nec.exe
+nec.exe: $(OBJ_N) $(PLTNCRES)
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) /SUBSYSTEM:console /out:$@ $(OBJ_N) $(PLTNCRES) $(CONSOLE_LIBS) $(LIBS)
 
-new:	new32.exe
-new32.exe: $(OBJ_V) $(PLTNRES)
+new:	new.exe
+new.exe: $(OBJ_V) $(PLTNRES)
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) /SUBSYSTEM:windows /out:$@ $(OBJ_V) $(PLTNRES) $(WINDOW_LIBS) $(LIBS)
 
 necw:	necw32.exe
@@ -222,8 +222,8 @@ necw32.exe: $(OBJ_E) $(PLTNRES)
 	$(LD) $(LDFLAGS) $(LDOPTIMISE) /SUBSYSTEM:console /out:$@ $(OBJ_E) $(PLTNRES) $(CONSOLE_LIBS) $(WINDOW_LIBS) $(LIBS)
 
 ne:	ne32.exe
-ne32.exe: nec32.exe
-	$(CP) nec32.exe $@
+ne32.exe: nec.exe
+	$(CP) nec.exe $@
 #
 # Debug Builds
 medc:	medc32.exe

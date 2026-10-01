@@ -28,10 +28,10 @@
 #
 #     To build from the command line using make & makefile. 
 #
-#	Run "mingw32-make -f win32mingw.mak"            for optimised build produces ./.win32mingw-release-mew/mew32.exe
-#	Run "mingw32-make -f win32mingw.mak BCFG=debug" for debug build produces     ./.win32mingw-debug-mew/mew32.exe
-#	Run "mingw32-make -f win32mingw.mak BTYP=c"     for console support          ./.win32mingw-release-mec/mec32.exe
-#	Run "mingw32-make -f win32mingw.mak BCOR=ne"    for ne build produces        ./.win32mingw-release-new/new32.exe
+#	Run "mingw32-make -f win32mingw.mak"            for optimised build produces ./.win32mingw-release-mew/mew.exe
+#	Run "mingw32-make -f win32mingw.mak BCFG=debug" for debug build produces     ./.win32mingw-debug-mew/mew.exe
+#	Run "mingw32-make -f win32mingw.mak BTYP=c"     for console support          ./.win32mingw-release-mec/mec.exe
+#	Run "mingw32-make -f win32mingw.mak BCOR=ne"    for ne build produces        ./.win32mingw-release-new/new.exe
 #
 #	Run "mingw32-make -f win32mingw.mak clean"      to clean source directory
 #	Run "mingw32-make -f win32mingw.mak spotless"   to clean source directory even more
@@ -122,7 +122,7 @@ BTYP     = w
 endif
 
 OUTDIR   = $(BOUTDIR)-$(BCOR)$(BTYP)
-PRGNAME  = $(BCOR)$(BTYP)32
+PRGNAME  = $(BCOR)$(BTYP)
 PRGFILE  = $(PRGNAME)$(EXE)
 PRGHDRS  = ebind.h edef.h eextrn.h efunc.h emain.h emode.h eprint.h esearch.h eskeys.h estruct.h eterm.h evar.h evers.h eopt.h \
 	   ebind.def efunc.def eprint.def evar.def etermcap.def emode.def eskeys.def bfs.h \

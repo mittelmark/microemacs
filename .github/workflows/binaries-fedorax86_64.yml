@@ -46,29 +46,29 @@ jobs:
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         
     - name: make bfs binary
-      run:  make -f linux32gcc.gmk bfs/bin
+      run:  make -f unixgcc.gmk bfs/bin
 
     - name: make mec binary       
-      run:  make -f linux32gcc.gmk mec
+      run:  make -f unixgcc.gmk mec
 
     - name: make mew binary       
-      run:  make -f linux32gcc.gmk mew
+      run:  make -f unixgcc.gmk mew
 
     - name: make mecw binary       
-      run:  make -f linux32gcc.gmk mecw
+      run:  make -f unixgcc.gmk mecw
 
     - name: make mecb binary
-      run:  make -f linux32gcc.gmk mecb
+      run:  make -f unixgcc.gmk mecb
     
     - name: make mewb binary
-      run:  make -f linux32gcc.gmk mewb
+      run:  make -f unixgcc.gmk mewb
     
     - name: make mecwb binary
-      run:  make -f linux32gcc.gmk mecwb
+      run:  make -f unixgcc.gmk mecwb
 
     - name: make brew package
       run:  |
-        make -f linux32gcc.gmk brew
+        make -f unixgcc.gmk brew
         rm -rf brew-*/
     
     - name: Make release
@@ -82,9 +82,9 @@ jobs:
         mkdir $MEPATH/share/company        
         cp doc/me.1 $MEPATH/man/1/
         cp bfs/bfs $MEPATH/bin/
-        cp src/.linux32gcc-release-mecw/mecw $MEPATH/bin/
-        cp src/.linux32gcc-release-mew/mew $MEPATH/bin/
-        cp src/.linux32gcc-release-mec/mec  $MEPATH/bin/
+        cp src/.linuxgcc-release-mecw/mecw $MEPATH/bin/
+        cp src/.linuxgcc-release-mew/mew $MEPATH/bin/
+        cp src/.linuxgcc-release-mec/mec  $MEPATH/bin/
         cp linux-*me*.bin $MEPATH/bin/
         cp license.txt $MEPATH/share/jasspa/
         cp COPYING $MEPATH/share/jasspa/
@@ -155,9 +155,9 @@ jobs:
 
     - name: Combined Release
       run: |
-        make -f linux32gcc.gmk release app=mecb
-        make -f linux32gcc.gmk release app=mewb
-        make -f linux32gcc.gmk release app=mecwb
+        make -f unixgcc.gmk release app=mecb
+        make -f unixgcc.gmk release app=mewb
+        make -f unixgcc.gmk release app=mecwb
 
     - name: Upload Linux Combined Release
       uses: actions/upload-artifact@v4

@@ -6,7 +6,7 @@
 # Merged from the former top-level linux32gcc.gmk and cygwin.gmk. The
 # platform is auto-detected with "uname -o":
 #
-#   GNU/Linux -> src/unixgcc.gmk -> .linux32gcc-* output (historical paths)
+#   GNU/Linux -> src/unixgcc.gmk -> .linuxgcc-* output
 #   Cygwin    -> src/unixgcc.gmk -> .cygwin-*    output
 #   Msys      -> src/unixgcc.gmk -> .msysunix-*  output (MSYS2/mintty)
 #
@@ -32,7 +32,7 @@ ifeq ($(UNAME_S),FreeBSD)
 $(error FreeBSD: run "make -f freebsd.mak" (BSD make) instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
 endif
 ifeq ($(UNAME_S),Darwin)
-$(error macOS: run "make -f macos32gcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
+$(error macOS: run "make -f macosgcc.gmk" instead - unixgcc.gmk targets Linux/Cygwin/MSYS2)
 endif
 #
 # Platform detection - "uname -o" gives GNU/Linux, Cygwin or Msys.
@@ -59,7 +59,7 @@ endif
 KERNEL := $(shell uname -r | grep -oE '^[0-9]')
 DIST := $(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
 RELEASE := linux-$(KERNEL)-$(MACHINE)-$(DIST)-$(OSV)-microemacs-$(VERSION)
-BUILDID := linux32gcc
+BUILDID := linuxgcc
 EXE :=
 OUTPUT_EXT := bin
 else ifeq ($(PLATFORM),cygwin)

@@ -26056,8 +26056,8 @@ $a
   >  __me -n -p @pipetest.emf__
 
   Use the __-P__ option for additional debug lines, printed to stderr. Windows
-  users must use a console capable version of MicroEmacs, i.e. mec32.exe or
-  mecw32.exe.
+  users must use a console capable version of MicroEmacs, i.e. mec.exe or
+  mecw.exe.
 
 
 ## SEE ALSO
@@ -31131,7 +31131,7 @@ $a
 ## Build since 2024
 
   The  version  which is on Github  should be build using the  Makefile in the
-  root folder of the github project named  unixgcc.gmk,  macos32gcc.gmk and
+  root folder of the github project named  unixgcc.gmk,  macosgcc.gmk and
   win32mingw.gmk  (this currently  supports  crosscompiling on Linux using the
   Mingw version of the Gcc compiler.
    
@@ -31224,8 +31224,8 @@ $a
   
   MacOS:
   
-        make -f macos32gcc.gmk mec bfs/bin mecb
-        make -f macos32gcc.gmk mew mewb
+        make -f macosgcc.gmk mec bfs/bin mecb
+        make -f macosgcc.gmk mew mewb
 
   Windows (Cross compiling on Linux):
   
@@ -31333,11 +31333,11 @@ $a
   >  Set the build type, where _type_ can be one of the following:
 
   * c Build a console only version (i.e. no window support), the
-    output is mec (or mec32 on Windows).
+    output is mec (mec.exe on Windows).
   * w Build a windows only version (i.e. no console support),
-    the output is mew (or mew32 on Windows).
+    the output is mew (mew.exe on Windows).
   * cw Build a version which supports both console and windows,
-    the output is mecw (or mecw32 on Windows).
+    the output is mecw (mecw.exe on Windows).
 
 
 ## Makefiles 

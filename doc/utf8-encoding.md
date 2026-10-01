@@ -315,9 +315,9 @@ TrueType rendering for `mew`/`mecw` via libXft, off by default:
 
 ```bash
 cd src
-make -f linux32gcc.gmk XFT=1 BTYP=cw   # outdirs: .linux32gcc-release-mew-xft, -mecw-xft
-make -f linux32gcc.gmk XFT=1 BTYP=w    # mew only
-make -f linux32gcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
+make -f unixgcc.gmk XFT=1 BTYP=cw   # outdirs: .linuxgcc-release-mew-xft, -mecw-xft
+make -f unixgcc.gmk XFT=1 BTYP=w    # mew only
+make -f unixgcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
 ```
 
 - `change-font "monospace:size=14"` loads an Xft pattern; `&opt "xft"`
@@ -677,17 +677,17 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 ```bash
 cd src
-make -f linux32gcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
-make -f linux32gcc.gmk BTYP=c             # mec (console only)
-make -f linux32gcc.gmk BTYP=w             # mew (X11 only, core fonts)
-make -f linux32gcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
-make -f linux32gcc.gmk XFT=1 BTYP=w       # mew with libXft
+make -f unixgcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
+make -f unixgcc.gmk BTYP=c             # mec (console only)
+make -f unixgcc.gmk BTYP=w             # mew (X11 only, core fonts)
+make -f unixgcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
+make -f unixgcc.gmk XFT=1 BTYP=w       # mew with libXft
 ```
 
 ### Automated Tests
 
 ```bash
-MEPATH=jasspa/macros MENAME=ci-test ./src/.linux32gcc-release-mec/mec @tests/test-basics
+MEPATH=jasspa/macros MENAME=ci-test ./src/.linuxgcc-release-mec/mec @tests/test-basics
 # expect tests/test-output.txt to contain TEST:all-tests=complete
 ```
 
@@ -695,13 +695,13 @@ MEPATH=jasspa/macros MENAME=ci-test ./src/.linux32gcc-release-mec/mec @tests/tes
 
 ```bash
 # Console with UTF-8
-TERM=xterm-256color MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec tests/encodings/tutf8.txt
+TERM=xterm-256color MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec tests/encodings/tutf8.txt
 
 # X11 core fonts
-DISPLAY=:0 MEPATH=jasspa/macros ./src/.linux32gcc-release-mew/mew tests/encodings/tutf8.txt
+DISPLAY=:0 MEPATH=jasspa/macros ./src/.linuxgcc-release-mew/mew tests/encodings/tutf8.txt
 
 # X11 libXft (then M-x user-setup → Choose Font ... or change-font)
-DISPLAY=:0 MEPATH=jasspa/macros ./src/.linux32gcc-release-mew-xft/mew tests/encodings/tutf8.txt
+DISPLAY=:0 MEPATH=jasspa/macros ./src/.linuxgcc-release-mew-xft/mew tests/encodings/tutf8.txt
 ```
 
 Headless GUI checks (no WM): start `Xvfb :97`, run `mew`, then

@@ -22,7 +22,7 @@ jobs:
           #rm -f tests/test-output.txt
           echo "VRS=$VRS" >> $GITHUB_ENV
           export TERM=xterm
-          MEPATH=jasspa/macros ./src/.linux32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         run: |
@@ -58,12 +58,12 @@ jobs:
             export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
             echo "VRS=$VRS" >> $GITHUB_ENV
             echo "GCC=gcc-15" >> $GITHUB_ENV
-            make -f macos32gcc.gmk mec CC=gcc-15
+            make -f macosgcc.gmk mec CC=gcc-15
       - name: Run basic tests
         run: |
           #rm -f tests/test-output.txt
           export TERM=xterm
-          MEPATH=jasspa/macros ./src/.macos32gcc-release-mec/mec @tests/test-basics 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         run: |
@@ -103,7 +103,7 @@ jobs:
         shell: msys2 {0}
         run: |
           ls src/
-          MEPATH=jasspa/macros src/.mingw64win-release-mec/mec32.exe @tests/test-basics 2>/dev/null || true
+          MEPATH=jasspa/macros src/.mingw64win-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: msys2 {0}
@@ -243,7 +243,7 @@ jobs:
         shell: cmd
         run: |
           set MEPATH=jasspa\macros
-          src\.win32winlibs-release-mec\mec32.exe @tests\test-basics
+          src\.win32winlibs-release-mec\mec.exe @tests\test-basics
           type tests\test-output.txt
       - name: Verify test results
         shell: cmd

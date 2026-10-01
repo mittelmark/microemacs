@@ -85,11 +85,11 @@ BUILD
           Set the build type, where type can be one of the following: 
 
             *  c Build  a console  only version  (i.e. no  window support), the
-               output is mec (or mec32 on Windows). 
+               output is mec (mec.exe on Windows). 
             *  w Build a  windows only  version (i.e. no  console support), the
-               output is mew (or mew32 on Windows). 
+               output is mew (mew.exe on Windows). 
             *  cw Build a version which  supports both console and windows, the
-               output is mecw (or mecw32 on Windows). 
+               output is mecw (mecw.exe on Windows). 
 
   Makefiles 
      The supplied makefiles are provided in two forms:- 

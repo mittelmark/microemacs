@@ -63,9 +63,9 @@ make -f linuxmingwgcc.gmk BDIST=mingw64 BCFG=debug mec
 ### Output Directories
 
 ```
-src/.linuxmingwgcc-mingw64-release-mec/  → mec32.exe  (x86-64, msvcrt)
-src/.linuxmingwgcc-ucrt64-release-mec/   → mec32.exe  (x86-64, UCRT)
-src/.linuxmingwgcc-mingw32-release-mec/  → mec32.exe  (i686,  msvcrt)
+src/.linuxmingwgcc-mingw64-release-mec/  → mec.exe  (x86-64, msvcrt)
+src/.linuxmingwgcc-ucrt64-release-mec/   → mec.exe  (x86-64, UCRT)
+src/.linuxmingwgcc-mingw32-release-mec/  → mec.exe  (i686,  msvcrt)
 ```
 
 ### BDIST Parameter
@@ -313,15 +313,15 @@ int mkdir(const char *path, mode_t mode);  // Unix
 
 ```bash
 # Cross-compile: mingw64 (msvcrt)
-x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-mingw64-release-mec/mec32.exe | grep "DLL Name"
+x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-mingw64-release-mec/mec.exe | grep "DLL Name"
 # Should show: msvcrt.dll
 
 # Cross-compile: ucrt64 (UCRT)
-x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-ucrt64-release-mec/mec32.exe | grep "DLL Name"
+x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-ucrt64-release-mec/mec.exe | grep "DLL Name"
 # Should show: api-ms-win-crt-*.dll (no msvcrt.dll)
 
 # Cross-compile: mingw32 (msvcrt)
-x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-mingw32-release-mec/mec32.exe | grep "DLL Name"
+x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-mingw32-release-mec/mec.exe | grep "DLL Name"
 # Should show: msvcrt.dll
 ```
 
@@ -329,11 +329,11 @@ x86_64-w64-mingw32-objdump -p src/.linuxmingwgcc-mingw32-release-mec/mec32.exe |
 
 ```bash
 # mingw64 / ucrt64: PE32+ x86-64
-file src/.linuxmingwgcc-mingw64-release-mec/mec32.exe
+file src/.linuxmingwgcc-mingw64-release-mec/mec.exe
 # PE32+ executable for MS Windows 5.02 (console), x86-64
 
 # mingw32: PE32 i386
-file src/.linuxmingwgcc-mingw32-release-mec/mec32.exe
+file src/.linuxmingwgcc-mingw32-release-mec/mec.exe
 # PE32 executable for MS Windows 4.00 (console), Intel i386
 ```
 
@@ -341,13 +341,13 @@ file src/.linuxmingwgcc-mingw32-release-mec/mec32.exe
 
 ```bash
 # Linux cross-compile
-MEPATH=jasspa/macros ./src/.linuxmingwgcc-mingw64-release-mec/mec32.exe -V
+MEPATH=jasspa/macros ./src/.linuxmingwgcc-mingw64-release-mec/mec.exe -V
 
 # Native MSYS2 build
-MENAME=temp MEPATH=jasspa/macros src/.msys64gcc-release-mec/mec32.exe -h
+MENAME=temp MEPATH=jasspa/macros src/.msys64gcc-release-mec/mec.exe -h
 
 # Native MinGW64 build
-MENAME=temp MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec32.exe -h
+MENAME=temp MEPATH=jasspa/macros src/.mingw64gcc-release-mec/mec.exe -h
 ```
 
 ---
