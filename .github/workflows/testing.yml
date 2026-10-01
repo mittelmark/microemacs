@@ -138,7 +138,7 @@ jobs:
       - name: Install MSYS packages
         shell: msys2 {0}
         run: |
-          pacman -S --noconfirm gcc ncurses ncurses-devel zlib zlib-devel
+          pacman -S --noconfirm gcc ncurses ncurses-devel zlib zlib-devel util-linux
       - name: Build mec (console, msys2unix)
         shell: msys2 {0}
         run: |
@@ -146,11 +146,12 @@ jobs:
           make -f winmingwgcc.mak print-info
           make -f winmingwgcc.mak BTYP=c all BDIST=msys2unix
       - name: Run basic tests
+        timeout-minutes: 10
         shell: msys2 {0}
         run: |
           ls src/
           export TERM=xterm
-          MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
+          script -q -c "MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
       - name: Verify test results
         shell: msys2 {0}
