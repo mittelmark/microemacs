@@ -125,6 +125,53 @@ jobs:
           name: test-results-windows-mingw
           path: tests/test-output.txt
 
+  windows-msysunix:
+    runs-on: windows-latest
+    name: Test on Windows (MSYS2 mintty)
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ucrt64
+          install: make
+      - name: Install MSYS packages
+        shell: msys2 {0}
+        run: |
+          pacman -S --noconfirm gcc ncurses ncurses-devel zlib zlib-devel
+      - name: Build mec (console, msys2unix)
+        shell: msys2 {0}
+        run: |
+          cd src
+          make -f winmingwgcc.mak print-info
+          make -f winmingwgcc.mak BTYP=c all BDIST=msys2unix
+      - name: Run basic tests
+        shell: msys2 {0}
+        run: |
+          ls src/
+          export TERM=xterm
+          MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
+          cat tests/test-output.txt
+      - name: Verify test results
+        shell: msys2 {0}
+        run: |
+          if [ -s tests/test-output.txt ]; then
+            echo "Tests produced output"
+            grep -q "TEST:version=" tests/test-output.txt && echo "PASS: version test" || echo "FAIL: version test"
+            grep -q "TEST:all-tests=complete" tests/test-output.txt && echo "PASS: all tests completed" || echo "FAIL: all tests did not complete"
+            grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
+            grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
+          else
+            echo "FAIL: No test output produced"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: test-results-msysunix
+          path: tests/test-output.txt
+
   cygwin-x64:
     runs-on: windows-latest
     name: Test on Cygwin (x86_64)
