@@ -186,33 +186,6 @@ else
     fi
 fi
 
-function install_fonts() {
-    if [ ! -d ~/.local/share/fonts ]; then
-        mkdir -p ~/.local/share/jasspa/fonts
-        curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip --output ttf-files.zip 
-        unzip -j -q -d ~/.local/share/fonts ttf-files.zip
-        rm ttf-files.zip
-    fi  
-    XSET=`which xset 2>/dev/null`
-    if [ "$XSET" = "" ]; then
-        echo "Xset is not installed! If you are on a system where "
-        echo "you can't install xset like Red Hat Enterprise 10,"
-        echo "you can try to install the fonts into your system with sudo like this:"
-        echo "sudo mkdir /etc/X11/fontpath.d/ttf-fonts"
-        echo "sudo cp $HOME/.local/share/fonts/* /etc/X11/fontpath.d/ttf-fonts/"
-        echo "and then restart your session."
-        exit
-    else
-        FP=`xset q | grep -A1 'Font Path' | grep 'local/share/fonts'`
-        if [ "$FP" = "" ]; then
-            xset +fp ~/.local/share/fonts
-            xset fp rehash
-        else   
-            xset fp rehash
-        fi
-    fi
-}
-
 function install_me {
     if [ ! -d ~/.local/bin ]; then
         mkdir -p ~/.local/bin
@@ -484,10 +457,6 @@ if [ "`which mecb 2>/dev/null`" != "" ]; then
     echo "Installed and checking: ~/.local/bin/mewb"
     ~/.local/bin/mewb -V
 fi
-if [ "$OS" = "Linux" ] || [ "$OS" = "FreeBSD" ] || [ "$OS" = "cygwin" ]; then
-    install_fonts
-fi
-
 # Optional tool check: suggest missing font related tools on Linux, FreeBSD and Cygwin.
 # fc-list (fontconfig) lists TrueType fonts (used for font selection in user-setup),
 # xfontsel selects legacy X11 XLFD bitmap fonts (M-x change-font-xfontsel).

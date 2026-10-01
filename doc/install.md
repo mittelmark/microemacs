@@ -121,9 +121,13 @@ If `~/.local/bin` is not already in `$PATH`, the script appends the
 appropriate export line to `~/.bashrc` or `~/.zshrc`, depending on the
 user's login shell.
 
-### 6. Install X11 Fonts (Linux / FreeBSD / Cygwin)
+### 6. Font Tool Check (Linux / FreeBSD / Cygwin)
 
-On graphical systems, the script installs font support for the **GUI version (`mewb`)** so that TrueType glyphs render correctly. The terminal version (`mecb`) does not require these fonts. If `xset` is unavailable, a fallback using `sudo` is suggested.
+The script no longer downloads or installs TrueType fonts — desktop Unix
+systems provide a suitable TrueType font selection already (via fontconfig).
+Instead the script only *suggests* missing font related tools: `fc-list`
+(fontconfig, used by the TrueType font selection in `user-setup`) and
+`xfontsel` (legacy X11 XLFD bitmap fonts for `M-x change-font-xfontsel`).
 
 ---
 
