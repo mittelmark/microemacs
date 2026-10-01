@@ -31130,10 +31130,10 @@ $a
 
 ## Build since 2024
 
-  The  version  which is on Github  should be build using the  Makefile in the
-  root folder of the github project named  unixgcc.gmk,  macosgcc.gmk and
-  win32mingw.gmk  (this currently  supports  crosscompiling on Linux using the
-  Mingw version of the Gcc compiler.
+  The  version  which is on Github  should be build using  the makefiles in
+  the makefiles folder of the github project named  unixgcc.gmk,  macosgcc.gmk
+  and linuxmingwgcc.gmk  (this currently  supports crosscompiling on Linux
+  using the Mingw version of the Gcc compiler.
    
   The following executables can be build.
   
@@ -31187,11 +31187,11 @@ $a
         git clone https://github.com/mittelmark/microemacs.git
         cd microemacs
         ### build  mec terminal executable
-        make -f unixgcc.gmk mec  
+        make -f makefiles/unixgcc.gmk mec  
         ### build  bfs terminal executable
-        make -f unixgcc.gmk bfs/bin
+        make -f makefiles/unixgcc.gmk bfs/bin
         ### build  mecb terminal executable
-        make -f unixgcc.gmk mecb
+        make -f makefiles/unixgcc.gmk mecb
           
   You should then have a file like  _mecb-0912XX-linux-KERNEL-DISTRO-VERSION.bin_
   in the current folder. The uppercase letters are replaced with the ME version
@@ -31202,7 +31202,7 @@ $a
   
   Hint: the three build steps can be as well done with one command line:
   
-        make -f unixgcc.gmk mec bfs/bin mecb
+        make -f makefiles/unixgcc.gmk mec bfs/bin mecb
         
   TODO: MacOS and Windows (with msys2) build explanations
   
@@ -31215,7 +31215,7 @@ $a
   
   You can then compile the mecw and mewb executables like this
   
-        make -f unixgcc.gmk mew mewb
+        make -f makefiles/unixgcc.gmk mew mewb
 
   You should then have a file like  _mewb-0912XX-linux-KERNEL-DISTRO-VERSION.bin_ in the
   current folder
@@ -31224,8 +31224,8 @@ $a
   
   MacOS:
   
-        make -f macosgcc.gmk mec bfs/bin mecb
-        make -f macosgcc.gmk mew mewb
+        make -f makefiles/macosgcc.gmk mec bfs/bin mecb
+        make -f makefiles/macosgcc.gmk mew mewb
 
   Windows (Cross compiling on Linux):
   

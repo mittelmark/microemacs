@@ -84,7 +84,7 @@ jobs:
          ls -la .*-release-mec/
          ./.*-release-mec/mec.exe -V
          cd ..
-         make -f winmingwgcc.gmk release app=mecb BDIST=msys2unix
+         make -f makefiles/winmingwgcc.gmk release app=mecb BDIST=msys2unix
          ls -la *
     - name: compile mew executable
       run: |
@@ -94,15 +94,15 @@ jobs:
          cd ..
     - name: create mecb executable
       run: |
-         make -f winmingwgcc.gmk mecb BDIST=${{ matrix.subsystem }}64
+         make -f makefiles/winmingwgcc.gmk mecb BDIST=${{ matrix.subsystem }}64
     - name: create mewb executable
       run: |
-         make -f winmingwgcc.gmk mewb BDIST=${{ matrix.subsystem }}64
+         make -f makefiles/winmingwgcc.gmk mewb BDIST=${{ matrix.subsystem }}64
 
     - name: create Release executable
       run: |
-         make -f winmingwgcc.gmk release app=mecb BDIST=${{ matrix.subsystem }}64
-         make -f winmingwgcc.gmk release app=mewb BDIST=${{ matrix.subsystem }}64
+         make -f makefiles/winmingwgcc.gmk release app=mecb BDIST=${{ matrix.subsystem }}64
+         make -f makefiles/winmingwgcc.gmk release app=mewb BDIST=${{ matrix.subsystem }}64
          rm *.exe
          ls
     

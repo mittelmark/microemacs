@@ -53,7 +53,7 @@ jobs:
         gcc --version
         PATH=%CD%\mingw32\bin;%PATH%
         gcc --version
-        mingw32-make -f win32winlibs.gmk bfs/exe
+        mingw32-make -f makefiles/win32winlibs.gmk bfs/exe
 
     - name: compile mec
       shell: cmd
@@ -61,25 +61,25 @@ jobs:
         PATH=%CD%\mingw32\bin;%PATH%
         gcc --version
         ld --version
-        mingw32-make -f win32winlibs.gmk mec
+        mingw32-make -f makefiles/win32winlibs.gmk mec
         
     - name: compile mew
       shell: cmd
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
-        mingw32-make -f win32winlibs.gmk mew
+        mingw32-make -f makefiles/win32winlibs.gmk mew
 
     - name: create mecb
       shell: cmd
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
-        mingw32-make -f win32winlibs.gmk mecb
+        mingw32-make -f makefiles/win32winlibs.gmk mecb
         
     - name: create mewb
       shell: cmd
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
-        mingw32-make -f win32winlibs.gmk mewb
+        mingw32-make -f makefiles/win32winlibs.gmk mewb
     - name: Make release
       shell: pwsh
       run: |

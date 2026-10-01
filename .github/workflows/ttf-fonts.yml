@@ -18,7 +18,7 @@ jobs:
         sudo apt install xfonts-utils
 
     - name: make ttf zip filebinary
-      run:  make -f ttf-fonts.gmk all
+      run:  make -f makefiles/ttf-fonts.gmk all
 
     - name: Upload ttf zip file
       uses: actions/upload-artifact@v6

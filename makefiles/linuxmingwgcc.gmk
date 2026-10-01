@@ -54,7 +54,7 @@ mewb: bfs/exe mew
 	./bfs/bfs -a ./$$MEW_DIR/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
 
 release: bfs/exe $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
+	make -f makefiles/release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
 
 brew: mecb mewb
 	mkdir -p brew-windows-$(VERSION)/bin
@@ -76,13 +76,13 @@ scoop: mecb mewb
 
 # Convenience targets for building all three variants
 mingw32:
-	$(MAKE) -f linuxmingwgcc.gmk BDIST=mingw32
+	$(MAKE) -f makefiles/linuxmingwgcc.gmk BDIST=mingw32
 
 mingw64:
-	$(MAKE) -f linuxmingwgcc.gmk BDIST=mingw64
+	$(MAKE) -f makefiles/linuxmingwgcc.gmk BDIST=mingw64
 
 ucrt64:
-	$(MAKE) -f linuxmingwgcc.gmk BDIST=ucrt64
+	$(MAKE) -f makefiles/linuxmingwgcc.gmk BDIST=ucrt64
 
 # Build all three architectures
 all-windows: mecb mingw64-mecb ucrt64-mecb

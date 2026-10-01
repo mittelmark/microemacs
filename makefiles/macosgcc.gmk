@@ -54,7 +54,7 @@ version:
 	echo "XFT: $(XFT)"
 
 release: $(app)
-	make -f release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
+	make -f makefiles/release.gmk app=$(app) RELEASE=$(RELEASE) ext=bin
 
 brew: mecb mewb
 	mkdir -p brew-macos-$(VERSION)/bin

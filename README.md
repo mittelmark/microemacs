@@ -258,9 +258,9 @@ sudo apt install git build-essential libz-dev libncurses-dev
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ### builds the bfs executable for making stand-alone mecb and mewb etc
-make -f unixgcc.gmk bfs/bin
+make -f makefiles/unixgcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
-make -f unixgcc.gmk mecb
+make -f makefiles/unixgcc.gmk mecb
 ```
 
 You  should  now  have  files  like  `mec-VERSION-PLATFORM.bin`  (VERSION  and
@@ -281,9 +281,9 @@ version (mecwb) which can be run both as a terminal and as a X11 application.
 ### install packages for X11 build
 sudo apt install libxt-dev libxft-dev pkgconf
 ### builds standalone mew executable (GUI)
-make -f unixgcc.gmk mewb
+make -f makefiles/unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
-make -f unixgcc.gmk mecwb
+make -f makefiles/unixgcc.gmk mecwb
 sudo apt install fontconfig  # fc-list - better font selection
 sudo apt install x11-utils xfonts-utils ## xfontsel mkfontscale for using ttf fonts (not required anymore)
 sudo apt install xclip ## for better clipboard support
@@ -303,15 +303,15 @@ sudo dnf install make zip unzip gcc zlib-devel ncurses-devel git
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ### builds the bfs executable for making stand-alone mecb and mewb etc
-make -f unixgcc.gmk bfs/bin
+make -f makefiles/unixgcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
-make -f unixgcc.gmk mecb
+make -f makefiles/unixgcc.gmk mecb
 ### install X11 developer files
 sudo dnf install libXt-devel libXft-devel pkgconf
 ### builds standalone mew executable (GUI)
-make -f unixgcc.gmk mewb
+make -f makefiles/unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
-make -f unixgcc.gmk mecwb
+make -f makefiles/unixgcc.gmk mecwb
 ### for more fonts and better font selection
 sudo dnf install xorg-x11-apps ## xfontsel
 sudo dnf install xorg-x11-fonts* ## Lucidatypewriter, Adobe courier
@@ -332,14 +332,14 @@ sudo pacman -S make gcc ncurses git zlib pkgconf libxft fontconfig xorg-xfontsel
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
 ### builds the bfs executable for making stand-alone mecb and mewb etc
-make -f unixgcc.gmk bfs/bin
+make -f makefiles/unixgcc.gmk bfs/bin
 ### builds standalone mecb  executable (Terminal)
-make -f unixgcc.gmk mecb
+make -f makefiles/unixgcc.gmk mecb
 ### install X11 developer files seems not required on Manjaro
 ### builds standalone mew executable (GUI)
-make -f unixgcc.gmk mewb
+make -f makefiles/unixgcc.gmk mewb
 ### builds combined standalone mecw executable (Terminal and GUI)
-make -f unixgcc.gmk mecwb
+make -f makefiles/unixgcc.gmk mecwb
 ### for more fonts and better font selection (not really neccessary anymore)
 xset fp rehash ## update the fontpath settings to the current session
 ```
@@ -391,10 +391,10 @@ cd microemacs
 ## Or if git is not working or not installed (what was true for MobaXterm 25.2): 
 ## wget https://github.com/mittelmark/microemacs/archive/refs/heads/master.zip
 ## unzip master.zip && cd microemacs-master
-make -f unixgcc.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
-make -f unixgcc.gmk mecb    ## console version
-make -f unixgcc.gmk mewb    ## X11 version
-make -f unixgcc.gmk mecwb   ## X11 and console version
+make -f makefiles/unixgcc.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
+make -f makefiles/unixgcc.gmk mecb    ## console version
+make -f makefiles/unixgcc.gmk mewb    ## X11 version
+make -f makefiles/unixgcc.gmk mecwb   ## X11 and console version
 ## for better font support
 apt install xfontsel mkfontscale xset
 ```
@@ -414,8 +414,8 @@ makefile, the terminal console version only (no X11 libraries exist for MSYS2):
 pacman -S make gcc ncurses-devel zlib-devel git
 git clone https://github.com/mittelmark/microemacs.git
 cd microemacs
-make -f unixgcc.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
-make -f unixgcc.gmk mecb    ## console version
+make -f makefiles/unixgcc.gmk bfs/bin ## bfs tool for standalone MicroEmacs files
+make -f makefiles/unixgcc.gmk mecb    ## console version
 ```
 
 The executables are placed in a _.msysunix-release-*_ folder. For the Windows
@@ -441,9 +441,9 @@ Makefile in the microemacs root project folder.
 
 ```bash
 ### compile the barebone executables
-make -f freebsd.mak bfs/bin mec mew mecw
+make -f makefiles/freebsd.mak bfs/bin mec mew mecw
 ### compile the standalone executables
-make -f freebsd.mak mecb mewb mecwb
+make -f makefiles/freebsd.mak mecb mewb mecwb
 ```
 
 The Makefile has the extension  `mak` as it can use the default `make`

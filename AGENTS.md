@@ -184,17 +184,17 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 
 ### Platform-Specific Build Files
 
-**Top-level Makefiles** (project root):
+**Top-level Makefiles** (in `makefiles/`):
 
 | File | Platform | Notes |
 |------|----------|-------|
-| `unixgcc.gmk` | Linux / Cygwin / MSYS2 (primary) | GNU Make, gcc, auto-detects platform via `uname -o` |
-| `linuxmingwgcc.gmk` | Linux cross-compile to Windows | MinGW `i686-w64-mingw32-gcc` |
-| `freebsd.mak` | FreeBSD | Uses default `make` (not gmake) |
-| `macosgcc.gmk` | macOS | GNU Make |
-| `winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
-| `win32winlibs.gmk` | Windows (WinLibs) | Native Windows gcc |
-| `Makefile` | Portable dispatcher | plain `make` → unixgcc.gmk / freebsd.mak / macosgcc.gmk (BSD+GNU make parseable) |
+| `makefiles/unixgcc.gmk` | Linux / Cygwin / MSYS2 (primary) | GNU Make, gcc, auto-detects platform via `uname -o` |
+| `makefiles/linuxmingwgcc.gmk` | Linux cross-compile to Windows | MinGW `i686-w64-mingw32-gcc` |
+| `makefiles/freebsd.mak` | FreeBSD | Uses default `make` (not gmake) |
+| `makefiles/macosgcc.gmk` | macOS | GNU Make |
+| `makefiles/winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
+| `makefiles/win32winlibs.gmk` | Windows (WinLibs) | Native Windows gcc |
+| `Makefile` | Portable dispatcher | plain `make` → makefiles/unixgcc.gmk / makefiles/freebsd.mak / makefiles/macosgcc.gmk (BSD+GNU make parseable) |
 
 **Source Makefiles** (in `src/`):
 
@@ -712,7 +712,7 @@ The `testing.yml` workflow runs on every push to `master`/`msys-fix` and on pull
 
 | Platform | Build Command | Shell |
 |----------|--------------|-------|
-| Linux (Ubuntu 22.04) | `make -f unixgcc.gmk mec` | bash |
+| Linux (Ubuntu 22.04) | `make -f makefiles/unixgcc.gmk mec` | bash |
 | macOS | `make -f src/darwin.gmk mec` | bash |
 | Windows (MinGW64) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
 | Windows (MSYS2) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |

@@ -170,7 +170,7 @@ endif
 #
 # libXft TrueType support for mew (off by default, enable with XFT=1).
 # XFT_DEFS switches MEOPT_XFT on, XFT_LIBS links fontconfig/freetype.
-# Auto-detection lives in the top-level unixgcc.gmk and is passed in as XFT=.
+# Auto-detection lives in the top-level makefiles/unixgcc.gmk and is passed in as XFT=.
 #
 PKG_CONFIG ?= pkg-config
 ifeq "$(XFT)" "1"

@@ -89,26 +89,26 @@ jobs:
         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
         echo "VRS=$VRS" >> $GITHUB_ENV
         echo "VRS=$VRS"
-        make -f unixgcc.gmk default
+        make -f makefiles/unixgcc.gmk default
         pkg-config --exists xft && echo "XFT: found" || echo "XFT: missing"
-        make -f unixgcc.gmk bfs/bin
-        make -f unixgcc.gmk mec  
-        make -f unixgcc.gmk mecb
-        make -f unixgcc.gmk mew  mewb        
-        make -f unixgcc.gmk mecw mecwb                
+        make -f makefiles/unixgcc.gmk bfs/bin
+        make -f makefiles/unixgcc.gmk mec  
+        make -f makefiles/unixgcc.gmk mecb
+        make -f makefiles/unixgcc.gmk mew  mewb        
+        make -f makefiles/unixgcc.gmk mecw mecwb                
         ls
         ls -l ./cygwin-${CYGWIN_VER}-${CYGWIN_MACHINE}-microemacs-${VRS}-mecb.exe
         echo `./cygwin-${CYGWIN_VER}-${CYGWIN_MACHINE}-microemacs-${VRS}-mecb.exe -V`
         pwd
-        make -f unixgcc.gmk release app=mecb
+        make -f makefiles/unixgcc.gmk release app=mecb
         
     - name: Cygwin Combined Release 
       shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'    
       run: |
         cd $GITHUB_WORKSPACE
-        make -f unixgcc.gmk release app=mecb
-        make -f unixgcc.gmk release app=mewb        
-        make -f unixgcc.gmk release app=mecwb
+        make -f makefiles/unixgcc.gmk release app=mecb
+        make -f makefiles/unixgcc.gmk release app=mewb        
+        make -f makefiles/unixgcc.gmk release app=mecwb
         find . -name "*.exe" | xargs rm
                         
 

@@ -78,32 +78,32 @@ jobs:
               echo "GCC=gcc-15" >> $GITHUB_ENV
            fi
       - name: Report libXft detection
-        run: make -f macosgcc.gmk version CC=${GCC}
+        run: make -f makefiles/macosgcc.gmk version CC=${GCC}
 
       - name: make bfs binary
-        run: make -f macosgcc.gmk bfs/bin CC=${GCC}
+        run: make -f makefiles/macosgcc.gmk bfs/bin CC=${GCC}
 
       - name: make mec binary
-        run:  make -f macosgcc.gmk mec CC=${GCC}
+        run:  make -f makefiles/macosgcc.gmk mec CC=${GCC}
 
       - name: make mew binary
-        run: make -f macosgcc.gmk mew CC=${GCC}
+        run: make -f makefiles/macosgcc.gmk mew CC=${GCC}
         
       - name: make mecw binary
-        run: make -f macosgcc.gmk mecw CC=${GCC}
+        run: make -f makefiles/macosgcc.gmk mecw CC=${GCC}
         
       - name: make mecb binary 
-        run: make -f macosgcc.gmk mecb CC=${GCC} VERSION=${VRS}
+        run: make -f makefiles/macosgcc.gmk mecb CC=${GCC} VERSION=${VRS}
         
       - name: make mewb binary 
-        run: make -f macosgcc.gmk mewb CC=${GCC} VERSION=${VRS}
+        run: make -f makefiles/macosgcc.gmk mewb CC=${GCC} VERSION=${VRS}
 
       - name: make mecwb binary 
-        run: make -f macosgcc.gmk mecwb CC=${GCC} VERSION=${VRS}
+        run: make -f makefiles/macosgcc.gmk mecwb CC=${GCC} VERSION=${VRS}
         
       - name: make brew package
         run: |
-            make -f macosgcc.gmk brew CC=${GCC} VERSION=${VRS}
+            make -f makefiles/macosgcc.gmk brew CC=${GCC} VERSION=${VRS}
             rm -rf brew-*/          
 
       - name: Make release
@@ -113,7 +113,7 @@ jobs:
           cp bfs/bfs MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
           # Prefer Xft outdirs when libXft was detected (XFTDIR=-xft)
           XFTDIR=""
-          if make -f macosgcc.gmk version CC=${GCC} | grep -q "XFT: 1"; then
+          if make -f makefiles/macosgcc.gmk version CC=${GCC} | grep -q "XFT: 1"; then
             XFTDIR="-xft"
           fi
           cp src/.macosgcc-release-mecw${XFTDIR}/mecw MicroEmacs09-${VRS}-${{ matrix.os }}/bin/
@@ -184,9 +184,9 @@ jobs:
 
       - name: Combined Release
         run: |
-          make -f macosgcc.gmk release app=mecb VERSION=${VRS}
-          make -f macosgcc.gmk release app=mewb VERSION=${VRS}
-          make -f macosgcc.gmk release app=mecwb VERSION=${VRS}
+          make -f makefiles/macosgcc.gmk release app=mecb VERSION=${VRS}
+          make -f makefiles/macosgcc.gmk release app=mewb VERSION=${VRS}
+          make -f makefiles/macosgcc.gmk release app=mecwb VERSION=${VRS}
 
       - name: Upload Macos Combined Release
         uses: actions/upload-artifact@v6

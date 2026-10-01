@@ -27,26 +27,26 @@ jobs:
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         
     - name: make bfs binary
-      run:  make -f unixgcc.gmk bfs/bin
+      run:  make -f makefiles/unixgcc.gmk bfs/bin
 
     - name: make mec binary       
-      run:  make -f unixgcc.gmk mec
+      run:  make -f makefiles/unixgcc.gmk mec
 
     - name: make mew binary       
-      run:  make -f unixgcc.gmk mew
+      run:  make -f makefiles/unixgcc.gmk mew
 
     - name: make mecw binary       
-      run:  make -f unixgcc.gmk mecw
+      run:  make -f makefiles/unixgcc.gmk mecw
 
     - name: make mecb binary
       run:  |
-        make -f unixgcc.gmk mecb
+        make -f makefiles/unixgcc.gmk mecb
     
     - name: make mewb binary
-      run:  make -f unixgcc.gmk mewb
+      run:  make -f makefiles/unixgcc.gmk mewb
     
     - name: make mecwb binary
-      run:  make -f unixgcc.gmk mecwb
+      run:  make -f makefiles/unixgcc.gmk mecwb
 
     # AppImage is x86_64 only (recipe arch + appimage-builder runtime).
     # appimage-builder is installed user-local (~/.local/bin), not system-wide.
@@ -68,7 +68,7 @@ jobs:
         APPIMAGE_EXTRACT_AND_RUN: "1"
       run: |
         appimage-builder --version
-        make -f unixgcc.gmk app-image \
+        make -f makefiles/unixgcc.gmk app-image \
           APPIMAGE_PLATFORM_SUFFIX=_${{ matrix.os }}
         ls -lh Jasspa_MicroEmacs_${VRS}_${{ matrix.os }}_x86_64.AppImage
 
@@ -81,7 +81,7 @@ jobs:
 
     - name: make brew package
       run:  |
-        make -f unixgcc.gmk brew
+        make -f makefiles/unixgcc.gmk brew
         rm -rf brew-*/          
     
     - name: Make release
@@ -165,9 +165,9 @@ jobs:
 
     - name: Combined Release
       run: |
-        make -f unixgcc.gmk release app=mecb
-        make -f unixgcc.gmk release app=mewb
-        make -f unixgcc.gmk release app=mecwb
+        make -f makefiles/unixgcc.gmk release app=mecb
+        make -f makefiles/unixgcc.gmk release app=mewb
+        make -f makefiles/unixgcc.gmk release app=mecwb
         export DIR=`ls linux-*-mecb.bin | sed 's/-mecb.bin//'`
         echo $DIR
     - name: Upload Ubuntu Combined Release
