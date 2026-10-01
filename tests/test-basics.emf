@@ -60,6 +60,25 @@ define-macro start-up
     insert-string $encoding
     insert-newline
 
+    ; Test 10: Triple nested while loops (4x4x4 = 64 iterations)
+    set-variable #l0 0
+    set-variable #l3 0
+    !while &les #l0 4
+        set-variable #l1 0
+        !while &les #l1 4
+            set-variable #l2 0
+            !while &les #l2 4
+                set-variable #l3 &add #l3 1
+                set-variable #l2 &add #l2 1
+            !done
+            set-variable #l1 &add #l1 1
+        !done
+        set-variable #l0 &add #l0 1
+    !done
+    insert-string "TEST:nested-while="
+    insert-string #l3
+    insert-newline
+
     ; All tests complete
     insert-string "TEST:all-tests=complete"
     insert-newline
