@@ -53,3 +53,11 @@ folder as the mecu wrapper script and then run:
 mecu --theme=github-dark ...
 ```
 
+__Installers:__
+
+- __install.sh__ - Unix curl-based installer which downloads the latest release
+  for Linux, macOS, Cygwin and MSYS2 (see `doc/install.md`)
+- __install-windows.ps1__ - Windows PowerShell installer
+- __install-fonts.sh__ - X11 font installer for the optional coding fonts
+- __install-dict.sh__ - spelling dictionary installer
+

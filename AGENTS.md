@@ -215,14 +215,14 @@ Probably outdated:
 
 A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Windows, and macOS with optional GUI.
 
-### Install Scripts
+### Install Scripts (in `bin/`)
 
 | File | Purpose |
 |------|---------|
-| `install.sh` | Unix curl-based installer (downloads latest release) for Linux, MaxOS, Cygwin/Windows and Msys/Windows|
-| `install-windows.ps1` | Windows PowerShell installer |
-| `install-fonts.sh` | X11 font installer |
-| `install-dict.sh` | Spelling dictionary installer |
+| `bin/install.sh` | Unix curl-based installer (downloads latest release) for Linux, MaxOS, Cygwin/Windows and Msys/Windows|
+| `bin/install-windows.ps1` | Windows PowerShell installer |
+| `bin/install-fonts.sh` | X11 font installer |
+| `bin/install-dict.sh` | Spelling dictionary installer |
 
 For full details on the install and update mechanism, see `doc/install.md`.
 

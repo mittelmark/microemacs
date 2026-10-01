@@ -203,7 +203,7 @@ function Create-Shortcut ($destFolder) {
 
 # Download and save the installer script itself for future updates
 function Install-UpdateScript ($destFolder) {
-    $scriptUrl = "https://raw.githubusercontent.com/mittelmark/microemacs/master/install-windows.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/mittelmark/microemacs/master/bin/install-windows.ps1"
     $scriptPath = Join-Path $destFolder "install-windows.ps1"
     
     Write-Host "Downloading installer script for future updates..."

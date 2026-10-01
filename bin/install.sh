@@ -441,7 +441,7 @@ UPDATESCRIPT
 }
 
 ## install desktop file
-#/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/install-linux.sh)"
+#/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mittelmark/microemacs/refs/heads/master/bin/install.sh)"
 install_me
 install_update_script
 if [ "`which mecb 2>/dev/null`" != "" ]; then
