@@ -154,10 +154,30 @@ release: $(app)
 # The AppDir is staged in appimage-build/AppDir so that the tracked files
 # in jme.AppDir/ stay untouched. Packaging uses appimage-builder with
 # --skip-build: the staged AppDir (including the AppRun script) is packaged
-# as-is by the type2 AppImageKit runtime. The AppRun script runs jme through
-# the host dynamic linker (/lib64/ld-linux-x86-64.so.2) because a full
-# appimage-builder build rewrites PT_INTERP to a relative path and replaces
-# AppRun with its own ELF + AppRun.env.
+# as-is by the AppImage runtime (APPIMAGE_RUNTIME, see below). The AppRun
+# script runs jme through the host dynamic linker
+# (/lib64/ld-linux-x86-64.so.2) because a full appimage-builder build
+# rewrites PT_INTERP to a relative path and replaces AppRun with its own
+# ELF + AppRun.env.
+#
+# The runtime ("carrier") is the statically linked type2-runtime from
+# https://github.com/AppImage/type2-runtime (musl, no dynamic section) so
+# the AppImage does NOT need libfuse.so.2 on the target system - the old
+# AppImageKit runtime dlopen()s it and aborts with
+#   dlopen(): error loading libfuse.so.2
+# on machines without FUSE2. appimage-builder only downloads a runtime when
+# $(APPIMAGE_RUNTIME) is absent, so the app-image target seeds/verifies the
+# pinned release there first (sha256 checked, stale caches replaced).
+# Mounting still uses the setuid fusermount/fusermount3 helper of the host
+# fuse/fuse3 package; on systems without any FUSE unpack manually with:
+#   ./Jasspa_MicroEmacs_<version>_x86_64.AppImage --appimage-extract
+#
+# appimage-builder 1.1.0 always compresses the squashfs payload with xz,
+# but the type2-runtime's embedded squashfuse is built with zlib/zstd only
+# (an xz payload dies with "Squashfs image uses xz compression, this
+# version supports only zlib, zstd."). The payload is therefore re-emitted
+# with mksquashfs -comp zstd and spliced behind the carrier after
+# appimage-builder has packaged the AppDir.
 #
 # Optional platform tag in the AppImage file name (used by CI), e.g.:
 #   make -f makefiles/unixgcc.gmk app-image APPIMAGE_PLATFORM_SUFFIX=_ubuntu-22.04
@@ -169,6 +189,13 @@ APPIMAGE_PLATFORM_SUFFIX ?=
 APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)$(APPIMAGE_PLATFORM_SUFFIX)_x86_64.AppImage
 APPIMAGE_RECIPE ?= makefiles/AppImageBuilder.yml
 APPIMAGE_ENV    := JME_VERSION=$(VERSION) JME_PLATFORM_SUFFIX=$(APPIMAGE_PLATFORM_SUFFIX)
+# Static type2-runtime carrier (no libfuse.so.2 dependency on the host),
+# pinned release, see comment block above.
+APPIMAGE_RUNTIME        := appimage-build/prime/runtime-x86_64
+APPIMAGE_RUNTIME_URL    := https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-x86_64
+APPIMAGE_RUNTIME_SHA256 := 2fca8b443c92510f1483a883f60061ad09b46b978b2631c807cd873a47ec260d
+# zstd payload used to replace appimage-builder's xz payload (see above)
+APPIMAGE_PAYLOAD := appimage-build/payload-zstd.squashfs
 
 ifeq ($(PLATFORM),linux)
 app-image: mecwb
@@ -180,6 +207,21 @@ app-image: mecwb
 		echo "app-image: error: recipe '$(APPIMAGE_RECIPE)' not found" ; exit 1 ; }
 	@echo "app-image: using recipe $(APPIMAGE_RECIPE)"
 	@echo "app-image: output $(APPIMAGE_FILE)"
+	@command -v curl >/dev/null 2>&1 || { \
+		echo "app-image: error: 'curl' not found in PATH (needed to fetch the AppImage runtime)" ; \
+		exit 1 ; }
+	@mkdir -p $(dir $(APPIMAGE_RUNTIME))
+	@if [ -f "$(APPIMAGE_RUNTIME)" ] && \
+	    [ "$$(sha256sum "$(APPIMAGE_RUNTIME)" | cut -d' ' -f1)" = "$(APPIMAGE_RUNTIME_SHA256)" ]; then \
+		echo "app-image: runtime cache OK ($(APPIMAGE_RUNTIME))" ; \
+	else \
+		echo "app-image: fetching type2-runtime $(APPIMAGE_RUNTIME_URL)" ; \
+		curl -fsSL -o "$(APPIMAGE_RUNTIME).tmp" "$(APPIMAGE_RUNTIME_URL)" || { \
+			rm -f "$(APPIMAGE_RUNTIME).tmp" ; exit 1 ; } ; \
+		echo "$(APPIMAGE_RUNTIME_SHA256)  $(APPIMAGE_RUNTIME).tmp" | sha256sum -c - || { \
+			rm -f "$(APPIMAGE_RUNTIME).tmp" ; exit 1 ; } ; \
+		mv "$(APPIMAGE_RUNTIME).tmp" "$(APPIMAGE_RUNTIME)" ; \
+	fi
 	rm -rf $(APPIMAGE_APPDIR)
 	mkdir -p $(APPIMAGE_APPDIR)/usr/bin
 	mkdir -p $(APPIMAGE_APPDIR)/usr/share/applications
@@ -195,6 +237,15 @@ app-image: mecwb
 	rm -f $(APPIMAGE_FILE)
 	$(APPIMAGE_ENV) appimage-builder --recipe $(APPIMAGE_RECIPE) \
 		--appdir $(APPIMAGE_APPDIR) --skip-build
+	@echo "app-image: re-compressing payload as zstd (type2-runtime has no xz)"
+	rm -f $(APPIMAGE_PAYLOAD)
+	mksquashfs $(APPIMAGE_APPDIR) $(APPIMAGE_PAYLOAD) \
+		-root-owned -noappend -reproducible -comp zstd
+	@off=$$(./$(APPIMAGE_FILE) --appimage-offset) && \
+		head -c $$((off)) "$(APPIMAGE_FILE)" > "$(APPIMAGE_FILE).tmp" && \
+		cat "$(APPIMAGE_PAYLOAD)" >> "$(APPIMAGE_FILE).tmp" && \
+		mv "$(APPIMAGE_FILE).tmp" "$(APPIMAGE_FILE)" && \
+		rm -f "$(APPIMAGE_PAYLOAD)"
 	chmod 755 $(APPIMAGE_FILE)
 	./$(APPIMAGE_FILE) -V -n
 else

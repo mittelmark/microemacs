@@ -31,6 +31,20 @@
 # and require AppRun.env; the script approach avoids that machinery and the
 # old corrupted bundled-glibc runtime.)
 #
+# The runtime ("carrier") prepended to the squashfs payload is seeded and
+# sha256-verified by the makefile before this recipe runs:
+# appimage-builder would otherwise download AppImageKit's old fuse2 runtime
+# (dlopen()s libfuse.so.2 and aborts on hosts without FUSE2) into
+# appimage-build/prime/runtime-x86_64 whenever that file is missing.
+# We use the statically linked type2-runtime instead, which needs no
+# libfuse.so.2; mounting uses the host's setuid fusermount/fusermount3 and
+# --appimage-extract remains available on systems without any FUSE.
+#
+# Note: this recipe's packager compresses the payload with xz, which the
+# type2-runtime squashfuse does not understand (zlib/zstd only). The
+# makefile re-compresses the payload with zstd and splices it behind the
+# carrier right after appimage-builder returns - see makefiles/unixgcc.gmk.
+#
 # Output file name:
 #   Jasspa_MicroEmacs_<JME_VERSION><JME_PLATFORM_SUFFIX>_x86_64.AppImage
 #

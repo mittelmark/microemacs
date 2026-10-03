@@ -7,11 +7,32 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261003.0817>
+  > Last Modified : <261003.1045>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [261003] - AppImage no longer requires libfuse2 on the target
+               system: the embedded runtime is now the statically
+               linked type2-runtime (release 20251108, pinned URL and
+               sha256 checked by the makefile) instead of AppImageKit's
+               fuse2 runtime, which aborted with "dlopen(): error
+               loading libfuse.so.2" on distros that only ship FUSE3.
+               app-image seeds appimage-build/prime/runtime-x86_64
+               before appimage-builder runs, because appimage-builder
+               only downloads a runtime when that file is absent and
+               would silently keep a stale fuse2 carrier. That runtime
+               mounts zlib/zstd squashfs payloads only, so the xz
+               payload produced by appimage-builder 1.1.0 is
+               re-compressed with mksquashfs -comp zstd and spliced
+               behind the carrier afterwards. Mounting still uses the
+               host's setuid fusermount/fusermount3; systems without
+               any FUSE unpack with --appimage-extract (documented in
+               doc/install.md, new AppImage section plus a
+               troubleshooting entry). Files: makefiles/unixgcc.gmk,
+               makefiles/AppImageBuilder.yml, jme.AppDir/AppRun,
+               doc/install.md, ChangeLog
 
   [261003] - Documentation refresh after the 260929-261001 build and
                CI changes. AGENTS.md: the stale "No formal test suite"

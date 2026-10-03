@@ -288,6 +288,30 @@ The script supports the following platforms. Build filenames follow the pattern:
 | 7      | x86_64     | Fedora 43                  | `linux-7-x86_64-fedora-43-mecb`      |
 | 7      | x86_64     | Ubuntu 26                  | `linux-7-x86_64-ubuntu-26-mecb`      |
 
+### AppImage (Linux)
+
+The GitHub release also ships a self-mounting AppImage built with
+`make -f makefiles/unixgcc.gmk app-image`. It bundles no libraries and needs
+from the host:
+
+```bash
+glibc >= 2.36        # Debian 12+, Ubuntu 22.04+, Fedora 36+, Arch, ...
+libX11.so.6 libXft.so.2 libtinfo.so.6 libz.so.1
+```
+
+The embedded runtime is the statically linked
+[type2-runtime](https://github.com/AppImage/type2-runtime), so **no
+`libfuse.so.2` is required** (older AppImages of other projects often fail
+with `dlopen(): error loading libfuse.so.2` on modern distros). Mounting is
+done with the setuid `fusermount`/`fusermount3` helper from the standard
+`fuse`/`fuse3` package. On a system without any FUSE unpack the editor
+manually instead of mounting:
+
+```bash
+./Jasspa_MicroEmacs_<version>_x86_64.AppImage --appimage-extract
+./squashfs-root/AppRun
+```
+
 ### macOS Details
 
 | Kernel | Arch       | Build Suffix                               |
@@ -384,3 +408,21 @@ sudo dnf install unzip curl
 # macOS
 brew install unzip curl
 ```
+
+### AppImage: `dlopen(): error loading libfuse.so.2`
+
+AppImages built **before 2026-10-03** embed the old AppImageKit runtime,
+which loads `libfuse.so.2` dynamically and aborts on distros that only ship
+FUSE3 (e.g. Ubuntu 24.04). Either install the compatibility package or
+unpack manually:
+
+```bash
+# Debian/Ubuntu
+sudo apt install libfuse2
+# or without FUSE at all
+./Jasspa_MicroEmacs_<version>_x86_64.AppImage --appimage-extract
+```
+
+Current AppImages use a statically linked runtime and no longer print this
+error; they only need a setuid `fusermount`/`fusermount3` (`fuse`/`fuse3`
+package) to mount.
