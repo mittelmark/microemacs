@@ -5198,6 +5198,86 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [261003] - Documentation catch-up after the 260929-261001 build and CI
+                 restructure: AGENTS.md testing and CI sections rewritten
+                 around tests/test-basics.emf and the 7 testing.yml jobs,
+                 doc/utf8-encoding.md build commands fixed for the
+                 makefiles/ move, its status header refreshed (tickets 12
+                 and 13 closed) and the ChangeLog back-filled.
+
+    - [261001] - CI regression tests extended (UTF-8 Greek round-trip and
+                 triple nested while/repeat) with assertions in every
+                 testing.yml job plus a new MSYS2 mintty test job.
+                 Repository restructure: build makefiles into makefiles/,
+                 install scripts into bin/, docs and examples into docs/ and
+                 user/; "32" dropped from the build names (mec32.exe ->
+                 mec.exe, linux32gcc -> linuxgcc, macos32gcc.gmk ->
+                 macosgcc.gmk).
+
+    - [260930] - Support three nested !while / !repeat loops (was two), with
+                 a clear error on the fourth; legacy BDF fonts and the
+                 bdf-fonts workflow removed; AppImage building reworked for
+                 Debian/Ubuntu.
+
+    - [260929] - Unified build strategy: the top-level unixgcc.gmk now
+                 drives Linux, Cygwin and MSYS2 terminal builds
+                 (auto-detected via uname -o) and the root Makefile became a
+                 portable platform dispatcher; README shortened with old
+                 releases archived.
+
+    - [260928] - Fixed the long-line horizontal scroll display (ticket 13)
+                 and field-verified the font selection dialog availability
+                 rules (ticket 12 font UI follow-up closed).
+
+    - [260925] - Font selection availability truth table: "Choose Font ..."
+                 appears only when the toolchain can work (xft + fc-list ->
+                 FreeType dialog, xfontsel only -> legacy dialog, neither ->
+                 button omitted with an explanatory message).
+
+    - [260924] - Windows mew full BMP UTF-8 display via ExtTextOutW with a
+                 WCHAR sideband (meFrameLine.wtext); cygwin libXft support;
+                 UTF-8 documentation updates.
+
+    - [260923] - Assorted ticket 12 fixes: Xft one-character typing lag,
+                 special-char GC colors, startup SEGV, FreeType font dialog
+                 port, core-font Hide and umlaut cursor handling,
+                 insert-symbol cell rendering, and draining queued UTF-8
+                 continuation bytes in doOneKey.
+
+    - [260922] - libXft TrueType rendering for mew/mecw behind XFT=1 plus
+                 legacy core-font umlaut display fixes; documented in
+                 doc/utf8-encoding.md.
+
+    - [260921] - Encoding-aware insert-symbol dialog and CP850 support
+                 (src/encoding.c, tests/encodings/tcp850.txt).
+
+    - [260919] - Per-buffer encoding rendering for mixed-encoding sessions
+                 (each buffer paints via its own bp->encoding) and
+                 cross-encoding rectangle kill/yank.
+
+    - [260915] - UTF-8 character-aware editing: cursor movement, word
+                 operations and delete/kill treat multi-byte sequences as
+                 single characters.
+
+    - [260830] - Two nested !while / !repeat loops (first nesting level) in
+                 dobuf, with tests in tests/loops/while.emf.
+
+    - [260829] - Search path fixes (current directory excluded, newuser
+                 wizard .erf lookup in ~/.jasspa), Cygwin/MSYS2 install-test
+                 fixes and buffer-encoding variable ordering in evar.def.
+
+    - [260828] - Native UTF-8 display core: disLineByteOff byte-offset
+                 mapping keeps the byte-based meLine structure while painting
+                 UTF-8 at the correct columns (tests/encodings/tutf8.txt);
+                 CP437/CP4866 restored and BOM detection tested.
+
+    - [260827] - Luit terminal translation experiment, adding the $encoding
+                 and $internal-encoding variables (later rejected as lossy -
+                 see doc/utf8-encoding.md).
+
+    - [260826] - README refresh (asciinema links); version set to
+                 v09.12.26b6.
+
     - [260824] - Added mdview navigation history and wiki-style link creation.
                  History tracks visited files with Start/Prev/Next navigation.
                  History view lists all visited files as clickable links.
@@ -8786,6 +8866,13 @@ Miscellaneous Information
        - Adding CLIPBOARD selection support for X-Windows version (mew) -
          allows copy/paste to work with external applications using Ctrl+C/Ctrl+V.
          Can be enabled via user-setup (Platform page) or $system variable (0x2000000).
+       - Adding native UTF-8 and multi-encoding editing - per-buffer
+         $buffer-encoding with auto-detection and -E command line override,
+         libXft TrueType rendering for mew/mecw (XFT=1) and full BMP display
+         in the Windows GUI version (mew). See doc/utf8-encoding.md.
+       - Adding an automated regression test suite (tests/test-basics.emf)
+         run by GitHub Actions on 7 platform jobs (Linux, macOS, Windows x3,
+         Cygwin x2) and three nested !while/!repeat loops.
 
     cDSeptember 2009cA
        10th Major Release - MicroEmacs 2009.

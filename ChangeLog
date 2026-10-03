@@ -1,17 +1,95 @@
 > -!- document; fill-mode:both; fill-column:78 -!-
 >
 >  Copyright 1998-2009 JASSPA (www.jasspa.com).
->            2021-2025 Detlef Groth (https://github.com/mittelmark/microemacs)
+>            2021-2026 Detlef Groth (https://github.com/mittelmark/microemacs)
 > 
 >  License:  GPL (see the file COPYING) 
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <260928.0848>
+  > Last Modified : <261003.0817>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [261003] - Documentation refresh after the 260929-261001 build and
+               CI changes. AGENTS.md: the stale "No formal test suite"
+               wording replaced (tests/test-basics.emf + testing.yml
+               exist), CI workflow table updated to the 7 testing.yml
+               jobs (Linux, macOS, Windows UCRT64, Windows MSYS2
+               mintty, Cygwin x86_64, Cygwin x86, WinLibs) with the
+               devel-only push trigger, branch strategy corrected (no
+               pull_request trigger exists in any workflow), workflow list
+               corrected to the 11 files present (the old table listed
+               cygwin.yml/cygwin2.yml/bdf-fonts.yml which are gone and
+               missed binaries-cygwin.yml/test-install.yml),
+               encoding.c/encoding.h added to the source table,
+               utf8-encoding.md description fixed
+               (native UTF-8, not "mapped to CP1252"), Key Directories
+               now list bin/, makefiles/, tests/test-basics.emf and
+               tests/encodings. doc/utf8-encoding.md: build commands
+               broken by the makefiles/ move fixed (inside cd src use
+               unixgcc.gmk - makefiles/unixgcc.gmk only works from the
+               repo root, and BTYP= is a src-level variable), status
+               header refreshed (branch devel, ticket 13 fixed, Windows
+               BMP row no longer pending, CI unicode/nested-loop
+               assertions noted). doc/me.smd: Development History
+               entries added for 260826-261003 and a UTF-8 bullet in
+               the 2026 release notes; me.ehf regenerated and copied to
+               jasspa/macros/me.ehf. Files: AGENTS.md,
+               doc/utf8-encoding.md, doc/me.smd, jasspa/macros/me.ehf,
+               ChangeLog
+
+  [261001] - CI test-basics extended: UTF-8 Greek round-trip
+               (TEST:unicode=...) and triple nested while/repeat
+               (TEST:nested-while=64) asserted in every testing.yml
+               job; added the MSYS2 mintty (msys2unix) test job and
+               renamed the mingw64 test distribution to ucrt64.
+               Repository restructure (PR #17, PR #18): root build
+               makefiles moved into makefiles/, install scripts into
+               bin/, README-standalone.md into docs/, misc files into
+               user/, AppImageBuilder.yml into makefiles/; dropped the
+               misleading "32" from build names (mec32.exe -> mec.exe,
+               linux32gcc -> linuxgcc, macos32gcc.gmk -> macosgcc.gmk).
+               Docs aligned with v09.12.26b6 (README b6 section,
+               macOS CC fallback); install.sh no longer downloads TTF
+               fonts; gitignore covers built archives and Windows bfs
+               binaries. Files: .github/workflows/testing.yml,
+               tests/test-basics.emf, Makefile, AGENTS.md, README.md,
+               .gitignore, bin/, docs/, user/, makefiles/,
+               doc/install.md
+
+  [260930] - Support three nested !while and !repeat loops (was two): a
+               third loop-line slot (wlpSaved2/rlpSaved2) was added to
+               dobuf so both loop kinds can be nested twice; a fourth
+               level now raises a clear "Too many nested" error instead
+               of corrupting the loop state. Documentation updated
+               (doc/me.smd, docs/emf-tutorial.md, AGENTS.md, me.ehf)
+               and tests/loops/while.emf extended with 3-level cases.
+               Removed the legacy BDF fonts directory and the broken
+               bdf-fonts workflow; reworked AppImage building for
+               Debian/Ubuntu (appimage-builder via the unixgcc.gmk
+               app-image target) and added Arch build notes.
+               Files: src/exec.c, tests/loops/while.emf, fonts/,
+               .github/workflows/, unixgcc.gmk, doc/me.smd,
+               docs/emf-tutorial.md, AGENTS.md, README.md
+
+  [260929] - Unified build strategy: the top-level unixgcc.gmk now
+               drives Linux, Cygwin and MSYS2 terminal builds (platform
+               auto-detected via uname -o, FreeBSD/Darwin guarded);
+               cygwin.gmk dropped. The root Makefile was replaced by a
+               portable platform dispatcher (unixgcc.gmk / freebsd.mak /
+               macosgcc.gmk) parseable by both BSD and GNU make. Default
+               winmingw target is now mingw64. README shortening (started
+               260928) with old releases archived, install.sh gained a
+               font-tool check, the cygwin action uses the default
+               checkout and fixes chmod 755 of me?b executables,
+               temporary Xft debug calls removed. Files: unixgcc.gmk,
+               src/unixgcc.gmk, Makefile, README.md, install.sh,
+               .github/workflows/binaries-cygwin.yml, AGENTS.md,
+               doc/build.txt, doc/cygwin.txt, doc/me.smd,
+               jasspa/macros/me.ehf
 
   [260928] - Font selection dialog field-verified, ticket 12 font UI
                follow-up closed (maintainer test). Behaves correctly
@@ -222,8 +300,60 @@
               masks, C1 controls shown as dots to protect the terminal.
               Added CP850 (DOS Latin-1) conversion engine with test file
               tests/encodings/tcp850.txt.
-              Files: jasspa/macros/osdmisc.emf, src/encoding.c,
-              src/encoding.h, tests/encodings/tcp850.txt
+               Files: jasspa/macros/osdmisc.emf, src/encoding.c,
+               src/encoding.h, tests/encodings/tcp850.txt
+
+  [260919] - Per-buffer encoding rendering for mixed-encoding sessions:
+               every buffer now paints through its own bp->encoding rather
+               than a single global internal encoding, so UTF-8 and
+               single-byte files can be open side by side. Rectangle
+               kill/yank converts across the encoding boundary (utf8-mec).
+               Windows terminal insert-symbol fixes. Files: src/display.c,
+               src/encoding.c, src/encoding.h, src/region.c, src/frame.c,
+               tests/encodings/
+
+  [260915] - UTF-8 character-aware editing: cursor movement, word
+               operations and delete/kill treat multi-byte sequences as
+               single characters instead of stepping through bytes.
+               Files: src/basic.c, src/random.c, src/word.c
+
+  [260830] - Two nested !while / !repeat loops (first nesting level)
+               supported in dobuf via saved loop-line slots; tests in
+               tests/loops/while.emf (incl. t-chessboard case) and
+               documentation updated. Files: src/exec.c, tests/loops/,
+               doc/me.smd, jasspa/macros/me.ehf
+
+  [260829] - Search path and install fixes: the current working directory
+               is excluded from the macro search path, the newuser wizard
+               looks for .erf in ~/.jasspa instead of the whole
+               search-path, and the Cygwin/MSYS2 install-test actions,
+               cygwin colors and cygwin.gmk mecw build were corrected.
+               Buffer-encoding variable ordering in evar.def fixed (ME
+               resolves variables by binary chop). Files: src/unixterm.c,
+               jasspa/macros/me.emf, .github/workflows/, src/cygwin.gmk,
+               src/evar.def
+
+  [260828] - Native UTF-8 display core: disLineByteOff byte-offset
+               mapping keeps ME's byte-based meLine structure and stores
+               per-line cell offsets so UTF-8 bytes paint at their correct
+               column (fixture tests/encodings/tutf8.txt). Encoding sources
+               renamed to the 8.3 convention, CP437/CP4866 restored, Cp866
+               warning fixed, BOM detection tested; startup now
+               recalculates the screen size (me.emf).
+               Files: src/display.c, src/unixterm.c, src/encoding.c,
+               src/main.c, tests/encodings/, jasspa/macros/me.emf
+
+  [260827] - Luit on-the-fly terminal encoding experiment: UTF-8 and
+               single-byte conversion at the terminal I/O boundary,
+               introducing the $encoding and $internal-encoding variables,
+               plus encoding fixtures and test-basics additions. The
+               approach was later rejected as lossy and limited to 256
+               characters - rationale recorded in doc/utf8-encoding.md.
+               Files: src/termio.c, src/unixterm.c, src/encoding.c,
+               src/eval.c, src/hilight.c, tests/
+
+  [260826] - README refresh (asciinema links, LLM note fixes); version
+               set to v09.12.26b6. Files: README.md, src/evers.h
 
   [260824] - Added mdview navigation history and wiki-style link creation.
              History tracks visited files with Start/Prev/Next navigation.

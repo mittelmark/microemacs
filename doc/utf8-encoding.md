@@ -1,10 +1,12 @@
 # UTF-8 Encoding Implementation
 
-**Status (2026-09-24, branch `libxft-utf8`):** core UTF-8 path, Linux Xft
+**Status (2026-10-03, branch `devel`):** core UTF-8 path, Linux Xft
 rendering, and **Windows GUI full BMP** (`mew`, `ExtTextOutW` + WCHAR
-sideband) are implemented and verified. XLFD (core X11 fonts) is kept as a
-**latin-1 fallback**, not a UTF-8 target. Full CJK/IME still open.
-Tracked as Ticket 12 in `doc/tickets.md`.
+sideband) are implemented, verified and merged (v09.12.26b6). XLFD (core
+X11 fonts) is kept as a **latin-1 fallback**, not a UTF-8 target. Full
+CJK/IME still open. Tracked as Ticket 12 in `doc/tickets.md` (closed
+260928); the long-line display fix that landed alongside is Ticket 13
+(closed 260928).
 
 | OS | Terminal (`mec`) | Core X11 fonts (XLFD) | libXft (`XFT=1`) | Windows GUI (`mew`) |
 |----|------------------|----------------------|------------------|---------------------|
@@ -309,16 +311,20 @@ KOI8-R, CP437/866/850). ISO-8859/ASCII keep C1 dotted. Both are restored
 afterwards (also on C-g dismissal). Insertion always goes through
 `&tchar` from the dialog source into `$buffer-encoding`.
 
-## libXft TrueType Support (`MEOPT_XFT`, branch `libxft-utf8`)
+## libXft TrueType Support (`MEOPT_XFT`)
 
 TrueType rendering for `mew`/`mecw` via libXft, off by default:
 
 ```bash
 cd src
-make -f makefiles/unixgcc.gmk XFT=1 BTYP=cw   # outdirs: .linuxgcc-release-mew-xft, -mecw-xft
-make -f makefiles/unixgcc.gmk XFT=1 BTYP=w    # mew only
-make -f makefiles/unixgcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
+make -f unixgcc.gmk XFT=1 BTYP=cw   # outdirs: .linuxgcc-release-mew-xft, -mecw-xft
+make -f unixgcc.gmk XFT=1 BTYP=w    # mew only
+make -f unixgcc.gmk XFT=1 BTYP=w BCFG=debug   # debug + ME_DBGTRACE
 ```
+
+(From the repository root the equivalent dispatcher form is
+`make -f makefiles/unixgcc.gmk XFT=1 mew` / `mecw`; `BTYP=` is only
+understood by the in-`src` makefile.)
 
 - `change-font "monospace:size=14"` loads an Xft pattern; `&opt "xft"`
   reports whether Xft is active. Without a successful `change-font`,
@@ -522,7 +528,8 @@ Debug traces:
 
 Build with debug traces:
 ```bash
-make -f makefiles/unixgcc.gmk BTYP=w BCFG=debug XFT=1
+cd src && make -f unixgcc.gmk BTYP=w BCFG=debug XFT=1
+# or from the root: make -f makefiles/unixgcc.gmk BCFG=debug XFT=1 mew
 ```
 
 #### Remaining hypotheses (all superseded by the Hide stale-save fix above)
@@ -677,11 +684,19 @@ UTF-8 validation wins. This prevents double-encoding when a Python file declares
 
 ```bash
 cd src
-make -f makefiles/unixgcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
-make -f makefiles/unixgcc.gmk BTYP=c             # mec (console only)
-make -f makefiles/unixgcc.gmk BTYP=w             # mew (X11 only, core fonts)
-make -f makefiles/unixgcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
-make -f makefiles/unixgcc.gmk XFT=1 BTYP=w       # mew with libXft
+make -f unixgcc.gmk BTYP=cw            # mecw (console + X11, core fonts)
+make -f unixgcc.gmk BTYP=c             # mec (console only)
+make -f unixgcc.gmk BTYP=w             # mew (X11 only, core fonts)
+make -f unixgcc.gmk XFT=1 BTYP=cw      # mecw with libXft (-xft outdirs)
+make -f unixgcc.gmk XFT=1 BTYP=w       # mew with libXft
+```
+
+Equivalently from the repository root (dispatcher forwards to `src/`):
+
+```bash
+make -f makefiles/unixgcc.gmk mec      # console
+make -f makefiles/unixgcc.gmk mew      # X11 (libXft auto-detected, override XFT=0/1)
+make -f makefiles/unixgcc.gmk mecw     # both
 ```
 
 ### Automated Tests
@@ -739,7 +754,12 @@ Chronological highlights (details in `doc/tickets.md`):
 | `eab3acc` | Xft special chars 0..31: `SetScheme` updates X11 GC |
 | `5a1bdd2` / `25e3c76` | Windows clipboard: external tools + CF_UNICODETEXT |
 | `972ca79` | Windows GUI latin-1 fold (system fonts) |
-| (pending) | Windows GUI full BMP: ExtTextOutW + `wtext` sideband |
+| `7135b42` | Windows GUI full BMP: ExtTextOutW + `wtext` sideband (260924) |
+| `04b4a56` | Ticket 13: long-line horizontal scroll display (260928) |
+| `625feda` | CI `test-basics`: UTF-8 Greek round-trip assertion (261001) |
+
+The long-line horizontal-scroll regression found while testing UTF-8 was
+tracked separately as Ticket 13 and fixed by `04b4a56` (260928).
 
 ### Approach Considered: Luit On-the-fly Translation
 
@@ -804,5 +824,6 @@ The `disLineByteOff[]` approach was chosen because it:
 
 TrueType on Linux (`XFT=1`), core-font latin-1 fold (fallback), Windows
 GUI full BMP (`ExtTextOutW`), clipboard CF_UNICODETEXT, and the typing-lag
-class of bugs are **done** on `libxft-utf8` — see the Xft / XLFD /
-Windows sections above and Ticket 12 in `doc/tickets.md`.
+class of bugs are **done** and merged into `devel` (v09.12.26b6) — see
+the Xft / XLFD / Windows sections above and Tickets 12 and 13 in
+`doc/tickets.md`.

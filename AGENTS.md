@@ -19,6 +19,8 @@ Current version: **v09.12.26b6** (defined in `src/evers.h`).
 - 45+ color themes (Dracula, Solarized, Ayu, etc.)
 - 80+ file hooks for syntax highlighting
 - Built-in spell checking, code folding, git integration
+- Native UTF-8 / multi-encoding editing (per-buffer `bp->encoding`,
+  auto-detection, `-E` override; see `doc/utf8-encoding.md`)
 
 ## Build Commands
 
@@ -156,7 +158,7 @@ The macro is used in `main.c` to trace execution flow at key points:
 Example debug build command:
 
 ```bash
-make -f winmingwgcc.mak BDIST=msys2unix BTYP=c BCFG=debug all
+cd src && make -f winmingwgcc.mak BDIST=msys2unix BTYP=c BCFG=debug all
 ```
 
 Output: `.ucrt64unix-debug-mec/mec.exe`
@@ -203,6 +205,7 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 | `unixgcc.gmk` | Linux / Cygwin / MSYS2 gcc (primary) |
 | `linuxmingwgcc.mak` | Cross-compile from Linux to Windows |
 | `macosgcc.gmk` | macOS |
+| `darwin.gmk` | macOS (legacy JASSPA makefile; CI uses `makefiles/macosgcc.gmk`) |
 | `freebsd.mak` | FreeBSD |
 | `openbsd.gmk` | OpenBSD (not actual) |
 | `winmingwgcc.mak` | MSYS2 native Windows |
@@ -305,6 +308,7 @@ functionName(int arg)
 | `bind.c` | Key binding management |
 | `buffer.c` | Buffer management |
 | `display.c` | Screen display/redraw |
+| `encoding.c` / `encoding.h` | Character encoding conversion (UTF-8, CP1252, ISO-8859-x, …), `meConvChar()`, latin-1 fold |
 | `eval.c` | Expression evaluation (macro interpreter core) |
 | `exec.c` | Command execution engine |
 | `file.c` / `fileio.c` | File I/O operations |
@@ -445,9 +449,13 @@ These are included by headers to generate lookup tables:
 - `jasspa/pixmaps/` - Icons (XPM, PNG formats)
 - `jasspa/contrib/` - Contributed/user macro files
 - `bfs/` - Built-in File System tool (embeds macros into executables)
+- `bin/` - Helper scripts (install, fonts, themes, `ehf2md.tcl`)
+- `makefiles/` - Top-level build makefiles (dispatcher, `unixgcc.gmk`, …)
 - `doc/` - Documentation (me.smd → me.ehf)
 - `docs/` - EMF tutorial (emf-tutorial.md)
-- `tests/` - Sample source files in 42+ programming languages
+- `tests/` - Sample source files in 42+ programming languages, plus
+  `tests/test-basics.emf` (CI regression suite), `tests/encodings/`
+  (UTF-8/single-byte fixtures), `tests/loops/`
 - `user/` - Example/test user macro files
 - `~/.jasspa/` - User-specific configuration directory
 - `~/.jasspa/USERNAME.emf` - User startup macro file
@@ -566,7 +574,8 @@ osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\\} Use \\HFonts" 0x10 
 
 ## Testing
 
-No formal test suite exists. Manual testing:
+An automated regression suite (`tests/test-basics.emf`, see below) plus CI
+(`testing.yml`) exists; everything beyond that is manual testing:
 
 ### Basic Startup Test
 
@@ -708,17 +717,23 @@ fi
 
 #### CI Workflow
 
-The `testing.yml` workflow runs on every push to `master`/`msys-fix` and on pull requests. It builds and tests on 5 platforms:
+The `testing.yml` workflow runs on every push to `devel` and on manual
+`workflow_dispatch` (there is no `pull_request` trigger). It builds and tests
+on 7 jobs:
 
 | Platform | Build Command | Shell |
 |----------|--------------|-------|
 | Linux (Ubuntu 22.04) | `make -f makefiles/unixgcc.gmk mec` | bash |
-| macOS | `make -f src/darwin.gmk mec` | bash |
-| Windows (MinGW64) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
-| Windows (MSYS2) | `make -f src/winmingwgcc.mak BTYP=c all` | msys2 |
-| Windows (Cygwin) | `make -f src/unixgcc.gmk mec` | cygwin |
+| macOS | `make -f makefiles/macosgcc.gmk mec CC=gcc-15` | bash |
+| Windows (UCRT64) | `cd src && make -f winmingwgcc.mak BTYP=c all BDIST=mingw64` | msys2 |
+| Windows (MSYS2 mintty) | `cd src && make -f winmingwgcc.mak BTYP=c all BDIST=msys2unix` | msys2 |
+| Cygwin (x86_64) | `cd src && make -f unixgcc.gmk mec` | cygwin |
+| Cygwin (x86) | `cd src && make -f unixgcc.gmk mec` | cygwin |
+| Windows (WinLibs) | `mingw32-make -f makefiles/win32winlibs.gmk mec` | cmd |
 
 Each job: builds → runs `@tests/test-basics` → verifies output file → uploads as artifact.
+Assertions include `TEST:nested-while=64` (three nested `!while` loops) and
+`TEST:unicode=αβγ` (UTF-8 round-trip).
 
 #### Creating New Tests
 
@@ -758,7 +773,8 @@ Additional reference documentation:
 | `doc/clipboard-support.md` | Clipboard implementation — C source, macro fallback, xclip hand-off, Wayland dual-clipboard |
 | `doc/mingw-build.md` | MinGW/MSYS2 cross-compilation setup and known issues |
 | `doc/emf-bnf.md` | Back-Naur-Form defintion for ME macro files |
-| `doc/utf8-encoding.md` | Describes the support strategy for UTF encoded files which are mapped to CP1252 |
+| `doc/utf8-encoding.md` | Native UTF-8 / multi-encoding design (per-buffer `bp->encoding`, detection, rendering, Xft/Windows BMP) |
+| `doc/tickets.md` | Feature/bug ticket tracker (WIP/DONE states) |
 | `docs/emf-tutorial.md` | Tutorial about the emf macro language |
 
 ## Branch Strategy
@@ -775,24 +791,24 @@ feature branches (msys-fix, clipboard-x11wayland, etc.)
 
 | Branch | Purpose | CI Trigger | Merges |
 |--------|---------|------------|--------|
-| `master` | Release-ready code | PRs only (from `devel`) | Rare, after final test |
-| `devel` | Integration branch | Push + PR | After feature CI passes |
-| `feature/*` | New development | Optional local CI | Into `devel` when ready |
+| `master` | Release-ready code | Manual (`workflow_dispatch`) | Rare, from `devel` |
+| `devel` | Integration branch | Push (7 `testing.yml` jobs + binary builds) | After review |
+| `feature/*` | New development | None (workflows only run on `devel`) | Into `devel` when ready |
 
 **Workflow:**
 
 1. Create feature branch from `devel`
 2. Develop and test locally
-3. Push to feature branch (optional CI)
-4. Create PR into `devel` (triggers full CI: 6 test jobs)
-5. After CI passes, merge to `devel`
+3. Push to feature branch (no CI trigger - build/test manually)
+4. Create PR into `devel` (review only - CI runs on the subsequent push)
+5. Merge into `devel`, which triggers full CI (7 `testing.yml` jobs)
 6. Periodically merge `devel` into `master` for releases
 
 **CI triggers** (`.github/workflows/`):
 
-- `push` → `devel` only
-- `pull_request` → `devel` and `master`
-- `workflow_dispatch` → `devel`
+- `push` → `devel` only (all workflows except `binaries-cygwin.yml`)
+- `workflow_dispatch` → manual runs on any branch (`binaries-cygwin.yml` is manual-only)
+- there is **no** `pull_request` trigger in any workflow
 
 ### Release Process
 
@@ -830,7 +846,7 @@ git push origin --delete featurebranch
 
 ## CI/CD (GitHub Actions)
 
-12 workflow files in `.github/workflows/`:
+11 workflow files in `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
@@ -840,10 +856,11 @@ git push origin --delete featurebranch
 | `binaries-winlibs.yml` | Windows native builds |
 | `binaries-msys2.yml` | MSYS2 Windows builds |
 | `binaries-fedorax86_64.yml` | Fedora-specific builds |
-| `cygwin.yml` / `cygwin2.yml` | Cygwin builds |
-| `bdf-fonts.yml` / `ttf-fonts.yml` | Font packaging |
+| `binaries-cygwin.yml` | Cygwin builds |
+| `ttf-fonts.yml` | Font packaging (the legacy `bdf-fonts.yml` was removed) |
 | `ubuntu-arm-check.yml` | ARM compatibility check |
-| `testing.yml` | Automated testing (Linux, macOS, Windows×3, Cygwin) |
+| `test-install.yml` | Installer smoke test |
+| `testing.yml` | Automated testing (Linux, macOS, Windows×3, Cygwin×2) |
 
 ## Common Patterns
 
