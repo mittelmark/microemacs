@@ -457,10 +457,24 @@ if [ "`which mecb 2>/dev/null`" != "" ]; then
     echo "Installed and checking: ~/.local/bin/mewb"
     ~/.local/bin/mewb -V
 fi
-# Optional tool check: suggest missing font related tools on Linux, FreeBSD and Cygwin.
-# fc-list (fontconfig) lists TrueType fonts (used for font selection in user-setup),
-# xfontsel selects legacy X11 XLFD bitmap fonts (M-x change-font-xfontsel).
-if [ "$OSNAME" = "Linux" ] || [ "$OSNAME" = "FreeBSD" ] || echo "$OSNAME" | grep -q CYGWIN; then
+# Optional tool check: suggest missing font related tools at the end of the
+# install. fc-list (fontconfig) lists TrueType fonts (used for font selection
+# in user-setup), xfontsel selects legacy X11 XLFD bitmap fonts (M-x
+# change-font-xfontsel) and the mewb/mew GUI on macOS is an X11 program which
+# needs XQuartz (https://www.xquartz.org/).
+if [ "$OSNAME" = "Darwin" ]; then
+    if [ "`which xquartz 2>/dev/null`" = "" ] && [ ! -x /opt/X11/bin/xquartz ]; then
+        echo ""
+        echo "Note: XQuartz (X11) was not found on this system!"
+        echo "Please install XQuartz for the mewb GUI from https://www.xquartz.org/"
+    fi
+    if [ "`which fc-list 2>/dev/null`" = "" ]; then
+        echo ""
+        echo "Note: fc-list (fontconfig) was not found on this system!"
+        echo "Please install fontconfig for better font support, e.g. on macOS:"
+        echo "  brew install fontconfig"
+    fi
+elif [ "$OSNAME" = "Linux" ] || [ "$OSNAME" = "FreeBSD" ] || echo "$OSNAME" | grep -q CYGWIN; then
     MISSING_TOOLS=""
     if [ "`which fc-list 2>/dev/null`" = "" ]; then
         MISSING_TOOLS="${MISSING_TOOLS} fc-list"
@@ -473,7 +487,7 @@ if [ "$OSNAME" = "Linux" ] || [ "$OSNAME" = "FreeBSD" ] || echo "$OSNAME" | grep
         echo "Note: the following optional tools are not installed:${MISSING_TOOLS}"
         echo "  fc-list  - list TrueType fonts (fontconfig), used for font selection in user-setup"
         echo "  xfontsel - select legacy X11 XLFD bitmap fonts, used by M-x change-font-xfontsel"
-        echo "Suggested installation:"
+        echo "Suggested installation (fontconfig brings better font support):"
         if [ "$OSNAME" = "FreeBSD" ]; then
             echo "  sudo pkg install fontconfig xfontsel"
         elif echo "$OSNAME" | grep -q CYGWIN; then
