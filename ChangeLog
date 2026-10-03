@@ -7,11 +7,31 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261003.1116>
+  > Last Modified : <261003.1134>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [261003] - Windows updater gets the same thin bootstrap treatment
+               as install.sh: install-windows.ps1 no longer saves a
+               full local copy of itself for updates (that copy was
+               only refreshed after a successful binary update, so it
+               could freeze at the installer version that created it)
+               but writes a static mecb-update.ps1 that downloads
+               releases/latest/download/install-windows.ps1 and runs
+               it; mecb-update.bat now invokes the bootstrap next to
+               it via %~dp0 instead of a baked-in script path.
+               Get-MeVersion no longer falls back to a stale
+               hardcoded version on failure - the installer now
+               aborts with a clear message instead of risking a
+               bogus downgrade. doc/install.md: Windows section
+               rewritten (correct %LOCALAPPDATA%\bin location, old
+               WindowsApps path and "self-contained" claims removed),
+               missing Unix bootstrap heading added, maintainer note
+               to re-upload the installer scripts as release assets.
+               Files: bin/install-windows.ps1, doc/install.md,
+               ChangeLog
 
   [261003] - mecb-update is now a thin bootstrap that downloads the
                latest install.sh and runs it, instead of embedding a

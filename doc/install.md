@@ -1,6 +1,6 @@
 # Installation and Update
 
-This document describes the one-time installation process and the self-contained update mechanism for JASSPA MicroEmacs 09 on Unix-like systems (Linux, macOS, FreeBSD, Cygwin, MSYS2) and Windows.
+This document describes the one-time installation process and the update mechanism for JASSPA MicroEmacs 09 on Unix-like systems (Linux, macOS, FreeBSD, Cygwin, MSYS2) and Windows.
 
 ## Quick Install
 
@@ -25,8 +25,9 @@ mecb -V            # verify installation
 ```
 
 The script downloads and installs `mecb.exe` and `mewb.exe` to
-`$env:LOCALAPPDATA\Microsoft\WindowsApps`, creates a Start Menu shortcut,
-and writes `mecb-update.ps1` for future updates.
+`%LOCALAPPDATA%\bin`, creates a Start Menu shortcut, and writes the
+`mecb-update.ps1` bootstrap plus a `mecb-update.bat` wrapper for future
+updates.
 
 After installation, the `mecb-update` command is available for all future updates
 (see [Updating](#updating)).
@@ -53,10 +54,12 @@ your PATH on first install.
 |--------------------|------------------------------------------------|
 | `mecb.exe`         | Console (terminal) version of MicroEmacs       |
 | `mewb.exe`         | GUI (X11 / Wayland / Windows) version          |
-| `mecb-update.ps1`  | Self-contained PowerShell update checker       |
+| `mecb-update.ps1`  | Bootstrap that runs the latest installer       |
+| `mecb-update.bat`  | Batch wrapper that runs `mecb-update.ps1`      |
 
-All files are installed into `$env:LOCALAPPDATA\Microsoft\WindowsApps`, and a
-Start Menu shortcut for `mewb.exe` is created.
+All files are installed into `%LOCALAPPDATA%\bin`, which is added to the
+user PATH during installation, and a Start Menu shortcut for `mewb.exe` is
+created.
 
 ---
 
@@ -184,6 +187,8 @@ mecu --help            # show options
 This allows running `mecb` in a persistent terminal session that survives
 disconnections and supports UTF-8 content via `luit`.
 
+## The `mecb-update` Bootstrap (Unix)
+
 `mecb-update` is a small bootstrap script written to
 `~/.local/bin/mecb-update` during the first install. It downloads the
 current `install.sh` from GitHub and runs it, so the updater itself can
@@ -213,36 +218,43 @@ your PATH and `curl` is available.
 
 ## The `mecb-update.ps1` Script (Windows)
 
-`mecb-update.ps1` is a standalone, self-contained PowerShell script written to
-`%LOCALAPPDATA%\Microsoft\WindowsApps\mecb-update.ps1` during the first install.
-It contains all the logic needed for future updates, without requiring an
-external download.
+`mecb-update.ps1` is a small bootstrap written to
+`%LOCALAPPDATA%\bin\mecb-update.ps1` during the install (together with the
+`mecb-update.bat` wrapper in the same folder). It contains no update logic
+itself: it downloads the current `install-windows.ps1` from the GitHub
+release and runs it, so the updater can never go stale — fixes and new
+checks are picked up on the next run, and the bootstrap is rewritten from
+the fresh server copy during installation. Only an internet connection is
+needed.
 
 ### Workflow
 
-1. **Fetch latest release info** from GitHub (same as `install-windows.ps1`).
-2. **Check installed version** via `mecb.exe -V`.
-3. **Skip** if installed version ≥ latest.
-4. **Download** only `mecb.exe` and `mewb.exe` (no PATH setup, no shortcuts).
-5. **Print** the new version numbers for confirmation.
+1. **Download the latest `install-windows.ps1`** from GitHub (uses
+   `Invoke-RestMethod`).
+2. **Check installed version** via `mecb.exe -V` (inside
+   `install-windows.ps1`).
+3. **Skip** if installed version ≥ latest ("already up to date").
+4. **Download** `mecb.exe` and `mewb.exe` and rewrite the bootstrap
+   itself.
 
 ### Usage
 
 ```powershell
-# From PowerShell or cmd.exe
-mecb-update.ps1              # check and update if needed
-mecb-update.ps1              # run again — reports "Nothing to do" if current
+# From cmd.exe (new terminal session may be needed for PATH)
+mecb-update
+
+# From PowerShell
+& "$env:LOCALAPPDATA\bin\mecb-update.ps1"
 ```
 
-Or from the Start Menu, search for "PowerShell" and run:
+You can also double-click `%LOCALAPPDATA%\bin\mecb-update.bat`. Existing
+installations created by an older installer keep their old
+`mecb-update.bat`/`install-windows.ps1` pair and migrate to the bootstrap
+automatically after their next successful binary update.
 
-```powershell
-& "$env:LOCALAPPDATA\Microsoft\WindowsApps\mecb-update.ps1"
-```
-
-Because `mecb-update.ps1` is self-contained, it works even after the system
-has been rebooted, as long as `mecb.exe` and `mewb.exe` remain in
-`%LOCALAPPDATA\Microsoft\WindowsApps`.
+Because the bootstrap always runs the latest installer, it works after
+reboots as long as `%LOCALAPPDATA%\bin` remains in your PATH and an
+internet connection is available.
 
 ### Execution Policy
 
@@ -254,6 +266,18 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 This allows locally created scripts (like `mecb-update.ps1`) to run while
 still requiring downloaded scripts to be signed.
+
+### Release Note for Maintainers
+
+The bootstrap downloads
+`releases/latest/download/install-windows.ps1`, so when cutting a new
+release, re-upload both installer scripts as release assets, e.g.:
+
+```bash
+gh release upload v09.12.26 bin/install.sh bin/install-windows.ps1
+```
+
+Otherwise users keep downloading the previous installer.
 
 ---
 
