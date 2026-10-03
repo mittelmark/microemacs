@@ -199,17 +199,26 @@ function install_me {
     
     # Check if ~/bin is already in the PATH
     if [ "`echo $PATH | grep /.local/bin`" = "" ]; then
-        # If it's not in the PATH, add it to ~/.bashrc
+        # If it's not in the PATH, add it to ~/.bashrc (only once, the
+        # updater runs this script too and must not append duplicates)
         if [ "$SHELL" = "/bin/bash" -o "$SHELL" = "/bin/bash.exe" ]; then 
             ## bash.exe on Cygwin or Msys
-            echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-            # Update the PATH for the current session
-            echo "PATH variable was updated in your .bashrc"
+            if grep -qF '|| export PATH="$HOME/.local/bin:$PATH"' ~/.bashrc 2>/dev/null; then
+                echo "PATH setup line is already present in your .bashrc"
+            else
+                echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+                # Update the PATH for the current session
+                echo "PATH variable was updated in your .bashrc"
+            fi
             echo "use 'source ~/.bashrc' to update the PATH variable in your current terminal session"
             echo "If using an other shell than Bash or Zsh then add the folder '~/.local/bin' manually to your PATH variable!"
         elif [ "$SHELL" = "/bin/zsh" ]; then 
-            echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-            echo "PATH variable was eventually updated in your .zshrc"
+            if grep -qF '|| export PATH="$HOME/.local/bin:$PATH"' ~/.zshrc 2>/dev/null; then
+                echo "PATH setup line is already present in your .zshrc"
+            else
+                echo 'echo $PATH | grep -q /.local/bin || export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+                echo "PATH variable was eventually updated in your .zshrc"
+            fi
             echo "use 'source ~/.zshrc' to update the PATH variable in your current terminal session"
             echo "If using an other shell than Bash or Zsh then add the folder '~/.local/bin' manually to your PATH variable!"
         else
@@ -258,182 +267,27 @@ function install_update_script {
     fi
     cat > ~/.local/bin/mecb-update << 'UPDATESCRIPT'
 #!/usr/bin/env bash
-# mecb-update - Check for and install newer MicroEmacs builds
-# This script is a copy of install.sh tailored for updates.
-# It will update itself from the same source whenever it runs.
+# mecb-update - update MicroEmacs using the latest installer from GitHub.
+# This script is deliberately small: it downloads the current install.sh
+# and runs it, so this updater can never go stale. install.sh skips the
+# download when the local mecb is already up to date and rewrites this
+# script from the fresh server copy during installation.
 
 SELF_UPDATE="https://github.com/mittelmark/microemacs/releases/latest/download/install.sh"
-UPDATER_VERSION="20091226b4"
 
-os=$(uname -o | sed -E 's/GNU.//')
-machine=$(uname -m)
-kernel=$(uname -r | grep -Eo '^[0-9]+')
-if [ "$(uname -s | grep -o CYGWIN)" = "CYGWIN" ]; then
-    kernel=$(uname -r | grep -Eo '^[1-9].[0-9]')
-    os="cygwin"
-fi
-
-baseurl=`curl -sLI https://github.com/mittelmark/microemacs/releases/latest  -w '%{url_effective}' | grep -E '^https' | sed -E 's/tag/download/'`
-version=`echo ${baseurl} | sed -E 's/.*v//' | sed -E 's/\.//g' | sed -E 's/beta/b/' | sed -E 's/[^0-9b]+//'`
-
-
-check_installed() {
-    local mecb_path
-    mecb_path=$(which mecb 2>/dev/null)
-    if [ -z "$mecb_path" ]; then
-        echo "No local mecb found in PATH, performing full install."
-        return 0
-    fi
-    echo "Found local mecb at: ${mecb_path}"
-    local existing_date
-    existing_date=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
-    if [ -z "$existing_date" ]; then
-        echo "Could not determine existing mecb version, performing full install."
-        return 0
-    fi
-    local existing_code
-    existing_code=$(echo "$existing_date" | sed 's/^20//; s/\///g')
-    local existing_num new_num
-    if [[ $existing_code =~ b ]]; then
-        existing_num="$existing_code"
-    else 
-        existing_num="${existing_code}b9"
-    fi
-    if [[ $version =~ b ]]; then
-        new_num="$version"
-    else 
-        new_num="${version}b9"
-    fi
-    echo "Existing version: ${existing_code}, Latest version: ${version}"
-    if [[ "$existing_num" > "$new_num" || "$existing_num" == "$new_num" ]] 2>/dev/null; then
-        echo "Installed version ${existing_code} is up to date (>= ${version}). Nothing to do."
-        exit 0
-    fi
-    echo "Newer version available (${version} > ${existing_code}), proceeding with update."
-    return 0
-}
-
-check_installed
-
-if [ "$(which unzip 2>/dev/null)" = "" ]; then
-    echo "Error: Please install unzip before installing MicroEmacs!"
+tmp=$(mktemp) || exit 1
+if curl -fsSL "$SELF_UPDATE" -o "$tmp"; then
+    bash "$tmp"
+    rc=$?
+else
+    echo "Error: failed to download the latest installer from:" >&2
+    echo "  ${SELF_UPDATE}" >&2
+    echo "Note: mecb-update needs curl in your PATH." >&2
+    rm -f "$tmp"
     exit 1
 fi
-if [ "$(which curl 2>/dev/null)" = "" ]; then
-    echo "Error: Please install curl before installing MicroEmacs!"
-    exit 1
-fi
-
-case "${os}" in
-    Msys)
-        mecb="windows-msysunix-ucrt64-microemacs-${version}-mecb"
-        mewb="windows-msys-ucrt64-microemacs-${version}-mewb"
-        exe=".exe"
-        ;;
-    cygwin)
-        if [ "$kernel" = "3.4" ] || [ "$kernel" = "3.5" ]; then
-            echo "Error: Kernel ${kernel} for Cygwin is not supported!"
-            exit 1
-        fi
-        mecb="cygwin-${kernel}-${machine}-microemacs-${version}-mecb"
-        mewb="cygwin-${kernel}-${machine}-microemacs-${version}-mewb"
-        exe=".exe"
-        ;;
-    Darwin)
-        case "${kernel}-${machine}" in
-            23-x86_64)  mecb="macos-15-x86_64-microemacs-${version}-mecb";  mewb="macos-15-x86_64-microemacs-${version}-mewb" ;;
-            23-arm64)   mecb="macos-14-arm64-microemacs-${version}-mecb";   mewb="macos-14-arm64-microemacs-${version}-mewb" ;;
-            24-x86_64)  mecb="macos-15-x86_64-microemacs-${version}-mecb";  mewb="macos-15-x86_64-microemacs-${version}-mewb" ;;
-            24-arm64)   mecb="macos-15-arm64-microemacs-${version}-mecb";   mewb="macos-15-arm64-microemacs-${version}-mewb" ;;
-            25-arm64)   mecb="macos-15-arm64-microemacs-${version}-mecb";   mewb="macos-15-arm64-microemacs-${version}-mewb" ;;
-            25-x86_64)  mecb="macos-15-x86_64-microemacs-${version}-mecb";  mewb="macos-15-x86_64-microemacs-${version}-mewb" ;;
-            26-x86_64)  mecb="macos-26-x86_64-microemacs-${version}-mecb";  mewb="macos-26-x86_64-microemacs-${version}-mewb" ;;
-            26-arm64)   mecb="macos-26-arm64-microemacs-${version}-mecb";   mewb="macos-26-arm64-microemacs-${version}-mewb" ;;
-            *)          echo "Error: Kernel ${kernel} on ${machine} for Darwin not supported!"; exit 1 ;;
-        esac
-        ;;
-    FreeBSD)
-        case "${kernel}" in
-            14) mecb="freebsd-14-${machine}-microemacs-${version}-mecb";  mewb="freebsd-14-${machine}-microemacs-${version}-mewb" ;;
-            15) mecb="freebsd-15-${machine}-microemacs-${version}-mecb";  mewb="freebsd-15-${machine}-microemacs-${version}-mewb" ;;
-            *)  echo "Error: Kernel ${kernel} on FreeBSD not supported!"; exit 1 ;;
-        esac
-        ;;
-    Linux)
-        if [ "$(uname -r | grep -E '(fc|el)[0-9]')" != "" ]; then
-            case "${kernel}-${machine}" in
-                5-i686)    mecb="linux-5-${machine}-fedora-28-microemacs-${version}-mecb";  mewb="linux-5-${machine}-fedora-28-microemacs-${version}-mewb" ;;
-                4-x86_64)  mecb="linux-4-${machine}-almalinux-8-microemacs-${version}-mecb"; mewb="linux-4-${machine}-almalinux-8-microemacs-${version}-mewb" ;;
-                5-x86_64)  mecb="linux-5-${machine}-almalinux-9-microemacs-${version}-mecb"; mewb="linux-5-${machine}-almalinux-9-microemacs-${version}-mewb" ;;
-                6-x86_64)  mecb="linux-6-${machine}-almalinux-10-microemacs-${version}-mecb";mewb="linux-6-${machine}-almalinux-10-microemacs-${version}-mewb" ;;
-                7-x86_64)  mecb="linux-7-${machine}-fedora-43-microemacs-${version}-mecb";  mewb="linux-7-${machine}-fedora-43-microemacs-${version}-mewb" ;;
-                *)         echo "Error: Architecture ${machine} and Kernel ${kernel} for RedHat/Fedora distros not supported!"; exit 1 ;;
-            esac
-        elif [ "$(uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)')" != "" ]; then
-            if [ "$kernel" = "6" ] && [ "$machine" = "x86_64" ]; then
-                mecb="linux-6-${machine}-manjaro-0-microemacs-${version}-mecb"
-                mewb="linux-6-${machine}-manjaro-0-microemacs-${version}-mewb"
-            else
-                echo "Error: Kernel ${kernel} for Architecture ${machine} not supported for Arch based distros!"; exit 1
-            fi
-        else
-            case "${kernel}" in
-                5)
-                    if [ "${machine}" = "i686" ]; then
-                        mecb="linux-5-${machine}-ubuntu-18-microemacs-${version}-mecb"
-                        mewb="linux-5-${machine}-ubuntu-18-microemacs-${version}-mewb"
-                    else
-                        mecb="linux-5-${machine}-ubuntu-20-microemacs-${version}-mecb"
-                        mewb="linux-5-${machine}-ubuntu-20-microemacs-${version}-mewb"
-                    fi
-                    ;;
-                6)
-                    mecb="linux-6-${machine}-ubuntu-22-microemacs-${version}-mecb"
-                    mewb="linux-6-${machine}-ubuntu-22-microemacs-${version}-mewb"
-                    ;;
-                7)
-                    mecb="linux-7-${machine}-ubuntu-26-microemacs-${version}-mecb"
-                    mewb="linux-7-${machine}-ubuntu-26-microemacs-${version}-mewb"
-                    ;;
-                *)
-                    echo "Error: Kernel ${kernel} not supported!"; exit 1
-                    ;;
-            esac
-        fi
-        ;;
-    *)
-        echo "Error: OS ${os} not supported!"
-        exit 1
-        ;;
-esac
-
-if [ ! -d ~/.local/bin ]; then
-    mkdir -p ~/.local/bin
-fi
-
-echo "Fetching ${baseurl}/${mecb}.zip into local folder `pwd`"
-rm -f "${mecb}.zip"
-curl -fsSL "${baseurl}/${mecb}.zip" --output "${mecb}.zip"
-unzip -p "${mecb}.zip" "${mecb}/bin/mecb${exe}" > ~/.local/bin/mecb${exe}
-
-echo "Fetching ${baseurl}/${mewb}.zip into local folder `pwd`"
-rm -f "${mewb}.zip"
-curl -fsSL "${baseurl}/${mewb}.zip" --output "${mewb}.zip"
-unzip -p "${mewb}.zip" "${mewb}/bin/mewb${exe}" > ~/.local/bin/mewb${exe}
-
-if [ "$exe" = "" ]; then
-    unzip -p "${mecb}.zip" "${mecb}/bin/mecu" > ~/.local/bin/mecu
-    chmod 755 ~/.local/bin/mecu
-fi
-chmod 755 ~/.local/bin/mecb
-chmod 755 ~/.local/bin/mewb
-rm -f "${mecb}.zip" "${mewb}.zip"
-
-echo "Update complete."
-echo "Installed and checking: ~/.local/bin/mecb"
-~/.local/bin/mecb -V
-echo "Installed: ~/.local/bin/mewb"
-echo "Check with: ~/.local/bin/mewb -V"
+rm -f "$tmp"
+exit $rc
 UPDATESCRIPT
     chmod 755 ~/.local/bin/mecb-update
     echo "mecb-update script installed to ~/.local/bin/mecb-update"

@@ -42,7 +42,7 @@ After installation, the `mecb-update` command is available for all future update
 | `mecb`           | Console (terminal) version of MicroEmacs       |
 | `mewb`           | GUI (X11 / Wayland / Windows) version          |
 | `mecu`           | Wrapper to run `mecb` with UTF-8 + abduco      |
-| `mecb-update`    | Self-contained update checker and installer    |
+| `mecb-update`    | Bootstrap that runs the latest installer        |
 
 All files are installed into `~/.local/bin/`, which is automatically added to
 your PATH on first install.
@@ -184,29 +184,30 @@ mecu --help            # show options
 This allows running `mecb` in a persistent terminal session that survives
 disconnections and supports UTF-8 content via `luit`.
 
-`mecb-update` is a standalone, self-contained script written to
-`~/.local/bin/mecb-update` during the first install. It contains all the
-logic from `install.sh` needed for future updates, without requiring an
-external download.
+`mecb-update` is a small bootstrap script written to
+`~/.local/bin/mecb-update` during the first install. It downloads the
+current `install.sh` from GitHub and runs it, so the updater itself can
+never go stale: fixes and new checks in `install.sh` are picked up on the
+next run, and the bootstrap is rewritten from the fresh server copy during
+installation. Only `curl` and an up-to-date release on GitHub are needed.
 
 ### Workflow
 
-1. **Fetch latest release info** from GitHub (same as `install.sh`).
-2. **Check installed version** via `mecb -V`.
-3. **Skip** if installed version ≥ latest.
-4. **Download** only `mecb` and `mewb` (no PATH setup, no fonts).
-5. **Print** the new version numbers for confirmation.
+1. **Download the latest `install.sh`** from GitHub (needs `curl`).
+2. **Check installed version** via `mecb -V` (inside `install.sh`).
+3. **Skip** if installed version ≥ latest ("Skipping installation").
+4. **Download** `mecb` and `mewb` and rewrite `mecb-update` itself.
 
 ### Usage
 
 ```bash
-mecb-update              # check and update if needed
-mecb-update              # run again — reports "Nothing to do" if current
+mecb-update              # update if a newer release exists
+mecb-update              # run again — reports up-to-date, skips install
 ```
 
-Because `mecb-update` is self-contained, it works even after the system
-has been rebooted or the terminal session has changed, as long as
-`~/.local/bin` remains in your PATH.
+Because `mecb-update` always runs the latest installer, it works after
+reboots and terminal session changes as long as `~/.local/bin` remains in
+your PATH and `curl` is available.
 
 ---
 

@@ -7,11 +7,24 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261003.1045>
+  > Last Modified : <261003.1116>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [261003] - mecb-update is now a thin bootstrap that downloads the
+               latest install.sh and runs it, instead of embedding a
+               copy of the installer logic that could never update
+               itself (SELF_UPDATE/UPDATER_VERSION were defined but
+               never used, so an updater written by an old installer
+               froze at that version's logic). The bootstrap cannot go
+               stale and inherits new end-of-install checks such as the
+               XQuartz/fontconfig hints automatically; install.sh
+               rewrites the bootstrap from the fresh server copy on
+               every run. The .bashrc/.zshrc PATH setup line is now
+               appended only once. Files: bin/install.sh,
+               doc/install.md, ChangeLog
 
   [261003] - AppImage no longer requires libfuse2 on the target
                system: the embedded runtime is now the statically
