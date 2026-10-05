@@ -1372,6 +1372,7 @@ countWords(int f, int n)
     long nchars;		/* total number of chars */
     int nlines;			/* total number of lines in region */
     int status;			/* status return code */
+    int utf8;			/* buffer is UTF-8 encoded */
     meRegion region;		/* region to look at */
 
     /* make sure we have a region to count */
@@ -1380,6 +1381,7 @@ countWords(int f, int n)
     lp = region.line ;
     offset = region.offset ;
     size = region.size ;
+    utf8 = (frameCur->bufferCur->encoding == ME_ENC_UTF8) ;
     
     /* count up things */
     lastword = meFALSE;
@@ -1399,8 +1401,16 @@ countWords(int f, int n)
         else
             offset++ ;
         
-        /* and tabulate it */
-        wordflag = isWord(ch) ;
+        /* skip UTF-8 continuation bytes, the sequence was already counted
+         * with its lead byte (utf8-mec) */
+        if(utf8 && ((ch & 0xc0) == 0x80))
+            continue ;
+
+        /* and tabulate it - a byte >= 0x80 is either a UTF-8 sequence or
+         * an accented single byte character, count it as a word character
+         * so that count-words reports the same word count for CP1252 and
+         * UTF-8 encoded text */
+        wordflag = (ch >= 0x80) ? meTRUE : isWord(ch) ;
         if((wordflag != meFALSE) && (lastword == meFALSE))
             ++nwords;
         lastword = wordflag;
