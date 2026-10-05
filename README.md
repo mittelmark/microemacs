@@ -432,7 +432,7 @@ already included so for the compilation you install the following tools:
 
 ```bash
 sudo pkg install gcc
-sudo pkg install Xorg libX11 libXft
+sudo pkg install Xorg libX11 libXft pkgconf fontconfig
 ### GhostBSD as well: sudo pkg install -g 'GhostBSD*-dev'
 ```
 
@@ -441,9 +441,9 @@ Makefile in the microemacs root project folder.
 
 ```bash
 ### compile the barebone executables
-make -f makefiles/freebsd.mak bfs/bin mec mew mecw
+make -f makefiles/freebsd.mak mec mew mecw
 ### compile the standalone executables
-make -f makefiles/freebsd.mak mecb mewb mecwb
+make -f makefiles/freebsd.mak bfs/bin mecb mewb mecwb
 ```
 
 The Makefile has the extension  `mak` as it can use the default `make`
