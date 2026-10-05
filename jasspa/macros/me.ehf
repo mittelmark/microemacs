@@ -1490,8 +1490,12 @@ Miscellaneous Information
                     \__________________________________set-variable (C-x v) command
 
 
-    Functions always begin with an ampersand (cD&cA) character, and are only
-    significant to the first 3 characters after the ampersand. Functions will
+    Functions always begin with an ampersand (cD&cA) character. The complete
+    name is matched first, so that names of different length can be told
+    apart (e.g. cD&uleftcA and cD&ulencA). When there is no exact match the
+    first 3 characters after the ampersand select the function, keeping the
+    traditional three letter abbreviations working (e.g. cD&rightcA may be
+    written as cD&rigcA). Functions will
     normally expect one of three types of arguments, and will automatically
     convert types when needed.
 
@@ -49779,7 +49783,8 @@ $a
 
     The cD&ucA prefixed variants cD&uleftcA, cD&ulencA, cD&umidcA and cD&urightcA
     operate on characters rather than bytes, i.e. a multi-byte UTF-8 sequence
-    counts as a single character.
+    counts as a single character. They are normally written in full, cD&ulefcA
+    and cD&urigcA are accepted as short forms.
 
     cD&catcA cCstr1cA cCstr2cA
     

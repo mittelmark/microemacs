@@ -119,6 +119,36 @@ define-macro start-up
     insert-string #l9
     insert-newline
 
+    ; Test 13: function name lookup - full name first, then the legacy
+    ; 3-character chop (gtfun dual-chop). Locks both alias families:
+    ; long queries for short entries (&length, &trboth, &lget) and
+    ; short queries for the >3 char u-entries (&ulef, &urig, &umi, &usi)
+    set-variable #l9 "ok"
+    !if &not &seq &length "abc" "3"
+        set-variable #l9 "length-alias"
+    !endif
+    !if &not &seq &trboth " x " "x"
+        set-variable #l9 "trboth-alias"
+    !endif
+    !if &not &seq &lget ",a,b,c" 2 "b"
+        set-variable #l9 "lget-alias"
+    !endif
+    !if &not &seq &ulef "äöü" 2 "äö"
+        set-variable #l9 "ulef"
+    !endif
+    !if &not &seq &urig "hello" 1 "ello"
+        set-variable #l9 "urig"
+    !endif
+    !if &not &seq &umi "äöü" 1 1 "ö"
+        set-variable #l9 "umi"
+    !endif
+    !if &not &seq &usi "ö" "äöü" "2"
+        set-variable #l9 "usi"
+    !endif
+    insert-string "TEST:func-lookup="
+    insert-string #l9
+    insert-newline
+
     ; All tests complete
     insert-string "TEST:all-tests=complete"
     insert-newline

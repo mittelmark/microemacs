@@ -1402,8 +1402,12 @@
                   \__________________________________set-variable (C-x v) command
 
 
-  Functions always begin with an ampersand (__&__) character, and are only
-  significant to the first 3 characters after the ampersand. Functions will
+  Functions always begin with an ampersand (__&__) character. The complete
+  name is matched first, so that names of different length can be told
+  apart (e.g. __&uleft__ and __&ulen__). When there is no exact match the
+  first 3 characters after the ampersand select the function, keeping the
+  traditional three letter abbreviations working (e.g. __&right__ may be
+  written as __&rig__). Functions will
   normally expect one of three types of arguments, and will automatically
   convert types when needed.
 
@@ -50416,7 +50420,8 @@ $a
 
   The __&u__ prefixed variants __&uleft__, __&ulen__, __&umid__ and __&uright__
   operate on characters rather than bytes, i.e. a multi-byte UTF-8 sequence
-  counts as a single character.
+  counts as a single character. They are normally written in full, __&ulef__
+  and __&urig__ are accepted as short forms.
 
   __&cat__ _str1_ _str2_
   
