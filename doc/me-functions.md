@@ -11,12 +11,16 @@ Full docs in `doc/me.smd` (search for function name).
 | `&lef` | str len | Leftmost `len` chars. Negative `len` = all but last `0-len` chars |
 | `&rig` | str index | Rightmost chars from `index`. 0 = full string. Negative = last `0-index` chars |
 | `&mid` | str index len | Substring from `index` of length `len`. Negative `index` = from end |
-| `&len` | str | String length (number of characters) |
+| `&len` | str | String length (number of **bytes**) |
 | `&slo` | str | Convert to lowercase |
 | `&sup` | str | Convert to uppercase |
 | `&trb` | str | Trim whitespace from both sides |
 | `&trl` | str | Trim whitespace from left |
 | `&trr` | str | Trim whitespace from right |
+| `&uleft` | str len | As `&lef` but counts **characters** (UTF-8) rather than bytes |
+| `&ulen` | str | String length in **characters** (a UTF-8 multi-byte sequence = 1) |
+| `&umid` | str index len | As `&mid` but counts **characters** rather than bytes |
+| `&uright` | str index | As `&rig` but counts **characters** rather than bytes |
 
 **Index note:** String indices are **1-based**. `&lef "abc" 2` → `"ab"`.
 
@@ -109,7 +113,8 @@ Expression evaluation is **prefix** (no brackets): `(2*3)+4` = `&add &mul 2 3 4`
 
 | Function | Args | Description |
 |----------|------|-------------|
-| `&sin` | str1 str2 | Position of first occurrence of str1 in str2 (1-based, 0 = not found) |
+| `&sin` | str1 str2 | Position of first occurrence of str1 in str2 (1-based, 0 = not found; byte position for UTF-8) |
+| `&usin` | str1 str2 | As `&sin` but the position counts **characters** rather than bytes |
 | `&isi` | str1 str2 | Same as `&sin` but case insensitive |
 | `&ris` | str1 str2 | Position of **last** occurrence |
 | `&ris` | str1 str2 | Same but case insensitive |

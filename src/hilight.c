@@ -2245,8 +2245,12 @@ BracketJump:
                     c1 += 2 ;
                 ignore = node->ignore ;
                 s1 = srcText+hd.srcPos ;
-                for( ; ; hd.srcPos++)
+                for( ; ; )
                 {
+                    /* utf8-mec: keep srcPos in step with s1 - hilCopyConvChar
+                     * consumes whole multi-byte sequences per iteration and
+                     * the selection callback compares byte positions. */
+                    hd.srcPos = (int)(s1 - srcText) ;
                     if(!solt || (hd.srcPos == 0))
                     {                       
                         c2 = c1 ;
@@ -2292,20 +2296,18 @@ BracketJump:
                     }
                     else
                         tt = 1 ;
-                    if((tt == '\0') || (hd.srcPos == srcWid))
+                    if((tt == '\0') || (hd.srcPos >= srcWid))
                         break ;
-                    ss = *s1++ ;
+                    ss = *s1 ;
                     {
-                        /* Rewind: hilCopyConvChar consumes from the source
-                         * pointer and reports bytes used (utf8-mec). */
                         int used ;
-                        s1-- ;
                         dstPos = hilCopyConvChar(dstPos,s1,&hd,&used) ;
                         s1 += used ;
                     }
                     if(ss == ignore)
                     {
-                        if(++hd.srcPos == srcWid)
+                        hd.srcPos = (int)(s1 - srcText) ;
+                        if(hd.srcPos >= srcWid)
                             break ;
                         {
                             int used ;
@@ -2652,8 +2654,12 @@ column_token:
                     c1 += 2 ;
                 ignore = node->ignore ;
                 s1 = srcText+srcPos ;
-                for( ; ; srcPos++)
+                for( ; ; )
                 {
+                    /* utf8-mec: srcPos is a byte offset - keep it in step
+                     * with s1 (multi-byte sequences advance it by more
+                     * than one per iteration). */
+                    srcPos = (int)(s1 - srcText) ;
                     if(!solt || (srcPos == 0))
                     {                       
                         c2 = c1 ;
@@ -2695,16 +2701,38 @@ column_token:
                     }
                     else
                         tt = 1 ;
-                    if((tt == '\0') || (srcPos == srcWid))
+                    if((tt == '\0') || (srcPos >= srcWid))
                         break ;
                     ss = *s1++ ;
                     hilOffsetChar(off,dstPos,dstJmp,ss,tw) ;
+                    if((ss >= 0xC0) && (wp->buffer->encoding == ME_ENC_UTF8))
+                    {
+                        /* UTF-8 continuation bytes occupy no display column -
+                         * record 0 width like hilOffsetString() and
+                         * windCurLineOffsetEval(). */
+                        int utflen = meUtf8ValidSeqLen(s1 - 1) - 1 ;
+                        while((utflen-- > 0) && (*s1 != '\0'))
+                        {
+                            *off++ = 0 ;
+                            s1++ ;
+                        }
+                    }
                     if(ss == ignore)
                     {
-                        if(++srcPos == srcWid)
+                        srcPos = (int)(s1 - srcText) ;
+                        if(srcPos >= srcWid)
                             break ;
                         ss = *s1++ ;
                         hilOffsetChar(off,dstPos,dstJmp,ss,tw) ;
+                        if((ss >= 0xC0) && (wp->buffer->encoding == ME_ENC_UTF8))
+                        {
+                            int utflen = meUtf8ValidSeqLen(s1 - 1) - 1 ;
+                            while((utflen-- > 0) && (*s1 != '\0'))
+                            {
+                                *off++ = 0 ;
+                                s1++ ;
+                            }
+                        }
                     }
                 }
                 if(tt != '\0')

@@ -1459,6 +1459,10 @@
   [&trboth(4)](&trboth(4)) Return string trimmed of white chars on both sides  
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
+  [&uleft(4)](&uleft(4)) Return the left most characters from a string (character based)  
+  [&ulen(4)](&ulen(4)) Return the length of a string in characters  
+  [&umid(4)](&umid(4)) Return a portion (middle) of a string (character based)  
+  [&uright(4)](&uright(4)) Return the right most characters from a string (character based)  
 
   __List manipulation functions__ (returns _<str>_ or _<int>)
 
@@ -1510,6 +1514,7 @@
   [&sin(4)](&sin(4)) Test for string in string  
   [&stat(4)](&stat(4)) Retrieve a file statistic  
   [&tchar(4)](&tchar(4)) Transcode a character between charsets  
+  [&usin(4)](&usin(4)) Test for string in string, character index  
   [&which(4)](&which(4)) Find a program on the path  
   [&xirep(4)](&xirep(4)) Regex case insensitive Replace string in string  
   [&xrep(4)](&xrep(4)) Regex replace string in string  
@@ -2956,6 +2961,11 @@
   [&trboth(4)](&trboth(4)) Return string trimmed of white chars on both sides  
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
+  [&uleft(4)](&uleft(4)) Return the left most characters from a string (character based)  
+  [&ulen(4)](&ulen(4)) Return the length of a string in characters  
+  [&umid(4)](&umid(4)) Return a portion (middle) of a string (character based)  
+  [&uright(4)](&uright(4)) Return the right most characters from a string (character based)  
+  [&usin(4)](&usin(4)) Test for string in string, character index  
   [&which(4)](&which(4)) Find a program on the path  
   [&xirep(4)](&xirep(4)) Regex case insensitive Replace string in string  
   [&xisequal(4)](&xisequal(4)) Case insensitive regex String equivalence operator  
@@ -3281,6 +3291,11 @@
   [&trboth(4)](&trboth(4)) Return string trimmed of white chars on both sides  
   [&trleft(4)](&trleft(4)) Return string trimmed of white chars on left side  
   [&trright(4)](&trright(4)) Return string trimmed of white chars on right side  
+  [&uleft(4)](&uleft(4)) Return the left most characters from a string (character based)  
+  [&ulen(4)](&ulen(4)) Return the length of a string in characters  
+  [&umid(4)](&umid(4)) Return a portion (middle) of a string (character based)  
+  [&uright(4)](&uright(4)) Return the right most characters from a string (character based)  
+  [&usin(4)](&usin(4)) Test for string in string, character index  
   [&which(4)](&which(4)) Find a program on the path  
   [&xirep(4)](&xirep(4)) Regex case insensitive Replace string in string  
   [&xisequal(4)](&xisequal(4)) Case insensitive regex String equivalence operator  
@@ -50357,10 +50372,14 @@ $a
 ! 4 &right
 ! 4 &slower
 ! 4 &trboth
+! 4 &uleft
+! 4 &ulen
+! 4 &umid
+! 4 &uright
 ## NAME
 
 
-  &cat, &lef, &rig, &mid, &len, &slo, &trb - String macro operators
+  &cat, &lef, &rig, &mid, &len, &slo, &trb, &uleft, &ulen, &umid, &uright - String macro operators
 
 
 ## SYNOPSIS
@@ -50370,8 +50389,12 @@ $a
   __&lef__ _str_ _len_  
   __&right__ _str_ _index_  
   __&mid__ _str_ _index_ _len_  
+  __&uleft__ _str_ _len_  
+  __&uright__ _str_ _index_  
+  __&umid__ _str_ _index_ _len_  
 
   __&len__ _str_  
+  __&ulen__ _str_  
 
   __&slower__ _str_  
   __&supper__ _str_  
@@ -50390,6 +50413,10 @@ $a
   The operators may all be abbreviated to their three letter abbreviation
   (i.e. __&right__ may be expressed as __&rig__). In all cases the first argument is
   completely evaluated before the second argument.
+
+  The __&u__ prefixed variants __&uleft__, __&ulen__, __&umid__ and __&uright__
+  operate on characters rather than bytes, i.e. a multi-byte UTF-8 sequence
+  counts as a single character.
 
   __&cat__ _str1_ _str2_
   
@@ -50418,9 +50445,28 @@ $a
      length _len_. A negative _index_ extracts the string starting from 0-_index_
      from the end of _str_ with a length of _len_.
 
+  __&uleft__ _str_ _len_
+  
+  >  As __&lef__ except that _len_ counts characters rather than bytes.
+
+  __&uright__ _str_ _index_
+  
+  >  As __&rig__ except that _index_ counts characters rather than bytes.
+
+  __&umid__ _str_ _index_ _len_
+  
+  >  As __&mid__ except that _index_ and _len_ count characters rather than
+     bytes.
+
   __&len__ _str_
   
-  >  Returns the integer length of the string (number of characters).
+  >  Returns the integer length of the string (number of bytes).
+
+  __&ulen__ _str_
+  
+  >  Returns the integer length of the string in characters. For single byte
+     encodings this is identical to __&len__, for UTF-8 encoded data a
+     multi-byte sequence counts as one character.
 
   __&slower__ _str_
   
@@ -53660,10 +53706,11 @@ $a
 ! 4 &isin
 ! 4 &rsin
 ! 4 &risin
+! 4 &usin
 ## NAME
 
 
- &sin, &isin, &rsin, &risin - String in string test functions
+ &sin, &isin, &rsin, &risin, &usin - String in string test functions
 
 
 ## SYNOPSIS
@@ -53672,7 +53719,8 @@ $a
   __&sin__ _str1_ _str2_  
   __&isin__ _str1_ _str2_  
   __&rsin__ _str1_ _str2_  
-  __&risin__ _str1_ _str2_
+  __&risin__ _str1_ _str2_  
+  __&usin__ _str1_ _str2_
 
 
 ## DESCRIPTION
@@ -53689,7 +53737,9 @@ $a
   
   >  Returns `0` if string _str1_ does not exists in string _str2_. Otherwise the
      function returns the character position + 1 of the location of the
-     first character of the first occurrence of _str1_.
+     first character of the first occurrence of _str1_. For UTF-8 encoded
+     data the returned position is a byte position, use __&usin__ for a
+     character position.
 
   __&isin__ _str1_ _str2_
   
@@ -53708,6 +53758,11 @@ $a
   >  Returns `0` if case insensitive string _str1_ does not exists in string
      _str2_. Otherwise the function returns the character position + 1 of the
      location of the first character of the last occurrence of _str1_.
+
+  __&usin__ _str1_ _str2_
+  
+  >  As __&sin__ except that the returned position is a character position,
+     i.e. a multi-byte UTF-8 sequence counts as a single character.
 
 
 ## EXAMPLE

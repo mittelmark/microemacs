@@ -1547,6 +1547,10 @@ Miscellaneous Information
     ls&trboth(4)lm&trboth(4)le Return string trimmed of white chars on both sides  
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
+    ls&uleft(4)lm&uleft(4)le Return the left most characters from a string (character based)  
+    ls&ulen(4)lm&ulen(4)le Return the length of a string in characters  
+    ls&umid(4)lm&umid(4)le Return a portion (middle) of a string (character based)  
+    ls&uright(4)lm&uright(4)le Return the right most characters from a string (character based)  
 
     cDList manipulation functionscA (returns cC<str>cA or _<int>)
 
@@ -1598,6 +1602,7 @@ Miscellaneous Information
     ls&sin(4)lm&sin(4)le Test for string in string  
     ls&stat(4)lm&stat(4)le Retrieve a file statistic  
     ls&tchar(4)lm&tchar(4)le Transcode a character between charsets  
+    ls&usin(4)lm&usin(4)le Test for string in string, character index  
     ls&which(4)lm&which(4)le Find a program on the path  
     ls&xirep(4)lm&xirep(4)le Regex case insensitive Replace string in string  
     ls&xrep(4)lm&xrep(4)le Regex replace string in string  
@@ -3037,6 +3042,11 @@ Miscellaneous Information
     ls&trboth(4)lm&trboth(4)le Return string trimmed of white chars on both sides  
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
+    ls&uleft(4)lm&uleft(4)le Return the left most characters from a string (character based)  
+    ls&ulen(4)lm&ulen(4)le Return the length of a string in characters  
+    ls&umid(4)lm&umid(4)le Return a portion (middle) of a string (character based)  
+    ls&uright(4)lm&uright(4)le Return the right most characters from a string (character based)  
+    ls&usin(4)lm&usin(4)le Test for string in string, character index  
     ls&which(4)lm&which(4)le Find a program on the path  
     ls&xirep(4)lm&xirep(4)le Regex case insensitive Replace string in string  
     ls&xisequal(4)lm&xisequal(4)le Case insensitive regex String equivalence operator  
@@ -3361,6 +3371,11 @@ Miscellaneous Information
     ls&trboth(4)lm&trboth(4)le Return string trimmed of white chars on both sides  
     ls&trleft(4)lm&trleft(4)le Return string trimmed of white chars on left side  
     ls&trright(4)lm&trright(4)le Return string trimmed of white chars on right side  
+    ls&uleft(4)lm&uleft(4)le Return the left most characters from a string (character based)  
+    ls&ulen(4)lm&ulen(4)le Return the length of a string in characters  
+    ls&umid(4)lm&umid(4)le Return a portion (middle) of a string (character based)  
+    ls&uright(4)lm&uright(4)le Return the right most characters from a string (character based)  
+    ls&usin(4)lm&usin(4)le Test for string in string, character index  
     ls&which(4)lm&which(4)le Find a program on the path  
     ls&xirep(4)lm&xirep(4)le Regex case insensitive Replace string in string  
     ls&xisequal(4)lm&xisequal(4)le Case insensitive regex String equivalence operator  
@@ -49720,10 +49735,14 @@ $a
 ! 4 &right
 ! 4 &slower
 ! 4 &trboth
+! 4 &uleft
+! 4 &ulen
+! 4 &umid
+! 4 &uright
 cEcENAME cEcA
 
 
-    &cat, &lef, &rig, &mid, &len, &slo, &trb - String macro operators
+    &cat, &lef, &rig, &mid, &len, &slo, &trb, &uleft, &ulen, &umid, &uright - String macro operators
 
 
 cESYNOPSIS cA
@@ -49733,8 +49752,12 @@ $a
     cD&lefcA cCstrcA cClencA  
     cD&rightcA cCstrcA cCindexcA  
     cD&midcA cCstrcA cCindexcA cClencA  
+    cD&uleftcA cCstrcA cClencA  
+    cD&urightcA cCstrcA cCindexcA  
+    cD&umidcA cCstrcA cCindexcA cClencA  
 
     cD&lencA cCstrcA  
+    cD&ulencA cCstrcA  
 
     cD&slowercA cCstrcA  
     cD&suppercA cCstrcA  
@@ -49753,6 +49776,10 @@ $a
     The operators may all be abbreviated to their three letter abbreviation
     (i.e. cD&rightcA may be expressed as cD&rigcA). In all cases the first argument is
     completely evaluated before the second argument.
+
+    The cD&ucA prefixed variants cD&uleftcA, cD&ulencA, cD&umidcA and cD&urightcA
+    operate on characters rather than bytes, i.e. a multi-byte UTF-8 sequence
+    counts as a single character.
 
     cD&catcA cCstr1cA cCstr2cA
     
@@ -49781,9 +49808,28 @@ $a
        length cClencA. A negative cCindexcA extracts the string starting from 0-cCindexcA
        from the end of cCstrcA with a length of cClencA.
 
+    cD&uleftcA cCstrcA cClencA
+    
+       As cD&lefcA except that cClencA counts characters rather than bytes.
+
+    cD&urightcA cCstrcA cCindexcA
+    
+       As cD&rigcA except that cCindexcA counts characters rather than bytes.
+
+    cD&umidcA cCstrcA cCindexcA cClencA
+    
+       As cD&midcA except that cCindexcA and cClencA count characters rather than
+       bytes.
+
     cD&lencA cCstrcA
     
-       Returns the integer length of the string (number of characters).
+       Returns the integer length of the string (number of bytes).
+
+    cD&ulencA cCstrcA
+    
+       Returns the integer length of the string in characters. For single byte
+       encodings this is identical to cD&lencA, for UTF-8 encoded data a
+       multi-byte sequence counts as one character.
 
     cD&slowercA cCstrcA
     
@@ -52919,10 +52965,11 @@ $a
 ! 4 &isin
 ! 4 &rsin
 ! 4 &risin
+! 4 &usin
 cEcENAME cEcA
 
 
- &sin, &isin, &rsin, &risin - String in string test functions
+ &sin, &isin, &rsin, &risin, &usin - String in string test functions
 
 
 cESYNOPSIS cA
@@ -52931,7 +52978,8 @@ $a
     cD&sincA cCstr1cA cCstr2cA  
     cD&isincA cCstr1cA cCstr2cA  
     cD&rsincA cCstr1cA cCstr2cA  
-    cD&risincA cCstr1cA cCstr2cA
+    cD&risincA cCstr1cA cCstr2cA  
+    cD&usincA cCstr1cA cCstr2cA
 
 
 cEDESCRIPTION cA
@@ -52948,7 +52996,9 @@ $a
     
        Returns cG0cA if string cCstr1cA does not exists in string cCstr2cA. Otherwise the
        function returns the character position + 1 of the location of the
-       first character of the first occurrence of cCstr1cA.
+       first character of the first occurrence of cCstr1cA. For UTF-8 encoded
+       data the returned position is a byte position, use cD&usincA for a
+       character position.
 
     cD&isincA cCstr1cA cCstr2cA
     
@@ -52967,6 +53017,11 @@ $a
        Returns cG0cA if case insensitive string cCstr1cA does not exists in string
        cCstr2cA. Otherwise the function returns the character position + 1 of the
        location of the first character of the last occurrence of cCstr1cA.
+
+    cD&usincA cCstr1cA cCstr2cA
+    
+       As cD&sincA except that the returned position is a character position,
+       i.e. a multi-byte UTF-8 sequence counts as a single character.
 
 
 cEEXAMPLE cA

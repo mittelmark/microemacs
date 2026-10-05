@@ -328,6 +328,13 @@ DEFFUN (UFTCHAR,    "tch", FUN_TRINAMIC)     /* transcode charset byte i.e. "cp1
 DEFFUN (UFTRIMB,    "trb", FUN_MONAMIC)     /* Trim whitespace both */
 DEFFUN (UFTRIML,    "trl", FUN_MONAMIC)     /* Trim whitespace left */
 DEFFUN (UFTRIMR,    "trr", FUN_MONAMIC)     /* Trim whitespace right */
+DEFFUN (UFULEFT,    "uleft", FUN_DYNAMIC)   /* left string, character based (UTF-8) */
+DEFFUN (UFULEN,     "ulen", FUN_MONAMIC)    /* Length of a string in characters */
+DEFFUN (UFUMID,     "umid", FUN_TRINAMIC)   /* mid string, character based (UTF-8) */
+DEFFUN (UFURIGHT,   "uright", FUN_DYNAMIC)  /* right string, character based (UTF-8) */
+#if MEOPT_EXTENDED
+DEFFUN (UFUSIN,     "usin", FUN_DYNAMIC)    /* str in str, character index */
+#endif
 DEFFUN (UFWHICH,    "whi", FUN_MONAMIC)     /* Does a which on a given program name */
 DEFFUN (UFXIREP,    "xir", FUN_TRINAMIC)    /* regexp case insensitive replace str in str */
 DEFFUN (UFXISEQ,    "xis", FUN_DYNAMIC)     /* regexp case insensitive string logical equality check */

@@ -2082,6 +2082,34 @@ meGetDayOfYear(meInt year, meInt month, meInt day)
 }
 #endif
 
+/* stringCharLen - length of a string counted in characters (utf8-mec).
+ * A meCHAR_LEADER pair counts as one character, a valid UTF-8 sequence
+ * counts as one character, every other byte counts as one character.
+ * Single-byte and invalid UTF-8 data therefore keeps the historical
+ * byte counting behaviour. */
+static int
+stringCharLen(meUByte *ss)
+{
+    meUByte cc ;
+    int ii=0 ;
+
+    for(;;)
+    {
+        if((cc=*ss++) == meCHAR_LEADER)
+            cc = *ss++ ;
+        else if(cc >= 0xC0)
+        {
+            int nn = meUtf8ValidSeqLen(ss-1) ;
+            if(nn > 1)
+                ss += nn-1 ;
+        }
+        if(cc == '\0')
+            break ;
+        ii++ ;
+    }
+    return ii ;
+}
+
 meUByte *
 gtfun(meUByte *fname)  /* evaluate a function given name of function */
 {
@@ -2094,8 +2122,32 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
     meUByte arg3[meBUF_SIZE_MAX];      /* value of third argument */
     meUByte *varVal ;
     
-    /* look the function up in the function table */
-    if((fnum = biChopFindString(fname,3,funcNames,NFUNCS)) < 0)
+    /* look the function up in the function table. An exact-length match is
+     * tried first so names longer than the historical 3-character chop can
+     * coexist (e.g. &uleft and &ulen share the "ule" prefix), then the
+     * 3-character chop keeps the short aliases working (e.g. &lget finds
+     * "lge", &length finds "len"). */
+    {
+        int flen = (int) meStrlen(fname) ;
+        fnum = -1 ;
+        if(flen > 3)
+            fnum = biChopFindString(fname,flen,funcNames,NFUNCS) ;
+        if(fnum < 0)
+            fnum = biChopFindString(fname,3,funcNames,NFUNCS) ;
+        if((fnum >= 0) && (flen > 3))
+        {
+            /* Only accept the 3-character fallback when one name is a true
+             * prefix of the other - for normal 3-letter entries this always
+             * holds so existing lookups are unaffected, longer entries (the
+             * UTF-8 string functions) must not swallow near misses. */
+            meUByte *en = funcNames[fnum] ;
+            int elen = (int) meStrlen(en) ;
+            int clen = (elen < flen) ? elen : flen ;
+            if(strncmp(en,fname,clen) != 0)
+                fnum = -1 ;
+        }
+    }
+    if(fnum < 0)
     {
         mlwrite(MWABORT|MWWAIT,(meUByte *)"[Unknown function &%s]",fname);
         return abortm ;
@@ -2443,6 +2495,40 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             *dd = '\0' ;
             return evalResult ;
         }
+    case UFULEFT:
+        {
+            meUByte *dd, *ss, cc ;
+            int ii=meAtoi(arg2) ;
+            ss = arg1 ;
+            if(ii < 0)
+                ii = stringCharLen(ss) + ii ;
+            dd = evalResult ;
+            while(--ii >= 0)
+            {
+                meUByte *cs = ss ;
+                if((cc=*ss++) == meCHAR_LEADER)
+                {
+                    *dd++ = cc ;
+                    cc = *ss++ ;
+                }
+                else if(cc >= 0xC0)
+                {
+                    int nn = meUtf8ValidSeqLen(cs) ;
+                    if(nn > 1)
+                    {
+                        ss = cs + nn ;
+                        while(nn--)
+                            *dd++ = *cs++ ;
+                        continue ;
+                    }
+                }
+                if(cc == '\0')
+                    break ;
+                *dd++ = cc ;
+            }
+            *dd = '\0' ;
+            return evalResult ;
+        }
     case UFRIGHT:
         {
             meUByte *dd, *ss, cc ;
@@ -2454,6 +2540,34 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             {
                 if((cc=*ss++) == meCHAR_LEADER)
                     cc = *ss++ ;
+                if(cc == '\0')
+                {
+                    ss-- ;
+                    break ;
+                }
+            }
+            dd = evalResult ;
+            while((*dd++ = *ss++) != '\0')
+                ;
+            return evalResult ;
+        }
+    case UFURIGHT:
+        {
+            meUByte *dd, *ss, cc ;
+            int ii=meAtoi(arg2) ;
+            ss = arg1 ;
+            if(ii < 0)
+                ii = stringCharLen(ss) + ii ;
+            while(--ii >= 0)
+            {
+                if((cc=*ss++) == meCHAR_LEADER)
+                    cc = *ss++ ;
+                else if(cc >= 0xC0)
+                {
+                    int nn = meUtf8ValidSeqLen(ss-1) ;
+                    if(nn > 1)
+                        ss += nn-1 ;
+                }
                 if(cc == '\0')
                 {
                     ss-- ;
@@ -2507,6 +2621,66 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             *dd = '\0' ;
             return evalResult ;
         }
+    case UFUMID:
+        {
+            meUByte *dd, *ss, cc ;
+            int ii, ll ;
+            ss = arg1 ;
+
+            ll = meAtoi(arg3) ;
+            ii = meAtoi(arg2) ;
+            if(ii < 0)
+                ii = stringCharLen(ss) + ii ;
+            if(ii > 0)
+            {
+                do
+                {
+                    if((cc=*ss++) == meCHAR_LEADER)
+                        cc = *ss++ ;
+                    else if(cc >= 0xC0)
+                    {
+                        int nn = meUtf8ValidSeqLen(ss-1) ;
+                        if(nn > 1)
+                            ss += nn-1 ;
+                    }
+                    if(cc == '\0')
+                    {
+                        ss-- ;
+                        break ;
+                    }
+                } while(--ii > 0) ;
+            }
+            else if(ll >= 0)
+                ll += ii ;
+            if(ll < 0)
+                ll = stringCharLen(ss) + ll ;
+            dd = evalResult ;
+            while(--ll >= 0)
+            {
+                meUByte *cs = ss ;
+                if((cc=*ss++) == meCHAR_LEADER)
+                {
+                    *dd++ = cc ;
+                    cc = *ss++ ;
+                }
+                else if(cc >= 0xC0)
+                {
+                    int nn = meUtf8ValidSeqLen(cs) ;
+                    if(nn > 1)
+                    {
+                        ss = cs + nn ;
+                        while(nn--)
+                            *dd++ = *cs++ ;
+                        continue ;
+                    }
+                }
+                if(cc == '\0')
+                    break ;
+                *dd++ = cc ;
+            }
+            *dd = '\0' ;
+            return evalResult ;
+        }
     case UFLEN:
         {
             meUByte *ss, cc ;
@@ -2522,6 +2696,8 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             }
             return meItoa(ii) ;
         }
+    case UFULEN:
+        return meItoa(stringCharLen(arg1)) ;
 #if MEOPT_EXTENDED
     case UFSLOWER:
         {
@@ -2574,6 +2750,39 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                 }
             } while(cc != '\0') ;
             
+            if(lss != NULL)
+                return meItoa(lss-arg2-off+1);
+            return meLtoa(0) ;
+        }
+    case UFUSIN:
+        {
+            meUByte cc, *ss=arg2, *lss=NULL ;
+            int len, off=0 ;
+            len = meStrlen(arg1) ;
+
+            do
+            {
+                if(!strncmp(arg1,ss,len))
+                {
+                    lss = ss ;
+                    break ;
+                }
+                if((cc=*ss++) == meCHAR_LEADER)
+                {
+                    cc = *ss++ ;
+                    off++ ;
+                }
+                else if(cc >= 0xC0)
+                {
+                    int nn = meUtf8ValidSeqLen(ss-1) ;
+                    if(nn > 1)
+                    {
+                        ss += nn-1 ;
+                        off += nn-1 ;
+                    }
+                }
+            } while(cc != '\0') ;
+
             if(lss != NULL)
                 return meItoa(lss-arg2-off+1);
             return meLtoa(0) ;

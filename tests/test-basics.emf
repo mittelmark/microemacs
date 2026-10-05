@@ -84,6 +84,41 @@ define-macro start-up
     insert-string "αβγ"
     insert-newline
 
+    ; Test 12: UTF-8 character based string functions (byte functions stay
+    ; byte based: &len/&sin, character functions: &ulen/&uleft/&uright/
+    ; &umid/&usin)
+    set-variable #l9 "ok"
+    !if &not &seq &len "äöü" "6"
+        set-variable #l9 "len-bytes"
+    !endif
+    !if &not &seq &sin "ö" "äöü" "3"
+        set-variable #l9 "sin-bytes"
+    !endif
+    !if &not &seq &ulen "äöü" "3"
+        set-variable #l9 "ulen"
+    !endif
+    !if &not &seq &uleft "äöü" 2 "äö"
+        set-variable #l9 "uleft"
+    !endif
+    !if &not &seq &uleft "äöü" -1 "äö"
+        set-variable #l9 "uleft-neg"
+    !endif
+    !if &not &seq &uright "äöü" -1 "ü"
+        set-variable #l9 "uright"
+    !endif
+    !if &not &seq &umid "äöü" 1 1 "ö"
+        set-variable #l9 "umid"
+    !endif
+    !if &not &seq &usin "ö" "äöü" "2"
+        set-variable #l9 "usin"
+    !endif
+    !if &not &seq &uleft "aä" 2 "aä"
+        set-variable #l9 "uleft-mixed"
+    !endif
+    insert-string "TEST:utf8-strfuncs="
+    insert-string #l9
+    insert-newline
+
     ; All tests complete
     insert-string "TEST:all-tests=complete"
     insert-newline
