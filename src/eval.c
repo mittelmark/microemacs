@@ -2143,7 +2143,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             meUByte *en = funcNames[fnum] ;
             int elen = (int) meStrlen(en) ;
             int clen = (elen < flen) ? elen : flen ;
-            if(strncmp(en,fname,clen) != 0)
+            if(meStrncmp(en,fname,clen) != 0)
                 fnum = -1 ;
         }
     }
@@ -2762,7 +2762,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
 
             do
             {
-                if(!strncmp(arg1,ss,len))
+                if(!meStrncmp(arg1,ss,len))
                 {
                     lss = ss ;
                     break ;
