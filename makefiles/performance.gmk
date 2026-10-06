@@ -1,0 +1,299 @@
+# makefiles/performance.gmk - MicroEmacs performance regression check
+#
+# Runs the fixed editing workload tests/test-performance.emf against the
+# console (mec) and GUI (mew) builds, measures wall clock time and peak
+# memory (maximum resident set size) and writes the results as TEST: lines
+# to tests/perf-output.txt so runs can be compared over time.
+#
+# Usage:
+#   make -f makefiles/performance.gmk            # both binaries + report
+#   make -f makefiles/performance.gmk mec        # console workload only
+#   make -f makefiles/performance.gmk mew        # GUI workload only
+#   make -f makefiles/performance.gmk report     # re-check existing results
+#   make -f makefiles/performance.gmk clean      # remove all results
+#
+# Options (command line overrides):
+#   MAXWALL=<seconds>    fail the report when a run exceeds this wall time
+#   MAXRSS=<kbytes>      fail the report when a run exceeds this peak RSS
+#   TIMEOUT=<seconds>    hard kill for a hung run (default 120)
+#   MEC=<path>           console binary (default src/.linuxgcc-release-mec/mec)
+#   MEW=<path>           GUI binary (auto-detected: mew-xft, mew, mecw)
+#
+# The GUI run needs a running X display (DISPLAY) and xdotool; without them
+# it is reported as skipped. On a headless machine run the whole check with
+#   xvfb-run -a make -f makefiles/performance.gmk
+#
+# Dialog close keys are injected while tests/perf-dialog.flag is non-empty:
+# the console build reads them from stdin (byte 0x07 = C-g), the GUI build
+# receives them in the MicroEmacs window (tests/xsendkey.c XSendEvent helper,
+# xdotool fallback) resent every 0.25s until the macro has cleared the marker
+# again. Send attempts are logged to tests/perf-mew.keys.
+#
+# GNU make is required (used by all microemacs gmk files).
+
+.ONESHELL:
+SHELL := /bin/sh
+.NOTPARALLEL:
+
+ROOT    := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))/..
+MEC     ?= $(ROOT)/src/.linuxgcc-release-mec/mec
+MEW     ?= $(firstword $(wildcard $(ROOT)/src/.linuxgcc-release-mew-xft/mew \
+                                   $(ROOT)/src/.linuxgcc-release-mew/mew \
+                                   $(ROOT)/src/.linuxgcc-release-mecw/mecw))
+TIMEOUT ?= 120
+MAXWALL ?=
+MAXRSS  ?=
+OUT     := tests/perf-output.txt
+
+# GNU time provides wall clock and maximum RSS in one run; BSD time does not
+GNUTIME := $(shell /usr/bin/time -v true >/dev/null 2>&1 && echo yes)
+
+.PHONY: all prep mec mew report clean
+
+all: prep mec mew report
+
+prep:
+	@cd "$(ROOT)"
+	rm -f $(OUT)
+	echo "TEST:perf-date=$$(date -u +%Y-%m-%dT%H:%M:%SZ)" > $(OUT)
+
+define run_mec
+	cd "$(ROOT)"
+	if [ ! -x "$(MEC)" ]; then
+		echo "ERROR: console binary not found: $(MEC)"
+		echo "       build it first: make -f makefiles/unixgcc.gmk mec"
+		exit 1
+	fi
+	echo "== mec: workload on $(MEC)"
+	rm -f tests/perf-macro.out tests/perf-dialog.flag tests/perf-tmp.txt \
+	      tests/perf-mec.time tests/perf-mec.stats tests/perf-mec.log \
+	      tests/perf-run.active jasspa/macros/perf-test.esf* \
+	      jasspa/macros/perf-test.erf jasspa/macros/perf-test.eff
+	: > tests/perf-run.active
+	{
+		# bound the loop: if the binary dies without ever setting the
+		# marker the pipeline must still end shortly after TIMEOUT
+		left=$$(((( $(TIMEOUT) + 10) * 4)))
+		while [ -f tests/perf-run.active ] && [ $$left -gt 0 ]; do
+			if [ -s tests/perf-dialog.flag ]; then printf '\007'; fi
+			sleep 0.25
+			left=$$((left - 1))
+		done
+	} | {
+		cmd="exec timeout $(TIMEOUT) env MEPATH=jasspa/macros MENAME=perf-test TERM=$${TERM:-xterm-256color} $(MEC) @tests/test-performance"
+		rc=0
+		if [ -n "$(GNUTIME)" ]; then
+			/usr/bin/time -v -o tests/perf-mec.time sh -c "$$cmd" || rc=$$?
+		else
+			s=$$(date +%s)
+			sh -c "$$cmd" || rc=$$?
+			e=$$(date +%s)
+			printf 'wall=%s\nrss=-\n' $$((e - s)) > tests/perf-mec.stats
+		fi
+		# mec is done - release the stdin spammer, it waits for this file
+		rm -f tests/perf-run.active
+		exit $$rc
+	} > tests/perf-mec.log 2>&1
+	rc=$$?
+	rm -f tests/perf-run.active tests/perf-dialog.flag tests/perf-tmp.txt
+	if [ -n "$(GNUTIME)" ]; then
+		w=$$(awk -F': ' '/Elapsed \(wall clock\)/{print $$NF}' tests/perf-mec.time)
+		wall=$$(awk -v t="$$w" 'BEGIN{n=split(t,a,":"); if(n==3) print a[1]*3600+a[2]*60+a[3]; else print a[1]*60+a[2]}')
+		rss=$$(awk -F': ' '/Maximum resident/{print $$NF}' tests/perf-mec.time)
+		[ -n "$$rss" ] || rss="-"
+		printf 'wall=%s\nrss=%s\n' "$$wall" "$$rss" > tests/perf-mec.stats
+	fi
+	wall=$$(sed -n 's/^wall=//p' tests/perf-mec.stats)
+	rss=$$(sed -n 's/^rss=//p' tests/perf-mec.stats)
+	{ echo "TEST:mec-wall=$$wall"; echo "TEST:mec-maxrss=$$rss"; } >> $(OUT)
+	if [ $$rc -eq 0 ] && grep -q 'TEST:workload-complete=1' tests/perf-macro.out 2>/dev/null; then
+		sed -n 's/^TEST:/TEST:mec-/p' tests/perf-macro.out >> $(OUT)
+		echo "TEST:mec-status=ok" >> $(OUT)
+		echo "   wall=$$wall s  peak RSS=$$rss kB  [ok]"
+	else
+		if [ $$rc -eq 124 ] || [ $$rc -eq 137 ]; then st="timeout"; else st="failed"; fi
+		echo "TEST:mec-status=$$st" >> $(OUT)
+		echo "   FAIL: mec workload ($$st, rc=$$rc) - log tail:"
+		tail -n 5 tests/perf-mec.log 2>/dev/null | sed 's/^/     /'
+	fi
+endef
+
+define run_mew
+	cd "$(ROOT)"
+	if [ -z "$(MEW)" ] || [ ! -x "$(MEW)" ]; then
+		echo "SKIP: mew - no GUI binary (build with: make -f makefiles/unixgcc.gmk mew)"
+		echo "TEST:mew-status=skipped" >> $(OUT)
+	elif [ -z "$$DISPLAY" ]; then
+		echo "SKIP: mew - no DISPLAY (try: xvfb-run -a make -f makefiles/performance.gmk)"
+		echo "TEST:mew-status=skipped" >> $(OUT)
+	elif ! command -v xdotool >/dev/null 2>&1; then
+		echo "SKIP: mew - xdotool not installed (needed to close the dialogs)"
+		echo "TEST:mew-status=skipped" >> $(OUT)
+	else
+		echo "== mew: workload on $(MEW)"
+		# deliver C-g with the bundled XSendEvent helper - some xdotool
+		# builds silently fail to inject keys; xdotool stays as fallback
+		XSEND=""
+		if [ ! -x tests/perf-xsendkey ] || [ tests/xsendkey.c -nt tests/perf-xsendkey ]; then
+			$${CC:-cc} -o tests/perf-xsendkey tests/xsendkey.c -lX11 2>/dev/null || rm -f tests/perf-xsendkey
+		fi
+		if [ -x tests/perf-xsendkey ]; then
+			XSEND=tests/perf-xsendkey
+		else
+			echo "note: could not build tests/xsendkey.c, falling back to xdotool key"
+		fi
+		rm -f tests/perf-macro.out tests/perf-dialog.flag tests/perf-tmp.txt \
+		      tests/perf-mew.time tests/perf-mew.stats tests/perf-mew.log \
+		      tests/perf-mew.keys tests/perf-run.active \
+		      jasspa/macros/perf-test.esf* \
+		      jasspa/macros/perf-test.erf jasspa/macros/perf-test.eff
+		: > tests/perf-run.active
+		cmd="exec timeout $(TIMEOUT) env MEPATH=jasspa/macros MENAME=perf-test $(MEW) @tests/test-performance"
+		if [ -n "$(GNUTIME)" ]; then
+			/usr/bin/time -v -o tests/perf-mew.time sh -c "$$cmd" > tests/perf-mew.log 2>&1 &
+		else
+			s=$$(date +%s)
+			sh -c "$$cmd" > tests/perf-mew.log 2>&1 &
+		fi
+		rpid=$$!
+		(
+			# no --timeout on this xdotool's search - retry until the
+			# window shows up, then re-check it every pass (cheap) so a
+			# stale id can never leave the dialogs waiting
+			sendkey()
+			{
+				if [ -n "$$XSEND" ]; then
+					"$$XSEND" "$$1"
+				else
+					xdotool key --window "$$1" ctrl+g 2>/dev/null
+				fi
+			}
+			wid=""
+			try=0
+			while [ -z "$$wid" ] && [ $$try -lt 60 ]; do
+				wid=$$(xdotool search --class MicroEmacs 2>/dev/null | head -n 1)
+				if [ -z "$$wid" ]; then
+					try=$$((try + 1))
+					sleep 0.5
+				fi
+			done
+			stuck=0
+			while kill -0 $$rpid 2>/dev/null; do
+				if [ -z "$$wid" ]; then
+					wid=$$(xdotool search --class MicroEmacs 2>/dev/null | head -n 1)
+				fi
+				if [ -s tests/perf-dialog.flag ]; then
+					if [ -n "$$wid" ]; then
+						echo "$$(date +%s) window=$$wid stuck=$$stuck" >> tests/perf-mew.keys
+						sendkey "$$wid"
+					fi
+					stuck=$$((stuck + 1))
+					if [ $$stuck -ge 20 ]; then
+						# marker still open after ~5s - re-resolve the
+						# window id (may have been stale) and resend
+						echo "$$(date +%s) escalate resend stuck=$$stuck" >> tests/perf-mew.keys
+						wid=$$(xdotool search --class MicroEmacs 2>/dev/null | head -n 1)
+						[ -n "$$wid" ] && sendkey "$$wid"
+						stuck=0
+					fi
+				else
+					stuck=0
+				fi
+				sleep 0.25
+			done
+		) &
+		wpid=$$!
+		wait $$rpid
+		rc=$$?
+		kill $$wpid 2>/dev/null
+		wait $$wpid 2>/dev/null
+		rm -f tests/perf-run.active tests/perf-dialog.flag tests/perf-tmp.txt
+		if [ -n "$(GNUTIME)" ]; then
+			w=$$(awk -F': ' '/Elapsed \(wall clock\)/{print $$NF}' tests/perf-mew.time)
+			wall=$$(awk -v t="$$w" 'BEGIN{n=split(t,a,":"); if(n==3) print a[1]*3600+a[2]*60+a[3]; else print a[1]*60+a[2]}')
+			rss=$$(awk -F': ' '/Maximum resident/{print $$NF}' tests/perf-mew.time)
+			[ -n "$$rss" ] || rss="-"
+			printf 'wall=%s\nrss=%s\n' "$$wall" "$$rss" > tests/perf-mew.stats
+		else
+			e=$$(date +%s)
+			printf 'wall=%s\nrss=-\n' $$((e - s)) > tests/perf-mew.stats
+		fi
+		wall=$$(sed -n 's/^wall=//p' tests/perf-mew.stats)
+		rss=$$(sed -n 's/^rss=//p' tests/perf-mew.stats)
+		{ echo "TEST:mew-wall=$$wall"; echo "TEST:mew-maxrss=$$rss"; } >> $(OUT)
+		if [ $$rc -eq 0 ] && grep -q 'TEST:workload-complete=1' tests/perf-macro.out 2>/dev/null; then
+			sed -n 's/^TEST:/TEST:mew-/p' tests/perf-macro.out >> $(OUT)
+			echo "TEST:mew-status=ok" >> $(OUT)
+			echo "   wall=$$wall s  peak RSS=$$rss kB  [ok]"
+		else
+			if [ $$rc -eq 124 ] || [ $$rc -eq 137 ]; then st="timeout"; else st="failed"; fi
+			echo "TEST:mew-status=$$st" >> $(OUT)
+			echo "   FAIL: mew workload ($$st, rc=$$rc) - log tail:"
+			tail -n 5 tests/perf-mew.log 2>/dev/null | sed 's/^/     /'
+		fi
+	fi
+endef
+
+mec:
+	@$(run_mec)
+
+mew:
+	@$(run_mew)
+
+report:
+	@cd "$(ROOT)"
+	fail=0
+	if [ ! -s $(OUT) ]; then
+		echo "FAIL: no results - run 'make -f makefiles/performance.gmk' first"
+		exit 1
+	fi
+	echo "== performance results =="
+	for b in mec mew; do
+		# take the last match - re-running a target without prep appends
+		st=$$(sed -n "s/^TEST:$$b-status=//p" $(OUT) | tail -n 1)
+		case "$$st" in
+		ok)
+			w=$$(sed -n "s/^TEST:$$b-wall=//p" $(OUT) | tail -n 1)
+			r=$$(sed -n "s/^TEST:$$b-maxrss=//p" $(OUT) | tail -n 1)
+			echo "  $$b: wall=$$w s  peak RSS=$$r kB  [ok]"
+			if [ -n "$(MAXWALL)" ] && awk -v a="$$w" -v b="$(MAXWALL)" 'BEGIN{exit !(a>b)}'; then
+				echo "  FAIL: $$b wall $$w s exceeds MAXWALL=$(MAXWALL) s"
+				fail=1
+			fi
+			if [ -n "$(MAXRSS)" ] && [ "$$r" != "-" ] && awk -v a="$$r" -v b="$(MAXRSS)" 'BEGIN{exit !(a>b)}'; then
+				echo "  FAIL: $$b peak RSS $$r kB exceeds MAXRSS=$(MAXRSS) kB"
+				fail=1
+			fi
+			;;
+		skipped)
+			echo "  $$b: skipped"
+			;;
+		"")
+			echo "  $$b: not run"
+			fail=1
+			;;
+		*)
+			echo "  FAIL: $$b workload $$st (details in tests/perf-$$b.log)"
+			fail=1
+			;;
+		esac
+	done
+	if [ $$fail -eq 0 ] && ! grep -q 'TEST:mec-status=ok\|TEST:mew-status=ok' $(OUT); then
+		echo "FAIL: no successful run at all"
+		fail=1
+	fi
+	if [ $$fail -eq 0 ]; then
+		grep -q 'TEST:all-tests=complete' $(OUT) || echo "TEST:all-tests=complete" >> $(OUT)
+		echo "PASS"
+	else
+		echo "FAIL"
+	fi
+	echo "--- $(OUT) ---"
+	cat $(OUT)
+	exit $$fail
+
+clean:
+	@cd "$(ROOT)"
+	rm -f tests/perf-*
+	rm -f jasspa/macros/perf-test.esf jasspa/macros/perf-test.esf.* \
+	      jasspa/macros/perf-test.erf jasspa/macros/perf-test.eff

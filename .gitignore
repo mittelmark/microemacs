@@ -26,3 +26,5 @@ tests/*-out.txt
 tests/*-tmp.emf
 # Generated help file (built via: cd doc && make ehf)
 doc/me.ehf
+# Performance check outputs (make -f makefiles/performance.gmk)
+tests/perf-*

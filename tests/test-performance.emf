@@ -1,0 +1,123 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 Detlef Groth (https://github.com/mittelmark)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Performance regression workload driven by makefiles/performance.gmk
+; Authors:     Detlef Groth
+;
+; Phases (timed via $time, millisecond resolution):
+;
+;   string - macro evaluator / string function crunch
+;            (&cat, &itoa, &mid, &uleft, &usin ...)
+;   edit   - new ISO-8859-1 buffer, repeated line insertion with screen
+;            redraws, whole-buffer replace-string, buffer save (file I/O)
+;   dialog - insert-symbol and user-setup open/close round-trips
+;
+; Dialog close keys are supplied by the driver (makefiles/performance.gmk):
+; while a dialog is open the marker file tests/perf-dialog.flag is non-empty,
+; the driver then sends C-g every 0.25s (console: stdin byte 0x07, GUI:
+; xdotool ctrl+g) until the marker has been cleared again. The phase
+; timings are written to tests/perf-macro.out for the driver to pick up.
+;
+; Run via:  make -f makefiles/performance.gmk
+
+; An @file argument replaces me.emf (see main.c), so load it explicitly
+; first - it registers the deferred dialog macros (define-macro-file
+; entries such as insert-symbol and user-setup). It defines start-up
+; itself; the definition below then overrides that one.
+execute-file "me"
+
+0 define-macro perf-flag   ; @1 = "set" opens / "clear" closes the dialog marker
+    ; NOTE: macro arguments arrive in @1 (not #l0); find-file is given the
+    ; bare file name because inputFileName (MLMACNORT) appends the argument
+    ; to the current buffer's directory prefill - "tests/x" from a tests/
+    ; buffer would resolve to "tests/tests/x" and abort the file attach.
+    ; The marker buffer is always emptied first (replace-string cannot
+    ; delete - an empty replacement argument aborts silently), "set" then
+    ; inserts one character, "clear" saves the empty buffer (0 bytes).
+    !force set-variable #l0 @1
+    find-file "perf-dialog.flag"
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    kill-region
+    !if &seq #l0 "set"
+        insert-string "x"
+    !endif
+    save-buffer
+    find-file "perf-tmp.txt"
+!emacro
+
+0 define-macro perf-ms     ; @1 = $time string, result in %perf-ms
+    ; $time layout (eval.c EVTIME): YYYYCCCMMDDWhhmmssSSS - fixed width,
+    ; space padded (no leading zeros, they would read as octal). &mid
+    ; SKIPS its start chars, so start = position - 1: hh 13, mm 15,
+    ; ss 17, SSS 19 (1-based positions in the raw string)
+    !force set-variable #l0 @1
+    set-variable #l1 &mul &mid #l0 12 2 3600000
+    set-variable #l2 &mul &mid #l0 14 2 60000
+    set-variable #l3 &mul &mid #l0 16 2 1000
+    set-variable #l4 &mid #l0 18 3
+    set-variable %perf-ms &add #l1 &add #l2 &add #l3 #l4
+!emacro
+
+0 define-macro start-up
+    ; ------------------------------------------------------ string crunch
+    perf-ms $time
+    set-variable #l5 %perf-ms
+    set-variable #l9 0
+    !while &les #l9 3000
+        set-variable #l1 &cat "Grüße-" &itoa #l9
+        set-variable #l2 &uleft #l1 3
+        set-variable #l3 &usin #l1 "ß"
+        set-variable #l4 &mid #l1 2 4
+        set-variable #l9 &add #l9 1
+    !done
+    perf-ms $time
+    set-variable #l6 %perf-ms
+
+    ; ------------------------------------------------------ ISO-8859-1 edit
+    find-file "tests/perf-tmp.txt"
+    set-buffer-encoding "ISO-8859-1"
+    set-variable #l9 0
+    !while &les #l9 800
+        insert-string "Musterzeile: Grüße aus Mörfelden, Größe 3, Ku'damm 47"
+        insert-newline
+        screen-update
+        set-variable #l9 &add #l9 1
+    !done
+    replace-string "Ku'damm" "Kurfuerstendamm"
+    save-buffer
+    perf-ms $time
+    set-variable #l7 %perf-ms
+
+    ; ------------------------------------------------------ dialogs
+    perf-flag "set"
+    insert-symbol
+    !force perf-flag "clear"
+    perf-flag "set"
+    user-setup
+    !force perf-flag "clear"
+    perf-ms $time
+    set-variable #l8 %perf-ms
+
+    ; ------------------------------------------------------ report
+    find-file "perf-macro.out"
+    set-variable #l0 &spr "TEST:string-ms=%d" &sub #l6 #l5
+    insert-string #l0
+    insert-newline
+    set-variable #l0 &spr "TEST:edit-ms=%d" &sub #l7 #l6
+    insert-string #l0
+    insert-newline
+    set-variable #l0 &spr "TEST:dialog-ms=%d" &sub #l8 #l7
+    insert-string #l0
+    insert-newline
+    set-variable #l0 &spr "TEST:total-ms=%d" &sub #l8 #l5
+    insert-string #l0
+    insert-newline
+    insert-string "TEST:workload-complete=1"
+    insert-newline
+    save-buffer
+    exit-emacs
+!emacro
