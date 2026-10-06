@@ -9,7 +9,9 @@
 ; Phases (timed via $time, millisecond resolution):
 ;
 ;   string - macro evaluator / string function crunch
-;            (&cat, &itoa, &mid, &uleft, &usin ...)
+;            (&cat, &spr, &mid, &seq, &len ...) - deliberately only
+;            functions that exist in every supported version, so old
+;            git tags can run this workload unchanged
 ;   edit   - new ISO-8859-1 buffer, repeated line insertion with screen
 ;            redraws, whole-buffer replace-string, buffer save (file I/O)
 ;   dialog - insert-symbol and user-setup open/close round-trips
@@ -17,7 +19,8 @@
 ; Dialog close keys are supplied by the driver (makefiles/performance.gmk):
 ; while a dialog is open the marker file tests/perf-dialog.flag is non-empty,
 ; the driver then sends C-g every 0.25s (console: stdin byte 0x07, GUI:
-; xdotool ctrl+g) until the marker has been cleared again. The phase
+; tests/xsendkey.c XSendEvent helper) until the marker has been cleared
+; again. The phase
 ; timings are written to tests/perf-macro.out for the driver to pick up.
 ;
 ; Run via:  make -f makefiles/performance.gmk
@@ -68,9 +71,9 @@ execute-file "me"
     set-variable #l5 %perf-ms
     set-variable #l9 0
     !while &les #l9 3000
-        set-variable #l1 &cat "Grüße-" &itoa #l9
-        set-variable #l2 &uleft #l1 3
-        set-variable #l3 &usin #l1 "ß"
+        set-variable #l1 &cat "Grüße-" &spr "%d" #l9
+        set-variable #l2 &mid #l1 0 3
+        set-variable #l3 &seq &mid #l1 0 3 "Grü"
         set-variable #l4 &mid #l1 2 4
         set-variable #l9 &add #l9 1
     !done
@@ -79,7 +82,12 @@ execute-file "me"
 
     ; ------------------------------------------------------ ISO-8859-1 edit
     find-file "tests/perf-tmp.txt"
-    set-buffer-encoding "ISO-8859-1"
+    ; set-buffer-encoding only exists in recent versions - &exi guards it
+    ; so old git tags keep their default encoding instead of aborting
+    ; (note: !force does NOT suppress the unknown command error)
+    !if &exi "set-buffer-encoding"
+        set-buffer-encoding "ISO-8859-1"
+    !endif
     set-variable #l9 0
     !while &les #l9 800
         insert-string "Musterzeile: Grüße aus Mörfelden, Größe 3, Ku'damm 47"
@@ -94,10 +102,10 @@ execute-file "me"
 
     ; ------------------------------------------------------ dialogs
     perf-flag "set"
-    insert-symbol
+    !force insert-symbol
     !force perf-flag "clear"
     perf-flag "set"
-    user-setup
+    !force user-setup
     !force perf-flag "clear"
     perf-ms $time
     set-variable #l8 %perf-ms

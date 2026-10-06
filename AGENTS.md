@@ -196,6 +196,7 @@ The `b` suffix indicates a "bfs-built" standalone binary that includes all macro
 | `makefiles/macosgcc.gmk` | macOS | GNU Make |
 | `makefiles/winmingwgcc.gmk` | MSYS2 Windows | Native MSYS2 gcc |
 | `makefiles/win32winlibs.gmk` | Windows (WinLibs) | Native Windows gcc |
+| `makefiles/performance.gmk` | Performance check (Linux) | `make -f makefiles/performance.gmk` — wall/RSS benchmark for mec + mew, also run by `performance.yml` against release tags |
 | `Makefile` | Portable dispatcher | plain `make` → makefiles/unixgcc.gmk / makefiles/freebsd.mak / makefiles/macosgcc.gmk (BSD+GNU make parseable) |
 
 **Source Makefiles** (in `src/`):
@@ -846,7 +847,7 @@ git push origin --delete featurebranch
 
 ## CI/CD (GitHub Actions)
 
-11 workflow files in `.github/workflows/`:
+12 workflow files in `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
@@ -861,6 +862,7 @@ git push origin --delete featurebranch
 | `ubuntu-arm-check.yml` | ARM compatibility check |
 | `test-install.yml` | Installer smoke test |
 | `testing.yml` | Automated testing (Linux, macOS, Windows×3, Cygwin×2) |
+| `performance.yml` | Performance benchmark: current code vs release tags (mec + mew, wall/RSS) |
 
 ## Common Patterns
 

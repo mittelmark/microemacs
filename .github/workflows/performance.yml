@@ -1,0 +1,191 @@
+name: performance
+
+# Benchmarks the editing workload tests/test-performance.emf (driven by
+# makefiles/performance.gmk) against the current code AND against previous
+# releases given by git tags, so performance changes become visible over
+# time. The workload harness is always taken from the current commit while
+# the editor binary is built from the ref under test - old tags predate
+# makefiles/ and are built with their own makefile (linux32gcc.gmk, ...).
+#
+# Results are written to tests/perf-output.txt (TEST: lines), uploaded as
+# artifacts (perf-<version>) and rendered as a comparison table in the job
+# summary. The GUI run happens under xvfb; the console run runs without
+# DISPLAY so combined (mecw) binaries from old tags start in terminal mode.
+#
+# Run manually via workflow_dispatch to benchmark an arbitrary tag list.
+
+on:
+  push:
+    branches: [ devel ]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Space separated git tags to benchmark against the current code"
+        required: false
+        default: "v09.12.26.beta5 v09.12.25 v09.12.24"
+
+jobs:
+  refs:
+    name: resolve versions
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Build version matrix
+        id: list
+        env:
+          TAGS: ${{ github.event.inputs.tags }}
+        run: |
+          set -e
+          tags="${TAGS:-v09.12.26.beta5 v09.12.25 v09.12.24}"
+          short="$(git rev-parse --short HEAD)"
+          json="[{\"ref\":\"${GITHUB_SHA}\",\"label\":\"current-${short}\"}"
+          for t in ${tags}; do
+            if ! git rev-parse -q --verify "refs/tags/${t}" >/dev/null; then
+              echo "::error::unknown git tag: ${t}"
+              exit 1
+            fi
+            json="${json},{\"ref\":\"${t}\",\"label\":\"${t}\"}"
+          done
+          json="${json}]"
+          echo "matrix=${json}" >> "$GITHUB_OUTPUT"
+          echo "matrix: ${json}"
+
+  bench:
+    name: bench (${{ matrix.label }})
+    needs: refs
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.refs.outputs.matrix) }}
+    steps:
+      - name: Checkout version under test
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.ref }}
+
+      - name: Checkout performance harness (current)
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: harness
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libxt-dev \
+            libx11-dev libxft-dev libxpm-dev time xvfb xauth xdotool
+
+      - name: Build
+        run: |
+          set -e
+          if [ -f makefiles/unixgcc.gmk ]; then
+            make -f makefiles/unixgcc.gmk mec mew
+          elif [ -f unixgcc.gmk ]; then
+            make -f unixgcc.gmk mec mew
+          elif [ -f linux32gcc.gmk ]; then
+            make -f linux32gcc.gmk mec mew
+          elif [ -f src/linux32gcc.gmk ]; then
+            make -C src -f linux32gcc.gmk
+          else
+            echo "::error::no supported build makefile at this ref"
+            exit 1
+          fi
+          MEC="$(ls -d src/.linux*-release-mec/mec 2>/dev/null | head -n 1)"
+          [ -n "${MEC}" ] || MEC="$(ls -d src/.linux*-release-mecw/mecw 2>/dev/null | head -n 1)"
+          MEW="$(ls -d src/.linux*-release-mew*/mew 2>/dev/null | head -n 1)"
+          [ -n "${MEW}" ] || MEW="$(ls -d src/.linux*-release-mecw/mecw 2>/dev/null | head -n 1)"
+          if [ -z "${MEC}" ] || [ -z "${MEW}" ]; then
+            echo "::error::built binaries not found"
+            ls -d src/.linux* 2>/dev/null || true
+            exit 1
+          fi
+          echo "MEC=${PWD}/${MEC}" >> "$GITHUB_ENV"
+          echo "MEW=${PWD}/${MEW}" >> "$GITHUB_ENV"
+          echo "MEC=${MEC}  MEW=${MEW}"
+
+      - name: Install performance harness
+        run: |
+          set -e
+          mkdir -p makefiles tests
+          cp harness/makefiles/performance.gmk makefiles/
+          cp harness/tests/test-performance.emf harness/tests/xsendkey.c tests/
+
+      - name: Run console workload
+        run: env -u DISPLAY make -f makefiles/performance.gmk prep mec MEC="$MEC" MEW="$MEW"
+
+      - name: Run GUI workload
+        run: |
+          xvfb-run -a -s "-screen 0 1280x800x24" \
+            make -f makefiles/performance.gmk mew MEC="$MEC" MEW="$MEW"
+
+      - name: Report
+        run: make -f makefiles/performance.gmk report MEC="$MEC" MEW="$MEW"
+
+      - name: Job summary
+        if: always()
+        env:
+          LABEL: ${{ matrix.label }}
+        run: |
+          {
+            echo "### ${LABEL}"
+            echo '```'
+            cat tests/perf-output.txt 2>/dev/null || echo "no results"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: perf-${{ matrix.label }}
+          path: |
+            tests/perf-output.txt
+            tests/perf-*.log
+            tests/perf-*.stats
+            tests/perf-*.time
+            tests/perf-mew.keys
+          if-no-files-found: ignore
+
+  summary:
+    name: comparison table
+    needs: [ refs, bench ]
+    if: always()
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v6
+        with:
+          path: results
+
+      - name: Write comparison table
+        run: |
+          val() { sed -n "s/^TEST:$2=//p" "$1" | tail -n 1; }
+          {
+            echo "## Performance comparison"
+            echo
+            echo "| version | mec wall (s) | mec RSS (kB) | mec edit (ms) | mew wall (s) | mew RSS (kB) | mew edit (ms) | mew dialog (ms) | status |"
+            echo "|---|---|---|---|---|---|---|---|---|"
+            rows=0
+            for f in results/*/perf-output.txt; do
+              [ -f "$f" ] || continue
+              label="$(basename "$(dirname "$f")")"
+              label="${label#perf-}"
+              ms="$(val "$f" mec-status)"; ws="$(val "$f" mew-status)"
+              [ -n "$ms" ] || ms="not run"
+              [ -n "$ws" ] || ws="not run"
+              if [ "$ms" = "ok" ] && [ "$ws" = "ok" ]; then st="ok"; else st="${ms}/${ws}"; fi
+              echo "| ${label} | $(val "$f" mec-wall) | $(val "$f" mec-maxrss) | $(val "$f" mec-edit-ms) | $(val "$f" mew-wall) | $(val "$f" mew-maxrss) | $(val "$f" mew-edit-ms) | $(val "$f" mew-dialog-ms) | ${st} |"
+              rows=$((rows + 1))
+            done
+            if [ "$rows" -eq 0 ]; then
+              echo
+              echo "_No results uploaded (build or run failed before any output)._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

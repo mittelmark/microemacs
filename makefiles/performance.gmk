@@ -80,7 +80,7 @@ define run_mec
 			left=$$((left - 1))
 		done
 	} | {
-		cmd="exec timeout $(TIMEOUT) env MEPATH=jasspa/macros MENAME=perf-test TERM=$${TERM:-xterm-256color} $(MEC) @tests/test-performance"
+		cmd="exec timeout -k 10 $(TIMEOUT) env MEPATH=jasspa/macros MENAME=perf-test TERM=$${TERM:-xterm-256color} $(MEC) @tests/test-performance"
 		rc=0
 		if [ -n "$(GNUTIME)" ]; then
 			/usr/bin/time -v -o tests/perf-mec.time sh -c "$$cmd" || rc=$$?
@@ -148,7 +148,7 @@ define run_mew
 		      jasspa/macros/perf-test.esf* \
 		      jasspa/macros/perf-test.erf jasspa/macros/perf-test.eff
 		: > tests/perf-run.active
-		cmd="exec timeout $(TIMEOUT) env MEPATH=jasspa/macros MENAME=perf-test $(MEW) @tests/test-performance"
+		cmd="exec timeout -k 10 $(TIMEOUT) env MEPATH=jasspa/macros MENAME=perf-test $(MEW) @tests/test-performance"
 		if [ -n "$(GNUTIME)" ]; then
 			/usr/bin/time -v -o tests/perf-mew.time sh -c "$$cmd" > tests/perf-mew.log 2>&1 &
 		else
