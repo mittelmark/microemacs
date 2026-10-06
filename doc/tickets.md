@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-09-25 14:55
+date: 2026-10-06 09:55
 ---
 
 ## Introduction
@@ -352,3 +352,75 @@ from devel that we are not so far away from master where this still was working.
       mew Xft screenshots cell-exact for longline/utf8/tab scenarios
       (8-cell tab gap, EOL blanks, cursor position, no spill).
       Files: src/display.c, src/hilight.c
+
+## Ticket 14: FR - per-filetype default encoding (WIP)
+~
+For some filetypes like emf, erf etc. we should change the default
+encoding from UTF-8 to ASCII, or ISO-8859-1, e.g. for the MicroEmacs
+macro and registry files. Running uchardet over the macro files shows
+that
+
+    jasspa/macros/spellutl.emf    Windows-CP1252
+    jasspa/macros/hklatex.emf     Windows-CP1252
+    jasspa/macros/abbrev.emf      Windows-CP1252
+
+while all other macro files are pure ASCII.
+
+    - WIP 261006: ticket opened with an analysis of the current
+      auto-detection (file.c, first 4KB sampled: BOM, then valid
+      UTF-8, else meInternalEnc/CP1252, coding: declaration in the
+      first five lines overrides). Findings: spellutl.emf (first high
+      byte at offset 1583) and abbrev.emf (3108) are inside the 4KB
+      window and open correctly as Windows-1252 (verified on mec
+      devel); keyboard.emf (2323) and language.emf (1228) take the
+      same path. hklatex.emf's first high byte sits at offset 6134,
+      beyond the sample, so its ASCII-only head passes the validity
+      check and the buffer opens labelled UTF-8 although the file is
+      invalid UTF-8 (reproduced: $buffer-encoding = UTF-8). In
+      addition meUtf8IsValid returns invalid for a multi-byte
+      sequence cut at the 4096-byte boundary, so a valid UTF-8 file
+      can be mis-detected as CP1252 depending on where byte 4096
+      falls. charset.emf, hkinfo.emf and hkmdview.emf contain high
+      bytes but are valid UTF-8; .erf/.eaf/.etf/.smd files contain no
+      high bytes at all. Opinion: do not force a filetype default -
+      ME_ENC_ASCII is lossy (read masks to 7 bits, characters >= 0x80
+      are stored as the replacement character) and forcing
+      ISO-8859-1 on every .emf would mis-read genuinely UTF-8 macro
+      files like charset/hkinfo/hkmdview; for pure ASCII content the
+      label is cosmetic since ASCII text is valid UTF-8 by
+      definition. Recommended: (1) validate the whole file instead of
+      only the first 4KB (fixes hklatex.emf and the boundary case),
+      (2) optionally a per-filetype default (file hook or registry)
+      consulted only when detection stays inconclusive. Files:
+      doc/tickets.md
+    - WIP 261006: large-file constraint agreed - validating whole
+      files unbounded is problematic (detection becomes a second
+      full read of e.g. a 1GB log before the normal load). Target a
+      bounded fail-fast scan instead: validate min(filesize, ~1MB)
+      and stop at the first invalid byte (-> CP1252); a multi-byte
+      sequence still incomplete at the scan end counts as valid-so-
+      far, not invalid, which also removes the 4KB-boundary
+      misdetection. This catches hklatex.emf (high byte at 6134) and
+      any other filetype with late latin-1 bytes without filetype
+      special-casing, and never behaves worse than today for huge
+      files. Files: doc/tickets.md
+
+## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (WIP)
+~
+The number of chars reported by count-words is wrong for UTF-8
+buffers: for the string 'üäö' a UTF-8 encoded buffer reports 6 chars
+(the byte count) while an ISO-8859-1 encoded buffer correctly
+reports 3.
+
+    - WIP 261006: verified on the current mec devel build - the
+      reported 6 stems from a build without commit c5f61d3
+      (261005, "count-words: count UTF-8 sequences as characters,
+      accented text as words"), e.g. an older mew or a released
+      binary. Fresh test files both report the same result now:
+      UTF-8 file -> 1 Words, 3 Chars, 1 Lines; raw CP1252 file ->
+      1 Words, 3 Chars, 1 Lines. To be closed after re-verification
+      with a rebuilt binary; if it still shows 6, reopen with the
+      binary build date. Note count-words only reports on the
+      message line ($result holds the call status), so an automated
+      test-basics assertion is not possible without a new return
+      path. Files: doc/tickets.md
