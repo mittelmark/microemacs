@@ -230,6 +230,89 @@ A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Wi
 
 For full details on the install and update mechanism, see `doc/install.md`.
 
+## Developing on Windows / MSYS2
+
+### Shell and PATH Setup
+
+All builds run in a POSIX shell (MSYS2 bash, or Git Bash). `gcc` and `make`
+are **not on the default PATH** in a plain Git Bash, so prepend the MSYS2
+toolchain first:
+
+```bash
+export PATH=/c/msys64/usr/bin:/c/msys64/mingw64/bin:$PATH
+```
+
+| Tool | Path | Version (verified) |
+|------|------|--------------------|
+| MSYS2 gcc | `/c/msys64/usr/bin/gcc.exe` | GCC 15.2.0 |
+| MSYS2 make | `/c/msys64/usr/bin/make.exe` | GNU Make 4.4.1 (x86_64-pc-msys) |
+| MinGW64 gcc | `/c/msys64/mingw64/bin/gcc.exe` | GCC 15.2.0 (Rev13) |
+| bfs packer | `bfs/bfs.exe` | built automatically by the `bfs/exe` target (gitignored) |
+
+Path syntax differs per makefile family — see "MinGW/MSYS2 Windows Build"
+above: `winmingwgcc.*` uses MSYS paths (`/c/Users/name`), `linuxmingwgcc.*`
+uses Windows paths (`C:\Users\name`).
+
+### Local Build Commands (verified on MSYS2)
+
+```bash
+# 1. MSYS2-native terminal standalone - /c/ style paths
+make mecb
+#    -> msysunix-3.6-x86_64-microemacs-<VERSION>-mecb.exe
+
+# 2. Native Windows terminal standalone - C:\ style paths
+make -f makefiles/winmingwgcc.gmk mecb BDIST=mingw64
+#    -> windows-mingw-mingw64-microemacs-<VERSION>-mecb.exe
+
+# 3. Native Windows GUI (True Windows application)
+make -f makefiles/winmingwgcc.gmk mewb BDIST=mingw64
+#    -> windows-mingw-mingw64-microemacs-<VERSION>-mewb.exe
+```
+
+Command 1 goes through the top-level `Makefile` dispatcher, which detects
+`MSYS*`/`MINGW*` from `uname` and forwards to `makefiles/unixgcc.gmk`.
+Commands 2 and 3 call `makefiles/winmingwgcc.gmk`, which recurses into
+`src/winmingwgcc.mak` and `bfs/winmingwgcc.gmk`.
+
+Available `winmingwgcc.gmk` targets: `default`, `bfs/exe`, `mec`, `mew`,
+`mecb`, `mewb`, `release`.
+
+### BDIST Quirk
+
+`makefiles/winmingwgcc.gmk:2` declares the default as `BDIST:="mingw64"` —
+the quotes become part of the value, so `ifeq (mingw64,$(BDIST))` fails when
+`BDIST` is not given explicitly and `WIN=msys`/`WIX=msys` is selected.
+**Always pass `BDIST=mingw64` on the command line** to get the native Windows
+(`WIN=mingw`, `WIX=win`) output naming.
+
+### Output Naming
+
+The release name is assembled in `makefiles/winmingwgcc.gmk:16`:
+
+```
+RELEASE = windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)
+```
+
+- `VERSION` comes from `src/evers.h` (`meYEAR` + `meMONTH` + `meDAY`,
+  e.g. `091226b6`).
+- `MSYS` is `$MSYSTEM` lower-cased (e.g. `ucrt64`, `mingw64`).
+- Object dirs look like `src/.mingw64gcc-release-mec/`, `src/.msysunix-release-mec/`.
+
+Top-level `*.exe` and `bfs/bfs.exe` are covered by `.gitignore`, so builds do
+not dirty the working tree.
+
+### Running the Built Executables
+
+```bash
+# Help/usage (there is no --version flag)
+./windows-mingw-mingw64-microemacs-091226b6-mecb.exe -h
+
+# Full run with macros from the source tree
+MEPATH=jasspa/macros ./msysunix-3.6-x86_64-microemacs-091226b6-mecb.exe
+```
+
+See the Testing section below for automated runs via `@tests/test-basics`.
+
 ## C Code Style
 
 ### File Header Template
