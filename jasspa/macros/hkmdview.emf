@@ -451,8 +451,10 @@ define-macro mdview
     !return
   !endif
 
-  ; Resolve relative path
-  !if &not &seq &lef #l0 1 "/"
+  ; Resolve relative path - absolute is unix (/...), a Windows drive
+  ; letter (C:/...) or a UNC path (\\...), otherwise the source
+  ; directory gets prepended twice on Windows (c:/dir/c:/dir/file.md)
+  !if &not &or &seq &lef #l0 1 "/" &xse #l0 "^[A-Za-z]:.*" &xse #l0 "^\\\\.*"
     set-variable #l0 &cat .mdview.source #l0
   !endif
 
