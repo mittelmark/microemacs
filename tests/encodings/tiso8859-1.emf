@@ -1,0 +1,12 @@
+; -!- emf -!-
+; ISO-8859-1 (Latin-1) encoded fixture for encoding tests
+;
+; Last Modified : <261005.2237>
+;
+; Synopsis:    Prints string lengths to verify non-ASCII handling
+; Authors:     Detlef Groth
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+1000 ml-write &cat "aou: " &len "aou"
+1000 ml-write &cat "הצü: " &ulen "הצü"
+1000 ml-write &cat "1+2=" &add 1 2

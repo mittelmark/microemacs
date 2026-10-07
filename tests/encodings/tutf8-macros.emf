@@ -1,0 +1,14 @@
+; -!- emf -!-
+; Copyright (C) 2026 $COMPANY_REF$.
+;
+; $COMPANY_LICENSE:75$
+;
+; Last Modified : <261005.2239>
+;
+; Synopsis:    
+; Authors:     Delf Groth
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+set-variable #l0 "äöü"
+1000 ml-write &ulen #l0
+1000 ml-write #l0
