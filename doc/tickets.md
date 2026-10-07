@@ -424,3 +424,26 @@ reports 3.
       message line ($result holds the call status), so an automated
       test-basics assertion is not possible without a new return
       path. Files: doc/tickets.md
+
+## Ticket 16: BUG - re-entrant screenUpdate crash on ConfigureNotify during insert-file (WIP)
+~
+A SIGSEGV can occur when an X ConfigureNotify (window resize, typically
+from the window manager while the window is being mapped or moved) is
+processed while a macro is still executing insert-file. The event reaches
+TTahead() inside ffReadFile() which dispatches meXEventHandler(); that
+handler runs screenUpdate() re-entrantly while the window line list is
+not in a walkable state, so the meLINE_CHANGED flag clearing loop at the
+end of screenUpdate() follows a garbage meLine pointer (observed
+flp = 0xa000dff) and dies.
+
+    - WIP 261007: reproduced with a debug as well as a release Xft mew
+      build running a start-up macro that opens a small file via mdview.
+      Crash signature is always
+      screenUpdate <- meXEventHandler <- TTahead <- ffReadFile.
+      Baseline master crashes 3/6 attempts, a build carrying the Xft
+      underline fixes (15b66c4) shows the same rate, so the race is
+      pre-existing. Candidate fixes: skip the resize driven screenUpdate
+      while an insert/ffReadFile is in progress, defer ConfigureNotify
+      handling to the outer input loop, or bound the flag clearing
+      loops by the buffer head/tail sentinels before dereferencing
+      flp/blp. Files: src/unixterm.c, src/display.c
