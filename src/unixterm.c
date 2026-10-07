@@ -1270,6 +1270,7 @@ meFrameXTermSetScheme(meFrame *frame, meScheme scheme)
         else
             cc = meStyleGetFont(meSchemeGetStyle(scheme)) & meFONT_MASK ;
         meFrameSetXftFont(frame,meXftFontGet(cc)) ;
+        meFrameSetXGCFont(frame,cc) ;
         if(valueMask)
             XChangeGC(mecm.xdisplay,meFrameGetXGC(frame),valueMask,&meFrameGetXGCValues(frame)) ;
         return ;
@@ -3737,8 +3738,7 @@ XTERMsetFont(int n, char *fontName)
         mecm.ascent = jj - ftFont->descent;
         mecm.fhwidth = ii >> 1;
         mecm.fhdepth = jj >> 1;
-        if((mecm.underline = mecm.ascent + 2) >= mecm.fdepth)
-            mecm.underline = mecm.fdepth - 1;
+        mecm.underline = mecm.fdepth - mecm.ascent - 1;
         if((mecm.fadepth = ii+1) > jj)
             mecm.fadepth = jj;
         mecm.descent = ftFont->descent ;
