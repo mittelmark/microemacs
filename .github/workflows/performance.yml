@@ -22,7 +22,7 @@ on:
       tags:
         description: "Space separated git tags to benchmark against the current code"
         required: false
-        default: "v09.12.26.beta5 v09.12.25 v09.12.24"
+        default: "v09.12.26.beta5 v09.12.26.beta3 v09.12.26.beta1 v09.12.25 v09.12.24"
 
 jobs:
   refs:
@@ -31,7 +31,7 @@ jobs:
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v8
         with:
           fetch-depth: 0
 
@@ -41,7 +41,7 @@ jobs:
           TAGS: ${{ github.event.inputs.tags }}
         run: |
           set -e
-          tags="${TAGS:-v09.12.26.beta5 v09.12.25 v09.12.24}"
+          tags="${TAGS:-v09.12.26.beta5 v09.12.26.beta3 v09.12.26.beta1 v09.12.25 v09.12.24}"
           short="$(git rev-parse --short HEAD)"
           json="[{\"ref\":\"${GITHUB_SHA}\",\"label\":\"current-${short}\"}"
           for t in ${tags}; do
@@ -66,12 +66,12 @@ jobs:
         include: ${{ fromJson(needs.refs.outputs.matrix) }}
     steps:
       - name: Checkout version under test
-        uses: actions/checkout@v6
+        uses: actions/checkout@v8
         with:
           ref: ${{ matrix.ref }}
 
       - name: Checkout performance harness (current)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v8
         with:
           ref: ${{ github.sha }}
           path: harness
@@ -142,7 +142,7 @@ jobs:
 
       - name: Upload results
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v8
         with:
           name: perf-${{ matrix.label }}
           path: |
@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Download results
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           path: results
 
