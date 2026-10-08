@@ -252,10 +252,19 @@ extern  int     mlwrite(int flags, meUByte *fmt, ...) ;
 /* Debug trace macro - writes to me_dbgtrace.txt in current directory */
 /* Only enabled in debug builds (when _DEBUG is defined) */
 #ifdef _DEBUG
+#ifdef _WIN32
 #define ME_DBGTRACE(msg) do { \
     FILE *_dbgfp = fopen("me_dbgtrace.txt", "a") ; \
-    if(_dbgfp) { fprintf(_dbgfp, "%s\n", msg) ; fclose(_dbgfp) ; } \
+    if(_dbgfp) { DWORD _tms = GetTickCount() ; \
+    fprintf(_dbgfp, "%lu.%03lu %s\n", (unsigned long)(_tms/1000), (unsigned long)(_tms%1000), msg) ; fclose(_dbgfp) ; } \
 } while(0)
+#else
+#define ME_DBGTRACE(msg) do { \
+    FILE *_dbgfp = fopen("me_dbgtrace.txt", "a") ; \
+    if(_dbgfp) { struct timespec _ts; clock_gettime(CLOCK_MONOTONIC,&_ts); \
+    fprintf(_dbgfp, "%lld.%03ld %s\n", (long long)_ts.tv_sec, _ts.tv_nsec/1000000, msg) ; fclose(_dbgfp) ; } \
+} while(0)
+#endif
 #else
 #define ME_DBGTRACE(msg) /* nothing */
 #endif

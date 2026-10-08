@@ -1842,6 +1842,7 @@ missing_arg:
 #endif
 #endif
     screenUpdateDisabledCount = 0 ;
+    ME_DBGTRACE("6c: updates enabled") ;
 #ifdef _CLIPBRD
     /* allow interaction with the clipboard now that me has initialized */
     clipState &= ~CLIP_DISABLED ;

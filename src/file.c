@@ -1783,6 +1783,11 @@ insertFile(int f, int n)
 
     if((s=inputFileName((meUByte *)"Insert file",fname,1)) <= 0)
         return s ;
+    {
+        char _tb[300] ;
+        snprintf(_tb,sizeof(_tb),"cmd:insertFile %s",fname) ;
+        ME_DBGTRACE(_tb) ;
+    }
     /* Allow existing or url files if not doing a partial insert */
     if(((s=getFileStats(fname,meFINDFILESINGLE_GFS_OPT,&stats,NULL)) != meFILETYPE_REGULAR) &&
        ((n & 4) || ((s != meFILETYPE_HTTP) && (s != meFILETYPE_FTP)
