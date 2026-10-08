@@ -2065,6 +2065,7 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
 {
     meLine *lp0, *lp1, *lp2 ;
     int   ss, nline ;
+    int   sudc ;
 #if MEOPT_SOCKET
     int ff ;
     ff = ((bp != NULL) && (fname != NULL) && (bp->fileName == fname)) ;
@@ -2073,6 +2074,12 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
     if(ffReadFileOpen(fname,flags,bp) <= 0)
         return meABORT ;
 
+    /* Disallow screen updates whilst the line chain is being re-linked -
+     * a re-entrant screenUpdate (e.g. from a ConfigureNotify delivered by
+     * TTahead() inside the TTbreakTest() line poll) would walk into new
+     * lines whose next/prev pointers are not yet fully linked (Ticket #16) */
+    sudc = screenUpdateDisabledCount ;
+    screenUpdateDisabledCount = 1 ;
     ffoffset = 0 ;
     if(length != 0)
     {
@@ -2134,6 +2141,7 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
     }
 
     nline = 0;
+    ME_DBGTRACE("ff:enter") ;
     lp2 = hlp ;	        /* line after  insert */
     lp0 = lp2->prev ;	/* line before insert */
     while((ss=ffgetline(&lp1)) == meTRUE)
@@ -2154,6 +2162,7 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
     /* complete the link */
     lp2->prev = lp0;
     lp0->next = lp2;
+    ME_DBGTRACE("ff:done") ;
 
     ffReadFileClose(fname,flags) ;
 
@@ -2204,6 +2213,7 @@ ffReadFile(meUByte *fname, meUInt flags, meBuffer *bp, meLine *hlp,
         }
         sprintf((char *)resultStr,"|0x%x|0x%x|0x%x|0x%x|",ffoffset,el,uoffset,eu) ;
     }
+    screenUpdateDisabledCount = sudc ;
     return ss ;
 }
 

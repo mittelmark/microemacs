@@ -1907,7 +1907,16 @@ meXEventHandler(void)
             if ((hh != frame->depth+1) || (ww != frame->width))
                 meFrameSetWindowSize(frame) ;
             if(sizeSet && !screenUpdateDisabledCount)
+            {
+                ME_DBGTRACE("cfg:screenUpdate-call") ;
                 screenUpdate(meTRUE,2-sgarbf) ;
+            }
+            else
+            {
+                char _tb[64] ;
+                snprintf(_tb,sizeof(_tb),"cfg:skipped sizeSet=%d suCnt=%d",sizeSet,screenUpdateDisabledCount) ;
+                ME_DBGTRACE(_tb) ;
+            }
         }
         break;
     case Expose:
