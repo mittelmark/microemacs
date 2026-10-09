@@ -660,16 +660,19 @@ yankRectangleKill(struct meKill *pklist, int soff, int notLast)
         if(srcEnc != dstEnc)
         {
             /* '\n' maps to itself in all supported encodings, so segment
-             * boundaries survive; every character converts to exactly one
-             * character, preserving the rectangle column geometry */
+             * boundaries survive; every representable character converts
+             * to exactly one character, preserving the rectangle column
+             * geometry (unrepresentable characters become \uXXXX escapes,
+             * see Ticket 17, which do widen their column) */
             size_t segLen = meStrlen(killp->data) ;
-            convBuf = (meUByte *) meMalloc(segLen*4+1) ;
+            convBuf = (meUByte *) meMalloc(segLen*6+1) ;
             if(convBuf != NULL)
             {
                 meConv conv ;
                 int outLen ;
                 meConvInit(&conv, srcEnc, dstEnc) ;
-                outLen = meConvString(&conv, killp->data, segLen, convBuf, segLen*4) ;
+                conv.escape = 1 ;   /* Ticket 17: \uXXXX escapes, not '?' */
+                outLen = meConvString(&conv, killp->data, segLen, convBuf, segLen*6) ;
                 if(outLen >= 0)
                 {
                     convBuf[outLen] = '\0' ;

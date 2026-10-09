@@ -1459,15 +1459,17 @@ yankfrom(struct meKill *pklist)
         meUByte *convBuf ;
         meConv conv ;
         int outLen ;
-        /* Worst case expansion (single-byte -> UTF-8) is 2x; use 4x margin */
-        if((convBuf = (meUByte *) meMalloc(chunkLen*4+1)) == NULL)
+        /* Worst case expansion with escape mode (Ticket 17) is 6x -
+         * one single-byte character may become a \uXXXX escape */
+        if((convBuf = (meUByte *) meMalloc(chunkLen*6+1)) == NULL)
         {
             len += bufferInsertText(killp->data,0) ;
             killp = killp->next ;
             continue ;
         }
         meConvInit(&conv, srcEnc, dstEnc) ;
-        outLen = meConvString(&conv, killp->data, chunkLen, convBuf, chunkLen*4) ;
+        conv.escape = 1 ;   /* Ticket 17: \uXXXX escapes, not '?' */
+        outLen = meConvString(&conv, killp->data, chunkLen, convBuf, chunkLen*6) ;
         if(outLen < 0)
         {
             /* Conversion failed - insert raw text rather than lose it */
