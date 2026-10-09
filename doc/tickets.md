@@ -459,7 +459,7 @@ flp = 0xa000dff) and dies.
       before the guard is raised, so the restore cannot be skipped.
       Files: src/fileio.c, src/unixterm.c
 
-## Ticket 17 - Allow to copy between different buffers using different encodings (WIP)
+## Ticket 17 - Allow to copy between different buffers using different encodings (In Testing)
 
 1) If  I  copy  text  between   buffers,  let's  say  between  an  ISO-8859-1  or
 Windows-CP1252  buffer to an UTF8  buffer the  characters  above 128 should be
@@ -536,3 +536,91 @@ so.
       encodings under one tag.
       Files: src/line.c, src/region.c, src/unixterm.c, src/winterm.c,
       src/encoding.c, src/efunc.def
+
+    - WIP 261009: implementation complete on branch encoding-copy
+      (commits e6c1aa4, 46df24f, f1a635c, 4b3d534); multi-platform
+      testing pending. The three points plus the copy-out gaps are
+      covered by four changes:
+
+      (1) INTERNAL vs EXTERNAL (unixterm.c): TTgetClipboard() now
+          returns early when ME owns the X selection, so an internal
+          paste keeps the kill's encoding tag instead of round-
+          tripping through X and being re-tagged from the served
+          target type (XA_STRING -> CP1252). The Wayland and console
+          tool gets rebuild the kill only when the fetched content
+          really differs, comparing the COMPLETE kill text
+          (killTextEquals(), all nodes) so multi-node kills keep
+          their tags and node structure.
+
+      (2) COPY-OUT (unixterm.c): the X11 SelectionRequest handler
+          now serves UTF8_STRING as well as XA_STRING, converting
+          from klhead->encoding to what each target promises
+          (ICCCM: UTF8_STRING = UTF-8, XA_STRING = Latin-1). The
+          TARGETS reply advertises [TARGETS, UTF8_STRING,
+          XA_STRING]; the atom name table off-by-one (index 7 said
+          CLIPBOARD, "STRING" was missing) is fixed. The console
+          and wl-copy pipe-outs now write ALL kill nodes converted
+          to UTF-8 (new helpers killTextConcat/killTextConvert).
+
+      (3) ESCAPES (encoding.c, line.c, region.c): meConv gained an
+          escape flag; an unmappable character then becomes an
+          ASCII \uXXXX escape (UTF-16 surrogate pair above the BMP)
+          instead of a silent '?'. Enabled only in the kill yank
+          paths yankfrom()/yankRectangleKill(); file save, X target
+          serving and tool pipe-out keep the '?' so external
+          consumers get conventional text. Verified by
+          tests/test-enc17.emf (BMP + non-BMP).
+
+      (4) yank-as (line.c, efunc.def): new command that re-tags
+          klhead->encoding from a prompted or macro-argument
+          encoding name (TAB completion, same idiom as
+          set-buffer-encoding) and yanks WITHOUT a clipboard fetch,
+          so a mis-tagged internal kill can be corrected. The yank
+          tail was split into yankKill() for reuse. Command table
+          verified with the KEY_TEST !test directive. Verified by
+          tests/test-enc17-yankas.emf.
+
+    - WIP 261009: WINDOWS PORT HINTS (native Windows build,
+      winterm.c). The three user-visible points are platform
+      independent - only a small parity fix is needed on Windows.
+
+      Already correct on Windows, no work:
+      - WinKillToClipboard() already converts ALL kill nodes from
+        klhead->encoding to UTF-16 CF_UNICODETEXT; this was the
+        model for the X11/tool copy-out fixes (item 2).
+      - TTgetClipboard() already returns early while CLIP_OWNER is
+        set, so the internal/external distinction (item 1) exists.
+      - The \uXXXX escape mode (item 3) and yank-as (item 4) live
+        in encoding.c/line.c/region.c and work unchanged on every
+        platform.
+
+      Needed for parity (small):
+      - winterm.c TTgetClipboard() still decides "content differs"
+        with the old first-node-only test (around line 3111:
+        klhead->kill->next != NULL || meStrcmp(kill->data,
+        tmpbuf)). Port the full-text comparison from unixterm.c
+        killTextEquals(): either move that helper into line.c (the
+        kill-buffer domain, next to killSave) and declare it in
+        eextrn.h so both platform files share it, or duplicate the
+        ~20-line helper in winterm.c under #ifdef _CLIPBRD.
+        Effect: a multi-node internal kill that was mirrored to the
+        Windows clipboard is no longer rebuilt and re-tagged as
+        UTF-8 on every C-y.
+      - No X11/TARGETS/tool-pipe work applies; CF_UNICODETEXT is
+        already normalized to UTF-8 on the way in.
+
+      Suggested Windows test matrix:
+      - mec (console, clip.exe/PowerShell tool) and mew (GUI,
+        WM_RENDERFORMAT/WM_CLIPBOARDUPDATE) builds.
+      - Multi-node kill (C-k C-k in one buffer) then C-y: text and
+        encoding tag must be unchanged (check by yanking into a
+        buffer with a different set-buffer-encoding).
+      - Copy UTF-8 text in ME, paste into Notepad - must show real
+        characters (CF_UNICODETEXT path).
+      - Copy from Notepad, paste into an ISO-8859-1 buffer -
+        unmappable characters must appear as \uXXXX escapes.
+      - yank-as <enc> interactively (TAB completion) and from a
+        macro command line.
+      - Regression: tests/test-basics.emf, tests/test-enc17.emf
+        and tests/test-enc17-yankas.emf all run on Windows (they
+        write file-based output, no terminal interaction).
