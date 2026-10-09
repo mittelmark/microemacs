@@ -75,6 +75,8 @@ typedef struct {
     meEncoding to;
     int strict;
     char replacement;
+    char escape;    /* Ticket 17: emit \uXXXX escapes for unmappable
+                     * characters instead of the replacement char */
 } meConv;
 
 void meConvInit(meConv *conv, meEncoding from, meEncoding to);

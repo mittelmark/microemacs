@@ -569,6 +569,7 @@ void meConvInit(meConv *conv, meEncoding from, meEncoding to) {
     conv->to = to;
     conv->strict = 0;
     conv->replacement = '?';
+    conv->escape = 0;
 }
 
 static int utf8_decode_one(const unsigned char *in, size_t in_len, int32_t *cp) {
@@ -785,6 +786,47 @@ static int unicode_to_cp850_byte(int32_t cp) {
     return -1;
 }
 
+/* Ticket 17: common fallback for a codepoint the destination encoding
+ * cannot represent. In strict mode the conversion fails, otherwise the
+ * configured replacement character is written - or, when escape mode
+ * is enabled (kill yanks), an ASCII \uXXXX escape (a UTF-16 surrogate
+ * pair above the BMP) so the text stays readable and recoverable
+ * instead of silently degrading to '?'. Returns the number of bytes
+ * written, or -1 in strict mode. */
+static int meConvFallback(meConv *conv, int32_t cp, unsigned char *out, size_t out_len) {
+    static const char hexd[] = "0123456789ABCDEF";
+    unsigned int u = (unsigned int)cp;
+    int need;
+
+    if (conv->strict) return -1;
+    if (!conv->escape || u == 0 || u > 0x10FFFFu) {
+        out[0] = conv->replacement;
+        return 1;
+    }
+    need = (u > 0xFFFFu) ? 12 : 6;
+    if (out_len < (size_t)need) {
+        /* not enough room for the escape - degrade gracefully */
+        out[0] = conv->replacement;
+        return 1;
+    }
+    if (u > 0xFFFFu) {
+        unsigned int v = u - 0x10000u;
+        unsigned int hi = 0xD800u | (v >> 10);
+        unsigned int lo = 0xDC00u | (v & 0x3FFu);
+        out[0] = '\\'; out[1] = 'u';
+        out[2] = hexd[(hi >> 12) & 0xf]; out[3] = hexd[(hi >> 8) & 0xf];
+        out[4] = hexd[(hi >> 4) & 0xf]; out[5] = hexd[hi & 0xf];
+        out[6] = '\\'; out[7] = 'u';
+        out[8] = hexd[(lo >> 12) & 0xf]; out[9] = hexd[(lo >> 8) & 0xf];
+        out[10] = hexd[(lo >> 4) & 0xf]; out[11] = hexd[lo & 0xf];
+        return 12;
+    }
+    out[0] = '\\'; out[1] = 'u';
+    out[2] = hexd[(u >> 12) & 0xf]; out[3] = hexd[(u >> 8) & 0xf];
+    out[4] = hexd[(u >> 4) & 0xf]; out[5] = hexd[u & 0xf];
+    return 6;
+}
+
 int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                unsigned char *out, size_t out_len) {
     if (in_len == 0 || out_len == 0) return 0;
@@ -952,18 +994,14 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)cp;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         case ME_ENC_CP1252: {
             int mapped = unicode_to_cp1252_byte(cp);
             if (mapped >= 0) {
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP1251: {
             int mapped = unicode_to_cp1251_byte(cp);
@@ -971,9 +1009,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP1253: {
             int mapped = unicode_to_cp1253_byte(cp);
@@ -981,9 +1017,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_2: {
             int mapped = unicode_to_iso8859_2_byte(cp);
@@ -991,9 +1025,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_15: {
             int mapped = unicode_to_iso8859_15_byte(cp);
@@ -1001,9 +1033,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_3: {
             int mapped = unicode_to_iso8859_3_byte(cp);
@@ -1011,9 +1041,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_4: {
             int mapped = unicode_to_iso8859_4_byte(cp);
@@ -1021,9 +1049,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_5: {
             int mapped = unicode_to_iso8859_5_byte(cp);
@@ -1031,9 +1057,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_7: {
             int mapped = unicode_to_iso8859_7_byte(cp);
@@ -1041,9 +1065,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_9: {
             int mapped = unicode_to_iso8859_9_byte(cp);
@@ -1051,9 +1073,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_10: {
             int mapped = unicode_to_iso8859_10_byte(cp);
@@ -1061,9 +1081,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_13: {
             int mapped = unicode_to_iso8859_13_byte(cp);
@@ -1071,9 +1089,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ISO8859_16: {
             int mapped = unicode_to_iso8859_16_byte(cp);
@@ -1081,9 +1097,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP1250: {
             int mapped = unicode_to_cp1250_byte(cp);
@@ -1091,9 +1105,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP1254: {
             int mapped = unicode_to_cp1254_byte(cp);
@@ -1101,9 +1113,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_KOI8_R: {
             int mapped = unicode_to_koi8r_byte(cp);
@@ -1111,9 +1121,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP437: {
             int mapped = unicode_to_cp437_byte(cp);
@@ -1121,9 +1129,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP866: {
             int mapped = unicode_to_cp866_byte(cp);
@@ -1131,9 +1137,7 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_CP850: {
             int mapped = unicode_to_cp850_byte(cp);
@@ -1141,18 +1145,14 @@ int meConvChar(meConv *conv, const unsigned char *in, size_t in_len,
                 out[0] = (unsigned char)mapped;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
         }
         case ME_ENC_ASCII:
             if (cp < 0x80) {
                 out[0] = (unsigned char)cp;
                 return 1;
             }
-            if (conv->strict) return -1;
-            out[0] = conv->replacement;
-            return 1;
+            return meConvFallback(conv, cp, out, out_len);
     }
     return -1;
 }
