@@ -90,7 +90,7 @@ define-macro-file hkinfo info info-on info-goto-link
 define-macro-file filtools file-format file-lint file-exec file-exists
 define-macro-file rtools r-doc r-format r-lint r-exec
 define-macro-file hkmdview mdview
-define-macro-file hkpview pview
+define-macro-file hkpview pview pview-icons-toggle
 define-macro-file pytools py-doc py-format py-lint py-exec
 define-macro-file tcltools tcl-format tcl-lint tcl-exec
 define-macro-file zfile find-zfile zfile-setup

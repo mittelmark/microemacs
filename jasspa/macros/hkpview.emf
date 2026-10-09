@@ -200,12 +200,21 @@ define-macro pview
 
 0 define-macro pview-render
     set-variable .pview.entries "|"
+    ; Must disable view mode to allow modifications
     -1 buffer-mode "view"
     -1 buffer-mode "undo"
+    ; Clear buffer content - use delete-region from start to end
     beginning-of-buffer
     set-mark
     end-of-buffer
-    kill-region
+    !force 1 kill-region
+    ; Ensure buffer is empty (fallback if kill-region failed)
+    !if &gre $buffer-lines 1
+        beginning-of-buffer
+        set-mark
+        end-of-buffer
+        1 kill-region
+    !endif
     ; Root line: basename only
     set-variable #l0 &lef .pview.root &sub &len .pview.root 1
     set-variable #l1 &rig #l0 &rsin "/" #l0
@@ -218,8 +227,9 @@ define-macro pview
     !if &lfind .pview.open .pview.root
         pview-render-dir .pview.root 1
     !endif
-    -1 buffer-mode "view"
-    1 buffer-mode "undo"
+    ; Re-enable view mode
+    -1 buffer-mode "edit"
+    1 buffer-mode "view"
 !emacro
 
 ; pview-render-dir <dirpath/> <depth>
@@ -228,13 +238,16 @@ define-macro pview
     set-variable #l0 @1
     set-variable #l1 @2
     pview-listdir #l0
+    ; Cache list lengths - recursive calls from pview-emit-dir will modify lists
+    set-variable #l7 &llen .pview.ld-dirs
+    set-variable #l8 &llen .pview.ld-files
     set-variable #l2 0
-    !while &les &pinc #l2 1 &llen .pview.ld-dirs
+    !while &les &pinc #l2 1 #l7
         set-variable #l3 &lget .pview.ld-dirs #l2
         pview-emit-dir #l3 #l1
     !done
     set-variable #l2 0
-    !while &les &pinc #l2 1 &llen .pview.ld-files
+    !while &les &pinc #l2 1 #l8
         set-variable #l3 &lget .pview.ld-files #l2
         pview-emit-file #l3 #l1
     !done
@@ -276,11 +289,8 @@ define-macro pview
     ; Basename without trailing /
     set-variable #l4 &lef #l0 &sub &len #l0 1
     set-variable #l4 &rig #l4 &rsin "/" #l4
-    ; Indent: 2 spaces per level (depth 1 at column 0)
-    set-variable #l5 0
-    !if &gre #l1 1
-        set-variable #l5 &mul &sub #l1 1 2
-    !endif
+    ; Indent: 2 spaces per level (depth 1 = 2 spaces, depth 2 = 4, etc.)
+    set-variable #l5 &mul #l1 2
     set-variable #l6 0
     !while &less #l6 #l5
         insert-string " "
@@ -316,9 +326,13 @@ define-macro pview
     pview-emit-git #l0 1
     insert-newline
     set-variable .pview.entries &lins .pview.entries -1 #l0
-    ; Expand children if open
+    ; Expand children if open - save/restore ld-lists around recursive call
     !if #l3
+        set-variable .pview.ld-save-dirs .pview.ld-dirs
+        set-variable .pview.ld-save-files .pview.ld-files
         pview-render-dir #l0 &add #l1 1
+        set-variable .pview.ld-dirs .pview.ld-save-dirs
+        set-variable .pview.ld-files .pview.ld-save-files
     !endif
 !emacro
 
@@ -328,11 +342,8 @@ define-macro pview
     set-variable #l1 @2
     ; Basename
     set-variable #l2 &rig #l0 &rsin "/" #l0
-    ; Indent one level deeper than parent dir
-    set-variable #l3 0
-    !if &gre #l1 1
-        set-variable #l3 &mul &sub #l1 1 2
-    !endif
+    ; Indent: 2 spaces per level (depth 1 = 2 spaces, depth 2 = 4, etc.)
+    set-variable #l3 &mul #l1 2
     set-variable #l4 0
     !while &less #l4 #l3
         insert-string " "
