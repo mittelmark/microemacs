@@ -395,7 +395,9 @@ DEFFUNC ("wrap-word",			0x04, wrapWord,		CK_WRPWRD, &__cmdArray[CK_WRPWRD+1], 0)
 DEFFUNC ("write-buffer",		0x42, writeBuffer,	CK_WRTBUF, &__cmdArray[CK_WRTBUF+1], &__cmdArray[CK_KILPAR])
 #if MEOPT_CMDHASH || MEOPT_EXTENDED
 DEFFUNC ("yank",			0x39, yank,		CK_YANK, &__cmdArray[CK_YANK+1], &__cmdArray[CK_FLNEXT])
+DEFFUNC ("yank-as",			0x39, yankAs,		CK_YANKAS, &__cmdArray[CK_YANKAS+1], 0)
 DEFFUNC ("yank-rectangle",		0x04, yankRectangle,	CK_YANKRECT, 0, &__cmdArray[CK_DESCBIN])
 #else
-DEFFUNC ("yank",			0x39, yank,		CK_YANK, 0, &__cmdArray[CK_FLNEXT])
+DEFFUNC ("yank",			0x39, yank,		CK_YANK, &__cmdArray[CK_YANK+1], 0)
+DEFFUNC ("yank-as",			0x39, yankAs,		CK_YANKAS, 0, 0)
 #endif
