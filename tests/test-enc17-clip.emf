@@ -1,0 +1,72 @@
+; -!- emf -!-
+; Ticket 17 interop test (NOT for CI):
+;
+; Verifies the EXTERNAL clipboard round trip - copy inside ME, leave the
+; process (clip.exe / PowerShell / xclip / Win32) and paste back with a
+; plain yank. Both the kill text and its encoding tag have to survive:
+;
+;   TEST:clip-iso2utf=  ISO-8859-1 kill, published as UTF-8, read back
+;                       and yanked into a UTF-8 buffer
+;   TEST:clip-mn=<...>  multi-node kill (3 x kill-line) round trip,
+;                       every node and the line structure must return
+;
+; This test reads the machine's live clipboard, so it is informational:
+; another application writing to the clipboard (or, on the console
+; builds, the asynchronous clip.exe publish losing the race against the
+; PowerShell read) changes the result. Run it by hand, not in CI.
+; The deterministic encoding assertions are in test-enc17-mn.emf.
+;
+; On non-Windows platforms a short sleep is inserted between the copy
+; and the yank because the console clipboard set is a forked child that
+; needs a moment to publish (Windows uses the synchronous Win32 API).
+;
+; find-file resolves a relative name against the CURRENT buffer's
+; directory, so names after the first find-file are relative to tests/.
+;
+; Run:  MENAME=ci-test <exe> @tests/test-enc17-clip
+; Out:  tests/test-enc17-clip-out.txt (utf-8)
+execute-file "me"
+
+set-variable $system &bor $system 0x2000000
+set-variable $allow-clip-exec 1
+
+define-macro start-up
+    ; ---- ISO-8859-1 kill -> system clipboard -> UTF-8 buffer ----
+    find-file "tests/enc-17-iso.txt"
+    !force set-buffer-encoding "iso-8859-1"
+    beginning-of-buffer
+    set-mark
+    end-of-line
+    !force copy-region
+    !if &not &seq $platform "win32"
+        !force 1 shell-command "sleep 0.5"
+    !endif
+
+    find-file "test-enc17-clip-out.txt"
+    !force set-buffer-encoding "utf-8"
+    insert-string "TEST:clip-iso2utf="
+    !force yank
+    insert-newline
+
+    ; ---- multi-node kill -> system clipboard -> UTF-8 buffer ----
+    set-mark
+    insert-string "αX😀Y"
+    insert-newline
+    insert-string "βZ😀W"
+    insert-newline
+    exchange-point-and-mark
+    !force kill-line
+    !force kill-line
+    !force kill-line
+    !if &not &seq $platform "win32"
+        !force 1 shell-command "sleep 0.5"
+    !endif
+    insert-string "TEST:clip-mn=<"
+    !force yank
+    insert-string ">"
+    insert-newline
+
+    insert-string "TEST:all-tests=complete"
+    save-buffer
+    exit-emacs
+!emacro

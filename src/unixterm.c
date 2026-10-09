@@ -1100,28 +1100,6 @@ sigSize(SIGNAL_PROTOTYPE)
 #endif /* _ME_CONSOLE */
 
 #ifdef _CLIPBRD
-/* Ticket 17: compare the complete kill text against an external clipboard
- * buffer. The old test only looked at the first node, so any multi-node
- * internal kill was rebuilt as a single node and re-tagged from the
- * transport encoding on every clipboard round trip. */
-static int
-killTextEquals(const meUByte *buf, int len)
-{
-    meKillNode *killp ;
-    int pos = 0, nn ;
-
-    if((klhead == NULL) || (klhead->kill == NULL))
-        return len == 0 ;
-    for(killp = klhead->kill ; killp != NULL ; killp = killp->next)
-    {
-        nn = meStrlen(killp->data) ;
-        if(((pos + nn) > len) || (memcmp(killp->data, buf + pos, nn) != 0))
-            return meFALSE ;
-        pos += nn ;
-    }
-    return pos == len ;
-}
-
 /* Ticket 17: build a single buffer holding the complete kill text (all
  * nodes). Returns a malloc'd buffer of *outLen bytes plus a NUL, with
  * one spare byte so a caller can turn an empty kill into a single

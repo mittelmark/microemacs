@@ -3105,13 +3105,11 @@ TTgetClipboard(void)
     {
         int len = (int) meStrlen (tmpbuf);
 
-        /* Make sure that it is not the same as the current
-         * save buffer head */
-        if ((len == 0) ||
-            (klhead == NULL) ||
-            (klhead->kill == NULL) ||
-            (klhead->kill->next != NULL) ||
-            (meStrcmp (klhead->kill->data,tmpbuf)))
+        /* Ticket 17: compare the complete kill text - only rebuild (and
+         * re-tag as UTF-8) when the clipboard really differs, so an
+         * internal multi-node kill keeps its source encoding tag and
+         * node structure (parity with unixterm.c killTextEquals). */
+        if (!killTextEquals (tmpbuf, len))
         {
             /* Always killSave, don't want to glue them together */
             killSave();
