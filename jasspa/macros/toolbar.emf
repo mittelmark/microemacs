@@ -315,16 +315,19 @@ define-macro toolbar-refresh
 
 define-macro toolbar-open
     !if @#
-        ; Load the full tool list from toollist.emf first as the baseline
+        ; Load the full tool list from toollist.emf to populate
+        ; .toolbar.tool-descs / .toolbar.tool-names / .toolbar.tool-buffs etc.
+        ; (the AVAILABLE tools list used by toolbar-setup-find/add)
         !force exec-file "toollist"
         set-variable .toolbar.size &reg "/history/toolbar/size" "|20|15|20|15|"
-        ; Use the toollist values as defaults - registry overrides if present
-        set-variable .toolbar.tool-name &reg "/history/toolbar/tool-name" .toolbar.tool-names
-        set-variable .toolbar.tool-buff &reg "/history/toolbar/tool-buff" .toolbar.tool-buffs
-        set-variable .toolbar.tool-file &reg "/history/toolbar/tool-file" .toolbar.tool-files
-        set-variable .toolbar.tool-size &reg "/history/toolbar/tool-size" .toolbar.tool-size
-        set-variable .toolbar.tool-flag &reg "/history/toolbar/tool-flag" .toolbar.tool-flags
-        set-variable .toolbar.tool-cmd  &reg "/history/toolbar/tool-cmd"  .toolbar.tool-cmds
+        ; .toolbar.tool-buff (no 's') = tools CURRENTLY in the toolbar
+        ; Default is just the "Toolbar" tool - registry overrides if present
+        set-variable .toolbar.tool-name &reg "/history/toolbar/tool-name" "\CHToolbar\CH"
+        set-variable .toolbar.tool-buff &reg "/history/toolbar/tool-buff" "\CH*toolbar-left*\CH"
+        set-variable .toolbar.tool-file &reg "/history/toolbar/tool-file" "\CHtooldef\CH"
+        set-variable .toolbar.tool-size &reg "/history/toolbar/tool-size" "\CH100\CH"
+        set-variable .toolbar.tool-flag &reg "/history/toolbar/tool-flag" "\CH0x1001\CH"
+        set-variable .toolbar.tool-cmd  &reg "/history/toolbar/tool-cmd"  "\CHtoolbar-default\CH"
     !endif
     !if &seq "" &lget .toolbar.tool-flag 1
         ml-write "[Error: No registered tools]"
