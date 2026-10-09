@@ -1,0 +1,114 @@
+; -!- emf -!-
+; Test the pview project browser (Ticket 11)
+; Usage: MEPATH=jasspa/macros me @tests/test-pview
+; Results are written to tests/test-pview-output.txt
+
+execute-file "me"
+
+define-macro start-up
+    ; Absolute paths
+    set-variable %pview-sample &cat &stat "a" "." "tests/pview-sample/"
+    set-variable %pview-sample &rep %pview-sample "//" "/"
+    set-variable %pview-out &cat &stat "a" "." "tests/test-pview-output.txt"
+    set-variable %pview-out &rep %pview-out "//" "/"
+
+    ; Open pview on the sample directory
+    pview %pview-sample
+
+    ; Capture buffer-local state while still in *pview*
+    set-variable %pview-root .pview.root
+    set-variable %pview-count1 &llen .pview.entries
+    set-variable %pview-entry1 &lget .pview.entries 1
+    set-variable %pview-has-subdir &lfind .pview.entries &cat %pview-sample "subdir/"
+    set-variable %pview-has-file1 &lfind .pview.entries &cat %pview-sample "file1.txt"
+    set-variable %pview-has-hidden &lfind .pview.entries &cat %pview-sample ".hidden.txt"
+
+    ; Expand subdir while in *pview*
+    !if &gre %pview-has-subdir 0
+        %pview-has-subdir goto-line
+        pview-select
+        set-variable %pview-has-nested &lfind .pview.entries &cat %pview-sample "subdir/nested.txt"
+        set-variable %pview-has-deep &lfind .pview.entries &cat %pview-sample "subdir/.deep.txt"
+    !else
+        set-variable %pview-has-nested 0
+        set-variable %pview-has-deep 0
+    !endif
+
+    ; Collapse root (line 1)
+    1 goto-line
+    pview-select
+    set-variable %pview-count2 &llen .pview.entries
+
+    ; Now write results
+    find-file %pview-out
+
+    insert-string "TEST:pview-root="
+    insert-string %pview-root
+    insert-newline
+
+    insert-string "TEST:pview-root-slash="
+    !if &seq &rig %pview-root -1 "/"
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:pview-entries-count="
+    insert-string %pview-count1
+    insert-newline
+
+    insert-string "TEST:pview-entry1="
+    insert-string %pview-entry1
+    insert-newline
+
+    insert-string "TEST:pview-has-subdir="
+    !if &gre %pview-has-subdir 0
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:pview-has-file1="
+    !if &gre %pview-has-file1 0
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:pview-has-hidden="
+    !if &gre %pview-has-hidden 0
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:pview-expanded-nested="
+    !if &gre %pview-has-nested 0
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:pview-expanded-deep-hidden="
+    !if &gre %pview-has-deep 0
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:pview-collapsed-count="
+    insert-string %pview-count2
+    insert-newline
+
+    insert-string "TEST:all-tests=complete"
+    insert-newline
+    !force save-buffer
+    !force write-buffer %pview-out
+    exit-emacs
+!emacro

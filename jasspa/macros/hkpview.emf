@@ -1,0 +1,453 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Project browser - workspace file tree with git status
+; Authors:     Detlef Groth
+;
+; pview - Project/workspace browser showing the directory tree of the
+; directory from which MicroEmacs was started (or an optional path).
+;
+; Layout (Ticket 11):
+;   > closed dir
+;   v open dir
+;      .hidden (grey)
+;      filename.txt (color)    M (indicator)
+;      newname.txt (color)     A (git indicator)
+;
+; Navigation: Return/click open file or toggle dir, Tab/S-tab move,
+; Space page down, r refresh (incl. git status), q quit.
+;
+
+; ========================
+; File hook setup
+; ========================
+
+define-macro fhook-pview
+    set-variable $buffer-mask "luh12"
+    @# buffer-init "pview"
+    set-variable :mouse-word-select pview-select
+    !if &seq $buffer-bname "*pview*"
+        buffer-bind-create "bio" "return" "0" pview-select
+        buffer-bind-create "bio" "tab"   "" pview-next-line
+        buffer-bind-create "bio" "S-tab" "" pview-prev-line
+        buffer-bind-create "bio" "space" "" scroll-down
+        buffer-bind-create "bio" "b"     "" beginning-of-buffer
+        buffer-bind-create "bio" "q"     "" pview-quit
+        buffer-bind-create "bio" "r"     "" pview-refresh
+    !endif
+    buffer-init-hooks
+!emacro
+
+; buffer-init variables
+set-variable .fhook-pview.name "Project View"
+set-variable .fhook-pview.setup &reg "/history/fhook/pview" "ghmopWU"
+set-variable .fhook-pview.setup-mask "aghmopWU"
+set-variable .fhook-pview.command-flag  "|thbio|thbio|th|thbio|thbio|bio|bio|"
+set-variable .fhook-pview.command-name  "|pview-next-line|pview-prev-line|scroll-down|pview-select|pview-quit|pview-refresh|beginning-of-buffer|"
+set-variable .fhook-pview.command-nbind "||||0|"
+set-variable .fhook-pview.command-kbind "|tab|S-tab|space|return|q|r|b|"
+set-variable .fhook-pview.command-desc  "|Move to \HNext Entry|Move to \HPrevious Entry|Page Down|Open File / Toggle \HDirectory|Quit \HProject View|Refresh \HView (git status)|Move to \HTop|"
+; Enable hilight by default
+set-variable .fhook-pview.setup "ghmopWU"
+
+; ========================
+; Hilight definitions
+; ========================
+
+!if &and &sin "h" .fhook-pview.setup &band .hilight.flags 0x01
+    !if &not &exist .hilight.pview
+        set-variable .hilight.pview &pinc .hilight.next 1
+    !endif
+
+    0 hilight .hilight.pview 2 50                    $global-scheme
+    ; Markers inserted by pview-render
+    hilight .hilight.pview 0x44 "\ecD" "" "\ecA" "" "" .scheme.bold       ; root line
+    hilight .hilight.pview 0x44 "\ecC" "" "\ecA" "" "" .scheme.dir-closed ; closed dir
+    hilight .hilight.pview 0x44 "\ecO" "" "\ecA" "" "" .scheme.dir-open   ; open dir
+    hilight .hilight.pview 0x44 "\ecH" "" "\ecA" "" "" .scheme.hide       ; hidden entries
+    hilight .hilight.pview 0x44 "\ecF" "" "\ecA" "" "" .scheme.file       ; regular files
+    hilight .hilight.pview 0x44 "\ecI" "" "\ecA" "" "" .scheme.hlyellow   ; git indicators
+!endif
+
+; ========================
+; pview main command
+; ========================
+
+define-macro pview
+    ; Optional directory argument, default = directory ME was started from
+    !force set-variable #l0 @1
+    !if &not $status
+        set-variable #l0 &stat "a" "."
+    !endif
+    !if &seq #l0 ""
+        ml-write "pview: no directory"
+        !return
+    !endif
+    ; Ensure trailing directory separator (idempotent)
+    !if &not &seq &rig #l0 -1 "/"
+        set-variable #l0 &cat #l0 "/"
+    !endif
+    ; Collapse any double separators from concatenation
+    set-variable #l0 &rep #l0 "//" "/"
+    ; Create or reuse *pview* buffer via popup split
+    !force 1 popup-window "*pview*"
+    !if &not &exist .pview.open
+        set-variable .pview.open "|"
+    !endif
+    ; Root always starts open
+    !if &not &lfind .pview.open #l0
+        set-variable .pview.open &lins .pview.open -1 #l0
+    !endif
+    set-variable .pview.root #l0
+    pview-git-status
+    pview-render
+    set-variable $buffer-fhook "fhook-pview"
+    beginning-of-buffer
+    ml-write &spr "Project view: %s" #l0
+!emacro
+
+; ========================
+; Git status cache
+; ========================
+
+0 define-macro pview-git-status
+    set-variable .pview.git-path "|"
+    set-variable .pview.git-stat "|"
+    set-variable .pview.repo ""
+    ; Find git repository root
+    !force !force 2 pipe-shell-command &spr "git -C \"%s\" rev-parse --show-toplevel" &rep .pview.root "\\" "/" "*pview-git*"
+    !if &not $status
+        !return
+    !endif
+    !force 0 find-buffer "*pview-git*"
+    !if &not $status
+        !return
+    !endif
+    ; Skip 3 header lines (cd, command, empty) added by pipeShellCommand
+    ; Actual output starts at line 4
+    beginning-of-buffer
+    4 goto-line
+    !force set-variable #l0 &trb @wl
+    !if &seq #l0 ""
+        delete-buffer "*pview-git*"
+        !return
+    !endif
+    delete-buffer "*pview-git*"
+    ; Must look like an absolute path
+    !if &not &seq &lef #l0 1 "/"
+        !return
+    !endif
+    set-variable .pview.repo #l0
+    ; Porcelain status
+    !force !force 2 pipe-shell-command &spr "git -C \"%s\" status --porcelain" &rep .pview.root "\\" "/" "*pview-git*"
+    !if &not $status
+        !return
+    !endif
+    !force 0 find-buffer "*pview-git*"
+    !if &not $status
+        !return
+    !endif
+    ; Skip 3 header lines (cd, command, empty) added by pipeShellCommand
+    ; Actual output starts at line 4
+    beginning-of-buffer
+    4 goto-line
+    !while $status
+        set-variable #l1 @wl
+        !if &gre &len #l1 3
+            set-variable #l2 &lef #l1 2
+            set-variable #l3 &trb &rig #l1 3
+            ; Renames: "old -> new" - use the new path
+            !if &sin "->" #l3
+                set-variable #l3 &trb &rig #l3 &add &rsin "->" #l3 2
+            !endif
+            ; Skip quoted porcelain paths (special chars)
+            !if &not &seq &lef #l3 1 "\""
+                set-variable #l3 &cat .pview.repo &cat "/" #l3
+                set-variable #l4 ""
+                !if &seq #l2 "??"
+                    set-variable #l4 "U"
+                !elif &sin "D" #l2
+                    set-variable #l4 "D"
+                !elif &sin "M" #l2
+                    set-variable #l4 "M"
+                !elif &sin "A" #l2
+                    set-variable #l4 "A"
+                !elif &sin "R" #l2
+                    set-variable #l4 "R"
+                !elif &sin "C" #l2
+                    set-variable #l4 "C"
+                !endif
+                !if &not &seq #l4 ""
+                    set-variable .pview.git-path &lins .pview.git-path -1 #l3
+                    set-variable .pview.git-stat &lins .pview.git-stat -1 #l4
+                !endif
+            !endif
+        !endif
+        !force forward-line
+    !done
+    delete-buffer "*pview-git*"
+!emacro
+
+; ========================
+; Render the tree
+; ========================
+
+0 define-macro pview-render
+    set-variable .pview.entries "|"
+    -1 buffer-mode "view"
+    -1 buffer-mode "undo"
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    kill-region
+    ; Root line: basename only
+    set-variable #l0 &lef .pview.root &sub &len .pview.root 1
+    set-variable #l1 &rig #l0 &rsin "/" #l0
+    insert-string "\ecD"
+    insert-string #l1
+    insert-string "\ecA"
+    pview-emit-git .pview.root 1
+    insert-newline
+    set-variable .pview.entries &lins .pview.entries -1 .pview.root
+    !if &lfind .pview.open .pview.root
+        pview-render-dir .pview.root 1
+    !endif
+    -1 buffer-mode "view"
+    1 buffer-mode "undo"
+!emacro
+
+; pview-render-dir <dirpath/> <depth>
+; depth 1 = direct children of root
+0 define-macro pview-render-dir
+    set-variable #l0 @1
+    set-variable #l1 @2
+    pview-listdir #l0
+    set-variable #l2 0
+    !while &les &pinc #l2 1 &llen .pview.ld-dirs
+        set-variable #l3 &lget .pview.ld-dirs #l2
+        pview-emit-dir #l3 #l1
+    !done
+    set-variable #l2 0
+    !while &les &pinc #l2 1 &llen .pview.ld-files
+        set-variable #l3 &lget .pview.ld-files #l2
+        pview-emit-file #l3 #l1
+    !done
+!emacro
+
+; pview-listdir <dirpath/>
+; Sets .pview.ld-dirs and .pview.ld-files to sorted full paths
+; (dirs keep trailing /). Skips ./ and ../.
+0 define-macro pview-listdir
+    set-variable .pview.ld-dirs "|"
+    set-variable .pview.ld-files "|"
+    set-variable #l0 @1
+    set-variable $file-names &cat #l0 ".*"
+    !while &not &seq &set #l1 $file-names ""
+        !if &or &seq #l1 "./" &seq #l1 "../"
+            ; skip self references
+        !elif &seq &rig #l1 -1 "~"
+            ; skip editor backup files (name~)
+        !else
+            set-variable #l2 &cat #l0 #l1
+            !if &seq &rig #l1 -1 "/"
+                set-variable .pview.ld-dirs &lins .pview.ld-dirs -1 #l2
+            !else
+                set-variable .pview.ld-files &lins .pview.ld-files -1 #l2
+            !endif
+        !endif
+    !done
+!emacro
+
+; pview-emit-dir <fullpath/> <depth>
+0 define-macro pview-emit-dir
+    set-variable #l0 @1
+    set-variable #l1 @2
+    set-variable #l2 &lfind .pview.open #l0
+    set-variable #l3 0
+    !if &gre #l2 0
+        set-variable #l3 1
+    !endif
+    ; Basename without trailing /
+    set-variable #l4 &lef #l0 &sub &len #l0 1
+    set-variable #l4 &rig #l4 &rsin "/" #l4
+    ; Indent: 2 spaces per level (depth 1 at column 0)
+    set-variable #l5 0
+    !if &gre #l1 1
+        set-variable #l5 &mul &sub #l1 1 2
+    !endif
+    set-variable #l6 0
+    !while &less #l6 #l5
+        insert-string " "
+        set-variable #l6 &add #l6 1
+    !done
+    ; Colour: hidden overrides open/closed; otherwise open vs closed
+    !if &seq &lef #l4 1 "."
+        insert-string "\ecH"
+    !else
+        !if #l3
+            insert-string "\ecO"
+        !else
+            insert-string "\ecC"
+        !endif
+    !endif
+    !if #l3
+        insert-string "v "
+    !else
+        insert-string "> "
+    !endif
+    insert-string #l4
+    insert-string "/"
+    insert-string "\ecA"
+    pview-emit-git #l0 1
+    insert-newline
+    set-variable .pview.entries &lins .pview.entries -1 #l0
+    ; Expand children if open
+    !if #l3
+        pview-render-dir #l0 &add #l1 1
+    !endif
+!emacro
+
+; pview-emit-file <fullpath> <depth>
+0 define-macro pview-emit-file
+    set-variable #l0 @1
+    set-variable #l1 @2
+    ; Basename
+    set-variable #l2 &rig #l0 &rsin "/" #l0
+    ; Indent one level deeper than parent dir
+    set-variable #l3 0
+    !if &gre #l1 1
+        set-variable #l3 &mul &sub #l1 1 2
+    !endif
+    set-variable #l4 0
+    !while &less #l4 #l3
+        insert-string " "
+        set-variable #l4 &add #l4 1
+    !done
+    !if &seq &lef #l2 1 "."
+        insert-string "\ecH"
+    !else
+        insert-string "\ecF"
+    !endif
+    insert-string #l2
+    insert-string "\ecA"
+    pview-emit-git #l0 0
+    insert-newline
+    set-variable .pview.entries &lins .pview.entries -1 #l0
+!emacro
+
+; pview-emit-git <fullpath> <isdir>
+; Files: letter from git status. Dirs: bullet if any tracked change below.
+0 define-macro pview-emit-git
+    set-variable #l0 @1
+    set-variable #l1 @2
+    set-variable #l2 ""
+    !if #l1
+        set-variable #l3 1
+        !while &les #l3 &llen .pview.git-path
+            !if &seq #l2 ""
+                set-variable #l4 &lget .pview.git-path #l3
+                !if &equ &lef #l4 &len #l0 #l0
+                    set-variable #l2 "•"
+                !endif
+            !endif
+            set-variable #l3 &add #l3 1
+        !done
+    !else
+        set-variable #l3 &lfind .pview.git-path #l0
+        !if &gre #l3 0
+            set-variable #l2 &lget .pview.git-stat #l3
+        !endif
+    !endif
+    !if &not &seq #l2 ""
+        insert-string "    "
+        insert-string "\ecI"
+        insert-string #l2
+        insert-string "\ecA"
+    !endif
+!emacro
+
+; ========================
+; Select / open (Return, mouse click)
+; ========================
+
+0 define-macro pview-select
+    !if &not &seq $buffer-bname "*pview*"
+        !return
+    !endif
+    set-variable #l0 $window-line
+    set-variable #l1 &lget .pview.entries #l0
+    !if &seq #l1 ""
+        ml-write "No entry on this line"
+        !return
+    !endif
+    !if &seq &rig #l1 -1 "/"
+        ; Directory - toggle open/closed, keep cursor
+        set-variable #l2 $window-line
+        set-variable #l3 $window-y-scroll
+        set-variable #l4 &lfind .pview.open #l1
+        !if &gre #l4 0
+            set-variable .pview.open &ldel .pview.open #l4
+        !else
+            set-variable .pview.open &lins .pview.open -1 #l1
+        !endif
+        pview-render
+        !if &les #l2 &llen .pview.entries
+            #l2 goto-line
+        !endif
+        !force set-variable $window-y-scroll #l3
+    !else
+        ; File - open in the other window, leave browser open
+        !force next-window
+        find-file #l1
+    !endif
+!emacro
+
+; ========================
+; Line navigation
+; ========================
+
+0 define-macro pview-next-line
+    !if &less $window-line &llen .pview.entries
+        1 next-line
+    !endif
+!emacro
+
+0 define-macro pview-prev-line
+    !if &gre $window-line 1
+        1 previous-line
+    !endif
+!emacro
+
+; ========================
+; Refresh (re-run git + re-render)
+; ========================
+
+0 define-macro pview-refresh
+    !if &not &seq $buffer-bname "*pview*"
+        !return
+    !endif
+    set-variable #l1 $window-line
+    set-variable #l2 $window-y-scroll
+    pview-git-status
+    pview-render
+    !if &les #l1 &llen .pview.entries
+        #l1 goto-line
+    !endif
+    !force set-variable $window-y-scroll #l2
+    ml-write "Project view refreshed"
+!emacro
+
+; ========================
+; Quit
+; ========================
+
+0 define-macro pview-quit
+    !if &seq $buffer-bname "*pview*"
+        !force delete-buffer "*pview*"
+    !endif
+!emacro
+
+buffer-init-fhook "pview"
+add-file-hook "*pview*" fhook-pview
