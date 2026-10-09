@@ -28,6 +28,8 @@ define-macro fhook-pview
     set-variable $buffer-mask "luh12"
     @# buffer-init "pview"
     set-variable :mouse-word-select pview-select
+    set-variable :mouse-pick-3 pview-mouse-pick-3
+    set-variable :mouse-drop-3 pview-mouse-drop-3
     !if &seq $buffer-bname "*pview*"
         buffer-bind-create "bio" "return" "0" pview-select
         buffer-bind-create "bio" "tab"   "" pview-next-line
@@ -43,7 +45,7 @@ define-macro fhook-pview
 ; buffer-init variables
 set-variable .fhook-pview.name "Project View"
 set-variable .fhook-pview.setup &reg "/history/fhook/pview" "ghmopWU"
-set-variable .fhook-pview.setup-mask "aghmopWU"
+set-variable .fhook-pview.setup-mask "aghmopWU1"
 set-variable .fhook-pview.command-flag  "|thbio|thbio|th|thbio|thbio|bio|bio|"
 set-variable .fhook-pview.command-name  "|pview-next-line|pview-prev-line|scroll-down|pview-select|pview-quit|pview-refresh|beginning-of-buffer|"
 set-variable .fhook-pview.command-nbind "||||0|"
@@ -483,6 +485,48 @@ define-macro pview
     !if &seq $buffer-bname "*pview*"
         !force delete-buffer "*pview*"
     !endif
+!emacro
+
+; ========================
+; Mouse handlers for right-click context menu
+; ========================
+
+0 define-macro pview-mouse-pick-3
+    set-position "\x81"
+!emacro
+
+0 define-macro pview-mouse-drop-3
+    ; did we start in this window? if not then this is a file dragging event
+    set-position "\x83"
+    set-variable #l0 $buffer-bname
+    1 goto-position "\x81"
+    !if &seq #l0 $buffer-bname
+        ; same buffer - no drag - do popup menu
+        goto-position "\x83"
+        pview-context-menu
+        !return
+    !endif
+    ; different buffer - abort drag
+    goto-position "\x81"
+!emacro
+
+0 define-macro pview-context-menu
+    set-variable #l0 @wl
+    ; Check if we're on a directory line
+    set-variable #l1 &sin "\ecC" #l0
+    set-variable #l2 &sin "\ecO" #l0
+    !if &or #l1 #l2
+        osd .osd.pview   5 ""  "\HOpen/Close Dir"  0 pview-select
+        osd .osd.pview  10 ""  "Refresh \HView"    f pview-refresh
+        osd .osd.pview  15 "-" ""
+        osd .osd.pview  20 ""  "\HClose View"      f pview-quit
+    !else
+        osd .osd.pview   5 ""  "\HOpen File"       0 pview-select
+        osd .osd.pview  10 ""  "Refresh \HView"    f pview-refresh
+        osd .osd.pview  15 "-" ""
+        osd .osd.pview  20 ""  "\HClose View"      f pview-quit
+    !endif
+    .osd.pview osd
 !emacro
 
 ; ========================
