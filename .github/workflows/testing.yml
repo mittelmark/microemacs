@@ -253,6 +253,7 @@ jobs:
       - name: Verify encoding tests (ticket 17)
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          cd $GITHUB_WORKSPACE
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   cygwin-x86:
@@ -309,6 +310,7 @@ jobs:
       - name: Verify encoding tests (ticket 17)
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
+          cd $GITHUB_WORKSPACE
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   windows-winlibs:
