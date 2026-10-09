@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-06 09:55
+date: 2026-10-09 05:09
 ---
 
 ## Introduction
@@ -38,7 +38,7 @@ Files  to  consider:  @jasspa/macros/hkinfo.emd  implementing  an info  manual
 browser,   @jasspa/macros/hkehf.emf   implementing   the   ehf   browser   and
 @jasspa/macros/rtools.emf implementing the r-doc (R help browser) browser
 
-## Ticket 4: FR: embedding luit functionality (WIP)
+## Ticket 4: FR: embedding luit functionality (DONE with full UTF8 support)
 
 Mimic luit  functionality  to allow ME to run on UTF8 terminals with extendend
 character  sets. Luit is a terminal  application  which allows other  terminal
@@ -62,11 +62,13 @@ enter characters higher then 128 bytes from the extended character set of a spec
 - in UTF-8 mode umlauts are written correctly but delete needs two steps
 
 
-## Ticket 5: FR - simple api call to opencode
+## Ticket 5: FR - simple api call to opencode (SHOULD BE AVOIDED)
 
 configure a generic application call getting some user input which then translates to
 
 opencode run --model .... "question"
+
+Should not be possible as it might submit relevant data to some server just by accident.
 
 ## Ticket 6: FR - embedding other scripting languages in addition to me.emf
 
@@ -77,7 +79,7 @@ opencode run --model .... "question"
 - Snek: https://sneklang.org/ - Python like
 - mquickjs https://github.com/bellard/mquickjs - JavaScript like
 
-## Ticket 7: BUG - Windows builds - Fixing mec windows terminal size (WIP)
+## Ticket 7: BUG - Windows builds - Fixing mec windows terminal size (DONE)
 
 Windows: After  fixing  the  resize  issue the mecb  terminal  window is usually  after
 resizing using one row and one column to small.
@@ -109,7 +111,7 @@ v unfold dir (color
    filename.txt (color)    M (indicator)
    newname.txt (color)     A (git indicator)
    
-## Ticket 12: UTF8 symbol support
+## Ticket 12: UTF8 symbol support (WIP)
 
 | OS       | me version | supported |
 |----------|------------|-----------|
@@ -456,3 +458,81 @@ flp = 0xa000dff) and dies.
       display.c entry check. All early returns in ffReadFile() occur
       before the guard is raised, so the restore cannot be skipped.
       Files: src/fileio.c, src/unixterm.c
+
+## Ticket 17 - Allow to copy between different buffers using different encodings (WIP)
+
+1) If  I  copy  text  between   buffers,  let's  say  between  an  ISO-8859-1  or
+Windows-CP1252  buffer to an UTF8  buffer the  characters  above 128 should be
+automatically encoded to their unicode/UTF8 symbol equivalent.
+
+
+2) If I copy from UTF8 to ISO or Windows encoding the available charset should be
+properly  converted, not available  charsets  should be displayed as \uxxxx or
+so.
+
+3) Using commands like paste-utf8, or paste-iso-8859-1 etc to explicitly state the encoding.
+
+    - WIP 261009: code analysis (no changes yet). The three points must be
+      handled for two distinct paths that should be kept separate:
+
+      (a) INTERNAL copy/paste between ME buffers (the kill ring). Mostly
+      implemented already ("utf8-mec Phase 3"): killSave() tags every new
+      kill head with the source buffer encoding (line.c), yankfrom()
+      converts src -> dst via meConvString when the encodings differ
+      (line.c), and yankRectangleKill() does the same for rectangles
+      (region.c). So point 1 works today for C-w/C-y and yank-rectangle
+      between differently encoded buffers - verify with a test.
+
+      (b) EXTERNAL paste from the system clipboard/primary selection.
+      Here the source encoding comes from the transport, not from a
+      buffer: X11 SelectionNotify tags UTF8_STRING as UTF-8 and
+      XA_STRING as CP1252 (ICCCM says Latin-1), wl-paste/xclip/pbpaste
+      output is tagged UTF-8, Windows CF_UNICODETEXT is normalized to
+      UTF-8 (winterm.c). yankfrom() then converts into the target
+      buffer exactly as in (a) - so the way in already converts.
+
+      The two paths are currently conflated in yank() (line.c): C-y
+      calls TTgetClipboard() unconditionally before yankfrom(). Windows
+      returns early while WE own the clipboard (CLIP_OWNER), so
+      internal multi-node kills survive. X11 has NO owner short-
+      circuit: every C-y round-trips through the X server, and for a
+      multi-node internal kill the SelectionNotify handler re-creates
+      the kill head and re-tags it from the *served target type*
+      (XA_STRING -> CP1252), i.e. a UTF-8 kill is afterwards treated
+      as CP1252 and gets double-encoded by yankfrom(). Fix direction:
+      TTgetClipboard() should return early when we own the selection
+      (mirror the CLIP_OWNER logic) so internal pastes never consult
+      the system clipboard; only fetch it for a genuine external paste.
+
+      Point 2: meConvInit() hardwires replacement = '?', so
+      UTF-8 -> CP1252/ISO conversions silently degrade unmappable
+      characters to '?'. Add an escape mode that emits ASCII \uXXXX
+      instead - only reachable when src != dst (single-byte
+      destinations), so UTF-8 buffers keep real characters.
+
+      Point 3: no such commands exist; set-buffer-encoding changes the
+      buffer, not the interpretation of the kill. Needed: a command
+      (e.g. yank-as / paste-encoding <name>) that re-tags
+      klhead->encoding (or passes an override into yankfrom()) and
+      then yanks - the escape hatch when the transport guess in (b) is
+      wrong. Note $yank returns raw bytes to macros; document that.
+
+      Copy-out (ME as clipboard provider) is asymmetric - points 1/2
+      do not hold end-to-end yet:
+      - X11 SelectionRequest serves XA_STRING with the raw kill bytes
+        in the kill's native encoding (a UTF-8 kill leaves ME as
+        mislabeled Latin-1 -> mojibake) and refuses UTF8_STRING
+        requests altogether; the TARGETS reply advertises
+        [TARGETS, CLIPBOARD] because meAtomNames[] is off-by-one
+        (index 7 is named CLIPBOARD, the name "STRING" is missing).
+      - the external-tool pipe-out (xclip/wl-copy/pbcopy, unixterm.c
+        TTsetClipboard) writes only the FIRST kill node and assumes
+        the bytes are already UTF-8.
+      - Windows already does it right: WinKillToClipboard() converts
+        from klhead->encoding to UTF-16 - use it as the model for the
+        X11 paths.
+      Edge case: the kill head's encoding is fixed by the FIRST kill;
+      C-k in buffer A followed by C-k in buffer B (same head) mixes
+      encodings under one tag.
+      Files: src/line.c, src/region.c, src/unixterm.c, src/winterm.c,
+      src/encoding.c, src/efunc.def
