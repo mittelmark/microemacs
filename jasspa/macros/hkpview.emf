@@ -558,12 +558,17 @@ define-macro pview-tool-create
     ; Do NOT render here - the toolbar forces this command on first
     ; buffer use regardless of tool flag. Rendering is done only by
     ; explicit M-x pview or when user clicks the tool in toolbar menu.
-    ; Just ensure the buffer has minimal state so fhook runs cleanly.
+    ; Ensure buffer has minimal state and hilight is configured.
     !if &not &exist .pview.icons
         set-variable .pview.icons 0
     !endif
     !if &not &exist .pview.open
         set-variable .pview.open "|"
+    !endif
+    ; Set fhook and hilight so the buffer renders correctly
+    set-variable $buffer-fhook "fhook-pview"
+    !if &and &sin "h" .fhook-pview.setup &band .hilight.flags 0x01
+        set-variable $buffer-hilight .hilight.pview
     !endif
 !emacro
 
