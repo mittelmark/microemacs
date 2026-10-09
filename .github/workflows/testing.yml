@@ -24,6 +24,7 @@ jobs:
           export TERM=xterm
           MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-enc17-mn 2>/dev/null || true
       - name: Verify test results
         run: |
           if [ -s tests/test-output.txt ]; then
@@ -44,6 +45,9 @@ jobs:
         with:
           name: test-results-linux
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   macos:
     runs-on: macos-latest
@@ -67,6 +71,7 @@ jobs:
           export TERM=xterm
           MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-enc17-mn 2>/dev/null || true
       - name: Verify test results
         run: |
           if [ -s tests/test-output.txt ]; then
@@ -87,6 +92,9 @@ jobs:
         with:
           name: test-results-macos
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   windows-ucrt64:
     runs-on: windows-latest
@@ -109,6 +117,7 @@ jobs:
           ls src/
           MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
+          MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-enc17-mn 2>/dev/null || true
       - name: Verify test results
         shell: msys2 {0}
         run: |
@@ -130,6 +139,10 @@ jobs:
         with:
           name: test-results-windows-mingw
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: msys2 {0}
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   windows-msysunix:
     runs-on: windows-latest
@@ -159,6 +172,7 @@ jobs:
           export TERM=xterm
           script -q -c "MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
+          script -q -c "MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-enc17-mn" /dev/null 2>/dev/null || true
       - name: Verify test results
         shell: msys2 {0}
         run: |
@@ -180,6 +194,10 @@ jobs:
         with:
           name: test-results-msysunix
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: msys2 {0}
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   cygwin-x64:
     runs-on: windows-latest
@@ -209,6 +227,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
+          script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-enc17-mn" /dev/null 2>/dev/null || true
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
@@ -231,6 +250,10 @@ jobs:
         with:
           name: test-results-cygwin-x64
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   cygwin-x86:
     runs-on: windows-latest
@@ -260,6 +283,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
+          script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-enc17-mn" /dev/null 2>/dev/null || true
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
@@ -282,6 +306,10 @@ jobs:
         with:
           name: test-results-cygwin-x86
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   windows-winlibs:
     runs-on: windows-2022
@@ -304,6 +332,7 @@ jobs:
         run: |
           set MEPATH=jasspa\macros
           src\.win32winlibs-release-mec\mec.exe @tests\test-basics
+          src\.win32winlibs-release-mec\mec.exe @tests\test-enc17-mn
           type tests\test-output.txt
       - name: Verify test results
         shell: cmd
@@ -326,3 +355,7 @@ jobs:
         with:
           name: test-results-windows-winlibs
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: bash
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
