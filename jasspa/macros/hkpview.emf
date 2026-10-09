@@ -96,6 +96,10 @@ define-macro pview
     !if &not &exist .pview.open
         set-variable .pview.open "|"
     !endif
+    ; Default icons off (set .pview.icons to 1 to enable UTF-8 icons)
+    !if &not &exist .pview.icons
+        set-variable .pview.icons 0
+    !endif
     ; Root always starts open
     !if &not &lfind .pview.open #l0
         set-variable .pview.open &lins .pview.open -1 #l0
@@ -292,10 +296,19 @@ define-macro pview
             insert-string "\ecC"
         !endif
     !endif
-    !if #l3
-        insert-string "v "
+    ; Icon or expand marker
+    !if .pview.icons
+        !if #l3
+            insert-string "📂 "    ; open folder
+        !else
+            insert-string "📁 "    ; closed folder
+        !endif
     !else
-        insert-string "> "
+        !if #l3
+            insert-string "v "
+        !else
+            insert-string "> "
+        !endif
     !endif
     insert-string #l4
     insert-string "/"
@@ -329,6 +342,10 @@ define-macro pview
         insert-string "\ecH"
     !else
         insert-string "\ecF"
+    !endif
+    ; Icon or nothing
+    !if .pview.icons
+        insert-string "📄 "    ; page
     !endif
     insert-string #l2
     insert-string "\ecA"
@@ -446,6 +463,67 @@ define-macro pview
 0 define-macro pview-quit
     !if &seq $buffer-bname "*pview*"
         !force delete-buffer "*pview*"
+    !endif
+!emacro
+
+; ========================
+; Toggle UTF-8 icons
+; ========================
+
+0 define-macro pview-icons-toggle
+    !if &not &exist .pview.icons
+        set-variable .pview.icons 0
+    !endif
+    !if .pview.icons
+        set-variable .pview.icons 0
+        ml-write "Project view: icons off"
+    !else
+        set-variable .pview.icons 1
+        ml-write "Project view: icons on"
+    !endif
+    !if &seq $buffer-bname "*pview*"
+        pview-refresh
+    !endif
+!emacro
+
+; ========================
+; Toolbar tool integration
+; ========================
+
+0 define-macro pview-tool-create
+    ; Called by toolbar when *pview* buffer is created/updated
+    ; Save current file's directory, then init pview if empty
+    set-variable #l0 $buffer-fname
+    ; If no file, use current directory
+    !if &seq #l0 ""
+        set-variable #l0 &stat "a" "."
+    !else
+        ; Strip filename to get directory
+        !if &set #l1 &rsin "/" #l0
+            set-variable #l0 &lef #l0 #l1
+        !else
+            set-variable #l0 &stat "a" "."
+        !endif
+    !endif
+    ; Ensure trailing slash
+    !if &not &seq &rig #l0 -1 "/"
+        set-variable #l0 &cat #l0 "/"
+    !endif
+    set-variable #l0 &rep #l0 "//" "/"
+    ; Only initialize if root not set yet
+    !if &not &exist .pview.root
+        set-variable .pview.root #l0
+        !if &not &exist .pview.open
+            set-variable .pview.open "|"
+        !endif
+        !if &not &lfind .pview.open #l0
+            set-variable .pview.open &lins .pview.open -1 #l0
+        !endif
+        !if &not &exist .pview.icons
+            set-variable .pview.icons 0
+        !endif
+        pview-git-status
+        pview-render
     !endif
 !emacro
 

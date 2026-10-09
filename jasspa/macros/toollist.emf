@@ -8,9 +8,9 @@
 ; Authors:     Steven Phillips
 ;
 ; Setup the Toolbar tools
-set-variable .toolbar.tool-descs "\CHBuffer Bookmarks\CHBuffer File Info\CHBuffer List\CHBuffer Tab List\CHKill List\CHBuffer Tools\CHBuffer Abbreviations\CHBuffer Item List\CHDirectory Tree\CHDirectory File List\CHFavorites\CHFTP Console\CHCVS Console\CHClearCase Console\CH"
-set-variable .toolbar.tool-names "\CHBookmarks\CHInfo\CHBuff List\CHBuffer Tab List\CHKill List\CHTools\CHAbbrevs\CHItems\CHDir Tree\CHDir Files\CHFavorites\CHFTP Console\CHCVS Console\CHClearCase Console\CH"
-set-variable .toolbar.tool-buffs "\CH*bookmark*\CH*buffer-info*\CH*buffer-list*\CH*toolbar-buffer-tab*\CH*kill-list*\CH*tool-list*\CH*abbrev-list*\CH*item-list*\CH*directory*\CH*toolbar-files*\CH*favorites*\CH*ftp-console*\CH*cvs-console*\CH*cc-console*\CH"
-set-variable .toolbar.tool-files "\CHbookmark\CHtoolstd\CHtoolstd\CHtoolstd\CHkilllist\CHabbrlist\CHabbrlist\CHitemlist\CHtoolstd\CHhkdirlst\CHfavorite\CHftp\CHcvs\CHclearcs\CH"
-set-variable .toolbar.tool-flags "\CH0x2000b\CH0x22001b\CH0x1b\CH0x10000b\CH0x100003\CH0x10007\CH0x10007\CH0x22000f\CH0x1\CH0x200001\CH0x3\CH0x01\CH0x01\CH0x01\CH"
-set-variable .toolbar.tool-cmds  "\CHbookmark-create\CHbuffer-info-create\CHbuffer-list-create\CHbuffer-tab-list-create\CHkill-list-create\CHtool-list-create\CHabbrev-list-create\CHitem-list-create\CHtoolbar-dir-list-create\CHtoolbar-file-list-create\CHtoolbar-favorites\CHftp-console-tool\CHcvs-console-tool\CHcc-console-tool\CH"
+set-variable .toolbar.tool-descs "\CHBuffer Bookmarks\CHBuffer File Info\CHBuffer List\CHBuffer Tab List\CHKill List\CHBuffer Tools\CHBuffer Abbreviations\CHBuffer Item List\CHDirectory Tree\CHDirectory File List\CHProject View\CHFavorites\CHFTP Console\CHCVS Console\CHClearCase Console\CH"
+set-variable .toolbar.tool-names "\CHBookmarks\CHInfo\CHBuff List\CHBuffer Tab List\CHKill List\CHTools\CHAbbrevs\CHItems\CHDir Tree\CHDir Files\CHProject View\CHFavorites\CHFTP Console\CHCVS Console\CHClearCase Console\CH"
+set-variable .toolbar.tool-buffs "\CH*bookmark*\CH*buffer-info*\CH*buffer-list*\CH*toolbar-buffer-tab*\CH*kill-list*\CH*tool-list*\CH*abbrev-list*\CH*item-list*\CH*directory*\CH*toolbar-files*\CH*pview*\CH*favorites*\CH*ftp-console*\CH*cvs-console*\CH*cc-console*\CH"
+set-variable .toolbar.tool-files "\CHbookmark\CHtoolstd\CHtoolstd\CHtoolstd\CHkilllist\CHabbrlist\CHabbrlist\CHitemlist\CHtoolstd\CHhkdirlst\CHhkpview\CHfavorite\CHftp\CHcvs\CHclearcs\CH"
+set-variable .toolbar.tool-flags "\CH0x2000b\CH0x22001b\CH0x1b\CH0x10000b\CH0x100003\CH0x10007\CH0x10007\CH0x22000f\CH0x1\CH0x200001\CH0x9\CH0x3\CH0x01\CH0x01\CH0x01\CH"
+set-variable .toolbar.tool-cmds  "\CHbookmark-create\CHbuffer-info-create\CHbuffer-list-create\CHbuffer-tab-list-create\CHkill-list-create\CHtool-list-create\CHabbrev-list-create\CHitem-list-create\CHtoolbar-dir-list-create\CHtoolbar-file-list-create\CHpview-tool-create\CHtoolbar-favorites\CHftp-console-tool\CHcvs-console-tool\CHcc-console-tool\CH"
