@@ -481,20 +481,20 @@ define-macro pview
 ; Toggle UTF-8 icons
 ; ========================
 
-0 define-macro pview-icons-toggle
-    !if &not &exist .pview.icons
-        set-variable .pview.icons 0
-    !endif
-    !if .pview.icons
-        set-variable .pview.icons 0
-        ml-write "Project view: icons off"
-    !else
-        set-variable .pview.icons 1
-        ml-write "Project view: icons on"
-    !endif
-    !if &seq $buffer-bname "*pview*"
-        pview-refresh
-    !endif
+define-macro pview-icons-toggle
+  !if &not &exist .pview.icons
+    set-variable .pview.icons 0
+  !endif
+  !if .pview.icons
+    set-variable .pview.icons 0
+    ml-write "Project view: icons off"
+  !else
+    set-variable .pview.icons 1
+    ml-write "Project view: icons on"
+  !endif
+  !if &seq $buffer-bname "*pview*"
+    pview-refresh
+  !endif
 !emacro
 
 ; ========================
