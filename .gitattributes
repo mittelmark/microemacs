@@ -1,0 +1,5 @@
+# Shell scripts must always be checked out with Unix (LF) line endings.
+# The Windows/Cygwin CI runners check out with core.autocrlf=true which
+# would turn them into CRLF, and Cygwin's sh then fails with
+#   tests/check-enc17.sh: line 7: $'\r': command not found
+*.sh text eol=lf
