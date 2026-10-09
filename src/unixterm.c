@@ -1121,6 +1121,63 @@ killTextEquals(const meUByte *buf, int len)
     }
     return pos == len ;
 }
+
+/* Ticket 17: build a single buffer holding the complete kill text (all
+ * nodes). Returns a malloc'd buffer of *outLen bytes plus a NUL, with
+ * one spare byte so a caller can turn an empty kill into a single
+ * space (meSYSTEM_NOEMPTYANK). */
+static meUByte *
+killTextConcat(int *outLen)
+{
+    meKillNode *killp ;
+    meUByte *data, *dd, cc ;
+    int total = 0 ;
+
+    if((klhead == NULL) || (klhead->kill == NULL))
+        return NULL ;
+    for(killp = klhead->kill ; killp != NULL ; killp = killp->next)
+        total += meStrlen(killp->data) ;
+    if((data = meMalloc(total + 2)) == NULL)
+        return NULL ;
+    dd = data ;
+    for(killp = klhead->kill ; killp != NULL ; killp = killp->next)
+    {
+        meUByte *ss = killp->data ;
+        while((cc = *ss++) != '\0')
+            *dd++ = cc ;
+    }
+    *dd = '\0' ;
+    *outLen = total ;
+    return data ;
+}
+
+/* Ticket 17: convert a kill text to the encoding an external consumer
+ * expects (X targets and clipboard tools all speak UTF-8 or Latin-1
+ * STRING). Returns a new buffer and sets *outLen, or NULL when no
+ * conversion is needed (identical encodings or out of memory - the
+ * caller then uses the raw text). */
+static meUByte *
+killTextConvert(const meUByte *src, int srcLen, meEncoding srcEnc,
+                meEncoding dstEnc, int *outLen)
+{
+    meConv conv ;
+    meUByte *out ;
+    int nn ;
+
+    if(srcEnc == dstEnc)
+        return NULL ;
+    if((out = meMalloc((srcLen * 4) + 2)) == NULL)
+        return NULL ;
+    meConvInit(&conv, srcEnc, dstEnc) ;
+    if((nn = meConvString(&conv, src, srcLen, out, (srcLen * 4) + 1)) < 0)
+    {
+        meFree(out) ;
+        return NULL ;
+    }
+    out[nn] = '\0' ;
+    *outLen = nn ;
+    return out ;
+}
 #endif /* _CLIPBRD */
 
 #ifdef _XTERM
@@ -2563,54 +2620,56 @@ special_bound:
             if((event.xselectionrequest.selection == XA_PRIMARY) ||
                (event.xselectionrequest.selection == meAtoms[meATOM_XA_CLIPBOARD]))
             {
-                if((event.xselectionrequest.target == XA_STRING) && (klhead != NULL))
+                if(((event.xselectionrequest.target == XA_STRING) ||
+                    (event.xselectionrequest.target == meAtoms[meATOM_UTF8_STRING])) &&
+                   (klhead != NULL))
                 {
-                    static meUByte *data=NULL ;
-                    static int dataLen=0 ;
-                    meUByte *ss, *dd, cc ;
-                    meKillNode *killp ;
-                    int   len ;
+                    meUByte *raw, *serve, *conv ;
+                    int rawLen, serveLen ;
 
-                    len = 0 ;
-                    killp = klhead->kill;
-                    while(killp != NULL)
+                    if((raw = killTextConcat(&rawLen)) != NULL)
                     {
-                        len += meStrlen(killp->data) ;
-                        killp = killp->next;
-                    }
-                    if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (len == 0))
-                        len++ ;
-                    if((dataLen <= len) &&
-                       ((ss = meMalloc(len+1)) != NULL))
-                    {
-                        meNullFree(data) ;
-                        data = ss ;
-                        dataLen = len+1 ;
-                    }
-                    if(dataLen > len)
-                    {
-                        ss = data ;
-                        killp = klhead->kill;
-                        while(killp != NULL)
+                        if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (rawLen == 0))
                         {
-                            dd = killp->data ;
-                            while((cc = *dd++))
-                                *ss++ = cc ;
-                            killp = killp->next ;
+                            raw[0] = ' ' ;
+                            raw[1] = '\0' ;
+                            rawLen = 1 ;
                         }
-                        if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (ss == data))
-                            *ss++ = ' ' ;
-                        *ss = '\0' ;
+                        /* Ticket 17: serve the kill converted to what the
+                         * target promises - UTF8_STRING is UTF-8, XA_STRING
+                         * is Latin-1 (ICCCM) - instead of always writing
+                         * the raw kill bytes. */
+                        serve = raw ;
+                        serveLen = rawLen ;
+                        if((conv = killTextConvert(raw, rawLen,
+                                                   (meEncoding) klhead->encoding,
+                                                   (event.xselectionrequest.target == XA_STRING) ?
+                                                   ME_ENC_ISO8859_1 : ME_ENC_UTF8,
+                                                   &serveLen)) != NULL)
+                            serve = conv ;
                         reply.property = event.xselectionrequest.property ;
                         XChangeProperty(mecm.xdisplay,reply.requestor,reply.property,reply.target,
-                                        8,PropModeReplace,data,len);
+                                        8,PropModeReplace,serve,serveLen);
+                        if(serve != raw)
+                            meFree(serve) ;
+                        meFree(raw) ;
                     }
                 }
                 else if(event.xselectionrequest.target == meAtoms[meATOM_TARGETS])
                 {
+                    /* Ticket 17: advertise the targets we really serve.
+                     * The old reply read meAtoms starting at
+                     * meATOM_TARGETS with a count of 2, which - due to
+                     * the off-by-one atom name table - claimed TARGETS
+                     * and CLIPBOARD and never mentioned any text type. */
+                    Atom targets[3] ;
+
+                    targets[0] = meAtoms[meATOM_TARGETS] ;
+                    targets[1] = meAtoms[meATOM_UTF8_STRING] ;
+                    targets[2] = XA_STRING ;
                     reply.property = event.xselectionrequest.property ;
                     XChangeProperty(mecm.xdisplay,reply.requestor,reply.property,reply.target,
-                                    32,PropModeReplace,(unsigned char *) (meAtoms+meATOM_TARGETS),2);
+                                    32,PropModeReplace,(unsigned char *) targets,3);
                 }
             }
             XSendEvent(mecm.xdisplay,reply.requestor,False,0,(XEvent *) &reply) ;
@@ -4204,7 +4263,10 @@ XTERMstart(void)
             "INCR",
             "MULTIPLE",
             "TARGETS",
-            "CLIPBOARD"
+            /* Ticket 17: this slot is meATOM_STRING - it used to read
+             * "CLIPBOARD" (off-by-one), so the TARGETS reply advertised
+             * CLIPBOARD instead of the text target. */
+            "STRING"
         } ;
         int ii ;
         for(ii=0 ; ii<8 ; ii++)
@@ -5078,52 +5140,42 @@ TTisWaylandSession(void)
 static void
 TTsetWaylandClipboard(void)
 {
-    meKillNode *killp;
-    int total;
-    meUByte *data, *dd, cc;
-    
-    if((klhead == NULL) || (klhead->kill == NULL))
+    meUByte *raw, *serve ;
+    int rawLen, serveLen ;
+
+    if((raw = killTextConcat(&rawLen)) == NULL)
         return;
-    
-    total = 0;
-    killp = klhead->kill;
-    while(killp != NULL)
+    if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (rawLen == 0))
     {
-        total += meStrlen(killp->data);
-        killp = killp->next;
+        raw[0] = ' ' ;
+        raw[1] = '\0' ;
+        rawLen = 1 ;
     }
-    if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (total == 0))
-        total++;
-    
-    if((data = meMalloc(total + 1)) == NULL)
-        return;
-    
-    dd = data;
-    killp = klhead->kill;
-    while(killp != NULL)
+    /* Ticket 17: wl-copy expects UTF-8, convert a single-byte kill
+     * rather than piping its raw bytes */
+    serve = killTextConvert(raw, rawLen, (meEncoding) klhead->encoding,
+                            ME_ENC_UTF8, &serveLen) ;
+    if(serve == NULL)
     {
-        meUByte *ss = killp->data;
-        while((cc = *ss++))
-            *dd++ = cc;
-        killp = killp->next;
+        serve = raw ;
+        serveLen = rawLen ;
     }
-    if((meSystemCfg & meSYSTEM_NOEMPTYANK) && (dd == data))
-        *dd++ = ' ';
-    *dd = '\0';
-    
+
     /* Run in background to avoid flickering */
     if(meFork() == 0)
     {
         FILE *fp = popen((char *)wlCopyPath, "w");
         if(fp != NULL)
         {
-            fwrite(data, 1, total, fp);
+            fwrite(serve, 1, serveLen, fp);
             pclose(fp);
         }
         _exit(0);
     }
-    
-    meFree(data);
+
+    if(serve != raw)
+        meFree(serve) ;
+    meFree(raw);
 }
 
 static int
@@ -7214,8 +7266,8 @@ TTdetectClipTool(void)
 void
 TTsetClipboard(void)
 {
-    meKillNode *killp;
-    meInt len;
+    meUByte *raw, *serve;
+    int rawLen, serveLen;
     int fd[2];
     pid_t pid;
 
@@ -7227,21 +7279,37 @@ TTsetClipboard(void)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if((klhead == NULL) || (klhead->kill == NULL))
-        return ;
-
-    killp = klhead->kill;
-    len = meStrlen(killp->data);
-    if(len == 0)
-        return ;
 
     TTdetectClipTool();
 
     if(conClipTool == 0)
         return ;
 
-    if(pipe(fd) < 0)
+    /* Ticket 17: pipe the complete kill (all nodes) and always as
+     * UTF-8 - the tools expect UTF-8 and writing only the first node
+     * silently dropped the rest of a multi-node kill. */
+    if((raw = killTextConcat(&rawLen)) == NULL)
         return ;
+    if(rawLen == 0)
+    {
+        meFree(raw);
+        return ;
+    }
+    serve = killTextConvert(raw, rawLen, (meEncoding) klhead->encoding,
+                            ME_ENC_UTF8, &serveLen);
+    if(serve == NULL)
+    {
+        serve = raw;
+        serveLen = rawLen;
+    }
+
+    if(pipe(fd) < 0)
+    {
+        if(serve != raw)
+            meFree(serve);
+        meFree(raw);
+        return ;
+    }
 
     pid = meFork();
     if(pid == 0)
@@ -7266,9 +7334,9 @@ TTsetClipboard(void)
     }
     else if(pid > 0)
     {
-        /* Parent: write kill buffer data to pipe */
+        /* Parent: write kill text to pipe */
         close(fd[0]);
-        write(fd[1], killp->data, len);
+        write(fd[1], serve, serveLen);
         close(fd[1]);
         conClipSetCount++;
     }
@@ -7277,6 +7345,9 @@ TTsetClipboard(void)
         close(fd[0]);
         close(fd[1]);
     }
+    if(serve != raw)
+        meFree(serve);
+    meFree(raw);
 }
 
 void
