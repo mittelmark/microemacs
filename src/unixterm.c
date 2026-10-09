@@ -1099,6 +1099,30 @@ sigSize(SIGNAL_PROTOTYPE)
 #endif /* _TCAP */
 #endif /* _ME_CONSOLE */
 
+#ifdef _CLIPBRD
+/* Ticket 17: compare the complete kill text against an external clipboard
+ * buffer. The old test only looked at the first node, so any multi-node
+ * internal kill was rebuilt as a single node and re-tagged from the
+ * transport encoding on every clipboard round trip. */
+static int
+killTextEquals(const meUByte *buf, int len)
+{
+    meKillNode *killp ;
+    int pos = 0, nn ;
+
+    if((klhead == NULL) || (klhead->kill == NULL))
+        return len == 0 ;
+    for(killp = klhead->kill ; killp != NULL ; killp = killp->next)
+    {
+        nn = meStrlen(killp->data) ;
+        if(((pos + nn) > len) || (memcmp(killp->data, buf + pos, nn) != 0))
+            return meFALSE ;
+        pos += nn ;
+    }
+    return pos == len ;
+}
+#endif /* _CLIPBRD */
+
 #ifdef _XTERM
 
 static Font
@@ -5201,9 +5225,10 @@ TTgetWaylandClipboard(void)
         return meFALSE;
     }
 
-    if((klhead == NULL) || (klhead->kill == NULL) ||
-       (klhead->kill->next != NULL) ||
-       meStrcmp(klhead->kill->data, tmpbuf))
+    /* Ticket 17: compare the complete kill text - only rebuild (and
+     * re-tag as UTF-8) when the clipboard really differs, so an
+     * internal kill keeps its source encoding tag and node structure. */
+    if(!killTextEquals(tmpbuf, len))
     {
         killSave();
         /* wl-paste always emits UTF-8 */
@@ -5213,8 +5238,11 @@ TTgetWaylandClipboard(void)
         if(dd != NULL)
             memcpy(dd, tmpbuf, len + 1);
         thisflag = meCFKILL;
-        ret = meTRUE;
     }
+    /* Either replaced or content already matched - the clipboard was
+     * read successfully either way, don't fall through to an X11
+     * request for the same content */
+    ret = meTRUE;
 
     meFree(tmpbuf);
     return ret;
@@ -5294,7 +5322,14 @@ TTgetClipboard(void)
         return ;
     meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
     if(clipState & ownClip)
-        clipState &= ~ownClip ;
+    {
+        /* Ticket 17: we own the selection so the kill buffer already
+         * holds its content tagged with the true source encoding.
+         * Re-requesting would return our own bytes tagged from the
+         * served target type (XA_STRING -> CP1252) and glue any
+         * multi-node kill into one wrongly tagged node. */
+        return ;
+    }
     clipState &= ~CLIP_RECEIVED ;
     clipState |= CLIP_RECEIVING ;
     clipReqFailed = 0 ;
@@ -7316,13 +7351,19 @@ TTgetClipboard(void)
         if(tmpbuf != NULL && total > 0)
         {
             tmpbuf[total] = '\0';
-            killSave();
-            /* xclip/xsel/pbpaste output UTF-8 */
-            if(klhead != NULL)
-                klhead->encoding = (meUByte) ME_ENC_UTF8 ;
-            if((dd = killAddNode(total + 1)) != NULL)
-                memcpy(dd, tmpbuf, total + 1);
-            thisflag = meCFKILL;
+            /* Ticket 17: only rebuild the kill when the tool content
+             * differs from it - an unchanged internal kill keeps its
+             * original encoding tag and node structure. */
+            if(!killTextEquals(tmpbuf, total))
+            {
+                killSave();
+                /* xclip/xsel/pbpaste output UTF-8 */
+                if(klhead != NULL)
+                    klhead->encoding = (meUByte) ME_ENC_UTF8 ;
+                if((dd = killAddNode(total + 1)) != NULL)
+                    memcpy(dd, tmpbuf, total + 1);
+                thisflag = meCFKILL;
+            }
         }
         meFree(tmpbuf);
     }
