@@ -105,9 +105,14 @@ define-macro pview
         set-variable .pview.open &lins .pview.open -1 #l0
     !endif
     set-variable .pview.root #l0
-    pview-git-status
-    pview-render
+    ; Set fhook BEFORE git-status (which switches buffers)
     set-variable $buffer-fhook "fhook-pview"
+    ; git-status switches to *pview-git* internally; save and restore buffer
+    set-variable #l9 $buffer-bname
+    pview-git-status
+    ; Ensure we're back in *pview* before rendering
+    !force 0 find-buffer #l9
+    pview-render
     beginning-of-buffer
     ml-write &spr "Project view: %s" #l0
 !emacro
@@ -458,7 +463,10 @@ define-macro pview
     !endif
     set-variable #l1 $window-line
     set-variable #l2 $window-y-scroll
+    ; git-status switches to *pview-git* internally; save and restore buffer
+    set-variable #l9 $buffer-bname
     pview-git-status
+    !force 0 find-buffer #l9
     pview-render
     !if &les #l1 &llen .pview.entries
         #l1 goto-line
