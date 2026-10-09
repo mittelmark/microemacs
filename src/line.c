@@ -1488,6 +1488,47 @@ yankfrom(struct meKill *pklist)
 }
 
 /*
+ * Shared yank tail - insert the current kill n times. Split out of
+ * yank() so yankAs() can yank without the clipboard round trip
+ * (Ticket 17).
+ */
+static int
+yankKill(int f, int n)
+{
+    register int ret ;		/* return from "yankfrom()" */
+    register int len = 0 ;	/* return from "yankfrom()" */
+
+    /* make sure there is something to yank */
+    if(klhead == NULL)
+        return mlwrite(MWABORT,(meUByte *)"[nothing to yank]");
+    /* Check we can change the buffer */
+    if((ret=bufferSetEdit()) <= 0)
+        return ret ;
+
+    /* place the mark on the current line */
+    windowSetMark(meFALSE, meFALSE);
+
+    /* for each time.... */
+    while(n--)
+    {
+        if((ret = yankfrom(klhead)) < 0)
+            break;
+        len += ret ;
+    }
+#if MEOPT_UNDO
+    if(len > 0)
+        meUndoAddInsChars(len) ;
+#endif
+    if(ret >= 0)
+    {
+        /* remember that this was a yank command */
+        thisflag = meCFYANK ;
+        return meTRUE ;
+    }
+    return meFALSE ;
+}
+
+/*
  * Yank text back from the kill buffer. This is really easy. All of the work
  * is done by the standard insert routines. All you do is run the loop, and
  * check for errors. Bound to "C-Y".
@@ -1495,9 +1536,6 @@ yankfrom(struct meKill *pklist)
 int
 yank(int f, int n)
 {
-    register int ret ;		/* return from "yankfrom()" */
-    register int len = 0 ;	/* return from "yankfrom()" */
-
     commandFlag[CK_YANK] = (comSelStart|comSelSetDot|comSelSetMark|comSelSetFix) ;
     if(n == 0)
     {
@@ -1532,34 +1570,48 @@ yank(int f, int n)
 #ifdef _CLIPBRD
     TTgetClipboard() ;
 #endif
-    /* make sure there is something to yank */
+    return yankKill(f, n) ;
+}
+
+/* yank-as - reinterpret the kill text in a named encoding and yank it.
+ * Ticket 17: the kill buffer's encoding tag describes the bytes it
+ * holds; when that tag is wrong this command re-tags the current kill
+ * and yanks WITHOUT a clipboard fetch, so the new tag is applied. The
+ * encoding cannot be changed by a fetch - an internal yank must not
+ * round-trip through the system clipboard. In a macro the encoding
+ * name is taken as the next argument, e.g. yank-as iso-8859-5 */
+int
+yankAs(int f, int n)
+{
+    meUByte encName[64] ;
+    meEncoding enc ;
+    int s ;
+    /* Completion list over all supported encodings (TAB lists them).
+     * Built once from the canonical meEncodingName() strings. */
+    static meUByte *encCompList[ME_ENC_ASCII+1] ;
+    static int encCompCount = 0 ;
+
     if(klhead == NULL)
-        return mlwrite(MWABORT,(meUByte *)"[nothing to yank]");
-    /* Check we can change the buffer */
-    if((ret=bufferSetEdit()) <= 0)
-        return ret ;
-
-    /* place the mark on the current line */
-    windowSetMark(meFALSE, meFALSE);
-
-    /* for each time.... */
-    while(n--)
+        return mlwrite(MWABORT,(meUByte *)"[nothing to yank]") ;
+    if(encCompCount == 0)
     {
-        if((ret = yankfrom(klhead)) < 0)
-            break;
-        len += ret ;
+        meEncoding ee ;
+        for(ee = ME_ENC_UTF8 ; ee <= ME_ENC_ASCII ; ee++)
+            encCompList[encCompCount++] = (meUByte *) meEncodingName(ee) ;
     }
-#if MEOPT_UNDO
-    if(len > 0)
-        meUndoAddInsChars(len) ;
-#endif
-    if(ret >= 0)
-    {
-        /* remember that this was a yank command */
-        thisflag = meCFYANK ;
-        return meTRUE ;
-    }
-    return meFALSE ;
+    mlgsStrList = encCompList ;
+    mlgsStrListSize = encCompCount ;
+    if((s = meGetString((meUByte *)"Kill encoding", MLUSER|MLINSENSCASE, 0,
+                        encName, sizeof(encName))) <= 0)
+        return s ;
+    if(encName[0] == '\0')
+        return mlwrite(0, (meUByte *)"[Current kill encoding is \"%s\"]",
+                       (meUByte *) meEncodingName((meEncoding) klhead->encoding)) ;
+    if((enc = meEncodingFromName((const char *) encName)) == (meEncoding) -1)
+        return mlwrite(MWABORT, (meUByte *)"[Unknown encoding \"%s\"]", encName) ;
+    klhead->encoding = (meUByte) enc ;
+    commandFlag[CK_YANKAS] = (comSelStart|comSelSetDot|comSelSetMark|comSelSetFix) ;
+    return yankKill(f, (n > 0) ? n : 1) ;
 }
 
 int

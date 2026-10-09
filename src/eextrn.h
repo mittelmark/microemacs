@@ -619,6 +619,7 @@ extern	int	killSave(void);
 extern	meUByte *killAddNode(meInt count);
 extern	int	yankfrom(struct meKill *pklist);
 extern	int	yank(int f, int n);
+extern	int	yankAs(int f, int n);
 extern	int	reyank(int f, int n);
 extern  void    meLineLoopFree(meLine *lp, int flag) ;
 

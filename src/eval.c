@@ -389,6 +389,7 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
                         thisflag = meCFRYANK ;
                         break ;
                     case CK_YANK:
+                    case CK_YANKAS:
                         thisflag = meCFYANK ;
                         break ;
 #if MEOPT_UNDO

@@ -1,0 +1,27 @@
+; -!- emf -!-
+; Ticket 17: yank-as re-tag test
+; Usage: me @tests/test-enc17-yankas
+; Copies UTF-8 text, re-tags the kill as CP1252 (mojibake paste),
+; then re-tags it back with yank-as utf-8 - the second paste must
+; reproduce the original text.
+
+define-macro start-up
+    find-file "tests/enc-17-src.txt"
+    !force set-buffer-encoding utf-8
+    beginning-of-buffer
+    set-mark
+    end-of-buffer
+    copy-region
+    ; fresh UTF-8 buffer as paste target (path relative to current
+    ; buffer's directory, i.e. tests/)
+    find-file "test-enc17y-output.txt"
+    !force set-buffer-encoding utf-8
+    ; paste with a deliberately wrong tag - the bytes are UTF-8 but
+    ; are now interpreted as CP1252
+    yank-as cp1252
+    insert-newline
+    ; re-tag the same kill back to UTF-8 and paste again
+    yank-as utf-8
+    save-buffer
+    exit-emacs
+!emacro
