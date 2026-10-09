@@ -617,6 +617,7 @@ extern	int	mldelete(meInt n, meUByte *kstring);
 extern	int	ldelete(meInt n, int kflag);
 extern	int	killSave(void);
 extern	meUByte *killAddNode(meInt count);
+extern	int	killTextEquals(const meUByte *buf, int len);
 extern	int	yankfrom(struct meKill *pklist);
 extern	int	yank(int f, int n);
 extern	int	yankAs(int f, int n);

@@ -903,6 +903,30 @@ killAddNode(meInt count)
     return nbl->data ;
 }
 
+/* Ticket 17: compare the complete kill text against an external clipboard
+ * buffer. The old platform test only looked at the first node, so any
+ * multi-node internal kill was rebuilt as a single node and re-tagged from
+ * the transport encoding on every clipboard round trip. Lives here (the
+ * kill-buffer domain) so unixterm.c and winterm.c share it. Returns
+ * meTRUE when the concatenation of all kill nodes equals buf[0..len). */
+int
+killTextEquals(const meUByte *buf, int len)
+{
+    meKillNode *killp ;
+    int pos = 0, nn ;
+
+    if((klhead == NULL) || (klhead->kill == NULL))
+        return len == 0 ;
+    for(killp = klhead->kill ; killp != NULL ; killp = killp->next)
+    {
+        nn = meStrlen(killp->data) ;
+        if(((pos + nn) > len) || (memcmp(killp->data, buf + pos, nn) != 0))
+            return meFALSE ;
+        pos += nn ;
+    }
+    return pos == len ;
+}
+
 /*
  * This function deletes "n" bytes, starting at dot. It understands how do deal
  * with end of lines, etc. It returns meTRUE if all of the characters were

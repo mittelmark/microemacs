@@ -1,0 +1,100 @@
+; -!- emf -!-
+; Ticket 17 strict tests (deterministic):
+;
+;   Part A: ISO-8859-1 -> UTF-8 (the reverse direction of test-enc17)
+;   Part B: multi-node kill round trip - three chained kill-line commands
+;           produce one kill entry holding several nodes; the kill text
+;           AND its encoding tag must survive. Checked the way
+;           doc/tickets.md ticket 17 suggests: yank the same kill into
+;           buffers with different set-buffer-encoding values and compare
+;           the resulting text.
+;
+; The OUTWARD clipboard (TTsetClipboard) is exercised - $allow-clip-exec
+; is 1 while copying/killing, so the complete kill and its encoding are
+; published to the system clipboard. The READ-BACK (TTgetClipboard) is
+; deliberately blocked during the yanks ($allow-clip-exec 0): on the
+; console builds that read shells out (clip.exe/PowerShell/xclip) and any
+; other application touching the clipboard would change the result, so
+; this test must not depend on the machine's clipboard state. The full
+; external round trip lives in test-enc17-clip.emf.
+;
+; Notes:
+;  * find-file resolves a relative name against the CURRENT buffer's
+;    directory, so after the first find-file (from *scratch*, i.e. the
+;    current directory) every name below is relative to tests/.
+;  * the multi-node kill is cut from the output buffer itself (the text
+;    is inserted, killed with three kill-line commands and yanked back)
+;    so that no modified source file is left behind for exit-emacs.
+;
+; Run:  MENAME=ci-test <exe> @tests/test-enc17-mn
+; Out:  tests/test-enc17-mn-out.txt      (utf-8)
+;       tests/test-enc17-mn-iso-out.txt  (iso-8859-1, escape output)
+execute-file "me"
+
+set-variable $system &bor $system 0x2000000
+set-variable $allow-clip-exec 1
+
+define-macro start-up
+    ; ---- Part A: ISO-8859-1 source -> UTF-8 destination ----
+    find-file "tests/enc-17-iso.txt"
+    !force set-buffer-encoding "iso-8859-1"
+    set-variable #l0 $buffer-encoding
+    beginning-of-buffer
+    set-mark
+    end-of-line
+    !force copy-region
+
+    find-file "test-enc17-mn-out.txt"
+    !force set-buffer-encoding "utf-8"
+    insert-string "TEST:iso-srcenc="
+    insert-string #l0
+    insert-newline
+    insert-string "TEST:iso-dstenc="
+    insert-string $buffer-encoding
+    insert-newline
+    insert-string "TEST:iso2utf-text="
+    set-variable $allow-clip-exec 0
+    !force yank
+    set-variable $allow-clip-exec 1
+    insert-newline
+
+    ; ---- Part B: multi-node kill (3 x kill-line) round trip ----
+    ; cut a two line UTF-8 block out of this buffer: the three chained
+    ; kill-line commands end up as three nodes of ONE kill entry
+    set-mark
+    insert-string "αX😀Y"
+    insert-newline
+    insert-string "βZ😀W"
+    insert-newline
+    exchange-point-and-mark
+    !force kill-line
+    !force kill-line
+    !force kill-line
+
+    ; (1) paste back into a UTF-8 buffer - every node and the line
+    ;     structure must come back unchanged
+    insert-string "TEST:mn-utf8=<"
+    set-variable $allow-clip-exec 0
+    !force yank
+    set-variable $allow-clip-exec 1
+    insert-string ">"
+    insert-newline
+
+    ; (2) paste the same kill into an ISO-8859-1 buffer - the \uXXXX
+    ;     escapes only appear if the kill is still tagged UTF-8 (a lost
+    ;     or wrong tag pastes mojibake instead)
+    find-file "test-enc17-mn-iso-out.txt"
+    !force set-buffer-encoding "iso-8859-1"
+    insert-string "TEST:mn-iso=<"
+    set-variable $allow-clip-exec 0
+    !force yank
+    set-variable $allow-clip-exec 1
+    insert-string ">"
+    insert-newline
+    save-buffer
+
+    find-file "test-enc17-mn-out.txt"
+    insert-string "TEST:all-tests=complete"
+    save-buffer
+    exit-emacs
+!emacro
