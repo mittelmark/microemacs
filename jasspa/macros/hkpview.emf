@@ -501,40 +501,17 @@ define-macro pview-icons-toggle
 ; Toolbar tool integration
 ; ========================
 
-0 define-macro pview-tool-create
-    ; Called by toolbar when *pview* buffer is created/updated
-    ; Save current file's directory, then init pview if empty
-    set-variable #l0 $buffer-fname
-    ; If no file, use current directory
-    !if &seq #l0 ""
-        set-variable #l0 &stat "a" "."
-    !else
-        ; Strip filename to get directory
-        !if &set #l1 &rsin "/" #l0
-            set-variable #l0 &lef #l0 #l1
-        !else
-            set-variable #l0 &stat "a" "."
-        !endif
+define-macro pview-tool-create
+    ; Called by toolbar when *pview* buffer is created/updated.
+    ; Do NOT render here - the toolbar forces this command on first
+    ; buffer use regardless of tool flag. Rendering is done only by
+    ; explicit M-x pview or when user clicks the tool in toolbar menu.
+    ; Just ensure the buffer has minimal state so fhook runs cleanly.
+    !if &not &exist .pview.icons
+        set-variable .pview.icons 0
     !endif
-    ; Ensure trailing slash
-    !if &not &seq &rig #l0 -1 "/"
-        set-variable #l0 &cat #l0 "/"
-    !endif
-    set-variable #l0 &rep #l0 "//" "/"
-    ; Only initialize if root not set yet
-    !if &not &exist .pview.root
-        set-variable .pview.root #l0
-        !if &not &exist .pview.open
-            set-variable .pview.open "|"
-        !endif
-        !if &not &lfind .pview.open #l0
-            set-variable .pview.open &lins .pview.open -1 #l0
-        !endif
-        !if &not &exist .pview.icons
-            set-variable .pview.icons 0
-        !endif
-        pview-git-status
-        pview-render
+    !if &not &exist .pview.open
+        set-variable .pview.open "|"
     !endif
 !emacro
 
