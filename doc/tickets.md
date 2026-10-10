@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-09 05:09
+date: 2026-10-10 06:51
 ---
 
 ## Introduction
@@ -103,7 +103,7 @@ If in mewb clipboard is enabled and some text is in the clipboard the
 help browser tries all the time to load a help page using the text in the clipboard instead of the actual link.
 
 
-## Ticket 11: FR - Project browser
+## Ticket 11: FR - Project browser (WIP)
 
 > closed dir (color1)
 v unfold dir (color
@@ -111,6 +111,44 @@ v unfold dir (color
    filename.txt (color)    M (indicator)
    newname.txt (color)     A (git indicator)
    
+### Ticket 11A: basic implementation (DONE)
+
+The following features and problems exists.
+
+- pview command opens correctly a new window and basic clicking does work
+- if there are many files like in MicroEmacs macros directory only let's say the first 20 files should be displayed, then three ...
+- clicking on the dots should open 100 more files, etc
+- optional support for UTF8 icons for files and folders (WIP)
+
+Notes: large directories are paged (20 entries + a clickable "... N more"
+line adding 100 per click). Entries are stored relative to the project root
+and the macro variable evaluation buffers were raised from 1KB to 16KB
+(meEVALBUF_SIZE_MAX) so that a fully expanded 500+ entry directory fits.
+
+### Ticket 11B: toolbar integration (DONE)
+
+- if the Project View is added, the function pview must be now called manually, but it should be loaded autmatically
+- the "Project View" buffer in the toolbar has no highlighting, the escape codes are visible, it should have the pview highlighting mode attached
+
+Notes: the root cause was twofold. The Project View entry in
+`toollist.emf` had tool flag `0x0` - without the `0x001` "run update
+command on create" bit the toolbar never invoked `pview-tool-create`
+(fixed to `0x1`, the Add Tool flow ORs the toolbar position giving
+`0x1001`). The command itself then selects the `*pview*` buffer
+explicitly (toolbar-redraw-tools restores the callers window only, so
+the tool command runs in the callers buffer - see
+`toolbar-dir-list-create`), sets `$buffer-fhook`/`$buffer-hilight` from
+the registered `.hilight.pview` rule, runs `fhook-pview` for the buffer
+bindings and renders the project tree once when the buffer is still
+empty. Regression test: `tests/test-pview-toolbar.emf` (lazy load,
+flag, auto-render, highlighting and a re-render marker for the second
+toolbar-open).
+
+NB: existing user registries still hold the old flag (`0x1000`); the
+Project View tool must be removed once and re-added via M-x user-setup
+after the update so that the registry picks up the new `0x1001` flag.
+
+
 ## Ticket 12: UTF8 symbol support (WIP)
 
 | OS       | me version | supported |

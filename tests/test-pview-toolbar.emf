@@ -1,0 +1,167 @@
+; -!- emf -!-
+; Test toolbar integration for the pview project browser (Ticket 11B)
+; Usage: MEPATH=jasspa/macros me @tests/test-pview-toolbar
+; Results are written to tests/test-pview-toolbar-output.txt
+
+execute-file "me"
+
+define-macro start-up
+    ; Absolute output path
+    set-variable %pview-out &cat &stat "a" "." "tests/test-pview-toolbar-output.txt"
+    set-variable %pview-out &rep %pview-out "//" "/"
+    set-variable %pview-cwd &rep &cat &stat "a" "." "/" "//" "/"
+
+    ; hkpview must not be loaded yet - the toolbar registers the lazy load
+    !if &exi .hilight.pview
+        set-variable %pview-preload 1
+    !else
+        set-variable %pview-preload 0
+    !endif
+
+    ; Build the current toolbar with only the Project View tool, sourcing
+    ; every value from toollist.emf (same as the Add Tool flow in
+    ; toolstp.emf: flag OR'd with the target toolbar position).
+    exec-file "toollist"
+    set-variable .toolbar.tool-name &cat "\CH" &cat &lget .toolbar.tool-names 12 "\CH"
+    set-variable .toolbar.tool-buff &cat "\CH" &cat &lget .toolbar.tool-buffs 12 "\CH"
+    set-variable .toolbar.tool-file &cat "\CH" &cat &lget .toolbar.tool-files 12 "\CH"
+    set-variable .toolbar.tool-size "\CH100\CH"
+    set-variable .toolbar.tool-cmd  &cat "\CH" &cat &lget .toolbar.tool-cmds 12 "\CH"
+    set-variable %pview-flag &bor &lget .toolbar.tool-flags 12 0x1000
+    set-variable .toolbar.tool-flag &cat "\CH" &cat %pview-flag "\CH"
+
+    ; Open the toolbar: registers pview-tool-create -> hkpview (lazy load)
+    ; and creates the *pview* tool buffer in its own window.
+    ; NB: a bare call defaults @# to a truthy value which makes toolbar-open
+    ; re-read the tool lists from the registry - pass 0 to keep the
+    ; in-memory lists above (same trick as session.emf).
+    0 toolbar-open
+
+    ; First redraw pass - toolbar-redraw passes .toolbar-redraw.bc (0x001
+    ; after open); this executes pview-tool-create for flag 0x001 tools.
+    1 toolbar-redraw-tools
+
+    ; Capture the state of the tool buffer
+    find-buffer "*pview*"
+    set-variable %pview-bname $buffer-bname
+    set-variable %pview-loaded 0
+    !if &exi .hilight.pview
+        set-variable %pview-loaded 1
+    !endif
+    set-variable %pview-toolname &lget .toolbar.tool-name 1
+    set-variable %pview-root .pview.root
+    set-variable %pview-count1 &llen .pview.entries
+    set-variable %pview-eline $window-eline
+    set-variable %pview-fhook $buffer-fhook
+    set-variable %pview-hl $buffer-hilight
+    set-variable %pview-hl-id .hilight.pview
+    !if &and &sin "h" .fhook-pview.setup &band .hilight.flags 0x01
+        set-variable %pview-hl-ok 1
+    !else
+        set-variable %pview-hl-ok 0
+    !endif
+
+    ; Marker line at the top: a second tool-create run must not re-render
+    ; or wipe the existing state (*pview* is in view mode, the marker is
+    ; inserted with view mode temporarily disabled).
+    beginning-of-buffer
+    0 buffer-mode "view"
+    insert-string ";RE-RUN-MARKER"
+    insert-newline
+    1 buffer-mode "view"
+    set-variable %pview-eline1 $window-eline
+
+    ; Second redraw pass (as on a later toolbar-open): tool-create runs
+    ; again but must NOT re-render or wipe the existing state.
+    1 toolbar-redraw-tools
+    find-buffer "*pview*"
+    beginning-of-buffer
+    set-variable %pview-mfound 0
+    !force search-forward ";RE-RUN-MARKER"
+    !if $status
+        set-variable %pview-mfound 1
+    !endif
+    set-variable %pview-count2 &llen .pview.entries
+    set-variable %pview-root2 .pview.root
+    set-variable %pview-eline2 $window-eline
+
+    ; --- Write results ---
+    find-file %pview-out
+
+    insert-string "TEST:bname="
+    insert-string %pview-bname
+    insert-newline
+
+    insert-string "TEST:preload="
+    insert-string %pview-preload
+    insert-newline
+
+    insert-string "TEST:toolname="
+    insert-string %pview-toolname
+    insert-newline
+
+    insert-string "TEST:flag="
+    insert-string %pview-flag
+    insert-newline
+
+    insert-string "TEST:tool-loaded="
+    insert-string %pview-loaded
+    insert-newline
+
+    insert-string "TEST:root="
+    insert-string %pview-root
+    insert-newline
+
+    insert-string "TEST:entries-count="
+    insert-string %pview-count1
+    insert-newline
+
+    insert-string "TEST:eline="
+    insert-string %pview-eline
+    insert-newline
+
+    insert-string "TEST:fhook="
+    insert-string %pview-fhook
+    insert-newline
+
+    insert-string "TEST:hilight="
+    insert-string %pview-hl
+    insert-newline
+
+    insert-string "TEST:hilight-id="
+    insert-string %pview-hl-id
+    insert-newline
+
+    insert-string "TEST:hilight-ok="
+    insert-string %pview-hl-ok
+    insert-newline
+
+    insert-string "TEST:rerun-entries-count="
+    insert-string %pview-count2
+    insert-newline
+
+    insert-string "TEST:rerun-root="
+    insert-string %pview-root2
+    insert-newline
+
+    insert-string "TEST:rerun-eline1="
+    insert-string %pview-eline1
+    insert-newline
+    insert-string "TEST:rerun-eline="
+    insert-string %pview-eline2
+    insert-newline
+
+    insert-string "TEST:rerun-marker="
+    !if &equ %pview-mfound 1
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
+    insert-string "TEST:all-tests=complete"
+    insert-newline
+    !force save-buffer
+    !force write-buffer %pview-out
+    exit-emacs
+!emacro

@@ -71,6 +71,7 @@ set-variable .fhook-pview.setup "ghmopWU"
     hilight .hilight.pview 0x44 "\ecH" "" "\ecA" "" "" .scheme.hide       ; hidden entries
     hilight .hilight.pview 0x44 "\ecF" "" "\ecA" "" "" .scheme.file       ; regular files
     hilight .hilight.pview 0x44 "\ecI" "" "\ecA" "" "" .scheme.hlyellow   ; git indicators
+    hilight .hilight.pview 0x44 "\ecM" "" "\ecA" "" "" .scheme.comment    ; "... N more" paging line
 !endif
 
 ; ========================
@@ -102,6 +103,16 @@ define-macro pview
     !if &not &exist .pview.icons
         set-variable .pview.icons 0
     !endif
+    ; Pagination defaults: entries shown per directory / added per click
+    !if &not &exist .pview.pagelen
+        set-variable .pview.pagelen 20
+    !endif
+    !if &not &exist .pview.pagestep
+        set-variable .pview.pagestep 100
+    !endif
+    ; Fresh view: drop any previously expanded per-directory limits
+    set-variable .pview.limit-path "|"
+    set-variable .pview.limit-val "|"
     ; Root always starts open
     !if &not &lfind .pview.open #l0
         set-variable .pview.open &lins .pview.open -1 #l0
@@ -230,13 +241,81 @@ define-macro pview
     insert-string "\ecA"
     pview-emit-git .pview.root 1
     insert-newline
-    set-variable .pview.entries &lins .pview.entries -1 .pview.root
+    ; Root entry stores an empty path (relative to itself)
+    set-variable .pview.entries &lins .pview.entries -1 ""
     !if &lfind .pview.open .pview.root
         pview-render-dir .pview.root 1
     !endif
     ; Re-enable view mode
     -1 buffer-mode "edit"
     1 buffer-mode "view"
+!emacro
+
+; ========================
+; Pagination (large directories)
+; ========================
+
+; pview-dir-limit <dirpath/>
+; Effective number of entries shown for a directory -> $result
+0 define-macro pview-dir-limit
+    !if &not &exist .pview.pagelen
+        set-variable .pview.pagelen 20
+    !endif
+    !if &not &exist .pview.limit-path
+        set-variable .pview.limit-path "|"
+        set-variable .pview.limit-val "|"
+    !endif
+    set-variable #l0 @1
+    set-variable #l1 &lfind .pview.limit-path #l0
+    !if &gre #l1 0
+        set-variable $result &lget .pview.limit-val #l1
+    !else
+        set-variable $result .pview.pagelen
+    !endif
+!emacro
+
+; pview-bump-limit <dirpath/>
+; Increase the display limit for <dirpath/> by .pview.pagestep
+0 define-macro pview-bump-limit
+    !if &not &exist .pview.pagestep
+        set-variable .pview.pagestep 100
+    !endif
+    !if &not &exist .pview.limit-path
+        set-variable .pview.limit-path "|"
+        set-variable .pview.limit-val "|"
+    !endif
+    !if &not &exist .pview.pagelen
+        set-variable .pview.pagelen 20
+    !endif
+    set-variable #l0 @1
+    set-variable #l1 &lfind .pview.limit-path #l0
+    !if &gre #l1 0
+        set-variable #l2 &add &lget .pview.limit-val #l1 .pview.pagestep
+        set-variable .pview.limit-val &lset .pview.limit-val #l1 #l2
+    !else
+        set-variable .pview.limit-path &lins .pview.limit-path -1 #l0
+        set-variable .pview.limit-val &lins .pview.limit-val -1 &add .pview.pagelen .pview.pagestep
+    !endif
+!emacro
+
+; pview-emit-more <dirpath/> <depth> <remaining>
+; Appends the "... N more ..." paging line and its pseudo-entry
+0 define-macro pview-emit-more
+    set-variable #l0 @1
+    set-variable #l1 @2
+    set-variable #l2 @3
+    ; Indent: 2 spaces per level (matches siblings)
+    set-variable #l3 &mul #l1 2
+    set-variable #l4 0
+    !while &less #l4 #l3
+        insert-string " "
+        set-variable #l4 &add #l4 1
+    !done
+    insert-string "\ecM"
+    insert-string &spr "... %d more ..." #l2
+    insert-string "\ecA"
+    insert-newline
+    set-variable .pview.entries &lins .pview.entries -1 &cat "..." &rig #l0 &len .pview.root
 !emacro
 
 ; pview-render-dir <dirpath/> <depth>
@@ -248,21 +327,39 @@ define-macro pview
     ; Cache list lengths - recursive calls from pview-emit-dir will modify lists
     set-variable #l7 &llen .pview.ld-dirs
     set-variable #l8 &llen .pview.ld-files
+    ; Pagination: show at most pview-dir-limit direct children
+    pview-dir-limit #l0
+    set-variable #l6 $result
+    set-variable #l5 0
+    set-variable #l4 0
     set-variable #l2 0
     !while &les &pinc #l2 1 #l7
-        set-variable #l3 &lget .pview.ld-dirs #l2
-        pview-emit-dir #l3 #l1
+        !if &less #l5 #l6
+            set-variable #l3 &cat #l0 &lget .pview.ld-dirs #l2
+            pview-emit-dir #l3 #l1
+            set-variable #l5 &add #l5 1
+        !else
+            set-variable #l4 1
+        !endif
     !done
     set-variable #l2 0
     !while &les &pinc #l2 1 #l8
-        set-variable #l3 &lget .pview.ld-files #l2
-        pview-emit-file #l3 #l1
+        !if &less #l5 #l6
+            set-variable #l3 &cat #l0 &lget .pview.ld-files #l2
+            pview-emit-file #l3 #l1
+            set-variable #l5 &add #l5 1
+        !else
+            set-variable #l4 1
+        !endif
     !done
+    !if #l4
+        pview-emit-more #l0 #l1 &sub &add #l7 #l8 #l5
+    !endif
 !emacro
 
 ; pview-listdir <dirpath/>
-; Sets .pview.ld-dirs and .pview.ld-files to sorted full paths
-; (dirs keep trailing /). Skips ./ and ../.
+; Sets .pview.ld-dirs and .pview.ld-files to sorted entry names
+; relative to <dirpath/> (dirs keep trailing /). Skips ./ and ../.
 0 define-macro pview-listdir
     set-variable .pview.ld-dirs "|"
     set-variable .pview.ld-files "|"
@@ -274,11 +371,10 @@ define-macro pview
         !elif &seq &rig #l1 -1 "~"
             ; skip editor backup files (name~)
         !else
-            set-variable #l2 &cat #l0 #l1
             !if &seq &rig #l1 -1 "/"
-                set-variable .pview.ld-dirs &lins .pview.ld-dirs -1 #l2
+                set-variable .pview.ld-dirs &lins .pview.ld-dirs -1 #l1
             !else
-                set-variable .pview.ld-files &lins .pview.ld-files -1 #l2
+                set-variable .pview.ld-files &lins .pview.ld-files -1 #l1
             !endif
         !endif
     !done
@@ -332,7 +428,8 @@ define-macro pview
     insert-string "\ecA"
     pview-emit-git #l0 1
     insert-newline
-    set-variable .pview.entries &lins .pview.entries -1 #l0
+    ; Entries store paths relative to .pview.root (keeps the list small)
+    set-variable .pview.entries &lins .pview.entries -1 &rig #l0 &len .pview.root
     ; Expand children if open - save/restore ld-lists around recursive call
     !if #l3
         set-variable .pview.ld-save-dirs .pview.ld-dirs
@@ -369,7 +466,7 @@ define-macro pview
     insert-string "\ecA"
     pview-emit-git #l0 0
     insert-newline
-    set-variable .pview.entries &lins .pview.entries -1 #l0
+    set-variable .pview.entries &lins .pview.entries -1 &rig #l0 &len .pview.root
 !emacro
 
 ; pview-emit-git <fullpath> <isdir>
@@ -414,9 +511,26 @@ define-macro pview
     set-variable #l0 $window-line
     set-variable #l1 &lget .pview.entries #l0
     !if &seq #l1 ""
-        ml-write "No entry on this line"
+        ; The root entry is stored as an empty relative path (always line 1)
+        !if &not &equ #l0 1
+            ml-write "No entry on this line"
+            !return
+        !endif
+    !endif
+    !if &seq &lef #l1 3 "..."
+        ; Pagination "... N more ..." line - expand this directory and keep cursor
+        set-variable #l2 $window-line
+        set-variable #l3 $window-y-scroll
+        pview-bump-limit &cat .pview.root &rig #l1 3
+        pview-render
+        !if &les #l2 &add &llen .pview.entries 1
+            #l2 goto-line
+        !endif
+        !force set-variable $window-y-scroll #l3
         !return
     !endif
+    ; Resolve the relative entry against the project root
+    set-variable #l1 &cat .pview.root #l1
     !if &seq &rig #l1 -1 "/"
         ; Directory - toggle open/closed, keep cursor
         set-variable #l2 $window-line
@@ -428,7 +542,7 @@ define-macro pview
             set-variable .pview.open &lins .pview.open -1 #l1
         !endif
         pview-render
-        !if &les #l2 &llen .pview.entries
+        !if &les #l2 &add &llen .pview.entries 1
             #l2 goto-line
         !endif
         !force set-variable $window-y-scroll #l3
@@ -470,7 +584,7 @@ define-macro pview
     pview-git-status
     !force 0 find-buffer #l9
     pview-render
-    !if &les #l1 &llen .pview.entries
+    !if &les #l1 &add &llen .pview.entries 1
         #l1 goto-line
     !endif
     !force set-variable $window-y-scroll #l2
@@ -512,10 +626,16 @@ define-macro pview
 
 0 define-macro pview-context-menu
     set-variable #l0 @wl
-    ; Check if we're on a directory line
+    ; Check line type: pagination marker, directory, or file
     set-variable #l1 &sin "\ecC" #l0
     set-variable #l2 &sin "\ecO" #l0
-    !if &or #l1 #l2
+    set-variable #l3 &sin "\ecM" #l0
+    !if #l3
+        osd .osd.pview   5 ""  "\HShow More"      0 pview-select
+        osd .osd.pview  10 ""  "Refresh \HView"    f pview-refresh
+        osd .osd.pview  15 "-" ""
+        osd .osd.pview  20 ""  "\HClose View"      f pview-quit
+    !elif &or #l1 #l2
         osd .osd.pview   5 ""  "\HOpen/Close Dir"  0 pview-select
         osd .osd.pview  10 ""  "Refresh \HView"    f pview-refresh
         osd .osd.pview  15 "-" ""
@@ -554,22 +674,61 @@ define-macro pview-icons-toggle
 ; ========================
 
 define-macro pview-tool-create
-    ; Called by toolbar when *pview* buffer is created/updated.
-    ; Do NOT render here - the toolbar forces this command on first
-    ; buffer use regardless of tool flag. Rendering is done only by
-    ; explicit M-x pview or when user clicks the tool in toolbar menu.
-    ; Ensure buffer has minimal state and hilight is configured.
+    ; Called by the toolbar when the *pview* tool buffer is created or the
+    ; toolbar is opened (tool flag 0x001 - see toolbar.emf). The command
+    ; runs in the callers buffer context (toolbar-redraw-tools restores the
+    ; callers window only), so the tool buffer is selected explicitly and
+    ; the callers position restored afterwards - same pattern as
+    ; toolbar-dir-list-create (no popup-window here).
+    set-position "\x86"
+    find-buffer "*pview*"
+    ; Buffer state defaults (same as pview)
     !if &not &exist .pview.icons
         set-variable .pview.icons 0
     !endif
     !if &not &exist .pview.open
         set-variable .pview.open "|"
     !endif
-    ; Set fhook and hilight so the buffer renders correctly
+    !if &not &exist .pview.pagelen
+        set-variable .pview.pagelen 20
+    !endif
+    !if &not &exist .pview.pagestep
+        set-variable .pview.pagestep 100
+    !endif
+    ; Set fhook and hilight so the \ec markers highlight correctly
     set-variable $buffer-fhook "fhook-pview"
     !if &and &sin "h" .fhook-pview.setup &band .hilight.flags 0x01
         set-variable $buffer-hilight .hilight.pview
     !endif
+    ; Install the buffer key bindings (return/tab/q/r) - the file hook was
+    ; registered too late for the initial buffer creation
+    fhook-pview
+    ; Render once when the buffer is still empty (first toolbar display).
+    ; A buffer already filled by M-x pview keeps its state - the toolbar
+    ; re-runs this command on every toolbar-open.
+    end-of-buffer
+    !if &equ $window-eline 1
+        set-variable #l0 &stat "a" "."
+        !if &not &seq &rig #l0 -1 "/"
+            set-variable #l0 &cat #l0 "/"
+        !endif
+        set-variable #l0 &rep #l0 "//" "/"
+        ; Fresh view: drop any previously expanded per-directory limits
+        set-variable .pview.limit-path "|"
+        set-variable .pview.limit-val "|"
+        ; Root always starts open
+        !if &not &lfind .pview.open #l0
+            set-variable .pview.open &lins .pview.open -1 #l0
+        !endif
+        set-variable .pview.root #l0
+        ; git-status switches to *pview-git* internally; save and restore buffer
+        set-variable #l9 $buffer-bname
+        pview-git-status
+        !force 0 find-buffer #l9
+        pview-render
+        beginning-of-buffer
+    !endif
+    goto-position "\x86"
 !emacro
 
 buffer-init-fhook "pview"
