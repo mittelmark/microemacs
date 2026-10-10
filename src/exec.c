@@ -407,7 +407,7 @@ macarg(meUByte *tok)               /* get a macro line argument */
     
     savcle = clexec;            /* save execution mode */
     clexec = meTRUE;              /* get the argument */
-    status = meGetString(NULL,MLNOHIST|MLFFZERO,0,tok,meBUF_SIZE_MAX) ;
+    status = meGetString(NULL,MLNOHIST|MLFFZERO,0,tok,meTOKENBUF_SIZE_MAX) ;
     clexec = savcle;            /* restore execution mode */
     
     return status ;
