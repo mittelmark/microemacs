@@ -250,7 +250,9 @@ setVar(meUByte *vname, meUByte *vvalue, meRegister *regs)
             cc = nn[1] - '0' ;
             if(cc >= ('0'+meREGISTER_MAX))
                 return mlwrite(MWABORT,(meUByte *)"[No such register %s]",vname);
-            meStrcpy(regs->reg[cc],vvalue) ;
+            /* registers stay meBUF_SIZE_MAX - truncate long eval results */
+            meStrncpy(regs->reg[cc],vvalue,meBUF_SIZE_MAX-1) ;
+            regs->reg[cc][meBUF_SIZE_MAX-1] = '\0' ;
             break ;
         }
 #if MEOPT_EXTENDED
@@ -2118,9 +2120,9 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
     meRegister *regs ;     /* pointer to relevant regs if setting var */
 #endif
     register int fnum;      /* index to function to eval */
-    meUByte arg1[meBUF_SIZE_MAX];      /* value of first argument */
-    meUByte arg2[meBUF_SIZE_MAX];      /* value of second argument */
-    meUByte arg3[meBUF_SIZE_MAX];      /* value of third argument */
+    meUByte arg1[meTOKENBUF_SIZE_MAX];      /* value of first argument */
+    meUByte arg2[meTOKENBUF_SIZE_MAX];      /* value of second argument */
+    meUByte arg3[meTOKENBUF_SIZE_MAX];      /* value of third argument */
     meUByte *varVal ;
     
     /* look the function up in the function table. An exact-length match is
@@ -2456,7 +2458,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
     case UFCAT:
         {
             meUByte *dd, *ss ;
-            int ii = meBUF_SIZE_MAX-1 ;
+            int ii = meTOKENBUF_SIZE_MAX-1 ;
             
             /* first string can be copied, second we must check the left */
             dd = evalResult ;
@@ -2806,7 +2808,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                 ii = cmpIFunc(arg2,ss,mlen) ;
                 if(!ii)
                 {
-                    if((dlen+rlen) >= meBUF_SIZE_MAX)
+                    if((dlen+rlen) >= meTOKENBUF_SIZE_MAX)
                         break ;
                     meStrcpy(evalResult+dlen,arg3) ;
                     dlen += rlen ;
@@ -2816,7 +2818,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                     break ;
                 if(ii || (mlen == 0))
                 {
-                    if(dlen >= meBUF_SIZE_MAX-2)
+                    if(dlen >= meTOKENBUF_SIZE_MAX-2)
                         break ;
                     ss++ ;
                     if(cc == meCHAR_LEADER)
@@ -2846,14 +2848,14 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                 if(ii)
                 {
                     mlen = meRegexStrCmp.group[0].start - soff ;
-                    if(dlen+mlen >= meBUF_SIZE_MAX)
+                    if(dlen+mlen >= meTOKENBUF_SIZE_MAX)
                         break ;
                     meStrncpy(evalResult+dlen,arg1+soff,mlen) ;
                     dlen += mlen ;
                     rr = arg3 ;
                     while((cc=*rr++) != '\0')
                     {
-                        if(dlen >= meBUF_SIZE_MAX-1)
+                        if(dlen >= meTOKENBUF_SIZE_MAX-1)
                             break ;
                         if((cc == '\\') && (*rr != '\0'))
                         {
@@ -2872,7 +2874,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                                 if((soff=meRegexStrCmp.group[cc].start) >= 0)
                                 {
                                     mlen = meRegexStrCmp.group[cc].end - soff ;
-                                    if(dlen+mlen >= meBUF_SIZE_MAX)
+                                    if(dlen+mlen >= meTOKENBUF_SIZE_MAX)
                                         break ;
                                     if(cc)
                                         soff += meRegexStrCmp.group[0].start ;
@@ -2919,7 +2921,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                     break ;
                 if(!ii || (mlen == 0))
                 {
-                    if(dlen >= meBUF_SIZE_MAX-2)
+                    if(dlen >= meTOKENBUF_SIZE_MAX-2)
                         break ;
                     soff++ ;
                     if(cc == meCHAR_LEADER)
@@ -2965,6 +2967,11 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
         {
             int  index=meAtoi(arg2) ;
             meUByte cc, *s1, *s2 ;
+            if(arg1[0] == '\0')
+            {
+                evalResult[0] = '\0' ;
+                return evalResult ;
+            }
             if(index > 0)
             {
                 s2 = arg1 ;
@@ -2991,6 +2998,8 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
         {
             int  index ;
             meUByte cc, *s1, *s2 ;
+            if(arg1[0] == '\0')
+                return meLtoa(0) ;
             s2 = arg1 ;
             cc = *s2 ;
             for(index=1 ; ; index++)
@@ -3007,6 +3016,8 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
         {
             int  index ;
             meUByte cc, *s1, *s2 ;
+            if(arg1[0] == '\0')
+                return meItoa(0) ;
             s2 = arg1 ;
             cc = *s2 ;
             for(index=1 ; ; index++)
@@ -3022,6 +3033,8 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             int  index ;
             meUByte cc, *s1, *s2 ;
             if((index=meAtoi(arg2)) <= 0)
+                return emptym ;
+            if(arg1[0] == '\0')
                 return emptym ;
             s2 = arg1 ;
             cc = *s2 ;
@@ -3040,6 +3053,14 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
         {
             int  index=meAtoi(arg2), ii ;
             meUByte cc, *s1, *s2 ;
+            if(arg1[0] == '\0')
+            {
+                /* an empty list builds a canonical one-element list */
+                meStrcpy(evalResult,"|") ;
+                meStrcat(evalResult,arg3) ;
+                meStrcat(evalResult,"|") ;
+                return evalResult ;
+            }
             s2 = arg1 ;
             cc = *s2 ;
             if(index <= 0)
@@ -3084,7 +3105,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
             index = (int) (s1 - arg1) ;
             meStrncpy(evalResult,arg1,index) ;
             ii = meStrlen(arg3) ;
-            if(ii+index < meBUF_SIZE_MAX)
+            if(ii+index < meTOKENBUF_SIZE_MAX)
             {
                 //meStrncpy(evalResult+index,arg3,ii) ;
                 memcpy(evalResult+index,arg3,ii);
@@ -3092,7 +3113,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                 if(fnum == UFLINS)
                     s2 = s1-1 ;
                 ii = meStrlen(s2) ;
-                if(ii+index < meBUF_SIZE_MAX)
+                if(ii+index < meTOKENBUF_SIZE_MAX)
                 {
                     meStrcpy(evalResult+index,s2) ;
                     index += ii ;
@@ -3739,7 +3760,7 @@ setVariable(int f, int n)       /* set a variable */
 {
     register int   status ;         /* status return */
     meUByte var[meSBUF_SIZE_MAX] ;            /* name of variable to fetch */
-    meUByte value[meBUF_SIZE_MAX] ;           /* value to set variable to */
+    meUByte value[meTOKENBUF_SIZE_MAX] ;      /* value to set variable to */
     meRegister *regs ;
     
     /* horrid global variable, see notes at definition */
@@ -3755,7 +3776,7 @@ setVariable(int f, int n)       /* set a variable */
     /* get the value for that variable */
     if(f == meTRUE)
         meStrcpy(value, meItoa(n));
-    else if((status = meGetString((meUByte *)"Value", MLFFZERO, 0, value,meBUF_SIZE_MAX)) <= 0)
+    else if((status = meGetString((meUByte *)"Value", MLFFZERO, 0, value,meTOKENBUF_SIZE_MAX)) <= 0)
         return status ;
     
     return setVar(var,value,regs) ;

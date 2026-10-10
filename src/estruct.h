@@ -37,7 +37,8 @@
 #define meWINDOW_MAX          64                /* # of windows MAXIMUM         */
 #define meSBUF_SIZE_MAX       128               /* # of bytes, string buffers   */
 #define meBUF_SIZE_MAX        1024              /* size of various inputs       */
-#define meTOKENBUF_SIZE_MAX   meBUF_SIZE_MAX+4  /* meBUF_SIZE_MAX + an overrun safe area*/
+#define meEVALBUF_SIZE_MAX    16384             /* expression evaluation result/args */
+#define meTOKENBUF_SIZE_MAX   meEVALBUF_SIZE_MAX+4  /* meEVALBUF_SIZE_MAX + an overrun safe area*/
 #define meMLDISP_SIZE_MAX     meBUF_SIZE_MAX+20 /* meBUF_SIZE_MAX + completion label*/
 #define meTIME_STAMP_SIZE_MAX 40                /* Max len of a time stamp str. */
 #define meMACRO_DEPTH_MAX     20                /* maximum depth of recursion   */
