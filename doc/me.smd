@@ -239,7 +239,8 @@
   [quote-char(2)](quote-char(2)) (C-q) Insert literal character  
   [reyank(2)](reyank(2)) (esc y) Restore next yank buffer  
   [tab(2)](tab(2)) (tab) Handle the tab key  
-  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer  
+  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer
+  [yank-as(2)](yank-as(2)) Re-tag the kill buffer encoding and yank  
   [yank-rectangle(2)](yank-rectangle(2)) (esc C-y) Insert a column of text  
   [yank-rectangle-overwrite(3)](yank-rectangle-overwrite(3)) Insert a column of text with overwrite  
 
@@ -2245,7 +2246,8 @@
   [xfind(3)](xfind(3)) Execute find command  
   [xgrep(3)](xgrep(3)) Execute grep command  
   [xrdb-scheme(3)](xrdb-scheme(3)) - load xrdb color scheme files into ME  
-  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer  
+  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer
+  [yank-as(2)](yank-as(2)) Re-tag the kill buffer encoding and yank  
   [yank-rectangle(2)](yank-rectangle(2)) (esc C-y) Insert a column of text  
   [yank-rectangle-overwrite(3)](yank-rectangle-overwrite(3)) Insert a column of text with overwrite  
   [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
@@ -2475,7 +2477,8 @@
   [void(2)](void(2)) Null command  
   [wrap-word(2)](wrap-word(2)) Wrap word onto next line  
   [write-buffer(2)](write-buffer(2)) (C-x C-w) Write contents of buffer to named (new) file  
-  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer  
+  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer
+  [yank-as(2)](yank-as(2)) Re-tag the kill buffer encoding and yank  
   [yank-rectangle(2)](yank-rectangle(2)) (esc C-y) Insert a column of text  
 
   The following is a list of documented macro commands provided by  __MicroEmacs__:
@@ -4089,7 +4092,8 @@
   [xsl(9)](xsl(9)) Extensible Stylesheet Language  
   [xul(9)](xul(9)) XML User Interface Language  
   [y(9)](y(9)) YACC programming language  
-  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer  
+  [yank(2)](yank(2)) (C-y) Paste (copy) kill buffer contents into buffer
+  [yank-as(2)](yank-as(2)) Re-tag the kill buffer encoding and yank  
   [yank-rectangle(2)](yank-rectangle(2)) (esc C-y) Insert a column of text  
   [yank-rectangle-overwrite(3)](yank-rectangle-overwrite(3)) Insert a column of text with overwrite  
   [zfile-setup(3)](zfile-setup(3)) Compressed file support setup  
@@ -5140,6 +5144,32 @@
 
 
 ## Development History 
+
+  - [261010] - Release v09.12.26.beta6
+
+  - [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
+               buffer encoding tags survive clipboard round trips,
+               copy-out encodes to the target for X selection targets
+               and external tools, unmappable characters become \uXXXX
+               escapes in single-byte buffers, and the new yank-as
+               command re-tags and yanks the kill buffer in a chosen
+               encoding; Windows killTextEquals parity keeps
+               multi-node kills intact.
+
+  - [261010] - Macro evaluation and token buffers raised from 1KB to
+               16KB (meEVALBUF_SIZE_MAX) so large &cat/&rep results,
+               function arguments and set-variable values no longer
+               truncate; empty-list guards for &lget &lset &lfind
+               &llen &ldel which could read past an empty list.
+
+  - [261010] - Fixes and additions: re-entrant screenUpdate crash on
+               ConfigureNotify during insert-file (ticket 16), Xft
+               underline offset and stale XGCFont gate, UTF-8
+               highlight desync, count-words counts UTF-8 characters
+               (ticket 15), new character string functions &uleft
+               &ulen &umid &uright &usin, macOS installer restored
+               for 10.15-14, hkmdview recognizes Windows drive and
+               UNC paths.
 
   - [261003] - Documentation catch-up after the 260929-261001 build and CI
                restructure: AGENTS.md testing and CI sections rewritten
@@ -8816,6 +8846,14 @@
      - Adding an automated regression test suite (tests/test-basics.emf)
        run by GitHub Actions on 7 platform jobs (Linux, macOS, Windows x3,
        Cygwin x2) and three nested !while/!repeat loops.
+     - Encoding-aware clipboard and kill ring (ticket 17): copy/paste
+       between different encodings round-trips correctly, unmappable
+       characters are written as \uXXXX escapes into single-byte
+       buffers and the new yank-as command re-tags the kill buffer.
+     - Macro evaluation buffers raised from 1KB to 16KB and empty-list
+       guards for the &l list functions (&lget &lset &lfind &llen
+       &ldel); new character string functions &uleft &ulen &umid
+       &uright &usin for UTF-8 aware macro text processing.
 
   __September 2009__
      10th Major Release - MicroEmacs 2009.
@@ -24770,6 +24808,58 @@ $a
   [$auto-time(5)]($auto-time(5)), [append-buffer(2)](append-buffer(2)), [backup(2m)](backup(2m)), [buffer-mode(2)](buffer-mode(2)),
   [change-file-name(2)](change-file-name(2)), [file-attrib(3)](file-attrib(3)), [save-buffer(2)](save-buffer(2)), [time(2m)](time(2m)),
   [write-region(3)](write-region(3)).
+!! me-id: m2cmd144
+! 2 yank-as
+## NAME
+
+
+  yank-as - Re-tag the kill buffer with an encoding and yank it
+$a
+
+
+## SYNOPSIS
+
+
+  _n_ __yank-as__ "_encoding_"
+
+
+## DESCRIPTION
+
+
+  Every kill ring entry carries an encoding tag which describes the
+  bytes held in that entry. __yank-as__ prompts for an encoding name
+  (TAB completes over the supported encodings), replaces the tag of
+  the most recent kill entry with the chosen encoding and then yanks
+  the entry _n_ times (default one) with the new tag applied.
+
+  The re-tagging acts on the internal kill buffer only; the command
+  does not read from or write to the system clipboard, so the new tag
+  is applied to the inserted text. Use it when text was killed in one
+  encoding and is to be pasted into a buffer using a different
+  __$buffer-encoding__, or when an external clipboard fetch left the
+  kill ring tagged with the wrong encoding.
+
+  An empty _encoding_ reports the current kill encoding on the
+  message line and yanks nothing. An unknown encoding or an empty
+  kill ring aborts the command.
+
+
+## EXAMPLE
+
+
+  Re-tag the current kill entry as ISO-8859-1 and yank it twice:
+
+```{.emf}
+        2 yank-as iso-8859-1
+
+```
+
+
+## SEE ALSO
+
+
+  [copy-region(2)](copy-region(2)), [kill-line(2)](kill-line(2)), [kill-region(2)](kill-region(2)),
+  [reyank(2)](reyank(2)), [yank(2)](yank(2)).
 !! me-id: m2cmd145
 ! 2 ml-write
 ## NAME
@@ -24973,7 +25063,7 @@ $a
 
   [backward-delete-char(2)](backward-delete-char(2)), [backward-kill-word(2)](backward-kill-word(2)), [copy-region(2)](copy-region(2)),
   [forward-delete-char(2)](forward-delete-char(2)), [forward-kill-word(2)](forward-kill-word(2)), [kill-line(2)](kill-line(2)),
-  [kill-paragraph(2)](kill-paragraph(2)), [kill-region(2)](kill-region(2)), [reyank(2)](reyank(2)), [yank-rectangle(2)](yank-rectangle(2)), [@y(4)](@y(4)),
+  [kill-paragraph(2)](kill-paragraph(2)), [kill-region(2)](kill-region(2)), [reyank(2)](reyank(2)), [yank-as(2)](yank-as(2)), [yank-rectangle(2)](yank-rectangle(2)), [@y(4)](@y(4)),
   [@cc(4)](@cc(4)).
 !! me-id: m2cmd147
 ! 2 define-macro-file

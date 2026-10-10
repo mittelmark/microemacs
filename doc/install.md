@@ -358,7 +358,8 @@ Versions are encoded as `YYMMDDbN` and compared numerically:
 ```
 
 A version without a `b` suffix (final / non-beta release) gets an internal
-beta value of **100**. This guarantees that a final release ranks **higher**
+beta value of **100**. Beta numbering stops at **b9** at most, so the value
+100 is only theoretical - it guarantees that a final release ranks **higher**
 than any beta of the same date:
 
 | Installed | Latest  | Decision       |
@@ -370,8 +371,8 @@ than any beta of the same date:
 Cross-date comparisons also work correctly:
 
 ```
-091301 (final, next month) = 9,130,200 > 091226b99 = 9,122,699
-091227 (final, next day)   = 9,122,800 > 091226b99 = 9,122,699
+091301 (final, next month) = 9,130,200 > 091226b9 = 9,122,609
+091227 (final, next day)   = 9,122,800 > 091226b9 = 9,122,609
 ```
 
 The `mecb -V` output format is:
