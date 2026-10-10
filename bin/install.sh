@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-OS=`uname -o`
+DARWIN=`uname`
+if [ "$DARWIN" = "Darwin" ]; then
+    OS="Darwin"
+else
+    OS=`uname -o`
+fi
 MACHINE=`uname -m`
 OSNAME=`uname -s`
 KERNEL=`uname -r | grep -Eo '^[0-9]+'`
@@ -86,14 +91,13 @@ elif [ $OS = "cygwin" ]; then
     MEWB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
-    if [ $KERNEL -lt 23 ]; then    
-        echo "Error: Installs of prebuild versions for MacOS 13 is not supported since 2026!"
+    if [ $KERNEL -lt 19 ]; then    
+        echo "Error: Installs of prebuild versions for MacOS 10.14 and lower is not supported since 2026!"
         echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
         exit
-    elif [ $KERNEL -eq 23 -a $MACHINE = "x86_64" ]; then    
+    elif [ $KERNEL -lt 24 -a $MACHINE = "x86_64" ]; then    
        MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
        MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"   
-        exit
     elif [ $KERNEL -eq 23 -a $MACHINE = "arm64" ]; then    
        MECB="macos-14-arm64-microemacs-${VERSION}-mecb"
        MEWB="macos-14-arm64-microemacs-${VERSION}-mewb"   
