@@ -351,7 +351,8 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsreyank(2)lmreyank(2)le (esc y) Restore next yank buffer  
     lstab(2)lmtab(2)le (tab) Handle the tab key  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
 
@@ -2329,7 +2330,8 @@ Miscellaneous Information
     lsxfind(3)lmxfind(3)le Execute find command  
     lsxgrep(3)lmxgrep(3)le Execute grep command  
     lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
     lszfile-setup(3)lmzfile-setup(3)le Compressed file support setup  
@@ -2558,7 +2560,8 @@ Miscellaneous Information
     lsvoid(2)lmvoid(2)le Null command  
     lswrap-word(2)lmwrap-word(2)le Wrap word onto next line  
     lswrite-buffer(2)lmwrite-buffer(2)le (C-x C-w) Write contents of buffer to named (new) file  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
 
     The following is a list of documented macro commands provided by  cDMicroEmacscA:
@@ -4169,7 +4172,8 @@ Miscellaneous Information
     lsxsl(9)lmxsl(9)le Extensible Stylesheet Language  
     lsxul(9)lmxul(9)le XML User Interface Language  
     lsy(9)lmy(9)le YACC programming language  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
     lszfile-setup(3)lmzfile-setup(3)le Compressed file support setup  
@@ -5216,6 +5220,32 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
+
+    - [261010] - Release v09.12.26.beta6
+
+    - [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
+                 buffer encoding tags survive clipboard round trips,
+                 copy-out encodes to the target for X selection targets
+                 and external tools, unmappable characters become \uXXXX
+                 escapes in single-byte buffers, and the new yank-as
+                 command re-tags and yanks the kill buffer in a chosen
+                 encoding; Windows killTextEquals parity keeps
+                 multi-node kills intact.
+
+    - [261010] - Macro evaluation and token buffers raised from 1KB to
+                 16KB (meEVALBUF_SIZE_MAX) so large &cat/&rep results,
+                 function arguments and set-variable values no longer
+                 truncate; empty-list guards for &lget &lset &lfind
+                 &llen &ldel which could read past an empty list.
+
+    - [261010] - Fixes and additions: re-entrant screenUpdate crash on
+                 ConfigureNotify during insert-file (ticket 16), Xft
+                 underline offset and stale XGCFont gate, UTF-8
+                 highlight desync, count-words counts UTF-8 characters
+                 (ticket 15), new character string functions &uleft
+                 &ulen &umid &uright &usin, macOS installer restored
+                 for 10.15-14, hkmdview recognizes Windows drive and
+                 UNC paths.
 
     - [261003] - Documentation catch-up after the 260929-261001 build and CI
                  restructure: AGENTS.md testing and CI sections rewritten
@@ -8892,6 +8922,14 @@ Miscellaneous Information
        - Adding an automated regression test suite (tests/test-basics.emf)
          run by GitHub Actions on 7 platform jobs (Linux, macOS, Windows x3,
          Cygwin x2) and three nested !while/!repeat loops.
+       - Encoding-aware clipboard and kill ring (ticket 17): copy/paste
+         between different encodings round-trips correctly, unmappable
+         characters are written as \uXXXX escapes into single-byte
+         buffers and the new yank-as command re-tags the kill buffer.
+       - Macro evaluation buffers raised from 1KB to 16KB and empty-list
+         guards for the &l list functions (&lget &lset &lfind &llen
+         &ldel); new character string functions &uleft &ulen &umid
+         &uright &usin for UTF-8 aware macro text processing.
 
     cDSeptember 2009cA
        10th Major Release - MicroEmacs 2009.
@@ -24509,6 +24547,56 @@ $a
     ls$auto-time(5)lm$auto-time(5)le, lsappend-buffer(2)lmappend-buffer(2)le, lsbackup(2m)lmbackup(2m)le, lsbuffer-mode(2)lmbuffer-mode(2)le,
     lschange-file-name(2)lmchange-file-name(2)le, lsfile-attrib(3)lmfile-attrib(3)le, lssave-buffer(2)lmsave-buffer(2)le, lstime(2m)lmtime(2m)le,
     lswrite-region(3)lmwrite-region(3)le.
+! 2 yank-as
+cEcENAME cEcA
+
+
+    yank-as - Re-tag the kill buffer with an encoding and yank it
+$a
+
+
+cESYNOPSIS cA
+
+
+    cCncA cDyank-ascA "cCencodingcA"
+
+
+cEDESCRIPTION cA
+
+
+    Every kill ring entry carries an encoding tag which describes the
+    bytes held in that entry. cDyank-ascA prompts for an encoding name
+    (TAB completes over the supported encodings), replaces the tag of
+    the most recent kill entry with the chosen encoding and then yanks
+    the entry cCncA times (default one) with the new tag applied.
+
+    The re-tagging acts on the internal kill buffer only; the command
+    does not read from or write to the system clipboard, so the new tag
+    is applied to the inserted text. Use it when text was killed in one
+    encoding and is to be pasted into a buffer using a different
+    cD$buffer-encodingcA, or when an external clipboard fetch left the
+    kill ring tagged with the wrong encoding.
+
+    An empty cCencodingcA reports the current kill encoding on the
+    message line and yanks nothing. An unknown encoding or an empty
+    kill ring aborts the command.
+
+
+cEEXAMPLE cA
+
+
+    Re-tag the current kill entry as ISO-8859-1 and yank it twice:
+
+sB
+          2 yank-as iso-8859-1
+
+sA
+
+cESEE ALSO cA
+
+
+    lscopy-region(2)lmcopy-region(2)le, lskill-line(2)lmkill-line(2)le, lskill-region(2)lmkill-region(2)le,
+    lsreyank(2)lmreyank(2)le, lsyank(2)lmyank(2)le.
 ! 2 ml-write
 cEcENAME cEcA
 
@@ -24707,7 +24795,7 @@ $a
 
     lsbackward-delete-char(2)lmbackward-delete-char(2)le, lsbackward-kill-word(2)lmbackward-kill-word(2)le, lscopy-region(2)lmcopy-region(2)le,
     lsforward-delete-char(2)lmforward-delete-char(2)le, lsforward-kill-word(2)lmforward-kill-word(2)le, lskill-line(2)lmkill-line(2)le,
-    lskill-paragraph(2)lmkill-paragraph(2)le, lskill-region(2)lmkill-region(2)le, lsreyank(2)lmreyank(2)le, lsyank-rectangle(2)lmyank-rectangle(2)le, ls@y(4)lm@y(4)le,
+    lskill-paragraph(2)lmkill-paragraph(2)le, lskill-region(2)lmkill-region(2)le, lsreyank(2)lmreyank(2)le, lsyank-as(2)lmyank-as(2)le, lsyank-rectangle(2)lmyank-rectangle(2)le, ls@y(4)lm@y(4)le,
     ls@cc(4)lm@cc(4)le.
 ! 2 define-macro-file
 cEcENAME cEcA

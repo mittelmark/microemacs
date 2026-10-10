@@ -7,11 +7,55 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261003.1134>
+  > Last Modified : <261010.1206>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth
 
 ## 2026
+
+  [261010] - Release v09.12.26.beta6
+
+  [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
+               buffer encoding tags survive clipboard round trips,
+               copy-out now encodes to the target for X selection
+               targets and external tools, unmappable characters are
+               emitted as \uXXXX escapes into single-byte buffers, and
+               the new yank-as command re-tags and pastes the kill
+               buffer in a chosen encoding. Windows killTextEquals
+               parity so multi-node kills are not rebuilt as UTF-8 on
+               every yank. Files: src/line.c, src/region.c,
+               src/unixterm.c, src/winterm.c, src/encoding.c,
+               src/efunc.def, tests/test-enc17*.emf, doc/tickets.md,
+               ChangeLog
+
+  [261010] - Macro evaluation/token buffers raised from 1KB to 16KB
+               (meEVALBUF_SIZE_MAX) so large &cat/&rep results,
+               function arguments and set-variable values no longer
+               truncate; register (#0-#9) stores stay 1KB but are
+               bounded copies. Empty-list guards added to
+               &lget/&lset/&lfind/&llen/&ldel which could read past
+               the '|' terminator of an empty list and crash.
+               Files: src/estruct.h, src/eval.c, src/exec.c,
+               ChangeLog
+
+  [261010] - Assorted fixes: re-entrant screenUpdate crash during
+               insert-file/ConfigureNotify (ticket 16), Xft underline
+               offset and stale XGCFont gate, count-words counts UTF-8
+               characters (ticket 15), UTF-8 highlight desync fix plus
+               new character string functions &uleft &ulen &umid
+               &uright &usin, macOS installer restored for 10.15-14,
+               hkmdview treats Windows drive and UNC paths as
+               absolute. Files: src/unixterm.c, src/fileio.c,
+               src/hilight.c, src/word.c, src/eval.c, src/evar.def,
+               bin/install.sh, jasspa/macros/hkmdview.emf,
+               doc/me-functions.md, ChangeLog
+
+  [261010] - CI and tooling: unicode regression test job, forced LF
+               checkout for shell scripts, Cygwin workspace fix, and
+               a performance benchmark workflow comparing a build
+               against release tags (makefiles/performance.gmk).
+               Files: .github/workflows, makefiles/performance.gmk,
+               ChangeLog
 
   [261003] - Windows updater gets the same thin bootstrap treatment
                as install.sh: install-windows.ps1 no longer saves a
@@ -406,6 +450,8 @@
                Files: src/termio.c, src/unixterm.c, src/encoding.c,
                src/eval.c, src/hilight.c, tests/
 
+  [260826] - Release v09.12.26.beta5
+
   [260826] - README refresh (asciinema links, LLM note fixes); version
                set to v09.12.26b6. Files: README.md, src/evers.h
 
@@ -472,6 +518,8 @@
   
   [260811] - Scheme Nord added.
   
+  [260808] - Release v09.12.26.beta3
+
   [260807] - Added mouse support for Windows terminal version (mec32.exe).
              Native Win32 MOUSE_EVENT for console mode, SGR VT mouse via
              stdin/stdout for pipe mode (mintty). Supports click, drag,

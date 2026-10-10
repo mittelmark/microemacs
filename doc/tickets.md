@@ -111,7 +111,7 @@ v unfold dir (color
    filename.txt (color)    M (indicator)
    newname.txt (color)     A (git indicator)
    
-## Ticket 12: UTF8 symbol support (WIP)
+## Ticket 12: UTF8 symbol support (DONE)
 
 | OS       | me version | supported |
 |----------|------------|-----------|
@@ -624,3 +624,7 @@ so.
       - Regression: tests/test-basics.emf, tests/test-enc17.emf
         and tests/test-enc17-yankas.emf all run on Windows (they
         write file-based output, no terminal interaction).
+
+    - WIP 261010: merged to devel and master for v09.12.26.beta6;
+      platform verification (Windows, macOS) still pending - run the
+      test matrix above before closing this ticket.
