@@ -197,10 +197,6 @@ function install_me {
     if [ -f "${HOME}/.local/bin/mecb" ]; then
         rm ${HOME}/.local/bin/me?b*
     fi
-    if [ -f "${HOME}/.local/bin/mecu" ]; then
-        rm ${HOME}/.local/bin/mecu
-    fi
-    
     # Check if ~/bin is already in the PATH
     if [ "`echo $PATH | grep /.local/bin`" = "" ]; then
         # If it's not in the PATH, add it to ~/.bashrc (only once, the
@@ -248,8 +244,6 @@ function install_me {
     curl -fsSL "${URL}.zip" --output ${MEWB}.zip 
     unzip -p "${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
     if [ "$EXE" = "" ]; then
-        unzip -p "${MECB}.zip" $MECB/bin/mecu > ~/.local/bin/mecu
-        chmod 755 ~/.local/bin/mecu
         chmod 755 ~/.local/bin/mecb
         chmod 755 ~/.local/bin/mewb
     fi
