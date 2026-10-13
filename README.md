@@ -146,8 +146,8 @@ __DEMO (mdview command for browsing and editing Markdown files):__
 
 __Main Cons:__
 
-- No Unicode (but full ISO and Windows encoding support) - you can type usually all the keys from your keyboard
 - No softwrap (but automatic wrap is available)
+- No line numbers left of buffer (but display of the current line number in the statusbar)
 
 This  is a fork  of  [Jasspa  MicroEmacs](http://www.jasspa.com)  forked  from
 [https://github.com/vitalyster/microemacs](https://github.com/vitalyster/microemacs).
@@ -189,11 +189,10 @@ changes / extensions:
 * improvements in the terminal mode:
     - UTF8 support
     - libXft with modern font rendering (thanks to Steven Phillips)
-    - mouse support
+    - mouse support in the terminal
     - 16 instead of colors in terminal mode
     - clipboard support using terminal command line tools like xclip, wl-copy, pbpaste, clip.exe 
     - suspend emacs using alternative  terminal
-  buffer (thanks to Steven Phillips)
 * new command `mdview` which can switch between viewing, browsing and editing a set of Markdown files  
 * basic git support with commands to add, commit and get status of files etc  
 * easier addition of own user  templates with interactive  template  selection
@@ -512,6 +511,12 @@ This release provides the following new features in comparison to v09.12.26b5:
 |             | Windows Cygwin 3.6-x86_64 | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.26.beta6/cygwin-3.6-microemacs-091226b6-mecb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.26.beta6/cygwin-3.6-microemacs-091226b6-mewb.zip) | [x](https://github.com/mittelmark/microemacs/releases/download/v09.12.26.beta6/cygwin-3.6-x86_64-microemacs-091226b6-mecwb.zip) |
 
 *Most Windows users should probably download the Windows 10/11 ucrt64 release.
+
+**Linux app-images for Debian and Fedora based intel platforms:**
+
+- [Kernel 6: Ubuntu 22 / Debian 11-13](https://github.com/mittelmark/microemacs/releases/download/v09.12.beta6/Jasspa_MicroEmacs_091226b6_ubuntu-22.04_x86_64.AppImage)
+- [Kernel 6: Ubuntu 24 / Debian 11-13](https://github.com/mittelmark/microemacs/releases/download/v09.12.beta6/Jasspa_MicroEmacs_091226b6_ubuntu-24.04_x86_64.AppImage)
+- [Kernel 7: Ubuntu 26 / Debian 11-13](https://github.com/mittelmark/microemacs/releases/download/v09.12.beta6/Jasspa_MicroEmacs_091226b6_ubuntu-26.04_x86_64.AppImage)
 
 ## Download Prebuild MicroEmacs Executables (v09.12.26b5)
 
