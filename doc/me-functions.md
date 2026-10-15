@@ -1,7 +1,7 @@
 # ME Macro Language — Function Cheat Sheet
 
 Quick reference for commonly used functions. All functions abbreviate to 3 letters.
-Full docs in `doc/me.smd` (search for function name).
+Full docs in `doc/reference.smd` (search for function name).
 
 ## String Operators
 

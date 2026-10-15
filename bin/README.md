@@ -18,8 +18,9 @@ __Documentaton related:__
 - __ehf2md.tcl__ - Tcl script which  converts an ehf file to a big Markdown  file,
   the file needs  thereafter  a lot of tweaking,  that script needs to be used
   only once if there is a switch from nroff format to Markdown
-- __me-tools.sh__ - utility functions to convert the documentation file me.smd
-  to me.ehf and to a set of HTML files
+- __me-tools.sh__ - utility functions to convert the assembled documentation file
+  (me-full.smd, built from front/history/faq/reference.smd) to me.ehf and to a
+  set of HTML files
 
 
 __ME startup related:__

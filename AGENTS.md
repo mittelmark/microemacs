@@ -230,7 +230,7 @@ A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Wi
 
 The installers are the default installation path; the detailed user-facing
 instructions live in `README.md`, and the built-in help page "Installation"
-(`doc/me.smd`) carries a short offline copy plus the manual/legacy fallback.
+(`doc/front.smd`) carries a short offline copy plus the manual/legacy fallback.
 `install.sh` installs `mecb`/`mewb` into `~/.local/bin` (adding it to the PATH
 once); `install-windows.ps1` installs `mecb.exe`/`mewb.exe` into
 `%LOCALAPPDATA%\bin` and creates a Start Menu shortcut. Both also write an
@@ -864,17 +864,19 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 
 ## Documentation
 
-- Source: `doc/me.smd` (main manual) plus `doc/faq.smd` (the Frequently Asked
-  Questions) and `doc/history.smd` (the MicroEmacs development history). The
-  two appendices are kept in their own files to reduce merge conflicts
-- These files are assembled into the generated `doc/me-full.smd` by the
-  `doc/Makefile`; always edit `me.smd` / `faq.smd` / `history.smd`, never
-  `me-full.smd`
+- The manual is split into four source files, assembled in page order by
+  `doc/Makefile` (`cat front.smd history.smd faq.smd reference.smd`):
+  - `doc/front.smd` - front matter: home, acknowledgments, copyright, contact
+  - `doc/history.smd` - the MicroEmacs development history
+  - `doc/faq.smd` - the Frequently Asked Questions
+  - `doc/reference.smd` - the command, macro, variable and file type reference
+- The four files are assembled into the generated `doc/me-full.smd`; always
+  edit the four source files, never `me-full.smd`
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
 - HTML files built with "cd doc && make html-all" (per page ranges in
   `doc/Makefile`; keep them in sync when pages are added)
 - HTML files can also be built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm` -  but needs update file list
-- Links section at top of me.smd for cross-references
+- Links section at top of front.smd for cross-references
 
 Additional reference documentation:
 

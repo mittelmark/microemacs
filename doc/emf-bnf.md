@@ -5,8 +5,8 @@ date: 2026-08-29
 abstract: >
     This document provides a formal BNF (Backus-Naur Form) grammar specification 
     for the JASSPA MicroEmacs macro language (EMF). It is derived from the 
-    documentation in `doc/me.smd` and serves as a reference for understanding 
-    the language structure.
+    documentation in `doc/reference.smd` (assembled into `doc/me-full.smd`) and
+    serves as a reference for understanding the language structure.
 ---
 
 ## Overview

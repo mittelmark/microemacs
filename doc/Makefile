@@ -33,12 +33,15 @@
 page=m1cmd000
 SMD=me-full.smd
 
-# The full manual is assembled from me.smd (the main manual), faq.smd (the
-# Frequently Asked Questions) and history.smd (the development history). These
-# appendices are kept in their own files to reduce merge conflicts.
-# me-full.smd is generated, do not edit it directly.
-$(SMD): me.smd faq.smd history.smd
-	cat me.smd faq.smd history.smd > $(SMD)
+# The manual is assembled in page order from four files:
+#   front.smd     - home, acknowledgments, copyright, contact (front matter)
+#   history.smd   - MicroEmacs development history
+#   faq.smd       - the Frequently Asked Questions
+#   reference.smd - the command, macro, variable and file type reference
+# They are kept separate to reduce merge conflicts. me-full.smd is generated,
+# do not edit it directly; edit front/history/faq/reference instead.
+$(SMD): front.smd history.smd faq.smd reference.smd
+	cat front.smd history.smd faq.smd reference.smd > $(SMD)
 
 html-single: $(SMD)
 	bash ../bin/me-tools.sh smd2html $(SMD) $(page) html

@@ -1,6 +1,6 @@
 function smd2html {
     if [ -z $3 ]; then 
-        echo "Usage: me.smd me-id folder"
+        echo "Usage: me-full.smd me-id folder"
         echo "        where me-id is soething like amicr000"
     else
         perl -ne "/^!! me-id: $2/ and \$flag = 1 and next; \$flag and /^!!/ and last; \$flag and print" $1 | grep -Ev '^!' | perl -pe 's/</&lt;/g; s/([^ ]{2})>/$1&gt;/g' | perl -ne '/^(\||\$a)/ and next; /^ ([^ ].+)/ and print "$1  \n" and next; print;' > $3/$2.md
@@ -49,7 +49,7 @@ function me2html {
 
 function smd2ehf {
     if [ -z $2 ]; then
-        echo "Usage: $0 smd2ehf header me.smd"
+        echo "Usage: $0 smd2ehf header me-full.smd"
     else
         cat $1
         perl -ne '
@@ -96,14 +96,14 @@ function smd2ehf {
 if  [ -z "$3" ]; then
     echo "Usage:"
     echo "   single html side:"
-    echo "      smd2html me.smd ME-ID FOLDER"
+    echo "      smd2html me-full.smd ME-ID FOLDER"
     echo "   set of files:"
-    echo "      me2html me.smd FOLDER prefix from to"
+    echo "      me2html me-full.smd FOLDER prefix from to"
     echo "      where prefix might be amicr, m1cmd, m2cmd etc"
     echo "   example:"
-    echo "      me2html me.smd html amicr 0 85"    
+    echo "      me2html me-full.smd html amicr 0 85"    
     echo "   convert to ehf file"
-    echo "      smd2ehf header.txt me.smd > me.ehf" 
+    echo "      smd2ehf header.txt me-full.smd > me.ehf" 
 else    
     "$@"
 fi

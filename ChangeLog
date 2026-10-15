@@ -69,6 +69,20 @@
                html-all targets. Files: doc/me.smd, doc/faq.smd,
                doc/Makefile, jasspa/macros/me.ehf, AGENTS.md, ChangeLog
 
+  [261015] - Documentation: the help manual is now split into four files
+               that doc/Makefile assembles in page order
+               (front.smd history.smd faq.smd reference.smd) into the
+               generated me-full.smd, so the built help keeps the
+               original page order. doc/front.smd holds the front matter,
+               doc/history.smd the development history, doc/faq.smd the
+               Frequently Asked Questions and doc/reference.smd the
+               command/macro/variable/file type reference; the monolithic
+               doc/me.smd is gone. Files: doc/front.smd,
+               doc/reference.smd, doc/me.smd (removed), doc/Makefile,
+               bin/me-tools.sh, bin/README.md, doc/emf-bnf.md,
+               doc/me-functions.md, AGENTS.md, jasspa/macros/me.ehf,
+               ChangeLog
+
   [261010] - Release v09.12.26.beta6
 
   [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
