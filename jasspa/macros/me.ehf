@@ -5130,1752 +5130,6 @@ Miscellaneous Information
     If you wish to port MicroEmacs to another platform and are willing to
     undertake responsibility for maintenance of that platform then please let us
     know by opening an issue with the details.
-!   Frequently Asked Questions
-cEcEFAQ cEcA
-
-
-    This page contains frequently asked questions submitted to JASSPA over the
-    years. Some of the older entries refer to platforms and tools that are no
-    longer supported (MS-DOS, Windows 3.x, old DOS/Windows shells and helpers);
-    they are kept here for historical reference. The questions most relevant to
-    the current releases are the later ones (roughly faq44 onwards) and the
-    encoding questions faq48 and faq49.
-
-    lsFAQs(0f)lmFAQsle - FAQ Contact information  
-    lsfaq00(0f)lmfaq00le - New functionality; what is useful to me as an old MicroEmacs user ??  
-    lsfaq01(0f)lmfaq01le - Languages; Are any foreign languages supported other than English ??  
-    lsfaq02(0f)lmfaq02le - C++ is not default, C is - how do I change this ??  
-    lsfaq03(0f)lmfaq03le - GNU Emacs; are there any GNU Emacs bindings. ?  
-    lsfaq04(0f)lmfaq04le - Icons are not displayed correctly in Microsoft Windows environments !!  
-    lsfaq05(0f)lmfaq05le - ipipes not working on Microsoft Windows network drives ?  
-    lsfaq06(0f)lmfaq06le - Language not supported - will it be ??  
-    lsfaq07(0f)lmfaq07le - Language file is incomplete  
-    lsfaq08(0f)lmfaq08le - Input locked up and not accepting keys; how do I unlock ?  
-    lsfaq09(0f)lmfaq09le - MicroEmacs Bindings; How do I get the original MicroEmacs bindings ?  
-    lsfaq10(0f)lmfaq10le - Microsoft Windows Locks up after killing an ipipe.  
-    lsfaq11(0f)lmfaq11le - Mouse support under Microsoft windows is strange !!  
-    lsfaq12(0f)lmfaq12le - Scroll bars too narrow !!  
-    lsfaq13(0f)lmfaq13le - Tab key; Why does the tab key not operate in some windows ??  
-    lsfaq14(0f)lmfaq14le - Termcap; On a color terminal why is there no color ??  
-    lsfaq15(0f)lmfaq15le - Termcap; Some of the keys do not work - how can I bind them ?  
-    lsfaq16(0f)lmfaq16le - Timestamp; Format incorrect, how can I change to MMDDYY.hhmm ?  
-    lsfaq17(0f)lmfaq17le - Windows; Component characters rendered incorrectly, how do I fix ?  
-    lsfaq18(0f)lmfaq18le - Windows Autosave and Backup files; are these potentially a problem ?  
-    lsfaq19(0f)lmfaq19le - Printing; Why in Windows does the output come out in a buffer ??  
-    lsfaq20(0f)lmfaq20le - Printing; On Windows which font should I use ??  
-    lsfaq21(0f)lmfaq21le - Printing; My printer is not supported ?  
-    lsfaq22(0f)lmfaq22le - Alt key maps to the Menu, how do I change ?  
-    lsfaq23(0f)lmfaq23le - me32.ini - Where does it go, how do I know it's being processed ??  
-    lsfaq24(0f)lmfaq24le - Windows - Where is app850.fon ?  
-    lsfaq25(0f)lmfaq25le - Time; mode line is showing the date in DD/MM/YY format how do I change ?  
-    lsfaq26(0f)lmfaq26le - C or C++ indentation and effects; how can I turn off ?  
-    lsfaq27(0f)lmfaq27le - fill-paragraph function does not fill ??  
-    lsfaq28(0f)lmfaq28le - Key modifier which acts as the ESC key; what is it ?  
-    lsfaq29(0f)lmfaq29le - find-file start location; where is it ?  
-    lsfaq30(0f)lmfaq30le - Re-using a MicroEmacs session; how to ??  
-    lsfaq31(0f)lmfaq31le - Drag and Drop; is it supported ??  
-    lsfaq32(0f)lmfaq32le - Cut and Paste to/from other applications; is it supported ??  
-    lsfaq33(0f)lmfaq33le - Fonts; how can I change the font ??  
-    lsfaq34(0f)lmfaq34le - Colors; how can I change screen colors ??  
-    lsfaq35(0f)lmfaq35le - File Types; how do I interchange between UNIX, Windows and DOS files ??  
-    lsfaq36(0f)lmfaq36le - Non-English Languages; What font should I select ??  
-    lsfaq37(0f)lmfaq37le - MicroEmacs '99; How do I up-grade from MicroEmacs'98 ??  
-    lsfaq38(0f)lmfaq38le - Some keys on my foreign keyboard do not work properly, how do I get them working ??  
-    lsfaq39(0f)lmfaq39le - Tabs; How to change the tab width ??  
-    lsfaq40(0f)lmfaq40le - Windows/DOS; Where do I get grep/diff etc. ??  
-    lsfaq41(0f)lmfaq41le - Home/End Keys; How do I change the default bindings ??  
-    lsfaq42(0f)lmfaq42le - tags; How do I generate a MicroEmacs compatible tags file ??  
-    lsfaq43(0f)lmfaq43le - ne; how can I enable line wrapping in NE ??  
-    lsfaq44(0f)lmfaq44le - Why is MicroEmacs called still MicroEmacs 09 in 2024 ??  
-    lsfaq45(0f)lmfaq45le - What are the main new features of MicroEmacs 09 in 2024  ??  
-    lsfaq46(0f)lmfaq46le - What is a bfs executuable?  
-    lsfaq47(0f)lmfaq47le - How can I use True Type Fonts within  MicroEmacs on a X11 system ??  
-    lsfaq48(0f)lmfaq48le - How to deal with UTF-8 enabled terminals with console MicroEmacs ??  
-    lsfaq49(0f)lmfaq49le - What are the recommended ISO encodings I should use for my terminal session??  
-    lsfaq50(0f)lmfaq50le - How to use other existing editor color schemes in MicroEmacs?  
-
-! 0ffaq00
-cEcEQUESTION (00) cEcA
-
-
-    New functionality; what is useful to me as an old MicroEmacs user ??
-
-
-cEANSWER cA
-
-
-    There are a lot of new features in this distribution. Assuming that you
-    just want to use the editor (and have cottoned onto the fact that there
-    are now scroll bars etc.) then the most frequent commands that we use
-    are:-
-
-    lsgrep(3)lmgrep(3)le - May need to set up in cC<user>.emfcA.  
-    lsdiff(3)lmdiff(3)le - May need to set up in cC<user>.emfcA.  
-    lscompile(3)lmcompile(3)le - May need to set up in cC<user>.emfcA.  
-    lsclean(3)lmclean(3)le - cleans a buffer, removing spaces etc.  
-    lsrestyle-buffer(3)lmrestyle-buffer(3)le - Reformats 'C' + known languages.  
-    lsspell-buffer(3)lmspell-buffer(3)le - For documentation work, spells the buffer.  
-    cDC-scA - lsisearch-forward(2)lmisearch-forward(2)le incremental search.  
-    cDC-x ucA or cGC-_cA - lsundo(2)lmundo(2)le undoes edits.  
-    cDF10cA - lsfile-browser(3)lmfile-browser(3)le allows the file system to be browsed  
-
-    Other useful macros include:-
-
-    lstabs-to-spaces(3)lmtabs-to-spaces(3)le - Good for sorting out the mess made by Microsoft Developer Studio.  
-    lssort-lines(2)lmsort-lines(2)le - Two versions of this, allows marked lines to be sorted alphabetically.  
-
-    Be wary of:-
-
-     cDesc-ocA - lsfill-paragraph(2)lmfill-paragraph(2)le. The default mode is an automatic
-    mode  which attempts to guess at the format required. It works most of the time. 
-    Also works in 'C'.
-
-    Most of the other new features are in the background, such as the macro  
-    processor, indentation control, color hilighting, indentation control,  
-    auto-saving etc.
-
-    To have a look at the features developed since 2009 have a look at lsfaq44(0f)lmfaq44le and 
-    lsfaq45(0f)lmfaq45le.
-    
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq01
-cEcEQUESTION (01) cEcA
-
-
-    Languages; Are any foreign languages supported other than English ??
-
-
-cEANSWER cA
-
-
-    Unfortunately as we started with V3.8 as a base many years ago, we missed  
-    the distribution with foreign language extensions. We have not  
-    incorporated them into the release.  
-
-    The May 1999 release improves the language support by supporting the  
-    ISO-Latin character sets.  
-
-    We do have spelling dictionaries for French, Spanish, Portuguese and  
-    German. Other languages may be supported by transforming native cDispell(1)cA  
-    dictionaries.  
-
-    If there is enough interest in this release from people with foreign  
-    languages then we may consider including support for foreign language(s).  
-    However we would be very much reliant on external help for local testing  
-    and translation. We would be open to suggestions.  
-
-- [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq02
-cEcEQUESTION (02) cEcA
-
-
-    C++ is not default, C is - how do I change this ??
-
-
-cEANSWER cA
-
-
-    If your main programming language is C++, then you will require the cG.defcA  
-    and cG.hcA files to be loaded in C++ mode by default, rather than 'C'. To  
-    modify this hen the order of the file hooks has to be re-defined.  
-
-    Within your cC<user>.emfcA, over-ride the default ordering by including the
-    line:-
-    
-sB
-          add-file-hook ".h .def"                                     fhook-cpp
-
-sA
-    This adds a newer binding for cGcG.hcAcA and cGcG.defcAcA to C++, over-riding the  
-    existing 'C' binding.  
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq03
-cEcEQUESTION (03) cEcA
-
-
-    GNU Emacs; are there any GNU Emacs bindings. ?
-
-
-cEANSWER cA
-
-
-    No not at the moment. The GNU Emacs bindings would be added as a  
-    compatibility file (meemacs.emf) in much the same way that the me3.8  
-    bindings are added, see meme3_8.emf.
-
-    From the user-setup(3), the user would then ask for "gnu" compatibility.
-
-    We would welcome submissions for a gnu compatibility file, gnu.emf, to add  
-    to the release.
-
-    The cDMetacA key (typically cGAltcA) may be bound to key strokes, as opposed to  
-    the menu short-cut from the lsuser-setup(3)lmuser-setup(3)le as follows:-  
-
-    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Main Menu Hot-keyscA = N
-    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Esc PrefixcA = Y
-
-- [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq04
-cEcEQUESTION (04) cEcA
-
-
-    Icons are not displayed correctly in Microsoft Windows environments !!
-
-
-cEANSWER cA
-
-
-    After installing on Microsoft platforms, the Icons in the Explorer window  
-    may not be showing correctly. To remedy the situation then the following  
-    steps may be taken.  
-
-    cDWindows '95cA
-    
-       Try re-starting the system first. If the icons are still incorrect
-       then re-start in Safe mode and delete the file:
-
-           `c:\windows\ShellIconCache`
-
-    Restart and the Icons should be correct.
-
-    cDWindow '98cA
-    
-        Try re-starting the system first. If the Icons are still incorrect
-        then re-start in Safe mode, this should re-generate the Icon cache.
-        Restart windows.
-
-    cDNTcA
-    
-        Restart the system.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq05
-cEcEQUESTION (05) cEcA
-
-
-    ipipes not working on Microsoft Windows network drives ?
-
-
-cEANSWER cA
-
-
-    We are aware of a problem with the ipipe commands with '95 and '98 (not 
-    sure about NT) when the current drive is a Novel network drive.
-
-    Although we have not been ably to fully characterize the problem, we know 
-    that:-
-
-    - Old Novel Clients prior to 2.2 - Does not work
-    - Novel Intranetware Client 2.2 - Does not work.
-    - Novel Network Client 2.5 - Does work.
-    - Novel Client 3.01 - Does work.
-
-    Any other information in this area would be appreciated to fully  
-    characterize the problem.
-
-    To get around the problem then disable ipipes using ls$system(5)lm$system(5)le. From
-    within your cC<user>.emfcA knock off bit 0x800 from ls$system(5)lm$system(5)le. This will
-    enable regular pipes, which will work, albeit not in the background.
-
-- [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq06
-cEcEQUESTION (06) cEcA
-
-
-    Language not supported - will it be ??
-
-
-cEANSWER cA
-
-
-    We only support the (programming) languages that we have come into contact
-    with. If you are using a language that we are not supporting then you will
-    need to write a new cGhk<language>.emfcA file. See lslanguageTemplates(2)lmLanguage Templatesle on how
-    to map a new programming language. The list of currently supported file
-    types is defined in lsMicroEmacs - Supported File TypeslmSupported File Typesle.
-
-    Jasspa would appreciate any new templates that people define for standard
-    file types so that we can add them to the distribution.
-
-    For Microsoft Windows, any associated "me" icons types would also be
-    appreciated.
-
-- [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq07
-cEcEQUESTION (07) cEcA
-
-
-    Language file is incomplete
-
-
-cEANSWER cA
-
-
-    For a number of the (programming) language templates we have only provided
-    a sub-set of the commands, this is typically because we only use a sub-set
-    ourselves.
-
-    For a number of templates, there is no indent support (see lsindent(2)lmindent(2)le and
-    lsMicroEmacs - Supported File Types)lmSupported File Typesle.
-
-    Note that when extending the template then only standard words should be
-    added. Words which are local extensions should be added to a cGmyXXX.emfcA.
-
-    Jasspa would appreciate completed template definitions.
-
-
-cESEE ALSO cA
-
-
-    lsfaq06(0f)lmFAQ06le, [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq08
-cEcEQUESTION (08) cEcA
-
-
-    Input locked up and not accepting keys; how do I unlock ?
-
-
-cEANSWER cA
-
-
-    This sometimes happens if a macro has been aborted badly. Typically a few
-    "Ctrl-G"s (see lsabort-command(2)lmabort-command(2)le) will terminate the macro and return
-    control back to the caller.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq09
-cEcEQUESTION (09) cEcA
-
-
-    MicroEmacs Bindings; How do I get the original MicroEmacs bindings ?
-
-
-cEANSWER cA
-
-
-    From lsuser-setup(3)lmuser-setup(3)le set the Emulation to cG`MicroEmacs v3.8`cA. On re-starting
-    (or Current) the macro file cGmeme3_8.emfcA is executed and the bindings
-    loaded. This file should restore your familiar execution set.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq10
-cEcEQUESTION (10) cEcA
-
-
-    Microsoft Windows Locks up after killing an ipipe.
-
-
-cEANSWER cA
-
-
-    This is a known problem for '95/'98 (not NT), on killing an ipipe.  
-    Sometimes the "Winoldapp" locks up, if this is the case use "Alt-Ctrl-Del"
-    to bring up the "cDClose ProgramcA" dialogue, kill off the cGcGWinOldAppcAcA if it
-    is not responding.
-
-    MicroEmacs will then come back. We are looking for ways around this
-    problem at the moment. From the programming perspective Windows is just
-    not as nice as UNIX - which just works !!
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq11
-cEcEQUESTION (11) cEcA
-
-
-    Mouse support under Microsoft windows is strange !!
-
-
-cEANSWER cA
-
-
-    The mouse operation under Microsoft windows (and DOS) is biased towards a
-    3-button mouse operation (Logitech is ideal !!), operating in a similar
-    way to UNIX. i.e. <select> operation gets text <Middle button> yanks text
-    back.
-
-    This stems from the fact that we all came from UNIX backgrounds. We have
-    had a number of comments about this already and do plan to address this
-    issue.
-
-    cDNote:-cA Those of you that have already had a little dip into the operation
-    of the mouse will have probably worked out that the whole of the visible
-    mouse/screen interaction is driven through macros, so this functionality
-    is actually a macro change.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq12
-cEcEQUESTION (12) cEcA
-
-
-    Scroll bars too narrow !!
-
-
-cEANSWER cA
-
-
-    You can change the width of the scroll bars to double width from
-    lsuser-setup(3)lmuser-setup(3)le "Wide Scroll Bars".  
-    Alternatively, you may do this yourself from cG<user>.emfcA by:-
-
-sB
-          set-variable $scroll-bar &bor $scroll-bar 1
-
-sA 
-    See ls$scroll-bar(5)lm$scroll-bar(5)le.
-
-    Remember if you have enabled wide scroll bars, under windows, or
-    X-Windows, you may want to change your start-up screen width to cG82cA
-    characters rather than cG80cA - see lschange-frame-width(2)lmchange-frame-width(2)le.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq13
-cEcEQUESTION (13) cEcA
-
-
-    Tab key; Why does the tab key not operate in some windows ??
-
-
-cEANSWER cA
-
-
-    In buffers with indentation information the tab key re-computes the
-    indentation of the line. This behavior may be changed from the user-setup.
-
-    Refer to documentation for ls$system(5)lm$system(5)le and lsuser-setup(3)lmuser-setup(3)le.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq14
-cEcEQUESTION (14) cEcA
-
-
-    Termcap; On a color terminal why is there no color ??
-
-
-cEANSWER cA
-
-
-    MicroEmacs has to be enabled to show color by default. From lsuser-setup(3)lmuser-setup(3)le
-    enable "Termcap Color". This will give you basic colors.
-
-    You may also try  enabling  "With  Bold" - this may  increase  the  range of
-    colors.  If still  there  are no  colors  you might try to run emacs  with a
-    different  terminal  setting,  for  instance  using  cGTERM=xterm  me  -ncA or
-    cGTERM=xterm me -ncA or cGTERM=rxvt  meccA in dependence  what type of me you are
-    using.  Check if you get the color,  usually  setting  the  variable to term
-    works best with regards to keys  (backspace  problems) and colors.  Settings
-    might differ however in dependence to the used terminal emulator or terminal
-    multiplexer.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq15
-cEcEQUESTION (15) cEcA
-
-
-    Termcap; Some of the keys do not work - how can I bind them ?
-
-
-cEANSWER cA
-
-
-    In your user setup <user>.emf add the new keys. You have to be careful as
-    to the environment and probably need to do something like the following:-
-
-sB
-          ; First check we are not an Xterm
-          !if &not $use-x
-              ; Quick check on the terminal type. We probably need to
-              ; distinguish between terminal types for different bindings
-              !if &seq $TERM "myterm"
-                  translate-key "<from>" "<to>"
-                  ...
-                  translate-key "<from>" "<to>"
-              !endif
-          !endif
-
-sA
-    See lstranslate-key(2)lmtranslate-key(2)le for details of translating termcap keys.  
-    See lsdescribe-key(2)lmdescribe-key(2)le to help identify the key.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq16
-cEcEQUESTION (16) cEcA
-
-
-    Timestamp; Format incorrect, how can I change to MMDDYY.hhmm ?
-
-
-cEANSWER cA
-
-
-    From within your cC<user.emf>cA set the time stamp default format i.e.
-
-sB
-          set-variable $timestamp "<%M%D%Y.%h%m>"
-
-sA
-    See ls$timestamp(5)lm$timestamp(5)le.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq17
-cEcEQUESTION (17) cEcA
-
-
-    Windows; Component characters rendered incorrectly, how do I fix ?
-
-
-cEANSWER cA
-
-
-    If some of the components of the windows are rendered incorrectly,
-    typically caused by local variations of character sets, then new window
-    component characters may be defined. See ls$window-chars(5)lm$window-chars(5)le for details on
-    how to define new character replacements.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq18
-cEcEQUESTION (18) cEcA
-
-
-    Windows Autosave and Backup files; are these potentially a problem ?
-
-
-cEANSWER cA
-
-
-    For windows '95 up until OEM service release 2, the OS could not
-    distinguish the difference between the files:-
-
-
-       .xxx
-       .xxx~
-
-
-    on a read, we have managed to find a work around for this, however we
-    would advise that the 3 letter extension is adhered to for these releases.
-    For releases of '95 OEM service release 2 and greater, '98 and NT we have
-    not found a problem with any of the auto save and backup naming.
-
-    Obviously, the backup naming will depend on the native file system. For
-    instance if your system administrator has not enabled long file names on
-    your Novel server.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq19
-cEcEQUESTION (19) cEcA
-
-
-    Printing; Why in Windows does the output come out in a buffer ??
-
-
-cEANSWER cA
-
-
-    Use the cDFilecA -> cDPrinter SetupcA dialog and change the destination to the
-    "cDDirect to printercA".
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq20
-cEcEQUESTION (20) cEcA
-
-
-    Printing; On Windows which font should I use ??
-
-
-cEANSWER cA
-
-
-    We suggest that "cDCourier NewcA" is used as the print font. This scales well
-    and supports the full character set. Problems have been reported with
-    networked postscript printers when used in conjunction with fixed fonts.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq21
-cEcEQUESTION (21) cEcA
-
-
-    Printing; My printer is not supported ?
-
-
-cEANSWER cA
-
-
-    We are in the process of providing native postscript generation - UNIX
-    users can stream their output through "a2ps" and then into their standard
-    printer queues.
-
-    Windows, the support is already built in.
-
-    For DOS then you need to get your printer manual out and sort out how to
-    map the printer codes onto fonts. The printer codes are added to
-    cGcGprinter.erfcAcA. We have already provided support for the HP DeskJet printer
-    (PCL), look at this printer definition for some help as to the type of
-    information that you need to set up. It's all a bit fiddley, but you do
-    not get much choice if you want more than plain ASCII out.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq22
-cEcEQUESTION (22) cEcA
-
-
-    Alt key maps to the Menu, how do I change ?
-
-    A-f opens the main File menu instead of executing forward-word (esc f).  
-    How do I make the Alt key act like the Meta key all the time?
-
-
-cEANSWER cA
-
-
-    The cDMetacA key (typically cGAltcA) may be bound to key strokes, as opposed to
-    the menu short-cut from the lsuser-setup(3)lmuser-setup(3)le as follows:-
-
-    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Main Menu Hot-keyscA = N  
-    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Esc PrefixcA = Y
-
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq23
-cEcEQUESTION (23) cEcA
-
-
-    me32.ini - Where does it go, how do I know it's being processed ??
-
-
-cEANSWER cA
-
-
-    Question posed as:-
-
-       > 1)  Am I right in assuming that for NT the file me32.ini goes
-       >     into  %windir%, i.e. into c:
-
-
-    Yes, this is where the other .ini files are.
-
-        > 2)  How do I know me32.ini is being processed?  Creating one,
-        >     as described in the readme.txt file doesn't seem to have
-        >     any visible effect.
-
-
-     From within the editor, if you show the variable [$MEPATH(5)]($MEPATH(5)), then it
-     should echo the paths that you have defined in the me32.ini file.
-
-         esc-x describe-variable
-         $MEPATH
-
-
-    See: lsme32.ini(8)lmme32.ini(8)le, lsInstallation(1)lmInstallation Informationle, lsUserProfiles(2)lmSetting Up A User Profilele.
-
-       > 3) What does the "fontfile" statement do ?
-
-
-    For releases after May 1999 then the cCfontfilecA statement may be omitted as
-    typically cDLucida ConsolecA or cDCourier NewcA is used. If you want to use the
-    fixed OEM fonts then cCfontfilecA should be defined as cDapp860.foncA (or local
-    language equivalent), this forces the font to be loaded as a resource,
-    prior to use.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq24
-cEcEQUESTION (24) cEcA
-
-
-    Windows - Where is app850.fon ?
-
-
-cEANSWER cA
-
-
-    "app850.fon" is the font file used for the DOS window under '95/'95/NT.
-    You should find it in your c: hidden. If you search from the
-    Explorer->Tools->Find "app850.fon" it should be found in the fonts
-    directory. There is nothing to be done - the file exists and is in the
-    correct location.
-
-    If you do not have this file then, you might have "appXXX.fon", or some
-    other fixed font. You can locate the file that you want as follows:-
-
-        Start->Settings->Control Panel->Fonts
-
-    Display the font list as 'details'. Within that list you should find a
-    "MS-DOS CPXXX" entry. It will be a red font (if you are in monochrome then
-    it will have a 'A' in the box rather than a 'Tt'). This is a fixed font
-    and will be a good alternative to "app850.fon", you can also try the
-    "Fixedsys" font file which has some weird name.
-
-    To be honest I do not know what Microsoft are currently shipping. Most of
-    the Windows platforms that I have used have been upgrades or been abused
-    by so many people you never know what is original !!
-
-    We would be interested in any details of other fixed fonts, which support
-    the full OEM character set that are better alternatives to the DOS ones.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq25
-cEcEQUESTION (25) cEcA
-
-
-    Time; mode line is showing the date in DD/MM/YY format how do I change ?
-
-
-cEANSWER cA
-
-
-    From within your user setup, over-ride the default mode line setting with
-    the modifications you require. i.e. to change the date format to MM/DD/YY
-    use:-
-
-sB
-          set-variable $mode-line "%s%r%u%k %b %l - %h:%m %M/%D/%Y (%e) - (%f) "
-
-sA
-cESEE ALSO cA
-
-    [[FAQ Index]](Frequently Asked Questions), ls$mode-line(5)lm$mode-line(5)le.
-
-
-! 0ffaq26
-cEcEQUESTION (26) cEcA
-
-
-    C or C++ indentation and effects; how can I turn off ?
-
-
-cEANSWER cA
-
-
-    The C mode indentation is supposed to make editing 'C' easier, by forcing
-    the user to follow a preset editing convection. The layout is pretty
-    standard, following a 4 space indent, writing either K&R or standard
-    'Pascal' type layout, with braces aligning vertically.
-
-    The problem most new users have is the inability of the tab key to
-    function, or more simply do not want to be 'forced' to write in a
-    particular style (GNU writers will probably not like this either -
-    conversely they will be using GNU emacs !!). However the constrained
-    layout can be configured to create most styles and does help in a project
-    situation, whereby most of the authored code roughly adheres to the same
-    sort of layout conventions. For C++ users then edit cGcGhkcpp.emfcAcA rather
-    than cGcGhkc.emfcAcA.
-
-
-cETo turn off all automatic 'C' layout  cA
-
-
-    To disable ALL automatic layout in C and C++ files then from the menu
-
-        help -> Buffer Setup -> Setup Auto Indent
-
-
-    Or from the command line cDesc x buffer-setupcA and disable through the
-    dialogue.
-
-    Restart the editor.
-
-
-cETo re-enable the <tab> key  cA
-
-
-    To retain the 'C' layout aid, but re-enable the tab key operation then
-    disable the cDTab To IndentcA option in lsuser-setup(3)lmuser-setup(3)le i.e.
-
-    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDTab To IndentcA
-
-    This enables the use of the TAB key in all column positions with the
-    exception of column 0. A <tab> in Column 0 will still enable the automatic
-    line re-formatting.
-
-    If you want real <Tabs> then disable the cDtabcA mode using lsuser-setup(3)lmuser-setup(3)le i.e.
-
-    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDTabcA
-
-
-cETo change the 'C' Indentation Layout  cA
-
-
-    The 'C' layout indentation is controlled from the lsindent(2)lmindent(2)le command (see
-    cGhkc.emfcA), the indentation level is controlled by the variables
-    ls$buffer-indent-width(5)lm$buffer-indent-width(5)le and ls$buffer-indent(5)lm$buffer-indent(5)le these may be changed in the
-    cDBuffer SetupcA dialog.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq27
-cEcEQUESTION (27) cEcA
-
-
-    fill-paragraph function does not fill ??
-
-    I can't seem to get the fill-paragraph function to fill the following
-    paragraph:
-
-       This is a very
-       poorly formed paragraph
-       which refuses to fill
-       properly!
-
-
-cEANSWER cA
-
-
-    The default justification mode is Auto which tries to work out the mode
-    required for each paragraph. Its fairly smart at maintaining a documents
-    indentation, e.g. consider the example right hand justified:
-
-                                                              This is a very
-                                                     poorly formed paragraph
-                                                       which refuses to fill
-                                                                   properly!
-
-
-    It will maintain this indentation. The problem comes when the detected
-    form is not the required form as in the example. The detected paragraph
-    justification to be used is "none" because the lines are short. There are
-    2 ways to solve this problem:
-
-    - You can change the ls$fill-mode(5)lm$fill-mode(5)le to left or both (in fhook-doc mode
-      use C-c l or C-c b) and then use fill-paragraph as normal.
-    - Manually concatenate the first few lines into one to create a longer
-      first line and then use the fill-paragraph a normal, i.e. change the
-      paragraph to:
-
-       `This is a very poorly formed paragraph which refuses to fill` properly!
-
-    and then fill. This works because the longer line will lead to a
-    different assessment of what's required.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq28
-cEcEQUESTION (28) cEcA
-
-
-    Key modifier which acts as the ESC key; what is it ?
-
-    What is the modifier key which acts as the ESC key ? Having to type ESCAPE
-    and then f to move one word forward is very boring.
-
-    With Gnu Emacs (on Unix systems), there is a "meta" modifier key which is
-    a shortcut for pressing ESCAPE followed by the command key. The "meta" key
-    should be the "Alt" key.
-
-
-cEANSWER cA
-
-
-    The "meta" key is the "Alt" key. But 'F' is the Main menu hot-key for the
-    'File' sub-menu so by default 'A-f' will open the File sub-menu. This can
-    be disabled by clearing bit 0x2000 in the $system variable. This option
-    can now be set using user-setup (Alt -> Main Menu).
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq29
-cEcEQUESTION (29) cEcA
-
-
-    find-file start location; where is it ?
-
-
-cEANSWER cA
-
-
-    The lsfind-file(2)lmfind-file(2)le start location is defined as follows:-
-
-    - cG*scratch*cA is current buffer; the current working directory.
-    - cGfilecA is current buffer; the directory location containing cCfilecA.
-
-    Running under Microsoft Windows or UNIX, using an icon launch, then it may
-    become frustrating that the start location is always cGC:\ProgramcA
-    cGFiles\JASSPA\MicroEmacscA (Microsoft windows) or cG/usr/local/bincA (UNIX) this
-    is simply resolved by starting the executable with the cD-ccA option, as
-    defined by lsme(1)lmme(1)le. The cD-ccA option starts the editor with the last editing
-    session, this is typically where a user will want to commence an editing
-    session.
-
-    If the cD-ccA approach is not acceptable, then it is worth defining the
-    environment variable cG$HOMEcA within the start up script, or in the users
-    environment. Using cDfind-filecA with tilde (cG~cA) implies that the directory
-    start path is cG$HOMEcA.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq30
-cEcEQUESTION (30) cEcA
-
-
-    Re-using a MicroEmacs session; how to ??
-
-
-cEANSWER cA
-
-
-    A MicroEmacs editing session may be re-used, such that the current editor
-    is prompted to load a new file externally. This is typically invoked from
-    a short-cut launch from a file manager i.e. cDExplorer(1)cA, cDTkdesk(1)cA etc.
-
-    In order to facilitate the re-use of the session, then lsme(1)lmme(1)le is invoked
-    with the cD-ocA option, this locates the active editor session and passes the
-    file load request. If an existing session does not exist then a new
-    session is started.
-
-    In order for this mechanism to operate, then the lsClient-Server(2)lmClient-Server Interfacele
-    must be enabled from the lsuser-setup(3)lmuser-setup(3)le i.e.
-
-      [Tools -> User Setup -> Platform -> Client Server = Y]
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq31
-cEcEQUESTION (31) cEcA
-
-
-    Drag and Drop; is it supported ??
-
-
-cEANSWER cA
-
-
-    MicroEmacs 2009 supports Microsoft and UNIX XDND (Gnome/KDE) cCdrag-and-dropcA
-    interaction. Multiple files and directories may be dragged from Microsoft
-    Explorer, Nautilus (or other application) and dropped into a buffer
-    window. The destination buffer window is the window in which the dropped
-    file(s) are displayed.
-
-    cDNotecA if the user is currently on the command line, then the command line
-    operation is aborted in order to facilitate the cCdroppedcA files.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq32
-cEcEQUESTION (32) cEcA
-
-
-    Cut and Paste to/from other applications; is it supported ??
-
-
-cEANSWER cA
-
-
-    MicroEmacs 2009 supports cCcut and pastecA operations on all platforms.
-
-    To copy a region from MicroEmacs 2009 to another application:  
-
-    - Select a region (with the mouse or keys) - there is no need to invoke
-      a copy operation. All selected text is immediately available to other
-      applications.
-
-    - Move to the new application and paste, as dictated by the platform.
-
-    To copy a region from another application to MicroEmacs 2009
- 
-    - Select the region in the application into the clipboard, as dictated
-      by the platform.
-
-    - Move to MicroEmacs 2009, position the cursor and lsyank(2)lmyank(2)le (cGC-ycA or
-      typically the middle mouse button) the clipboard text.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq33
-cEcEQUESTION (33) cEcA
-
-
-    Fonts; how can I change the font ??
-
-
-cEANSWER cA
-
-
-    The currently selected font may be modified from the lsuser-setup(3)lmuser-setup(3)le.
-
-    cDToolscA -> cDUser SetupcA -> cDPlatformcA
-
-    The font selection depends upon the platform, in all cases a fixed font
-    should be selected, otherwise rendering anomalies will result.
-
-    If you are running on Microsoft platforms ensure that the cDOEM/ANSIcA flag
-    matches the settings of the cDDisplay Font SetcA entry.
-    
-    With MicroEmacs releases after 2022 you might as well use a function 
-    lschange-font-type(3)lmchange-font-type(3)le which allows you to switch the font
-    in an interactive menu on X-Windows systems. You can as well use a tool like
-    cGxfontselcA on X-Windows systems and select a monospaced font, then pasting the
-    font-string into the user-setup form field for the font name. 
-    
-    Per default in this menu only the fonts "Adobe Courier" and "Lucida Typwriter" 
-    are available as these seem to exist on all platforms which I could test, such
-    as macOS with XQuartz, Fedora and Ubuntu Linux.
-    
-    In case you are not  satisified  with this minimal font  selection you might
-    install you own TrueType fonts, see  the information at  lsfaq47(0f)lmfaq47le  - 
-    How  can I use  True  Type  Fonts  within MicroEmacs?
-    
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq34
-cEcEQUESTION (34) cEcA
-
-
-    Colors; how can I change screen colors ??
-
-
-cEANSWER cA
-
-
-    The screen colors are selected from the lsuser-setup(3)lmuser-setup(3)le.
-
-    cDToolscA -> cDUser SetupcA -> cDPlatformcA -> cDColor SchemecA
-
-    The default setting is cCWhite on BlackcA, the cCBlack on CreamcA is the most
-    popular  setting.  To see for hints on how to use other  well  known  editor
-    themes see lsfaq50(0f)lmfaq50le.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq35
-cEcEQUESTION (35) cEcA
-
-
-    File Types; how do I interchange between UNIX, Windows and DOS files ??
-
-
-cEANSWER cA
-
-
-    MicroEmacs 2009 facilitates the editing of the standard file types on all
-    platforms. All files retain their line ending type through edits. i.e. if
-    a DOS file is edited on a UNIX system, the file is still written as a DOS
-    file. When new files are created, they are created with the standard
-    attributes of the host O/S.
-
-    The line ending of the file may be modified from the menu
-
-    cDfilecA -> cDattributescA
-
-    This brings up a dialog that allows the file type and attributes to be
-    modified.
-
-    Note that the only ending that is NOT preserved are files whose lines end
-    in cG<CR>cA's only. The line format is correctly interpreted on reading, but
-    is not retained on the write.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq36
-cEcEQUESTION (36) cEcA
-
-
-    Non-English Languages; What font should I select ??
-
-
-cEANSWER cA
-
-
-    MicroEmacs 2009 has only been tested with Western Lanuguages only. Within
-    the Microsoft Windows environment an ANSI type font should be selected,
-    assuming of course that the characters required are in the ISO-Latin
-    character set. UNIX typically supports ISO-Latin character sets.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq37
-cEcEQUESTION (37) cEcA
-
-
-    MicroEmacs '99; How do I up-grade from MicroEmacs'98 ??
-
-
-cEANSWER cA
-
-
-    Backup your current version!
-
-    Follow the MicroEmacs'99 installation procedure to install and get
-    MicroEmacs'99 running.
-
-    Due to the great improvement to lsuser-setup(3)lmuser-setup(3)le it is advised that the user
-    creates a new setup using cDuser-setupcA and then migrates required macro code
-    changes from the old release into the new.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq38
-cEcEQUESTION (38) cEcA
-
-
-    Some keys on my foreign keyboard do not work properly, how do I get them
-    working ??
-
-
-cEANSWER cA
-
-
-    The most common problem are with foreign keyboards where the <AltGr> key
-    is used to generate some characters in a similar fashion to the <Shift>
-    key. For example, on a Belgian keyboard the '9' key produces a '{'
-    character when the <AltGr> key is also pressed.
-
-    The quickest and best solution is to use the cDKeyboardcA setup on the
-    Start-Up page of lsuser-setup(3)lmuser-setup(3)le. This however may not 
-    provide the solution as not all keyboards are currently supported.  
-    If you are using an unsupported keyboard please send configuration 
-    information back to JASSPA for inclusion in the next release.   
-    The keyboard configuration information is stored in the macro file cGkeyboard.emfcA.
-
-    If cDuser-setupcA does not currently support your keyboard, or you wish to
-    remap some keys, then the command lstranslate-key(2)lmtranslate-key(2)le should be used.  
-    cDtranslate-keycA remaps generated key stroke(s) into another key at a low
-    level so the mapping is supported in all areas. If a macro and key binding
-    were used instead, while they would work in the main text windows, they
-    would not work in the message line. See help on cDtranslate-keycA for more
-    information.
-
-    Note that some <AltGr> keys can produce 2 keys, for example on a Belgian
-    keyboard '<AltGr>-9' produces the key 'A-C-9' first, immediately followed
-    by 'A-C-{'. This is an unfortunate side effect of windows, it is better to
-    have two keys rather than none. But this does add confusion to the
-    problem! Again, see cDtranslate-keycA for more information.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq39
-cEcEQUESTION (39) cEcA
-
-
-    Tabs; How to change the tab width ??
-
-
-cEANSWER cA
-
-
-    ls$tab-width(5)lm$tab-width(5)le controls the size of the displayed tab character
-    (number of spaces) and the simulated tab character size, where the user entered tab
-    character is replaced by a number of space characters. The latter is only
-    used when lstab(2m)lmtab(2m)le mode is enabled (it is typically enabled by default).
-
-    To change the tab character width then the lsset-variable(2)lmset-variable(2)le command is
-    used:
-
-       esc x set-variable
-
-
-    You will then be prompted for the remaining arguments. cG<TAB>cA is the
-    completion so:-
-
-       esc x set-v<TAB>
-       $tab-width<TAB>
-       2
-
-
-    If this is the setting that you always want to use then it is easier if
-    you put this in your <user.emf> as:-
-
-sB
-          set-variable $tab-width 2
-
-sA
-    then whenever you start a new session you will always have the cG$tab-widthcA
-    defined as you want it.
-
-    If you are reading in a file with TAB's embedded then you can convert all
-    of the <TAB>'s to spaces using lstabs-to-spaces(3)lmtabs-to-spaces(3)le:
-
-       esc x tabs-to-spaces
-
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq40
-cEcEQUESTION (40) cEcA
-
-
-    Windows/DOS; Where do I get grep/diff etc. ??
-
-
-cEANSWER cA
-
-
-    For windows and DOS users the UNIX tools may be obtained from:-
-
-       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23a.zip (238 Kb)
-       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23b.zip (227 Kb)
-       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23c.zip (221 Kb)
-       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23d.zip (160 Kb)
-
-
-    comments for this at:
-
-        http://www.geocities.com/SiliconValley/Lakes/1401/softlib1.htm
-
-
-    One awk-port; the Gnuish project has 16 bit and 32 bit versions of cDgawk(1)cA
-    in:
-
-       ftp://mirrors.aol.com/pub/simtelnet/gnu/gnuish/gawk303x.zip (1997, 495K)
-
-
-    Acknowledgment: cDDGcA - 99/07/02
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq41
-cEcEQUESTION (41) cEcA
-
-
-    Home/End Keys; How do I change the default bindings ??
-
-
-cEANSWER cA
-
-
-    Some users prefer the cGHOMEcA and cGENDcA keys to map to the beginning and end of
-    the line, rather than beginning/end of the buffer, respectively. Within
-    the cC<user>.emfcA the following global bindings may be applied to re-assign
-    the key mappings:-
-
-sB
-          global-bind-key "beginning-of-buffer" "C-home"
-          global-bind-key "end-of-buffer"       "C-end"
-          global-bind-key "end-of-line"         "end"
-          global-bind-key "beginning-of-line"   "home"
-
-sA
-    Acknowledgment: cDDGcA - 99/07/02
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq42
-cEcEQUESTION (42) cEcA
-
-
-    tags; How do I generate a MicroEmacs compatible tags file ??
-
-
-cEANSWER cA
-
-
-    A cDtagscA file is used by the lsfind-tag(2)lmfind-tag(2)le command. This is used to hypertext
-    to the cCtaggedcA definition or variable. The standard cDctags(1)cA format is used
-    by MicroEmacs. The cDtagscA file itself may be generated by MicroEmacs 2009
-    from the menu (cCTools->XX Tools->Create Tags FilecA). Alternatively a cDtagscA
-    file may be generated by the cDctags(1)cA utility. This is typically standard
-    on UNIX platforms. For Windows and DOS platforms then the cDExuberant CtagscA
-    is recommended, this is available from:-
-
-        http://darren.hiebert.com
-
-    A MicroEmacs 2009 compatible tags file may be generated using the command
-    line "`ctags -N --format=1 ."` cataloging the current directory. To generate
-    cDtagscA for a directory tree then use cG`ctags -NR --format=1 .`cA. Refer to the
-    cDExuberant CtagscA documentation for a more detailed description of the
-    utility.
-
-    The user variable ls%tag-option(5)lm%tag-option(5)le may be used to enable lsfind-tag(2)lmfind-tag(2)le to
-    locate a recursivelly generated cDtagscA file from a parent directory.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq43
-cEcEQUESTION (43) cEcA
-
-
-    ne; how can I enable line wrapping in NE ??
-
-
-cEANSWER cA
-
-
-    The line wrapping feature is controlled by the wrap buffer-mode in ME but
-    this feature is omitted in NE. To get the size of NE down many features
-    have to be disabled including the wrap mode and fill-paragraph.
-
-    To enable then you have to build your own version of NE with this enabled
-    by changing the 2nd MEOPT_WORDPRO settings in "emain.h" to 1.
-    Alternatively rename your ne.emf to me.emf and use 'me' instead of ne.
-
-    Once it is built and you want to edit a text file then you need to enable
-    WRAP and INDENT mode in the buffer for it to behave correctly. WRAP does
-    the wrap to the next line and INDENT maintains the left indentation.
-    fill-paragraph is present.
-
-    [[FAQ Index]](Frequently Asked Questions).
-
-! 0fFAQs
-cEcEFREQUENTLY ASKED QUESTIONS - Cont cEcA
-
-
-    This document contains frequently asked questions submitted to JASSPA. Use
-    the E-Mail reflector and associated logs, described in the 
-    lsContact InformationlmMicroEmacs - Contact Informationle
-    alternatively questions may be submitted to:-
-
-    cGEmail:support@jasspa.comcA
-
-    We cannot promise to resolve all questions, but will endeavor to answer
-    most. We would also appreciate comments on how to improve the readability
-    of the documentation or suggestions for improvements where you think the
-    documentation is deficient.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq44
-cEcEQUESTION (44) cEcA
-
-
-    Why is MicroEmacs called MicroEmacs 09 in 2024 ??
-
-
-cEANSWER cA
-
-    MicroEmacs was mainly developed by John Green and Steven Phillips in the 1990ies
-    and in the 2010s. The last official release was in 2009. Since then the development
-    was stalled mainly do to the closing of yahoogroups as the communication was lost
-    within the small user base. On Github are a few forks which did some fixes but which
-    were not coordinated. Currently the branch at https://github.com/mittelmark/microemacs
-    is the one which is developed. As there exists another newer branch with more features
-    like https, SVN and Git support I (Detlef Groth) decided to stick with the old name
-    MicroEmacs and add the last release years at the end. So the versions will stick with
-    09 to distinguish it from the new version which will be hopefully released in 2024 as
-    MicroEmacs 24. So the versioning scheme of this MicroEmacs is v09.12.XX - where I will
-    count up the XX from 23 to 31 of neccessary. Currently we (Steven Phillips and me)
-    focus on the release of MicroEmacs 24. MicroEmacs 09 will contain just bug fixes.
-
-    The last official 09 release from 2009 can be download from http://www.jasspa.com -
-    the updated release from https://github.com/mittelmark/microemacs
-    
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq45
-cEcEQUESTION (45) cEcA
-
-
-    What are the main new features of MicroEmacs 09 in 2024 ??  
-
-
-cEANSWER cA
-
-
-    MicroEmacs  09 in 2024  contains  a few fixes to  compile it with the modern
-    GCC. It provides the following new features (often added by Steven  Phillips
-    to the new MicroEmacs 24 (which is not published yet) and then backported by
-    me to MicroEmacs 09):
-    
-    - in terminal mode on Unix using the alternate buffer feature which supports
-      suspension  without editor traces, so the buffer clears during  suspension
-      with Ctrl-z
-    - fixing frame resize on X-Windows which might before destroy the window layout
-      on some tiling window managers
-    - better font support on X11 using true type fonts as well as the old pixmaps fonts
-    - simplified font selection on X-windows using lschange-font-type(3)lmchange-font-type(3)le
-    - font-resize with Ctrl-Plus and Ctrl-Minus
-    - support for  Windows-cp1252  encodings if the font  supports it, so you an
-      get an Euro symbol ...,  Windows-cp1250  (Central European - Polish, Czech
-      etc) and Windows-cp1251  (Cyrillian) are as well now available if the user
-      has a monospaced font with these encodings
-    - more editor schemes, mainly interesting Dracula and Ayu-Light schemes 
-    - improved template handling using an interactive menu to select templates
-      from the users config directory (.jasspa in your HOME directory), create a
-      subfolder r for R templates and place your etf files there
-    - new binary builds for macOS 11-14 (as well as for Windows and Ubuntu and Fedora Linuxes)
-    - much improved C++, Python, R and Markdown mode, support for highlighting R
-      or Python  code chunks in Markdown documents
-    - improved CUA bindings - shortcut emulation more common in standard GUI
-      applications like C-c, C-x, C-v for copy, cut and paste 
-    - new lsjeany-bindings(3)lmjeany-bindings(3)le command which supports a few CUA bindings
-      after the C-j prefix so copy, cut and paste are cGC-j C-c`, `C-j C-xcA and `C-j C-v`.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq46
-cEcEQUESTION (46) cEcA
-
- 
-    What is a bfs executuable?
-    
-    Here the text from John Green from the MicroEmacs website from 2009:
-    
-    The  motivation  behind  this  latest  development  was to  produce  a fully
-    featured  version  of JASSPA  MicroEmacs  which  included  all of the macros
-    (which do most of the work) in a single  executable  package  that  could be
-    transported to different systems without  installing  anything. i.e. copy it
-    onto the system and run it.  Secondly  we  realised  that we also  wanted to
-    customise the macros contained within such that we could carry round our own
-    extensions but did not necessarily want to re-build the binary as the target
-    systems we wanted to run on might not  contain  all of the  necessary  build
-    tools and libraries to re-build the image. Thirdly  anything we added to the
-    executable must contain a hierarchical file structure and must be a platform
-    independent  format which may be constructed and manipulated on any platform
-    whilst being space efficient.
-
-    The  solution  was to  obviously  tack the  information  onto the end of the
-    executable as we know where the  executable  is. The next problem was how to
-    append  information  onto the  executable  that we can  retrieve at runtime.
-    There was obviously  conventional  archive formats, but they are not so good
-    at run-time traversal, in addition there were no tools to add and remove the
-    archive. A cat would of course append  information to the end of a file, but
-    removal  is much more  difficult.  In the end we came up with a new  archive
-    format that performed with conventional file system commands such as listing
-    a directory  and reading files in addition  added  compression  such that we
-    could  efficiently  reduce the size of the data  attachment.  Given that the
-    archive is being  placed at the bottom of the  executable  then the  archive
-    must be located  from the bottom. The end result is a built-in  file  system
-    format  called bfs, this in  hindsight  was  probably not a really good name
-    because it conflicts with the BEoS file system  (latterly we have settled on
-    the Tacky  (Tacked-on)  File  System or tfs but have yet to perform the name
-    space move).
-
-    The bfs command line utility is used to manipulate the archive and attach it
-    to the  executable,  its basic  operation is outlined  below. The  following
-    examples  use me.exe as a clearer  example of which item is the  executable.
-    Obviously  in a UNIX type  environment  then the .exe suffix is not used and
-    does not exist.
-
-    To build a bfs archive then simply  unpack the metree and remove things that
-    you do not want in the archive:
-
-         % tar zxvf jasspa-metree-20091017.tar.gz
-         % rm -rf ./jasspa/pixmaps        # Delete the pixmaps not required.
-         % rm -rf  ./jasspa/spelling      # Delete the empty spelling directory.
-         % rm -rf  ./jasspa/company       # Delete the empty company directory.
-         % rm -f ./jasspa/macros/null     # Delete the null file.
-              
-    You can add new things  such as a spelling  dictionary,  some of your  private
-    files etc. DO NOT add the dynamic  files such as user.erf or the session files
-    as the archive is READ-ONLY and cannot write back any saved session or history
-    information.
-
-    Build the  archive  and add to an  executable  from a different  directory  to
-    create a new executable with BFS archive attached:
-
-         % bfs -a mypath/mecw.exe -o me.exe ./jasspa
-      
-    Append an already existing archive to the executable:
-
-         % bfs -a mypath/mecw.exe -o me.exe jasspa-metree-20091117.bfs
-      
-    This  should now be a stand alone  executable.  If you append  again it will
-    remove the old archive and add a new one.
-
-    The archive may be updated in place using  either a directory  or a .bfs file.
-    This will  remove the  existing  archive and replace it with the new  archive.
-    i.e.
-
-         % bfs -a me.exe ./jasspa          # Add a new archive from directory.
-         % bfs -a me.exe jasspa.bfs        # Add a pre-built archive.
-        
-    You can list the archive attached to the executable:
-
-         % bfs -l me.exe
-      
-    You can test the archive attached to the executable:
-
-         % bfs -t me.exe
-      
-    You can get some information on the archive attached to the executable:
-
-         % bfs -i me.exe
-      
-    You can remove (or strip) the archive attached to the executable:
-
-         % bfs -s me.exe
-      
-    You can extract the archive  attached to the executable which will extract the
-    directory tree in the archive to a new directory called oldarch.
-
-         % bfs -x oldarch me.exe        # Extract to directory called "oldarch"
-         % bfs -f oldarch.bfs me.exe    # Extract to a file called "oldarch.bfs"
-        
-    We  mentioned in the preamble  that bfs is  architecture  independent  and a
-    little  endian Linux  executable or big endian Sun sparc  executable  may be
-    safely manipulated and appended by a Windows version of bfs, and vice versa.
-    bfs treats all files as binary hence care should be taken with line endings,
-    although  MicroEmacs is not directly  affected by the different  line ending
-    forms.
-
-cECustomizing the executable cA
-
-    The standard bfs archive built by JASSPA contains the standard macros but no
-    customization  so when a user  wishes  to bundle  their  macros  and  common
-    extensions the following steps outline how to do it.
-
-    Firstly lets assume that the user starts from the supplied attached archive,
-    the first thing to do is to extract it and then modify it.
-
-          % bfs -x myarch me.exe      # Extract to directory called "myarch"
-      
-    The extracted tree will have two directories:
-
-          myarch/macros
-          myarch/contrib
-        
-    Assuming that the user wants to add a spelling dictionary, then create a new
-    directory called spelling and place the required  spelling  dictionary files
-    in this new  directory (we selected the US  dictionary  here). Note that you
-    can include more than one spelling dictionary file set in here:
-
-         % mkdir myarch/spelling
-         % (cd myarch/spelling; tar zxvf pathto/ls_enus.tar.gz)
-        
-    If you have some company wide files then create a directory  called  company
-    and place the macro files into this directory:
-
-        % mkdir myarch/company
-        % cp pathto/companyfiles* myarch/company
-        
-    If you have your own private  extensions then it is suggested that you place
-    these at the top level i.e. in the myarch  directory.  Note that the private
-    files  include  a user  name  component  so some may not be found if you are
-    logged in as a different  user, so consider  carefully the files to transfer
-    across. DO NOT place any  dynamic  files into the archive as it is read only
-    i.e.  user.erf as these cannot be written. It is strongly  recommended  that
-    the files in the  myarch/macros are not changed as this enables user changes
-    that do not work to be  easily  backed  out;  placing  a file in the  myarch
-    directory  is  used  in  preference  to, and  overrides,  the  same  file in
-    myarch/macros.
-
-         % cp pathto/myfiles* myarch
-      
-    With the archive  directory  composed  then we simply add it to the end of the
-    executable, this operation displaces any old archive with the new one:
-
-         % bfs -a me.exe ./myarch
-      
-    Now  when  you run the  executable  it will  contain  the  archive  that you
-    constructed.  Note that the  attached  archive is last in the search path so
-    any macro  files  found in the file  system in the normal  search  path will
-    override the same macro files that exist in the archive.
-
-    
-cEAccessing  the file  system  from within  MicroEmacs cA
-
-    The bfs file  system is  accessible  from  within  MicroEmacs  using the URL
-    bfs://. The directory location may be traversed by the user and files may be
-    copied out and executed within the editor from this location. i.e.
-
-          C-x C-f bfs://
-      
-    results in a directory listing of the file system:
-
-          Directory listing of: bfs://
-          4833  used in 0 files and 4 dirs (Not-Filtered)
-      
-          Attr    Size             Modified Name
-          dr-x      21  2009/11/21 18:16:38 ../
-          dr-x     152  2009/11/21 18:16:38 contrib/
-          dr-x    4639  2009/11/21 18:16:38 macros/
-            
-    Note that the bfs://  location  is  automatically  placed on the file search
-    path in the colon  separated  list and is  referenced  as {bfs} in the colon
-    separated search path list.
-
-cEKnown Issues cA
-
-
-    JASSPA MicroEmacs is not starting up in a X-Windows mode on Fedora 11/12 and
-    possibly some other RedHat  systems. On executing me then it silently  fails
-    to start. The reason for this is that the  built-in  default  font cannot be
-    resolved. In order to fix this then the following steps may be taken:
-
-    Create a file .Xresources in the $HOME directory if it does not already exist.
-    Add the line
-
-
-          MicroEmacs*font: -*-fixed-medium-r-*-*-*-*-*-*-*-*-*
-
-    to the .Xresources file.
-
-    Merge the local resources definitions to the XServer with the command:
-
-          % xrdb -merge $HOME/.Xresources
-
-    After  performing  these  steps then any  pre-built  MicroEmacs  will run up
-    correctly and not silently fail. If you wish to re-build the binary with the
-    default font then edit unixterm.c::2976 and change the default font string.
-
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq47
-cEcEQUESTION (47) cEcA
-
-    How can I use True Type Fonts within MicroEmacs on a X11 system ??  
-    
-    Wheras  in the  terminal  you use your  terminal  emulator  to choose a nice
-    looking font, for the  X11-Windows  application  you are on your own. If you
-    are on  Linux  with an X11  server  the  availability  of  fonts  to be used
-    directly within  MicroEmacs is first rather limited and restricted mostly to Bitmap
-    fonts like misc-fixed or or -bitstream-courier.. To graphically  explore
-    the available  fonts you can use a tool like xfontsel.  Using an other tool,
-    mkfontscale, you can however index as well True or Open Type Fonts to be
-    used  within  X11  applications.  You can  place  your ttf and otf fonts for
-    instance  in the  cG~/fontscA  folder  within  your  home  directory  and  run
-    thereafter the tools mkfontscale, mkfontdir and xset like this:
-    
-          cd ~/.fonts
-          mkfontdir .         # indexing filenames
-          mkfontscale .       # indexing encodings
-          xset +fp `pwd`      # extend the font search path
-          xset fp rehash      # let the X-server know about
-    
-    In case of trouble you can reset the font search path to the original search
-    path by writing this:
-
-          xset fp default
-          xset fp rehash
-
-    You can now inspect the file  fonts.dir  to see the  available  font strings
-    usuable by X11 applications:
-    
-    For instance my fonts.dir contains the line:
-    
-        CCONSOLA.TTF -microsoft-consolas-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
-
-    Indicating that I can use this font with a cp1252 encodingm the extended ISO
-    encoding by  Microsoft.  I can write this string into the user setup  dialog
-    together  with a fontsize  which  should  come  directly  after the two minus
-    digits:
-    
-        CCONSOLA.TTF -microsoft-consolas-medium-r-normal--22-0-0-0-m-0-microsoft-cp1252
-      
-    Selecting  Windows  ANSI as the  character  set  allows me to use the extend
-    character set within my  application. If you use "esc x  insert-symbol"  you
-    see for instance that the Euro symbol is available.
-    
-    On the Github  project  page,  https://github.com/mittelmark/microemacs  you
-    will find a download link for some indexed monospaced TTF fonts.
-    
-    [[FAQ Index]](Frequently Asked Questions).
-! 0ffaq48
-cEcEQUESTION (48) cEcA
-    
-    How to work with the terminal version of MicroEmacs on terminals with UTF-8
-    encoding?
-    
-    Since the 2026 releases MicroEmacs handles terminal output natively in UTF-8,
-    so on a UTF-8 terminal you normally do not have to do anything special. The
-    encoding used for reading and writing files is per buffer and is controlled by
-    the variable cG$buffer-encodingcA, which is auto-detected when a file is loaded
-    and can be overridden on the command line with the cD-EcA option, for example
-
-      `mec -E iso-8859-15 file.txt`
-
-    Use cGmec -E utf-8cA to force UTF-8 for a buffer, or the command
-    lscharset-change(3)lmcharset-change(3)le to convert an already open buffer.
-
-    Legacy note: before native UTF-8 support (releases up to b6) the console
-    version relied on the terminal font encoding, so non-ASCII characters could
-    display incorrectly on a UTF-8 only terminal. The old workaround was to run a
-    wrapper such as cGluitcA - https://invisible-island.net/luit/luit-figures.html -
-    between MicroEmacs and the terminal:
-
-      `TERM=xterm luit -encoding ISO-8859-15 mec`
-
-    Note that cGluitcA prevents suspending MicroEmacs (cDC-zcA); combining it with
-    cGabducocA allowed suspension. With current releases this workaround is no
-    longer necessary.
-
-
-    [[FAQ Index]](Frequently Asked Questions).
-
-! 0ffaq49
-cEcEQUESTION (49) cEcA
-    
-    What are the recommended ISO encodings I should use for my terminal session:
-
-    Since the 2026 releases UTF-8 is the recommended terminal and file encoding,
-    see cG$buffer-encodingcA and the cD-EcA option. The following single byte ISO
-    8859 encodings are only relevant for legacy terminals that cannot display
-    UTF-8, in which case the terminal font encoding, the buffer encoding and the
-    MicroEmacs display character set should all be the same:
-
-    - ISO 8859-1 Western Europe
-    - ISO 8859-2 Western and Central Europe (German, Poland)
-    - ISO 8859-3 Western Europe and South European (Turkish, Maltese plus Esperanto)
-    - ISO 8859-4 Western Europe and Baltic countries (Lithuania, Estonia, Latvia and Lapp)
-    - ISO 8859-5 Cyrillic alphabet
-    - ISO 8859-7 Greek
-    - ISO 8859-8 Hebrew
-    - ISO 8859-9 Western Europe with amended Turkish character set
-    - ISO 8859-10 Western Europe with rationalised character set for Nordic languages, including complete Icelandic set
-    - ISO 8859-13 Baltic languages plus Polish
-    - ISO 8859-15 Added the Euro sign and other rationalisations to ISO 8859-1
-    - ISO 8859-16 Central, Eastern and Southern European languages (Albanian, Bosnian, Croatian, Hungarian, Polish, 
-
-! 0ffaq50
-cEcEQUESTION (50) cEcA
-
-    How can I use other popular editor color themes in MicroEmacs?
-    
-    Importinng  other editor themes is not that  difficult. You can quite easily
-    create  existing  color schemes for dark mode using the default color scheme
-    "Default White on Black". If you go to the Github project page:
-    https://github.com/mbadolato/iTerm2-Color-Schemes you find there downloads
-    for the terminal 
-    https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/dynamic-colors
-    as shell scripts and for an X11-session as xrdb-files.  
-    
-    For the terminal just choose the shell script of your choice and execute it before
-    your start you MicroEmacs terminal version. You should use the standard MicroEmacs
-    theme "Default White on Black" as it mostly compatible with the shell script themes.
-    
-    So a terminal session could look like this:
-    
-         source /path/to/neobones_light.sh    
-         mecb  
-    
-    Usually  dark themes work better than light  themes.  Light themes only work
-    with  the  default  theme if color 0 and 8 are set to light  colors.  If you
-    background  is dark for a white  theme you can try out the  Scheme  "Termcap
-    (White)" which fits quite nicely for light themes
-     
-    For the X11 GUI  MicroEmacs  a scheme file should be  generated.  There is a
-    little shell script  xrdb2scheme.sh  in the Github bin folder which can be used
-    to convert xrdb files into MicroEmacs color scheme code:
-    
-         bash bin/xrdb2scheme.sh  /path/to/xrdb-file
-         
-    will  print  out the  color  creation  code for a scheme  file. Use the file
-    cGschemeat.emfcA  (the Artur theme) as template,  replace the color lines from
-    color 1 to 21 with code printed to the  terminal,  give the theme a new name
-    which is shown in the  description  part on top.  Color  1-16 are the  usual
-    terminal  themes,  (black, red, green,  yellow,  blue,  purple, cyan, white)
-    first full then bright versions, color 17 is the background  color, color 18
-    is the foreground  color, color 19 is the cursor color, color 20 is the text
-    selection  background  color  and color 21 is the text  selection  foregound
-    color.
-    
-    Here an example session:
-    
-         $ bash bin/xrdb2scheme.sh ~/Downloads/Github-Dark.sh 
-         add-color &set .col1 1 0 0 0          ; ansi color 0  (black) 
-         add-color &set .col2 2 247 129 102    ; ansi color 1  (red)   
-         add-color &set .col3 3 86 211 100     ; ansi color 2  (green) 
-         add-color &set .col4 4 227 179 65     ; ansi color 3  (yellow)
-         add-color &set .col5 5 108 164 248    ; ansi color 4  (blue)  
-         add-color &set .col6 6 219 97 162     ; ansi color 5  (purple)
-         add-color &set .col7 7 43 116 137     ; ansi color 6  (cyan)  
-         add-color &set .col8 8 255 255 255    ; ansi color 7  (white) 
-         add-color &set .col9 9 77 77 77       ; ansi color 8  (brightblack) 
-         add-color &set .col10 10 247 129 102  ; ansi color 9  (brightred)   
-         add-color &set .col11 11 86 211 100   ; ansi color 10 (brightgreen) 
-         add-color &set .col12 12 227 179 65   ; ansi color 11 (brightyellow)
-         add-color &set .col13 13 108 164 248  ; ansi color 12 (brightblue)  
-         add-color &set .col14 14 219 97 162   ; ansi color 13 (brightpurple)
-         add-color &set .col15 15 43 116 137   ; ansi color 14 (brightcyan)  
-         add-color &set .col16 16 255 255 255  ; ansi color 15 (brightwhite)
-         add-color &set .col17 17 16 18 22     ; background          
-         add-color &set .col18 18 139 148 158  ; foreground         
-         add-color &set .col19 19 201 209 217  ; cursor color       
-         add-color &set .col20 20 59 80 112    ; selection background
-         add-color &set .col21 21 255 255 255  ; selection foreground
-      
-    These color defintions could be placed in the color scheme file using
-    one of the Ayu schemes (schemead.emf - dark theme, schemeale.emf - 
-    light theme)  as templates. Usually there is then some tweaking 
-    required aftwards in the lsscheme-editor(3)lmscheme-editor(3)le.
-    
-    You can as well create a function like cGscheme-github-darkcA
-    in your cGusername.emfcA file where at the beginning you load  either 
-    the schemefile cGschemead.emfcA or cGschemeal.emfcA files using the execute
-    file command and at the end doing a screen-update. 
-    So the code would look like this:
-    
-         define-macro scheme-github-dark
-            execute-file "schemead"
-            ... color codes from above
-            screen-update
-         !emacro
-    
-    You can then execute this function and get the color scheme in your 
-    current editor session. Please note that this is then not a regular 
-    scheme file, so the scheme can't be edited using the scheme-editor
-    only by changing the colors in your cGusername.emfcA file.
-
-    As an alternative you can since ME version 0924b2 directly load 
-    rdb files without converting them into a ME scheme file. 
-    See lsxrdb-scheme(3)lmxrdb-scheme(3)le for details.
-
-    [[FAQ Index]](Frequently Asked Questions).
 ! 1 me
 cEcENAME cEcA
 
@@ -64083,6 +62337,1752 @@ $a
     lscollapse-all(3)lmcollapse-all(3)le, lscollapse-current(3)lmcollapse-current(3)le,
       
     lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+!   Frequently Asked Questions
+cEcEFAQ cEcA
+
+
+    This page contains frequently asked questions submitted to JASSPA over the
+    years. Some of the older entries refer to platforms and tools that are no
+    longer supported (MS-DOS, Windows 3.x, old DOS/Windows shells and helpers);
+    they are kept here for historical reference. The questions most relevant to
+    the current releases are the later ones (roughly faq44 onwards) and the
+    encoding questions faq48 and faq49.
+
+    lsFAQs(0f)lmFAQsle - FAQ Contact information  
+    lsfaq00(0f)lmfaq00le - New functionality; what is useful to me as an old MicroEmacs user ??  
+    lsfaq01(0f)lmfaq01le - Languages; Are any foreign languages supported other than English ??  
+    lsfaq02(0f)lmfaq02le - C++ is not default, C is - how do I change this ??  
+    lsfaq03(0f)lmfaq03le - GNU Emacs; are there any GNU Emacs bindings. ?  
+    lsfaq04(0f)lmfaq04le - Icons are not displayed correctly in Microsoft Windows environments !!  
+    lsfaq05(0f)lmfaq05le - ipipes not working on Microsoft Windows network drives ?  
+    lsfaq06(0f)lmfaq06le - Language not supported - will it be ??  
+    lsfaq07(0f)lmfaq07le - Language file is incomplete  
+    lsfaq08(0f)lmfaq08le - Input locked up and not accepting keys; how do I unlock ?  
+    lsfaq09(0f)lmfaq09le - MicroEmacs Bindings; How do I get the original MicroEmacs bindings ?  
+    lsfaq10(0f)lmfaq10le - Microsoft Windows Locks up after killing an ipipe.  
+    lsfaq11(0f)lmfaq11le - Mouse support under Microsoft windows is strange !!  
+    lsfaq12(0f)lmfaq12le - Scroll bars too narrow !!  
+    lsfaq13(0f)lmfaq13le - Tab key; Why does the tab key not operate in some windows ??  
+    lsfaq14(0f)lmfaq14le - Termcap; On a color terminal why is there no color ??  
+    lsfaq15(0f)lmfaq15le - Termcap; Some of the keys do not work - how can I bind them ?  
+    lsfaq16(0f)lmfaq16le - Timestamp; Format incorrect, how can I change to MMDDYY.hhmm ?  
+    lsfaq17(0f)lmfaq17le - Windows; Component characters rendered incorrectly, how do I fix ?  
+    lsfaq18(0f)lmfaq18le - Windows Autosave and Backup files; are these potentially a problem ?  
+    lsfaq19(0f)lmfaq19le - Printing; Why in Windows does the output come out in a buffer ??  
+    lsfaq20(0f)lmfaq20le - Printing; On Windows which font should I use ??  
+    lsfaq21(0f)lmfaq21le - Printing; My printer is not supported ?  
+    lsfaq22(0f)lmfaq22le - Alt key maps to the Menu, how do I change ?  
+    lsfaq23(0f)lmfaq23le - me32.ini - Where does it go, how do I know it's being processed ??  
+    lsfaq24(0f)lmfaq24le - Windows - Where is app850.fon ?  
+    lsfaq25(0f)lmfaq25le - Time; mode line is showing the date in DD/MM/YY format how do I change ?  
+    lsfaq26(0f)lmfaq26le - C or C++ indentation and effects; how can I turn off ?  
+    lsfaq27(0f)lmfaq27le - fill-paragraph function does not fill ??  
+    lsfaq28(0f)lmfaq28le - Key modifier which acts as the ESC key; what is it ?  
+    lsfaq29(0f)lmfaq29le - find-file start location; where is it ?  
+    lsfaq30(0f)lmfaq30le - Re-using a MicroEmacs session; how to ??  
+    lsfaq31(0f)lmfaq31le - Drag and Drop; is it supported ??  
+    lsfaq32(0f)lmfaq32le - Cut and Paste to/from other applications; is it supported ??  
+    lsfaq33(0f)lmfaq33le - Fonts; how can I change the font ??  
+    lsfaq34(0f)lmfaq34le - Colors; how can I change screen colors ??  
+    lsfaq35(0f)lmfaq35le - File Types; how do I interchange between UNIX, Windows and DOS files ??  
+    lsfaq36(0f)lmfaq36le - Non-English Languages; What font should I select ??  
+    lsfaq37(0f)lmfaq37le - MicroEmacs '99; How do I up-grade from MicroEmacs'98 ??  
+    lsfaq38(0f)lmfaq38le - Some keys on my foreign keyboard do not work properly, how do I get them working ??  
+    lsfaq39(0f)lmfaq39le - Tabs; How to change the tab width ??  
+    lsfaq40(0f)lmfaq40le - Windows/DOS; Where do I get grep/diff etc. ??  
+    lsfaq41(0f)lmfaq41le - Home/End Keys; How do I change the default bindings ??  
+    lsfaq42(0f)lmfaq42le - tags; How do I generate a MicroEmacs compatible tags file ??  
+    lsfaq43(0f)lmfaq43le - ne; how can I enable line wrapping in NE ??  
+    lsfaq44(0f)lmfaq44le - Why is MicroEmacs called still MicroEmacs 09 in 2024 ??  
+    lsfaq45(0f)lmfaq45le - What are the main new features of MicroEmacs 09 in 2024  ??  
+    lsfaq46(0f)lmfaq46le - What is a bfs executuable?  
+    lsfaq47(0f)lmfaq47le - How can I use True Type Fonts within  MicroEmacs on a X11 system ??  
+    lsfaq48(0f)lmfaq48le - How to deal with UTF-8 enabled terminals with console MicroEmacs ??  
+    lsfaq49(0f)lmfaq49le - What are the recommended ISO encodings I should use for my terminal session??  
+    lsfaq50(0f)lmfaq50le - How to use other existing editor color schemes in MicroEmacs?  
+
+! 0ffaq00
+cEcEQUESTION (00) cEcA
+
+
+    New functionality; what is useful to me as an old MicroEmacs user ??
+
+
+cEANSWER cA
+
+
+    There are a lot of new features in this distribution. Assuming that you
+    just want to use the editor (and have cottoned onto the fact that there
+    are now scroll bars etc.) then the most frequent commands that we use
+    are:-
+
+    lsgrep(3)lmgrep(3)le - May need to set up in cC<user>.emfcA.  
+    lsdiff(3)lmdiff(3)le - May need to set up in cC<user>.emfcA.  
+    lscompile(3)lmcompile(3)le - May need to set up in cC<user>.emfcA.  
+    lsclean(3)lmclean(3)le - cleans a buffer, removing spaces etc.  
+    lsrestyle-buffer(3)lmrestyle-buffer(3)le - Reformats 'C' + known languages.  
+    lsspell-buffer(3)lmspell-buffer(3)le - For documentation work, spells the buffer.  
+    cDC-scA - lsisearch-forward(2)lmisearch-forward(2)le incremental search.  
+    cDC-x ucA or cGC-_cA - lsundo(2)lmundo(2)le undoes edits.  
+    cDF10cA - lsfile-browser(3)lmfile-browser(3)le allows the file system to be browsed  
+
+    Other useful macros include:-
+
+    lstabs-to-spaces(3)lmtabs-to-spaces(3)le - Good for sorting out the mess made by Microsoft Developer Studio.  
+    lssort-lines(2)lmsort-lines(2)le - Two versions of this, allows marked lines to be sorted alphabetically.  
+
+    Be wary of:-
+
+     cDesc-ocA - lsfill-paragraph(2)lmfill-paragraph(2)le. The default mode is an automatic
+    mode  which attempts to guess at the format required. It works most of the time. 
+    Also works in 'C'.
+
+    Most of the other new features are in the background, such as the macro  
+    processor, indentation control, color hilighting, indentation control,  
+    auto-saving etc.
+
+    To have a look at the features developed since 2009 have a look at lsfaq44(0f)lmfaq44le and 
+    lsfaq45(0f)lmfaq45le.
+    
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq01
+cEcEQUESTION (01) cEcA
+
+
+    Languages; Are any foreign languages supported other than English ??
+
+
+cEANSWER cA
+
+
+    Unfortunately as we started with V3.8 as a base many years ago, we missed  
+    the distribution with foreign language extensions. We have not  
+    incorporated them into the release.  
+
+    The May 1999 release improves the language support by supporting the  
+    ISO-Latin character sets.  
+
+    We do have spelling dictionaries for French, Spanish, Portuguese and  
+    German. Other languages may be supported by transforming native cDispell(1)cA  
+    dictionaries.  
+
+    If there is enough interest in this release from people with foreign  
+    languages then we may consider including support for foreign language(s).  
+    However we would be very much reliant on external help for local testing  
+    and translation. We would be open to suggestions.  
+
+- [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq02
+cEcEQUESTION (02) cEcA
+
+
+    C++ is not default, C is - how do I change this ??
+
+
+cEANSWER cA
+
+
+    If your main programming language is C++, then you will require the cG.defcA  
+    and cG.hcA files to be loaded in C++ mode by default, rather than 'C'. To  
+    modify this hen the order of the file hooks has to be re-defined.  
+
+    Within your cC<user>.emfcA, over-ride the default ordering by including the
+    line:-
+    
+sB
+          add-file-hook ".h .def"                                     fhook-cpp
+
+sA
+    This adds a newer binding for cGcG.hcAcA and cGcG.defcAcA to C++, over-riding the  
+    existing 'C' binding.  
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq03
+cEcEQUESTION (03) cEcA
+
+
+    GNU Emacs; are there any GNU Emacs bindings. ?
+
+
+cEANSWER cA
+
+
+    No not at the moment. The GNU Emacs bindings would be added as a  
+    compatibility file (meemacs.emf) in much the same way that the me3.8  
+    bindings are added, see meme3_8.emf.
+
+    From the user-setup(3), the user would then ask for "gnu" compatibility.
+
+    We would welcome submissions for a gnu compatibility file, gnu.emf, to add  
+    to the release.
+
+    The cDMetacA key (typically cGAltcA) may be bound to key strokes, as opposed to  
+    the menu short-cut from the lsuser-setup(3)lmuser-setup(3)le as follows:-  
+
+    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Main Menu Hot-keyscA = N
+    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Esc PrefixcA = Y
+
+- [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq04
+cEcEQUESTION (04) cEcA
+
+
+    Icons are not displayed correctly in Microsoft Windows environments !!
+
+
+cEANSWER cA
+
+
+    After installing on Microsoft platforms, the Icons in the Explorer window  
+    may not be showing correctly. To remedy the situation then the following  
+    steps may be taken.  
+
+    cDWindows '95cA
+    
+       Try re-starting the system first. If the icons are still incorrect
+       then re-start in Safe mode and delete the file:
+
+           `c:\windows\ShellIconCache`
+
+    Restart and the Icons should be correct.
+
+    cDWindow '98cA
+    
+        Try re-starting the system first. If the Icons are still incorrect
+        then re-start in Safe mode, this should re-generate the Icon cache.
+        Restart windows.
+
+    cDNTcA
+    
+        Restart the system.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq05
+cEcEQUESTION (05) cEcA
+
+
+    ipipes not working on Microsoft Windows network drives ?
+
+
+cEANSWER cA
+
+
+    We are aware of a problem with the ipipe commands with '95 and '98 (not 
+    sure about NT) when the current drive is a Novel network drive.
+
+    Although we have not been ably to fully characterize the problem, we know 
+    that:-
+
+    - Old Novel Clients prior to 2.2 - Does not work
+    - Novel Intranetware Client 2.2 - Does not work.
+    - Novel Network Client 2.5 - Does work.
+    - Novel Client 3.01 - Does work.
+
+    Any other information in this area would be appreciated to fully  
+    characterize the problem.
+
+    To get around the problem then disable ipipes using ls$system(5)lm$system(5)le. From
+    within your cC<user>.emfcA knock off bit 0x800 from ls$system(5)lm$system(5)le. This will
+    enable regular pipes, which will work, albeit not in the background.
+
+- [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq06
+cEcEQUESTION (06) cEcA
+
+
+    Language not supported - will it be ??
+
+
+cEANSWER cA
+
+
+    We only support the (programming) languages that we have come into contact
+    with. If you are using a language that we are not supporting then you will
+    need to write a new cGhk<language>.emfcA file. See lslanguageTemplates(2)lmLanguage Templatesle on how
+    to map a new programming language. The list of currently supported file
+    types is defined in lsMicroEmacs - Supported File TypeslmSupported File Typesle.
+
+    Jasspa would appreciate any new templates that people define for standard
+    file types so that we can add them to the distribution.
+
+    For Microsoft Windows, any associated "me" icons types would also be
+    appreciated.
+
+- [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq07
+cEcEQUESTION (07) cEcA
+
+
+    Language file is incomplete
+
+
+cEANSWER cA
+
+
+    For a number of the (programming) language templates we have only provided
+    a sub-set of the commands, this is typically because we only use a sub-set
+    ourselves.
+
+    For a number of templates, there is no indent support (see lsindent(2)lmindent(2)le and
+    lsMicroEmacs - Supported File Types)lmSupported File Typesle.
+
+    Note that when extending the template then only standard words should be
+    added. Words which are local extensions should be added to a cGmyXXX.emfcA.
+
+    Jasspa would appreciate completed template definitions.
+
+
+cESEE ALSO cA
+
+
+    lsfaq06(0f)lmFAQ06le, [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq08
+cEcEQUESTION (08) cEcA
+
+
+    Input locked up and not accepting keys; how do I unlock ?
+
+
+cEANSWER cA
+
+
+    This sometimes happens if a macro has been aborted badly. Typically a few
+    "Ctrl-G"s (see lsabort-command(2)lmabort-command(2)le) will terminate the macro and return
+    control back to the caller.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq09
+cEcEQUESTION (09) cEcA
+
+
+    MicroEmacs Bindings; How do I get the original MicroEmacs bindings ?
+
+
+cEANSWER cA
+
+
+    From lsuser-setup(3)lmuser-setup(3)le set the Emulation to cG`MicroEmacs v3.8`cA. On re-starting
+    (or Current) the macro file cGmeme3_8.emfcA is executed and the bindings
+    loaded. This file should restore your familiar execution set.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq10
+cEcEQUESTION (10) cEcA
+
+
+    Microsoft Windows Locks up after killing an ipipe.
+
+
+cEANSWER cA
+
+
+    This is a known problem for '95/'98 (not NT), on killing an ipipe.  
+    Sometimes the "Winoldapp" locks up, if this is the case use "Alt-Ctrl-Del"
+    to bring up the "cDClose ProgramcA" dialogue, kill off the cGcGWinOldAppcAcA if it
+    is not responding.
+
+    MicroEmacs will then come back. We are looking for ways around this
+    problem at the moment. From the programming perspective Windows is just
+    not as nice as UNIX - which just works !!
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq11
+cEcEQUESTION (11) cEcA
+
+
+    Mouse support under Microsoft windows is strange !!
+
+
+cEANSWER cA
+
+
+    The mouse operation under Microsoft windows (and DOS) is biased towards a
+    3-button mouse operation (Logitech is ideal !!), operating in a similar
+    way to UNIX. i.e. <select> operation gets text <Middle button> yanks text
+    back.
+
+    This stems from the fact that we all came from UNIX backgrounds. We have
+    had a number of comments about this already and do plan to address this
+    issue.
+
+    cDNote:-cA Those of you that have already had a little dip into the operation
+    of the mouse will have probably worked out that the whole of the visible
+    mouse/screen interaction is driven through macros, so this functionality
+    is actually a macro change.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq12
+cEcEQUESTION (12) cEcA
+
+
+    Scroll bars too narrow !!
+
+
+cEANSWER cA
+
+
+    You can change the width of the scroll bars to double width from
+    lsuser-setup(3)lmuser-setup(3)le "Wide Scroll Bars".  
+    Alternatively, you may do this yourself from cG<user>.emfcA by:-
+
+sB
+          set-variable $scroll-bar &bor $scroll-bar 1
+
+sA 
+    See ls$scroll-bar(5)lm$scroll-bar(5)le.
+
+    Remember if you have enabled wide scroll bars, under windows, or
+    X-Windows, you may want to change your start-up screen width to cG82cA
+    characters rather than cG80cA - see lschange-frame-width(2)lmchange-frame-width(2)le.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq13
+cEcEQUESTION (13) cEcA
+
+
+    Tab key; Why does the tab key not operate in some windows ??
+
+
+cEANSWER cA
+
+
+    In buffers with indentation information the tab key re-computes the
+    indentation of the line. This behavior may be changed from the user-setup.
+
+    Refer to documentation for ls$system(5)lm$system(5)le and lsuser-setup(3)lmuser-setup(3)le.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq14
+cEcEQUESTION (14) cEcA
+
+
+    Termcap; On a color terminal why is there no color ??
+
+
+cEANSWER cA
+
+
+    MicroEmacs has to be enabled to show color by default. From lsuser-setup(3)lmuser-setup(3)le
+    enable "Termcap Color". This will give you basic colors.
+
+    You may also try  enabling  "With  Bold" - this may  increase  the  range of
+    colors.  If still  there  are no  colors  you might try to run emacs  with a
+    different  terminal  setting,  for  instance  using  cGTERM=xterm  me  -ncA or
+    cGTERM=xterm me -ncA or cGTERM=rxvt  meccA in dependence  what type of me you are
+    using.  Check if you get the color,  usually  setting  the  variable to term
+    works best with regards to keys  (backspace  problems) and colors.  Settings
+    might differ however in dependence to the used terminal emulator or terminal
+    multiplexer.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq15
+cEcEQUESTION (15) cEcA
+
+
+    Termcap; Some of the keys do not work - how can I bind them ?
+
+
+cEANSWER cA
+
+
+    In your user setup <user>.emf add the new keys. You have to be careful as
+    to the environment and probably need to do something like the following:-
+
+sB
+          ; First check we are not an Xterm
+          !if &not $use-x
+              ; Quick check on the terminal type. We probably need to
+              ; distinguish between terminal types for different bindings
+              !if &seq $TERM "myterm"
+                  translate-key "<from>" "<to>"
+                  ...
+                  translate-key "<from>" "<to>"
+              !endif
+          !endif
+
+sA
+    See lstranslate-key(2)lmtranslate-key(2)le for details of translating termcap keys.  
+    See lsdescribe-key(2)lmdescribe-key(2)le to help identify the key.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq16
+cEcEQUESTION (16) cEcA
+
+
+    Timestamp; Format incorrect, how can I change to MMDDYY.hhmm ?
+
+
+cEANSWER cA
+
+
+    From within your cC<user.emf>cA set the time stamp default format i.e.
+
+sB
+          set-variable $timestamp "<%M%D%Y.%h%m>"
+
+sA
+    See ls$timestamp(5)lm$timestamp(5)le.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq17
+cEcEQUESTION (17) cEcA
+
+
+    Windows; Component characters rendered incorrectly, how do I fix ?
+
+
+cEANSWER cA
+
+
+    If some of the components of the windows are rendered incorrectly,
+    typically caused by local variations of character sets, then new window
+    component characters may be defined. See ls$window-chars(5)lm$window-chars(5)le for details on
+    how to define new character replacements.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq18
+cEcEQUESTION (18) cEcA
+
+
+    Windows Autosave and Backup files; are these potentially a problem ?
+
+
+cEANSWER cA
+
+
+    For windows '95 up until OEM service release 2, the OS could not
+    distinguish the difference between the files:-
+
+
+       .xxx
+       .xxx~
+
+
+    on a read, we have managed to find a work around for this, however we
+    would advise that the 3 letter extension is adhered to for these releases.
+    For releases of '95 OEM service release 2 and greater, '98 and NT we have
+    not found a problem with any of the auto save and backup naming.
+
+    Obviously, the backup naming will depend on the native file system. For
+    instance if your system administrator has not enabled long file names on
+    your Novel server.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq19
+cEcEQUESTION (19) cEcA
+
+
+    Printing; Why in Windows does the output come out in a buffer ??
+
+
+cEANSWER cA
+
+
+    Use the cDFilecA -> cDPrinter SetupcA dialog and change the destination to the
+    "cDDirect to printercA".
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq20
+cEcEQUESTION (20) cEcA
+
+
+    Printing; On Windows which font should I use ??
+
+
+cEANSWER cA
+
+
+    We suggest that "cDCourier NewcA" is used as the print font. This scales well
+    and supports the full character set. Problems have been reported with
+    networked postscript printers when used in conjunction with fixed fonts.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq21
+cEcEQUESTION (21) cEcA
+
+
+    Printing; My printer is not supported ?
+
+
+cEANSWER cA
+
+
+    We are in the process of providing native postscript generation - UNIX
+    users can stream their output through "a2ps" and then into their standard
+    printer queues.
+
+    Windows, the support is already built in.
+
+    For DOS then you need to get your printer manual out and sort out how to
+    map the printer codes onto fonts. The printer codes are added to
+    cGcGprinter.erfcAcA. We have already provided support for the HP DeskJet printer
+    (PCL), look at this printer definition for some help as to the type of
+    information that you need to set up. It's all a bit fiddley, but you do
+    not get much choice if you want more than plain ASCII out.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq22
+cEcEQUESTION (22) cEcA
+
+
+    Alt key maps to the Menu, how do I change ?
+
+    A-f opens the main File menu instead of executing forward-word (esc f).  
+    How do I make the Alt key act like the Meta key all the time?
+
+
+cEANSWER cA
+
+
+    The cDMetacA key (typically cGAltcA) may be bound to key strokes, as opposed to
+    the menu short-cut from the lsuser-setup(3)lmuser-setup(3)le as follows:-
+
+    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Main Menu Hot-keyscA = N  
+    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDAlt Action: Esc PrefixcA = Y
+
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq23
+cEcEQUESTION (23) cEcA
+
+
+    me32.ini - Where does it go, how do I know it's being processed ??
+
+
+cEANSWER cA
+
+
+    Question posed as:-
+
+       > 1)  Am I right in assuming that for NT the file me32.ini goes
+       >     into  %windir%, i.e. into c:
+
+
+    Yes, this is where the other .ini files are.
+
+        > 2)  How do I know me32.ini is being processed?  Creating one,
+        >     as described in the readme.txt file doesn't seem to have
+        >     any visible effect.
+
+
+     From within the editor, if you show the variable [$MEPATH(5)]($MEPATH(5)), then it
+     should echo the paths that you have defined in the me32.ini file.
+
+         esc-x describe-variable
+         $MEPATH
+
+
+    See: lsme32.ini(8)lmme32.ini(8)le, lsInstallation(1)lmInstallation Informationle, lsUserProfiles(2)lmSetting Up A User Profilele.
+
+       > 3) What does the "fontfile" statement do ?
+
+
+    For releases after May 1999 then the cCfontfilecA statement may be omitted as
+    typically cDLucida ConsolecA or cDCourier NewcA is used. If you want to use the
+    fixed OEM fonts then cCfontfilecA should be defined as cDapp860.foncA (or local
+    language equivalent), this forces the font to be loaded as a resource,
+    prior to use.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq24
+cEcEQUESTION (24) cEcA
+
+
+    Windows - Where is app850.fon ?
+
+
+cEANSWER cA
+
+
+    "app850.fon" is the font file used for the DOS window under '95/'95/NT.
+    You should find it in your c: hidden. If you search from the
+    Explorer->Tools->Find "app850.fon" it should be found in the fonts
+    directory. There is nothing to be done - the file exists and is in the
+    correct location.
+
+    If you do not have this file then, you might have "appXXX.fon", or some
+    other fixed font. You can locate the file that you want as follows:-
+
+        Start->Settings->Control Panel->Fonts
+
+    Display the font list as 'details'. Within that list you should find a
+    "MS-DOS CPXXX" entry. It will be a red font (if you are in monochrome then
+    it will have a 'A' in the box rather than a 'Tt'). This is a fixed font
+    and will be a good alternative to "app850.fon", you can also try the
+    "Fixedsys" font file which has some weird name.
+
+    To be honest I do not know what Microsoft are currently shipping. Most of
+    the Windows platforms that I have used have been upgrades or been abused
+    by so many people you never know what is original !!
+
+    We would be interested in any details of other fixed fonts, which support
+    the full OEM character set that are better alternatives to the DOS ones.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq25
+cEcEQUESTION (25) cEcA
+
+
+    Time; mode line is showing the date in DD/MM/YY format how do I change ?
+
+
+cEANSWER cA
+
+
+    From within your user setup, over-ride the default mode line setting with
+    the modifications you require. i.e. to change the date format to MM/DD/YY
+    use:-
+
+sB
+          set-variable $mode-line "%s%r%u%k %b %l - %h:%m %M/%D/%Y (%e) - (%f) "
+
+sA
+cESEE ALSO cA
+
+    [[FAQ Index]](Frequently Asked Questions), ls$mode-line(5)lm$mode-line(5)le.
+
+
+! 0ffaq26
+cEcEQUESTION (26) cEcA
+
+
+    C or C++ indentation and effects; how can I turn off ?
+
+
+cEANSWER cA
+
+
+    The C mode indentation is supposed to make editing 'C' easier, by forcing
+    the user to follow a preset editing convection. The layout is pretty
+    standard, following a 4 space indent, writing either K&R or standard
+    'Pascal' type layout, with braces aligning vertically.
+
+    The problem most new users have is the inability of the tab key to
+    function, or more simply do not want to be 'forced' to write in a
+    particular style (GNU writers will probably not like this either -
+    conversely they will be using GNU emacs !!). However the constrained
+    layout can be configured to create most styles and does help in a project
+    situation, whereby most of the authored code roughly adheres to the same
+    sort of layout conventions. For C++ users then edit cGcGhkcpp.emfcAcA rather
+    than cGcGhkc.emfcAcA.
+
+
+cETo turn off all automatic 'C' layout  cA
+
+
+    To disable ALL automatic layout in C and C++ files then from the menu
+
+        help -> Buffer Setup -> Setup Auto Indent
+
+
+    Or from the command line cDesc x buffer-setupcA and disable through the
+    dialogue.
+
+    Restart the editor.
+
+
+cETo re-enable the <tab> key  cA
+
+
+    To retain the 'C' layout aid, but re-enable the tab key operation then
+    disable the cDTab To IndentcA option in lsuser-setup(3)lmuser-setup(3)le i.e.
+
+    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDTab To IndentcA
+
+    This enables the use of the TAB key in all column positions with the
+    exception of column 0. A <tab> in Column 0 will still enable the automatic
+    line re-formatting.
+
+    If you want real <Tabs> then disable the cDtabcA mode using lsuser-setup(3)lmuser-setup(3)le i.e.
+
+    cDToolscA -> cDUser SetupcA -> cDGeneralcA -> cDTabcA
+
+
+cETo change the 'C' Indentation Layout  cA
+
+
+    The 'C' layout indentation is controlled from the lsindent(2)lmindent(2)le command (see
+    cGhkc.emfcA), the indentation level is controlled by the variables
+    ls$buffer-indent-width(5)lm$buffer-indent-width(5)le and ls$buffer-indent(5)lm$buffer-indent(5)le these may be changed in the
+    cDBuffer SetupcA dialog.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq27
+cEcEQUESTION (27) cEcA
+
+
+    fill-paragraph function does not fill ??
+
+    I can't seem to get the fill-paragraph function to fill the following
+    paragraph:
+
+       This is a very
+       poorly formed paragraph
+       which refuses to fill
+       properly!
+
+
+cEANSWER cA
+
+
+    The default justification mode is Auto which tries to work out the mode
+    required for each paragraph. Its fairly smart at maintaining a documents
+    indentation, e.g. consider the example right hand justified:
+
+                                                              This is a very
+                                                     poorly formed paragraph
+                                                       which refuses to fill
+                                                                   properly!
+
+
+    It will maintain this indentation. The problem comes when the detected
+    form is not the required form as in the example. The detected paragraph
+    justification to be used is "none" because the lines are short. There are
+    2 ways to solve this problem:
+
+    - You can change the ls$fill-mode(5)lm$fill-mode(5)le to left or both (in fhook-doc mode
+      use C-c l or C-c b) and then use fill-paragraph as normal.
+    - Manually concatenate the first few lines into one to create a longer
+      first line and then use the fill-paragraph a normal, i.e. change the
+      paragraph to:
+
+       `This is a very poorly formed paragraph which refuses to fill` properly!
+
+    and then fill. This works because the longer line will lead to a
+    different assessment of what's required.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq28
+cEcEQUESTION (28) cEcA
+
+
+    Key modifier which acts as the ESC key; what is it ?
+
+    What is the modifier key which acts as the ESC key ? Having to type ESCAPE
+    and then f to move one word forward is very boring.
+
+    With Gnu Emacs (on Unix systems), there is a "meta" modifier key which is
+    a shortcut for pressing ESCAPE followed by the command key. The "meta" key
+    should be the "Alt" key.
+
+
+cEANSWER cA
+
+
+    The "meta" key is the "Alt" key. But 'F' is the Main menu hot-key for the
+    'File' sub-menu so by default 'A-f' will open the File sub-menu. This can
+    be disabled by clearing bit 0x2000 in the $system variable. This option
+    can now be set using user-setup (Alt -> Main Menu).
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq29
+cEcEQUESTION (29) cEcA
+
+
+    find-file start location; where is it ?
+
+
+cEANSWER cA
+
+
+    The lsfind-file(2)lmfind-file(2)le start location is defined as follows:-
+
+    - cG*scratch*cA is current buffer; the current working directory.
+    - cGfilecA is current buffer; the directory location containing cCfilecA.
+
+    Running under Microsoft Windows or UNIX, using an icon launch, then it may
+    become frustrating that the start location is always cGC:\ProgramcA
+    cGFiles\JASSPA\MicroEmacscA (Microsoft windows) or cG/usr/local/bincA (UNIX) this
+    is simply resolved by starting the executable with the cD-ccA option, as
+    defined by lsme(1)lmme(1)le. The cD-ccA option starts the editor with the last editing
+    session, this is typically where a user will want to commence an editing
+    session.
+
+    If the cD-ccA approach is not acceptable, then it is worth defining the
+    environment variable cG$HOMEcA within the start up script, or in the users
+    environment. Using cDfind-filecA with tilde (cG~cA) implies that the directory
+    start path is cG$HOMEcA.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq30
+cEcEQUESTION (30) cEcA
+
+
+    Re-using a MicroEmacs session; how to ??
+
+
+cEANSWER cA
+
+
+    A MicroEmacs editing session may be re-used, such that the current editor
+    is prompted to load a new file externally. This is typically invoked from
+    a short-cut launch from a file manager i.e. cDExplorer(1)cA, cDTkdesk(1)cA etc.
+
+    In order to facilitate the re-use of the session, then lsme(1)lmme(1)le is invoked
+    with the cD-ocA option, this locates the active editor session and passes the
+    file load request. If an existing session does not exist then a new
+    session is started.
+
+    In order for this mechanism to operate, then the lsClient-Server(2)lmClient-Server Interfacele
+    must be enabled from the lsuser-setup(3)lmuser-setup(3)le i.e.
+
+      [Tools -> User Setup -> Platform -> Client Server = Y]
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq31
+cEcEQUESTION (31) cEcA
+
+
+    Drag and Drop; is it supported ??
+
+
+cEANSWER cA
+
+
+    MicroEmacs 2009 supports Microsoft and UNIX XDND (Gnome/KDE) cCdrag-and-dropcA
+    interaction. Multiple files and directories may be dragged from Microsoft
+    Explorer, Nautilus (or other application) and dropped into a buffer
+    window. The destination buffer window is the window in which the dropped
+    file(s) are displayed.
+
+    cDNotecA if the user is currently on the command line, then the command line
+    operation is aborted in order to facilitate the cCdroppedcA files.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq32
+cEcEQUESTION (32) cEcA
+
+
+    Cut and Paste to/from other applications; is it supported ??
+
+
+cEANSWER cA
+
+
+    MicroEmacs 2009 supports cCcut and pastecA operations on all platforms.
+
+    To copy a region from MicroEmacs 2009 to another application:  
+
+    - Select a region (with the mouse or keys) - there is no need to invoke
+      a copy operation. All selected text is immediately available to other
+      applications.
+
+    - Move to the new application and paste, as dictated by the platform.
+
+    To copy a region from another application to MicroEmacs 2009
+ 
+    - Select the region in the application into the clipboard, as dictated
+      by the platform.
+
+    - Move to MicroEmacs 2009, position the cursor and lsyank(2)lmyank(2)le (cGC-ycA or
+      typically the middle mouse button) the clipboard text.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq33
+cEcEQUESTION (33) cEcA
+
+
+    Fonts; how can I change the font ??
+
+
+cEANSWER cA
+
+
+    The currently selected font may be modified from the lsuser-setup(3)lmuser-setup(3)le.
+
+    cDToolscA -> cDUser SetupcA -> cDPlatformcA
+
+    The font selection depends upon the platform, in all cases a fixed font
+    should be selected, otherwise rendering anomalies will result.
+
+    If you are running on Microsoft platforms ensure that the cDOEM/ANSIcA flag
+    matches the settings of the cDDisplay Font SetcA entry.
+    
+    With MicroEmacs releases after 2022 you might as well use a function 
+    lschange-font-type(3)lmchange-font-type(3)le which allows you to switch the font
+    in an interactive menu on X-Windows systems. You can as well use a tool like
+    cGxfontselcA on X-Windows systems and select a monospaced font, then pasting the
+    font-string into the user-setup form field for the font name. 
+    
+    Per default in this menu only the fonts "Adobe Courier" and "Lucida Typwriter" 
+    are available as these seem to exist on all platforms which I could test, such
+    as macOS with XQuartz, Fedora and Ubuntu Linux.
+    
+    In case you are not  satisified  with this minimal font  selection you might
+    install you own TrueType fonts, see  the information at  lsfaq47(0f)lmfaq47le  - 
+    How  can I use  True  Type  Fonts  within MicroEmacs?
+    
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq34
+cEcEQUESTION (34) cEcA
+
+
+    Colors; how can I change screen colors ??
+
+
+cEANSWER cA
+
+
+    The screen colors are selected from the lsuser-setup(3)lmuser-setup(3)le.
+
+    cDToolscA -> cDUser SetupcA -> cDPlatformcA -> cDColor SchemecA
+
+    The default setting is cCWhite on BlackcA, the cCBlack on CreamcA is the most
+    popular  setting.  To see for hints on how to use other  well  known  editor
+    themes see lsfaq50(0f)lmfaq50le.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq35
+cEcEQUESTION (35) cEcA
+
+
+    File Types; how do I interchange between UNIX, Windows and DOS files ??
+
+
+cEANSWER cA
+
+
+    MicroEmacs 2009 facilitates the editing of the standard file types on all
+    platforms. All files retain their line ending type through edits. i.e. if
+    a DOS file is edited on a UNIX system, the file is still written as a DOS
+    file. When new files are created, they are created with the standard
+    attributes of the host O/S.
+
+    The line ending of the file may be modified from the menu
+
+    cDfilecA -> cDattributescA
+
+    This brings up a dialog that allows the file type and attributes to be
+    modified.
+
+    Note that the only ending that is NOT preserved are files whose lines end
+    in cG<CR>cA's only. The line format is correctly interpreted on reading, but
+    is not retained on the write.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq36
+cEcEQUESTION (36) cEcA
+
+
+    Non-English Languages; What font should I select ??
+
+
+cEANSWER cA
+
+
+    MicroEmacs 2009 has only been tested with Western Lanuguages only. Within
+    the Microsoft Windows environment an ANSI type font should be selected,
+    assuming of course that the characters required are in the ISO-Latin
+    character set. UNIX typically supports ISO-Latin character sets.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq37
+cEcEQUESTION (37) cEcA
+
+
+    MicroEmacs '99; How do I up-grade from MicroEmacs'98 ??
+
+
+cEANSWER cA
+
+
+    Backup your current version!
+
+    Follow the MicroEmacs'99 installation procedure to install and get
+    MicroEmacs'99 running.
+
+    Due to the great improvement to lsuser-setup(3)lmuser-setup(3)le it is advised that the user
+    creates a new setup using cDuser-setupcA and then migrates required macro code
+    changes from the old release into the new.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq38
+cEcEQUESTION (38) cEcA
+
+
+    Some keys on my foreign keyboard do not work properly, how do I get them
+    working ??
+
+
+cEANSWER cA
+
+
+    The most common problem are with foreign keyboards where the <AltGr> key
+    is used to generate some characters in a similar fashion to the <Shift>
+    key. For example, on a Belgian keyboard the '9' key produces a '{'
+    character when the <AltGr> key is also pressed.
+
+    The quickest and best solution is to use the cDKeyboardcA setup on the
+    Start-Up page of lsuser-setup(3)lmuser-setup(3)le. This however may not 
+    provide the solution as not all keyboards are currently supported.  
+    If you are using an unsupported keyboard please send configuration 
+    information back to JASSPA for inclusion in the next release.   
+    The keyboard configuration information is stored in the macro file cGkeyboard.emfcA.
+
+    If cDuser-setupcA does not currently support your keyboard, or you wish to
+    remap some keys, then the command lstranslate-key(2)lmtranslate-key(2)le should be used.  
+    cDtranslate-keycA remaps generated key stroke(s) into another key at a low
+    level so the mapping is supported in all areas. If a macro and key binding
+    were used instead, while they would work in the main text windows, they
+    would not work in the message line. See help on cDtranslate-keycA for more
+    information.
+
+    Note that some <AltGr> keys can produce 2 keys, for example on a Belgian
+    keyboard '<AltGr>-9' produces the key 'A-C-9' first, immediately followed
+    by 'A-C-{'. This is an unfortunate side effect of windows, it is better to
+    have two keys rather than none. But this does add confusion to the
+    problem! Again, see cDtranslate-keycA for more information.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq39
+cEcEQUESTION (39) cEcA
+
+
+    Tabs; How to change the tab width ??
+
+
+cEANSWER cA
+
+
+    ls$tab-width(5)lm$tab-width(5)le controls the size of the displayed tab character
+    (number of spaces) and the simulated tab character size, where the user entered tab
+    character is replaced by a number of space characters. The latter is only
+    used when lstab(2m)lmtab(2m)le mode is enabled (it is typically enabled by default).
+
+    To change the tab character width then the lsset-variable(2)lmset-variable(2)le command is
+    used:
+
+       esc x set-variable
+
+
+    You will then be prompted for the remaining arguments. cG<TAB>cA is the
+    completion so:-
+
+       esc x set-v<TAB>
+       $tab-width<TAB>
+       2
+
+
+    If this is the setting that you always want to use then it is easier if
+    you put this in your <user.emf> as:-
+
+sB
+          set-variable $tab-width 2
+
+sA
+    then whenever you start a new session you will always have the cG$tab-widthcA
+    defined as you want it.
+
+    If you are reading in a file with TAB's embedded then you can convert all
+    of the <TAB>'s to spaces using lstabs-to-spaces(3)lmtabs-to-spaces(3)le:
+
+       esc x tabs-to-spaces
+
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq40
+cEcEQUESTION (40) cEcA
+
+
+    Windows/DOS; Where do I get grep/diff etc. ??
+
+
+cEANSWER cA
+
+
+    For windows and DOS users the UNIX tools may be obtained from:-
+
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23a.zip (238 Kb)
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23b.zip (227 Kb)
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23c.zip (221 Kb)
+       ftp://ftp.cdrom.com/pub/garbo/garbo_pc/unix/uxutl23d.zip (160 Kb)
+
+
+    comments for this at:
+
+        http://www.geocities.com/SiliconValley/Lakes/1401/softlib1.htm
+
+
+    One awk-port; the Gnuish project has 16 bit and 32 bit versions of cDgawk(1)cA
+    in:
+
+       ftp://mirrors.aol.com/pub/simtelnet/gnu/gnuish/gawk303x.zip (1997, 495K)
+
+
+    Acknowledgment: cDDGcA - 99/07/02
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq41
+cEcEQUESTION (41) cEcA
+
+
+    Home/End Keys; How do I change the default bindings ??
+
+
+cEANSWER cA
+
+
+    Some users prefer the cGHOMEcA and cGENDcA keys to map to the beginning and end of
+    the line, rather than beginning/end of the buffer, respectively. Within
+    the cC<user>.emfcA the following global bindings may be applied to re-assign
+    the key mappings:-
+
+sB
+          global-bind-key "beginning-of-buffer" "C-home"
+          global-bind-key "end-of-buffer"       "C-end"
+          global-bind-key "end-of-line"         "end"
+          global-bind-key "beginning-of-line"   "home"
+
+sA
+    Acknowledgment: cDDGcA - 99/07/02
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq42
+cEcEQUESTION (42) cEcA
+
+
+    tags; How do I generate a MicroEmacs compatible tags file ??
+
+
+cEANSWER cA
+
+
+    A cDtagscA file is used by the lsfind-tag(2)lmfind-tag(2)le command. This is used to hypertext
+    to the cCtaggedcA definition or variable. The standard cDctags(1)cA format is used
+    by MicroEmacs. The cDtagscA file itself may be generated by MicroEmacs 2009
+    from the menu (cCTools->XX Tools->Create Tags FilecA). Alternatively a cDtagscA
+    file may be generated by the cDctags(1)cA utility. This is typically standard
+    on UNIX platforms. For Windows and DOS platforms then the cDExuberant CtagscA
+    is recommended, this is available from:-
+
+        http://darren.hiebert.com
+
+    A MicroEmacs 2009 compatible tags file may be generated using the command
+    line "`ctags -N --format=1 ."` cataloging the current directory. To generate
+    cDtagscA for a directory tree then use cG`ctags -NR --format=1 .`cA. Refer to the
+    cDExuberant CtagscA documentation for a more detailed description of the
+    utility.
+
+    The user variable ls%tag-option(5)lm%tag-option(5)le may be used to enable lsfind-tag(2)lmfind-tag(2)le to
+    locate a recursivelly generated cDtagscA file from a parent directory.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq43
+cEcEQUESTION (43) cEcA
+
+
+    ne; how can I enable line wrapping in NE ??
+
+
+cEANSWER cA
+
+
+    The line wrapping feature is controlled by the wrap buffer-mode in ME but
+    this feature is omitted in NE. To get the size of NE down many features
+    have to be disabled including the wrap mode and fill-paragraph.
+
+    To enable then you have to build your own version of NE with this enabled
+    by changing the 2nd MEOPT_WORDPRO settings in "emain.h" to 1.
+    Alternatively rename your ne.emf to me.emf and use 'me' instead of ne.
+
+    Once it is built and you want to edit a text file then you need to enable
+    WRAP and INDENT mode in the buffer for it to behave correctly. WRAP does
+    the wrap to the next line and INDENT maintains the left indentation.
+    fill-paragraph is present.
+
+    [[FAQ Index]](Frequently Asked Questions).
+
+! 0fFAQs
+cEcEFREQUENTLY ASKED QUESTIONS - Cont cEcA
+
+
+    This document contains frequently asked questions submitted to JASSPA. Use
+    the E-Mail reflector and associated logs, described in the 
+    lsContact InformationlmMicroEmacs - Contact Informationle
+    alternatively questions may be submitted to:-
+
+    cGEmail:support@jasspa.comcA
+
+    We cannot promise to resolve all questions, but will endeavor to answer
+    most. We would also appreciate comments on how to improve the readability
+    of the documentation or suggestions for improvements where you think the
+    documentation is deficient.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq44
+cEcEQUESTION (44) cEcA
+
+
+    Why is MicroEmacs called MicroEmacs 09 in 2024 ??
+
+
+cEANSWER cA
+
+    MicroEmacs was mainly developed by John Green and Steven Phillips in the 1990ies
+    and in the 2010s. The last official release was in 2009. Since then the development
+    was stalled mainly do to the closing of yahoogroups as the communication was lost
+    within the small user base. On Github are a few forks which did some fixes but which
+    were not coordinated. Currently the branch at https://github.com/mittelmark/microemacs
+    is the one which is developed. As there exists another newer branch with more features
+    like https, SVN and Git support I (Detlef Groth) decided to stick with the old name
+    MicroEmacs and add the last release years at the end. So the versions will stick with
+    09 to distinguish it from the new version which will be hopefully released in 2024 as
+    MicroEmacs 24. So the versioning scheme of this MicroEmacs is v09.12.XX - where I will
+    count up the XX from 23 to 31 of neccessary. Currently we (Steven Phillips and me)
+    focus on the release of MicroEmacs 24. MicroEmacs 09 will contain just bug fixes.
+
+    The last official 09 release from 2009 can be download from http://www.jasspa.com -
+    the updated release from https://github.com/mittelmark/microemacs
+    
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq45
+cEcEQUESTION (45) cEcA
+
+
+    What are the main new features of MicroEmacs 09 in 2024 ??  
+
+
+cEANSWER cA
+
+
+    MicroEmacs  09 in 2024  contains  a few fixes to  compile it with the modern
+    GCC. It provides the following new features (often added by Steven  Phillips
+    to the new MicroEmacs 24 (which is not published yet) and then backported by
+    me to MicroEmacs 09):
+    
+    - in terminal mode on Unix using the alternate buffer feature which supports
+      suspension  without editor traces, so the buffer clears during  suspension
+      with Ctrl-z
+    - fixing frame resize on X-Windows which might before destroy the window layout
+      on some tiling window managers
+    - better font support on X11 using true type fonts as well as the old pixmaps fonts
+    - simplified font selection on X-windows using lschange-font-type(3)lmchange-font-type(3)le
+    - font-resize with Ctrl-Plus and Ctrl-Minus
+    - support for  Windows-cp1252  encodings if the font  supports it, so you an
+      get an Euro symbol ...,  Windows-cp1250  (Central European - Polish, Czech
+      etc) and Windows-cp1251  (Cyrillian) are as well now available if the user
+      has a monospaced font with these encodings
+    - more editor schemes, mainly interesting Dracula and Ayu-Light schemes 
+    - improved template handling using an interactive menu to select templates
+      from the users config directory (.jasspa in your HOME directory), create a
+      subfolder r for R templates and place your etf files there
+    - new binary builds for macOS 11-14 (as well as for Windows and Ubuntu and Fedora Linuxes)
+    - much improved C++, Python, R and Markdown mode, support for highlighting R
+      or Python  code chunks in Markdown documents
+    - improved CUA bindings - shortcut emulation more common in standard GUI
+      applications like C-c, C-x, C-v for copy, cut and paste 
+    - new lsjeany-bindings(3)lmjeany-bindings(3)le command which supports a few CUA bindings
+      after the C-j prefix so copy, cut and paste are cGC-j C-c`, `C-j C-xcA and `C-j C-v`.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq46
+cEcEQUESTION (46) cEcA
+
+ 
+    What is a bfs executuable?
+    
+    Here the text from John Green from the MicroEmacs website from 2009:
+    
+    The  motivation  behind  this  latest  development  was to  produce  a fully
+    featured  version  of JASSPA  MicroEmacs  which  included  all of the macros
+    (which do most of the work) in a single  executable  package  that  could be
+    transported to different systems without  installing  anything. i.e. copy it
+    onto the system and run it.  Secondly  we  realised  that we also  wanted to
+    customise the macros contained within such that we could carry round our own
+    extensions but did not necessarily want to re-build the binary as the target
+    systems we wanted to run on might not  contain  all of the  necessary  build
+    tools and libraries to re-build the image. Thirdly  anything we added to the
+    executable must contain a hierarchical file structure and must be a platform
+    independent  format which may be constructed and manipulated on any platform
+    whilst being space efficient.
+
+    The  solution  was to  obviously  tack the  information  onto the end of the
+    executable as we know where the  executable  is. The next problem was how to
+    append  information  onto the  executable  that we can  retrieve at runtime.
+    There was obviously  conventional  archive formats, but they are not so good
+    at run-time traversal, in addition there were no tools to add and remove the
+    archive. A cat would of course append  information to the end of a file, but
+    removal  is much more  difficult.  In the end we came up with a new  archive
+    format that performed with conventional file system commands such as listing
+    a directory  and reading files in addition  added  compression  such that we
+    could  efficiently  reduce the size of the data  attachment.  Given that the
+    archive is being  placed at the bottom of the  executable  then the  archive
+    must be located  from the bottom. The end result is a built-in  file  system
+    format  called bfs, this in  hindsight  was  probably not a really good name
+    because it conflicts with the BEoS file system  (latterly we have settled on
+    the Tacky  (Tacked-on)  File  System or tfs but have yet to perform the name
+    space move).
+
+    The bfs command line utility is used to manipulate the archive and attach it
+    to the  executable,  its basic  operation is outlined  below. The  following
+    examples  use me.exe as a clearer  example of which item is the  executable.
+    Obviously  in a UNIX type  environment  then the .exe suffix is not used and
+    does not exist.
+
+    To build a bfs archive then simply  unpack the metree and remove things that
+    you do not want in the archive:
+
+         % tar zxvf jasspa-metree-20091017.tar.gz
+         % rm -rf ./jasspa/pixmaps        # Delete the pixmaps not required.
+         % rm -rf  ./jasspa/spelling      # Delete the empty spelling directory.
+         % rm -rf  ./jasspa/company       # Delete the empty company directory.
+         % rm -f ./jasspa/macros/null     # Delete the null file.
+              
+    You can add new things  such as a spelling  dictionary,  some of your  private
+    files etc. DO NOT add the dynamic  files such as user.erf or the session files
+    as the archive is READ-ONLY and cannot write back any saved session or history
+    information.
+
+    Build the  archive  and add to an  executable  from a different  directory  to
+    create a new executable with BFS archive attached:
+
+         % bfs -a mypath/mecw.exe -o me.exe ./jasspa
+      
+    Append an already existing archive to the executable:
+
+         % bfs -a mypath/mecw.exe -o me.exe jasspa-metree-20091117.bfs
+      
+    This  should now be a stand alone  executable.  If you append  again it will
+    remove the old archive and add a new one.
+
+    The archive may be updated in place using  either a directory  or a .bfs file.
+    This will  remove the  existing  archive and replace it with the new  archive.
+    i.e.
+
+         % bfs -a me.exe ./jasspa          # Add a new archive from directory.
+         % bfs -a me.exe jasspa.bfs        # Add a pre-built archive.
+        
+    You can list the archive attached to the executable:
+
+         % bfs -l me.exe
+      
+    You can test the archive attached to the executable:
+
+         % bfs -t me.exe
+      
+    You can get some information on the archive attached to the executable:
+
+         % bfs -i me.exe
+      
+    You can remove (or strip) the archive attached to the executable:
+
+         % bfs -s me.exe
+      
+    You can extract the archive  attached to the executable which will extract the
+    directory tree in the archive to a new directory called oldarch.
+
+         % bfs -x oldarch me.exe        # Extract to directory called "oldarch"
+         % bfs -f oldarch.bfs me.exe    # Extract to a file called "oldarch.bfs"
+        
+    We  mentioned in the preamble  that bfs is  architecture  independent  and a
+    little  endian Linux  executable or big endian Sun sparc  executable  may be
+    safely manipulated and appended by a Windows version of bfs, and vice versa.
+    bfs treats all files as binary hence care should be taken with line endings,
+    although  MicroEmacs is not directly  affected by the different  line ending
+    forms.
+
+cECustomizing the executable cA
+
+    The standard bfs archive built by JASSPA contains the standard macros but no
+    customization  so when a user  wishes  to bundle  their  macros  and  common
+    extensions the following steps outline how to do it.
+
+    Firstly lets assume that the user starts from the supplied attached archive,
+    the first thing to do is to extract it and then modify it.
+
+          % bfs -x myarch me.exe      # Extract to directory called "myarch"
+      
+    The extracted tree will have two directories:
+
+          myarch/macros
+          myarch/contrib
+        
+    Assuming that the user wants to add a spelling dictionary, then create a new
+    directory called spelling and place the required  spelling  dictionary files
+    in this new  directory (we selected the US  dictionary  here). Note that you
+    can include more than one spelling dictionary file set in here:
+
+         % mkdir myarch/spelling
+         % (cd myarch/spelling; tar zxvf pathto/ls_enus.tar.gz)
+        
+    If you have some company wide files then create a directory  called  company
+    and place the macro files into this directory:
+
+        % mkdir myarch/company
+        % cp pathto/companyfiles* myarch/company
+        
+    If you have your own private  extensions then it is suggested that you place
+    these at the top level i.e. in the myarch  directory.  Note that the private
+    files  include  a user  name  component  so some may not be found if you are
+    logged in as a different  user, so consider  carefully the files to transfer
+    across. DO NOT place any  dynamic  files into the archive as it is read only
+    i.e.  user.erf as these cannot be written. It is strongly  recommended  that
+    the files in the  myarch/macros are not changed as this enables user changes
+    that do not work to be  easily  backed  out;  placing  a file in the  myarch
+    directory  is  used  in  preference  to, and  overrides,  the  same  file in
+    myarch/macros.
+
+         % cp pathto/myfiles* myarch
+      
+    With the archive  directory  composed  then we simply add it to the end of the
+    executable, this operation displaces any old archive with the new one:
+
+         % bfs -a me.exe ./myarch
+      
+    Now  when  you run the  executable  it will  contain  the  archive  that you
+    constructed.  Note that the  attached  archive is last in the search path so
+    any macro  files  found in the file  system in the normal  search  path will
+    override the same macro files that exist in the archive.
+
+    
+cEAccessing  the file  system  from within  MicroEmacs cA
+
+    The bfs file  system is  accessible  from  within  MicroEmacs  using the URL
+    bfs://. The directory location may be traversed by the user and files may be
+    copied out and executed within the editor from this location. i.e.
+
+          C-x C-f bfs://
+      
+    results in a directory listing of the file system:
+
+          Directory listing of: bfs://
+          4833  used in 0 files and 4 dirs (Not-Filtered)
+      
+          Attr    Size             Modified Name
+          dr-x      21  2009/11/21 18:16:38 ../
+          dr-x     152  2009/11/21 18:16:38 contrib/
+          dr-x    4639  2009/11/21 18:16:38 macros/
+            
+    Note that the bfs://  location  is  automatically  placed on the file search
+    path in the colon  separated  list and is  referenced  as {bfs} in the colon
+    separated search path list.
+
+cEKnown Issues cA
+
+
+    JASSPA MicroEmacs is not starting up in a X-Windows mode on Fedora 11/12 and
+    possibly some other RedHat  systems. On executing me then it silently  fails
+    to start. The reason for this is that the  built-in  default  font cannot be
+    resolved. In order to fix this then the following steps may be taken:
+
+    Create a file .Xresources in the $HOME directory if it does not already exist.
+    Add the line
+
+
+          MicroEmacs*font: -*-fixed-medium-r-*-*-*-*-*-*-*-*-*
+
+    to the .Xresources file.
+
+    Merge the local resources definitions to the XServer with the command:
+
+          % xrdb -merge $HOME/.Xresources
+
+    After  performing  these  steps then any  pre-built  MicroEmacs  will run up
+    correctly and not silently fail. If you wish to re-build the binary with the
+    default font then edit unixterm.c::2976 and change the default font string.
+
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq47
+cEcEQUESTION (47) cEcA
+
+    How can I use True Type Fonts within MicroEmacs on a X11 system ??  
+    
+    Wheras  in the  terminal  you use your  terminal  emulator  to choose a nice
+    looking font, for the  X11-Windows  application  you are on your own. If you
+    are on  Linux  with an X11  server  the  availability  of  fonts  to be used
+    directly within  MicroEmacs is first rather limited and restricted mostly to Bitmap
+    fonts like misc-fixed or or -bitstream-courier.. To graphically  explore
+    the available  fonts you can use a tool like xfontsel.  Using an other tool,
+    mkfontscale, you can however index as well True or Open Type Fonts to be
+    used  within  X11  applications.  You can  place  your ttf and otf fonts for
+    instance  in the  cG~/fontscA  folder  within  your  home  directory  and  run
+    thereafter the tools mkfontscale, mkfontdir and xset like this:
+    
+          cd ~/.fonts
+          mkfontdir .         # indexing filenames
+          mkfontscale .       # indexing encodings
+          xset +fp `pwd`      # extend the font search path
+          xset fp rehash      # let the X-server know about
+    
+    In case of trouble you can reset the font search path to the original search
+    path by writing this:
+
+          xset fp default
+          xset fp rehash
+
+    You can now inspect the file  fonts.dir  to see the  available  font strings
+    usuable by X11 applications:
+    
+    For instance my fonts.dir contains the line:
+    
+        CCONSOLA.TTF -microsoft-consolas-medium-r-normal--0-0-0-0-m-0-microsoft-cp1252
+
+    Indicating that I can use this font with a cp1252 encodingm the extended ISO
+    encoding by  Microsoft.  I can write this string into the user setup  dialog
+    together  with a fontsize  which  should  come  directly  after the two minus
+    digits:
+    
+        CCONSOLA.TTF -microsoft-consolas-medium-r-normal--22-0-0-0-m-0-microsoft-cp1252
+      
+    Selecting  Windows  ANSI as the  character  set  allows me to use the extend
+    character set within my  application. If you use "esc x  insert-symbol"  you
+    see for instance that the Euro symbol is available.
+    
+    On the Github  project  page,  https://github.com/mittelmark/microemacs  you
+    will find a download link for some indexed monospaced TTF fonts.
+    
+    [[FAQ Index]](Frequently Asked Questions).
+! 0ffaq48
+cEcEQUESTION (48) cEcA
+    
+    How to work with the terminal version of MicroEmacs on terminals with UTF-8
+    encoding?
+    
+    Since the 2026 releases MicroEmacs handles terminal output natively in UTF-8,
+    so on a UTF-8 terminal you normally do not have to do anything special. The
+    encoding used for reading and writing files is per buffer and is controlled by
+    the variable cG$buffer-encodingcA, which is auto-detected when a file is loaded
+    and can be overridden on the command line with the cD-EcA option, for example
+
+      `mec -E iso-8859-15 file.txt`
+
+    Use cGmec -E utf-8cA to force UTF-8 for a buffer, or the command
+    lscharset-change(3)lmcharset-change(3)le to convert an already open buffer.
+
+    Legacy note: before native UTF-8 support (releases up to b6) the console
+    version relied on the terminal font encoding, so non-ASCII characters could
+    display incorrectly on a UTF-8 only terminal. The old workaround was to run a
+    wrapper such as cGluitcA - https://invisible-island.net/luit/luit-figures.html -
+    between MicroEmacs and the terminal:
+
+      `TERM=xterm luit -encoding ISO-8859-15 mec`
+
+    Note that cGluitcA prevents suspending MicroEmacs (cDC-zcA); combining it with
+    cGabducocA allowed suspension. With current releases this workaround is no
+    longer necessary.
+
+
+    [[FAQ Index]](Frequently Asked Questions).
+
+! 0ffaq49
+cEcEQUESTION (49) cEcA
+    
+    What are the recommended ISO encodings I should use for my terminal session:
+
+    Since the 2026 releases UTF-8 is the recommended terminal and file encoding,
+    see cG$buffer-encodingcA and the cD-EcA option. The following single byte ISO
+    8859 encodings are only relevant for legacy terminals that cannot display
+    UTF-8, in which case the terminal font encoding, the buffer encoding and the
+    MicroEmacs display character set should all be the same:
+
+    - ISO 8859-1 Western Europe
+    - ISO 8859-2 Western and Central Europe (German, Poland)
+    - ISO 8859-3 Western Europe and South European (Turkish, Maltese plus Esperanto)
+    - ISO 8859-4 Western Europe and Baltic countries (Lithuania, Estonia, Latvia and Lapp)
+    - ISO 8859-5 Cyrillic alphabet
+    - ISO 8859-7 Greek
+    - ISO 8859-8 Hebrew
+    - ISO 8859-9 Western Europe with amended Turkish character set
+    - ISO 8859-10 Western Europe with rationalised character set for Nordic languages, including complete Icelandic set
+    - ISO 8859-13 Baltic languages plus Polish
+    - ISO 8859-15 Added the Euro sign and other rationalisations to ISO 8859-1
+    - ISO 8859-16 Central, Eastern and Southern European languages (Albanian, Bosnian, Croatian, Hungarian, Polish, 
+
+! 0ffaq50
+cEcEQUESTION (50) cEcA
+
+    How can I use other popular editor color themes in MicroEmacs?
+    
+    Importinng  other editor themes is not that  difficult. You can quite easily
+    create  existing  color schemes for dark mode using the default color scheme
+    "Default White on Black". If you go to the Github project page:
+    https://github.com/mbadolato/iTerm2-Color-Schemes you find there downloads
+    for the terminal 
+    https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/dynamic-colors
+    as shell scripts and for an X11-session as xrdb-files.  
+    
+    For the terminal just choose the shell script of your choice and execute it before
+    your start you MicroEmacs terminal version. You should use the standard MicroEmacs
+    theme "Default White on Black" as it mostly compatible with the shell script themes.
+    
+    So a terminal session could look like this:
+    
+         source /path/to/neobones_light.sh    
+         mecb  
+    
+    Usually  dark themes work better than light  themes.  Light themes only work
+    with  the  default  theme if color 0 and 8 are set to light  colors.  If you
+    background  is dark for a white  theme you can try out the  Scheme  "Termcap
+    (White)" which fits quite nicely for light themes
+     
+    For the X11 GUI  MicroEmacs  a scheme file should be  generated.  There is a
+    little shell script  xrdb2scheme.sh  in the Github bin folder which can be used
+    to convert xrdb files into MicroEmacs color scheme code:
+    
+         bash bin/xrdb2scheme.sh  /path/to/xrdb-file
+         
+    will  print  out the  color  creation  code for a scheme  file. Use the file
+    cGschemeat.emfcA  (the Artur theme) as template,  replace the color lines from
+    color 1 to 21 with code printed to the  terminal,  give the theme a new name
+    which is shown in the  description  part on top.  Color  1-16 are the  usual
+    terminal  themes,  (black, red, green,  yellow,  blue,  purple, cyan, white)
+    first full then bright versions, color 17 is the background  color, color 18
+    is the foreground  color, color 19 is the cursor color, color 20 is the text
+    selection  background  color  and color 21 is the text  selection  foregound
+    color.
+    
+    Here an example session:
+    
+         $ bash bin/xrdb2scheme.sh ~/Downloads/Github-Dark.sh 
+         add-color &set .col1 1 0 0 0          ; ansi color 0  (black) 
+         add-color &set .col2 2 247 129 102    ; ansi color 1  (red)   
+         add-color &set .col3 3 86 211 100     ; ansi color 2  (green) 
+         add-color &set .col4 4 227 179 65     ; ansi color 3  (yellow)
+         add-color &set .col5 5 108 164 248    ; ansi color 4  (blue)  
+         add-color &set .col6 6 219 97 162     ; ansi color 5  (purple)
+         add-color &set .col7 7 43 116 137     ; ansi color 6  (cyan)  
+         add-color &set .col8 8 255 255 255    ; ansi color 7  (white) 
+         add-color &set .col9 9 77 77 77       ; ansi color 8  (brightblack) 
+         add-color &set .col10 10 247 129 102  ; ansi color 9  (brightred)   
+         add-color &set .col11 11 86 211 100   ; ansi color 10 (brightgreen) 
+         add-color &set .col12 12 227 179 65   ; ansi color 11 (brightyellow)
+         add-color &set .col13 13 108 164 248  ; ansi color 12 (brightblue)  
+         add-color &set .col14 14 219 97 162   ; ansi color 13 (brightpurple)
+         add-color &set .col15 15 43 116 137   ; ansi color 14 (brightcyan)  
+         add-color &set .col16 16 255 255 255  ; ansi color 15 (brightwhite)
+         add-color &set .col17 17 16 18 22     ; background          
+         add-color &set .col18 18 139 148 158  ; foreground         
+         add-color &set .col19 19 201 209 217  ; cursor color       
+         add-color &set .col20 20 59 80 112    ; selection background
+         add-color &set .col21 21 255 255 255  ; selection foreground
+      
+    These color defintions could be placed in the color scheme file using
+    one of the Ayu schemes (schemead.emf - dark theme, schemeale.emf - 
+    light theme)  as templates. Usually there is then some tweaking 
+    required aftwards in the lsscheme-editor(3)lmscheme-editor(3)le.
+    
+    You can as well create a function like cGscheme-github-darkcA
+    in your cGusername.emfcA file where at the beginning you load  either 
+    the schemefile cGschemead.emfcA or cGschemeal.emfcA files using the execute
+    file command and at the end doing a screen-update. 
+    So the code would look like this:
+    
+         define-macro scheme-github-dark
+            execute-file "schemead"
+            ... color codes from above
+            screen-update
+         !emacro
+    
+    You can then execute this function and get the color scheme in your 
+    current editor session. Please note that this is then not a regular 
+    scheme file, so the scheme can't be edited using the scheme-editor
+    only by changing the colors in your cGusername.emfcA file.
+
+    As an alternative you can since ME version 0924b2 directly load 
+    rdb files without converting them into a ME scheme file. 
+    See lsxrdb-scheme(3)lmxrdb-scheme(3)le for details.
+
+    [[FAQ Index]](Frequently Asked Questions).
 !   MicroEmacs - History
 cEcEHISTORY cEcA
 

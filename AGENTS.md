@@ -864,11 +864,12 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 
 ## Documentation
 
-- Source: `doc/me.smd` (Markdown-like format, main manual) plus
-  `doc/history.smd` (the MicroEmacs development history, kept separate to
-  reduce merge conflicts)
-- The two files are assembled into the generated `doc/me-full.smd` by the
-  `doc/Makefile`; always edit `me.smd` / `history.smd`, never `me-full.smd`
+- Source: `doc/me.smd` (main manual) plus `doc/faq.smd` (the Frequently Asked
+  Questions) and `doc/history.smd` (the MicroEmacs development history). The
+  two appendices are kept in their own files to reduce merge conflicts
+- These files are assembled into the generated `doc/me-full.smd` by the
+  `doc/Makefile`; always edit `me.smd` / `faq.smd` / `history.smd`, never
+  `me-full.smd`
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
 - HTML files built with "cd doc && make html-all" (per page ranges in
   `doc/Makefile`; keep them in sync when pages are added)

@@ -62,6 +62,13 @@
                doc/me.md, jasspa/macros/me.ehf, AGENTS.md, .gitignore,
                ChangeLog
 
+  [261015] - Documentation: the Frequently Asked Questions (amicr040 -
+               amicr092, 53 pages) were moved out of doc/me.smd into
+               doc/faq.smd. doc/Makefile assembles me.smd + faq.smd +
+               history.smd into the generated me-full.smd for the ehf and
+               html-all targets. Files: doc/me.smd, doc/faq.smd,
+               doc/Makefile, jasspa/macros/me.ehf, AGENTS.md, ChangeLog
+
   [261010] - Release v09.12.26.beta6
 
   [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill

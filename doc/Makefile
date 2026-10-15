@@ -33,11 +33,12 @@
 page=m1cmd000
 SMD=me-full.smd
 
-# The full manual is assembled from me.smd (the main manual) and
-# history.smd (the development history, kept in its own file to reduce
-# merge conflicts). me-full.smd is generated, do not edit it directly.
-$(SMD): me.smd history.smd
-	cat me.smd history.smd > $(SMD)
+# The full manual is assembled from me.smd (the main manual), faq.smd (the
+# Frequently Asked Questions) and history.smd (the development history). These
+# appendices are kept in their own files to reduce merge conflicts.
+# me-full.smd is generated, do not edit it directly.
+$(SMD): me.smd faq.smd history.smd
+	cat me.smd faq.smd history.smd > $(SMD)
 
 html-single: $(SMD)
 	bash ../bin/me-tools.sh smd2html $(SMD) $(page) html
