@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-09 05:09
+date: 2026-10-15 08:13
 ---
 
 ## Introduction
@@ -628,3 +628,14 @@ so.
     - WIP 261010: merged to devel and master for v09.12.26.beta6;
       platform verification (Windows, macOS) still pending - run the
       test matrix above before closing this ticket.
+
+## Ticket 18: Fixing PageUp/PageDown key issue with terminal version
+
+If we are on Linux, Cygwin or Msys terminals the  PageUp/PageDown  keys jump a
+few lines up and then insert the tilde character. The windows terminal version seems to look fine
+
+## Ticket 19: Update doc/me.smd - Install section
+
+The installation page in the help 
+
+ 
