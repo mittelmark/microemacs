@@ -35,6 +35,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -82,6 +84,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -129,6 +133,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -184,6 +190,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -240,6 +248,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -297,6 +307,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -347,6 +359,8 @@ jobs:
             findstr /C:"TEST:unicode=" tests\test-output.txt >nul && echo PASS: unicode test || (echo FAIL: unicode test & exit /b 1)
             findstr /C:"TEST:utf8-strfuncs=ok" tests\test-output.txt >nul && echo PASS: utf8 string functions test || (echo FAIL: utf8 string functions test & exit /b 1)
             findstr /C:"TEST:func-lookup=ok" tests\test-output.txt >nul && echo PASS: function lookup test || (echo FAIL: function lookup test & exit /b 1)
+            findstr /C:"TEST:scroll-bob=ok" tests\test-output.txt >nul && echo PASS: scroll top test || (echo FAIL: scroll top test & exit /b 1)
+            findstr /C:"TEST:scroll-eob=ok" tests\test-output.txt >nul && echo PASS: scroll end test || (echo FAIL: scroll end test & exit /b 1)
           ) else (
             echo FAIL: No test output produced
             exit /b 1

@@ -677,3 +677,25 @@ The installation page in the help
       .github/workflows/binaries-linux.yml,
       .github/workflows/binaries-fedorax86_64.yml, doc/tickets.md
 
+## Ticket 20: PageUp/PageDown do not move the cursor at the buffer ends (DONE)
+
+Affects both the terminal (mec) and the GUI (mew) versions. When the first line
+of the buffer is already shown at the top of the window, pressing PageUp
+reports "top of buffer" but leaves the cursor where it is instead of moving it
+to the first line. Likewise, once the last line is at the top of the window,
+PageDown reports "end of buffer" without moving the cursor to the end of the
+buffer. The usual editor behaviour (GNU Emacs, Vim, ...) is that a page scroll
+which cannot scroll any further moves dot to the beginning/end of the buffer.
+
+    - DONE 261015: windowScrollUp()/windowScrollDown() (src/window.c)
+      returned meErrorBob()/meErrorEob() as soon as there was nothing left
+      to scroll, without touching dot. For a plain page scroll (no numeric
+      argument, i.e. the PageUp/PageDown keys) they now fall back to
+      windowGotoBob()/windowGotoEob() when dot is not already at the
+      beginning/end of the buffer, and only report the top/end of buffer
+      when dot is already there. A numeric-argument scroll (e.g.
+      "C-u 5 scroll-up") keeps the old behaviour. Regression test added to
+      tests/test-basics.emf (TEST:scroll-bob / TEST:scroll-eob), assertions
+      added to the testing.yml matrix. Files: src/window.c,
+      tests/test-basics.emf, .github/workflows/testing.yml, doc/tickets.md
+

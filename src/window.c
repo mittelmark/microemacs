@@ -664,8 +664,9 @@ windowGotoPrevious(int f, int n)
  * Move the current window up by "arg" lines. Recompute the new top line of
  * the window. Look to see if "." is still on the screen. If it is, you win.
  * If it isn't, then move "." to center it in the new framing of the window
- * (this command does not really move "."; it moves the frame). Bound to
- * "C-X C-P".
+ * (this command does not really move "."; it moves the frame). If the top
+ * of the buffer is already displayed then a plain page scroll moves "." to
+ * the beginning of the buffer. Bound to "C-X C-P".
  */
 
 int
@@ -679,7 +680,19 @@ windowScrollUp(int f, int n)
         return windowScrollDown(f, -n) ;
     
     if(frameCur->windowCur->vertScroll == 0)
+    {
+        /*
+         * The first line of the buffer is already at the top of the
+         * window and there is nothing left to scroll. For a plain page
+         * scroll (e.g. the PageUp key) move the cursor to the beginning
+         * of the buffer, unless it is already there; otherwise report
+         * that the top of the buffer has been reached.
+         */
+        if((f == meFALSE) &&
+           ((frameCur->windowCur->dotLineNo != 0) || (frameCur->windowCur->dotOffset != 0)))
+            return windowGotoBob(f, n) ;
         return meErrorBob() ;
+    }
 
     if((frameCur->windowCur->vertScroll-=n) < 0)
         frameCur->windowCur->vertScroll = 0 ;
@@ -695,7 +708,8 @@ windowScrollUp(int f, int n)
  * top line in the window. The move up and move down code is almost completely
  * the same; most of the work has to do with reframing the window, and picking
  * a new dot. We share the code by having "move down" just be an interface to
- * "move up". Magic. Bound to "C-X C-N".
+ * "move up". Magic. If the end of the buffer is already displayed then a
+ * plain page scroll moves "." to the end of the buffer. Bound to "C-X C-N".
  */
 
 int
@@ -709,7 +723,20 @@ windowScrollDown(int f, int n)
         return windowScrollUp(f, -n) ;
     /* A quick if no lines case to make rest easier */
     if(frameCur->windowCur->vertScroll >= frameCur->bufferCur->lineCount-1)
+    {
+        /*
+         * The last line of the buffer is already at the top of the
+         * window and there is nothing left to scroll. For a plain page
+         * scroll (e.g. the PageDown key) move the cursor to the end of
+         * the buffer, unless it is already there; otherwise report that
+         * the end of the buffer has been reached.
+         */
+        if((f == meFALSE) &&
+           ((frameCur->windowCur->dotLine != frameCur->bufferCur->baseLine) ||
+            (frameCur->windowCur->dotOffset != 0)))
+            return windowGotoEob(f, n) ;
         return meErrorEob() ;
+    }
     
     if((frameCur->windowCur->vertScroll+=n) >= frameCur->bufferCur->lineCount)
         frameCur->windowCur->vertScroll = frameCur->bufferCur->lineCount - 1 ;

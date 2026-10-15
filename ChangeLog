@@ -13,6 +13,19 @@
 
 ## 2026
 
+  [261015] - Fix PageUp/PageDown not moving the cursor at the buffer ends
+               (ticket 20): windowScrollUp()/windowScrollDown() in
+               src/window.c reported "top of buffer"/"end of buffer" as
+               soon as there was nothing left to scroll, leaving dot
+               untouched. For a plain page scroll (PageUp/PageDown keys,
+               no numeric argument) they now move dot to the beginning/end
+               of the buffer when it is not already there; a
+               numeric-argument scroll (e.g. "C-u 5 scroll-up") keeps the
+               old behaviour. Regression test added to tests/test-basics.emf
+               (TEST:scroll-bob / TEST:scroll-eob) with assertions in the
+               testing.yml matrix. Files: src/window.c, tests/test-basics.emf,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
   [261015] - Documentation: the Installation help page (doc/me.smd) now
                leads with the installer scripts (Unix curl one-liner and
                Windows PowerShell) plus the mecb-update bootstrap; the
