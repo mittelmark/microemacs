@@ -555,7 +555,7 @@ These are included by headers to generate lookup tables:
 - `bfs/` - Built-in File System tool (embeds macros into executables)
 - `bin/` - Helper scripts (install, fonts, themes, `ehf2md.tcl`)
 - `makefiles/` - Top-level build makefiles (dispatcher, `unixgcc.gmk`, …)
-- `doc/` - Documentation (me.smd → me.ehf)
+- `doc/` - Documentation (`me.smd` + `history.smd` → `me-full.smd` → `me.ehf`)
 - `docs/` - EMF tutorial (emf-tutorial.md)
 - `tests/` - Sample source files in 42+ programming languages, plus
   `tests/test-basics.emf` (CI regression suite), `tests/encodings/`
@@ -864,9 +864,15 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 
 ## Documentation
 
-- Source: `doc/me.smd` (Markdown-like format)
+- Source: `doc/me.smd` (Markdown-like format, main manual) plus
+  `doc/history.smd` (the MicroEmacs development history, kept separate to
+  reduce merge conflicts)
+- The two files are assembled into the generated `doc/me-full.smd` by the
+  `doc/Makefile`; always edit `me.smd` / `history.smd`, never `me-full.smd`
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
-- HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm` -  but needs update file list
+- HTML files built with "cd doc && make html-all" (per page ranges in
+  `doc/Makefile`; keep them in sync when pages are added)
+- HTML files can also be built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm` -  but needs update file list
 - Links section at top of me.smd for cross-references
 
 Additional reference documentation:

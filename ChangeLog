@@ -35,7 +35,33 @@
                makefiles/, .github/workflows/, doc/tickets.md, ChangeLog
 
   [261015] - fix PageUP, PageDown keys inserting tilde in Unix terminals
-  
+
+  [261015] - Documentation sync pass over the help manual (doc/me.smd).
+               Corrected the stale "UTF-8 characters cannot be displayed"
+               claim in the charset-* functions and rewrote FAQ 48/49
+               around native UTF-8 plus the new -E option and
+               $buffer-encoding; documented -E in me(1) and added a
+               "Buffer Encoding" section to the locale support page.
+               Repaired the Build page: the Windows cross compile used a
+               non-existent win32mingw makefile, the TODO markers are
+               gone, all current makefiles (including MSYS2/MinGW and
+               WinLibs) are listed and the pre-2024 platform makefile
+               list and MS-Dev sections are collapsed into a short
+               "Legacy Builds" note. Refreshed Contact Information to
+               lead with the GitHub issue tracker, marked the memsdev
+               MS-Dev add-in obsolete and trimmed the IBM-PC/MS-DOS
+               change-font and user-setup "Platform - DOS Setup"
+               sections. Fixed the outdated platform .emf list and
+               version-encoding wording. The 3,800 line development
+               History page was moved out of me.smd into doc/history.smd;
+               doc/Makefile now assembles me.smd + history.smd into the
+               generated me-full.smd for the ehf and html-all targets and
+               the per-prefix html page ranges were updated (m2mod and
+               m8fil were missing entirely). Stale doc/me.md removed.
+               Files: doc/me.smd, doc/history.smd, doc/Makefile,
+               doc/me.md, jasspa/macros/me.ehf, AGENTS.md, .gitignore,
+               ChangeLog
+
   [261010] - Release v09.12.26.beta6
 
   [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
