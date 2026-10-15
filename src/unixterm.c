@@ -5626,15 +5626,24 @@ TTahead(void)
                 if((sgrMouseState != SGR_MOUSE_STATE_IDLE) &&
                    (meMouseCfg & meMOUSE_ENBLE))
                 {
-                    /* Continue parsing SGR mouse sequence */
-                    if(cc >= '0' && cc <= '9')
+                    /* Continue parsing SGR mouse sequence. Digits are only
+                     * meaningful once we are reading a numeric field of a real
+                     * mouse report (button/col/row). In the earlier ESC/CSI
+                     * states a digit means this is NOT a mouse sequence (e.g.
+                     * "\033[5~" PageUp, "\033[15~" F5), so fall through to the
+                     * invalid-sequence handler below which re-injects the
+                     * consumed ESC/[ characters. */
+                    if((cc >= '0' && cc <= '9') &&
+                       (sgrMouseState == SGR_MOUSE_STATE_BUTTON ||
+                        sgrMouseState == SGR_MOUSE_STATE_COL ||
+                        sgrMouseState == SGR_MOUSE_STATE_ROW))
                     {
                         /* Accumulate digit */
                         if(sgrMouseState == SGR_MOUSE_STATE_BUTTON)
                             sgrMouseButton = sgrMouseButton * 10 + (cc - '0');
                         else if(sgrMouseState == SGR_MOUSE_STATE_COL)
                             sgrMouseCol = sgrMouseCol * 10 + (cc - '0');
-                        else if(sgrMouseState == SGR_MOUSE_STATE_ROW)
+                        else /* SGR_MOUSE_STATE_ROW */
                             sgrMouseRow = sgrMouseRow * 10 + (cc - '0');
                     }
                     else if(cc == ';' && (sgrMouseState == SGR_MOUSE_STATE_BUTTON ||

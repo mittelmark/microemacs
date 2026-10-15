@@ -629,10 +629,31 @@ so.
       platform verification (Windows, macOS) still pending - run the
       test matrix above before closing this ticket.
 
-## Ticket 18: Fixing PageUp/PageDown key issue with terminal version
+## Ticket 18: Fixing PageUp/PageDown key issue with terminal version (DONE)
 
 If we are on Linux, Cygwin or Msys terminals the  PageUp/PageDown  keys jump a
 few lines up and then insert the tilde character. The windows terminal version seems to look fine
+
+    - DONE 261015: root cause is the terminal (mec) SGR mouse
+      parser in TTahead() (src/unixterm.c). While probing for an SGR
+      mouse report "ESC [ <" it consumes the ESC and the '[', then a
+      digit while still in the intermediate ESC/CSI states matched the
+      digit-accumulate branch but none of its state sub-cases, so the
+      digit was silently dropped. "\033[5~" (PageUp) therefore reached
+      the key table as "\033[~"; ME then ran ESC '[' = M-[
+      (beginning-of-paragraph, the reported "jump a few lines up") and
+      self-inserted the leftover '~'. The same corruption affected
+      every key whose escape sequence contains a digit (PageDown,
+      Insert, Delete, Home/End and F1-F12). Fix: only accumulate
+      digits while already reading a real mouse report field
+      (BUTTON/COL/ROW); in the ESC/CSI states a digit is treated as an
+      invalid mouse sequence, so the consumed ESC/'[' are pushed back
+      and the digit is handled normally. Verified with a pty harness:
+      "\033[5~", "\033[6~", "\033[15~", "\033[2~", "\033[3~" and the
+      arrows no longer leave stray characters, SGR mouse
+      press/release/report sequences are still consumed, and
+      tests/test-basics passes on both mec and mew builds. Files:
+      src/unixterm.c, doc/tickets.md
 
 ## Ticket 19: Update doc/me.smd - Install section
 

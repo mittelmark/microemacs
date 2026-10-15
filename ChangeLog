@@ -7,12 +7,14 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261010.1206>
+  > Last Modified : <261015.1010>
 >
->  Authors:      : John Green, Steven Phillips, Detlef Groth
+>  Authors:      : John Green, Steven Phillips, Detlef Groth, MiMo-2.5, MiMo 2.6-Flash
 
 ## 2026
 
+  [201615] - fix PageUP, PageDown keys inserting tilde in Unix terminals
+  
   [261010] - Release v09.12.26.beta6
 
   [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
