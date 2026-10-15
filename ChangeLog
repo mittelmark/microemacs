@@ -34,7 +34,7 @@
                bin/README.md, bin/encoding.sh, bin/mecu, doc/install.md,
                makefiles/, .github/workflows/, doc/tickets.md, ChangeLog
 
-  [201615] - fix PageUP, PageDown keys inserting tilde in Unix terminals
+  [261015] - fix PageUP, PageDown keys inserting tilde in Unix terminals
   
   [261010] - Release v09.12.26.beta6
 
