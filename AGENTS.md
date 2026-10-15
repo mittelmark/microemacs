@@ -223,12 +223,32 @@ A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Wi
 
 | File | Purpose |
 |------|---------|
-| `bin/install.sh` | Unix curl-based installer (downloads latest release) for Linux, MaxOS, Cygwin/Windows and Msys/Windows|
+| `bin/install.sh` | Unix curl-based installer (downloads latest release) for Linux, macOS, Cygwin/Windows and Msys/Windows |
 | `bin/install-windows.ps1` | Windows PowerShell installer |
 | `bin/install-fonts.sh` | X11 font installer |
 | `bin/install-dict.sh` | Spelling dictionary installer |
 
-For full details on the install and update mechanism, see `doc/install.md`.
+The installers are the default installation path; the detailed user-facing
+instructions live in `README.md`, and the built-in help page "Installation"
+(`doc/me.smd`) carries a short offline copy plus the manual/legacy fallback.
+`install.sh` installs `mecb`/`mewb` into `~/.local/bin` (adding it to the PATH
+once); `install-windows.ps1` installs `mecb.exe`/`mewb.exe` into
+`%LOCALAPPDATA%\bin` and creates a Start Menu shortcut. Both also write an
+updater bootstrap (`mecb-update`; `mecb-update.ps1` + `mecb-update.bat` on
+Windows) that downloads the current installer and lets it decide whether a
+newer release exists.
+
+Version encoding: versions are `YYMMDDbN`, compared as
+`YY*1000000 + MM*10000 + DD*100 + N`; a final release (no `b` suffix) ranks
+above any beta of the same date. `mecb -V` prints the parsed date portion
+(e.g. `2009/12/26b4`).
+
+Release note for maintainers: the bootstraps download
+`releases/latest/download/install.sh` and
+`releases/latest/download/install-windows.ps1`, so when cutting a release
+re-upload both installer scripts as release assets
+(`gh release upload <tag> bin/install.sh bin/install-windows.ps1`), otherwise
+users keep fetching the previous installer.
 
 ## Developing on Windows / MSYS2
 
@@ -853,7 +873,6 @@ Additional reference documentation:
 
 | File | Topic |
 |------|-------|
-| `doc/install.md` | Installation and update logic (`install.sh`, `mecb-update`, version encoding, platform matrix) |
 | `doc/clipboard-support.md` | Clipboard implementation — C source, macro fallback, xclip hand-off, Wayland dual-clipboard |
 | `doc/mingw-build.md` | MinGW/MSYS2 cross-compilation setup and known issues |
 | `doc/emf-bnf.md` | Back-Naur-Form defintion for ME macro files |

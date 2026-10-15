@@ -10619,13 +10619,12 @@
   function or a shell script like this:
   
        #!/usr/bin/env bash
-       ## file mecu 
        tty=$(tty | grep -Eo '[0-9]+')
-       TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO559-15 mecb "$@"
+       TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO-8859-15 mecb "$@"
 
   This little wrapper function will either attach an existing session on your
   current  terminal  or  create  a new one. You  might  replace  the  encoding
-  ISO8859-15  with an encoding more  appropriate to your system. Make the file
+  ISO-8859-15  with an encoding more  appropriate to your system. Make the file
   executable and move it to your bin folder.
 
   [[FAQ Index]](Frequently Asked Questions).
@@ -29588,14 +29587,75 @@ $a
 ! 1 Installation
 ## INSTALLATION
 
-
   This page provides introductory notes for the installation and setup of
-  MicroEmacs 2009 build in 2024.
+  MicroEmacs 2009 (with the 2024-2026 extensions by mittelmark).
 
-## Single File Binary Install
+  There are two supported ways to install MicroEmacs:
 
-  Since 2009 the prefered way for  installation  is the use of the single file
-  binaries. The background is described here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html).
+  1. __Installer scripts (recommended, default).__ The platform installer
+     downloads the standalone (embedded-macro) binaries from the latest
+     GitHub release and sets up your PATH.
+  2. __Manual install (fallback).__ Download a single-file binary, or the
+     bare executables plus the macro tree, and place them by hand. Use this
+     only if the installer is unavailable or fails.
+
+  Step by step instructions and a troubleshooting section are maintained in
+  the project README on GitHub:
+  https://github.com/mittelmark/microemacs#installation
+
+## Installer Scripts (Recommended)
+
+## Unix-like Systems (Linux, macOS, FreeBSD, Cygwin, MSYS2)
+
+  Run the installer with curl:
+
+       bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+       source ~/.bashrc        # or re-open the terminal
+       mecb -V                 # verify the installation
+
+  The script detects the operating system, architecture and kernel version,
+  downloads the matching release archives and extracts the two standalone
+  binaries into `~/.local/bin`:
+
+  - `mecb` - terminal (console) version,
+  - `mewb` - GUI (X11 / Wayland) version.
+
+  `~/.local/bin` is added to your PATH on first install (once). `curl` and
+  `unzip` are required; the installer only *suggests* the optional font tools
+  `fc-list` and `xfontsel`.
+
+## Windows (PowerShell)
+
+  Run the installer from PowerShell:
+
+       Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+       Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
+       mecb -V                 # verify the installation
+
+  The script places `mecb.exe` and `mewb.exe` into `%LOCALAPPDATA%\bin`, adds
+  that folder to the user PATH and creates a Start Menu shortcut for
+  `mewb.exe`.
+
+## Updating
+
+  Both installers write a small updater bootstrap next to the binaries:
+  `mecb-update` on Unix-like systems and `mecb-update.ps1` plus a
+  `mecb-update.bat` wrapper on Windows. The bootstrap downloads the current
+  installer from GitHub and runs it; the installer compares versions and only
+  downloads when a newer release exists, so it is safe to run repeatedly:
+
+       mecb-update             # from a shell (Unix) or cmd.exe / PowerShell (Windows)
+
+  Versions are encoded as `YYMMDDbN`; a final release ranks above any beta of
+  the same date.
+
+## Manual Install (Fallback)
+
+  Use this route only when the installer scripts cannot be used, for instance
+  on an isolated machine. All current downloads on the release page are
+  standalone (bfs) builds with the macro files, the help file and the American
+  dictionary embedded. The background of the zero-installation approach is
+  described here: [http://www.jasspa.com/zeroinst.html](http://www.jasspa.com/zeroinst.html).
   The  MicroEmacs  executable  in this case contains the binary as well as all
   macro files and optionally as well some dictionary files and the help file.
   So the user only needs to  download a binary for its own  platform,  make it
@@ -29621,9 +29681,10 @@ $a
     and then as well GUI versions (mew and mecwb) which require the Cygwin X11
     libraries to be installed on Cygwin.
    
-  _Installation:_ Just  download the file (mecb, mewb, mecwB) for your platform
-  place it as mec, mew and me into a folder  belonging  to your  PATH, make it
-  executable and run it.
+  _Installation:_ Download the file (`mecb`, `mewb` or `mecwb`) for your
+  platform, make it executable and place it into a folder belonging to your
+  `PATH` (`~/.local/bin` is a common choice), then run it. Renaming the file
+  is optional.
 
   At the  first  run you will be asked  initially  for your  user name and the
   default  user path,  usually  it is  `~/.jasspa`.  As it a first  step it is
@@ -29655,21 +29716,15 @@ $a
   __Getting Help__
   
   In case of trouble use the issue link on the Github project page:
-  https::/github.com/mittelmark/microemacs/issues
+  https://github.com/mittelmark/microemacs/issues
 
-  Below is the old  description of an installation  for a simple me (mec, mew)
-  executable  (terminal or  X11/Windows  version)  together  with the required
-  macro files described. If you prefere the single file install just described
-  above, you do not need to read further. 
-  
-  Hint: All macro files for the  standalone  builds are  accessible  using the
-  bfs://macros path within your MicroEmacs text editor.
-  
-## Quick Install of ME barebones and Macro Files
+  Hint: All macro files for the standalone builds are accessible using the
+  `bfs://macros` path within your MicroEmacs text editor.
 
-  2024: The information below is mostly outdated, it describes an installation
-  of the barebone mec, mew and mecw executables  without attached macro folder
-  which require a separate installation of the jasspa macros.
+  If you build or download the bare (no embedded macros) `mec` / `mew` / `mecw`
+  executables you additionally need the `jasspa` macro tree - see below.
+
+## Bare Executables with a separate Macro Tree
 
   The quickest way to install MicroEmacs for testing without reading the
   rest of this document is to:-
@@ -29688,458 +29743,21 @@ $a
   This allows the user and screen settings to be altered. On becoming more
   accustomed to the editor then a fuller installation may be performed.
 
-  __Getting Help__
-  
-  >  See [Contact Information](Contact Information) for full contact information. A mail archive
-     exists at:-
-
-            http://groups.yahoo.com/group/jasspa/ (not existing anymore)
-
-
-  >  If you wish to participate in the list then you must first register by
-     sending an empty mail message body to:-
-
-            jasspa-subscribe@yahoogroups.com (not exiting anymore)
-
-
-  >  You will then be able to mail any questions into the group.
-     Registration is required in order to prevent _spam_ mailings from
-     entering into the lists.
-
-
-## Distribution 
-
-
-  MicroEmacs is distributed in the following files:-
-
-  __Complete Installations__
-  
-  >  The Microsoft 95/98/NT/2K/XP, Solaris, HP-UX, Linux and the more
-     popular platforms may be installed using a package and do not require
-     the components specified in later sections as these are all bundled
-     together (these packages do not include spelling).
-
-     `jasspa-me-YYYYMMDD-1.i386.rpm` - Linux RedHat 9.x package.
-     `jasspa-me-YYYYMMDD-1.src.rpm` - Linux RedHat 9.x source package.
-     `jasspa-mepkg-hpux-pa-10.20-YYYYMMDD.depot.gz` - HP-UX 10 package.
-     `jasspa-mepkg-hpux-pa-11.00-YYYYMMDD.depot.gz` - HP-UX 11 package.
-     `jasspa-mepkg-ms-win32-2004030.zip`  - 95/98/NT/2K/XP Install Shield
-     `jasspa-mepkg-sun-i386-58-YYYYMMDD.zip` - Sun 2.8(i386) package.
-     `jasspa-mepkg-sun-i386-59-YYYYMMDD.zip` - Sun 2.9(i386) package.
-     `jasspa-mepkg-sun-sparc-56-YYYYMMDD.zip` - Sun 2.6(Sparc) package.
-     `jasspa-mepkg-sun-sparc-58-YYYYMMDD.zip` - Sun 2.8(Sparc) package.
-     `jasspa-mepkg-sun-sparc-59-YYYYMMDD.zip` - Sun 2.9(Sparc) package.
-
-  __Executable Source Code__
-  
-  >  The source code release for MicroEmacs 2009 contains makefiles (`*.mak`)
-     for all supported platforms. Microsoft '95/'98/NT/2K/XP makefiles
-     contain options at the top of the makefile to enable/disable console
-     and URL support.
-
-     `jasspa-mesrc-YYYYMMDD.zip` - Source code for all platforms
-     `jasspa-mesrc-YYYYMMDD.tar.gz` - Source code
-
-  __Executable Images__
-  
-     `jasspa-me-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (X-Windows)
-     `jasspa-me-hpux-pa-10.20-YYYYMMDD.gz` - Hewlett Packard HP-UX 10
-                                              Executable
-     `jasspa-me-hpux-pa-11.00-YYYYMMDD.gz` - Hewlett Packard HP-UX 11
-                                              Executable
-     `jasspa-me-ibm-aix-4-YYYYMMDD.gz` - IBM's AIX 4.3 Executable
-     `jasspa-me-linux-i386-2.4-YYYYMMDD.gz` - Linux 2.2.x/2.4.x Executable
-     `jasspa-me-linux-i386-2.6-YYYYMMDD.gz` - Linux 2.6.x Executable
-     `jasspa-me-ms-win32-YYYYMMDD.zip` - Windows 32' (95/98/NT/2K/XP)
-                                              Executable
-     `jasspa-me-ms-win32s-YYYYMMDD.zip` - Windows win32s (Win3.1/3.11)
-                                              Executable
-     `jasspa-me-msdos-djgpp1-YYYYMMDD.zip` - DOS Executable (DJGPP v1.x)
-     `jasspa-me-msdos-djgpp2-YYYYMMDD.zip` - DOS Executable (DJGPP v2.x)
-     `jasspa-me-openbsd-i386-3.4-YYYYMMDD.gz` - Open BSD 3.4 Executable
-     `jasspa-me-sgi-irix-6-YYYYMMDD.gz` - Silicon Graphics Irix 6 Executable
-     `jasspa-me-sun-i386-58-YYYYMMDD.gz` - Sun Solaris 2.8 Intel Platform
-                                              Executable
-     `jasspa-me-sun-i386-59-YYYYMMDD.gz` - Sun Solaris 2.9 Intel Platform
-                                              Executable
-     `jasspa-me-sun-sparc-56-YYYYMMDD.gz` - Sun OS 5.5 Executable
-     `jasspa-me-sun-sparc-58-YYYYMMDD.gz` - Sun OS 5.8 Executable
-     `jasspa-me-sun-sparc-59-YYYYMMDD.gz` - Sun OS 5.9 Executable
-     `jasspa-mec-apple-darwin-6.6-YYYYMMDD.gz` - Apple console Executable
-     `jasspa-mec-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (Console)
-
-  __Help File Images__ (all platforms)
- 
-     `jasspa-mewinhlp-YYYYMMDD.zip` - Windows Help file
-     `jasspa-mehtm-YYYYMMDD.zip`  - HTML Help files for 8.3 file systems (.htm)
-     `jasspa-mehtml-YYYYMMDD.tar.gz` - HTML Help files (.html)
-
-  __Macro File Images__ (all platforms)
- 
-     `jasspa-memacros-YYYYMMDD.tar.gz` - Macro files
-     `jasspa-memacros-YYYYMMDD.zip` - Macro files
-
-     `jasspa-metree-YYYYMMDD.tar.gz` - Complete install tree + help
-     `jasspa-metree-YYYYMMDD.zip` - Complete install tree + help
-
-  __Spelling Dictionaries__ (all platforms)
-  
-  >  One of the following base dictionaries is required for spelling. The
-     extended dictionaries require the base dictionary and are recommended
-     for a more comprehensive spelling list. Other languages are supported.
-
-     `ls_dede.zip` - German rules and base + extended dictionary.
-     `ls_engb.zip` - British rules and base + extended dictionary.
-     `ls_enus.zip` - American rules and base + extended dictionary.
-     `ls_eses.zip` - Spanish rules and dictionary.
-     `ls_frfr.zip` - French rules and dictionary.
-     `ls_itit.zip` - Italian rules and dictionary
-     `ls_plpl.zip` - Polish rules and dictionary.
-     `ls_ptpt.zip` - Portuguese rules and dictionary.
-     `ls_ruye.zip` - Russian YE rules and dictionary.
-     `ls_ruyo.zip` - Russian YO rules and dictionary.
-
-     `ls_dede.tar.gz` - German rules and base + extended dictionary.
-     `ls_engb.tar.gz` - British rules and base + extended dictionary.
-     `ls_enus.tar.gz` - American rules and base + extended dictionary.
-     `ls_eses.tar.gz` - Spanish rules and dictionary.
-     `ls_frfr.tar.gz` - French rules and dictionary.
-     `ls_itit.tar.gz` - Italian rules and dictionary
-     `ls_plpl.tar.gz` - Polish rules and dictionary.
-     `ls_ptpt.tar.gz` - Portuguese rules and dictionary.
-     `ls_ruye.tar.gz` - Russian YE rules and dictionary.
-     `ls_ruyo.tar.gz` - Russian YO rules and dictionary.
-
-  >  __NOTE:__ The binary versions of the executables held on the site include
-     the platform name as part of the executable name i.e. __me__ for `DOS` is
-     called __medos.exe__. On installing the binaries onto the target machine,
-     you should rename the executable to __me__ or __me.exe__, whatever is
-     appropriate. The ONLY exception to this rule is the Microsoft Windows
-     executable where __mewin32.exe__ should be renamed to __me32.exe__. Our reason
-     for this naming is to allow the executables to be unpacked in the same
-     directory and not be confused with each other.
-
-
-## Installation Directories 
-
-
-  The suggested installation structure for all platforms is defined as:-
-
-                  jasspa
-                  / | \
-                 /  |  \
-                /   |   \
-         spelling macros company
-
-
-  This directory structure is suggested to facilitate upgrades in the future
-  and to keep user data separate from the system macros. MicroEmacs
-  understands this directory structure.
-
-  The directory structures are defined as:
-
-  __macros__
-  
-  >  The standard macro distribution, as supplied by JASSPA.
-
-  __spelling__
-  
-  >  Spelling dictionaries.
-
-  __company__
-  
-  >  Company wide local definitions for the local site. This directory may
-     be omitted if not applicable. Header templates (`.etf` are typically
-     copied from the `macro` directory to the `company` directory and modified
-     for the local site.
-
-  The search order is defined as `root`, `company`, `macros`, `spelling`.
-
-
-## UNIX Installation (System Wide) 
-
-
-  A system wide installation on UNIX for multiple users adheres to
-  conventional package installation methods.
-
-  __Distribution Components Required:__
-
-     `jasspa-me-`_<unix>_`-YYYYMMDD.gz`
-     `jasspa-metree-YYYYMMDD.tar.gz`
-     _<spelling>_`.gz`
-     `jasspa-mehtml-YYYYMMDD.tar.gz` (optional)
-
-  __Installation:__
-  
-  > It is recommended that the macro files are placed in a standard shared
-    system directory. The standard directory locations searched by MicroEmacs
-    are defined on a per-platform basis, only one of the directory locates is
-    selected, as follows:
-
-                                    HP-UX     SunOS      AIX      Cygwin
-                               IRIX     UnixWare   ***BSD    Linux      NeXT
-     /opt/jasspa:             y    y    y    y    y    y    n    n    n
-     /usr/share/jasspa:       y    y    y    y    y    y    y    n    n
-     /usr/local/jasspa:       y    y    y    y    y    y    y    y    y
-     /usr/local/share/jasspa: n    n    n    n    y    n    n    n    n
-
-
-  - Create the directory `/usr/local/jasspa`.
-  - Unpack and install the `jasspa-metree-YYYYMMDD.tar.gz` into this
-        directory.
-  - If spelling dictionaries are required then place them in the
-        spelling sub-directory created when metree was unpacked. Unpack and
-        install the spelling into this directory.
-  - If the standard icons are required for Gnome, KDE or some other
-        window manager then create the sub-directory /usr/local/jasspa/icons
-        and unpack and install the icons into the new directory.
-  - Unpack (or build) the executable and place in "`/usr/local/bin`"
-
-  The executable may now be run by all users. If the macros are placed in a
-  non-standard directory location then the environment variable
-  [MEINSTALLPATH(5)]($MEINSTALLPATH(5)) to define the root jasspa tree.
-
-  For __csh(1)__ users execute a "`rehash`" command and then [me(1)](me(1)) can be executed
-  from the command line.
-
-  By default a X-Windows terminal is displayed, ensure that `$DISPLAY` and
-  `$TERM` are correctly configured. To execute a terminal emulation then
-  execute __me__ with the `-n` option i.e. "`me -n`". Note that this is not required
-  if you are using a `vt100` emulation.
-
-  When MicroEmacs is executed the local directory `~/.jasspa` is created for
-  the user settings. The user home directory may be changed by setting the
-  environment variable [$MEPATH(5)]($MEPATH(5)).
-
-
-## UNIX Installation (Single User) 
-
-
-  Where the user is not permitted to install 3rd party applications in the
-  system directories then MicroEmacs may be installed locally as follows:-
-
-  - Create the directory `~/.jasspa`.
-  - Unpack and install the `jasspa-metree-YYYYMMDD.tar.gz` into this
-        directory.
-  - If spelling dictionaries are required then place them in the
-        spelling sub-directory created when metree was unpacked. Unpack and
-        install the spelling into this directory.
-  - If the standard icons are required for Gnome, KDE or some other
-        window manager then create the sub-directory ~/.jasspa/icons and
-        unpack and install the icons into the new directory.
-  - The user files will be placed in the `~/.jasspa` directory by default.
-        To keep the user macros separate then the directory
-        ~/.jasspa/$LOGNAME may be created and will identified as the users
-        home directory.
-  - Unpack (or build) the executable and place in "`~/bin`"
-
-  MicroEmacs may be executed after it has been re-hashed (depending on the
-  shell).
-
-
-## DOS Installation 
-
-
-  MS-DOS has no concept of a standard installation directory. The location
-  of the MicroEmacs macros is generally determined from the directory
-  location of the executable.
-
-  __Executable:__  Compiled with DJGPP V1.0
-
-  Distribution components required:
-  
-     `jasspa-me-msdos-djgpp1-YYYYMMDD.zip`
-     `jasspa-metree-YYYYMMDD.zip`
-     _<spelling>_`.zip`
-
-     `mewinhlp.zip` if you are using windows 3.1/3.11
-
-  Recommended installed components:
-  
-     `grep` - Version of grep (djgpp recommended)
-     `make` - Version of make (djgpp recommended)
-     `diff` - Version of diff (djgpp recommended)
-
-  __Installation:__
- 
-  This installation relies on the executable position.
-
-  - Create the directory `c:\jasspa` (or other location)
-  - Unpack and install the `jasspa-metree-YYYYMMDD.zip` into this
-        directory.
-  - If spelling dictionaries are required then place them in the
-        spelling sub-directory created when metree was unpacked. Unpack and
-        install the spelling into this directory.
-  - Unzip the executable and place it in the jasspa root directory
-        c:\jasspa.
-  - Edit "`c:\autoexec.bat`" and add the following lines:-
-
-
-            SET PATH=%PATH%;c:\jasspa
-
-
-  - Reboot the system.
-  - MicroEmacs may be run from the command line using __me__.
-
-  __Graphics Cards:__
-
-  MicroEmacs may be configured to the text modes of your graphics card.
-  Refer to you graphics card DOS text modes to identify the text modes
-  supported by your monitor. The text mode number may be entered into the
-  user monitor configuration, defined in __Tools__ -> __User Setup__.
-
-  Running DOS Version From Windows (3.x)
-  
-  >  The MS-DOS version of MicroEmacs may be executed from a __.pif__ file. Use
-     the pif editor to create a new __.pif__ file to launch MicroEmacs. The
-     size of the DOS window may be configured from the command line, set
-     the terminal size using one of the following command lines:-
-
-                me -c -v$TERM=E80x50        - 80 x 50 window
-                me -c -v$TERM=E80x25        - 80 x 25 window.
-
-
-  >  We usually add the `-c` option so that MicroEmacs is executed with
-     history information. This may be omitted if required.
-
-
-## Microsoft Windows 3.1/3.11 
-
-
-  __Executable:__  Compiled with Microsoft Developer 2.0
-
-  __Helper DLL:__
- 
-  Under __Win32s__ a helper DLL __methnk16.dll__ is required to perform the
-  [pipe-shell-command(2)](pipe-shell-command(2)) in a synchronous manner. This should be installed
-  into the `C:\WINDOWS\SHELL` directory. This (rather inelegantly) gets around
-  the problems of spawning a process under __win32s__ due to a number of
-  Microsoft bugs in the operating system. Note: that on a spawn operation a
-  `MS-DOS` window is visible, this is due to the nature of the command shell
-  on this platform which has a tendency to prompt the user at every
-  opportunity, hence a certain amount of interaction (which is out of our
-  control) is necessary.
-
-  The helper DLL is compiled with a 16-bit Windows compiler - MSVC 1.5.
-
-  __Distribution components required:__
-
-     `jasspa-me-ms-win32s-YYYYMMDD.zip`
-     `jasspa-metree-YYYYMMDD.zip`
-     `jasspa-mewinhlp-YYYYMMDD.zip`
-     _<spelling>_`.zip`
-
-  __Recommended installed components:__
-
-     `4dos` - command shell (giving _stderr_ redirection)
-     `grep` - Version of grep (GNU port of grep recommended)
-     `diff` - Version of diff (GNU port of grep recommended)
-     `make` - use nmake or GNU port of make.
-
-     If__win32s__ is a requirement on this platform, typically taken from
-     __pw1118.exe__ which freely available on the Internet.
-
-  __Installation:__
-  
-  This version of Windows does not have a _install_ directory as '95/'98 and
-  it is expected that the `MS-DOS` version will coexist. No _Install_ _Shield_
-  installation is provided. Install in a directory structure similar to
-  `MS-DOS`. Install the helper DLL __methnk16.dll__ in the `C:\WINDOWS\SHELL`
-  directory. Create a [me32.ini(8)](me32.ini(8)) file in the `C:\WINDOWS` directory to
-  identify the location of the MicroEmacs 2009 components, this much the
-  same as the '95/'98 file, change the directory paths to suite the install
-  base.
-
-  __Support Status:__
-
-  The __win32s__ release has not been used with vengeance, although no specific
-  problems have been reported with this release.
-
-
-## Windows 95/98/NT/2K/XP 
-
-
-  __Executable:__ Compiled with Microsoft Developer 6.x
-
-  __Install Shield__
-
-  >   An __Install Shield__ version of MicroEmacs is available which includes
-      all of the distribution components.
-
-  __Distribution components required:__
-
-    `jasspa-mepkg-ms-win32-2004030.zip`
-
-  __Recommended installed components:__
-
-     `grep` - Version of grep (GNU port of grep recommended)
-     `diff` - Version of diff (GNU port of grep recommended)
-     `make` - use nmake or GNU port of make.
-
-  >  A good source of UNIX native tools is
-
-    ` http://unxutils.sourceforge.net/` - for native windows grep, diff, zip
-     etc.
-    ` http://www.cygwin.com` - for a shell environment.
-
-  __Installation:__
-
-  - Create the directory "`c:\Program Files\Jasspa\MicroEmacs`" (or other
-        location)
-  - Create the sub-directory `c:\Program Files\Jasspa\MicroEmacs\macros`.
-        Unpack and install the memacros.zip into this directory
-  - If spelling dictionaries are required then create the directory
-        c:\Program Files\Jasspa\MicroEmacs\spelling. Unpack and install the
-        spelling into this directory.
-  - Unzip the executable components into "C:\Program
-        Files\Jasspa\MicroEmacs"
-  - Create a short cut to MicroEmacs for the Desktop
-
-  >  Right click on the desk top
-
-     `=> New`
-     `=> Short`
-     `=> Command Line: "c:\Program Files\Jasspa\MicroEmacs\me.exe -c"`
-     `=> Short Cut Name: "MicroEmacs"`
-
-  >  MicroEmacs may be executed from the shortcut.
-
-  __Open Actions__ Microsoft Windows 95/98/NT provide short cut actions,
-  assigning an open action to a file. The short cuts may be installed from
-  the __Install Shield__ installation, but may alternatively be explicitly
-  defined by editing the registry file with __regedit(1)__.
-
-  A file open action in the registry is bound to the file file extension, to
-  bind a file extension _.foo_ to the editor then the following registry
-  entries should be defined:-
-
-      [HKEY_CLASSES_ROOT\.foo]
-       "MicroEmacs_foo"
-      [HKEY_CLASSES_ROOT\MicroEmacs_foo\DefaultIcon]
-       "C:\Program File\JASSPA\MicroEmacs\meicons,23"
-      [HKEY_CLASSES_ROOT\MicroEmacs_foo\Shell\open]
-       "&Open"
-      [HKEY_CLASSES_ROOT\MicroEmacs_foo\Shell\open\command]
-       "C:\Program File\JASSPA\MicroEmacs\me32.exe -o "%1""
-
-
-  In the previous example the _DefaultIcon_ entry is the icon assigned to the
-  file. This may be an icon taken from `meicons.exe` (in this case icon number
-  23), or may be some other icon. The open action in the example uses the __-o__
-  option of the _client-server_, which loads the file into the current
-  MicroEmacs 2009 session, alternatively the __-c__ option may be used to retain
-  the previous context, or no option if a new session with no other files
-  loaded is started.
-
-  A generic open for ALL files may be defined using a wild-card, this may be
-  used to place a _MicroEmacs_ edit entry in the right-click pop-up menu, as
-  follows:-
-
-      [HKEY_CLASSES_ROOT\*\shell]
-      [HKEY_CLASSES_ROOT\*\shell\MicroEmacs]
-       "&MicroEmacs"
-      [HKEY_CLASSES_ROOT\*\shell\MicroEmacs\command]
-       "C:\Program File\JASSPA\MicroEmacs\me32.exe -o "%1""
+## Legacy Installations
+
+  Older installations of the original JASSPA MicroEmacs distribution
+  (2004-2009) used separate archives: `jasspa-metree-YYYYMMDD.tar.gz` for the
+  macro files and the help, separate spelling dictionary and icon archives and
+  the bare executables. The suggested tree placed `macros`, `spelling` and an
+  optional `company` directory below a `jasspa` root directory (searched in
+  the order root, company, macros, spelling); system wide installs used
+  `/usr/local/jasspa` together with the `$MEINSTALLPATH` variable.
+
+  These archives and the older platform sections (DOS, Windows 3.1/3.11 and
+  Windows 95/98/NT/2K) are no longer built or supported. Current releases only
+  ship the single-file binaries described above; use the installer scripts
+  whenever possible. The old JASSPA download pages remain available for
+  historical reference (see the links in the project README).
 
 
 ## ORGANIZING A LOCAL USER PROFILE

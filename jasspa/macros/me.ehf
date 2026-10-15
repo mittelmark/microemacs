@@ -10637,13 +10637,12 @@ Miscellaneous Information
     function or a shell script like this:
     
          #!/usr/bin/env bash
-         ## file mecu 
          tty=$(tty | grep -Eo '[0-9]+')
-         TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO559-15 mecb "$@"
+         TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO-8859-15 mecb "$@"
 
     This little wrapper function will either attach an existing session on your
     current  terminal  or  create  a new one. You  might  replace  the  encoding
-    ISO8859-15  with an encoding more  appropriate to your system. Make the file
+    ISO-8859-15  with an encoding more  appropriate to your system. Make the file
     executable and move it to your bin folder.
 
     [[FAQ Index]](Frequently Asked Questions).
@@ -29233,14 +29232,75 @@ $a
 ! 1 Installation
 cEcEINSTALLATION cEcA
 
-
     This page provides introductory notes for the installation and setup of
-    MicroEmacs 2009 build in 2024.
+    MicroEmacs 2009 (with the 2024-2026 extensions by mittelmark).
 
-cESingle File Binary Install cA
+    There are two supported ways to install MicroEmacs:
 
-    Since 2009 the prefered way for  installation  is the use of the single file
-    binaries. The background is described here: lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
+    1. cDInstaller scripts (recommended, default).cA The platform installer
+       downloads the standalone (embedded-macro) binaries from the latest
+       GitHub release and sets up your PATH.
+    2. cDManual install (fallback).cA Download a single-file binary, or the
+       bare executables plus the macro tree, and place them by hand. Use this
+       only if the installer is unavailable or fails.
+
+    Step by step instructions and a troubleshooting section are maintained in
+    the project README on GitHub:
+    https://github.com/mittelmark/microemacs#installation
+
+cEInstaller Scripts (Recommended) cA
+
+cEUnix-like Systems (Linux, macOS, FreeBSD, Cygwin, MSYS2) cA
+
+    Run the installer with curl:
+
+         bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+         source ~/.bashrc        # or re-open the terminal
+         mecb -V                 # verify the installation
+
+    The script detects the operating system, architecture and kernel version,
+    downloads the matching release archives and extracts the two standalone
+    binaries into cG~/.local/bincA:
+
+    - cGmecbcA - terminal (console) version,
+    - cGmewbcA - GUI (X11 / Wayland) version.
+
+    cG~/.local/bincA is added to your PATH on first install (once). cGcurlcA and
+    cGunzipcA are required; the installer only *suggests* the optional font tools
+    cGfc-listcA and cGxfontselcA.
+
+cEWindows (PowerShell) cA
+
+    Run the installer from PowerShell:
+
+         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+         Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
+         mecb -V                 # verify the installation
+
+    The script places cGmecb.execA and cGmewb.execA into cG%LOCALAPPDATA%\bincA, adds
+    that folder to the user PATH and creates a Start Menu shortcut for
+    cGmewb.execA.
+
+cEUpdating cA
+
+    Both installers write a small updater bootstrap next to the binaries:
+    cGmecb-updatecA on Unix-like systems and cGmecb-update.ps1cA plus a
+    cGmecb-update.batcA wrapper on Windows. The bootstrap downloads the current
+    installer from GitHub and runs it; the installer compares versions and only
+    downloads when a newer release exists, so it is safe to run repeatedly:
+
+         mecb-update             # from a shell (Unix) or cmd.exe / PowerShell (Windows)
+
+    Versions are encoded as cGYYMMDDbNcA; a final release ranks above any beta of
+    the same date.
+
+cEManual Install (Fallback) cA
+
+    Use this route only when the installer scripts cannot be used, for instance
+    on an isolated machine. All current downloads on the release page are
+    standalone (bfs) builds with the macro files, the help file and the American
+    dictionary embedded. The background of the zero-installation approach is
+    described here: lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
     The  MicroEmacs  executable  in this case contains the binary as well as all
     macro files and optionally as well some dictionary files and the help file.
     So the user only needs to  download a binary for its own  platform,  make it
@@ -29266,9 +29326,10 @@ $a
       and then as well GUI versions (mew and mecwb) which require the Cygwin X11
       libraries to be installed on Cygwin.
      
-    cCInstallation:cA Just  download the file (mecb, mewb, mecwB) for your platform
-    place it as mec, mew and me into a folder  belonging  to your  PATH, make it
-    executable and run it.
+    cCInstallation:cA Download the file (cGmecbcA, cGmewbcA or cGmecwbcA) for your
+    platform, make it executable and place it into a folder belonging to your
+    cGPATHcA (cG~/.local/bincA is a common choice), then run it. Renaming the file
+    is optional.
 
     At the  first  run you will be asked  initially  for your  user name and the
     default  user path,  usually  it is  cG~/.jasspacA.  As it a first  step it is
@@ -29300,21 +29361,15 @@ $a
     cDGetting HelpcA
     
     In case of trouble use the issue link on the Github project page:
-    https::/github.com/mittelmark/microemacs/issues
+    https://github.com/mittelmark/microemacs/issues
 
-    Below is the old  description of an installation  for a simple me (mec, mew)
-    executable  (terminal or  X11/Windows  version)  together  with the required
-    macro files described. If you prefere the single file install just described
-    above, you do not need to read further. 
-    
-    Hint: All macro files for the  standalone  builds are  accessible  using the
-    bfs://macros path within your MicroEmacs text editor.
-    
-cEQuick Install of ME barebones and Macro Files cA
+    Hint: All macro files for the standalone builds are accessible using the
+    cGbfs://macroscA path within your MicroEmacs text editor.
 
-    2024: The information below is mostly outdated, it describes an installation
-    of the barebone mec, mew and mecw executables  without attached macro folder
-    which require a separate installation of the jasspa macros.
+    If you build or download the bare (no embedded macros) cGmeccA / cGmewcA / cGmecwcA
+    executables you additionally need the cGjasspacA macro tree - see below.
+
+cEBare Executables with a separate Macro Tree cA
 
     The quickest way to install MicroEmacs for testing without reading the
     rest of this document is to:-
@@ -29333,458 +29388,21 @@ $a
     This allows the user and screen settings to be altered. On becoming more
     accustomed to the editor then a fuller installation may be performed.
 
-    cDGetting HelpcA
-    
-       See lsContact InformationlmContact Informationle for full contact information. A mail archive
-       exists at:-
-
-              http://groups.yahoo.com/group/jasspa/ (not existing anymore)
-
-
-       If you wish to participate in the list then you must first register by
-       sending an empty mail message body to:-
-
-              jasspa-subscribe@yahoogroups.com (not exiting anymore)
-
-
-       You will then be able to mail any questions into the group.
-       Registration is required in order to prevent cCspamcA mailings from
-       entering into the lists.
-
-
-cEDistribution  cA
-
-
-    MicroEmacs is distributed in the following files:-
-
-    cDComplete InstallationscA
-    
-       The Microsoft 95/98/NT/2K/XP, Solaris, HP-UX, Linux and the more
-       popular platforms may be installed using a package and do not require
-       the components specified in later sections as these are all bundled
-       together (these packages do not include spelling).
-
-       `jasspa-me-YYYYMMDD-1.i386.rpm` - Linux RedHat 9.x package.
-       `jasspa-me-YYYYMMDD-1.src.rpm` - Linux RedHat 9.x source package.
-       `jasspa-mepkg-hpux-pa-10.20-YYYYMMDD.depot.gz` - HP-UX 10 package.
-       `jasspa-mepkg-hpux-pa-11.00-YYYYMMDD.depot.gz` - HP-UX 11 package.
-       `jasspa-mepkg-ms-win32-2004030.zip`  - 95/98/NT/2K/XP Install Shield
-       `jasspa-mepkg-sun-i386-58-YYYYMMDD.zip` - Sun 2.8(i386) package.
-       `jasspa-mepkg-sun-i386-59-YYYYMMDD.zip` - Sun 2.9(i386) package.
-       `jasspa-mepkg-sun-sparc-56-YYYYMMDD.zip` - Sun 2.6(Sparc) package.
-       `jasspa-mepkg-sun-sparc-58-YYYYMMDD.zip` - Sun 2.8(Sparc) package.
-       `jasspa-mepkg-sun-sparc-59-YYYYMMDD.zip` - Sun 2.9(Sparc) package.
-
-    cDExecutable Source CodecA
-    
-       The source code release for MicroEmacs 2009 contains makefiles (cG*.makcA)
-       for all supported platforms. Microsoft '95/'98/NT/2K/XP makefiles
-       contain options at the top of the makefile to enable/disable console
-       and URL support.
-
-       `jasspa-mesrc-YYYYMMDD.zip` - Source code for all platforms
-       `jasspa-mesrc-YYYYMMDD.tar.gz` - Source code
-
-    cDExecutable ImagescA
-    
-       `jasspa-me-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (X-Windows)
-       `jasspa-me-hpux-pa-10.20-YYYYMMDD.gz` - Hewlett Packard HP-UX 10
-                                                Executable
-       `jasspa-me-hpux-pa-11.00-YYYYMMDD.gz` - Hewlett Packard HP-UX 11
-                                                Executable
-       `jasspa-me-ibm-aix-4-YYYYMMDD.gz` - IBM's AIX 4.3 Executable
-       `jasspa-me-linux-i386-2.4-YYYYMMDD.gz` - Linux 2.2.x/2.4.x Executable
-       `jasspa-me-linux-i386-2.6-YYYYMMDD.gz` - Linux 2.6.x Executable
-       `jasspa-me-ms-win32-YYYYMMDD.zip` - Windows 32' (95/98/NT/2K/XP)
-                                                Executable
-       `jasspa-me-ms-win32s-YYYYMMDD.zip` - Windows win32s (Win3.1/3.11)
-                                                Executable
-       `jasspa-me-msdos-djgpp1-YYYYMMDD.zip` - DOS Executable (DJGPP v1.x)
-       `jasspa-me-msdos-djgpp2-YYYYMMDD.zip` - DOS Executable (DJGPP v2.x)
-       `jasspa-me-openbsd-i386-3.4-YYYYMMDD.gz` - Open BSD 3.4 Executable
-       `jasspa-me-sgi-irix-6-YYYYMMDD.gz` - Silicon Graphics Irix 6 Executable
-       `jasspa-me-sun-i386-58-YYYYMMDD.gz` - Sun Solaris 2.8 Intel Platform
-                                                Executable
-       `jasspa-me-sun-i386-59-YYYYMMDD.gz` - Sun Solaris 2.9 Intel Platform
-                                                Executable
-       `jasspa-me-sun-sparc-56-YYYYMMDD.gz` - Sun OS 5.5 Executable
-       `jasspa-me-sun-sparc-58-YYYYMMDD.gz` - Sun OS 5.8 Executable
-       `jasspa-me-sun-sparc-59-YYYYMMDD.gz` - Sun OS 5.9 Executable
-       `jasspa-mec-apple-darwin-6.6-YYYYMMDD.gz` - Apple console Executable
-       `jasspa-mec-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (Console)
-
-    cDHelp File ImagescA (all platforms)
- 
-       `jasspa-mewinhlp-YYYYMMDD.zip` - Windows Help file
-       `jasspa-mehtm-YYYYMMDD.zip`  - HTML Help files for 8.3 file systems (.htm)
-       `jasspa-mehtml-YYYYMMDD.tar.gz` - HTML Help files (.html)
-
-    cDMacro File ImagescA (all platforms)
- 
-       `jasspa-memacros-YYYYMMDD.tar.gz` - Macro files
-       `jasspa-memacros-YYYYMMDD.zip` - Macro files
-
-       `jasspa-metree-YYYYMMDD.tar.gz` - Complete install tree + help
-       `jasspa-metree-YYYYMMDD.zip` - Complete install tree + help
-
-    cDSpelling DictionariescA (all platforms)
-    
-       One of the following base dictionaries is required for spelling. The
-       extended dictionaries require the base dictionary and are recommended
-       for a more comprehensive spelling list. Other languages are supported.
-
-       `ls_dede.zip` - German rules and base + extended dictionary.
-       `ls_engb.zip` - British rules and base + extended dictionary.
-       `ls_enus.zip` - American rules and base + extended dictionary.
-       `ls_eses.zip` - Spanish rules and dictionary.
-       `ls_frfr.zip` - French rules and dictionary.
-       `ls_itit.zip` - Italian rules and dictionary
-       `ls_plpl.zip` - Polish rules and dictionary.
-       `ls_ptpt.zip` - Portuguese rules and dictionary.
-       `ls_ruye.zip` - Russian YE rules and dictionary.
-       `ls_ruyo.zip` - Russian YO rules and dictionary.
-
-       `ls_dede.tar.gz` - German rules and base + extended dictionary.
-       `ls_engb.tar.gz` - British rules and base + extended dictionary.
-       `ls_enus.tar.gz` - American rules and base + extended dictionary.
-       `ls_eses.tar.gz` - Spanish rules and dictionary.
-       `ls_frfr.tar.gz` - French rules and dictionary.
-       `ls_itit.tar.gz` - Italian rules and dictionary
-       `ls_plpl.tar.gz` - Polish rules and dictionary.
-       `ls_ptpt.tar.gz` - Portuguese rules and dictionary.
-       `ls_ruye.tar.gz` - Russian YE rules and dictionary.
-       `ls_ruyo.tar.gz` - Russian YO rules and dictionary.
-
-       cDNOTE:cA The binary versions of the executables held on the site include
-       the platform name as part of the executable name i.e. cDmecA for cGDOScA is
-       called cDmedos.execA. On installing the binaries onto the target machine,
-       you should rename the executable to cDmecA or cDme.execA, whatever is
-       appropriate. The ONLY exception to this rule is the Microsoft Windows
-       executable where cDmewin32.execA should be renamed to cDme32.execA. Our reason
-       for this naming is to allow the executables to be unpacked in the same
-       directory and not be confused with each other.
-
-
-cEInstallation Directories  cA
-
-
-    The suggested installation structure for all platforms is defined as:-
-
-                    jasspa
-                    / | \
-                   /  |  \
-                  /   |   \
-           spelling macros company
-
-
-    This directory structure is suggested to facilitate upgrades in the future
-    and to keep user data separate from the system macros. MicroEmacs
-    understands this directory structure.
-
-    The directory structures are defined as:
-
-    cDmacroscA
-    
-       The standard macro distribution, as supplied by JASSPA.
-
-    cDspellingcA
-    
-       Spelling dictionaries.
-
-    cDcompanycA
-    
-       Company wide local definitions for the local site. This directory may
-       be omitted if not applicable. Header templates (cG.etfcA are typically
-       copied from the cGmacrocA directory to the cGcompanycA directory and modified
-       for the local site.
-
-    The search order is defined as cGrootcA, cGcompanycA, cGmacroscA, cGspellingcA.
-
-
-cEUNIX Installation (System Wide)  cA
-
-
-    A system wide installation on UNIX for multiple users adheres to
-    conventional package installation methods.
-
-    cDDistribution Components Required:cA
-
-       `jasspa-me-`_<unix>_`-YYYYMMDD.gz`
-       `jasspa-metree-YYYYMMDD.tar.gz`
-       _<spelling>_`.gz`
-       `jasspa-mehtml-YYYYMMDD.tar.gz` (optional)
-
-    cDInstallation:cA
-    
-      It is recommended that the macro files are placed in a standard shared
-      system directory. The standard directory locations searched by MicroEmacs
-      are defined on a per-platform basis, only one of the directory locates is
-      selected, as follows:
-
-                                      HP-UX     SunOS      AIX      Cygwin
-                                 IRIX     UnixWare   ***BSD    Linux      NeXT
-       /opt/jasspa:             y    y    y    y    y    y    n    n    n
-       /usr/share/jasspa:       y    y    y    y    y    y    y    n    n
-       /usr/local/jasspa:       y    y    y    y    y    y    y    y    y
-       /usr/local/share/jasspa: n    n    n    n    y    n    n    n    n
-
-
-    - Create the directory cG/usr/local/jasspacA.
-    - Unpack and install the cGjasspa-metree-YYYYMMDD.tar.gzcA into this
-          directory.
-    - If spelling dictionaries are required then place them in the
-          spelling sub-directory created when metree was unpacked. Unpack and
-          install the spelling into this directory.
-    - If the standard icons are required for Gnome, KDE or some other
-          window manager then create the sub-directory /usr/local/jasspa/icons
-          and unpack and install the icons into the new directory.
-    - Unpack (or build) the executable and place in cGcG/usr/local/bincAcA
-
-    The executable may now be run by all users. If the macros are placed in a
-    non-standard directory location then the environment variable
-    ls$MEINSTALLPATH(5)lmMEINSTALLPATH(5)le to define the root jasspa tree.
-
-    For cDcsh(1)cA users execute a cGcGrehashcAcA command and then lsme(1)lmme(1)le can be executed
-    from the command line.
-
-    By default a X-Windows terminal is displayed, ensure that cG$DISPLAYcA and
-    cG$TERMcA are correctly configured. To execute a terminal emulation then
-    execute cDmecA with the cG-ncA option i.e. cG`me -n`cA. Note that this is not required
-    if you are using a cGvt100cA emulation.
-
-    When MicroEmacs is executed the local directory cG~/.jasspacA is created for
-    the user settings. The user home directory may be changed by setting the
-    environment variable ls$MEPATH(5)lm$MEPATH(5)le.
-
-
-cEUNIX Installation (Single User)  cA
-
-
-    Where the user is not permitted to install 3rd party applications in the
-    system directories then MicroEmacs may be installed locally as follows:-
-
-    - Create the directory cG~/.jasspacA.
-    - Unpack and install the cGjasspa-metree-YYYYMMDD.tar.gzcA into this
-          directory.
-    - If spelling dictionaries are required then place them in the
-          spelling sub-directory created when metree was unpacked. Unpack and
-          install the spelling into this directory.
-    - If the standard icons are required for Gnome, KDE or some other
-          window manager then create the sub-directory ~/.jasspa/icons and
-          unpack and install the icons into the new directory.
-    - The user files will be placed in the cG~/.jasspacA directory by default.
-          To keep the user macros separate then the directory
-          ~/.jasspa/$LOGNAME may be created and will identified as the users
-          home directory.
-    - Unpack (or build) the executable and place in cGcG~/bincAcA
-
-    MicroEmacs may be executed after it has been re-hashed (depending on the
-    shell).
-
-
-cEDOS Installation  cA
-
-
-    MS-DOS has no concept of a standard installation directory. The location
-    of the MicroEmacs macros is generally determined from the directory
-    location of the executable.
-
-    cDExecutable:cA  Compiled with DJGPP V1.0
-
-    Distribution components required:
-    
-       `jasspa-me-msdos-djgpp1-YYYYMMDD.zip`
-       `jasspa-metree-YYYYMMDD.zip`
-       _<spelling>_`.zip`
-
-       `mewinhlp.zip` if you are using windows 3.1/3.11
-
-    Recommended installed components:
-    
-       `grep` - Version of grep (djgpp recommended)
-       `make` - Version of make (djgpp recommended)
-       `diff` - Version of diff (djgpp recommended)
-
-    cDInstallation:cA
- 
-    This installation relies on the executable position.
-
-    - Create the directory cGc:\jasspacA (or other location)
-    - Unpack and install the cGjasspa-metree-YYYYMMDD.zipcA into this
-          directory.
-    - If spelling dictionaries are required then place them in the
-          spelling sub-directory created when metree was unpacked. Unpack and
-          install the spelling into this directory.
-    - Unzip the executable and place it in the jasspa root directory
-          c:\jasspa.
-    - Edit cGcGc:\autoexec.batcAcA and add the following lines:-
-
-
-              SET PATH=%PATH%;c:\jasspa
-
-
-    - Reboot the system.
-    - MicroEmacs may be run from the command line using cDmecA.
-
-    cDGraphics Cards:cA
-
-    MicroEmacs may be configured to the text modes of your graphics card.
-    Refer to you graphics card DOS text modes to identify the text modes
-    supported by your monitor. The text mode number may be entered into the
-    user monitor configuration, defined in cDToolscA -> cDUser SetupcA.
-
-    Running DOS Version From Windows (3.x)
-    
-       The MS-DOS version of MicroEmacs may be executed from a cD.pifcA file. Use
-       the pif editor to create a new cD.pifcA file to launch MicroEmacs. The
-       size of the DOS window may be configured from the command line, set
-       the terminal size using one of the following command lines:-
-
-                  me -c -v$TERM=E80x50        - 80 x 50 window
-                  me -c -v$TERM=E80x25        - 80 x 25 window.
-
-
-       We usually add the cG-ccA option so that MicroEmacs is executed with
-       history information. This may be omitted if required.
-
-
-cEMicrosoft Windows 3.1/3.11  cA
-
-
-    cDExecutable:cA  Compiled with Microsoft Developer 2.0
-
-    cDHelper DLL:cA
- 
-    Under cDWin32scA a helper DLL cDmethnk16.dllcA is required to perform the
-    lspipe-shell-command(2)lmpipe-shell-command(2)le in a synchronous manner. This should be installed
-    into the cGC:\WINDOWS\SHELLcA directory. This (rather inelegantly) gets around
-    the problems of spawning a process under cDwin32scA due to a number of
-    Microsoft bugs in the operating system. Note: that on a spawn operation a
-    cGMS-DOScA window is visible, this is due to the nature of the command shell
-    on this platform which has a tendency to prompt the user at every
-    opportunity, hence a certain amount of interaction (which is out of our
-    control) is necessary.
-
-    The helper DLL is compiled with a 16-bit Windows compiler - MSVC 1.5.
-
-    cDDistribution components required:cA
-
-       `jasspa-me-ms-win32s-YYYYMMDD.zip`
-       `jasspa-metree-YYYYMMDD.zip`
-       `jasspa-mewinhlp-YYYYMMDD.zip`
-       _<spelling>_`.zip`
-
-    cDRecommended installed components:cA
-
-       `4dos` - command shell (giving _stderr_ redirection)
-       `grep` - Version of grep (GNU port of grep recommended)
-       `diff` - Version of diff (GNU port of grep recommended)
-       `make` - use nmake or GNU port of make.
-
-       If__win32s__ is a requirement on this platform, typically taken from
-       __pw1118.exe__ which freely available on the Internet.
-
-    cDInstallation:cA
-    
-    This version of Windows does not have a cCinstallcA directory as '95/'98 and
-    it is expected that the cGMS-DOScA version will coexist. No cCInstallcA cCShieldcA
-    installation is provided. Install in a directory structure similar to
-    cGMS-DOScA. Install the helper DLL cDmethnk16.dllcA in the cGC:\WINDOWS\SHELLcA
-    directory. Create a lsme32.ini(8)lmme32.ini(8)le file in the cGC:\WINDOWScA directory to
-    identify the location of the MicroEmacs 2009 components, this much the
-    same as the '95/'98 file, change the directory paths to suite the install
-    base.
-
-    cDSupport Status:cA
-
-    The cDwin32scA release has not been used with vengeance, although no specific
-    problems have been reported with this release.
-
-
-cEWindows 95/98/NT/2K/XP  cA
-
-
-    cDExecutable:cA Compiled with Microsoft Developer 6.x
-
-    cDInstall ShieldcA
-
-        An cDInstall ShieldcA version of MicroEmacs is available which includes
-        all of the distribution components.
-
-    cDDistribution components required:cA
-
-      `jasspa-mepkg-ms-win32-2004030.zip`
-
-    cDRecommended installed components:cA
-
-       `grep` - Version of grep (GNU port of grep recommended)
-       `diff` - Version of diff (GNU port of grep recommended)
-       `make` - use nmake or GNU port of make.
-
-       A good source of UNIX native tools is
-
-      ` http://unxutils.sourceforge.net/` - for native windows grep, diff, zip
-       etc.
-      ` http://www.cygwin.com` - for a shell environment.
-
-    cDInstallation:cA
-
-    - Create the directory cG`c:\Program Files\Jasspa\MicroEmacs`cA (or other
-          location)
-    - Create the sub-directory `c:\Program Files\Jasspa\MicroEmacs\macros`.
-          Unpack and install the memacros.zip into this directory
-    - If spelling dictionaries are required then create the directory
-          c:\Program Files\Jasspa\MicroEmacs\spelling. Unpack and install the
-          spelling into this directory.
-    - Unzip the executable components into "C:\Program
-          Files\Jasspa\MicroEmacs"
-    - Create a short cut to MicroEmacs for the Desktop
-
-       Right click on the desk top
-
-       `=> New`
-       `=> Short`
-       `=> Command Line: "c:\Program Files\Jasspa\MicroEmacs\me.exe -c"`
-       `=> Short Cut Name: "MicroEmacs"`
-
-       MicroEmacs may be executed from the shortcut.
-
-    cDOpen ActionscA Microsoft Windows 95/98/NT provide short cut actions,
-    assigning an open action to a file. The short cuts may be installed from
-    the cDInstall ShieldcA installation, but may alternatively be explicitly
-    defined by editing the registry file with cDregedit(1)cA.
-
-    A file open action in the registry is bound to the file file extension, to
-    bind a file extension cC.foocA to the editor then the following registry
-    entries should be defined:-
-
-        [HKEY_CLASSES_ROOT\.foo]
-         "MicroEmacs_foo"
-        [HKEY_CLASSES_ROOT\MicroEmacs_foo\DefaultIcon]
-         "C:\Program File\JASSPA\MicroEmacs\meicons,23"
-        [HKEY_CLASSES_ROOT\MicroEmacs_foo\Shell\open]
-         "&Open"
-        [HKEY_CLASSES_ROOT\MicroEmacs_foo\Shell\open\command]
-         "C:\Program File\JASSPA\MicroEmacs\me32.exe -o "%1""
-
-
-    In the previous example the cCDefaultIconcA entry is the icon assigned to the
-    file. This may be an icon taken from cGmeicons.execA (in this case icon number
-    23), or may be some other icon. The open action in the example uses the cD-ocA
-    option of the cCclient-servercA, which loads the file into the current
-    MicroEmacs 2009 session, alternatively the cD-ccA option may be used to retain
-    the previous context, or no option if a new session with no other files
-    loaded is started.
-
-    A generic open for ALL files may be defined using a wild-card, this may be
-    used to place a cCMicroEmacscA edit entry in the right-click pop-up menu, as
-    follows:-
-
-        [HKEY_CLASSES_ROOT\*\shell]
-        [HKEY_CLASSES_ROOT\*\shell\MicroEmacs]
-         "&MicroEmacs"
-        [HKEY_CLASSES_ROOT\*\shell\MicroEmacs\command]
-         "C:\Program File\JASSPA\MicroEmacs\me32.exe -o "%1""
+cELegacy Installations cA
+
+    Older installations of the original JASSPA MicroEmacs distribution
+    (2004-2009) used separate archives: cGjasspa-metree-YYYYMMDD.tar.gzcA for the
+    macro files and the help, separate spelling dictionary and icon archives and
+    the bare executables. The suggested tree placed cGmacroscA, cGspellingcA and an
+    optional cGcompanycA directory below a cGjasspacA root directory (searched in
+    the order root, company, macros, spelling); system wide installs used
+    cG/usr/local/jasspacA together with the cG$MEINSTALLPATHcA variable.
+
+    These archives and the older platform sections (DOS, Windows 3.1/3.11 and
+    Windows 95/98/NT/2K) are no longer built or supported. Current releases only
+    ship the single-file binaries described above; use the installer scripts
+    whenever possible. The old JASSPA download pages remain available for
+    historical reference (see the links in the project README).
 
 
 cEORGANIZING A LOCAL USER PROFILE cA

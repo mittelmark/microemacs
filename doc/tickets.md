@@ -655,8 +655,25 @@ few lines up and then insert the tilde character. The windows terminal version s
       tests/test-basics passes on both mec and mew builds. Files:
       src/unixterm.c, doc/tickets.md
 
-## Ticket 19: Update doc/me.smd - Install section
+## Ticket 19: Update doc/me.smd - Install section (DONE)
 
-The installation page in the help 
+The installation page in the help
 
- 
+    - DONE 261015: the Installation page now leads with the installer
+      scripts (Unix curl one-liner and Windows PowerShell) and the
+      mecb-update bootstrap, the manual single-file / bare-executable +
+      macro-tree routes are kept as a fallback, the 2004-2009 JASSPA
+      distribution sections (Distribution, Installation Directories,
+      UNIX system wide/single user, DOS, Windows 3.1/95/98) are collapsed
+      into a short "Legacy Installations" note, and the user/company
+      profile sections are unchanged. Made README.md the single
+      user-facing source of install instructions: doc/install.md was
+      deleted (version-encoding and release-asset notes moved to
+      AGENTS.md, troubleshooting/AppImage notes folded into README.md),
+      and the obsolete mecu wrapper was removed from the docs, bin/mecu
+      deleted and its packaging steps dropped from binaries-linux.yml and
+      binaries-fedorax86_64.yml. Files: doc/me.smd, README.md, AGENTS.md,
+      bin/README.md, bin/encoding.sh, bin/mecu, doc/install.md,
+      .github/workflows/binaries-linux.yml,
+      .github/workflows/binaries-fedorax86_64.yml, doc/tickets.md
+

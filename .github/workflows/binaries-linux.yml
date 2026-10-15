@@ -113,8 +113,6 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
         cp linux-*mecb.bin ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
-        cp bin/mecu ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
-        chmod 755 ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
         cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
@@ -135,8 +133,6 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/bin/
         cp linux-*mecwb.bin ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/bin/
-        cp bin/mecu ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
-        sed -i -E 's/mecb/mecwb -n/' ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
         cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/

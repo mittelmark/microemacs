@@ -13,6 +13,27 @@
 
 ## 2026
 
+  [261015] - Documentation: the Installation help page (doc/me.smd) now
+               leads with the installer scripts (Unix curl one-liner and
+               Windows PowerShell) plus the mecb-update bootstrap; the
+               manual single-file and bare-executable/macro-tree routes
+               remain as a fallback and the 2004-2009 JASSPA distribution
+               sections (Distribution, Installation Directories, UNIX
+               system wide/single user, DOS, Windows 3.1/95/98) are
+               collapsed into a short "Legacy Installations" note.
+               README.md is now the single user-facing install document:
+               doc/install.md removed (version-encoding and
+               release-asset notes moved to AGENTS.md, troubleshooting
+               and AppImage notes folded into README.md). The obsolete
+               mecu wrapper was dropped from the docs and from packaging
+               (bin/mecu deleted; mecu steps removed from bin/README.md,
+               bin/encoding.sh, makefiles/{unixgcc,macosgcc,release}.gmk
+               and the binaries-linux.yml / binaries-fedorax86_64.yml
+               workflows). doc/tickets.md ticket 19 closed. Files:
+               doc/me.smd, jasspa/macros/me.ehf, README.md, AGENTS.md,
+               bin/README.md, bin/encoding.sh, bin/mecu, doc/install.md,
+               makefiles/, .github/workflows/, doc/tickets.md, ChangeLog
+
   [201615] - fix PageUP, PageDown keys inserting tilde in Unix terminals
   
   [261010] - Release v09.12.26.beta6

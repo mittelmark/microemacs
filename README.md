@@ -102,12 +102,50 @@ command line. There should be as well a start menu entry for the "MicroEmacs 09"
 Further since version 26-beta4 you can run the batch script `mecb-update.bat`
 from a Windows terminal to check for updates of the installed executables.
 
+<a name="troubleshooting"> </a>
+### Troubleshooting
+
+- **`mecb-update` not found** — `~/.local/bin` is not in your `PATH`. Add it to
+  your shell config:
+
+  ```bash
+  export PATH="$HOME/.local/bin:$PATH"
+  ```
+
+- **Missing `unzip` or `curl`** — both are required by the installer:
+
+  ```bash
+  sudo apt install unzip curl      # Debian/Ubuntu
+  sudo dnf install unzip curl      # Fedora
+  brew install unzip curl          # macOS
+  ```
+
+- **Wrong version reported / force a reinstall** — the update check compares the
+  output of `mecb -V`; remove the binaries and re-run the installer:
+
+  ```bash
+  rm ~/.local/bin/mecb ~/.local/bin/mewb
+  bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+  ```
+
+- **AppImage: `dlopen(): error loading libfuse.so.2`** — AppImages built before
+  2026-10-03 need the FUSE2 runtime; install it or unpack manually:
+
+  ```bash
+  sudo apt install libfuse2                              # Debian/Ubuntu
+  ./Jasspa_MicroEmacs_<version>_x86_64.AppImage --appimage-extract
+  ```
+
+  Current AppImages use a statically linked runtime and only need a setuid
+  `fusermount`/`fusermount3` (the `fuse`/`fuse3` package).
+
 ## Table of Contents
 
 - [Installation](#installation)
     - [Unix systems](#unix)
     - [Spelling Dictionaries](#spelling)
     - [Windows](#windows)
+    - [Troubleshooting](#troubleshooting)
 - [New Schemes](#Schemes)
 - [Executable Types](#Types)
 - [New Features](#Features)
