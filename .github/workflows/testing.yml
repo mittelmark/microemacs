@@ -165,6 +165,27 @@ jobs:
         shell: msys2 {0}
         run: |
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Mouse-wheel regression test (ticket 22)
+        timeout-minutes: 3
+        shell: msys2 {0}
+        run: |
+          # The native Windows console build uses src/winterm.c. With stdin
+          # and stdout redirected ME cannot use ReadConsoleInputW and takes
+          # the "pipe mode" SGR path - the code fixed for ticket 22. Feed one
+          # wheel report per run and check the wheel key reaches the macros.
+          export TERM=xterm-256color
+          export TERM_PROGRAM="Windows Terminal"
+          export ME_MOUSE_WORK=mwtest
+          rm -rf mwtest && mkdir -p mwtest
+          echo "--- wheel-down (SGR button 65) ---"
+          printf '\033[<65;5;5M' | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win >/dev/null || true
+          cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
+          grep -q 'wheel=down' mwtest/mouse-wheel-win-out.txt
+          rm -f mwtest/mouse-wheel-win-out.txt
+          echo "--- wheel-up (SGR button 64) ---"
+          printf '\033[<64;5;5M' | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win >/dev/null || true
+          cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
+          grep -q 'wheel=up' mwtest/mouse-wheel-win-out.txt
 
   windows-msysunix:
     runs-on: windows-latest

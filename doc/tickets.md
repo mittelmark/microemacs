@@ -763,9 +763,21 @@ commands. Two bugs in the terminal SGR mouse parser blocked this.
       default of five lines per tick), four following wheel-up reports
       return it to 20 and no wheel event leaves it at 0. The harness is
       wired into the Linux and macOS jobs of
-      .github/workflows/testing.yml. The Windows console pipe-mode SGR
-      parser in src/winterm.c has the same numeric motion test and still
-      needs checking. Files: src/unixterm.c, tests/mouse-wheel.emf,
-      tests/mouse-wheel-test.py, .github/workflows/testing.yml,
+      .github/workflows/testing.yml.
+
+    - IN TESTING 261016: the native Windows console build
+      (src/winterm.c) had the same wheel bug in BOTH of its SGR parsers,
+      meParseSGRMouseChar (character state machine) and the raw byte
+      "pipe mode" parser used when ReadConsoleInputW fails (MSYS2 / CI).
+      Their numeric ">= 32" motion test mis-decoded the SGR wheel button
+      64 (up) / 65 (down) as motion with an unknown button, and the
+      pipe-mode parser never put the wheel direction into wParam, so even
+      a decoded wheel was always reported as a wheel-up. Both now use the
+      bit test ("& 32") and the pipe-mode parser sets wParam to
+      0x80000000 for wheel-down. A pipe-mode regression test
+      (tests/mouse-wheel-win.emf) feeds a single SGR wheel report on stdin
+      in the windows-ucrt64 job of testing.yml and asserts the bound
+      "mouse-wup" / "mouse-wdown" key fired. Files: src/winterm.c,
+      tests/mouse-wheel-win.emf, .github/workflows/testing.yml,
       doc/tickets.md
 

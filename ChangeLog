@@ -55,11 +55,34 @@
                eight wheel-down reports move the window y-scroll to 40,
                four following wheel-up reports return it to 20 and no
                wheel event leaves it at 0; wired into the Linux and macOS
-               testing.yml jobs. The Windows console pipe-mode SGR parser
-               in src/winterm.c has the same numeric motion test and still
-               needs checking. Files: src/unixterm.c, tests/mouse-wheel.emf,
-               tests/mouse-wheel-test.py, .github/workflows/testing.yml,
-               doc/tickets.md, ChangeLog
+               testing.yml jobs. The Windows console parser in
+               src/winterm.c had the same numeric motion test and is fixed
+               in the entry below. Files: src/unixterm.c,
+               tests/mouse-wheel.emf, tests/mouse-wheel-test.py,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
+  [261016] - Windows console (pipe-mode) mouse wheel (ticket 22).
+               The native Windows console build (src/winterm.c) had the
+               same wheel bug as the Unix decoder fixed above, in BOTH of
+               its SGR parsers: meParseSGRMouseChar (the character state
+               machine) and the raw byte "pipe mode" parser used when
+               ReadConsoleInputW fails (MSYS2 / CI). Both stripped the
+               motion bit with a numeric test (">= 32" / "-= 32"), but SGR
+               signals motion with bit 5 (32) and encodes the wheel as
+               button 64 (up) / 65 (down) - both numerically >= 32 - so a
+               wheel report was mis-decoded as motion with an unknown
+               button and dropped. Both now use the bit test ("& 32" /
+               "&= ~32"). The pipe-mode parser additionally never placed
+               the wheel direction into wParam, so even a correctly
+               decoded wheel was always reported as a wheel-up; it now
+               sets wParam to 0x80000000 for wheel-down, matching the
+               Windows console WM_MOUSEWHEEL convention. A pipe-mode
+               regression test (tests/mouse-wheel-win.emf) is wired into
+               the windows-ucrt64 job of testing.yml: it feeds a single
+               SGR wheel report on stdin and asserts the bound
+               "mouse-wup" / "mouse-wdown" key fired. Files:
+               src/winterm.c, tests/mouse-wheel-win.emf,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
 
   [261015] - Fix PageUp/PageDown not moving the cursor at the buffer ends
                (ticket 20): windowScrollUp()/windowScrollDown() in

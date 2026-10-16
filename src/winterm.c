@@ -1198,10 +1198,12 @@ meParseSGRMouseChar(MSG *msg, meUByte cc)
         int isMotion = 0;
         UINT wParam = 0;
 
-        /* Check for motion (button + 32) */
-        if(sgrMouseButton >= 32)
+        /* Check for motion. SGR marks motion with bit 5 (32); the wheel is
+         * encoded as button 64 (up) / 65 (down), which are numerically
+         * >= 32 but are NOT motion. Test the bit, not the value. */
+        if(sgrMouseButton & 32)
         {
-            sgrMouseButton -= 32;
+            sgrMouseButton &= ~32;
             isMotion = 1;
         }
 
@@ -1419,10 +1421,14 @@ meGetConsoleMessage(MSG *msg, int mode)
                                             int isMotion = 0 ;
                                             UINT wBtn = 0 ;
 
-                                            /* Check for motion (button + 32) */
-                                            if(btn >= 32)
+                                            /* Check for motion. SGR marks
+                                             * motion with bit 5 (32); the
+                                             * wheel is button 64/65, which
+                                             * is numerically >= 32 but is not
+                                             * motion. Test the bit. */
+                                            if(btn & 32)
                                             {
-                                                btn -= 32 ;
+                                                btn &= ~32 ;
                                                 isMotion = 1 ;
                                             }
 
@@ -1445,16 +1451,16 @@ meGetConsoleMessage(MSG *msg, int mode)
                                                 if(btn == 0) msg->message = WM_LBUTTONUP, wBtn = MK_LBUTTON ;
                                                 else if(btn == 1) msg->message = WM_MBUTTONUP, wBtn = MK_MBUTTON ;
                                                 else if(btn == 2) msg->message = WM_RBUTTONUP, wBtn = MK_RBUTTON ;
-                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL ;
-                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL ;
+                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL, wBtn = 0 ;
+                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL, wBtn = 0x80000000 ;
                                             }
                                             else
                                             {
                                                 if(btn == 0) msg->message = WM_LBUTTONDOWN, wBtn = MK_LBUTTON ;
                                                 else if(btn == 1) msg->message = WM_MBUTTONDOWN, wBtn = MK_MBUTTON ;
                                                 else if(btn == 2) msg->message = WM_RBUTTONDOWN, wBtn = MK_RBUTTON ;
-                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL ;
-                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL ;
+                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL, wBtn = 0 ;
+                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL, wBtn = 0x80000000 ;
                                             }
 
                                             msg->wParam = wBtn ;

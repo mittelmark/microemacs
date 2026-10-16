@@ -1,0 +1,51 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the Windows console mouse-wheel
+;              regression test (ticket 22). Driven by the "Mouse-wheel"
+;              step of the windows-ucrt64 job in testing.yml, which
+;              pipes a single SGR wheel report into mec.exe.
+;
+; The native Windows console build (winmingwgcc.mak, BDIST=mingw64)
+; uses src/winterm.c. When stdin is not a real console handle
+; (MSYS2 / CI) ReadConsoleInputW fails and ME falls back to the raw
+; "pipe mode" SGR parser in meGetConsoleMessage(). That parser had the
+; same numeric motion test as the Unix one ("btn >= 32" instead of the
+; bit test "btn & 32"), so a wheel report (SGR button 64/65) was
+; mis-decoded as mouse motion with an unknown button and dropped before
+; it reached the macro layer, and the wheel direction was never put into
+; wParam (so even a decoded wheel was reported as a wheel-up).
+;
+; This macro binds the two wheel keys to a recorder that writes which
+; key fired and then exits, so the CI step can assert that a wheel-down
+; report really produces "mouse-wdown" (and a wheel-up "mouse-wup").
+; A single report per run is enough and avoids the parser's "one SGR
+; sequence per read" behaviour.
+;
+; Run manually (ME_MOUSE_WORK must be an existing directory):
+;
+;   printf '\033[<65;5;5M' | \
+;     MEPATH=jasspa/macros mec.exe @tests/mouse-wheel-win
+;
+execute-file "me"
+
+define-macro mouse-wheel-win-record
+    set-variable #l1 @cck
+    find-file &cat $ME_MOUSE_WORK "/mouse-wheel-win-out.txt"
+    end-of-buffer
+    !if &seq #l1 "mouse-wup"
+        insert-string "wheel=up"
+    !else
+        insert-string "wheel=down"
+    !endif
+    insert-newline
+    save-buffer
+    exit-emacs
+!emacro
+
+define-macro start-up
+    global-bind-key mouse-wheel-win-record "mouse-wup"
+    global-bind-key mouse-wheel-win-record "mouse-wdown"
+!emacro
