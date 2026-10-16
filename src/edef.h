@@ -250,7 +250,8 @@ extern  meUShort  breakc;               /* current abort-command char*/
 #define CLIP_RECEIVED   0x20            /* Clipboard has been obtained  */
 #define CLIP_DISABLED   0x40            /* Currently disabled Start&end */
 #define CLIP_MOUSE_PENDING 0x80         /* Mouse selection pending - use PRIMARY */
-extern  meUByte   clipState;            /* clipboard status flag        */
+#define CLIP_MOUSE_PASTE 0x100          /* Middle-click paste - fetch PRIMARY */
+extern  meUShort  clipState;            /* clipboard status flag        */
 #endif
 extern  meUInt    cursorBlink;          /* cursor-blink blink time      */
 extern  int       blinkState;           /* cursor blink state           */
@@ -835,7 +836,7 @@ meUShort  keyTableSize;                 /* The current size of the key table */
 meUByte   resultStr[meBUF_SIZE_MAX];    /* Result string from commands  */
 
 #ifdef _CLIPBRD
-meUByte   clipState=CLIP_DISABLED;      /* clipboard status flag        */
+meUShort  clipState=CLIP_DISABLED;      /* clipboard status flag        */
 #endif
 
 #ifdef _DRAGNDROP

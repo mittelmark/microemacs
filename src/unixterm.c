@@ -2210,6 +2210,15 @@ meXEventHandler(void)
             mouseKeyState = ((ss & 0x01) << 8) | ((ss & 0x0C) << 7);
             ss = (ME_SPECIAL | (SKEY_mouse_drop_1+mouseKeys[bb]-1) | mouseKeyState) ;
             addKeyToBuffer(ss) ;
+
+#ifdef _CLIPBRD
+            /* A middle-button release marks the next clipboard fetch as a
+             * PRIMARY paste (the X11 convention that a middle click pastes
+             * the primary selection); any other button clears a stale flag. */
+            clipState &= ~CLIP_MOUSE_PASTE ;
+            if(mouseKeys[bb] == 2)
+                clipState |= CLIP_MOUSE_PASTE ;
+#endif
         }
         break ;
 #endif
@@ -5340,23 +5349,29 @@ TTsetPrimary(void)
 void
 TTgetClipboard(void)
 {
+    meUShort pastePrimary = clipState & CLIP_MOUSE_PASTE ;
+    clipState &= ~CLIP_MOUSE_PASTE ;
     if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
         return ;
     if(clipState & CLIP_DISABLED)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if(clexec && !allowClipExec)
+    /* The clexec guard stops macros silently touching the clipboard. A
+     * middle-button release is a direct user gesture (it is delivered via
+     * the mouse.emf macro), so allow the PRIMARY paste through. */
+    if(clexec && !allowClipExec && !pastePrimary)
         return ;
     
-    if((meSystemCfg & meSYSTEM_CLIPBOARD) && TTisWaylandSession() && TTcheckWaylandClipboard())
+    if(((meSystemCfg & meSYSTEM_CLIPBOARD) || pastePrimary) &&
+       TTisWaylandSession() && TTcheckWaylandClipboard())
     {
         meClipSize = 0;
         if(TTgetWaylandClipboard())
             return ;
     }
     
-    Atom sel = TTgetDefaultSelection() ;
+    Atom sel = pastePrimary ? XA_PRIMARY : TTgetDefaultSelection() ;
     if(sel == None)
         return ;
     meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
@@ -5747,6 +5762,15 @@ TTahead(void)
                                 mouseButtonDrop(meButton);
                                 ss = (ME_SPECIAL | (SKEY_mouse_drop_1 + mouseKeys[meButton] - 1) | mouseKeyState);
                                 addKeyToBuffer(ss);
+#ifdef _CLIPBRD
+                                /* A middle-button release marks the next clipboard
+                                 * fetch as a PRIMARY paste. Matching the X11 server
+                                 * path so a terminal middle-click pastes the primary
+                                 * selection; any other button clears a stale flag. */
+                                clipState &= ~CLIP_MOUSE_PASTE ;
+                                if(mouseKeys[meButton] == 2)
+                                    clipState |= CLIP_MOUSE_PASTE ;
+#endif
                             }
                             else
                             {
@@ -7397,17 +7421,28 @@ TTgetClipboard(void)
     meUByte *tmpbuf, *dd;
     meInt total, n;
     int fd[2];
+    int wantPrimary;
     pid_t pid;
+
+    /* A middle-button release (see the SGR mouse parser) asks for the
+     * PRIMARY selection so a terminal middle-click pastes what the mouse
+     * selected elsewhere, matching the X11 convention. Consume the flag
+     * here so an ordinary yank still reads the CLIPBOARD selection. */
+    wantPrimary = (clipState & CLIP_MOUSE_PASTE) ? 1 : 0;
+    clipState &= ~CLIP_MOUSE_PASTE;
 
     if(clipState & CLIP_DISABLED)
         return ;
     if(meSystemCfg & meSYSTEM_NOCLIPBRD)
         return ;
-    if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
+    if(!(meSystemCfg & meSYSTEM_CLIPBOARD) && !wantPrimary)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if(clexec && !allowClipExec)
+    /* The clexec guard stops macros silently touching the clipboard. A
+     * middle-button release is a direct user gesture (delivered via the
+     * mouse.emf macro), so allow the PRIMARY paste through. */
+    if(clexec && !allowClipExec && !wantPrimary)
         return ;
 
     TTdetectClipTool();
@@ -7426,7 +7461,7 @@ TTgetClipboard(void)
         dup2(fd[1], 1);
         close(fd[1]);
         if(conClipTool == 1)
-            execlp("xclip", "xclip", "-selection", "clipboard", "-o", NULL);
+            execlp("xclip", "xclip", "-selection", wantPrimary ? "primary" : "clipboard", "-o", NULL);
         else if(conClipTool == 2)
             execlp("wl-paste", "wl-paste", NULL);
         else if(conClipTool == 4)
@@ -7434,7 +7469,7 @@ TTgetClipboard(void)
         else if(conClipTool == 5)
             execlp("cat", "cat", "/dev/clipboard", NULL);
         else if(conClipTool == 6)
-            execlp("xsel", "xsel", "--clipboard", "--output", NULL);
+            execlp("xsel", "xsel", wantPrimary ? "--primary" : "--clipboard", "--output", NULL);
         else
             execlp("pbpaste", "pbpaste", NULL);
         _exit(1);

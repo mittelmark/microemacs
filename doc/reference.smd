@@ -34981,6 +34981,16 @@ $a
   - Wheel up/down: Scroll window
   - Right click: Context menu (if bound)
 
+  On X11 a middle click reads the PRIMARY selection with `xclip
+  -selection primary` (or `xsel --primary`). Where the clipboard tool has
+  no primary selection - `wl-paste` on Wayland, `pbpaste` on macOS - the
+  system clipboard is pasted instead. If the primary selection is empty
+  the internal kill buffer is pasted, so a selection made with the mouse
+  inside the editor can be pasted straight back. This follows the X11
+  convention that PRIMARY is pasted with the middle button while the
+  "Use Clipboard" option (CLIPBOARD, Ctrl+C/Ctrl+V) is used for explicit
+  copies.
+
   Mouse support can be enabled or disabled at runtime using the
   user-setup dialog (Platform tab) or by setting the $mouse variable.
 

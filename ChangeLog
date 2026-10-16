@@ -13,6 +13,29 @@
 
 ## 2026
 
+  [261016] - Terminal middle-click now pastes the primary selection
+               (ticket 25). The default middle-button binding yanks ME's
+               kill ring; on X11 (mew) that yank refreshes the ring from
+               the PRIMARY selection, but the console build (mec) always
+               used "xclip -selection clipboard -o", so a terminal middle
+               click could not paste what the mouse had selected in
+               another application. Because the yank runs from a macro the
+               clexec/allow-clip-exec guard also suppressed the external
+               fetch altogether unless $allow-clip-exec was set. A
+               middle-button release now flags the next fetch with the new
+               CLIP_MOUSE_PASTE bit (src/edef.h, mirroring the
+               CLIP_MOUSE_PENDING copy flag); TTgetClipboard() consumes it
+               and the console runs xclip -selection primary -o / xsel
+               --primary --output (wl-paste, clip.exe and pbpaste have no
+               primary selection and fall back to the clipboard) while the
+               X11 path requests XA_PRIMARY. The clexec guard is bypassed
+               for this user gesture and the internal kill ring stays the
+               fallback when the primary selection is empty. Regression
+               test tests/mouse-mid-test.py (Linux + macOS). Files:
+               src/edef.h, src/unixterm.c, tests/mouse-mid.emf,
+               tests/mouse-mid-test.py, .github/workflows/testing.yml,
+               doc/reference.smd, doc/tickets.md, ChangeLog
+
   [261016] - Windows console mouse wheel, native console path (ticket
                24, follow-up to ticket 22). A normal Windows console
                session (PowerShell / Windows Terminal) receives

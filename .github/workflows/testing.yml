@@ -62,6 +62,10 @@ jobs:
         timeout-minutes: 5
         run: |
           python3 tests/mouse-mod-test.py src/.linuxgcc-release-mec/mec
+      - name: Mouse middle-click paste regression test (ticket 25)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mid-test.py src/.linuxgcc-release-mec/mec
 
   macos:
     runs-on: macos-latest
@@ -123,6 +127,10 @@ jobs:
         timeout-minutes: 5
         run: |
           python3 tests/mouse-mod-test.py src/.macosgcc-release-mec/mec
+      - name: Mouse middle-click paste regression test (ticket 25)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mid-test.py src/.macosgcc-release-mec/mec
 
   windows-ucrt64:
     runs-on: windows-latest

@@ -844,3 +844,39 @@ src/winterm.c.
       branch is only reachable in a real console session (manual
       verification). Files: src/winterm.c
 
+## Ticket 25: Terminal middle-click pasted CLIPBOARD instead of PRIMARY (DONE)
+
+A terminal middle-click is expected to paste the primary selection (the X11
+convention, and what the "Terminal Mouse Support" page of the manual has
+always claimed). The default middle-button binding is mouse-move-yank, which
+yanks ME's kill ring. On X11 (mew) the yank refreshes that ring from the
+PRIMARY selection, but the console build (mec) always used the CLIPBOARD
+selection - "xclip -selection clipboard -o" - so a terminal middle click
+could not paste what the mouse had selected in another application. Worse,
+because the yank runs from a macro, the clexec/allow-clip-exec guard
+suppressed the external fetch altogether unless $allow-clip-exec was already
+set, so a middle click only ever pasted the internal kill ring.
+
+    - DONE 261016: a middle-button release now flags the next external fetch
+      as a PRIMARY paste. The new CLIP_MOUSE_PASTE bit in clipState
+      (src/edef.h, mirroring the existing CLIP_MOUSE_PENDING flag used for
+      copies) is set by the console SGR parser and by the X11 ButtonRelease
+      handler in src/unixterm.c. TTgetClipboard() consumes it: the console
+      variant runs "xclip -selection primary -o" / "xsel --primary --output"
+      (wl-paste, clip.exe and pbpaste have no primary selection and fall back
+      to the clipboard) and the X11 variant requests XA_PRIMARY instead of
+      TTgetDefaultSelection(). As a middle click is a direct user gesture the
+      clexec guard is bypassed for it - ordinary macros still need
+      $allow-clip-exec - and the internal kill ring remains the fallback when
+      the primary selection is empty. Windows keeps the kill-ring behaviour
+      (the native console has no primary selection and readconsole clipboard
+      access is unchanged); macOS console and Wayland fall back to the
+      clipboard through their external tool. Automated regression test:
+      tests/mouse-mid-test.py installs a fake `xclip` on PATH, sends an SGR
+      middle click over a pty and asserts that the tool is called with
+      "-selection primary -o" and that its output lands in the buffer (run on
+      Linux and macOS in testing.yml). Manually checked on Linux/X11.
+      Files: src/edef.h, src/unixterm.c, tests/mouse-mid.emf,
+      tests/mouse-mid-test.py, .github/workflows/testing.yml,
+      doc/reference.smd
+

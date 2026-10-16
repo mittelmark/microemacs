@@ -1,0 +1,36 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the terminal middle-click paste regression
+;              test (ticket 25). Driven by tests/mouse-mid-test.py, which
+;              sends an SGR middle-button click over a pty and checks that
+;              the paste reads the PRIMARY selection.
+;
+; A terminal middle-click must paste the primary selection (the X11
+; convention). The console clipboard code (src/unixterm.c) flags the next
+; external fetch as a PRIMARY read when the middle button is released, so
+; this test drives that by putting a fake `xclip` tool on PATH and checking
+; both the arguments it was called with and the text that landed in the
+; buffer.
+;
+; The harness passes an absolute work directory in ME_MOUSE_WORK. f5 saves
+; the (absolute) output file and exits. Run with:
+;
+;   python3 tests/mouse-mid-test.py
+execute-file "me"
+
+0 define-macro mouse-mid-dump
+    !force save-buffer
+    !force 1 write-buffer
+    exit-emacs
+!emacro
+
+define-macro start-up
+    set-variable $system &bor $system 0x2000000   ; enable clipboard mode
+    find-file &cat $ME_MOUSE_WORK "/mouse-mid-out.txt"
+    insert-string "MARKER"
+    save-buffer
+    global-bind-key mouse-mid-dump "f5"
+!emacro
