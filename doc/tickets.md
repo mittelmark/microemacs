@@ -781,3 +781,10 @@ commands. Two bugs in the terminal SGR mouse parser blocked this.
       tests/mouse-wheel-win.emf, .github/workflows/testing.yml,
       doc/tickets.md
 
+    - IN TESTING 261016: GitHub CI steps have no console, so the
+      windows-ucrt64 wheel step sets the new opt-in ME_CONSOLE_PIPEMODE
+      override in src/winterm.c: it keeps the original (pipe) standard
+      handles so TTstart() selects the raw pipe-mode SGR path even though
+      AllocConsole() created a console. Files: src/winterm.c,
+      .github/workflows/testing.yml
+

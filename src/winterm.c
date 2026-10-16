@@ -6169,6 +6169,17 @@ TTstart (void)
             hInput = GetStdHandle(STD_INPUT_HANDLE);
             hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
+            /* ME_CONSOLE_PIPEMODE forces the "pipe mode" fallback below:
+             * read raw ANSI/SGR input from the original stdin even though
+             * AllocConsole() has just created a console (it does so when
+             * the process is started without one, e.g. a GitHub CI step or
+             * any pipe driven invocation). Restoring the original (non
+             * console) output handle makes the console probe below fail so
+             * pipe mode is selected. Opt-in, so normal console sessions
+             * are unaffected. */
+            if(getenv("ME_CONSOLE_PIPEMODE") != NULL)
+                hInput = hOrigInput, hOutput = hOrigOutput ;
+
             /* get a ptr to the output screen buffer */
             if(GetConsoleScreenBufferInfo(hOutput,&Console))
             {

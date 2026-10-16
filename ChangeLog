@@ -84,6 +84,19 @@
                src/winterm.c, tests/mouse-wheel-win.emf,
                .github/workflows/testing.yml, doc/tickets.md, ChangeLog
 
+  [261016] - Windows console pipe-mode test hook (ticket 22).
+               GitHub Actions Windows steps run without a console, so the
+               AllocConsole() call in TTstart() succeeds and replaces the
+               standard handles with the newly created (never fed)
+               console; mec then read that console instead of the CI pipe
+               and the pipe-mode wheel test above produced no output. A
+               new opt-in ME_CONSOLE_PIPEMODE environment override keeps
+               the original standard handles so the raw "pipe mode"
+               SGR/ANSI path is selected; the windows-ucrt64 wheel test
+               step now sets it and reports the mec exit code. Files:
+               src/winterm.c, .github/workflows/testing.yml,
+               doc/tickets.md, ChangeLog
+
   [261015] - Fix PageUp/PageDown not moving the cursor at the buffer ends
                (ticket 20): windowScrollUp()/windowScrollDown() in
                src/window.c reported "top of buffer"/"end of buffer" as
