@@ -58,6 +58,10 @@ jobs:
         timeout-minutes: 5
         run: |
           python3 tests/mouse-wheel-test.py src/.linuxgcc-release-mec/mec
+      - name: Mouse-modifier regression test
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mod-test.py src/.linuxgcc-release-mec/mec
 
   macos:
     runs-on: macos-latest
@@ -115,6 +119,10 @@ jobs:
         timeout-minutes: 5
         run: |
           python3 tests/mouse-wheel-test.py src/.macosgcc-release-mec/mec
+      - name: Mouse-modifier regression test
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mod-test.py src/.macosgcc-release-mec/mec
 
   windows-ucrt64:
     runs-on: windows-latest
@@ -203,6 +211,14 @@ jobs:
           head -c 200 mwtest/console-up.out 2>/dev/null | cat -v; echo
           cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
           grep -q 'wheel=up' mwtest/mouse-wheel-win-out.txt
+      - name: Mouse-modifier regression test
+        timeout-minutes: 3
+        shell: msys2 {0}
+        run: |
+          # Pipes one SGR click report per run, with a Shift/Alt/Control
+          # modifier bit in the button number, and checks each reaches the
+          # matching binding (see tests/mouse-mod-win.sh).
+          sh tests/mouse-mod-win.sh src/.ucrt64win-release-mec/mec.exe || { echo "FAIL: mouse modifier test"; exit 1; }
 
   windows-msysunix:
     runs-on: windows-latest

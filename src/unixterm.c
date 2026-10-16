@@ -5685,6 +5685,23 @@ TTahead(void)
                             isMotion = 1;
                         }
 
+                        /* Decode the SGR modifier bits - 4=Shift, 8=Meta/Alt,
+                         * 16=Control - which are ORed into the button number.
+                         * Store them in mouseKeyState using the same encoding
+                         * as the X11 server path above (ME_SHIFT|ME_CONTROL|
+                         * ME_ALT) and strip them off the button number before
+                         * it is mapped. Without this a modifier-click failed
+                         * the button tests below (Shift+left is 4, Ctrl+left
+                         * is 16) and was discarded as an unknown button. */
+                        mouseKeyState = 0;
+                        if(sgrMouseButton & 4)
+                            mouseKeyState |= ME_SHIFT;
+                        if(sgrMouseButton & 8)
+                            mouseKeyState |= ME_ALT;
+                        if(sgrMouseButton & 16)
+                            mouseKeyState |= ME_CONTROL;
+                        sgrMouseButton &= ~(4|8|16);
+
                         /* Convert SGR button to ME button */
                         /* SGR: 0=left, 1=middle, 2=right, 64=wheel up, 65=wheel down */
                         if(sgrMouseButton == 0)
@@ -5735,8 +5752,6 @@ TTahead(void)
                             {
                                 /* Button press */
                                 mouseButtonPick(meButton);
-                                /* Clear modifier state for terminal - no modifier info available */
-                                mouseKeyState = 0;
                                 ss = (ME_SPECIAL | (SKEY_mouse_pick_1 + mouseKeys[meButton] - 1) | mouseKeyState);
                                 addKeyToBuffer(ss);
                                 /* A wheel report (button 4/5) arrives as a

@@ -13,6 +13,27 @@
 
 ## 2026
 
+  [261016] - Terminal mouse modifier-clicks (Shift/Ctrl/Alt) were
+               silently dropped. SGR encodes the modifiers in the button
+               number (4=Shift, 8=Meta/Alt, 16=Control) but the terminal
+               parsers only stripped the motion bit (32) and then matched
+               the raw number, so Shift+left (4), Ctrl+left (16) or
+               Ctrl+wheel (80, 64+16) matched no button and the whole
+               event was discarded. All three SGR parsers now decode those
+               bits into the same modifier state the X11 path uses
+               (ME_SHIFT/ME_CONTROL/ME_ALT) and strip them before the
+               button is mapped, and the terminal no longer forces
+               mouseKeyState to zero: src/unixterm.c (terminal) and
+               src/winterm.c (meParseSGRMouseChar plus the pipe-mode
+               parser in meGetConsoleMessage). Plain clicks are unchanged.
+               Regression harness tests/mouse-mod.emf +
+               tests/mouse-mod-test.py (Linux/macOS) and
+               tests/mouse-mod-win.emf + tests/mouse-mod-win.sh
+               (windows-ucrt64). Files: src/unixterm.c, src/winterm.c,
+               tests/mouse-mod.emf, tests/mouse-mod-test.py,
+               tests/mouse-mod-win.emf, tests/mouse-mod-win.sh,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
   [261016] - Fix mouse-drag window resizing in the terminal (ticket 21).
                The GUI (mew) could resize windows by dragging a mode
                line/divider but the terminal (mec) could not, although

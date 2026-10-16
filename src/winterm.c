@@ -1207,6 +1207,20 @@ meParseSGRMouseChar(MSG *msg, meUByte cc)
             isMotion = 1;
         }
 
+        /* Decode the SGR modifier bits - 4=Shift, 8=Meta/Alt, 16=Control -
+         * which are ORed into the button number. Store them in ttmodif and
+         * strip them off before the button is mapped, mirroring the X11
+         * path. Without this a modifier-click did not match any button
+         * below and generated no message at all. */
+        ttmodif = 0;
+        if(sgrMouseButton & 4)
+            ttmodif |= ME_SHIFT;
+        if(sgrMouseButton & 8)
+            ttmodif |= ME_ALT;
+        if(sgrMouseButton & 16)
+            ttmodif |= ME_CONTROL;
+        sgrMouseButton &= ~(4|8|16);
+
         /* Set mouse position (convert from 1-based to 0-based) */
         mouse_X = sgrMouseCol - 1;
         mouse_Y = sgrMouseRow - 1;
@@ -1276,7 +1290,6 @@ meParseSGRMouseChar(MSG *msg, meUByte cc)
 
         /* Set up lParam with mouse position */
         msg->lParam = ((mouse_Y) << 16) | mouse_X;
-        ttmodif = 0;
 
         sgrMouseState = SGR_MOUSE_STATE_IDLE;
         return 1;  /* Consumed - message is ready */
@@ -1432,6 +1445,16 @@ meGetConsoleMessage(MSG *msg, int mode)
                                                 isMotion = 1 ;
                                             }
 
+                                            /* Decode the SGR modifier bits
+                                             * (4=Shift, 8=Alt, 16=Control) into
+                                             * ttmodif and strip them off the
+                                             * button number before mapping. */
+                                            ttmodif = 0 ;
+                                            if(btn & 4)  ttmodif |= ME_SHIFT ;
+                                            if(btn & 8)  ttmodif |= ME_ALT ;
+                                            if(btn & 16) ttmodif |= ME_CONTROL ;
+                                            btn &= ~(4|8|16) ;
+
                                             /* Set mouse position (1-based to 0-based) */
                                             mouse_X = col - 1 ;
                                             mouse_Y = row - 1 ;
@@ -1465,7 +1488,6 @@ meGetConsoleMessage(MSG *msg, int mode)
 
                                             msg->wParam = wBtn ;
                                             msg->lParam = ((mouse_Y) << 16) | (mouse_X & 0xffff) ;
-                                            ttmodif = 0 ;
                                             ii = si ;
                                             return meTRUE ;
                                         }
@@ -1795,8 +1817,8 @@ meGetConsoleMessage(MSG *msg, int mode)
             /* Try to parse as SGR mouse sequence (ASCII only) */
             else if(ccAscii < 0x80 && meParseSGRMouseChar(msg, ccAscii))
             {
-                /* SGR parser consumed the char and filled in msg */
-                ttmodif = 0;
+                /* SGR parser consumed the char and filled in msg; it has
+                 * already set ttmodif from the SGR modifier bits. */
                 if(sgrMouseState == SGR_MOUSE_STATE_IDLE)
                 {
                     /* Complete mouse event ready */

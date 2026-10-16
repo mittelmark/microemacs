@@ -788,3 +788,35 @@ commands. Two bugs in the terminal SGR mouse parser blocked this.
       AllocConsole() created a console. Files: src/winterm.c,
       .github/workflows/testing.yml
 
+## Ticket 23: Terminal mouse modifier-clicks (Shift/Ctrl/Alt) dropped (DONE)
+
+SGR encodes mouse modifiers in the button number (4=Shift, 8=Meta/Alt,
+16=Control). The terminal parsers stripped only the motion bit (32) and
+then matched the raw button number, so any modifier-click failed the
+button tests and the whole event was discarded: Shift+left is button 4,
+Ctrl+left is 16 and Ctrl+wheel is 80 (64+16). The X11 server path
+already folded these bits into mouseKeyState (ME_SHIFT/ME_CONTROL/
+ME_ALT), so mew behaved correctly while mec and the Windows console did
+not.
+
+    - DONE 261016: all three SGR parsers now decode the modifier bits,
+      strip them off the button number before the button is mapped and
+      carry them as the same modifier state the X11 path uses; the
+      terminal press handler no longer clears mouseKeyState. This
+      restores Shift+click, Ctrl+click and Alt+click (and Shift+wheel) to
+      their bindings; plain clicks are unchanged. Files: src/unixterm.c,
+      src/winterm.c (meParseSGRMouseChar and the pipe-mode parser in
+      meGetConsoleMessage).
+
+    - DONE 261016: regression harness tests/mouse-mod.emf +
+      tests/mouse-mod-test.py drives the Unix console over a pty with a
+      plain, Shift, Ctrl and Alt click and asserts the matching binding
+      fired; it is wired into the Linux and macOS jobs of
+      .github/workflows/testing.yml. The Windows console is covered by
+      tests/mouse-mod-win.emf + tests/mouse-mod-win.sh, run from the
+      windows-ucrt64 job, which pipes one SGR click per run (the pipe
+      parser handles one SGR sequence per read). Files:
+      tests/mouse-mod.emf, tests/mouse-mod-test.py,
+      tests/mouse-mod-win.emf, tests/mouse-mod-win.sh,
+      .github/workflows/testing.yml
+
