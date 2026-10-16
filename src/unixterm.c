@@ -3103,6 +3103,59 @@ TCAPstart(void)
                             TTtransKey.time,sl,(SKEY_page_down|ME_SPECIAL)) ;
         }
     }
+
+    /* Modifier + cursor/home/end keys as sent by xterm-compatible
+     * terminals: CSI 1 ; <modifier> <final>, where the modifier is
+     * 1 + shift(1) + alt(2) + control(4) and the final character is
+     * A/B/C/D for up/down/right/left and H/F for home/end.
+     *
+     * Termcap only describes the unmodified sequences, so Alt-Left
+     * (CSI 1;3D) and friends fell through the translation table: after a
+     * failed prefix match the raw "1;3D" text was inserted instead of
+     * running the bound command ("A-left" is bound to backward-word by
+     * meemacs.emf). Map the modified forms onto the very same
+     * ME_SPECIAL|modifier|SKEY_xxx codes that the X11 (mew) server path
+     * generates so the same bindings work in the terminal. */
+    {
+        static const struct { int mod ; meUShort mask ; } sgrMods[] =
+        {
+            { 2, ME_SHIFT },                    /* Shift            */
+            { 3, ME_ALT },                      /* Alt              */
+            { 4, ME_SHIFT|ME_ALT },             /* Shift+Alt        */
+            { 5, ME_CONTROL },                  /* Control          */
+            { 6, ME_SHIFT|ME_CONTROL },         /* Shift+Control    */
+            { 7, ME_ALT|ME_CONTROL },           /* Alt+Control      */
+            { 8, ME_SHIFT|ME_ALT|ME_CONTROL },  /* Shift+Alt+Control*/
+        } ;
+        static const struct { char final ; meUShort skey ; } sgrFinals[] =
+        {
+            { 'A', SKEY_up },    { 'B', SKEY_down },
+            { 'C', SKEY_right }, { 'D', SKEY_left },
+            { 'H', SKEY_home },  { 'F', SKEY_end  },
+        } ;
+        meUShort sl[20] ;
+        meUByte seq[8] ;
+        int mi, fi ;
+
+        for(mi=0 ; mi<(int)(sizeof(sgrMods)/sizeof(sgrMods[0])) ; mi++)
+        {
+            for(fi=0 ; fi<(int)(sizeof(sgrFinals)/sizeof(sgrFinals[0])) ; fi++)
+            {
+                seq[0] = 27 ;                             /* ESC */
+                seq[1] = '[' ;
+                seq[2] = '1' ;
+                seq[3] = ';' ;
+                seq[4] = (meUByte) ('0' + sgrMods[mi].mod) ;
+                seq[5] = (meUByte) sgrFinals[fi].final ;
+                seq[6] = '\0' ;
+                translateKeyAdd(&TTtransKey,charListToShorts(sl,seq),
+                                TTtransKey.time,sl,
+                                (meUShort)(ME_SPECIAL|sgrMods[mi].mask|
+                                           sgrFinals[fi].skey)) ;
+            }
+        }
+    }
+
     /* Switch off the vertical window scroll bar */
     gsbarmode &= ~WMVBAR ;
     {

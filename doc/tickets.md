@@ -880,3 +880,31 @@ set, so a middle click only ever pasted the internal kill ring.
       tests/mouse-mid-test.py, .github/workflows/testing.yml,
       doc/reference.smd
 
+## Ticket 26: BUG - Alt-Left/Alt-Right inserted "1;3D" in the terminal (DONE)
+
+In the terminal build (mec) pressing Alt-Left or Alt-Right inserted the
+literal text "1;3D" / "1;3C" instead of running the bound command, while the
+same keys worked in the X11 build (mew). The terminal sends the xterm
+modified-cursor-key sequence CSI 1 ; <modifier> <final> - Alt-Left is
+`ESC [ 1 ; 3 D`, Alt-Right is `ESC [ 1 ; 3 C` - with the modifier encoded as
+1 + shift(1) + alt(2) + control(4). Termcap describes only the unmodified
+sequences (`\033[D` etc.), so the modified forms had no entry in the
+key-translation table: the prefix match failed after `ESC [` and the trailing
+"1;3D" was delivered as ordinary characters ("ESC [" itself was consumed as
+the M-[ prefix key and discarded).
+
+    - DONE 261016: TCAPstart (src/unixterm.c) now registers the standard
+      xterm CSI 1;<modifier><final> forms for up/down/right/left (A/B/C/D)
+      and home/end (H/F) for every Shift/Alt/Control combination, mapping
+      them onto the same ME_SPECIAL|modifier|SKEY_xxx codes that the X11
+      server path generates (ME_SHIFT/ME_CONTROL/ME_ALT). The existing
+      bindings therefore apply unchanged, e.g. "A-left" -> backward-word
+      from meemacs.emf. Note the raw input parser (TTahead) already
+      re-injects the ESC/[ it consumed when a sequence turns out not to be an
+      SGR mouse report, so the translation table sees the full sequence.
+      Automated regression test: tests/alt-cursor-test.py sends the CSI
+      sequences over a pty and asserts each reaches its binding without
+      leaking literal text (run on Linux and macOS in testing.yml). Files:
+      src/unixterm.c, tests/alt-cursor.emf, tests/alt-cursor-test.py,
+      .github/workflows/testing.yml, doc/reference.smd
+

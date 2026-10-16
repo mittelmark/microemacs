@@ -13,6 +13,26 @@
 
 ## 2026
 
+  [261016] - Terminal modified cursor keys (ticket 26). Alt-Left and
+               Alt-Right inserted the literal "1;3D" / "1;3C" in the
+               console build (mec) instead of running the bound command,
+               while they worked in the X11 build (mew). Terminals send the
+               xterm modified-cursor-key sequence CSI 1 ; <modifier>
+               <final> (modifier = 1 + shift + 2*alt + 4*control); termcap
+               only describes the unmodified forms, so the translation
+               table had no entry and the trailing characters leaked
+               through after "ESC [" had been eaten as the M-[ prefix.
+               TCAPstart in src/unixterm.c now registers the
+               CSI 1;<modifier><final> forms for the four cursor keys
+               (A/B/C/D) and home/end (H/F) for every Shift/Alt/Control
+               combination, mapped onto the same ME_SPECIAL|modifier|
+               SKEY_xxx codes as the X11 server path so the existing
+               bindings (A-left -> backward-word) apply unchanged.
+               Regression test tests/alt-cursor-test.py (Linux + macOS).
+               Files: src/unixterm.c, tests/alt-cursor.emf,
+               tests/alt-cursor-test.py, .github/workflows/testing.yml,
+               doc/reference.smd, doc/tickets.md, ChangeLog
+
   [261016] - Terminal middle-click now pastes the primary selection
                (ticket 25). The default middle-button binding yanks ME's
                kill ring; on X11 (mew) that yank refreshes the ring from

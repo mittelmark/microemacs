@@ -66,6 +66,10 @@ jobs:
         timeout-minutes: 5
         run: |
           python3 tests/mouse-mid-test.py src/.linuxgcc-release-mec/mec
+      - name: Modified cursor-key regression test (Alt/Ctrl/Shift arrows)
+        timeout-minutes: 5
+        run: |
+          python3 tests/alt-cursor-test.py src/.linuxgcc-release-mec/mec
 
   macos:
     runs-on: macos-latest
@@ -131,6 +135,10 @@ jobs:
         timeout-minutes: 5
         run: |
           python3 tests/mouse-mid-test.py src/.macosgcc-release-mec/mec
+      - name: Modified cursor-key regression test (Alt/Ctrl/Shift arrows)
+        timeout-minutes: 5
+        run: |
+          python3 tests/alt-cursor-test.py src/.macosgcc-release-mec/mec
 
   windows-ucrt64:
     runs-on: windows-latest
