@@ -730,5 +730,9 @@ SRG mouse bindings.
       press/motion/release on a mode line: fixed build resizes the
       window (+4 rows), the unfixed build and the no-motion control do
       not. Still to be confirmed on a real terminal emulator and on
-      Windows/macOS. Files: src/unixterm.c, src/winterm.c, doc/tickets.md
+      Windows/macOS. Regression harness (tests/mouse-resize.emf +
+      tests/mouse-resize-test.py) is wired into the Linux and macOS
+      jobs of .github/workflows/testing.yml. Files: src/unixterm.c,
+      src/winterm.c, tests/mouse-resize.emf, tests/mouse-resize-test.py,
+      .github/workflows/testing.yml, doc/tickets.md
 

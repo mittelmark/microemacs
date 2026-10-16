@@ -50,6 +50,10 @@ jobs:
       - name: Verify encoding tests (ticket 17)
         run: |
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Mouse-resize regression test (ticket 21)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-resize-test.py src/.linuxgcc-release-mec/mec
 
   macos:
     runs-on: macos-latest
@@ -99,6 +103,10 @@ jobs:
       - name: Verify encoding tests (ticket 17)
         run: |
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Mouse-resize regression test (ticket 21)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-resize-test.py src/.macosgcc-release-mec/mec
 
   windows-ucrt64:
     runs-on: windows-latest
