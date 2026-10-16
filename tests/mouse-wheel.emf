@@ -1,0 +1,53 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the terminal mouse-wheel regression
+;              test (ticket 22). Driven by tests/mouse-wheel-test.py,
+;              which sends SGR wheel press events over a pty and checks
+;              that the current window scrolls vertically.
+;
+; The harness passes an absolute work directory in the environment
+; variable ME_MOUSE_WORK. The source and output files are created there
+; as absolute paths: ME resolves a relative name against the *current
+; buffer's* directory (see find-file(2), "the current buffers
+; disk/directory is used"), so two successive relative names would be
+; looked up relative to the first one. An absolute path avoids that, and
+; a throw-away directory keeps the repository clean.
+;
+; The buffer is deliberately NOT dumped at start-up: the dump switches
+; the current window to the output file, and the wheel scrolls the
+; *current* buffer. f5 appends the window geometry to
+; mouse-wheel-out.txt and f6 exits. Run with:
+;
+;   python3 tests/mouse-wheel-test.py
+;
+execute-file "me"
+
+define-macro mouse-wheel-dump
+    set-variable #l8 $window-y-scroll
+    set-variable #l9 $window-line
+    find-file &cat $ME_MOUSE_WORK "/mouse-wheel-out.txt"
+    end-of-buffer
+    insert-string "y-scroll="
+    insert-string #l8
+    insert-string " line="
+    insert-string #l9
+    insert-newline
+    save-buffer
+!emacro
+
+define-macro start-up
+    find-file &cat $ME_MOUSE_WORK "/mouse-wheel-src.txt"
+    beginning-of-buffer
+    set-variable #l0 1
+    !while &les #l0 200
+        insert-string &cat "line " #l0
+        insert-newline
+        set-variable #l0 &add #l0 1
+    !done
+    beginning-of-buffer
+    global-bind-key mouse-wheel-dump "f5"
+    global-bind-key exit-emacs "f6"
+!emacro

@@ -736,3 +736,36 @@ SRG mouse bindings.
       src/winterm.c, tests/mouse-resize.emf, tests/mouse-resize-test.py,
       .github/workflows/testing.yml, doc/tickets.md
 
+## Ticket 22: Mouse wheel vertical scrolling in the terminal (IN TESTING)
+
+In the mew/mewb GUI version a mouse wheel scrolls the buffer. The
+terminal (mec) did not respond to the wheel even though the macro
+support was already in place: mouse.emf binds the wheel keys and, on
+non-Windows platforms, installs translate-key mappings from the
+X11-style "mouse-pick-4 mouse-drop-4" / "mouse-pick-5 mouse-drop-5"
+button pairs to the registered "mouse-wup-scroll" / "mouse-wdown-scroll"
+commands. Two bugs in the terminal SGR mouse parser blocked this.
+
+    - IN TESTING 261016: (1) the SGR button decoder in
+      src/unixterm.c first stripped the motion bit with
+      "if(sgrMouseButton >= 32) { sgrMouseButton -= 32; isMotion = 1; }".
+      SGR signals motion with bit 5 (32) but encodes the wheel as button
+      64 (up) / 65 (down); both are numerically >= 32, so a wheel report
+      was turned into a phantom motion with an unknown button and
+      silently dropped. The test is now the bit test
+      "if(sgrMouseButton & 32)". (2) A terminal reports a wheel tick as a
+      single press with no release while the mouse.emf translation
+      expects the X11-style press+release pair. The parser now
+      synthesises the matching drop (mouse-drop-4 / mouse-drop-5) when
+      the pressed button is a wheel, mirroring X11. Verified with a pty
+      harness (tests/mouse-wheel.emf + tests/mouse-wheel-test.py): eight
+      wheel-down reports move the window y-scroll to 40 (the registry
+      default of five lines per tick), four following wheel-up reports
+      return it to 20 and no wheel event leaves it at 0. The harness is
+      wired into the Linux and macOS jobs of
+      .github/workflows/testing.yml. The Windows console pipe-mode SGR
+      parser in src/winterm.c has the same numeric motion test and still
+      needs checking. Files: src/unixterm.c, tests/mouse-wheel.emf,
+      tests/mouse-wheel-test.py, .github/workflows/testing.yml,
+      doc/tickets.md
+

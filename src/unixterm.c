@@ -5672,10 +5672,16 @@ TTahead(void)
                         int isRelease = (cc == 'm');
                         int isMotion = 0;
 
-                        /* Check for motion (button + 32) */
-                        if(sgrMouseButton >= 32)
+                        /* Check for motion. SGR sets bit 5 (32) on motion
+                         * events; test that bit rather than the numeric
+                         * value, because the wheel codes 64/65 are
+                         * numerically greater than 32 but are not motion
+                         * events. Testing >= 32 used to turn a wheel report
+                         * into a phantom motion with an unknown button, so
+                         * the wheel was silently dropped. */
+                        if(sgrMouseButton & 32)
                         {
-                            sgrMouseButton -= 32;
+                            sgrMouseButton &= ~32;
                             isMotion = 1;
                         }
 
@@ -5733,6 +5739,19 @@ TTahead(void)
                                 mouseKeyState = 0;
                                 ss = (ME_SPECIAL | (SKEY_mouse_pick_1 + mouseKeys[meButton] - 1) | mouseKeyState);
                                 addKeyToBuffer(ss);
+                                /* A wheel report (button 4/5) arrives as a
+                                 * single press with no matching release.
+                                 * The mouse.emf wheel handling translates the
+                                 * X11-style "mouse-pick-N mouse-drop-N" pair
+                                 * into mouse-wup/mouse-wdown, so synthesise the
+                                 * drop here to make the terminal behave like
+                                 * X11 (where the server sends both events). */
+                                if((meButton == 4) || (meButton == 5))
+                                {
+                                    mouseButtonDrop(meButton);
+                                    ss = (ME_SPECIAL | (SKEY_mouse_drop_1 + mouseKeys[meButton] - 1) | mouseKeyState);
+                                    addKeyToBuffer(ss);
+                                }
                             }
                         }
 

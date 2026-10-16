@@ -34,6 +34,33 @@
                pipe-mode (mintty) path. Files: src/unixterm.c,
                src/winterm.c, doc/tickets.md, ChangeLog
 
+  [261016] - Mouse wheel vertical scrolling in the terminal (ticket 22).
+               The wheel did not scroll in mec although the macros and
+               the registry defaults were already in place (mouse.emf
+               binds the wheel keys and maps the X11-style
+               "mouse-pick-4 mouse-drop-4" / "...-5" pairs to the
+               registered "5 mouse-wdown-scroll" commands). Two bugs in
+               the terminal SGR mouse parser: (1) it stripped the motion
+               bit with "sgrMouseButton >= 32", but SGR encodes motion as
+               bit 5 (32) and the wheel as button 64/65 - both are
+               numerically >= 32, so a wheel report became a phantom
+               motion with an unknown button and was silently dropped;
+               the test is now the bit test "sgrMouseButton & 32". (2) a
+               terminal reports a wheel tick as a single press with no
+               release while the mouse.emf translation expects the
+               X11-style press+release pair, so the parser now
+               synthesises the matching mouse-drop-4/5 when the pressed
+               button is a wheel. Verified with a pty harness
+               (tests/mouse-wheel.emf + tests/mouse-wheel-test.py):
+               eight wheel-down reports move the window y-scroll to 40,
+               four following wheel-up reports return it to 20 and no
+               wheel event leaves it at 0; wired into the Linux and macOS
+               testing.yml jobs. The Windows console pipe-mode SGR parser
+               in src/winterm.c has the same numeric motion test and still
+               needs checking. Files: src/unixterm.c, tests/mouse-wheel.emf,
+               tests/mouse-wheel-test.py, .github/workflows/testing.yml,
+               doc/tickets.md, ChangeLog
+
   [261015] - Fix PageUp/PageDown not moving the cursor at the buffer ends
                (ticket 20): windowScrollUp()/windowScrollDown() in
                src/window.c reported "top of buffer"/"end of buffer" as
