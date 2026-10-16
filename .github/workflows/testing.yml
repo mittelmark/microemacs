@@ -173,8 +173,14 @@ jobs:
           # has no console, so AllocConsole() would otherwise succeed and
           # mec would read that new (empty) console instead of our pipe;
           # ME_CONSOLE_PIPEMODE forces the raw "pipe mode" SGR path fixed
-          # for ticket 22. Feed one wheel report per run and check the
-          # wheel key reaches the macros.
+          # for ticket 22.
+          #
+          # The report is repeated ~1s apart rather than sent once up front:
+          # ME runs a TTahead()/TTinflush() during start-up which reads and
+          # discards input already waiting in the pipe. A single early report
+          # was swallowed, after which the closed pipe gave EOF and mec called
+          # meDie() -> exit 1 with no file written. Keeping the pipe open and
+          # writing after start-up makes the report land in the main loop.
           export TERM=xterm-256color
           export TERM_PROGRAM="Windows Terminal"
           export ME_CONSOLE_PIPEMODE=1
@@ -182,15 +188,19 @@ jobs:
           rm -rf mwtest && mkdir -p mwtest
           echo "--- wheel-down (SGR button 65) ---"
           rc=0
-          printf '\033[<65;5;5M' | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win >/dev/null || rc=$?
+          { for _i in 1 2 3 4 5 6 7 8; do sleep 1; printf '\033[<65;5;5M' || break; done; sleep 2; } \
+            | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win > mwtest/console-down.out 2>&1 || rc=$?
           echo "mec exit=$rc"
+          head -c 200 mwtest/console-down.out 2>/dev/null | cat -v; echo
           cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
           grep -q 'wheel=down' mwtest/mouse-wheel-win-out.txt
           rm -f mwtest/mouse-wheel-win-out.txt
           echo "--- wheel-up (SGR button 64) ---"
           rc=0
-          printf '\033[<64;5;5M' | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win >/dev/null || rc=$?
+          { for _i in 1 2 3 4 5 6 7 8; do sleep 1; printf '\033[<64;5;5M' || break; done; sleep 2; } \
+            | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win > mwtest/console-up.out 2>&1 || rc=$?
           echo "mec exit=$rc"
+          head -c 200 mwtest/console-up.out 2>/dev/null | cat -v; echo
           cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
           grep -q 'wheel=up' mwtest/mouse-wheel-win-out.txt
 
