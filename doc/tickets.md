@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-15 08:13
+date: 2026-10-16 04:40
 ---
 
 ## Introduction
@@ -698,4 +698,37 @@ which cannot scroll any further moves dot to the beginning/end of the buffer.
       tests/test-basics.emf (TEST:scroll-bob / TEST:scroll-eob), assertions
       added to the testing.yml matrix. Files: src/window.c,
       tests/test-basics.emf, .github/workflows/testing.yml, doc/tickets.md
+
+## Ticket 21: Mouse Drag support for window resize operations (IN TESTING)
+
+Currently  in the  mew/mewb  GUI  version I can resize the windows by dragging
+them with the mouse. This is not  currently  not  supported in the temrinal as
+far as I can see. Could you check if this is possibly to  implement  using our
+SRG mouse bindings.
+
+    - IN TESTING 261016: the terminal (mec) already had the full resize
+      logic in the macros (mouse.emf: "mouse-grow-window", bound to
+      "mouse-move-<b>" on a mode-line/divider pick), but two bugs in the
+      C terminal mouse path meant a drag never reached it. (1) The
+      terminal only enabled DECSET 1000 (press/release) plus 1006 (SGR
+      coords); a terminal never reports motion in 1000, so dragging
+      produced no events. DECSET 1002 (button-event tracking) is now
+      enabled as well so motion is reported while a button is held
+      (1000 is kept as a fallback for terminals without 1002; 1003 is
+      deliberately not used because it also reports no-button motion,
+      which would be decoded as a phantom right-button drag). (2) The
+      SGR parser in TTahead() encoded the motion key as
+      "SKEY_mouse_move + mouseKeys[button] - 1" (i.e. "mouse-move"), one
+      short of the "mouse-move-1" that the macros bind, so the drag
+      command never fired; X11 and DOS encode "SKEY_mouse_move +
+      mouseKeys[button]". The motion branch now matches those encoders,
+      coalesces repeats with addKeyToBufferOnce() and only queues the
+      key when it is bound (or TTallKeys is set), mirroring X11/DOS and
+      avoiding a key-buffer flood of unbound moves. The same 1002
+      enable/disable was added to the Windows console pipe-mode (mintty)
+      path in winterm.c. Verified with a pty harness that injects SGR
+      press/motion/release on a mode line: fixed build resizes the
+      window (+4 rows), the unfixed build and the no-motion control do
+      not. Still to be confirmed on a real terminal emulator and on
+      Windows/macOS. Files: src/unixterm.c, src/winterm.c, doc/tickets.md
 

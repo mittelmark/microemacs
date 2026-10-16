@@ -3214,8 +3214,13 @@ TCAPopen(void)
      * only if the terminal is known to support it */
     if((meMouseCfg & meMOUSE_ENBLE) && TTtermHasSGRMouse())
     {
-        /* Enable SGR extended mouse mode (mode 1006) and basic mouse tracking (mode 1000) */
-        fputs("\033[?1006h\033[?1000h", stdout);
+        /* Enable SGR extended mouse mode (mode 1006) for unlimited coordinates.
+         * Enable basic tracking (1000) as a fallback and button-event tracking
+         * (1002) so motion is reported while a button is held. The motion
+         * reports are required for drag operations such as window resizing.
+         * Terminals that do not support 1002 keep the 1000 (press/release)
+         * behaviour. */
+        fputs("\033[?1006h\033[?1000h\033[?1002h", stdout);
         fflush(stdout);
     }
 #endif /* MEOPT_MOUSE */
@@ -3237,7 +3242,7 @@ TCAPclose(void)
 
 #if MEOPT_MOUSE
     /* Disable SGR mouse mode */
-    fputs("\033[?1006l\033[?1000l", stdout);
+    fputs("\033[?1006l\033[?1002l\033[?1000l", stdout);
     fflush(stdout);
 #endif /* MEOPT_MOUSE */
 
@@ -3644,11 +3649,15 @@ TTinitMouse(void)
     {
 #endif /* _ME_WINDOW */
         /* For console/terminal version, enable/disable SGR mouse mode
-         * only if the terminal is known to support it */
+         * only if the terminal is known to support it.
+         * 1006 = SGR extended coordinates, 1000 = basic tracking (fallback),
+         * 1002 = button-event tracking (motion reported while a button is
+         * held). Mode 1002 is required for mouse drag operations such as
+         * window resizing. */
         if((meMouseCfg & meMOUSE_ENBLE) && TTtermHasSGRMouse())
-            fputs("\033[?1006h\033[?1000h", stdout);
+            fputs("\033[?1006h\033[?1000h\033[?1002h", stdout);
         else
-            fputs("\033[?1006l\033[?1000l", stdout);
+            fputs("\033[?1006l\033[?1002l\033[?1000l", stdout);
         fflush(stdout);
 #ifdef _ME_WINDOW
     }
@@ -5695,9 +5704,19 @@ TTahead(void)
                         {
                             if(isMotion)
                             {
-                                /* Mouse motion - generate mouse-move event */
-                                ss = (ME_SPECIAL | (SKEY_mouse_move + mouseKeys[meButton] - 1) | mouseKeyState);
-                                addKeyToBuffer(ss);
+                                /* Mouse motion - generate a mouse-move event.
+                                 * SKEY_mouse_move is the base (move-0) code and
+                                 * the button offset (mouseKeys[]) is added with
+                                 * no -1, matching the X11 and DOS encoders, so
+                                 * the left button yields mouse-move-1 (the key
+                                 * the mouse.emf macros bind during a drag).
+                                 * Only queue the key when it is bound (or in
+                                 * all-keys mode) to avoid filling the key buffer
+                                 * with unbound movement events. */
+                                meUInt arg;     /* Decode key argument */
+                                ss = (ME_SPECIAL | (SKEY_mouse_move + mouseKeys[meButton]) | mouseKeyState);
+                                if((TTallKeys & 0x1) || (!TTallKeys && (decode_key(ss, &arg) != -1)))
+                                    addKeyToBufferOnce(ss);
                             }
                             else if(isRelease)
                             {

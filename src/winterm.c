@@ -1079,8 +1079,9 @@ TTend (void)
     /* Disable VT mouse if enabled */
     if(vtMouseEnabled)
     {
-        /* Disable SGR mouse mode: \033[?1006l + \033[?1000l */
+        /* Disable SGR mouse mode: \033[?1006l + \033[?1002l + \033[?1000l */
         fwrite("\033[?1006l", 1, 8, stdout);
+        fwrite("\033[?1002l", 1, 8, stdout);
         fwrite("\033[?1000l", 1, 8, stdout);
         fflush(stdout);
         vtMouseEnabled = 0;
@@ -3934,7 +3935,11 @@ TTinitMouse(void)
                  * as SGR sequences on stdin. */
                 if(TTtermHasVTMouse())
                 {
-                    fputs("\033[?1006h\033[?1000h", stdout);
+                    /* 1006 = SGR extended coordinates, 1000 = basic tracking
+                     * (fallback), 1002 = button-event tracking so motion is
+                     * reported while a button is held (needed for drags such as
+                     * window resizing). */
+                    fputs("\033[?1006h\033[?1000h\033[?1002h", stdout);
                     fflush(stdout);
                     vtMouseEnabled = 1;
                 }

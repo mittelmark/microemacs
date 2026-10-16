@@ -7,11 +7,32 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261015.1010>
+  > Last Modified : <261016.0538>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth, MiMo-2.5, MiMo 2.6-Flash
 
 ## 2026
+
+  [261016] - Fix mouse-drag window resizing in the terminal (ticket 21).
+               The GUI (mew) could resize windows by dragging a mode
+               line/divider but the terminal (mec) could not, although
+               the macros (mouse.emf "mouse-grow-window", bound to
+               "mouse-move-<b>") were already in place. Two bugs in the
+               C terminal mouse path: (1) only DECSET 1000 (press/release)
+               plus 1006 (SGR coords) was enabled and 1000 never reports
+               motion, so a drag generated no events - DECSET 1002
+               (button-event tracking) is now enabled too, with 1000 kept
+               as a fallback (1003 is deliberately avoided as it also
+               reports no-button motion, decoded as a phantom
+               right-button drag); (2) the SGR parser encoded the motion
+               key as "SKEY_mouse_move + mouseKeys[button] - 1" (i.e.
+               "mouse-move") instead of the "mouse-move-1" the macros
+               bind - it now matches the X11/DOS encoders
+               ("SKEY_mouse_move + mouseKeys[button]"), coalesces repeats
+               with addKeyToBufferOnce() and only queues bound moves. The
+               same 1002 enable/disable was added to the Windows console
+               pipe-mode (mintty) path. Files: src/unixterm.c,
+               src/winterm.c, doc/tickets.md, ChangeLog
 
   [261015] - Fix PageUp/PageDown not moving the cursor at the buffer ends
                (ticket 20): windowScrollUp()/windowScrollDown() in
