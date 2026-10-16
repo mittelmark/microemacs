@@ -1904,9 +1904,13 @@ meGetConsoleMessage(MSG *msg, int mode)
         else if (mr->dwEventFlags & MOUSE_WHEELED)
         {
             msg->message = WM_MOUSEWHEEL;
-            /* The high word of dwEventFlags contains the wheel delta.
-             * Positive = wheel up, negative = wheel down. */
-            if((short)HIWORD(mr->dwEventFlags) > 0)
+            /* For a MOUSE_WHEELED record the wheel delta is in the high
+             * word of dwButtonState - NOT dwEventFlags, which merely holds
+             * the MOUSE_WHEELED flag (0x0004). Reading dwEventFlags always
+             * gave HIWORD == 0, so every tick - including "wheel up" - was
+             * decoded as a wheel-down. Positive = wheel up (away from the
+             * user), negative = wheel down. */
+            if((short)HIWORD(mr->dwButtonState) > 0)
                 msg->wParam = 0x0;      /* Wheel up */
             else
                 msg->wParam = 0x80000000;  /* Wheel down */

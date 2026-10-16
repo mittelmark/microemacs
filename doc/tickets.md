@@ -820,3 +820,27 @@ not.
       tests/mouse-mod-win.emf, tests/mouse-mod-win.sh,
       .github/workflows/testing.yml
 
+## Ticket 24: BUG - Windows console mouse wheel-up scrolls down (DONE)
+
+On a real Windows console (PowerShell / Windows Terminal) the scroll wheel
+scrolled the buffer down for both directions: a wheel-up tick behaved like a
+wheel-down tick. This is the native-console counterpart of ticket 22 - the two
+SGR parsers fixed there only run in "pipe mode" (mintty/MSYS2 or when
+ReadConsoleInputW fails). A normal console session gets MOUSE_EVENT records
+from ReadConsoleInput and decodes them in meGetConsoleMessage() in
+src/winterm.c.
+
+    - DONE 261016: for a MOUSE_WHEELED record the wheel delta lives in the
+      high word of dwButtonState, while dwEventFlags only carries the
+      MOUSE_WHEELED flag (0x0004). The console decoder read
+      HIWORD(mr->dwEventFlags), which is always 0, so
+      "if((short)HIWORD(...) > 0)" never took the wheel-up branch and every
+      tick - up and down - was reported as wheel-down. It now reads
+      HIWORD(mr->dwButtonState): positive = wheel-up, negative = wheel-down,
+      matching the documented MOUSE_EVENT_RECORD semantics and the GUI
+      WM_MOUSEWHEEL handling (which already uses the high word of wParam).
+      No automated regression test is possible: GitHub CI has no console and
+      drives the wheel through the pipe-mode SGR path, so this native-console
+      branch is only reachable in a real console session (manual
+      verification). Files: src/winterm.c
+

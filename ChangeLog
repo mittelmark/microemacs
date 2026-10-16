@@ -13,6 +13,26 @@
 
 ## 2026
 
+  [261016] - Windows console mouse wheel, native console path (ticket
+               24, follow-up to ticket 22). A normal Windows console
+               session (PowerShell / Windows Terminal) receives
+               MOUSE_EVENT records from ReadConsoleInput and decodes them
+               in meGetConsoleMessage() in src/winterm.c - the SGR
+               parsers fixed for ticket 22 only run in pipe mode. For a
+               MOUSE_WHEELED record the wheel delta is in the high word of
+               dwButtonState, while dwEventFlags merely holds the
+               MOUSE_WHEELED flag (0x0004). The decoder read
+               HIWORD(mr->dwEventFlags), which is always 0, so the
+               "delta > 0" test never matched and every tick - including
+               wheel-up - was reported as wheel-down (scroll wheel moved
+               the buffer down in both directions). It now reads
+               HIWORD(mr->dwButtonState): positive = wheel-up, negative =
+               wheel-down, matching the documented MOUSE_EVENT_RECORD
+               semantics and the GUI WM_MOUSEWHEEL handling (which
+               already used the high word of wParam). No automated test:
+               CI has no console and exercises the pipe-mode path only.
+               Files: src/winterm.c, doc/tickets.md, ChangeLog
+
   [261016] - Terminal mouse modifier-clicks (Shift/Ctrl/Alt) were
                silently dropped. SGR encodes the modifiers in the button
                number (4=Shift, 8=Meta/Alt, 16=Control) but the terminal
