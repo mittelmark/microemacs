@@ -13,6 +13,24 @@
 
 ## 2026
 
+  [261021] - Encoding auto-detection now samples up to 1MB instead of
+               only the first 4KB. The scan is chunked (8KB head kept for
+               BOM and coding: declarations), stops at the first invalid
+               byte, and treats a multi-byte sequence still incomplete at
+               the sample end as valid-so-far. This fixes shipped files
+               such as jasspa/macros/hklatex.emf (first high byte at
+               offset 6134) opening mislabelled as UTF-8 instead of
+               Windows-1252, and removes the old 4KB boundary case where
+               a valid UTF-8 sequence was cut in half. New regression test
+               tests/test-encoding-detect.emf with fixtures
+               tests/encodings/late-cp1252.txt and late-utf8.txt; the
+               pview and pview-toolbar tests are now wired into the
+               Linux/macOS/Windows UCRT64 CI jobs. Files: src/file.c,
+               tests/test-encoding-detect.emf,
+               tests/encodings/late-cp1252.txt,
+               tests/encodings/late-utf8.txt, doc/tickets.md,
+               .github/workflows/testing.yml, ChangeLog
+
   [261021] - Performance harness: make the GUI workload robust against
                missed synthetic key events. The xdotool window lookup now
                re-resolves all MicroEmacs windows on every pass (visible

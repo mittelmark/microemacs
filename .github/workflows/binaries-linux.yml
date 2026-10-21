@@ -3,8 +3,6 @@ name: Binaries Ubuntu (linux-gcc)
 on:
   workflow_dispatch:
     branches: [ devel ]
-env:
-   VERSION: "091224b"
 jobs:
   build:
     strategy:

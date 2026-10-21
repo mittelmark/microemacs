@@ -1,0 +1,58 @@
+; -!- emf -!-
+; Ticket 14: encoding auto-detection must look past the first 4KB.
+;
+; The fixtures place their first non-ASCII byte at offset 10004, i.e.
+; beyond the old 4KB sample and beyond the 8KB head chunk, so both the
+; initial sample and the streaming continuation are exercised.
+;
+; Run:  MENAME=ci-test <exe> @tests/test-encoding-detect
+; Out:  tests/test-encoding-detect-out.txt
+execute-file "me"
+
+define-macro start-up
+    ; Absolute paths (the current buffer may live in tests/)
+    set-variable %pout &cat &stat "a" "." "tests/test-encoding-detect-out.txt"
+    set-variable %pout &rep %pout "//" "/"
+    set-variable %pcp &cat &stat "a" "." "tests/encodings/late-cp1252.txt"
+    set-variable %pcp &rep %pcp "//" "/"
+    set-variable %putf &cat &stat "a" "." "tests/encodings/late-utf8.txt"
+    set-variable %putf &rep %putf "//" "/"
+    set-variable %phk &cat &stat "a" "." "jasspa/macros/hklatex.emf"
+    set-variable %phk &rep %phk "//" "/"
+
+    ; CP1252 byte after the old 4KB window must not be taken as UTF-8
+    find-file %pcp
+    set-variable %enc-cp $buffer-encoding
+
+    ; Valid UTF-8 after the old 4KB window must stay UTF-8
+    find-file %putf
+    set-variable %enc-utf8 $buffer-encoding
+
+    ; Shipped file that triggered the ticket (first high byte at 6134)
+    find-file %phk
+    set-variable %enc-hk $buffer-encoding
+
+    ; Write results, clearing a previous run's output
+    find-file %pout
+    beginning-of-buffer
+    set-mark
+    !force end-of-buffer
+    !force kill-region
+
+    insert-string "TEST:late-cp1252-encoding="
+    insert-string %enc-cp
+    insert-newline
+
+    insert-string "TEST:late-utf8-encoding="
+    insert-string %enc-utf8
+    insert-newline
+
+    insert-string "TEST:hklatex-encoding="
+    insert-string %enc-hk
+    insert-newline
+
+    insert-string "TEST:all-tests=complete"
+    insert-newline
+    !force save-buffer
+    exit-emacs
+!emacro

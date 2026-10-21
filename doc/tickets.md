@@ -473,6 +473,19 @@ while all other macro files are pure ASCII.
       any other filetype with late latin-1 bytes without filetype
       special-casing, and never behaves worse than today for huge
       files. Files: doc/tickets.md
+    - DONE 261021: bounded fail-fast scan implemented in file.c
+      (meUtf8Scan, meENCODING_DETECT_MAX = 1MB, 8KB head chunk kept
+      for BOM and coding: declarations; a multi-byte sequence still
+      incomplete at the scan end counts as valid-so-far instead of
+      invalid). Verified with the shipped file: hklatex.emf now
+      reports Windows-1252, spellutl.emf is unchanged, and a late
+      valid UTF-8 file stays UTF-8. Regression test:
+      tests/test-encoding-detect.emf with fixtures
+      tests/encodings/late-cp1252.txt / late-utf8.txt (first high
+      byte at offset 10004, beyond both the old 4KB sample and the
+      new 8KB head chunk); wired into testing.yml for
+      Linux/macOS/Windows UCRT64. Files: src/file.c, tests/,
+      .github/workflows/testing.yml
 
 ## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (DONE)
 ~

@@ -2,8 +2,6 @@ name: Binaries Windows (windows-cygwin)
 
 on:
   workflow_dispatch:
-env:
-   VERSION: "091226b1"
 jobs:
   build:
     runs-on: windows-latest

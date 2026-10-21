@@ -25,6 +25,9 @@ jobs:
           MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
           MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-enc17-mn 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-encoding-detect 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-pview 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-pview-toolbar 2>/dev/null || true
       - name: Verify test results
         run: |
           if [ -s tests/test-output.txt ]; then
@@ -50,6 +53,20 @@ jobs:
       - name: Verify encoding tests (ticket 17)
         run: |
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Verify encoding auto-detection (ticket 14)
+        run: |
+          grep -q "TEST:late-cp1252-encoding=Windows-1252" tests/test-encoding-detect-out.txt || { echo "FAIL: late CP1252 detection"; exit 1; }
+          grep -q "TEST:late-utf8-encoding=UTF-8" tests/test-encoding-detect-out.txt || { echo "FAIL: late UTF-8 detection"; exit 1; }
+          grep -q "TEST:hklatex-encoding=Windows-1252" tests/test-encoding-detect-out.txt || { echo "FAIL: hklatex detection"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-encoding-detect-out.txt || { echo "FAIL: encoding detection test incomplete"; exit 1; }
+      - name: Verify pview tests (ticket 11)
+        run: |
+          grep -q "TEST:pview-expanded-nested=yes" tests/test-pview-output.txt || { echo "FAIL: pview nested expansion"; exit 1; }
+          grep -q "TEST:pview-git-unquote-ok=yes" tests/test-pview-output.txt || { echo "FAIL: pview git unquote"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-pview-output.txt || { echo "FAIL: pview test incomplete"; exit 1; }
+          grep -q "TEST:tool-loaded=1" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar lazy load"; exit 1; }
+          grep -q "TEST:mouse-ok=yes" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar mouse"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar test incomplete"; exit 1; }
       - name: Mouse-resize regression test (ticket 21)
         timeout-minutes: 5
         run: |
@@ -94,6 +111,9 @@ jobs:
           MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
           MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-enc17-mn 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-encoding-detect 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-pview 2>/dev/null || true
+          MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-pview-toolbar 2>/dev/null || true
       - name: Verify test results
         run: |
           if [ -s tests/test-output.txt ]; then
@@ -119,6 +139,20 @@ jobs:
       - name: Verify encoding tests (ticket 17)
         run: |
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Verify encoding auto-detection (ticket 14)
+        run: |
+          grep -q "TEST:late-cp1252-encoding=Windows-1252" tests/test-encoding-detect-out.txt || { echo "FAIL: late CP1252 detection"; exit 1; }
+          grep -q "TEST:late-utf8-encoding=UTF-8" tests/test-encoding-detect-out.txt || { echo "FAIL: late UTF-8 detection"; exit 1; }
+          grep -q "TEST:hklatex-encoding=Windows-1252" tests/test-encoding-detect-out.txt || { echo "FAIL: hklatex detection"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-encoding-detect-out.txt || { echo "FAIL: encoding detection test incomplete"; exit 1; }
+      - name: Verify pview tests (ticket 11)
+        run: |
+          grep -q "TEST:pview-expanded-nested=yes" tests/test-pview-output.txt || { echo "FAIL: pview nested expansion"; exit 1; }
+          grep -q "TEST:pview-git-unquote-ok=yes" tests/test-pview-output.txt || { echo "FAIL: pview git unquote"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-pview-output.txt || { echo "FAIL: pview test incomplete"; exit 1; }
+          grep -q "TEST:tool-loaded=1" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar lazy load"; exit 1; }
+          grep -q "TEST:mouse-ok=yes" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar mouse"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar test incomplete"; exit 1; }
       - name: Mouse-resize regression test (ticket 21)
         timeout-minutes: 5
         run: |
@@ -162,6 +196,9 @@ jobs:
           MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
           MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-enc17-mn 2>/dev/null || true
+          MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-encoding-detect 2>/dev/null || true
+          MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-pview 2>/dev/null || true
+          MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-pview-toolbar 2>/dev/null || true
       - name: Verify test results
         shell: msys2 {0}
         run: |
@@ -189,6 +226,22 @@ jobs:
         shell: msys2 {0}
         run: |
           sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Verify encoding auto-detection (ticket 14)
+        shell: msys2 {0}
+        run: |
+          grep -q "TEST:late-cp1252-encoding=Windows-1252" tests/test-encoding-detect-out.txt || { echo "FAIL: late CP1252 detection"; exit 1; }
+          grep -q "TEST:late-utf8-encoding=UTF-8" tests/test-encoding-detect-out.txt || { echo "FAIL: late UTF-8 detection"; exit 1; }
+          grep -q "TEST:hklatex-encoding=Windows-1252" tests/test-encoding-detect-out.txt || { echo "FAIL: hklatex detection"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-encoding-detect-out.txt || { echo "FAIL: encoding detection test incomplete"; exit 1; }
+      - name: Verify pview tests (ticket 11)
+        shell: msys2 {0}
+        run: |
+          grep -q "TEST:pview-expanded-nested=yes" tests/test-pview-output.txt || { echo "FAIL: pview nested expansion"; exit 1; }
+          grep -q "TEST:pview-git-unquote-ok=yes" tests/test-pview-output.txt || { echo "FAIL: pview git unquote"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-pview-output.txt || { echo "FAIL: pview test incomplete"; exit 1; }
+          grep -q "TEST:tool-loaded=1" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar lazy load"; exit 1; }
+          grep -q "TEST:mouse-ok=yes" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar mouse"; exit 1; }
+          grep -q "TEST:all-tests=complete" tests/test-pview-toolbar-output.txt || { echo "FAIL: pview toolbar test incomplete"; exit 1; }
       - name: Mouse-wheel regression test (ticket 22)
         timeout-minutes: 3
         shell: msys2 {0}
