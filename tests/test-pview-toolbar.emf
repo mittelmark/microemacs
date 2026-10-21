@@ -55,6 +55,17 @@ define-macro start-up
     set-variable %pview-fhook $buffer-fhook
     set-variable %pview-hl $buffer-hilight
     set-variable %pview-hl-id .hilight.pview
+    ; Mouse click support: the toolbar installs :mouse-pick-all /
+    ; :mouse-drop-all = toolbar-mouse-void for new tool buffers. The pview
+    ; hook must install specific :mouse-pick-1 / :mouse-drop-1 handlers,
+    ; which mouse-event resolves first, otherwise clicks do nothing.
+    set-variable %pview-mpick1 :mouse-pick-1
+    set-variable %pview-mdrop1 :mouse-drop-1
+    set-variable %pview-mall :mouse-pick-all
+    set-variable %pview-mouse-ok 0
+    !if &and &seq %pview-mpick1 "mouse-void" &seq %pview-mdrop1 "pview-select"
+        set-variable %pview-mouse-ok 1
+    !endif
     !if &and &sin "h" .fhook-pview.setup &band .hilight.flags 0x01
         set-variable %pview-hl-ok 1
     !else
@@ -86,7 +97,13 @@ define-macro start-up
     set-variable %pview-eline2 $window-eline
 
     ; --- Write results ---
+    ; Clear a previous run's output first so that re-running the test does
+    ; not append duplicate TEST: lines.
     find-file %pview-out
+    beginning-of-buffer
+    set-mark
+    !force end-of-buffer
+    !force kill-region
 
     insert-string "TEST:bname="
     insert-string %pview-bname
@@ -136,6 +153,23 @@ define-macro start-up
     insert-string %pview-hl-ok
     insert-newline
 
+    insert-string "TEST:mouse-pick1="
+    insert-string %pview-mpick1
+    insert-newline
+    insert-string "TEST:mouse-drop1="
+    insert-string %pview-mdrop1
+    insert-newline
+    insert-string "TEST:mouse-all="
+    insert-string %pview-mall
+    insert-newline
+    insert-string "TEST:mouse-ok="
+    !if %pview-mouse-ok
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+
     insert-string "TEST:rerun-entries-count="
     insert-string %pview-count2
     insert-newline
@@ -162,6 +196,7 @@ define-macro start-up
     insert-string "TEST:all-tests=complete"
     insert-newline
     !force save-buffer
-    !force write-buffer %pview-out
+    ; 0 = do not run the overwrite checks; save-buffer already wrote the file
+    !force 0 write-buffer %pview-out
     exit-emacs
 !emacro

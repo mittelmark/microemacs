@@ -149,6 +149,28 @@ NB: existing user registries still hold the old flag (`0x1000`); the
 Project View tool must be removed once and re-added via M-x user-setup
 after the update so that the registry picks up the new `0x1001` flag.
 
+### Ticket 11C: recursion, git quoting and toolbar clicks (DONE)
+
+- "Macro recursion gone too deep" after expanding several nested folders:
+  the renderer recursed through `pview-render-dir` <-> `pview-emit-dir` for
+  every open level, hitting `meMACRO_DEPTH_MAX` (20 frames) after about eight
+  open levels. Replaced with an iterative depth-first traversal using a
+  depth-indexed frame stack (`pview-frame-push`) plus `.pview.maxdepth`
+  (default 40) as a symlink-loop guard. Verified with a 15-level tree.
+- git status ignored non-ASCII file names because porcelain C-quotes them
+  (`"hell\303\266chen.R"`). The git commands now pass
+  `-c core.quotePath=false`, and `pview-git-unquote` decodes quoted paths
+  (spaces, octal byte escapes, control characters), so umlaut and spaced
+  names get their git indicator. The decoder is covered by
+  `tests/test-pview.emf`, and end-to-end behaviour was verified with umlaut,
+  space and rename fixtures.
+- clicks in the Project View tool window did nothing: `toolbar-redraw-tools`
+  installs `:mouse-pick-all`/`:mouse-drop-all` = `toolbar-mouse-void` for new
+  tool buffers, and `fhook-pview` only defined `:mouse-word-select`. Added
+  `:mouse-pick-1` (`mouse-void`) and `:mouse-drop-1` (`pview-select`), which
+  `mouse-event` resolves before the `-all` fallback. Regression:
+  `tests/test-pview-toolbar.emf` (checks the buffer-local handlers).
+
 
 ## Ticket 12: UTF8 symbol support (DONE)
 

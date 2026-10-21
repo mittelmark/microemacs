@@ -83,8 +83,23 @@ define-macro start-up
     set-variable .pview.limit-path "|"
     set-variable .pview.limit-val "|"
 
-    ; Now write results
+    ; Git porcelain C-quoted path decoding (octal bytes and quotes)
+    pview-git-unquote "\"hell\\303\\266chen.R\""
+    set-variable %pview-unquote $result
+    pview-git-unquote "\"with space.txt\""
+    set-variable %pview-unquote2 $result
+    set-variable %pview-unquote-ok 0
+    !if &seq %pview-unquote "hellöchen.R"
+        set-variable %pview-unquote-ok 1
+    !endif
+
+    ; Now write results - clear a previous run's output first so that
+    ; re-running the test does not append duplicate TEST: lines.
     find-file %pview-out
+    beginning-of-buffer
+    set-mark
+    !force end-of-buffer
+    !force kill-region
 
     insert-string "TEST:pview-root="
     insert-string %pview-root
@@ -187,9 +202,24 @@ define-macro start-up
     insert-string %pview-more-again
     insert-newline
 
+    insert-string "TEST:pview-git-unquote="
+    insert-string %pview-unquote
+    insert-newline
+    insert-string "TEST:pview-git-unquote-ok="
+    !if %pview-unquote-ok
+        insert-string "yes"
+    !else
+        insert-string "no"
+    !endif
+    insert-newline
+    insert-string "TEST:pview-git-unquote-space="
+    insert-string %pview-unquote2
+    insert-newline
+
     insert-string "TEST:all-tests=complete"
     insert-newline
     !force save-buffer
-    !force write-buffer %pview-out
+    ; 0 = do not run the overwrite checks; save-buffer already wrote the file
+    !force 0 write-buffer %pview-out
     exit-emacs
 !emacro

@@ -28,6 +28,11 @@ define-macro fhook-pview
     set-variable $buffer-mask "luh12"
     @# buffer-init "pview"
     set-variable :mouse-word-select pview-select
+    ; Left click: specific handlers override the toolbar's :mouse-pick-all /
+    ; :mouse-drop-all dummy (toolbar.emf installs those for new tool buffers,
+    ; which otherwise swallow clicks in the Project View tool window).
+    set-variable :mouse-pick-1 mouse-void
+    set-variable :mouse-drop-1 pview-select
     set-variable :mouse-pick-3 pview-mouse-pick-3
     set-variable :mouse-drop-3 pview-mouse-drop-3
     !if &seq $buffer-bname "*pview*"
@@ -134,12 +139,77 @@ define-macro pview
 ; Git status cache
 ; ========================
 
+; pview-git-unquote <path>
+; Decode a git C-quoted porcelain path (e.g. "hell\303\266chen.R" or
+; "with space.txt") into the raw bytes used by the file system -> $result.
+; Handles \\ \" \a \b \f \n \r \t \v and \nnn octal escapes.
+; Strings that are not quoted are returned unchanged.
+0 define-macro pview-git-unquote
+    set-variable #l0 @1
+    set-variable $result #l0
+    !if &not &seq &lef #l0 1 "\""
+        !return
+    !endif
+    ; strip the surrounding quotes
+    set-variable #l0 &mid #l0 1 &sub &len #l0 2
+    set-variable #l1 ""
+    set-variable #l2 0
+    set-variable #l3 &len #l0
+    !while &less #l2 #l3
+        set-variable #l4 &mid #l0 #l2 1
+        !if &seq #l4 "\\"
+            ; escape sequence - consume the backslash
+            set-variable #l2 &add #l2 1
+            set-variable #l4 &mid #l0 #l2 1
+            !if &seq #l4 "a"
+                set-variable #l4 &ito 7
+            !elif &seq #l4 "b"
+                set-variable #l4 &ito 8
+            !elif &seq #l4 "t"
+                set-variable #l4 &ito 9
+            !elif &seq #l4 "n"
+                set-variable #l4 &ito 10
+            !elif &seq #l4 "v"
+                set-variable #l4 &ito 11
+            !elif &seq #l4 "f"
+                set-variable #l4 &ito 12
+            !elif &seq #l4 "r"
+                set-variable #l4 &ito 13
+            !elif &and &gre &ato #l4 47 &less &ato #l4 56
+                ; octal escape, up to three digits
+                set-variable #l5 &sub &ato #l4 48
+                set-variable #l6 1
+                !while &less #l6 3
+                    set-variable #l7 &mid #l0 &add #l2 1 1
+                    !if &and &seq &len #l7 1 &and &gre &ato #l7 47 &less &ato #l7 56
+                        set-variable #l5 &add &mul #l5 8 &sub &ato #l7 48
+                        set-variable #l2 &add #l2 1
+                        set-variable #l6 &add #l6 1
+                    !else
+                        set-variable #l6 3
+                    !endif
+                !done
+                ; raw byte, e.g. \303\266 builds the UTF-8 umlaut
+                !if #l5
+                    set-variable #l4 &ito #l5
+                !else
+                    set-variable #l4 ""
+                !endif
+            !endif
+            ; \" and \\ fall through and keep the escaped character
+        !endif
+        set-variable #l1 &cat #l1 #l4
+        set-variable #l2 &add #l2 1
+    !done
+    set-variable $result #l1
+!emacro
+
 0 define-macro pview-git-status
     set-variable .pview.git-path "|"
     set-variable .pview.git-stat "|"
     set-variable .pview.repo ""
     ; Find git repository root
-    !force !force 2 pipe-shell-command &spr "git -C \"%s\" rev-parse --show-toplevel" &rep .pview.root "\\" "/" "*pview-git*"
+    !force !force 2 pipe-shell-command &spr "git -c core.quotePath=false -C \"%s\" rev-parse --show-toplevel" &rep .pview.root "\\" "/" "*pview-git*"
     !if &not $status
         !return
     !endif
@@ -163,7 +233,7 @@ define-macro pview
     !endif
     set-variable .pview.repo #l0
     ; Porcelain status
-    !force !force 2 pipe-shell-command &spr "git -C \"%s\" status --porcelain" &rep .pview.root "\\" "/" "*pview-git*"
+    !force !force 2 pipe-shell-command &spr "git -c core.quotePath=false -C \"%s\" status --porcelain" &rep .pview.root "\\" "/" "*pview-git*"
     !if &not $status
         !return
     !endif
@@ -184,27 +254,28 @@ define-macro pview
             !if &sin "->" #l3
                 set-variable #l3 &trb &rig #l3 &add &rsin "->" #l3 2
             !endif
-            ; Skip quoted porcelain paths (special chars)
-            !if &not &seq &lef #l3 1 "\""
-                set-variable #l3 &cat .pview.repo &cat "/" #l3
-                set-variable #l4 ""
-                !if &seq #l2 "??"
-                    set-variable #l4 "U"
-                !elif &sin "D" #l2
-                    set-variable #l4 "D"
-                !elif &sin "M" #l2
-                    set-variable #l4 "M"
-                !elif &sin "A" #l2
-                    set-variable #l4 "A"
-                !elif &sin "R" #l2
-                    set-variable #l4 "R"
-                !elif &sin "C" #l2
-                    set-variable #l4 "C"
-                !endif
-                !if &not &seq #l4 ""
-                    set-variable .pview.git-path &lins .pview.git-path -1 #l3
-                    set-variable .pview.git-stat &lins .pview.git-stat -1 #l4
-                !endif
+            ; Git C-quotes paths containing spaces or control characters
+            ; (and non-ASCII if core.quotePath is enabled). Decode the quotes
+            ; to raw bytes so the path matches the directory listing.
+            pview-git-unquote #l3
+            set-variable #l3 &cat .pview.repo &cat "/" $result
+            set-variable #l4 ""
+            !if &seq #l2 "??"
+                set-variable #l4 "U"
+            !elif &sin "D" #l2
+                set-variable #l4 "D"
+            !elif &sin "M" #l2
+                set-variable #l4 "M"
+            !elif &sin "A" #l2
+                set-variable #l4 "A"
+            !elif &sin "R" #l2
+                set-variable #l4 "R"
+            !elif &sin "C" #l2
+                set-variable #l4 "C"
+            !endif
+            !if &not &seq #l4 ""
+                set-variable .pview.git-path &lins .pview.git-path -1 #l3
+                set-variable .pview.git-stat &lins .pview.git-stat -1 #l4
             !endif
         !endif
         !force forward-line
@@ -218,6 +289,10 @@ define-macro pview
 
 0 define-macro pview-render
     set-variable .pview.entries "|"
+    ; Safety limit for the iterative traversal (guards against symlink loops)
+    !if &not &exist .pview.maxdepth
+        set-variable .pview.maxdepth 40
+    !endif
     ; Must disable view mode to allow modifications
     -1 buffer-mode "view"
     -1 buffer-mode "undo"
@@ -227,7 +302,7 @@ define-macro pview
     end-of-buffer
     !force 1 kill-region
     ; Ensure buffer is empty (fallback if kill-region failed)
-    !if &gre $buffer-lines 1
+    !if &gre $window-eline 1
         beginning-of-buffer
         set-mark
         end-of-buffer
@@ -320,41 +395,98 @@ define-macro pview
 
 ; pview-render-dir <dirpath/> <depth>
 ; depth 1 = direct children of root
+;
+; Iterative depth-first traversal using a depth-indexed frame stack. The
+; previous implementation recursed through pview-emit-dir/pview-render-dir
+; for every open directory, which hit the ME macro recursion limit
+; (meMACRO_DEPTH_MAX, 20 frames) after ~8 open levels. Frames hold only the
+; currently visible children, so memory stays bounded by the open branches.
 0 define-macro pview-render-dir
     set-variable #l0 @1
     set-variable #l1 @2
+    pview-frame-push #l0 #l1
+    set-variable #l2 #l1
+    !while &gre #l2 0
+        ; next sub-directory of this frame
+        set-variable #l3 &ind &cat "%pview.si" #l2
+        set-variable #l4 &ind &cat "%pview.sd" #l2
+        !if &not &gre #l3 &llen #l4
+            set-variable #l5 &lget #l4 #l3
+            set-variable &cat "%pview.si" #l2 &add #l3 1
+            pview-emit-dir #l5 #l2
+            !if &gre &lfind .pview.open #l5 0
+                !if &less #l2 .pview.maxdepth
+                    set-variable #l2 &add #l2 1
+                    pview-frame-push #l5 #l2
+                !endif
+            !endif
+        !else
+            ; next file of this frame
+            set-variable #l3 &ind &cat "%pview.sj" #l2
+            set-variable #l4 &ind &cat "%pview.sf" #l2
+            !if &not &gre #l3 &llen #l4
+                set-variable #l5 &lget #l4 #l3
+                set-variable &cat "%pview.sj" #l2 &add #l3 1
+                pview-emit-file #l5 #l2
+            !else
+                ; frame done - emit the paging line then pop
+                set-variable #l3 &ind &cat "%pview.se" #l2
+                set-variable #l4 &ind &cat "%pview.st" #l2
+                !if &gre #l4 #l3
+                    set-variable #l6 &ind &cat "%pview.sp" #l2
+                    pview-emit-more #l6 #l2 &sub #l4 #l3
+                !endif
+                !force unset-variable &cat "%pview.sd" #l2
+                !force unset-variable &cat "%pview.sf" #l2
+                !force unset-variable &cat "%pview.si" #l2
+                !force unset-variable &cat "%pview.sj" #l2
+                !force unset-variable &cat "%pview.se" #l2
+                !force unset-variable &cat "%pview.st" #l2
+                !force unset-variable &cat "%pview.sp" #l2
+                set-variable #l2 &sub #l2 1
+            !endif
+        !endif
+    !done
+!emacro
+
+; pview-frame-push <dirpath/> <depth>
+; Build the child lists for one directory and store them in the frame
+; variables used by pview-render-dir: sd (dirs), sf (files), si/sj (cursor),
+; se (emitted), st (total) and sp (directory for the "... N more" line).
+0 define-macro pview-frame-push
+    set-variable #l0 @1
+    set-variable #l1 @2
     pview-listdir #l0
-    ; Cache list lengths - recursive calls from pview-emit-dir will modify lists
-    set-variable #l7 &llen .pview.ld-dirs
-    set-variable #l8 &llen .pview.ld-files
-    ; Pagination: show at most pview-dir-limit direct children
+    set-variable #l2 &llen .pview.ld-dirs
+    set-variable #l3 &llen .pview.ld-files
     pview-dir-limit #l0
-    set-variable #l6 $result
+    set-variable #l4 $result
+    set-variable &cat "%pview.sd" #l1 "|"
+    set-variable &cat "%pview.sf" #l1 "|"
     set-variable #l5 0
-    set-variable #l4 0
-    set-variable #l2 0
-    !while &les &pinc #l2 1 #l7
-        !if &less #l5 #l6
-            set-variable #l3 &cat #l0 &lget .pview.ld-dirs #l2
-            pview-emit-dir #l3 #l1
+    set-variable #l6 0
+    !while &les &pinc #l6 1 #l2
+        !if &less #l5 #l4
+            set-variable #l7 &ind &cat "%pview.sd" #l1
+            set-variable #l7 &lins #l7 -1 &cat #l0 &lget .pview.ld-dirs #l6
+            set-variable &cat "%pview.sd" #l1 #l7
             set-variable #l5 &add #l5 1
-        !else
-            set-variable #l4 1
         !endif
     !done
-    set-variable #l2 0
-    !while &les &pinc #l2 1 #l8
-        !if &less #l5 #l6
-            set-variable #l3 &cat #l0 &lget .pview.ld-files #l2
-            pview-emit-file #l3 #l1
+    set-variable #l6 0
+    !while &les &pinc #l6 1 #l3
+        !if &less #l5 #l4
+            set-variable #l7 &ind &cat "%pview.sf" #l1
+            set-variable #l7 &lins #l7 -1 &cat #l0 &lget .pview.ld-files #l6
+            set-variable &cat "%pview.sf" #l1 #l7
             set-variable #l5 &add #l5 1
-        !else
-            set-variable #l4 1
         !endif
     !done
-    !if #l4
-        pview-emit-more #l0 #l1 &sub &add #l7 #l8 #l5
-    !endif
+    set-variable &cat "%pview.si" #l1 1
+    set-variable &cat "%pview.sj" #l1 1
+    set-variable &cat "%pview.se" #l1 #l5
+    set-variable &cat "%pview.st" #l1 &add #l2 #l3
+    set-variable &cat "%pview.sp" #l1 #l0
 !emacro
 
 ; pview-listdir <dirpath/>
@@ -430,14 +562,6 @@ define-macro pview
     insert-newline
     ; Entries store paths relative to .pview.root (keeps the list small)
     set-variable .pview.entries &lins .pview.entries -1 &rig #l0 &len .pview.root
-    ; Expand children if open - save/restore ld-lists around recursive call
-    !if #l3
-        set-variable .pview.ld-save-dirs .pview.ld-dirs
-        set-variable .pview.ld-save-files .pview.ld-files
-        pview-render-dir #l0 &add #l1 1
-        set-variable .pview.ld-dirs .pview.ld-save-dirs
-        set-variable .pview.ld-files .pview.ld-save-files
-    !endif
 !emacro
 
 ; pview-emit-file <fullpath> <depth>
