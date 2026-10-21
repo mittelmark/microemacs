@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-16 04:40
+date: 2026-10-21 06:33
 ---
 
 ## Introduction
@@ -103,7 +103,7 @@ If in mewb clipboard is enabled and some text is in the clipboard the
 help browser tries all the time to load a help page using the text in the clipboard instead of the actual link.
 
 
-## Ticket 11: FR - Project browser
+## Ticket 11: FR - Project browser (WIP)
 
 > closed dir (color1)
 v unfold dir (color
@@ -355,7 +355,7 @@ from devel that we are not so far away from master where this still was working.
       (8-cell tab gap, EOL blanks, cursor position, no spill).
       Files: src/display.c, src/hilight.c
 
-## Ticket 14: FR - per-filetype default encoding (WIP)
+## Ticket 14: FR - per-filetype default encoding (DONE)
 ~
 For some filetypes like emf, erf etc. we should change the default
 encoding from UTF-8 to ASCII, or ISO-8859-1, e.g. for the MicroEmacs
@@ -407,7 +407,7 @@ while all other macro files are pure ASCII.
       special-casing, and never behaves worse than today for huge
       files. Files: doc/tickets.md
 
-## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (WIP)
+## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (DONE)
 ~
 The number of chars reported by count-words is wrong for UTF-8
 buffers: for the string 'üäö' a UTF-8 encoded buffer reports 6 chars
@@ -459,7 +459,7 @@ flp = 0xa000dff) and dies.
       before the guard is raised, so the restore cannot be skipped.
       Files: src/fileio.c, src/unixterm.c
 
-## Ticket 17 - Allow to copy between different buffers using different encodings (In Testing)
+## Ticket 17 - Allow to copy between different buffers using different encodings (DONE)
 
 1) If  I  copy  text  between   buffers,  let's  say  between  an  ISO-8859-1  or
 Windows-CP1252  buffer to an UTF8  buffer the  characters  above 128 should be
