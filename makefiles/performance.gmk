@@ -25,9 +25,12 @@
 #
 # Dialog close keys are injected while tests/perf-dialog.flag is non-empty:
 # the console build reads them from stdin (byte 0x07 = C-g), the GUI build
-# receives them in the MicroEmacs window (tests/xsendkey.c XSendEvent helper,
-# xdotool fallback) resent every 0.25s until the macro has cleared the marker
-# again. Send attempts are logged to tests/perf-mew.keys.
+# receives them in every MicroEmacs window (tests/xsendkey.c XSendEvent
+# helper, xdotool fallback) resent every 0.25s until the macro has cleared
+# the marker again. If a dialog stays open the XTEST path and Escape are
+# tried as fallbacks. A heartbeat (marker state, window ids, tmp file
+# progress) is written to tests/perf-mew.keys so a timeout can be told
+# apart from a stuck dialog, and the failure report prints the log tail.
 #
 # GNU make is required (used by all microemacs gmk files).
 
@@ -157,47 +160,110 @@ define run_mew
 		fi
 		rpid=$$!
 		(
-			# no --timeout on this xdotool's search - retry until the
-			# window shows up, then re-check it every pass (cheap) so a
-			# stale id can never leave the dialogs waiting
-			sendkey()
+			# Progress hint for the key log: perf-tmp.txt only appears
+			# once the string phase is done and the edit phase starts.
+			state()
 			{
-				if [ -n "$$XSEND" ]; then
-					"$$XSEND" "$$1"
+				if [ -f tests/perf-tmp.txt ]; then
+					printf 'tmp=%s' "$$(wc -l < tests/perf-tmp.txt 2>/dev/null)"
 				else
-					xdotool key --window "$$1" ctrl+g 2>/dev/null
+					printf 'tmp=-'
 				fi
 			}
-			wid=""
-			try=0
-			while [ -z "$$wid" ] && [ $$try -lt 60 ]; do
-				wid=$$(xdotool search --class MicroEmacs 2>/dev/null | head -n 1)
-				if [ -z "$$wid" ]; then
-					try=$$((try + 1))
-					sleep 0.5
-				fi
-			done
+			# Resolve all MicroEmacs windows on every pass.  A stale or
+			# wrong first id (multiple windows, a re-created window) must
+			# not leave the dialog waiting; the class lookup is also
+			# repeated with the lower-case res_name and the WM title in
+			# case a display reports the class differently.
+			find_windows()
+			{
+				{
+					xdotool search --onlyvisible --class MicroEmacs 2>/dev/null
+					xdotool search --onlyvisible --class microemacs 2>/dev/null
+					xdotool search --onlyvisible --name MicroEmacs 2>/dev/null
+					xdotool search --class MicroEmacs 2>/dev/null
+					# Last resort: whatever currently has the input focus
+					# (the dialog itself under some window managers).
+					xdotool getactivewindow 2>/dev/null
+					xdotool getwindowfocus 2>/dev/null
+				} | sort -u | tr '\n' ' '
+			}
+			# Use one delivery path per pass.  The XSendEvent helper is the
+			# tried-and-tested path; xdotool only replaces it when the
+			# helper could not be built.  A second path (XTEST via the
+			# focused window) is only added on escalation, see below.
+			sendkey()
+			{
+				for w in $$1; do
+					if [ -n "$$XSEND" ]; then
+						"$$XSEND" "$$w" 2>/dev/null
+					else
+						xdotool key --window "$$w" --clearmodifiers ctrl+g 2>/dev/null
+					fi
+				done
+			}
+			# Last-resort path: focus the first window and inject the key
+			# through the X server (XTEST).  Used only after the primary
+			# path has been retried for a while.
+			sendkey_xtest()
+			{
+				first=$$(echo "$$1" | awk '{print $$1}')
+				[ -n "$$first" ] || return 0
+				xdotool windowfocus "$$first" 2>/dev/null
+				xdotool key --clearmodifiers ctrl+g 2>/dev/null
+			}
+			wids=""
 			stuck=0
+			marker_tries=0
+			last_log=0
+			last_marker_log=0
 			while kill -0 $$rpid 2>/dev/null; do
-				if [ -z "$$wid" ]; then
-					wid=$$(xdotool search --class MicroEmacs 2>/dev/null | head -n 1)
-				fi
+				wids=$$(find_windows)
 				if [ -s tests/perf-dialog.flag ]; then
-					if [ -n "$$wid" ]; then
-						echo "$$(date +%s) window=$$wid stuck=$$stuck" >> tests/perf-mew.keys
-						sendkey "$$wid"
+					if [ -n "$$wids" ]; then
+						echo "$$(date +%s) windows=$$wids stuck=$$stuck $$(state)" >> tests/perf-mew.keys
+						sendkey "$$wids"
+						marker_tries=$$((marker_tries + 1))
+						# After ~5s add the XTEST path, after ~10s also
+						# send Escape as an independent cancel path.  The
+						# primary helper is left to do the job first so
+						# normal dialogs close exactly as before.
+						if [ $$marker_tries -ge 20 ]; then
+							sendkey_xtest "$$wids"
+						fi
+						if [ $$marker_tries -ge 40 ]; then
+							for w in $$wids; do
+								xdotool key --window "$$w" --clearmodifiers Escape 2>/dev/null
+							done
+							xdotool key --clearmodifiers Escape 2>/dev/null
+						fi
+					else
+						now=$$(date +%s)
+						if [ $$((now - last_marker_log)) -ge 1 ]; then
+							echo "$$now marker=1 windows=none stuck=$$stuck $$(state)" >> tests/perf-mew.keys
+							last_marker_log=$$now
+						fi
 					fi
 					stuck=$$((stuck + 1))
 					if [ $$stuck -ge 20 ]; then
 						# marker still open after ~5s - re-resolve the
-						# window id (may have been stale) and resend
-						echo "$$(date +%s) escalate resend stuck=$$stuck" >> tests/perf-mew.keys
-						wid=$$(xdotool search --class MicroEmacs 2>/dev/null | head -n 1)
-						[ -n "$$wid" ] && sendkey "$$wid"
+						# window list and resend
+						echo "$$(date +%s) escalate windows=$$wids stuck=$$stuck" >> tests/perf-mew.keys
+						wids=$$(find_windows)
+						[ -n "$$wids" ] && sendkey "$$wids"
 						stuck=0
 					fi
 				else
+					# Heartbeat while no dialog is open, so a timeout
+					# during startup or the edit phase is distinguishable
+					# from a stuck dialog in the uploaded key log.
+					now=$$(date +%s)
+					if [ $$((now - last_log)) -ge 5 ]; then
+						echo "$$now marker=0 windows=$$wids $$(state)" >> tests/perf-mew.keys
+						last_log=$$now
+					fi
 					stuck=0
+					marker_tries=0
 				fi
 				sleep 0.25
 			done
@@ -230,6 +296,10 @@ define run_mew
 			echo "TEST:mew-status=$$st" >> $(OUT)
 			echo "   FAIL: mew workload ($$st, rc=$$rc) - log tail:"
 			tail -n 5 tests/perf-mew.log 2>/dev/null | sed 's/^/     /'
+			if [ -s tests/perf-mew.keys ]; then
+				echo "   Key injection log tail:"
+				tail -n 8 tests/perf-mew.keys | sed 's/^/     /'
+			fi
 		fi
 	fi
 endef

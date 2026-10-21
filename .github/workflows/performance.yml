@@ -122,8 +122,17 @@ jobs:
 
       - name: Run GUI workload
         run: |
-          xvfb-run -a -s "-screen 0 1280x800x24" \
-            make -f makefiles/performance.gmk mew MEC="$MEC" MEW="$MEW"
+          # The dialog-close keys are injected into the X server.  A single
+          # missed event leaves a modal dialog open until the watchdog kills
+          # the editor, so retry once with a fresh Xvfb display.  The second
+          # result is appended to perf-output.txt and wins in the report.
+          if ! xvfb-run -a -s "-screen 0 1280x800x24" \
+               make -f makefiles/performance.gmk mew MEC="$MEC" MEW="$MEW"; then
+            echo "::warning::GUI workload failed, retrying once with a fresh Xvfb display"
+            rm -f tests/perf-dialog.flag tests/perf-run.active tests/perf-tmp.txt
+            xvfb-run -a -s "-screen 0 1280x800x24" \
+              make -f makefiles/performance.gmk mew MEC="$MEC" MEW="$MEW"
+          fi
 
       - name: Report
         run: make -f makefiles/performance.gmk report MEC="$MEC" MEW="$MEW"

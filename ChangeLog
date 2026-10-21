@@ -13,6 +13,21 @@
 
 ## 2026
 
+  [261021] - Performance harness: make the GUI workload robust against
+               missed synthetic key events. The xdotool window lookup now
+               re-resolves all MicroEmacs windows on every pass (visible
+               class, lower-case res_name, WM title, and the focused/active
+               window) instead of caching a single id, C-g is sent to every
+               window, and if a dialog stays open the XTEST path and Escape
+               are tried as fallbacks. The key log gained a heartbeat with
+               the marker state, window ids and tmp-file progress, and the
+               failure report prints its tail so a timeout during startup
+               or the edit phase is distinguishable from a stuck dialog.
+               The performance workflow now retries the GUI workload once
+               on a fresh Xvfb display to absorb a single missed event.
+               Files: makefiles/performance.gmk,
+               .github/workflows/performance.yml, ChangeLog
+
   [261021] - Project View improvements (ticket 11C). The directory tree is
                now rendered iteratively with a depth-indexed frame stack
                instead of recursive macro calls, so deeply nested trees no
