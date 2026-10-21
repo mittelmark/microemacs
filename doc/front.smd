@@ -762,6 +762,7 @@
   [page-file(3)](page-file(3)) Load a large file in page mode  
   [page-file-save-buffer(3)](page-file-save-buffer(3)) (C-x C-s) Save contents of a page mode buffer to  
     file
+  [pview(3)](pview(3)) Project browser - file tree with git status  
   [read-file(2)](read-file(2)) (C-x C-r) Find and load file replacing current buffer  
   [reread-all(3)](reread-all(3)) Reload all files  
   [reread-file(3)](reread-file(3)) Reload the current buffer's file  
@@ -2117,6 +2118,7 @@
   [print-region(2)](print-region(2)) Print region, with formatting  
   [print-scheme(2)](print-scheme(2)) Create a new printer color and font scheme  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
+  [pview(3)](pview(3)) Project browser - file tree with git status  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
   [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf  
@@ -2669,6 +2671,7 @@
   [paragraph-to-line(3)](paragraph-to-line(3)) Convert a paragraph to a single line  
   [password-to-phonic(3)](password-to-phonic(3)) Convert a password to phonic string  
   [print-setup(3)](print-setup(3)) Configure MicroEmacs's printer interface  
+  [pview(3)](pview(3)) Project browser - file tree with git status  
   [py-doc(3)](py-doc(3)) Display Python module manual pages  
   [py-exec(3)](py-exec(3)) Executes the current Python script with or without command line arguments  
   [py-format(3)](py-format(3)) Format Python source code using either black or yapf    
@@ -3887,6 +3890,7 @@
   [ps1(9)](ps1(9)) PowerShell Language File  
   [psm1(9)](psm1(9)) PowerShell Language Module File  
   [puml(9)](puml(9)) PlantUML diagram file    
+  [pview(3)](pview(3)) Project browser - file tree with git status  
   [py(9)](py(9)) Python Language File  
   [pydoc(3f)](pydoc(3f)) Start the Python module docu browser of MicroEmacs 
   [py-doc(3)](py-doc(3)) Display Python module manual pages    

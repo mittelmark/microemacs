@@ -7,11 +7,32 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261016.0538>
+  > Last Modified : <261021.2036>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth, MiMo-2.5, MiMo 2.6-Flash
 
 ## 2026
+
+  [261021] - Project View improvements (ticket 11C). The directory tree is
+               now rendered iteratively with a depth-indexed frame stack
+               instead of recursive macro calls, so deeply nested trees no
+               longer hit the ME macro recursion limit; .pview.maxdepth
+               (default 40) guards against symbolic link loops. Git status
+               is queried with core.quotePath=false and porcelain paths are
+               decoded from Git's C-quoted form, so file and directory names
+               containing spaces or UTF-8 characters (umlauts) receive the
+               correct status indicators. Left-click handlers are
+               installed for the Project View toolbar tool so the toolbar's
+               dummy mouse bindings no longer swallow clicks. When git is
+               not installed or the directory is not a work tree the browser
+               still works and omits the indicators, and the temporary
+               *pview-git* buffer is now removed on every early return.
+               Added the pview manual page (m3mac107) with index entries and
+               a note on the no-git behaviour, and regenerated the compiled
+               help. Files: jasspa/macros/hkpview.emf, tests/test-pview.emf,
+               tests/test-pview-toolbar.emf, doc/reference.smd,
+               doc/front.smd, doc/Makefile, doc/tickets.md,
+               jasspa/macros/me.ehf, ChangeLog
 
   [261021] - Docs sync and ticket housekeeping. Regenerated the compiled
                help jasspa/macros/me.ehf from the current manual sources;

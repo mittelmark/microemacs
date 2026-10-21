@@ -170,6 +170,12 @@ after the update so that the registry picks up the new `0x1001` flag.
   `:mouse-pick-1` (`mouse-void`) and `:mouse-drop-1` (`pview-select`), which
   `mouse-event` resolves before the `-all` fallback. Regression:
   `tests/test-pview-toolbar.emf` (checks the buffer-local handlers).
+- without git (or outside a work tree) the browser works normally: the git
+  query fails, no indicators are shown and no error is reported. The
+  temporary `*pview-git*` buffer is now deleted on every early return. Tested
+  by running with a `PATH` that contains no `git` and against a plain
+  non-repository directory. Documented in the new `pview` manual page
+  (`m3mac107`) with index entries and a ChangeLog note; `me.ehf` regenerated.
 
 
 ## Ticket 12: UTF8 symbol support (DONE)

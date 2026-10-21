@@ -34040,6 +34040,121 @@ $a
 
 
   [Markdown(9)](Markdown(9)), [mdview(3f)](mdview(3f)).
+!! me-id: m3mac107
+! 3 pview
+## NAME
+
+
+|pview
+  pview - Project browser - file tree with git status  
+$a
+
+
+## SYNOPSIS
+
+
+  __pview__
+
+  __pview__ _directory_
+
+
+## DESCRIPTION
+
+
+  __pview__ opens a read-only project browser in a _*pview*_ window. The
+  directory tree is rooted at the directory from which MicroEmacs was started,
+  or at the optional _directory_ argument. Directories are listed before files
+  and hidden entries are shown in a dim colour.
+
+  Use Return or a left mouse click on a directory to expand or collapse it,
+  and on a file to open the file in the other window. The browser stays open.
+  A right mouse click opens a context menu with the actions applicable to the
+  current line.
+
+  The view can also be embedded in the toolbar by selecting _Project View_ in
+  the toolbar setup. The embedded view is refreshed whenever the toolbar is
+  opened.
+
+  When the directory is part of a Git work tree, the browser runs
+  `git status --porcelain` and appends a status indicator to each changed
+  file: `U` (untracked), `M` (modified), `A` (added), `R` (renamed) or `C`
+  (copied); renamed and copied files are reported under their new name.
+  Directories containing changed files are marked with a bullet. Paths are
+  decoded from Git's C-quoted form, so file names containing spaces or
+  non-ASCII characters are matched correctly.
+
+  If `git` is not installed, or the directory is not inside a Git work tree,
+  the browser works normally and simply omits all Git indicators; no error is
+  reported. Press `r` after installing Git or initialising a repository to
+  refresh the indicators.
+
+  Large directories are paginated. The first _pagelen_ entries are shown,
+  followed by a `... N more ...` line; selecting that line adds _pagestep_
+  further entries to the directory. The expansion state is kept per directory
+  for the current view.
+
+
+## KEY BINDINGS
+
+
+  Return, left click
+      Open the file or toggle the directory on the current line.
+
+  Tab, S-Tab
+      Move to the next or previous entry.
+
+  Space
+      Scroll the view down by one page.
+
+  b
+      Move to the top of the view.
+
+  r
+      Refresh the tree and the Git indicators.
+
+  q
+      Close the project view.
+
+
+## VARIABLES
+
+
+  The following namespace variables control the view. They can be changed
+  after the `pview` macros have been loaded (the first use of __pview__ loads
+  them); changes take effect on the next refresh.
+
+  `.pview.icons`
+      Show UTF-8 folder and file icons instead of the `>` and `v` expand
+      markers. The default is `0`. The setting can also be toggled with the
+      __pview-icons-toggle__ command.
+
+  `.pview.pagelen`
+      Number of entries shown initially per directory. The default is `20`.
+
+  `.pview.pagestep`
+      Number of additional entries revealed by the `... N more ...` line. The
+      default is `100`.
+
+  `.pview.maxdepth`
+      Maximum directory nesting depth that is expanded. The default is `40`.
+      This also protects against symbolic link loops.
+
+
+## NOTES
+
+
+  __pview__ is a macro implemented in the file `hkpview.emf`. The related
+  commands __pview-icons-toggle__ and __pview-tool-create__ are defined in the
+  same file. The optional _directory_ argument is mostly useful when the
+  browser is invoked from a macro; interactively the current directory is
+  used.
+
+
+## SEE ALSO
+
+
+  [git-status(3)](git-status(3)), [directory-tree(2)](directory-tree(2)),
+  [file-browser(3)](file-browser(3)), [user-setup(3)](user-setup(3)).
 !! me-id: m3osd000
 ! 3 user-setup
 ## NAME

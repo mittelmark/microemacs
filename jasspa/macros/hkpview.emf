@@ -211,10 +211,13 @@ define-macro pview
     ; Find git repository root
     !force !force 2 pipe-shell-command &spr "git -c core.quotePath=false -C \"%s\" rev-parse --show-toplevel" &rep .pview.root "\\" "/" "*pview-git*"
     !if &not $status
+        ; git missing or not a repository - no indicators, clean up the temp buffer
+        !force delete-buffer "*pview-git*"
         !return
     !endif
     !force 0 find-buffer "*pview-git*"
     !if &not $status
+        !force delete-buffer "*pview-git*"
         !return
     !endif
     ; Skip 3 header lines (cd, command, empty) added by pipeShellCommand
@@ -235,10 +238,12 @@ define-macro pview
     ; Porcelain status
     !force !force 2 pipe-shell-command &spr "git -c core.quotePath=false -C \"%s\" status --porcelain" &rep .pview.root "\\" "/" "*pview-git*"
     !if &not $status
+        !force delete-buffer "*pview-git*"
         !return
     !endif
     !force 0 find-buffer "*pview-git*"
     !if &not $status
+        !force delete-buffer "*pview-git*"
         !return
     !endif
     ; Skip 3 header lines (cd, command, empty) added by pipeShellCommand

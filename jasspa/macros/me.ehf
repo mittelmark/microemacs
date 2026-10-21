@@ -862,6 +862,7 @@ Miscellaneous Information
     lspage-file(3)lmpage-file(3)le Load a large file in page mode  
     lspage-file-save-buffer(3)lmpage-file-save-buffer(3)le (C-x C-s) Save contents of a page mode buffer to  
       file
+    lspview(3)lmpview(3)le Project browser - file tree with git status  
     lsread-file(2)lmread-file(2)le (C-x C-r) Find and load file replacing current buffer  
     lsreread-all(3)lmreread-all(3)le Reload all files  
     lsreread-file(3)lmreread-file(3)le Reload the current buffer's file  
@@ -2201,6 +2202,7 @@ Miscellaneous Information
     lsprint-region(2)lmprint-region(2)le Print region, with formatting  
     lsprint-scheme(2)lmprint-scheme(2)le Create a new printer color and font scheme  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
+    lspview(3)lmpview(3)le Project browser - file tree with git status  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
     lspy-exec(3)lmpy-exec(3)le Executes the current Python script with or without command line arguments  
     lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf  
@@ -2752,6 +2754,7 @@ Miscellaneous Information
     lsparagraph-to-line(3)lmparagraph-to-line(3)le Convert a paragraph to a single line  
     lspassword-to-phonic(3)lmpassword-to-phonic(3)le Convert a password to phonic string  
     lsprint-setup(3)lmprint-setup(3)le Configure MicroEmacs's printer interface  
+    lspview(3)lmpview(3)le Project browser - file tree with git status  
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages  
     lspy-exec(3)lmpy-exec(3)le Executes the current Python script with or without command line arguments  
     lspy-format(3)lmpy-format(3)le Format Python source code using either black or yapf    
@@ -3967,6 +3970,7 @@ Miscellaneous Information
     lsps1(9)lmps1(9)le PowerShell Language File  
     lspsm1(9)lmpsm1(9)le PowerShell Language Module File  
     lspuml(9)lmpuml(9)le PlantUML diagram file    
+    lspview(3)lmpview(3)le Project browser - file tree with git status  
     lspy(9)lmpy(9)le Python Language File  
     lspydoc(3f)lmpydoc(3f)le Start the Python module docu browser of MicroEmacs 
     lspy-doc(3)lmpy-doc(3)le Display Python module manual pages    
@@ -44111,6 +44115,120 @@ $a
 
 
     lsMarkdown(9)lmMarkdown(9)le, lsmdview(3f)lmmdview(3f)le.
+! 3 pview
+cEcENAME cEcA
+
+
+|pview
+    pview - Project browser - file tree with git status  
+$a
+
+
+cESYNOPSIS cA
+
+
+    cDpviewcA
+
+    cDpviewcA cCdirectorycA
+
+
+cEDESCRIPTION cA
+
+
+    cDpviewcA opens a read-only project browser in a cC*pview*cA window. The
+    directory tree is rooted at the directory from which MicroEmacs was started,
+    or at the optional cCdirectorycA argument. Directories are listed before files
+    and hidden entries are shown in a dim colour.
+
+    Use Return or a left mouse click on a directory to expand or collapse it,
+    and on a file to open the file in the other window. The browser stays open.
+    A right mouse click opens a context menu with the actions applicable to the
+    current line.
+
+    The view can also be embedded in the toolbar by selecting cCProject ViewcA in
+    the toolbar setup. The embedded view is refreshed whenever the toolbar is
+    opened.
+
+    When the directory is part of a Git work tree, the browser runs
+    cGgit status --porcelaincA and appends a status indicator to each changed
+    file: cGUcA (untracked), cGMcA (modified), cGAcA (added), cGRcA (renamed) or cGCcA
+    (copied); renamed and copied files are reported under their new name.
+    Directories containing changed files are marked with a bullet. Paths are
+    decoded from Git's C-quoted form, so file names containing spaces or
+    non-ASCII characters are matched correctly.
+
+    If cGgitcA is not installed, or the directory is not inside a Git work tree,
+    the browser works normally and simply omits all Git indicators; no error is
+    reported. Press cGrcA after installing Git or initialising a repository to
+    refresh the indicators.
+
+    Large directories are paginated. The first cCpagelencA entries are shown,
+    followed by a cG... N more ...cA line; selecting that line adds cCpagestepcA
+    further entries to the directory. The expansion state is kept per directory
+    for the current view.
+
+
+cEKEY BINDINGS cA
+
+
+    Return, left click
+        Open the file or toggle the directory on the current line.
+
+    Tab, S-Tab
+        Move to the next or previous entry.
+
+    Space
+        Scroll the view down by one page.
+
+    b
+        Move to the top of the view.
+
+    r
+        Refresh the tree and the Git indicators.
+
+    q
+        Close the project view.
+
+
+cEVARIABLES cA
+
+
+    The following namespace variables control the view. They can be changed
+    after the cGpviewcA macros have been loaded (the first use of cDpviewcA loads
+    them); changes take effect on the next refresh.
+
+    cG.pview.iconscA
+        Show UTF-8 folder and file icons instead of the cG>cA and cGvcA expand
+        markers. The default is cG0cA. The setting can also be toggled with the
+        cDpview-icons-togglecA command.
+
+    cG.pview.pagelencA
+        Number of entries shown initially per directory. The default is cG20cA.
+
+    cG.pview.pagestepcA
+        Number of additional entries revealed by the cG... N more ...cA line. The
+        default is cG100cA.
+
+    cG.pview.maxdepthcA
+        Maximum directory nesting depth that is expanded. The default is cG40cA.
+        This also protects against symbolic link loops.
+
+
+cENOTES cA
+
+
+    cDpviewcA is a macro implemented in the file cGhkpview.emfcA. The related
+    commands cDpview-icons-togglecA and cDpview-tool-createcA are defined in the
+    same file. The optional cCdirectorycA argument is mostly useful when the
+    browser is invoked from a macro; interactively the current directory is
+    used.
+
+
+cESEE ALSO cA
+
+
+    lsgit-status(3)lmgit-status(3)le, lsdirectory-tree(2)lmdirectory-tree(2)le,
+    lsfile-browser(3)lmfile-browser(3)le, lsuser-setup(3)lmuser-setup(3)le.
 ! 3 user-setup
 cEcENAME cEcA
 
