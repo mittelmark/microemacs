@@ -13,6 +13,15 @@
 
 ## 2026
 
+  [261021] - Docs sync and ticket housekeeping. Regenerated the compiled
+               help jasspa/macros/me.ehf from the current manual sources;
+               the previous copy predated the terminal middle-click
+               (ticket 25) and modified-cursor-key (ticket 26) text. Marked
+               tickets 21 (terminal window resize by mouse drag) and 22
+               (terminal wheel scrolling) DONE now that they have been
+               confirmed on a real terminal emulator and on macOS. Files:
+               jasspa/macros/me.ehf, doc/tickets.md, ChangeLog
+
   [261016] - Terminal modified cursor keys (ticket 26). Alt-Left and
                Alt-Right inserted the literal "1;3D" / "1;3C" in the
                console build (mec) instead of running the bound command,

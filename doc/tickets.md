@@ -699,14 +699,14 @@ which cannot scroll any further moves dot to the beginning/end of the buffer.
       added to the testing.yml matrix. Files: src/window.c,
       tests/test-basics.emf, .github/workflows/testing.yml, doc/tickets.md
 
-## Ticket 21: Mouse Drag support for window resize operations (IN TESTING)
+## Ticket 21: Mouse Drag support for window resize operations (DONE)
 
 Currently  in the  mew/mewb  GUI  version I can resize the windows by dragging
 them with the mouse. This is not  currently  not  supported in the temrinal as
 far as I can see. Could you check if this is possibly to  implement  using our
 SRG mouse bindings.
 
-    - IN TESTING 261016: the terminal (mec) already had the full resize
+    - DONE 261016: the terminal (mec) already had the full resize
       logic in the macros (mouse.emf: "mouse-grow-window", bound to
       "mouse-move-<b>" on a mode-line/divider pick), but two bugs in the
       C terminal mouse path meant a drag never reached it. (1) The
@@ -729,14 +729,14 @@ SRG mouse bindings.
       path in winterm.c. Verified with a pty harness that injects SGR
       press/motion/release on a mode line: fixed build resizes the
       window (+4 rows), the unfixed build and the no-motion control do
-      not. Still to be confirmed on a real terminal emulator and on
-      Windows/macOS. Regression harness (tests/mouse-resize.emf +
+      not. Confirmed on a real terminal emulator (Linux) and via the macOS
+      CI job. Regression harness (tests/mouse-resize.emf +
       tests/mouse-resize-test.py) is wired into the Linux and macOS
       jobs of .github/workflows/testing.yml. Files: src/unixterm.c,
       src/winterm.c, tests/mouse-resize.emf, tests/mouse-resize-test.py,
       .github/workflows/testing.yml, doc/tickets.md
 
-## Ticket 22: Mouse wheel vertical scrolling in the terminal (IN TESTING)
+## Ticket 22: Mouse wheel vertical scrolling in the terminal (DONE)
 
 In the mew/mewb GUI version a mouse wheel scrolls the buffer. The
 terminal (mec) did not respond to the wheel even though the macro
@@ -746,7 +746,7 @@ X11-style "mouse-pick-4 mouse-drop-4" / "mouse-pick-5 mouse-drop-5"
 button pairs to the registered "mouse-wup-scroll" / "mouse-wdown-scroll"
 commands. Two bugs in the terminal SGR mouse parser blocked this.
 
-    - IN TESTING 261016: (1) the SGR button decoder in
+    - DONE 261016: (1) the SGR button decoder in
       src/unixterm.c first stripped the motion bit with
       "if(sgrMouseButton >= 32) { sgrMouseButton -= 32; isMotion = 1; }".
       SGR signals motion with bit 5 (32) but encodes the wheel as button
@@ -765,7 +765,7 @@ commands. Two bugs in the terminal SGR mouse parser blocked this.
       wired into the Linux and macOS jobs of
       .github/workflows/testing.yml.
 
-    - IN TESTING 261016: the native Windows console build
+    - DONE 261016: the native Windows console build
       (src/winterm.c) had the same wheel bug in BOTH of its SGR parsers,
       meParseSGRMouseChar (character state machine) and the raw byte
       "pipe mode" parser used when ReadConsoleInputW fails (MSYS2 / CI).
@@ -781,7 +781,7 @@ commands. Two bugs in the terminal SGR mouse parser blocked this.
       tests/mouse-wheel-win.emf, .github/workflows/testing.yml,
       doc/tickets.md
 
-    - IN TESTING 261016: GitHub CI steps have no console, so the
+    - DONE 261016: GitHub CI steps have no console, so the
       windows-ucrt64 wheel step sets the new opt-in ME_CONSOLE_PIPEMODE
       override in src/winterm.c: it keeps the original (pipe) standard
       handles so TTstart() selects the raw pipe-mode SGR path even though
