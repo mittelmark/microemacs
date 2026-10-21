@@ -149,6 +149,39 @@ define-macro start-up
     insert-string #l9
     insert-newline
 
+    ; Test 14: PageUp/PageDown framing. Repeated page scrolls must move dot
+    ; to the beginning/end of the buffer, not just scroll the view. The
+    ; regression was that once the first line was at the top of the window
+    ; PageUp reported "top of buffer" and left dot where it was.
+    beginning-of-buffer
+    !force 3 goto-line
+    set-variable #l0 0
+    !while &les #l0 40
+        !force scroll-up
+        set-variable #l0 &add #l0 1
+    !done
+    set-variable #l5 "fail"
+    !if &seq $window-line 1
+        set-variable #l5 "ok"
+    !endif
+    beginning-of-buffer
+    set-variable #l0 0
+    !while &les #l0 40
+        !force scroll-down
+        set-variable #l0 &add #l0 1
+    !done
+    set-variable #l6 "fail"
+    !if &seq $window-line $window-eline
+        set-variable #l6 "ok"
+    !endif
+    end-of-buffer
+    insert-string "TEST:scroll-bob="
+    insert-string #l5
+    insert-newline
+    insert-string "TEST:scroll-eob="
+    insert-string #l6
+    insert-newline
+
     ; All tests complete
     insert-string "TEST:all-tests=complete"
     insert-newline

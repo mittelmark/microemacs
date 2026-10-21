@@ -1,0 +1,58 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the Windows console mouse-modifier
+;              regression test. Driven by tests/mouse-mod-win.sh from the
+;              windows-ucrt64 job in testing.yml, which pipes one SGR
+;              click report (with a modifier bit) into mec.exe.
+;
+; The native Windows console build uses src/winterm.c. The pipe-mode SGR
+; parser in meGetConsoleMessage() encoded the Shift/Alt/Control bits
+; (4/8/16) into the button number but did not strip them before mapping
+; the button, so a modifier-click matched no button and produced no
+; message at all. This test binds a distinct recorder to each
+; plain/modified mouse-pick-1; the recorder writes which one fired and
+; exits, so a single report per run is enough (the parser handles one
+; SGR sequence per read).
+;
+; Run manually (ME_MOUSE_WORK must be an existing directory):
+;
+;   printf '\033[<4;5;5M' | \
+;     MEPATH=jasspa/macros mec.exe @tests/mouse-mod-win
+;
+execute-file "me"
+
+0 define-macro mouse-mod-win-save
+    find-file &cat $ME_MOUSE_WORK "/mouse-mod-win-out.txt"
+    end-of-buffer
+    insert-string %mouse-mod-win.log
+    insert-newline
+    save-buffer
+    exit-emacs
+!emacro
+
+0 define-macro mouse-mod-win-plain
+    set-variable %mouse-mod-win.log "plain"
+    mouse-mod-win-save
+!emacro
+0 define-macro mouse-mod-win-shift
+    set-variable %mouse-mod-win.log "shift"
+    mouse-mod-win-save
+!emacro
+0 define-macro mouse-mod-win-ctrl
+    set-variable %mouse-mod-win.log "ctrl"
+    mouse-mod-win-save
+!emacro
+0 define-macro mouse-mod-win-alt
+    set-variable %mouse-mod-win.log "alt"
+    mouse-mod-win-save
+!emacro
+
+define-macro start-up
+    global-bind-key mouse-mod-win-plain "mouse-pick-1"
+    global-bind-key mouse-mod-win-shift "S-mouse-pick-1"
+    global-bind-key mouse-mod-win-ctrl  "C-mouse-pick-1"
+    global-bind-key mouse-mod-win-alt   "A-mouse-pick-1"
+!emacro

@@ -99,8 +99,6 @@ jobs:
         mkdir $MEPATH/bin
         cp bfs/bfs $MEPATH/bin/
         cp linux-*mecb.bin $MEPATH/bin/
-        cp bin/mecu $MEPATH/bin/
-        chmod 755 $MEPATH/bin/mecu
         cp license.txt $MEPATH/
         cp COPYING $MEPATH/
         cp docs/README-standalone.md $MEPATH/
@@ -123,8 +121,6 @@ jobs:
         mkdir $MEPATH/bin
         cp bfs/bfs $MEPATH/bin/
         cp linux-*mecwb.bin $MEPATH/bin/
-        cp bin/mecu $MEPATH/bin/
-        sed -i -E 's/mecb/mecwb -n/' $MEPATH/bin/mecu
         cp license.txt $MEPATH/
         cp COPYING $MEPATH/
         cp docs/README-standalone.md $MEPATH/

@@ -351,7 +351,8 @@ Miscellaneous Information
     lsquote-char(2)lmquote-char(2)le (C-q) Insert literal character  
     lsreyank(2)lmreyank(2)le (esc y) Restore next yank buffer  
     lstab(2)lmtab(2)le (tab) Handle the tab key  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
 
@@ -2329,7 +2330,8 @@ Miscellaneous Information
     lsxfind(3)lmxfind(3)le Execute find command  
     lsxgrep(3)lmxgrep(3)le Execute grep command  
     lsxrdb-scheme(3)lmxrdb-scheme(3)le - load xrdb color scheme files into ME  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
     lszfile-setup(3)lmzfile-setup(3)le Compressed file support setup  
@@ -2558,7 +2560,8 @@ Miscellaneous Information
     lsvoid(2)lmvoid(2)le Null command  
     lswrap-word(2)lmwrap-word(2)le Wrap word onto next line  
     lswrite-buffer(2)lmwrite-buffer(2)le (C-x C-w) Write contents of buffer to named (new) file  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
 
     The following is a list of documented macro commands provided by  cDMicroEmacscA:
@@ -4169,7 +4172,8 @@ Miscellaneous Information
     lsxsl(9)lmxsl(9)le Extensible Stylesheet Language  
     lsxul(9)lmxul(9)le XML User Interface Language  
     lsy(9)lmy(9)le YACC programming language  
-    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer  
+    lsyank(2)lmyank(2)le (C-y) Paste (copy) kill buffer contents into buffer
+    lsyank-as(2)lmyank-as(2)le Re-tag the kill buffer encoding and yank  
     lsyank-rectangle(2)lmyank-rectangle(2)le (esc C-y) Insert a column of text  
     lsyank-rectangle-overwrite(3)lmyank-rectangle-overwrite(3)le Insert a column of text with overwrite  
     lszfile-setup(3)lmzfile-setup(3)le Compressed file support setup  
@@ -5061,63 +5065,40 @@ Miscellaneous Information
 cEcECONTACT INFORMATION cEcA
 
 
-    The following contact point may be used to report all problems and request
-    information:-
+    The project is now hosted on Github. For all problems, questions and feature
+    requests please use the issue tracker:
 
-       `https://github.com/mittelmark/microemacs/issues` or via `Email:support@jasspa.com`
+      `https://github.com/mittelmark/microemacs/issues`
 
-    Also visit our web site's on the Internet:-
+    The project page is cGhttps://github.com/mittelmark/microemacscA and the release
+    downloads are at cGhttps://github.com/mittelmark/microemacs/releasescA.
 
-      `http://www.jasspa.com` and the project page `https://github.com/mittelmark/microemacs`
-
-    This pages carries the latest information and patches on the distribution.
-    
-    The web page cGhttp://www.jasspa.comcA contains information about all releases before 2010
-    and provides as well platforms for old platforms like DOS, Win3.1, Solaris, HP and others.
+    The historical JASSPA web site cGhttp://www.jasspa.comcA still documents the
+    releases before 2010 and hosts binaries for old platforms such as DOS,
+    Windows 3.1, Solaris and HP-UX.
 
 
 cEHelp, FAQ and other queries  cA
 
-    From 1997 to 2000 at egroups.com and from 2001 to 2010 there was a very
-    active discussion group for MicroEmacs. After a lot of face-lifting and the
-    final closing of yahoogroups there is no news groups any more. You can
-    retrieve the old news group content of yahoogroups (without attachments)
-    with a Tcl script which is explained here:
+    Before opening an issue please check the lsFrequently Asked QuestionslmFrequently Asked Questionsle
+    and the project home page, your problem may have already been addressed there.
+
+    From 1997 to 2000 there was a discussion group at egroups.com and from 2001
+    to 2010 at yahoogroups. After the final closing of yahoogroups there is no
+    news group any more. The old news group content (without attachments) can
+    still be retrieved with a Tcl script:
     
     cGhttps://wiki.tcl-lang.org/page/yahoogroups%2DreadercA
-
-    For problems with the current release  use the cGhttps://github.com/mittelmark/microemacs/issuescA 
-    facilities of the Github project page but lease check the lsFrequently Asked QuestionslmFrequently Asked Questionsle. 
-    list and the home page FAQ   before you submit any information to JASSPA,
-    your problem may have already been addressed in these pages.
-
-    Every effort will be made to deal with your problem as soon as possible.
-    Please send mail with the titles indicated below so that it maybe
-    filtered. Unless explicitly requested (or appropriate) JASSPA will only
-    respond through the FAQ lists on the Internet site. It will not be
-    possible to answer individual enquiries and questions.
-
-    Any sites that wish to mirror the JASSPA distribution should contact
-    JASSPA first (use PORT), we will then include details of the mirror on the
-    home page.
 
 
 cEReporting Problems  cA
 
-    Either use the issues link at Github https://github.com/mittelmark/microemacs/issues
-    or send your E-mail to cGdgroth (at) uni (minus) potsdam (dot) decA like this:
-
-    Mail as:-
-
-    cCTitle:cA cDBUGcA  
-    cCMessage Body:cA Description of the problem ....  
-
-    Problems should be reported such that they may be reproduced, this may not
-    be that easy. The information that is required is:-
+    Open an issue at https://github.com/mittelmark/microemacs/issues and include,
+    if possible, the following information:
 
     cDPlatformcA
  
-        The host platform which is exhibiting a problem
+        The host platform, for example cGlinuxcA, cGdarwincA, cGcygwincA or cGwin32cA.
 
     cDVersioncA
  
@@ -5125,7 +5106,7 @@ Miscellaneous Information
        information, the format of the date is cGyyyy/mm/ddcA, followed by the  
        host system type. e.g.  
 
-              MicroEmacs 06 - Date 2006/01/10 - sunos
+              MicroEmacs 09 - Date 2026/10/15 - linux
 
     cDDescriptioncA
  
@@ -5134,44 +5115,21 @@ Miscellaneous Information
        (i.e. macro files, text file that demonstrates problem etc).  
 
 
-cESuggestions  cA
+cESuggestions and Feedback  cA
 
 
-    Mail as:-
-
-    cCTitle:cA cDSUGGESTcA  
-    cCMessage Body:cA Your suggestion, macro code fragment etc.  
-
-    We always appreciate suggestions, new macro code fragments etc. We do not
-    have support for all languages, e.g. cDPerlcA, cDLatexcA... If you wish have
-    developed new macro templates, or games (we get a bit bored with the ones
-    that we have developed ourselves) then please mail them to cGSUGGESTcA and we
-    will incorporate them into the release.
-
-
-cEFeedback  cA
-
-
-    Mail as:-
-
-    cCTitle:cA cDFEEDBACKcA  
-    cCMessage Body:cA Your feedback.  
-
-    Any general comments (which are not suggestions), your feelings about this
-    version of MicroEmacs or any other non-technical dialogue.
+    Suggestions, new macro templates, themes and other contributions are very
+    welcome, please open an issue or a pull request on Github. We appreciate
+    macro code fragments for languages that do not yet have a file hook, games,
+    color schemes and similar additions.
 
 
 cEPorting  cA
 
 
-    Mail as:-
-
-    cCTitle:cA cDPORTcA  
-    cCMessage Body:cA Details  
-
     If you wish to port MicroEmacs to another platform and are willing to
-    undertake responsibility for maintenance of that platform then we would
-    like to here from you. Send us some details.
+    undertake responsibility for maintenance of that platform then please let us
+    know by opening an issue with the details.
 !   MicroEmacs - History
 cEcEHISTORY cEcA
 
@@ -5216,6 +5174,32 @@ Miscellaneous Information
 
 
 cEDevelopment History  cA
+
+    - [261010] - Release v09.12.26.beta6
+
+    - [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
+                 buffer encoding tags survive clipboard round trips,
+                 copy-out encodes to the target for X selection targets
+                 and external tools, unmappable characters become \uXXXX
+                 escapes in single-byte buffers, and the new yank-as
+                 command re-tags and yanks the kill buffer in a chosen
+                 encoding; Windows killTextEquals parity keeps
+                 multi-node kills intact.
+
+    - [261010] - Macro evaluation and token buffers raised from 1KB to
+                 16KB (meEVALBUF_SIZE_MAX) so large &cat/&rep results,
+                 function arguments and set-variable values no longer
+                 truncate; empty-list guards for &lget &lset &lfind
+                 &llen &ldel which could read past an empty list.
+
+    - [261010] - Fixes and additions: re-entrant screenUpdate crash on
+                 ConfigureNotify during insert-file (ticket 16), Xft
+                 underline offset and stale XGCFont gate, UTF-8
+                 highlight desync, count-words counts UTF-8 characters
+                 (ticket 15), new character string functions &uleft
+                 &ulen &umid &uright &usin, macOS installer restored
+                 for 10.15-14, hkmdview recognizes Windows drive and
+                 UNC paths.
 
     - [261003] - Documentation catch-up after the 260929-261001 build and CI
                  restructure: AGENTS.md testing and CI sections rewritten
@@ -8892,6 +8876,14 @@ Miscellaneous Information
        - Adding an automated regression test suite (tests/test-basics.emf)
          run by GitHub Actions on 7 platform jobs (Linux, macOS, Windows x3,
          Cygwin x2) and three nested !while/!repeat loops.
+       - Encoding-aware clipboard and kill ring (ticket 17): copy/paste
+         between different encodings round-trips correctly, unmappable
+         characters are written as \uXXXX escapes into single-byte
+         buffers and the new yank-as command re-tags the kill buffer.
+       - Macro evaluation buffers raised from 1KB to 16KB and empty-list
+         guards for the &l list functions (&lget &lset &lfind &llen
+         &ldel); new character string functions &uleft &ulen &umid
+         &uright &usin for UTF-8 aware macro text processing.
 
     cDSeptember 2009cA
        10th Major Release - MicroEmacs 2009.
@@ -8956,7 +8948,12 @@ Miscellaneous Information
 cEcEFAQ cEcA
 
 
-    This page contains frequently asked questions submitted to JASSPA.
+    This page contains frequently asked questions submitted to JASSPA over the
+    years. Some of the older entries refer to platforms and tools that are no
+    longer supported (MS-DOS, Windows 3.x, old DOS/Windows shells and helpers);
+    they are kept here for historical reference. The questions most relevant to
+    the current releases are the later ones (roughly faq44 onwards) and the
+    encoding questions faq48 and faq49.
 
     lsFAQs(0f)lmFAQsle - FAQ Contact information  
     lsfaq00(0f)lmfaq00le - New functionality; what is useful to me as an old MicroEmacs user ??  
@@ -10548,65 +10545,29 @@ Miscellaneous Information
     How to work with the terminal version of MicroEmacs on terminals with UTF-8
     encoding?
     
-    If you run the terminal  version of  MicroEmacs  the character  encodings are
-    defined  by the  terminal  emulator.  For some of them  (like Mate or Gnome
-    terminal)  you can  change  the font  encodings  using a menu,  others  like
-    LX-terminal the terminal multiplexer like tmux - only support
-    Unicode  encodings. If you work with MicroEmacs on such a terminal, the display
-    of non-ASCII characters might behave weird. There are two ways to fix this issue:
-    
-    - switch  the  current  font  encoding  for  your  terminal if possible, let's
-      say to ISO-8859-1 or ISO-8859-15 or what ever you need ... or
-    - run a  tool  like  cGluitcA - https://invisible-island.net/luit/luit-figures.html
-      as a  wrapping  application  which  sits  between  MicroEmacs  and the terminal
-      emulator  and  translates all codes  from and  to  Unicode between these two 
-      applications.
-      
-    Here an example on how to do this:
-    
+    Since the 2026 releases MicroEmacs handles terminal output natively in UTF-8,
+    so on a UTF-8 terminal you normally do not have to do anything special. The
+    encoding used for reading and writing files is per buffer and is controlled by
+    the variable cG$buffer-encodingcA, which is auto-detected when a file is loaded
+    and can be overridden on the command line with the cD-EcA option, for example
+
+      `mec -E iso-8859-15 file.txt`
+
+    Use cGmec -E utf-8cA to force UTF-8 for a buffer, or the command
+    lscharset-change(3)lmcharset-change(3)le to convert an already open buffer.
+
+    Legacy note: before native UTF-8 support (releases up to b6) the console
+    version relied on the terminal font encoding, so non-ASCII characters could
+    display incorrectly on a UTF-8 only terminal. The old workaround was to run a
+    wrapper such as cGluitcA - https://invisible-island.net/luit/luit-figures.html -
+    between MicroEmacs and the terminal:
+
       `TERM=xterm luit -encoding ISO-8859-15 mec`
-    
-    Or write at the end cGme -ncA if you use a mecw executuable. The TERM=xterm
-    prefix should enable the colored version in the terminal as well as described
-    in lsfaq14(0f)lmfaq14le.
-    
-    
-    The cGluitcA application should be available by your package manager, so it
-    should be installable as:
-    
-         sudo dnf install luit        ## fedora  
-         sudo apt install x11-utils   ## debian based
-         sudo pacman -S   luit        ## arch based   
-         sudo pkg install luit        ## freebsd
-                                      ## windows-cygwin  
 
-    You can as well create an alias for the luit-me command ensemble:       
-    
-       aliasc me-iso-15="TERM=xterm luit -encoding ISO-8859-15 mec"
-    
-    One  disadvantage  of using cGluitcA is, that you can't suspend MicroEmacs if running
-    it within  cGluitcA. To get  suspension  you might use  another  tools  called
-    abduco which allows you to suspend a terminal session in in principle. Aduco
-    is as well a standard  tool on Linux  systems  which  should be  installable
-    using your package manager like thist:
-    
-         sudo dnf install abduco      ## fedora, redhat system
-         sudo apt install abduco      ## debian based systems
-         sudo pacman -S   abduco      ## arch based systems
-         sudo pkg install abduco      ## freebsd system
+    Note that cGluitcA prevents suspending MicroEmacs (cDC-zcA); combining it with
+    cGabducocA allowed suspension. With current releases this workaround is no
+    longer necessary.
 
-    After you have  installed  abduco and luit you might  create a little  shell
-    function or a shell script like this:
-    
-         #!/usr/bin/env bash
-         ## file mecu 
-         tty=$(tty | grep -Eo '[0-9]+')
-         TERM=xterm abduco -A -e ^z mec$tty luit -encoding ISO559-15 mecb "$@"
-
-    This little wrapper function will either attach an existing session on your
-    current  terminal  or  create  a new one. You  might  replace  the  encoding
-    ISO8859-15  with an encoding more  appropriate to your system. Make the file
-    executable and move it to your bin folder.
 
     [[FAQ Index]](Frequently Asked Questions).
 
@@ -10614,6 +10575,12 @@ Miscellaneous Information
 cEcEQUESTION (49) cEcA
     
     What are the recommended ISO encodings I should use for my terminal session:
+
+    Since the 2026 releases UTF-8 is the recommended terminal and file encoding,
+    see cG$buffer-encodingcA and the cD-EcA option. The following single byte ISO
+    8859 encodings are only relevant for legacy terminals that cannot display
+    UTF-8, in which case the terminal font encoding, the buffer encoding and the
+    MicroEmacs display character set should all be the same:
 
     - ISO 8859-1 Western Europe
     - ISO 8859-2 Western and Central Europe (German, Poland)
@@ -10735,7 +10702,7 @@ Miscellaneous Information
 
     cDmecA [cCoptionscA] [cCfiles ...cA]
 
-    cDmecA [cC@startupFilecA] [cD-cA] [cD-acA] [cD-bcA cCfilecA] [cD-BcA] [cD-ccA[cCsessionNamecA]] [cD-hcA] [cD-icA]  [cD-kcA[cCkeycA] cCfilecA] [cD-lcA*lineNo*[_:column_]] [cD-mcA*command*] [cD-ncA] [cD-ocA] 
+    cDmecA [cC@startupFilecA] [cD-cA] [cD-acA] [cD-bcA cCfilecA] [cD-BcA] [cD-ccA[cCsessionNamecA]] [cD-EcA cCencodingcA] [cD-hcA] [cD-icA]  [cD-kcA[cCkeycA] cCfilecA] [cD-lcA*lineNo*[_:column_]] [cD-mcA*command*] [cD-ncA] [cD-ocA] 
     [cD-0cA*file*] [cD-pcA [cD-PcA]]  [cD-RcA] [cD-rcA] [cD-scA*string*] [cD-ucA*username* [cD-vcA*variable=string*] [cD-VcA] [cD-xcA] [cD-ycA *file*] cCfiles...cA
 
 
@@ -10839,10 +10806,15 @@ Miscellaneous Information
       buffers however the window layout and position is not restored. The
       default cCsessionNamecA is the login name ls$MENAME(5)lm$MENAME(5)le.
 
+    cD-EcA cCencodingcA Set the buffer file encoding used when reading and writing
+       files, for example cGutf-8cA, cGiso-8859-1cA or cGcp1252cA. Without this option
+       the encoding is auto-detected for each buffer; see the cG$buffer-encodingcA
+       variable and the lslocaleSupport(2)lmlocale supportle help page.
+
     cD-hcA Show the help page (does not start the editor).
 
-    cD-icA MS-DOS versions of cDMicroEmacs 2009cA only. Insert the contents of the
-     current screen into the cD*scratch*cA buffer
+    cD-icA Legacy MS-DOS only option, insert the contents of the current screen
+     into the cD*scratch*cA buffer.
 
     cD-kcA[cCkeycA] Load next file as an encrypted file (uses lscrypt(2m)lmcrypt(2m)le buffer mode). 
     
@@ -11103,10 +11075,9 @@ Miscellaneous Information
        The default startup file.
 
       <platform>.emf_
-      A platform specify startup file, these include UNIX generic
-         (unixterm.emf), UNIX specific (irix.emf, hpux.emf, unixwr1.emf,
-         linux.emf, sunos.emf etc), Microsoft Windows (win32.emf), MS-DOS
-         (dos.emf).
+      A platform specific startup file. These include the generic UNIX
+         terminal setup (cGunixterm.emfcA), the Microsoft Windows GUI setup
+         (cGwin32.emfcA) and the Cygwin / MSYS shell setup.
 
        cDhkxxxxxx.emfcA
     
@@ -11220,150 +11191,23 @@ John Green, Steven Philipps and Detlef Groth  <dgroth@uni-potsdam.de>
 cEcENAME cEcA
 
 
-    memsdev - Microsoft Developer Studio Add-in for MicroEmacs 2009
-
-
-cESYNOPSIS cA
-
-
-    cDmemsdev.dllcA
+    memsdev - Microsoft Developer Studio Add-in for MicroEmacs 2009 (obsolete)
 
 
 cEDESCRIPTION cA
 
 
-    cDmeMsdevcA is a Microsoft Visual Studio Add-In that allows MicroEmacs 2009 to
-    be integrated as the default text editor. It will be used instead of the
-    Visual Studio built in editor when you double click on a file or press F4.
+    The cDmeMsdevcA add-in allowed MicroEmacs 2009 to be used as the default text
+    editor inside Microsoft Visual Studio (MS-Dev V5 and V6) on 32 bit Windows.
+    It was integrated through the cGme32.inicA configuration file and a COM DLL
+    registered with cGregsvr32cA.
 
-    cDmeMsdevcA may not be supplied built and should be built using Microsoft
-    Developer Studio.
+    This add-in is obsolete: it targeted the old 32 bit Visual C++ / MS-Dev IDE,
+    it is not built or shipped with the current sources and it is not supported
+    on current Windows tool chains. It is documented here for historical
+    reference only. Current editor and IDE integration is done through the
+    lsClient-Server(2)lmclient-serverle interface.
 
-
-cEINSTALLATION cA
-
-
-    cD1)cA Copy mesdev.dll into the MicroEmacs directory i.e.
-
-         c:/Program Files/JASSPA/MicroEmacs
-
-
-    cD2)cA Edit the lsme32.ini(8)lmme32.ini(8)le file in your Windows directory and identify the
-    location of the MicroEmacs executable. The executable name is used to
-    spawn MicroEmacs if it is not already running. The entry takes the form:-
-
-         ; Identify the location of the MicroEmacs executable so that the
-         ; Developer Studio "Add-In" can locate the executable
-         [Location]
-         exe=c:\Program Files\JASSPA\MicroEmacs\me32.exe
-
-
-    Change the cCexecA entry to match the location and name of your executable.
-
-    cD3)cA For MS-DEV V5.0 only; from a DOS box, register the DLL using
-     cDregsvr32.exe(1)cA i.e.
-
-         > cd c:/Program Files/JASSPA/MicroEmacs
-         > regsvr32 memsdev.dll
-
-
-    For MS-DEV V6.0 it is not necessary to perform this registration step.
-
-    cD4)cA Start Visual Studio and goto:-
-
-          Tools
-              Customize...
-                  Add-Ins and Macro Files
-
-
-    cD5)cA Click on cCBrowsecA and point Visual Studio to your cDmemsdev.dllcA file.
-
-    cD6)cA Click the check box to indicate that you want to use the Add-In, and
-    close the Customize dialog box.
-
-    cD7)cA You should notice the MicroEmacs tool bar showing the MicroEmacs Icon.
-    This invokes a dialog that allows you to attach and detach MicroEmacs as
-    the default editor.
-
-
-cEUSING meMsdev cA
-
-
-    Clicking on the MicroEmacs Tool bar shows the meMsdev configuration
-    dialog. Check the boxes when MicroEmacs edit session is required as
-    default; uncheck the boxes if you wish to revert to the built-in dialog.
-
-    Use Visual Studio as normal, and MicroEmacs should almost always bring
-    MicroEmacs to the foreground to edit the document. If a MicroEmacs is
-    already running then "meMsdev" will attach to an existing session and will
-    load the file. If MicroEmacs is not detected then a new version is spawned
-    off and then an attachment is made.
-
-
-cERUNNING A DEBUG SESSION cA
-
-
-    cDmeMsdevcA does not currently provide any debugging capability (but we are
-    working on it !!). To start debugging it is suggested that the Editor is
-    decoupled cC(MicroEmacs Dialogue -> Uncheck Boxes)cA and work within the
-    Developer studio.
-
-    When you have finished debugging and wish to move back to an edit session
-    then re-enable MicroEmacs cC(MicroEmacs Dialogue -> Check Boxes)cA AND close
-    any windows that are open within the MS-Dev environment (
-    cCWindow->Windows...->Select AllcA and cCClose All WindowscA). Then commence
-    editing again.
-
-    While MicroEmacs is attached, selecting any of the find file lines,
-    compilation error lines etc within the response panes will take MicroEmacs
-    to the specified line.
-
-
-cEBUGS cA
-
-
-    cDmeMsdevcA works by hooks exposed by Visual Studio. Most of the functionality
-    works from the OpenDocument (look it up in VS 5) hook. So...If a document
-    is ALREADY open in Visual Studio, and you double click the file in the
-    File Browser...Emacs will NOT come to the foreground. Since the document
-    was open in the Visual Studio editor, the OpenDocument event never
-    occurred.
-
-
-cEACKNOWLEDGEMENTS cA
-
-
-    cDmeMsdevcA is based on the initial work from cDVisEmacscA performed by
-    cDChristopher PaynecA cC<payneca@sagian.com>cA for GNU Emacs. This software comes
-    under the GNU General Public License, as such, meMsdev is covered by the
-    same licensing.
-
-    Many thanks to Christopher for putting together this technology, this
-    manual page is derived from the documentation supplied with cCVisEmacscA.
-
-
-cELICENSING cA
-
-
-    meMsdev is free software; you can redistribute it and/or modify it under
-    the terms of the GNU General Public License as published by the Free
-    Software Foundation; either version 2, or (at your option) any later
-    version.
-
-    meMsdev is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-    FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-    details.
-
-    You should have received a copy of the GNU General Public License along
-    with GNU Emacs; see the file COPYING. If not, write to the Free Software
-    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-
-
-cESEE ALSO cA
-
-
-    cCMicrosoft Developer Studio Add-In DocumentationcA
 ! 1 ne
 cEcENAME cEcA
 
@@ -14015,57 +13859,25 @@ $a
 cEIBM-PC / MS-DOS  cA
 
 
-    MS-DOS may only change the screen resolution, the standard screen
-    resolution is either 80 columns by 25 rows or 80 by 50. A more advanced
-    graphics card can typically support up to 132 by 60, MicroEmacs in theory
-    has no limit but it has only been tested up to this size.
-
-    The main problem with MS-DOS machines is that there is no standard and
-    this is no exception. The graphics mode needed to get a 132 by 60 screen
-    (if available) varies from one card to the next so MicroEmacs 2009 needs
-    to know the graphic mode number your card uses to get your required screen
-    resolution.
-
-    MicroEmacs 2009 can also attempt a little bit of magic to double the
-    number of rows on the screen for a given screen resolution. This is how 50
-    lines are obtained from the standard 25 line mode 3. If the value of
-    "cCspeccA" is non-zero then this is attempted, to the authors knowledge this
-    will either work or not depending on the direction of the wind and no harm
-    will befall the users equipment. However the author also quickly disclaims
-    anything and everything, the user uses this at their own peril, like
-    everything else.
-
-    MicroEmacs 2009 attempts to determine the new screen width and depth
-    itself, in case this fails the commands lschange-frame-width(2)lmchange-frame-width(2)le and
-    lschange-frame-depth(2)lmchange-frame-depth(2)le may be used to correct the problem.
-
-    Following are the standard MS-DOS text modes:
+    cCLegacy.cA The 16 bit MS-DOS port is no longer part of the current sources.
+    Historically this command selected the screen text mode on MS-DOS (for
+    example 80x25, 80x50 or 132x60) by passing the graphics mode number of the
+    video card, and a non-zero second argument tried to double the number of
+    screen rows. The list of mode numbers below applied to specific video cards
+    (Trident, Diamond Stealth, Cirrus) and is kept here for historical reference
+    only.
 
 sB
           change-font "2" "0"       ; Simple monochrome or EGA monitor, 80 by 25.
           change-font "3" "0"       ; Simple EGA/VGA monitor, again 80 by 25.
           change-font "3" "1"       ; Simple EGA/VGA monitor using spec, 80 by 50.
+          change-font "86" "0"      ; Most Trident cards, 132 by 60.
+          change-font "85" "1"      ; Diamond Stealth, 132 by 50.
+          change-font "84" "1"      ; Cirrus 1MB cards (PT-526), 132x50.
 
 sA
-    Most Trident cards support the following text mode:
-
-sB
-          change-font "86" "0"      ; Sweet 132 by 60
-
-sA
-    A Diamond Stealth supports the following mode:
-
-sB
-          change-font "85" "1"      ; Nice 132 by 50
-
-sA
-    Cirrus video cards (1MB) seem to support:
-
-sB
-          change-font "84" "1"      ; PT-526 (132x50)
-
-sA
-    Time to start digging out your graphics card manual!
+    Current builds target Linux, macOS, FreeBSD, Cygwin/MSYS2 and native Windows
+    and do not use these MS-DOS graphics modes.
 
 
 cEMicrosoft Windows  cA
@@ -23583,6 +23395,16 @@ $a
           translate-key "C-[ [ 2 9 ~" "menu" ; context menu key
 
 sA
+    The standard xterm cGCSI 1;<modifier><final>cA forms of the cursor and
+    Home/End keys are recognised out of the box, so the equivalent
+    cDtranslate-keycA lines above are not needed for modern terminals. The
+    modifier is cD1 + shift(1) + alt(2) + control(4)cA and the final
+    character is cGAcA, cGBcA, cGCcA, cGDcA for up, down, right and left, and cGHcA,
+    cGFcA for home and end - so Alt-Left is cGC-[ [ 1 ; 3 DcA and maps onto
+    cGA-leftcA. This matches the key codes generated by the X11 (cDmewcA)
+    build, so the same bindings apply to both.
+
+
 cENOTES cA
 
 
@@ -24509,6 +24331,56 @@ $a
     ls$auto-time(5)lm$auto-time(5)le, lsappend-buffer(2)lmappend-buffer(2)le, lsbackup(2m)lmbackup(2m)le, lsbuffer-mode(2)lmbuffer-mode(2)le,
     lschange-file-name(2)lmchange-file-name(2)le, lsfile-attrib(3)lmfile-attrib(3)le, lssave-buffer(2)lmsave-buffer(2)le, lstime(2m)lmtime(2m)le,
     lswrite-region(3)lmwrite-region(3)le.
+! 2 yank-as
+cEcENAME cEcA
+
+
+    yank-as - Re-tag the kill buffer with an encoding and yank it
+$a
+
+
+cESYNOPSIS cA
+
+
+    cCncA cDyank-ascA "cCencodingcA"
+
+
+cEDESCRIPTION cA
+
+
+    Every kill ring entry carries an encoding tag which describes the
+    bytes held in that entry. cDyank-ascA prompts for an encoding name
+    (TAB completes over the supported encodings), replaces the tag of
+    the most recent kill entry with the chosen encoding and then yanks
+    the entry cCncA times (default one) with the new tag applied.
+
+    The re-tagging acts on the internal kill buffer only; the command
+    does not read from or write to the system clipboard, so the new tag
+    is applied to the inserted text. Use it when text was killed in one
+    encoding and is to be pasted into a buffer using a different
+    cD$buffer-encodingcA, or when an external clipboard fetch left the
+    kill ring tagged with the wrong encoding.
+
+    An empty cCencodingcA reports the current kill encoding on the
+    message line and yanks nothing. An unknown encoding or an empty
+    kill ring aborts the command.
+
+
+cEEXAMPLE cA
+
+
+    Re-tag the current kill entry as ISO-8859-1 and yank it twice:
+
+sB
+          2 yank-as iso-8859-1
+
+sA
+
+cESEE ALSO cA
+
+
+    lscopy-region(2)lmcopy-region(2)le, lskill-line(2)lmkill-line(2)le, lskill-region(2)lmkill-region(2)le,
+    lsreyank(2)lmreyank(2)le, lsyank(2)lmyank(2)le.
 ! 2 ml-write
 cEcENAME cEcA
 
@@ -24707,7 +24579,7 @@ $a
 
     lsbackward-delete-char(2)lmbackward-delete-char(2)le, lsbackward-kill-word(2)lmbackward-kill-word(2)le, lscopy-region(2)lmcopy-region(2)le,
     lsforward-delete-char(2)lmforward-delete-char(2)le, lsforward-kill-word(2)lmforward-kill-word(2)le, lskill-line(2)lmkill-line(2)le,
-    lskill-paragraph(2)lmkill-paragraph(2)le, lskill-region(2)lmkill-region(2)le, lsreyank(2)lmreyank(2)le, lsyank-rectangle(2)lmyank-rectangle(2)le, ls@y(4)lm@y(4)le,
+    lskill-paragraph(2)lmkill-paragraph(2)le, lskill-region(2)lmkill-region(2)le, lsreyank(2)lmreyank(2)le, lsyank-as(2)lmyank-as(2)le, lsyank-rectangle(2)lmyank-rectangle(2)le, ls@y(4)lm@y(4)le,
     ls@cc(4)lm@cc(4)le.
 ! 2 define-macro-file
 cEcENAME cEcA
@@ -26283,9 +26155,9 @@ $a
     editor on a daily basis across a limited number of platforms, for a
     variety of very different tasks and operating requirements.
 
-    This version of MicroEmacs is biased towards UNIX environments, MS-DOS and
-    Microsoft Windows ports have been performed however they are heavily
-    influenced by UNIX and inherit UNIX characteristics wherever possible. The
+    This version of MicroEmacs is biased towards UNIX environments; the
+    Microsoft Windows, Cygwin/MSYS2, macOS and FreeBSD ports inherit UNIX
+    characteristics wherever possible. The
     intention is that programmers, and alike, may move across platforms using
     a common editor environment without being frustrated by the idiosyncrasies
     of different platforms. The most noticeable platform is the Microsoft
@@ -29145,14 +29017,75 @@ $a
 ! 1 Installation
 cEcEINSTALLATION cEcA
 
-
     This page provides introductory notes for the installation and setup of
-    MicroEmacs 2009 build in 2024.
+    MicroEmacs 2009 (with the 2024-2026 extensions by mittelmark).
 
-cESingle File Binary Install cA
+    There are two supported ways to install MicroEmacs:
 
-    Since 2009 the prefered way for  installation  is the use of the single file
-    binaries. The background is described here: lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
+    1. cDInstaller scripts (recommended, default).cA The platform installer
+       downloads the standalone (embedded-macro) binaries from the latest
+       GitHub release and sets up your PATH.
+    2. cDManual install (fallback).cA Download a single-file binary, or the
+       bare executables plus the macro tree, and place them by hand. Use this
+       only if the installer is unavailable or fails.
+
+    Step by step instructions and a troubleshooting section are maintained in
+    the project README on GitHub:
+    https://github.com/mittelmark/microemacs#installation
+
+cEInstaller Scripts (Recommended) cA
+
+cEUnix-like Systems (Linux, macOS, FreeBSD, Cygwin, MSYS2) cA
+
+    Run the installer with curl:
+
+         bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+         source ~/.bashrc        # or re-open the terminal
+         mecb -V                 # verify the installation
+
+    The script detects the operating system, architecture and kernel version,
+    downloads the matching release archives and extracts the two standalone
+    binaries into cG~/.local/bincA:
+
+    - cGmecbcA - terminal (console) version,
+    - cGmewbcA - GUI (X11 / Wayland) version.
+
+    cG~/.local/bincA is added to your PATH on first install (once). cGcurlcA and
+    cGunzipcA are required; the installer only *suggests* the optional font tools
+    cGfc-listcA and cGxfontselcA.
+
+cEWindows (PowerShell) cA
+
+    Run the installer from PowerShell:
+
+         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+         Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
+         mecb -V                 # verify the installation
+
+    The script places cGmecb.execA and cGmewb.execA into cG%LOCALAPPDATA%\bincA, adds
+    that folder to the user PATH and creates a Start Menu shortcut for
+    cGmewb.execA.
+
+cEUpdating cA
+
+    Both installers write a small updater bootstrap next to the binaries:
+    cGmecb-updatecA on Unix-like systems and cGmecb-update.ps1cA plus a
+    cGmecb-update.batcA wrapper on Windows. The bootstrap downloads the current
+    installer from GitHub and runs it; the installer compares versions and only
+    downloads when a newer release exists, so it is safe to run repeatedly:
+
+         mecb-update             # from a shell (Unix) or cmd.exe / PowerShell (Windows)
+
+    Versions are encoded as cGYYMMDDbNcA; a final release ranks above any beta of
+    the same date.
+
+cEManual Install (Fallback) cA
+
+    Use this route only when the installer scripts cannot be used, for instance
+    on an isolated machine. All current downloads on the release page are
+    standalone (bfs) builds with the macro files, the help file and the American
+    dictionary embedded. The background of the zero-installation approach is
+    described here: lshttp://www.jasspa.com/zeroinst.htmllmhttp://www.jasspa.com/zeroinst.htmlle.
     The  MicroEmacs  executable  in this case contains the binary as well as all
     macro files and optionally as well some dictionary files and the help file.
     So the user only needs to  download a binary for its own  platform,  make it
@@ -29178,9 +29111,10 @@ $a
       and then as well GUI versions (mew and mecwb) which require the Cygwin X11
       libraries to be installed on Cygwin.
      
-    cCInstallation:cA Just  download the file (mecb, mewb, mecwB) for your platform
-    place it as mec, mew and me into a folder  belonging  to your  PATH, make it
-    executable and run it.
+    cCInstallation:cA Download the file (cGmecbcA, cGmewbcA or cGmecwbcA) for your
+    platform, make it executable and place it into a folder belonging to your
+    cGPATHcA (cG~/.local/bincA is a common choice), then run it. Renaming the file
+    is optional.
 
     At the  first  run you will be asked  initially  for your  user name and the
     default  user path,  usually  it is  cG~/.jasspacA.  As it a first  step it is
@@ -29212,21 +29146,15 @@ $a
     cDGetting HelpcA
     
     In case of trouble use the issue link on the Github project page:
-    https::/github.com/mittelmark/microemacs/issues
+    https://github.com/mittelmark/microemacs/issues
 
-    Below is the old  description of an installation  for a simple me (mec, mew)
-    executable  (terminal or  X11/Windows  version)  together  with the required
-    macro files described. If you prefere the single file install just described
-    above, you do not need to read further. 
-    
-    Hint: All macro files for the  standalone  builds are  accessible  using the
-    bfs://macros path within your MicroEmacs text editor.
-    
-cEQuick Install of ME barebones and Macro Files cA
+    Hint: All macro files for the standalone builds are accessible using the
+    cGbfs://macroscA path within your MicroEmacs text editor.
 
-    2024: The information below is mostly outdated, it describes an installation
-    of the barebone mec, mew and mecw executables  without attached macro folder
-    which require a separate installation of the jasspa macros.
+    If you build or download the bare (no embedded macros) cGmeccA / cGmewcA / cGmecwcA
+    executables you additionally need the cGjasspacA macro tree - see below.
+
+cEBare Executables with a separate Macro Tree cA
 
     The quickest way to install MicroEmacs for testing without reading the
     rest of this document is to:-
@@ -29245,458 +29173,21 @@ $a
     This allows the user and screen settings to be altered. On becoming more
     accustomed to the editor then a fuller installation may be performed.
 
-    cDGetting HelpcA
-    
-       See lsContact InformationlmContact Informationle for full contact information. A mail archive
-       exists at:-
-
-              http://groups.yahoo.com/group/jasspa/ (not existing anymore)
-
-
-       If you wish to participate in the list then you must first register by
-       sending an empty mail message body to:-
-
-              jasspa-subscribe@yahoogroups.com (not exiting anymore)
-
-
-       You will then be able to mail any questions into the group.
-       Registration is required in order to prevent cCspamcA mailings from
-       entering into the lists.
-
-
-cEDistribution  cA
-
-
-    MicroEmacs is distributed in the following files:-
-
-    cDComplete InstallationscA
-    
-       The Microsoft 95/98/NT/2K/XP, Solaris, HP-UX, Linux and the more
-       popular platforms may be installed using a package and do not require
-       the components specified in later sections as these are all bundled
-       together (these packages do not include spelling).
-
-       `jasspa-me-YYYYMMDD-1.i386.rpm` - Linux RedHat 9.x package.
-       `jasspa-me-YYYYMMDD-1.src.rpm` - Linux RedHat 9.x source package.
-       `jasspa-mepkg-hpux-pa-10.20-YYYYMMDD.depot.gz` - HP-UX 10 package.
-       `jasspa-mepkg-hpux-pa-11.00-YYYYMMDD.depot.gz` - HP-UX 11 package.
-       `jasspa-mepkg-ms-win32-2004030.zip`  - 95/98/NT/2K/XP Install Shield
-       `jasspa-mepkg-sun-i386-58-YYYYMMDD.zip` - Sun 2.8(i386) package.
-       `jasspa-mepkg-sun-i386-59-YYYYMMDD.zip` - Sun 2.9(i386) package.
-       `jasspa-mepkg-sun-sparc-56-YYYYMMDD.zip` - Sun 2.6(Sparc) package.
-       `jasspa-mepkg-sun-sparc-58-YYYYMMDD.zip` - Sun 2.8(Sparc) package.
-       `jasspa-mepkg-sun-sparc-59-YYYYMMDD.zip` - Sun 2.9(Sparc) package.
-
-    cDExecutable Source CodecA
-    
-       The source code release for MicroEmacs 2009 contains makefiles (cG*.makcA)
-       for all supported platforms. Microsoft '95/'98/NT/2K/XP makefiles
-       contain options at the top of the makefile to enable/disable console
-       and URL support.
-
-       `jasspa-mesrc-YYYYMMDD.zip` - Source code for all platforms
-       `jasspa-mesrc-YYYYMMDD.tar.gz` - Source code
-
-    cDExecutable ImagescA
-    
-       `jasspa-me-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (X-Windows)
-       `jasspa-me-hpux-pa-10.20-YYYYMMDD.gz` - Hewlett Packard HP-UX 10
-                                                Executable
-       `jasspa-me-hpux-pa-11.00-YYYYMMDD.gz` - Hewlett Packard HP-UX 11
-                                                Executable
-       `jasspa-me-ibm-aix-4-YYYYMMDD.gz` - IBM's AIX 4.3 Executable
-       `jasspa-me-linux-i386-2.4-YYYYMMDD.gz` - Linux 2.2.x/2.4.x Executable
-       `jasspa-me-linux-i386-2.6-YYYYMMDD.gz` - Linux 2.6.x Executable
-       `jasspa-me-ms-win32-YYYYMMDD.zip` - Windows 32' (95/98/NT/2K/XP)
-                                                Executable
-       `jasspa-me-ms-win32s-YYYYMMDD.zip` - Windows win32s (Win3.1/3.11)
-                                                Executable
-       `jasspa-me-msdos-djgpp1-YYYYMMDD.zip` - DOS Executable (DJGPP v1.x)
-       `jasspa-me-msdos-djgpp2-YYYYMMDD.zip` - DOS Executable (DJGPP v2.x)
-       `jasspa-me-openbsd-i386-3.4-YYYYMMDD.gz` - Open BSD 3.4 Executable
-       `jasspa-me-sgi-irix-6-YYYYMMDD.gz` - Silicon Graphics Irix 6 Executable
-       `jasspa-me-sun-i386-58-YYYYMMDD.gz` - Sun Solaris 2.8 Intel Platform
-                                                Executable
-       `jasspa-me-sun-i386-59-YYYYMMDD.gz` - Sun Solaris 2.9 Intel Platform
-                                                Executable
-       `jasspa-me-sun-sparc-56-YYYYMMDD.gz` - Sun OS 5.5 Executable
-       `jasspa-me-sun-sparc-58-YYYYMMDD.gz` - Sun OS 5.8 Executable
-       `jasspa-me-sun-sparc-59-YYYYMMDD.gz` - Sun OS 5.9 Executable
-       `jasspa-mec-apple-darwin-6.6-YYYYMMDD.gz` - Apple console Executable
-       `jasspa-mec-cygwin-YYYYMMDD.exe.gz` - Cygwin Executable (Console)
-
-    cDHelp File ImagescA (all platforms)
- 
-       `jasspa-mewinhlp-YYYYMMDD.zip` - Windows Help file
-       `jasspa-mehtm-YYYYMMDD.zip`  - HTML Help files for 8.3 file systems (.htm)
-       `jasspa-mehtml-YYYYMMDD.tar.gz` - HTML Help files (.html)
-
-    cDMacro File ImagescA (all platforms)
- 
-       `jasspa-memacros-YYYYMMDD.tar.gz` - Macro files
-       `jasspa-memacros-YYYYMMDD.zip` - Macro files
-
-       `jasspa-metree-YYYYMMDD.tar.gz` - Complete install tree + help
-       `jasspa-metree-YYYYMMDD.zip` - Complete install tree + help
-
-    cDSpelling DictionariescA (all platforms)
-    
-       One of the following base dictionaries is required for spelling. The
-       extended dictionaries require the base dictionary and are recommended
-       for a more comprehensive spelling list. Other languages are supported.
-
-       `ls_dede.zip` - German rules and base + extended dictionary.
-       `ls_engb.zip` - British rules and base + extended dictionary.
-       `ls_enus.zip` - American rules and base + extended dictionary.
-       `ls_eses.zip` - Spanish rules and dictionary.
-       `ls_frfr.zip` - French rules and dictionary.
-       `ls_itit.zip` - Italian rules and dictionary
-       `ls_plpl.zip` - Polish rules and dictionary.
-       `ls_ptpt.zip` - Portuguese rules and dictionary.
-       `ls_ruye.zip` - Russian YE rules and dictionary.
-       `ls_ruyo.zip` - Russian YO rules and dictionary.
-
-       `ls_dede.tar.gz` - German rules and base + extended dictionary.
-       `ls_engb.tar.gz` - British rules and base + extended dictionary.
-       `ls_enus.tar.gz` - American rules and base + extended dictionary.
-       `ls_eses.tar.gz` - Spanish rules and dictionary.
-       `ls_frfr.tar.gz` - French rules and dictionary.
-       `ls_itit.tar.gz` - Italian rules and dictionary
-       `ls_plpl.tar.gz` - Polish rules and dictionary.
-       `ls_ptpt.tar.gz` - Portuguese rules and dictionary.
-       `ls_ruye.tar.gz` - Russian YE rules and dictionary.
-       `ls_ruyo.tar.gz` - Russian YO rules and dictionary.
-
-       cDNOTE:cA The binary versions of the executables held on the site include
-       the platform name as part of the executable name i.e. cDmecA for cGDOScA is
-       called cDmedos.execA. On installing the binaries onto the target machine,
-       you should rename the executable to cDmecA or cDme.execA, whatever is
-       appropriate. The ONLY exception to this rule is the Microsoft Windows
-       executable where cDmewin32.execA should be renamed to cDme32.execA. Our reason
-       for this naming is to allow the executables to be unpacked in the same
-       directory and not be confused with each other.
-
-
-cEInstallation Directories  cA
-
-
-    The suggested installation structure for all platforms is defined as:-
-
-                    jasspa
-                    / | \
-                   /  |  \
-                  /   |   \
-           spelling macros company
-
-
-    This directory structure is suggested to facilitate upgrades in the future
-    and to keep user data separate from the system macros. MicroEmacs
-    understands this directory structure.
-
-    The directory structures are defined as:
-
-    cDmacroscA
-    
-       The standard macro distribution, as supplied by JASSPA.
-
-    cDspellingcA
-    
-       Spelling dictionaries.
-
-    cDcompanycA
-    
-       Company wide local definitions for the local site. This directory may
-       be omitted if not applicable. Header templates (cG.etfcA are typically
-       copied from the cGmacrocA directory to the cGcompanycA directory and modified
-       for the local site.
-
-    The search order is defined as cGrootcA, cGcompanycA, cGmacroscA, cGspellingcA.
-
-
-cEUNIX Installation (System Wide)  cA
-
-
-    A system wide installation on UNIX for multiple users adheres to
-    conventional package installation methods.
-
-    cDDistribution Components Required:cA
-
-       `jasspa-me-`_<unix>_`-YYYYMMDD.gz`
-       `jasspa-metree-YYYYMMDD.tar.gz`
-       _<spelling>_`.gz`
-       `jasspa-mehtml-YYYYMMDD.tar.gz` (optional)
-
-    cDInstallation:cA
-    
-      It is recommended that the macro files are placed in a standard shared
-      system directory. The standard directory locations searched by MicroEmacs
-      are defined on a per-platform basis, only one of the directory locates is
-      selected, as follows:
-
-                                      HP-UX     SunOS      AIX      Cygwin
-                                 IRIX     UnixWare   ***BSD    Linux      NeXT
-       /opt/jasspa:             y    y    y    y    y    y    n    n    n
-       /usr/share/jasspa:       y    y    y    y    y    y    y    n    n
-       /usr/local/jasspa:       y    y    y    y    y    y    y    y    y
-       /usr/local/share/jasspa: n    n    n    n    y    n    n    n    n
-
-
-    - Create the directory cG/usr/local/jasspacA.
-    - Unpack and install the cGjasspa-metree-YYYYMMDD.tar.gzcA into this
-          directory.
-    - If spelling dictionaries are required then place them in the
-          spelling sub-directory created when metree was unpacked. Unpack and
-          install the spelling into this directory.
-    - If the standard icons are required for Gnome, KDE or some other
-          window manager then create the sub-directory /usr/local/jasspa/icons
-          and unpack and install the icons into the new directory.
-    - Unpack (or build) the executable and place in cGcG/usr/local/bincAcA
-
-    The executable may now be run by all users. If the macros are placed in a
-    non-standard directory location then the environment variable
-    ls$MEINSTALLPATH(5)lmMEINSTALLPATH(5)le to define the root jasspa tree.
-
-    For cDcsh(1)cA users execute a cGcGrehashcAcA command and then lsme(1)lmme(1)le can be executed
-    from the command line.
-
-    By default a X-Windows terminal is displayed, ensure that cG$DISPLAYcA and
-    cG$TERMcA are correctly configured. To execute a terminal emulation then
-    execute cDmecA with the cG-ncA option i.e. cG`me -n`cA. Note that this is not required
-    if you are using a cGvt100cA emulation.
-
-    When MicroEmacs is executed the local directory cG~/.jasspacA is created for
-    the user settings. The user home directory may be changed by setting the
-    environment variable ls$MEPATH(5)lm$MEPATH(5)le.
-
-
-cEUNIX Installation (Single User)  cA
-
-
-    Where the user is not permitted to install 3rd party applications in the
-    system directories then MicroEmacs may be installed locally as follows:-
-
-    - Create the directory cG~/.jasspacA.
-    - Unpack and install the cGjasspa-metree-YYYYMMDD.tar.gzcA into this
-          directory.
-    - If spelling dictionaries are required then place them in the
-          spelling sub-directory created when metree was unpacked. Unpack and
-          install the spelling into this directory.
-    - If the standard icons are required for Gnome, KDE or some other
-          window manager then create the sub-directory ~/.jasspa/icons and
-          unpack and install the icons into the new directory.
-    - The user files will be placed in the cG~/.jasspacA directory by default.
-          To keep the user macros separate then the directory
-          ~/.jasspa/$LOGNAME may be created and will identified as the users
-          home directory.
-    - Unpack (or build) the executable and place in cGcG~/bincAcA
-
-    MicroEmacs may be executed after it has been re-hashed (depending on the
-    shell).
-
-
-cEDOS Installation  cA
-
-
-    MS-DOS has no concept of a standard installation directory. The location
-    of the MicroEmacs macros is generally determined from the directory
-    location of the executable.
-
-    cDExecutable:cA  Compiled with DJGPP V1.0
-
-    Distribution components required:
-    
-       `jasspa-me-msdos-djgpp1-YYYYMMDD.zip`
-       `jasspa-metree-YYYYMMDD.zip`
-       _<spelling>_`.zip`
-
-       `mewinhlp.zip` if you are using windows 3.1/3.11
-
-    Recommended installed components:
-    
-       `grep` - Version of grep (djgpp recommended)
-       `make` - Version of make (djgpp recommended)
-       `diff` - Version of diff (djgpp recommended)
-
-    cDInstallation:cA
- 
-    This installation relies on the executable position.
-
-    - Create the directory cGc:\jasspacA (or other location)
-    - Unpack and install the cGjasspa-metree-YYYYMMDD.zipcA into this
-          directory.
-    - If spelling dictionaries are required then place them in the
-          spelling sub-directory created when metree was unpacked. Unpack and
-          install the spelling into this directory.
-    - Unzip the executable and place it in the jasspa root directory
-          c:\jasspa.
-    - Edit cGcGc:\autoexec.batcAcA and add the following lines:-
-
-
-              SET PATH=%PATH%;c:\jasspa
-
-
-    - Reboot the system.
-    - MicroEmacs may be run from the command line using cDmecA.
-
-    cDGraphics Cards:cA
-
-    MicroEmacs may be configured to the text modes of your graphics card.
-    Refer to you graphics card DOS text modes to identify the text modes
-    supported by your monitor. The text mode number may be entered into the
-    user monitor configuration, defined in cDToolscA -> cDUser SetupcA.
-
-    Running DOS Version From Windows (3.x)
-    
-       The MS-DOS version of MicroEmacs may be executed from a cD.pifcA file. Use
-       the pif editor to create a new cD.pifcA file to launch MicroEmacs. The
-       size of the DOS window may be configured from the command line, set
-       the terminal size using one of the following command lines:-
-
-                  me -c -v$TERM=E80x50        - 80 x 50 window
-                  me -c -v$TERM=E80x25        - 80 x 25 window.
-
-
-       We usually add the cG-ccA option so that MicroEmacs is executed with
-       history information. This may be omitted if required.
-
-
-cEMicrosoft Windows 3.1/3.11  cA
-
-
-    cDExecutable:cA  Compiled with Microsoft Developer 2.0
-
-    cDHelper DLL:cA
- 
-    Under cDWin32scA a helper DLL cDmethnk16.dllcA is required to perform the
-    lspipe-shell-command(2)lmpipe-shell-command(2)le in a synchronous manner. This should be installed
-    into the cGC:\WINDOWS\SHELLcA directory. This (rather inelegantly) gets around
-    the problems of spawning a process under cDwin32scA due to a number of
-    Microsoft bugs in the operating system. Note: that on a spawn operation a
-    cGMS-DOScA window is visible, this is due to the nature of the command shell
-    on this platform which has a tendency to prompt the user at every
-    opportunity, hence a certain amount of interaction (which is out of our
-    control) is necessary.
-
-    The helper DLL is compiled with a 16-bit Windows compiler - MSVC 1.5.
-
-    cDDistribution components required:cA
-
-       `jasspa-me-ms-win32s-YYYYMMDD.zip`
-       `jasspa-metree-YYYYMMDD.zip`
-       `jasspa-mewinhlp-YYYYMMDD.zip`
-       _<spelling>_`.zip`
-
-    cDRecommended installed components:cA
-
-       `4dos` - command shell (giving _stderr_ redirection)
-       `grep` - Version of grep (GNU port of grep recommended)
-       `diff` - Version of diff (GNU port of grep recommended)
-       `make` - use nmake or GNU port of make.
-
-       If__win32s__ is a requirement on this platform, typically taken from
-       __pw1118.exe__ which freely available on the Internet.
-
-    cDInstallation:cA
-    
-    This version of Windows does not have a cCinstallcA directory as '95/'98 and
-    it is expected that the cGMS-DOScA version will coexist. No cCInstallcA cCShieldcA
-    installation is provided. Install in a directory structure similar to
-    cGMS-DOScA. Install the helper DLL cDmethnk16.dllcA in the cGC:\WINDOWS\SHELLcA
-    directory. Create a lsme32.ini(8)lmme32.ini(8)le file in the cGC:\WINDOWScA directory to
-    identify the location of the MicroEmacs 2009 components, this much the
-    same as the '95/'98 file, change the directory paths to suite the install
-    base.
-
-    cDSupport Status:cA
-
-    The cDwin32scA release has not been used with vengeance, although no specific
-    problems have been reported with this release.
-
-
-cEWindows 95/98/NT/2K/XP  cA
-
-
-    cDExecutable:cA Compiled with Microsoft Developer 6.x
-
-    cDInstall ShieldcA
-
-        An cDInstall ShieldcA version of MicroEmacs is available which includes
-        all of the distribution components.
-
-    cDDistribution components required:cA
-
-      `jasspa-mepkg-ms-win32-2004030.zip`
-
-    cDRecommended installed components:cA
-
-       `grep` - Version of grep (GNU port of grep recommended)
-       `diff` - Version of diff (GNU port of grep recommended)
-       `make` - use nmake or GNU port of make.
-
-       A good source of UNIX native tools is
-
-      ` http://unxutils.sourceforge.net/` - for native windows grep, diff, zip
-       etc.
-      ` http://www.cygwin.com` - for a shell environment.
-
-    cDInstallation:cA
-
-    - Create the directory cG`c:\Program Files\Jasspa\MicroEmacs`cA (or other
-          location)
-    - Create the sub-directory `c:\Program Files\Jasspa\MicroEmacs\macros`.
-          Unpack and install the memacros.zip into this directory
-    - If spelling dictionaries are required then create the directory
-          c:\Program Files\Jasspa\MicroEmacs\spelling. Unpack and install the
-          spelling into this directory.
-    - Unzip the executable components into "C:\Program
-          Files\Jasspa\MicroEmacs"
-    - Create a short cut to MicroEmacs for the Desktop
-
-       Right click on the desk top
-
-       `=> New`
-       `=> Short`
-       `=> Command Line: "c:\Program Files\Jasspa\MicroEmacs\me.exe -c"`
-       `=> Short Cut Name: "MicroEmacs"`
-
-       MicroEmacs may be executed from the shortcut.
-
-    cDOpen ActionscA Microsoft Windows 95/98/NT provide short cut actions,
-    assigning an open action to a file. The short cuts may be installed from
-    the cDInstall ShieldcA installation, but may alternatively be explicitly
-    defined by editing the registry file with cDregedit(1)cA.
-
-    A file open action in the registry is bound to the file file extension, to
-    bind a file extension cC.foocA to the editor then the following registry
-    entries should be defined:-
-
-        [HKEY_CLASSES_ROOT\.foo]
-         "MicroEmacs_foo"
-        [HKEY_CLASSES_ROOT\MicroEmacs_foo\DefaultIcon]
-         "C:\Program File\JASSPA\MicroEmacs\meicons,23"
-        [HKEY_CLASSES_ROOT\MicroEmacs_foo\Shell\open]
-         "&Open"
-        [HKEY_CLASSES_ROOT\MicroEmacs_foo\Shell\open\command]
-         "C:\Program File\JASSPA\MicroEmacs\me32.exe -o "%1""
-
-
-    In the previous example the cCDefaultIconcA entry is the icon assigned to the
-    file. This may be an icon taken from cGmeicons.execA (in this case icon number
-    23), or may be some other icon. The open action in the example uses the cD-ocA
-    option of the cCclient-servercA, which loads the file into the current
-    MicroEmacs 2009 session, alternatively the cD-ccA option may be used to retain
-    the previous context, or no option if a new session with no other files
-    loaded is started.
-
-    A generic open for ALL files may be defined using a wild-card, this may be
-    used to place a cCMicroEmacscA edit entry in the right-click pop-up menu, as
-    follows:-
-
-        [HKEY_CLASSES_ROOT\*\shell]
-        [HKEY_CLASSES_ROOT\*\shell\MicroEmacs]
-         "&MicroEmacs"
-        [HKEY_CLASSES_ROOT\*\shell\MicroEmacs\command]
-         "C:\Program File\JASSPA\MicroEmacs\me32.exe -o "%1""
+cELegacy Installations cA
+
+    Older installations of the original JASSPA MicroEmacs distribution
+    (2004-2009) used separate archives: cGjasspa-metree-YYYYMMDD.tar.gzcA for the
+    macro files and the help, separate spelling dictionary and icon archives and
+    the bare executables. The suggested tree placed cGmacroscA, cGspellingcA and an
+    optional cGcompanycA directory below a cGjasspacA root directory (searched in
+    the order root, company, macros, spelling); system wide installs used
+    cG/usr/local/jasspacA together with the cG$MEINSTALLPATHcA variable.
+
+    These archives and the older platform sections (DOS, Windows 3.1/3.11 and
+    Windows 95/98/NT/2K) are no longer built or supported. Current releases only
+    ship the single-file binaries described above; use the installer scripts
+    whenever possible. The old JASSPA download pages remain available for
+    historical reference (see the links in the project README).
 
 
 cEORGANIZING A LOCAL USER PROFILE cA
@@ -30874,10 +30365,12 @@ $a
 
 cEBuild since 2024 cA
 
-    The  version  which is on Github  should be build using  the makefiles in
-    the makefiles folder of the github project named  unixgcc.gmk,  macosgcc.gmk
-    and linuxmingwgcc.gmk  (this currently  supports crosscompiling on Linux
-    using the Mingw version of the Gcc compiler.
+    The version on Github is built with the makefiles in the cGmakefilescA folder
+    of the project. The most important ones are cGunixgcc.gmkcA (Linux / Cygwin /
+    MSYS2), cGmacosgcc.gmkcA (macOS), cGfreebsd.makcA (FreeBSD), cGlinuxmingwgcc.gmkcA
+    (cross compile on Linux with MinGW), cGwinmingwgcc.gmkcA (native MSYS2 build)
+    and cGwin32winlibs.gmkcA (WinLibs). A plain cGmakecA in the top level directory
+    dispatches to the correct makefile for the host system.
      
     The following executables can be build.
     
@@ -30948,7 +30441,9 @@ $a
     
           make -f makefiles/unixgcc.gmk mec bfs/bin mecb
           
-    TODO: MacOS and Windows (with msys2) build explanations
+    For macOS use cGmakefiles/macosgcc.gmkcA, for FreeBSD cGmakefiles/freebsd.makcA
+    (with the system cGmakecA), and for a native MSYS2/MinGW build on Windows use
+    cGmakefiles/winmingwgcc.gmkcA or cGmakefiles/win32winlibs.gmkcA.
     
 cEBuilding the GUI Version (mew/mecw and mewb/mecwb) cA
 
@@ -30964,263 +30459,42 @@ $a
     You should then have a file like  cCmewb-0912XX-linux-KERNEL-DISTRO-VERSION.bincA in the
     current folder
     
-    TODO: build MacOS, Windows (with msys2) instructions, the commands are:
-    
     MacOS:
     
           make -f makefiles/macosgcc.gmk mec bfs/bin mecb
           make -f makefiles/macosgcc.gmk mew mewb
 
-    Windows (Cross compiling on Linux):
-    
-          make -f win32mingw.gmk mec bfs/bin mecb
-          make -f win32mingw.gmx mew mewb
+    Windows native terminal build using MSYS2 (run inside the MSYS2 shell):
+
+          make -f makefiles/winmingwgcc.gmk mecb BDIST=mingw64
+          make -f makefiles/winmingwgcc.gmk mewb BDIST=mingw64
+
+    Windows native build using WinLibs (run inside a cmd shell):
+
+          mingw32-make -f makefiles/win32winlibs.gmk mec
+
+    Windows cross compile on Linux (produces native Windows executables):
+
+          make -f makefiles/linuxmingwgcc.gmk mec bfs/bin mecb
+          make -f makefiles/linuxmingwgcc.gmk mew mewb
             
     For cCmecwbcA builds just replace cCmewcA with cCmecwcA and cCmewbcA with cCmecwbcA.
+    See the file cGdoc/mingw-build.mdcA in the source tree for the Windows details.
     
-cEBuild before 2024 or for older Platforms cA
+cELegacy Builds (before 2024) cA
+
+    Releases before 2024 were built from the source tree with the shell scripts
+    cCbuildcA (UNIX Bourne Shell) or cCbuild.batcA (DOS/Windows) which auto detected the
+    host system. Those scripts, and the large set of platform specific makefiles
+    that went with them (aix, hpux, irix, osf1, sunos, DOS/djgpp, old Visual C++ /
+    Borland Win32 and MS-Dev projects), are obsolete and are no longer part of the
+    Github source tree. The only supported build files are the ones in the
+    cGmakefilescA folder described above, i.e. cGunixgcc.gmkcA, cGmacosgcc.gmkcA,
+    cGfreebsd.makcA, cGlinuxmingwgcc.gmkcA, cGwinmingwgcc.gmkcA and cGwin32winlibs.gmkcA.
+
+    For historical build instructions of the old platforms refer to an older
+    release tarball from https://www.jasspa.com or the project history.
 
-    This are the old build  instructions which you might try in case you like to
-    build for other platforms like other Unix systems or even DOS.
-    
-    MicroEmacs 2009 may be compiled from the source files using the command
-    shell build scripts cCbuildcA (UNIX Bourne Shell) or cCbuild.batcA (DOS/Windows).
-    A default compile sequence may be achieved with a simple:
-
-        build
-
-
-    from the command line. The build script attempts to detect the host system
-    and available compiler and build the editor.
-
-    The build script recognizes the following options:-
-
-    cD-CcA
-
-       Build clean. Delete all of the object files.
-
-    cD-dcA
-
-       Build a debugging version, the output is cGmedcA (or cGmed32cA for 32-bit
-       Windows versions).
-
-    cD-hcA
-
-       Display a simple help page
-
-    cD-lcA cClogfilecA
-
-       Redirect all compilation output to the cClogfilecA, this may not work on
-       DOS or Windows systems.
-
-    cD-lacA cClogfilecA
-
-       Append all compilation output to the end of cClogfilecA, this may not work
-       on DOS or Windows systems.
-
-    cD-mcA cCmakefilecA
-
-       Build using the specified makefile. over-riding the auto system
-       detect. The supplied makefiles include:-
-
-                  * aix4.mak IBM AIX 4.x native.
-                  * aix5.mak IBM AIX 5.x native.
-                  * aix4.gmk IBM AIX 4.x using GNU tools.
-                  * aix5.gmk IBM AIX 5.x using GNU tools.
-                  * unixgcc.gmk Linux, Cygwin and MSYS2 using GNU tools.
-                  * darwin.gmk Apple Darwin (console and X-Windows).
-                  * dosdj1.mak Microsoft DOS build using djgpp version 1.
-                  * dosdj2.mak Microsoft DOS build using djgpp version 2.
-                  * freebsd.gmk Free BSD using GNU tools.
-                  * hpux9.gmk HP-UX 9.x using GNU tools.
-                  * hpux9.mak HP-UX 9.x native
-                  * hpux10.gmk HP-UX 10.x using GNU tools.
-                  * hpux10.mak HP-UX 10.x native
-                  * hpux11.gmk HP-UX 11.x using GNU tools.
-                  * hpux11.mak HP-UX 11.x native
-                  * irix5.gmk Silicon Graphics IRIX 5.x using GNU tools
-                  * irix5.mak Silicon Graphics IRIX 5.x native
-                  * irix6.gmk Silicon Graphics IRIX 6.x using GNU tools
-                  * irix6.mak Silicon Graphics IRIX 6.x native
-                  * linux2.gmk Linux 2.2/4 kernels using GNU tools
-                  * linux26.gmk Linux 2.6 kernels using GNU tools
-                  * mingw.gmk minGW http://www.MinGW.org using GNU tools.
-                  * osf1.gmk OSF1 using GNU tools.
-                  * openbsd.gmk OpenBSD using GNU tools.
-                  * openstep.mak Openstep 4.2 on NeXTstep (BSD 4.3).
-                  * sunos5.gmak Sun Solaris 5.5/6/7/8/9/10 using GNU tools
-                  * sunos5.mak Sun Solaris 5.6/7/8/9/10 native
-                  * sunosx86.gmk Sun Solarais 2.6/7/8/9/10 (Intel) using GNU
-                    tools.
-                  * win32bc.mak Borland C, 32-bit Windows version.
-                  * win32b55.mak Borland C 5.5, 32-bit Windows version (Free
-                    compiler).
-                  * win32sv2.mak Microsoft Developer v2.x, Win32s (for Win 3.xx)
-                  * win32sv4.mak Microsoft Developer v4.2, Win32s (for Win 3.xx)
-                  * win32v2.mak Microsoft Developer v2.x, 32-bit Windows.
-                  * win32v5.mak Microsoft Developer v5.x, 32-bit Windows.
-                  * win32v6.mak Microsoft Developer v6.x, 32-bit Windows.
-                  * zaurus.gmk Zauras palm using GNU tools.
-
-    cD-necA
-
-       Build NanoEmacs (a cut down version aimed as a vi replacement), the
-       output is cGnecA (or cGned32cA for 32-bit Windows versions).
-
-    cD-ScA
-
-       Build spotless. Deletes all of the object files and any backup files,
-       tag files etc.
-
-    cD-tcA cCtypecA
-
-       Set the build type, where cCtypecA can be one of the following:
-
-    * c Build a console only version (i.e. no window support), the
-      output is mec (mec.exe on Windows).
-    * w Build a windows only version (i.e. no console support),
-      the output is mew (mew.exe on Windows).
-    * cw Build a version which supports both console and windows,
-      the output is mecw (mecw.exe on Windows).
-
-
-cEMakefiles  cA
-
-
-    The supplied makefiles are provided in two forms:-
-
-    - cD.gmkcA - GNU make, using gcc.
-    - cD.makcA - Native make, consistent with the compiler and platform.
-
-    The makefiles are supplied with the following targets:-
-
-    - cDallcA - Default build.
-    - cDcleancA - Removes intermediate files.
-    - cDspotlesscA - Removes intermediate files and any backup files.
-    - cDmecA - Builds the default MicroEmacs executable.
-    - cDmedcA - Builds a debugging version.
-    - cDmeccA - Builds a console only version.
-    - cDmewcA - Builds a windows only version.
-    - cDmecwcA - Builds a version which supports both console and windows.
-    - cDnecA - Builds NanoEmacs executable.
-
-
-cEWINDOWS ENVIRONMENT cA
-
-
-    The Windows environment is a little more difficult than UNIX because it
-    does not have a good native command line environment. There are two
-    Microsoft Developer options for building. If you have not purchased MS-DEV
-    then use the FREE Borland compiler which runs on the command line.
-
-
-cEMinGW Build  cA
-
-
-    A collection of freely available and freely distributable Windows specific
-    header files and import libraries combined with GNU toolsets that allow
-    one to produce native Windows programs that do not rely on any 3rd-party C
-    runtime DLLs. Available from http://www.mingw.org, cDmingwcA allows a
-    Microsoft Windows version MicroEmacs to bu built and maintained.
-
-
-cEMS-Dev GUI Build  cA
-
-
-    MicroEmacs is supplied with a MS-Dev 6.x project for building. This has
-    only been set up for debugging and has limited build options, it will also
-    produce a large executable image. The MS-Windows images shipped by JASSPA
-    are built using the command line build environment which is detailed in a
-    later section.
-
-
-cEMS-Dev Command Line Build  cA
-
-
-    The command line build with MS-Dev is a little messy to set up, in the
-    following sections we discuss MS-Dev 6.x under Windows 2000. There will be
-    differences with different operating systems versions, different install
-    paths and different versions of the MS-Dev toolkit. Use the following
-    information as an outline ONLY, JASSPA will not take responsibility for
-    the configuration of the command line environment, if in doubt then use
-    the GUI builder.
-
-    To run cDnmake(1)cA from a DOS box then the MS-Dev compiler tools must be
-    available in the command path. The MS-Dev kit V6.x is supplied with the
-    necessary file to set up the path which is called cGVCVARS32.BATcA and is
-    typically located in directory:
-
-        C:\Program Files\Microsoft Visual Studio\VC98\Bin
-
-
-    This should be run first and then the command line make files may be run
-    using nmake i.e. to build ME:-
-
-        nmake -f win32v6.mak me
-
-
-    To build NE:-
-
-        nmake -f win32v6.mak ne
-
-
-    To clean up after:-
-
-        nmake -f spotless
-
-
-    If you are going to perform a lot of command line building then it is
-    easier to set up the environment and not have to run cGVCVARS32.BATcA every
-    time you compile.
-
-    You can add the variables to your environment, you will need to expand the
-    cGVCVARS32.BATcA script and then add the results. The following example is for
-    MS-Dev 6.0 under W2K, the settings will differ depending on what O/S
-    variant you are running and where you have installed software. The
-    following ONLY serves as an example, you need to tailor for your
-    installation.
-
-    - To set up the variables then cDStartcA -> cDSettingscA -> cDControlcA cDPanelcA
-          which displays the Control Panel items.
-    - Select cDSystemcA -> cDAdvancedcA -> cDEnvironment variablescA
-    - In cDUser Variables forcA cC<User>cA then cDNew...cA or cDEdit...cA the cGPATHcA
-        variable. Add the command line tools execution paths to the
-        environment variable, this will be something like the following (but
-        without newlines):-
-
-                  Variable Name:  PATH
-                  Variable Value: %PATH%;
-                                  C:\PROGRA~1\MICROS~3\Common\msdev98\BIN;
-                                  C:\PROGRA~1\MICROS~3\VC98\BIN;
-                                  C:\PROGRA~1\MICROS~3\Common\TOOLS\WINNT;
-                                  C:\PROGRA~1\MICROS~3\Common\TOOLS;
-
-    - Similarly add the cGINCLUDEcA variable:-
-
-                  Variable Name:  INCLUDE
-                  Variable Value: C:\PROGRA~1\MICROS~3\VC98\ATL\INCLUDE;
-                                  C:\PROGRA~1\MICROS~3\VC98\INCLUDE;
-                                  C:\PROGRA~1\MICROS~3\VC98\MFC\INCLUDE;
-                                  %INCLUDE%
-
-    - Similarly add the cGLIBcA variable:-
-
-                  Variable Name:  LIB
-                  Variable Value: C:\PROGRA~1\MICROS~3\VC98\LIB;
-                                  C:\PROGRA~1\MICROS~3\VC98\MFC\LIB;
-                                  %LIB%
-
-    - Accept the entries and close down the dialog. Start a new DOS command
-       line and the variables should be set up ready for the build.
-
-
-cENOTES cA
-
-
-    Other UNIX ports should be fairly easy from the base set of ported
-    platforms. If any new platform ports are performed by individuals then
-    please submit the makefiles and any source changes back to JASSPA - see
-    lsContact InformationlmContact Informationle.
 ! 2 localeSupport
 cEcELOCALE SUPPORT cEcA
 
@@ -31313,6 +30587,31 @@ $a
     lsuser-setup(3)lmuser-setup(3)le. All the settings required for supporting each character set
     may be found in the cGcharset.emfcA macro file, so if your character set is
     not supported, this is the file to edit.
+
+
+cEBuffer Encoding cA
+
+    Since the 2026 releases MicroEmacs stores text internally per buffer and keeps
+    the file encoding with the buffer in the cG$buffer-encodingcA variable. UTF-8 is
+    handled natively for editing, display and external tools, so no iconv round
+    trip is needed for UTF-8 files any more.
+
+    When a file is loaded the encoding is auto-detected from its contents (a BOM or
+    valid UTF-8 sequences select UTF-8, otherwise a single byte encoding such as
+    ISO-8859-x or cp1252 is assumed). The detected value is available as
+    cG$buffer-encodingcA and can be changed with the lscharset-change(3)lmcharset-change(3)le command or by
+    setting the variable directly before saving.
+
+    The default encoding, and the encoding used for new buffers and for the
+    terminal, can be forced on the command line with the cD-EcA option, for example
+    cGmec -E utf-8`, `mec -E iso-8859-15cA or `mec -E cp1252`. The related variables
+    cG$encodingcA (terminal encoding) and cG$internal-encodingcA (encoding used by the
+    legacy luit conversion) are described together with the other variables.
+
+    Characters that cannot be represented in a buffer's encoding are written using
+    cG\uXXXXcA escapes when saved to a single byte encoding, so no data is lost
+    silently. See also the file cGdoc/utf8-encoding.mdcA in the source tree for the
+    full design notes.
 
 
 cEKeyboard Support cA
@@ -38179,10 +37478,14 @@ $a
     user's character set to ISO-8859-1 (Latin 1), this is typically used for
     the transfer of text files between different systems.
 
+    Since the 2026 releases MicroEmacs edits UTF-8 natively: every buffer carries its
+    own encoding (variable cG$buffer-encodingcA), auto-detected on load and overridable
+    with the cD-EcA command line option. The iconv based conversion functions below
+    are therefore only needed for legacy single-byte work or when a file has to be
+    converted to or from a specific encoding explicitly.
+
     The utf8 conversion functions can be used to convert UTF-8 characters to the 
     ISO or Windows encoding selected currently in lsuser-setup(3)lmuser-setup(3)le. 
-    The UTF-8 characters can't be displayed by MicroEmacs - so they should be converted 
-    usually using these  functions. 
     To  convert  your  current  opened  file  into the  current  character set from
     UTF-8  Unicode  you use  the  function  cDcharset-utf8-to-isocA.  In case of
     trouble  you might get an empty  buffer, you should  then reload the current
@@ -45520,60 +44823,11 @@ $a
 cEPlatform - DOS Setup  cA
 
 
-    Only present on DOS machines.
-
-    cGGraphic Mode #cA and `Double Lines`
-    
-       Sets the DOS graphics mode number and whether the number of text lines
-       can be doubled. This indirectly executes lschange-font(2)lmchange-font(2)le with the given
-       font name.
-
-    `Display Char Set`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Double Lines`
-    
-       In some graphic modes the number of text lines can be doubled via a
-       dos terminal call, this option is worth trying if more visible text
-       lines are required.
-
-    `Draw White Spaces`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Enable Toolbar`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Ignore Files`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Cursor Blink Rate`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Fence Display`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Scroll Bars`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Horizontal Scroll`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Vertical Scroll`
-    
-       See cDPlatform UNIX SetupcA above.
-
-    `Color Scheme`
-    
-       See cDPlatform UNIX SetupcA above.
-
+    cCLegacy.cA This page of the dialog is only present on the old 16 bit MS-DOS
+    builds, which are no longer supported. It allowed setting the DOS graphics
+    mode number, doubling the number of text lines and selecting the displayed
+    character set. On all current platforms the equivalent settings are on the
+    cDPlatform - UNIX SetupcA or cDPlatform - Windows SetupcA pages.
 
 cEMouse  cA
 
@@ -45806,6 +45060,16 @@ $a
     - Middle click: Paste from PRIMARY selection
     - Wheel up/down: Scroll window
     - Right click: Context menu (if bound)
+
+    On X11 a middle click reads the PRIMARY selection with `xclip
+    -selection primary` (or `xsel --primary`). Where the clipboard tool has
+    no primary selection - cGwl-pastecA on Wayland, cGpbpastecA on macOS - the
+    system clipboard is pasted instead. If the primary selection is empty
+    the internal kill buffer is pasted, so a selection made with the mouse
+    inside the editor can be pasted straight back. This follows the X11
+    convention that PRIMARY is pasted with the middle button while the
+    "Use Clipboard" option (CLIPBOARD, Ctrl+C/Ctrl+V) is used for explicit
+    copies.
 
     Mouse support can be enabled or disabled at runtime using the
     user-setup dialog (Platform tab) or by setting the $mouse variable.
@@ -59062,13 +58326,13 @@ $a
     environment variable $version has been defined. cGcGERRORcAcA evaluates to cG0cA
     hence the test still operates correctly.
 
-    In 2024 with version "20091224" the variable was extended to introduce 
-    beta-releases with the string  "b1" or "b2" at the end, for instance
-    "20091224b1". 
+    Since the 2024 releases the version string may carry a beta suffix such as
+    "b1" or "b2" at the end, for instance "091226b6". A final release (no suffix)
+    ranks above any beta of the same date.
     
-    Please note that since 2021 the four numbers at the beginning does not give
-    the release year, but the version year. There is this MicroEmacs 2009 version
-    and an other, at this time not yet released, MicroEmacs 2024 version.
+    Please note that the six leading digits are the release date as YYMMDD, where
+    the YY part is the version year rather than the calendar year, so for example
+    "091226" identifies a release of the MicroEmacs 2009 line.
     
     This variable is used in the macro file cGme.emfcA to check for any macro -
     executable incompatibility issues.

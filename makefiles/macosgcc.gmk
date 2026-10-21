@@ -60,8 +60,6 @@ brew: mecb mewb
 	mkdir -p brew-macos-$(VERSION)/bin
 	cp $(RELEASE)-mecb.bin   brew-macos-$(VERSION)/bin/mecb
 	cp $(RELEASE)-mewb.bin   brew-macos-$(VERSION)/bin/mewb	
-	cp bin/mecu              brew-macos-$(VERSION)/bin/mecu
-	chmod 755                brew-macos-$(VERSION)/bin/mecu
 	cp COPYING               brew-macos-$(VERSION)/license.txt
 	cp docs/README-standalone.md  brew-macos-$(VERSION)/README.md
 	tar cfz brew-macos-$(VERSION).tar.gz brew-macos-$(VERSION)/*

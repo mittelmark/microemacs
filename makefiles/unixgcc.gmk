@@ -256,8 +256,6 @@ endif
 
 brew: mecb mewb
 	mkdir -p brew-linux-$(VERSION)/bin
-	cp bin/mecu              brew-linux-$(VERSION)/bin/
-	chmod 755                brew-linux-$(VERSION)/bin/mecu  
 	cp bfs/bfs               brew-linux-$(VERSION)/bin/
 	cp $(RELEASE)-mecb.bin   brew-linux-$(VERSION)/bin/mecb
 	cp $(RELEASE)-mewb.bin   brew-linux-$(VERSION)/bin/mewb

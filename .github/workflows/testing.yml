@@ -24,6 +24,7 @@ jobs:
           export TERM=xterm
           MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.linuxgcc-release-mec/mec @tests/test-enc17-mn 2>/dev/null || true
       - name: Verify test results
         run: |
           if [ -s tests/test-output.txt ]; then
@@ -34,6 +35,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -44,6 +47,29 @@ jobs:
         with:
           name: test-results-linux
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Mouse-resize regression test (ticket 21)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-resize-test.py src/.linuxgcc-release-mec/mec
+      - name: Mouse-wheel regression test (ticket 22)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-wheel-test.py src/.linuxgcc-release-mec/mec
+      - name: Mouse-modifier regression test
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mod-test.py src/.linuxgcc-release-mec/mec
+      - name: Mouse middle-click paste regression test (ticket 25)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mid-test.py src/.linuxgcc-release-mec/mec
+      - name: Modified cursor-key regression test (Alt/Ctrl/Shift arrows)
+        timeout-minutes: 5
+        run: |
+          python3 tests/alt-cursor-test.py src/.linuxgcc-release-mec/mec
 
   macos:
     runs-on: macos-latest
@@ -67,6 +93,7 @@ jobs:
           export TERM=xterm
           MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
+          MEPATH=jasspa/macros ./src/.macosgcc-release-mec/mec @tests/test-enc17-mn 2>/dev/null || true
       - name: Verify test results
         run: |
           if [ -s tests/test-output.txt ]; then
@@ -77,6 +104,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -87,6 +116,29 @@ jobs:
         with:
           name: test-results-macos
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Mouse-resize regression test (ticket 21)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-resize-test.py src/.macosgcc-release-mec/mec
+      - name: Mouse-wheel regression test (ticket 22)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-wheel-test.py src/.macosgcc-release-mec/mec
+      - name: Mouse-modifier regression test
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mod-test.py src/.macosgcc-release-mec/mec
+      - name: Mouse middle-click paste regression test (ticket 25)
+        timeout-minutes: 5
+        run: |
+          python3 tests/mouse-mid-test.py src/.macosgcc-release-mec/mec
+      - name: Modified cursor-key regression test (Alt/Ctrl/Shift arrows)
+        timeout-minutes: 5
+        run: |
+          python3 tests/alt-cursor-test.py src/.macosgcc-release-mec/mec
 
   windows-ucrt64:
     runs-on: windows-latest
@@ -109,6 +161,7 @@ jobs:
           ls src/
           MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-basics 2>/dev/null || true
           cat tests/test-output.txt
+          MEPATH=jasspa/macros src/.ucrt64win-release-mec/mec.exe @tests/test-enc17-mn 2>/dev/null || true
       - name: Verify test results
         shell: msys2 {0}
         run: |
@@ -120,6 +173,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -130,6 +185,56 @@ jobs:
         with:
           name: test-results-windows-mingw
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: msys2 {0}
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
+      - name: Mouse-wheel regression test (ticket 22)
+        timeout-minutes: 3
+        shell: msys2 {0}
+        run: |
+          # The native Windows console build uses src/winterm.c. A CI step
+          # has no console, so AllocConsole() would otherwise succeed and
+          # mec would read that new (empty) console instead of our pipe;
+          # ME_CONSOLE_PIPEMODE forces the raw "pipe mode" SGR path fixed
+          # for ticket 22.
+          #
+          # The report is repeated ~1s apart rather than sent once up front:
+          # ME runs a TTahead()/TTinflush() during start-up which reads and
+          # discards input already waiting in the pipe. A single early report
+          # was swallowed, after which the closed pipe gave EOF and mec called
+          # meDie() -> exit 1 with no file written. Keeping the pipe open and
+          # writing after start-up makes the report land in the main loop.
+          export TERM=xterm-256color
+          export TERM_PROGRAM="Windows Terminal"
+          export ME_CONSOLE_PIPEMODE=1
+          export ME_MOUSE_WORK=mwtest
+          rm -rf mwtest && mkdir -p mwtest
+          echo "--- wheel-down (SGR button 65) ---"
+          rc=0
+          { for _i in 1 2 3 4 5 6 7 8; do sleep 1; printf '\033[<65;5;5M' || break; done; sleep 2; } \
+            | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win > mwtest/console-down.out 2>&1 || rc=$?
+          echo "mec exit=$rc"
+          head -c 200 mwtest/console-down.out 2>/dev/null | cat -v; echo
+          cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
+          grep -q 'wheel=down' mwtest/mouse-wheel-win-out.txt
+          rm -f mwtest/mouse-wheel-win-out.txt
+          echo "--- wheel-up (SGR button 64) ---"
+          rc=0
+          { for _i in 1 2 3 4 5 6 7 8; do sleep 1; printf '\033[<64;5;5M' || break; done; sleep 2; } \
+            | MEPATH=jasspa/macros timeout 30 src/.ucrt64win-release-mec/mec.exe @tests/mouse-wheel-win > mwtest/console-up.out 2>&1 || rc=$?
+          echo "mec exit=$rc"
+          head -c 200 mwtest/console-up.out 2>/dev/null | cat -v; echo
+          cat mwtest/mouse-wheel-win-out.txt 2>/dev/null || echo "(no output)"
+          grep -q 'wheel=up' mwtest/mouse-wheel-win-out.txt
+      - name: Mouse-modifier regression test
+        timeout-minutes: 3
+        shell: msys2 {0}
+        run: |
+          # Pipes one SGR click report per run, with a Shift/Alt/Control
+          # modifier bit in the button number, and checks each reaches the
+          # matching binding (see tests/mouse-mod-win.sh).
+          sh tests/mouse-mod-win.sh src/.ucrt64win-release-mec/mec.exe || { echo "FAIL: mouse modifier test"; exit 1; }
 
   windows-msysunix:
     runs-on: windows-latest
@@ -159,6 +264,7 @@ jobs:
           export TERM=xterm
           script -q -c "MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
+          script -q -c "MEPATH=jasspa/macros src/.ucrt64unix-release-mec/mec.exe @tests/test-enc17-mn" /dev/null 2>/dev/null || true
       - name: Verify test results
         shell: msys2 {0}
         run: |
@@ -170,6 +276,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -180,6 +288,10 @@ jobs:
         with:
           name: test-results-msysunix
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: msys2 {0}
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   cygwin-x64:
     runs-on: windows-latest
@@ -209,6 +321,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
+          script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-enc17-mn" /dev/null 2>/dev/null || true
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
@@ -221,6 +334,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -231,6 +346,11 @@ jobs:
         with:
           name: test-results-cygwin-x64
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          cd $GITHUB_WORKSPACE
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   cygwin-x86:
     runs-on: windows-latest
@@ -260,6 +380,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-basics" /dev/null 2>/dev/null || true
           cat tests/test-output.txt
+          script -q -c "MEPATH=jasspa/macros ./src/.cygwin-release-mec/mec.exe @tests/test-enc17-mn" /dev/null 2>/dev/null || true
       - name: Verify test results
         shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
         run: |
@@ -272,6 +393,8 @@ jobs:
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
+            grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
+            grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }
           else
             echo "FAIL: No test output produced"
             exit 1
@@ -282,6 +405,11 @@ jobs:
         with:
           name: test-results-cygwin-x86
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+        run: |
+          cd $GITHUB_WORKSPACE
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }
 
   windows-winlibs:
     runs-on: windows-2022
@@ -304,6 +432,7 @@ jobs:
         run: |
           set MEPATH=jasspa\macros
           src\.win32winlibs-release-mec\mec.exe @tests\test-basics
+          src\.win32winlibs-release-mec\mec.exe @tests\test-enc17-mn
           type tests\test-output.txt
       - name: Verify test results
         shell: cmd
@@ -316,6 +445,8 @@ jobs:
             findstr /C:"TEST:unicode=" tests\test-output.txt >nul && echo PASS: unicode test || (echo FAIL: unicode test & exit /b 1)
             findstr /C:"TEST:utf8-strfuncs=ok" tests\test-output.txt >nul && echo PASS: utf8 string functions test || (echo FAIL: utf8 string functions test & exit /b 1)
             findstr /C:"TEST:func-lookup=ok" tests\test-output.txt >nul && echo PASS: function lookup test || (echo FAIL: function lookup test & exit /b 1)
+            findstr /C:"TEST:scroll-bob=ok" tests\test-output.txt >nul && echo PASS: scroll top test || (echo FAIL: scroll top test & exit /b 1)
+            findstr /C:"TEST:scroll-eob=ok" tests\test-output.txt >nul && echo PASS: scroll end test || (echo FAIL: scroll end test & exit /b 1)
           ) else (
             echo FAIL: No test output produced
             exit /b 1
@@ -326,3 +457,7 @@ jobs:
         with:
           name: test-results-windows-winlibs
           path: tests/test-output.txt
+      - name: Verify encoding tests (ticket 17)
+        shell: bash
+        run: |
+          sh tests/check-enc17.sh || { echo "FAIL: encoding tests (ticket 17)"; exit 1; }

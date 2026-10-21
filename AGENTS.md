@@ -223,12 +223,32 @@ A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Wi
 
 | File | Purpose |
 |------|---------|
-| `bin/install.sh` | Unix curl-based installer (downloads latest release) for Linux, MaxOS, Cygwin/Windows and Msys/Windows|
+| `bin/install.sh` | Unix curl-based installer (downloads latest release) for Linux, macOS, Cygwin/Windows and Msys/Windows |
 | `bin/install-windows.ps1` | Windows PowerShell installer |
 | `bin/install-fonts.sh` | X11 font installer |
 | `bin/install-dict.sh` | Spelling dictionary installer |
 
-For full details on the install and update mechanism, see `doc/install.md`.
+The installers are the default installation path; the detailed user-facing
+instructions live in `README.md`, and the built-in help page "Installation"
+(`doc/front.smd`) carries a short offline copy plus the manual/legacy fallback.
+`install.sh` installs `mecb`/`mewb` into `~/.local/bin` (adding it to the PATH
+once); `install-windows.ps1` installs `mecb.exe`/`mewb.exe` into
+`%LOCALAPPDATA%\bin` and creates a Start Menu shortcut. Both also write an
+updater bootstrap (`mecb-update`; `mecb-update.ps1` + `mecb-update.bat` on
+Windows) that downloads the current installer and lets it decide whether a
+newer release exists.
+
+Version encoding: versions are `YYMMDDbN`, compared as
+`YY*1000000 + MM*10000 + DD*100 + N`; a final release (no `b` suffix) ranks
+above any beta of the same date. `mecb -V` prints the parsed date portion
+(e.g. `2009/12/26b4`).
+
+Release note for maintainers: the bootstraps download
+`releases/latest/download/install.sh` and
+`releases/latest/download/install-windows.ps1`, so when cutting a release
+re-upload both installer scripts as release assets
+(`gh release upload <tag> bin/install.sh bin/install-windows.ps1`), otherwise
+users keep fetching the previous installer.
 
 ## Developing on Windows / MSYS2
 
@@ -535,7 +555,7 @@ These are included by headers to generate lookup tables:
 - `bfs/` - Built-in File System tool (embeds macros into executables)
 - `bin/` - Helper scripts (install, fonts, themes, `ehf2md.tcl`)
 - `makefiles/` - Top-level build makefiles (dispatcher, `unixgcc.gmk`, …)
-- `doc/` - Documentation (me.smd → me.ehf)
+- `doc/` - Documentation (`me.smd` + `history.smd` → `me-full.smd` → `me.ehf`)
 - `docs/` - EMF tutorial (emf-tutorial.md)
 - `tests/` - Sample source files in 42+ programming languages, plus
   `tests/test-basics.emf` (CI regression suite), `tests/encodings/`
@@ -844,16 +864,24 @@ grep -q "TEST:my-key=" tests/test-output.txt && echo "PASS: my test" || echo "FA
 
 ## Documentation
 
-- Source: `doc/me.smd` (Markdown-like format)
+- The manual is split into four source files, assembled in page order by
+  `doc/Makefile` (`cat front.smd history.smd faq.smd reference.smd`):
+  - `doc/front.smd` - front matter: home, acknowledgments, copyright, contact
+  - `doc/history.smd` - the MicroEmacs development history
+  - `doc/faq.smd` - the Frequently Asked Questions
+  - `doc/reference.smd` - the command, macro, variable and file type reference
+- The four files are assembled into the generated `doc/me-full.smd`; always
+  edit the four source files, never `me-full.smd`
 - EHF file build with "cd doc && make ehf && cp me.ehf ../jasspa/macros && cd .."
-- HTML files built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm` -  but needs update file list
-- Links section at top of me.smd for cross-references
+- HTML files built with "cd doc && make html-all" (per page ranges in
+  `doc/Makefile`; keep them in sync when pages are added)
+- HTML files can also be built with: `tclsh bin/ehf2md.tcl jasspa/macros/me.ehf files.txt htm` -  but needs update file list
+- Links section at top of front.smd for cross-references
 
 Additional reference documentation:
 
 | File | Topic |
 |------|-------|
-| `doc/install.md` | Installation and update logic (`install.sh`, `mecb-update`, version encoding, platform matrix) |
 | `doc/clipboard-support.md` | Clipboard implementation — C source, macro fallback, xclip hand-off, Wayland dual-clipboard |
 | `doc/mingw-build.md` | MinGW/MSYS2 cross-compilation setup and known issues |
 | `doc/emf-bnf.md` | Back-Naur-Form defintion for ME macro files |

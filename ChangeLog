@@ -7,11 +7,315 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261003.1134>
+  > Last Modified : <261016.0538>
 >
->  Authors:      : John Green, Steven Phillips, Detlef Groth
+>  Authors:      : John Green, Steven Phillips, Detlef Groth, MiMo-2.5, MiMo 2.6-Flash
 
 ## 2026
+
+  [261021] - Docs sync and ticket housekeeping. Regenerated the compiled
+               help jasspa/macros/me.ehf from the current manual sources;
+               the previous copy predated the terminal middle-click
+               (ticket 25) and modified-cursor-key (ticket 26) text. Marked
+               tickets 21 (terminal window resize by mouse drag) and 22
+               (terminal wheel scrolling) DONE now that they have been
+               confirmed on a real terminal emulator and on macOS. Files:
+               jasspa/macros/me.ehf, doc/tickets.md, ChangeLog
+
+  [261016] - Terminal modified cursor keys (ticket 26). Alt-Left and
+               Alt-Right inserted the literal "1;3D" / "1;3C" in the
+               console build (mec) instead of running the bound command,
+               while they worked in the X11 build (mew). Terminals send the
+               xterm modified-cursor-key sequence CSI 1 ; <modifier>
+               <final> (modifier = 1 + shift + 2*alt + 4*control); termcap
+               only describes the unmodified forms, so the translation
+               table had no entry and the trailing characters leaked
+               through after "ESC [" had been eaten as the M-[ prefix.
+               TCAPstart in src/unixterm.c now registers the
+               CSI 1;<modifier><final> forms for the four cursor keys
+               (A/B/C/D) and home/end (H/F) for every Shift/Alt/Control
+               combination, mapped onto the same ME_SPECIAL|modifier|
+               SKEY_xxx codes as the X11 server path so the existing
+               bindings (A-left -> backward-word) apply unchanged.
+               Regression test tests/alt-cursor-test.py (Linux + macOS).
+               Files: src/unixterm.c, tests/alt-cursor.emf,
+               tests/alt-cursor-test.py, .github/workflows/testing.yml,
+               doc/reference.smd, doc/tickets.md, ChangeLog
+
+  [261016] - Terminal middle-click now pastes the primary selection
+               (ticket 25). The default middle-button binding yanks ME's
+               kill ring; on X11 (mew) that yank refreshes the ring from
+               the PRIMARY selection, but the console build (mec) always
+               used "xclip -selection clipboard -o", so a terminal middle
+               click could not paste what the mouse had selected in
+               another application. Because the yank runs from a macro the
+               clexec/allow-clip-exec guard also suppressed the external
+               fetch altogether unless $allow-clip-exec was set. A
+               middle-button release now flags the next fetch with the new
+               CLIP_MOUSE_PASTE bit (src/edef.h, mirroring the
+               CLIP_MOUSE_PENDING copy flag); TTgetClipboard() consumes it
+               and the console runs xclip -selection primary -o / xsel
+               --primary --output (wl-paste, clip.exe and pbpaste have no
+               primary selection and fall back to the clipboard) while the
+               X11 path requests XA_PRIMARY. The clexec guard is bypassed
+               for this user gesture and the internal kill ring stays the
+               fallback when the primary selection is empty. Regression
+               test tests/mouse-mid-test.py (Linux + macOS). Files:
+               src/edef.h, src/unixterm.c, tests/mouse-mid.emf,
+               tests/mouse-mid-test.py, .github/workflows/testing.yml,
+               doc/reference.smd, doc/tickets.md, ChangeLog
+
+  [261016] - Windows console mouse wheel, native console path (ticket
+               24, follow-up to ticket 22). A normal Windows console
+               session (PowerShell / Windows Terminal) receives
+               MOUSE_EVENT records from ReadConsoleInput and decodes them
+               in meGetConsoleMessage() in src/winterm.c - the SGR
+               parsers fixed for ticket 22 only run in pipe mode. For a
+               MOUSE_WHEELED record the wheel delta is in the high word of
+               dwButtonState, while dwEventFlags merely holds the
+               MOUSE_WHEELED flag (0x0004). The decoder read
+               HIWORD(mr->dwEventFlags), which is always 0, so the
+               "delta > 0" test never matched and every tick - including
+               wheel-up - was reported as wheel-down (scroll wheel moved
+               the buffer down in both directions). It now reads
+               HIWORD(mr->dwButtonState): positive = wheel-up, negative =
+               wheel-down, matching the documented MOUSE_EVENT_RECORD
+               semantics and the GUI WM_MOUSEWHEEL handling (which
+               already used the high word of wParam). No automated test:
+               CI has no console and exercises the pipe-mode path only.
+               Files: src/winterm.c, doc/tickets.md, ChangeLog
+
+  [261016] - Terminal mouse modifier-clicks (Shift/Ctrl/Alt) were
+               silently dropped. SGR encodes the modifiers in the button
+               number (4=Shift, 8=Meta/Alt, 16=Control) but the terminal
+               parsers only stripped the motion bit (32) and then matched
+               the raw number, so Shift+left (4), Ctrl+left (16) or
+               Ctrl+wheel (80, 64+16) matched no button and the whole
+               event was discarded. All three SGR parsers now decode those
+               bits into the same modifier state the X11 path uses
+               (ME_SHIFT/ME_CONTROL/ME_ALT) and strip them before the
+               button is mapped, and the terminal no longer forces
+               mouseKeyState to zero: src/unixterm.c (terminal) and
+               src/winterm.c (meParseSGRMouseChar plus the pipe-mode
+               parser in meGetConsoleMessage). Plain clicks are unchanged.
+               Regression harness tests/mouse-mod.emf +
+               tests/mouse-mod-test.py (Linux/macOS) and
+               tests/mouse-mod-win.emf + tests/mouse-mod-win.sh
+               (windows-ucrt64). Files: src/unixterm.c, src/winterm.c,
+               tests/mouse-mod.emf, tests/mouse-mod-test.py,
+               tests/mouse-mod-win.emf, tests/mouse-mod-win.sh,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
+  [261016] - Fix mouse-drag window resizing in the terminal (ticket 21).
+               The GUI (mew) could resize windows by dragging a mode
+               line/divider but the terminal (mec) could not, although
+               the macros (mouse.emf "mouse-grow-window", bound to
+               "mouse-move-<b>") were already in place. Two bugs in the
+               C terminal mouse path: (1) only DECSET 1000 (press/release)
+               plus 1006 (SGR coords) was enabled and 1000 never reports
+               motion, so a drag generated no events - DECSET 1002
+               (button-event tracking) is now enabled too, with 1000 kept
+               as a fallback (1003 is deliberately avoided as it also
+               reports no-button motion, decoded as a phantom
+               right-button drag); (2) the SGR parser encoded the motion
+               key as "SKEY_mouse_move + mouseKeys[button] - 1" (i.e.
+               "mouse-move") instead of the "mouse-move-1" the macros
+               bind - it now matches the X11/DOS encoders
+               ("SKEY_mouse_move + mouseKeys[button]"), coalesces repeats
+               with addKeyToBufferOnce() and only queues bound moves. The
+               same 1002 enable/disable was added to the Windows console
+               pipe-mode (mintty) path. Files: src/unixterm.c,
+               src/winterm.c, doc/tickets.md, ChangeLog
+
+  [261016] - Mouse wheel vertical scrolling in the terminal (ticket 22).
+               The wheel did not scroll in mec although the macros and
+               the registry defaults were already in place (mouse.emf
+               binds the wheel keys and maps the X11-style
+               "mouse-pick-4 mouse-drop-4" / "...-5" pairs to the
+               registered "5 mouse-wdown-scroll" commands). Two bugs in
+               the terminal SGR mouse parser: (1) it stripped the motion
+               bit with "sgrMouseButton >= 32", but SGR encodes motion as
+               bit 5 (32) and the wheel as button 64/65 - both are
+               numerically >= 32, so a wheel report became a phantom
+               motion with an unknown button and was silently dropped;
+               the test is now the bit test "sgrMouseButton & 32". (2) a
+               terminal reports a wheel tick as a single press with no
+               release while the mouse.emf translation expects the
+               X11-style press+release pair, so the parser now
+               synthesises the matching mouse-drop-4/5 when the pressed
+               button is a wheel. Verified with a pty harness
+               (tests/mouse-wheel.emf + tests/mouse-wheel-test.py):
+               eight wheel-down reports move the window y-scroll to 40,
+               four following wheel-up reports return it to 20 and no
+               wheel event leaves it at 0; wired into the Linux and macOS
+               testing.yml jobs. The Windows console parser in
+               src/winterm.c had the same numeric motion test and is fixed
+               in the entry below. Files: src/unixterm.c,
+               tests/mouse-wheel.emf, tests/mouse-wheel-test.py,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
+  [261016] - Windows console (pipe-mode) mouse wheel (ticket 22).
+               The native Windows console build (src/winterm.c) had the
+               same wheel bug as the Unix decoder fixed above, in BOTH of
+               its SGR parsers: meParseSGRMouseChar (the character state
+               machine) and the raw byte "pipe mode" parser used when
+               ReadConsoleInputW fails (MSYS2 / CI). Both stripped the
+               motion bit with a numeric test (">= 32" / "-= 32"), but SGR
+               signals motion with bit 5 (32) and encodes the wheel as
+               button 64 (up) / 65 (down) - both numerically >= 32 - so a
+               wheel report was mis-decoded as motion with an unknown
+               button and dropped. Both now use the bit test ("& 32" /
+               "&= ~32"). The pipe-mode parser additionally never placed
+               the wheel direction into wParam, so even a correctly
+               decoded wheel was always reported as a wheel-up; it now
+               sets wParam to 0x80000000 for wheel-down, matching the
+               Windows console WM_MOUSEWHEEL convention. A pipe-mode
+               regression test (tests/mouse-wheel-win.emf) is wired into
+               the windows-ucrt64 job of testing.yml: it feeds a single
+               SGR wheel report on stdin and asserts the bound
+               "mouse-wup" / "mouse-wdown" key fired. Files:
+               src/winterm.c, tests/mouse-wheel-win.emf,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
+  [261016] - Windows console pipe-mode test hook (ticket 22).
+               GitHub Actions Windows steps run without a console, so the
+               AllocConsole() call in TTstart() succeeds and replaces the
+               standard handles with the newly created (never fed)
+               console; mec then read that console instead of the CI pipe
+               and the pipe-mode wheel test above produced no output. A
+               new opt-in ME_CONSOLE_PIPEMODE environment override keeps
+               the original standard handles so the raw "pipe mode"
+               SGR/ANSI path is selected; the windows-ucrt64 wheel test
+               step now sets it and reports the mec exit code. Files:
+               src/winterm.c, .github/workflows/testing.yml,
+               doc/tickets.md, ChangeLog
+
+  [261015] - Fix PageUp/PageDown not moving the cursor at the buffer ends
+               (ticket 20): windowScrollUp()/windowScrollDown() in
+               src/window.c reported "top of buffer"/"end of buffer" as
+               soon as there was nothing left to scroll, leaving dot
+               untouched. For a plain page scroll (PageUp/PageDown keys,
+               no numeric argument) they now move dot to the beginning/end
+               of the buffer when it is not already there; a
+               numeric-argument scroll (e.g. "C-u 5 scroll-up") keeps the
+               old behaviour. Regression test added to tests/test-basics.emf
+               (TEST:scroll-bob / TEST:scroll-eob) with assertions in the
+               testing.yml matrix. Files: src/window.c, tests/test-basics.emf,
+               .github/workflows/testing.yml, doc/tickets.md, ChangeLog
+
+  [261015] - Documentation: the Installation help page (doc/me.smd) now
+               leads with the installer scripts (Unix curl one-liner and
+               Windows PowerShell) plus the mecb-update bootstrap; the
+               manual single-file and bare-executable/macro-tree routes
+               remain as a fallback and the 2004-2009 JASSPA distribution
+               sections (Distribution, Installation Directories, UNIX
+               system wide/single user, DOS, Windows 3.1/95/98) are
+               collapsed into a short "Legacy Installations" note.
+               README.md is now the single user-facing install document:
+               doc/install.md removed (version-encoding and
+               release-asset notes moved to AGENTS.md, troubleshooting
+               and AppImage notes folded into README.md). The obsolete
+               mecu wrapper was dropped from the docs and from packaging
+               (bin/mecu deleted; mecu steps removed from bin/README.md,
+               bin/encoding.sh, makefiles/{unixgcc,macosgcc,release}.gmk
+               and the binaries-linux.yml / binaries-fedorax86_64.yml
+               workflows). doc/tickets.md ticket 19 closed. Files:
+               doc/me.smd, jasspa/macros/me.ehf, README.md, AGENTS.md,
+               bin/README.md, bin/encoding.sh, bin/mecu, doc/install.md,
+               makefiles/, .github/workflows/, doc/tickets.md, ChangeLog
+
+  [261015] - fix PageUP, PageDown keys inserting tilde in Unix terminals
+
+  [261015] - Documentation sync pass over the help manual (doc/me.smd).
+               Corrected the stale "UTF-8 characters cannot be displayed"
+               claim in the charset-* functions and rewrote FAQ 48/49
+               around native UTF-8 plus the new -E option and
+               $buffer-encoding; documented -E in me(1) and added a
+               "Buffer Encoding" section to the locale support page.
+               Repaired the Build page: the Windows cross compile used a
+               non-existent win32mingw makefile, the TODO markers are
+               gone, all current makefiles (including MSYS2/MinGW and
+               WinLibs) are listed and the pre-2024 platform makefile
+               list and MS-Dev sections are collapsed into a short
+               "Legacy Builds" note. Refreshed Contact Information to
+               lead with the GitHub issue tracker, marked the memsdev
+               MS-Dev add-in obsolete and trimmed the IBM-PC/MS-DOS
+               change-font and user-setup "Platform - DOS Setup"
+               sections. Fixed the outdated platform .emf list and
+               version-encoding wording. The 3,800 line development
+               History page was moved out of me.smd into doc/history.smd;
+               doc/Makefile now assembles me.smd + history.smd into the
+               generated me-full.smd for the ehf and html-all targets and
+               the per-prefix html page ranges were updated (m2mod and
+               m8fil were missing entirely). Stale doc/me.md removed.
+               Files: doc/me.smd, doc/history.smd, doc/Makefile,
+               doc/me.md, jasspa/macros/me.ehf, AGENTS.md, .gitignore,
+               ChangeLog
+
+  [261015] - Documentation: the Frequently Asked Questions (amicr040 -
+               amicr092, 53 pages) were moved out of doc/me.smd into
+               doc/faq.smd. doc/Makefile assembles me.smd + faq.smd +
+               history.smd into the generated me-full.smd for the ehf and
+               html-all targets. Files: doc/me.smd, doc/faq.smd,
+               doc/Makefile, jasspa/macros/me.ehf, AGENTS.md, ChangeLog
+
+  [261015] - Documentation: the help manual is now split into four files
+               that doc/Makefile assembles in page order
+               (front.smd history.smd faq.smd reference.smd) into the
+               generated me-full.smd, so the built help keeps the
+               original page order. doc/front.smd holds the front matter,
+               doc/history.smd the development history, doc/faq.smd the
+               Frequently Asked Questions and doc/reference.smd the
+               command/macro/variable/file type reference; the monolithic
+               doc/me.smd is gone. Files: doc/front.smd,
+               doc/reference.smd, doc/me.smd (removed), doc/Makefile,
+               bin/me-tools.sh, bin/README.md, doc/emf-bnf.md,
+               doc/me-functions.md, AGENTS.md, jasspa/macros/me.ehf,
+               ChangeLog
+
+  [261010] - Release v09.12.26.beta6
+
+  [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
+               buffer encoding tags survive clipboard round trips,
+               copy-out now encodes to the target for X selection
+               targets and external tools, unmappable characters are
+               emitted as \uXXXX escapes into single-byte buffers, and
+               the new yank-as command re-tags and pastes the kill
+               buffer in a chosen encoding. Windows killTextEquals
+               parity so multi-node kills are not rebuilt as UTF-8 on
+               every yank. Files: src/line.c, src/region.c,
+               src/unixterm.c, src/winterm.c, src/encoding.c,
+               src/efunc.def, tests/test-enc17*.emf, doc/tickets.md,
+               ChangeLog
+
+  [261010] - Macro evaluation/token buffers raised from 1KB to 16KB
+               (meEVALBUF_SIZE_MAX) so large &cat/&rep results,
+               function arguments and set-variable values no longer
+               truncate; register (#0-#9) stores stay 1KB but are
+               bounded copies. Empty-list guards added to
+               &lget/&lset/&lfind/&llen/&ldel which could read past
+               the '|' terminator of an empty list and crash.
+               Files: src/estruct.h, src/eval.c, src/exec.c,
+               ChangeLog
+
+  [261010] - Assorted fixes: re-entrant screenUpdate crash during
+               insert-file/ConfigureNotify (ticket 16), Xft underline
+               offset and stale XGCFont gate, count-words counts UTF-8
+               characters (ticket 15), UTF-8 highlight desync fix plus
+               new character string functions &uleft &ulen &umid
+               &uright &usin, macOS installer restored for 10.15-14,
+               hkmdview treats Windows drive and UNC paths as
+               absolute. Files: src/unixterm.c, src/fileio.c,
+               src/hilight.c, src/word.c, src/eval.c, src/evar.def,
+               bin/install.sh, jasspa/macros/hkmdview.emf,
+               doc/me-functions.md, ChangeLog
+
+  [261010] - CI and tooling: unicode regression test job, forced LF
+               checkout for shell scripts, Cygwin workspace fix, and
+               a performance benchmark workflow comparing a build
+               against release tags (makefiles/performance.gmk).
+               Files: .github/workflows, makefiles/performance.gmk,
+               ChangeLog
 
   [261003] - Windows updater gets the same thin bootstrap treatment
                as install.sh: install-windows.ps1 no longer saves a
@@ -406,6 +710,8 @@
                Files: src/termio.c, src/unixterm.c, src/encoding.c,
                src/eval.c, src/hilight.c, tests/
 
+  [260826] - Release v09.12.26.beta5
+
   [260826] - README refresh (asciinema links, LLM note fixes); version
                set to v09.12.26b6. Files: README.md, src/evers.h
 
@@ -472,6 +778,8 @@
   
   [260811] - Scheme Nord added.
   
+  [260808] - Release v09.12.26.beta3
+
   [260807] - Added mouse support for Windows terminal version (mec32.exe).
              Native Win32 MOUSE_EVENT for console mode, SGR VT mouse via
              stdin/stdout for pipe mode (mintty). Supports click, drag,

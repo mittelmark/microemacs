@@ -1,0 +1,90 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the terminal modified-cursor-key regression
+;              test. Driven by tests/alt-cursor-test.py, which sends the
+;              xterm CSI 1;<modifier><final> sequences over a pty.
+;
+; xterm-compatible terminals encode Shift/Alt/Control with an arrow (or
+; Home/End) as CSI 1 ; <modifier> <final>, where modifier is
+; 1 + shift(1) + alt(2) + control(4). Termcap only describes the
+; unmodified sequences, so me has to translate the modified forms itself
+; (src/unixterm.c TCAPstart). Before the fix Alt-Left (CSI 1;3D) matched
+; nothing and the raw "1;3D" text was inserted.
+;
+; The harness binds a distinct macro to each modified key, sends the
+; sequences, then presses f5 to write the recorded tokens. The absolute
+; work directory is passed in ME_MOUSE_WORK.
+;
+;   python3 tests/alt-cursor-test.py
+execute-file "me"
+
+0 define-macro ac-t-al
+    set-variable %ac.log &cat %ac.log ";al"
+!emacro
+
+0 define-macro ac-t-ar
+    set-variable %ac.log &cat %ac.log ";ar"
+!emacro
+
+0 define-macro ac-t-au
+    set-variable %ac.log &cat %ac.log ";au"
+!emacro
+
+0 define-macro ac-t-ad
+    set-variable %ac.log &cat %ac.log ";ad"
+!emacro
+
+0 define-macro ac-t-cl
+    set-variable %ac.log &cat %ac.log ";cl"
+!emacro
+
+0 define-macro ac-t-cr
+    set-variable %ac.log &cat %ac.log ";cr"
+!emacro
+
+0 define-macro ac-t-sl
+    set-variable %ac.log &cat %ac.log ";sl"
+!emacro
+
+0 define-macro ac-t-ahome
+    set-variable %ac.log &cat %ac.log ";ah"
+!emacro
+
+0 define-macro ac-t-aend
+    set-variable %ac.log &cat %ac.log ";ae"
+!emacro
+
+0 define-macro ac-t-pl
+    set-variable %ac.log &cat %ac.log ";pl"
+!emacro
+
+0 define-macro ac-t-pu
+    set-variable %ac.log &cat %ac.log ";pu"
+!emacro
+
+0 define-macro ac-dump
+    find-file &cat $ME_MOUSE_WORK "/alt-cursor-out.txt"
+    insert-string %ac.log
+    insert-newline
+    save-buffer
+    exit-emacs
+!emacro
+
+define-macro start-up
+    set-variable %ac.log ""
+    global-bind-key ac-t-al "A-left"
+    global-bind-key ac-t-ar "A-right"
+    global-bind-key ac-t-au "A-up"
+    global-bind-key ac-t-ad "A-down"
+    global-bind-key ac-t-cl "C-left"
+    global-bind-key ac-t-cr "C-right"
+    global-bind-key ac-t-sl "S-left"
+    global-bind-key ac-t-ahome "A-home"
+    global-bind-key ac-t-aend "A-end"
+    global-bind-key ac-t-pl "left"
+    global-bind-key ac-t-pu "up"
+    global-bind-key ac-dump "f5"
+!emacro

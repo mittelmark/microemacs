@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-10 06:51
+date: 2026-10-21 06:33
 ---
 
 ## Introduction
@@ -110,7 +110,8 @@ v unfold dir (color
    .hidden (grey)
    filename.txt (color)    M (indicator)
    newname.txt (color)     A (git indicator)
-   
+    
+
 ### Ticket 11A: basic implementation (DONE)
 
 The following features and problems exists.
@@ -149,7 +150,7 @@ Project View tool must be removed once and re-added via M-x user-setup
 after the update so that the registry picks up the new `0x1001` flag.
 
 
-## Ticket 12: UTF8 symbol support (WIP)
+## Ticket 12: UTF8 symbol support (DONE)
 
 | OS       | me version | supported |
 |----------|------------|-----------|
@@ -393,7 +394,7 @@ from devel that we are not so far away from master where this still was working.
       (8-cell tab gap, EOL blanks, cursor position, no spill).
       Files: src/display.c, src/hilight.c
 
-## Ticket 14: FR - per-filetype default encoding (WIP)
+## Ticket 14: FR - per-filetype default encoding (DONE)
 ~
 For some filetypes like emf, erf etc. we should change the default
 encoding from UTF-8 to ASCII, or ISO-8859-1, e.g. for the MicroEmacs
@@ -445,7 +446,7 @@ while all other macro files are pure ASCII.
       special-casing, and never behaves worse than today for huge
       files. Files: doc/tickets.md
 
-## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (WIP)
+## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (DONE)
 ~
 The number of chars reported by count-words is wrong for UTF-8
 buffers: for the string 'üäö' a UTF-8 encoded buffer reports 6 chars
@@ -497,7 +498,7 @@ flp = 0xa000dff) and dies.
       before the guard is raised, so the restore cannot be skipped.
       Files: src/fileio.c, src/unixterm.c
 
-## Ticket 17 - Allow to copy between different buffers using different encodings (In Testing)
+## Ticket 17 - Allow to copy between different buffers using different encodings (DONE)
 
 1) If  I  copy  text  between   buffers,  let's  say  between  an  ISO-8859-1  or
 Windows-CP1252  buffer to an UTF8  buffer the  characters  above 128 should be
@@ -662,3 +663,287 @@ so.
       - Regression: tests/test-basics.emf, tests/test-enc17.emf
         and tests/test-enc17-yankas.emf all run on Windows (they
         write file-based output, no terminal interaction).
+
+    - WIP 261010: merged to devel and master for v09.12.26.beta6;
+      platform verification (Windows, macOS) still pending - run the
+      test matrix above before closing this ticket.
+
+## Ticket 18: Fixing PageUp/PageDown key issue with terminal version (DONE)
+
+If we are on Linux, Cygwin or Msys terminals the  PageUp/PageDown  keys jump a
+few lines up and then insert the tilde character. The windows terminal version seems to look fine
+
+    - DONE 261015: root cause is the terminal (mec) SGR mouse
+      parser in TTahead() (src/unixterm.c). While probing for an SGR
+      mouse report "ESC [ <" it consumes the ESC and the '[', then a
+      digit while still in the intermediate ESC/CSI states matched the
+      digit-accumulate branch but none of its state sub-cases, so the
+      digit was silently dropped. "\033[5~" (PageUp) therefore reached
+      the key table as "\033[~"; ME then ran ESC '[' = M-[
+      (beginning-of-paragraph, the reported "jump a few lines up") and
+      self-inserted the leftover '~'. The same corruption affected
+      every key whose escape sequence contains a digit (PageDown,
+      Insert, Delete, Home/End and F1-F12). Fix: only accumulate
+      digits while already reading a real mouse report field
+      (BUTTON/COL/ROW); in the ESC/CSI states a digit is treated as an
+      invalid mouse sequence, so the consumed ESC/'[' are pushed back
+      and the digit is handled normally. Verified with a pty harness:
+      "\033[5~", "\033[6~", "\033[15~", "\033[2~", "\033[3~" and the
+      arrows no longer leave stray characters, SGR mouse
+      press/release/report sequences are still consumed, and
+      tests/test-basics passes on both mec and mew builds. Files:
+      src/unixterm.c, doc/tickets.md
+
+## Ticket 19: Update doc/me.smd - Install section (DONE)
+
+The installation page in the help
+
+    - DONE 261015: the Installation page now leads with the installer
+      scripts (Unix curl one-liner and Windows PowerShell) and the
+      mecb-update bootstrap, the manual single-file / bare-executable +
+      macro-tree routes are kept as a fallback, the 2004-2009 JASSPA
+      distribution sections (Distribution, Installation Directories,
+      UNIX system wide/single user, DOS, Windows 3.1/95/98) are collapsed
+      into a short "Legacy Installations" note, and the user/company
+      profile sections are unchanged. Made README.md the single
+      user-facing source of install instructions: doc/install.md was
+      deleted (version-encoding and release-asset notes moved to
+      AGENTS.md, troubleshooting/AppImage notes folded into README.md),
+      and the obsolete mecu wrapper was removed from the docs, bin/mecu
+      deleted and its packaging steps dropped from binaries-linux.yml and
+      binaries-fedorax86_64.yml. Files: doc/me.smd, README.md, AGENTS.md,
+      bin/README.md, bin/encoding.sh, bin/mecu, doc/install.md,
+      .github/workflows/binaries-linux.yml,
+      .github/workflows/binaries-fedorax86_64.yml, doc/tickets.md
+
+## Ticket 20: PageUp/PageDown do not move the cursor at the buffer ends (DONE)
+
+Affects both the terminal (mec) and the GUI (mew) versions. When the first line
+of the buffer is already shown at the top of the window, pressing PageUp
+reports "top of buffer" but leaves the cursor where it is instead of moving it
+to the first line. Likewise, once the last line is at the top of the window,
+PageDown reports "end of buffer" without moving the cursor to the end of the
+buffer. The usual editor behaviour (GNU Emacs, Vim, ...) is that a page scroll
+which cannot scroll any further moves dot to the beginning/end of the buffer.
+
+    - DONE 261015: windowScrollUp()/windowScrollDown() (src/window.c)
+      returned meErrorBob()/meErrorEob() as soon as there was nothing left
+      to scroll, without touching dot. For a plain page scroll (no numeric
+      argument, i.e. the PageUp/PageDown keys) they now fall back to
+      windowGotoBob()/windowGotoEob() when dot is not already at the
+      beginning/end of the buffer, and only report the top/end of buffer
+      when dot is already there. A numeric-argument scroll (e.g.
+      "C-u 5 scroll-up") keeps the old behaviour. Regression test added to
+      tests/test-basics.emf (TEST:scroll-bob / TEST:scroll-eob), assertions
+      added to the testing.yml matrix. Files: src/window.c,
+      tests/test-basics.emf, .github/workflows/testing.yml, doc/tickets.md
+
+## Ticket 21: Mouse Drag support for window resize operations (DONE)
+
+Currently  in the  mew/mewb  GUI  version I can resize the windows by dragging
+them with the mouse. This is not  currently  not  supported in the temrinal as
+far as I can see. Could you check if this is possibly to  implement  using our
+SRG mouse bindings.
+
+    - DONE 261016: the terminal (mec) already had the full resize
+      logic in the macros (mouse.emf: "mouse-grow-window", bound to
+      "mouse-move-<b>" on a mode-line/divider pick), but two bugs in the
+      C terminal mouse path meant a drag never reached it. (1) The
+      terminal only enabled DECSET 1000 (press/release) plus 1006 (SGR
+      coords); a terminal never reports motion in 1000, so dragging
+      produced no events. DECSET 1002 (button-event tracking) is now
+      enabled as well so motion is reported while a button is held
+      (1000 is kept as a fallback for terminals without 1002; 1003 is
+      deliberately not used because it also reports no-button motion,
+      which would be decoded as a phantom right-button drag). (2) The
+      SGR parser in TTahead() encoded the motion key as
+      "SKEY_mouse_move + mouseKeys[button] - 1" (i.e. "mouse-move"), one
+      short of the "mouse-move-1" that the macros bind, so the drag
+      command never fired; X11 and DOS encode "SKEY_mouse_move +
+      mouseKeys[button]". The motion branch now matches those encoders,
+      coalesces repeats with addKeyToBufferOnce() and only queues the
+      key when it is bound (or TTallKeys is set), mirroring X11/DOS and
+      avoiding a key-buffer flood of unbound moves. The same 1002
+      enable/disable was added to the Windows console pipe-mode (mintty)
+      path in winterm.c. Verified with a pty harness that injects SGR
+      press/motion/release on a mode line: fixed build resizes the
+      window (+4 rows), the unfixed build and the no-motion control do
+      not. Confirmed on a real terminal emulator (Linux) and via the macOS
+      CI job. Regression harness (tests/mouse-resize.emf +
+      tests/mouse-resize-test.py) is wired into the Linux and macOS
+      jobs of .github/workflows/testing.yml. Files: src/unixterm.c,
+      src/winterm.c, tests/mouse-resize.emf, tests/mouse-resize-test.py,
+      .github/workflows/testing.yml, doc/tickets.md
+
+## Ticket 22: Mouse wheel vertical scrolling in the terminal (DONE)
+
+In the mew/mewb GUI version a mouse wheel scrolls the buffer. The
+terminal (mec) did not respond to the wheel even though the macro
+support was already in place: mouse.emf binds the wheel keys and, on
+non-Windows platforms, installs translate-key mappings from the
+X11-style "mouse-pick-4 mouse-drop-4" / "mouse-pick-5 mouse-drop-5"
+button pairs to the registered "mouse-wup-scroll" / "mouse-wdown-scroll"
+commands. Two bugs in the terminal SGR mouse parser blocked this.
+
+    - DONE 261016: (1) the SGR button decoder in
+      src/unixterm.c first stripped the motion bit with
+      "if(sgrMouseButton >= 32) { sgrMouseButton -= 32; isMotion = 1; }".
+      SGR signals motion with bit 5 (32) but encodes the wheel as button
+      64 (up) / 65 (down); both are numerically >= 32, so a wheel report
+      was turned into a phantom motion with an unknown button and
+      silently dropped. The test is now the bit test
+      "if(sgrMouseButton & 32)". (2) A terminal reports a wheel tick as a
+      single press with no release while the mouse.emf translation
+      expects the X11-style press+release pair. The parser now
+      synthesises the matching drop (mouse-drop-4 / mouse-drop-5) when
+      the pressed button is a wheel, mirroring X11. Verified with a pty
+      harness (tests/mouse-wheel.emf + tests/mouse-wheel-test.py): eight
+      wheel-down reports move the window y-scroll to 40 (the registry
+      default of five lines per tick), four following wheel-up reports
+      return it to 20 and no wheel event leaves it at 0. The harness is
+      wired into the Linux and macOS jobs of
+      .github/workflows/testing.yml.
+
+    - DONE 261016: the native Windows console build
+      (src/winterm.c) had the same wheel bug in BOTH of its SGR parsers,
+      meParseSGRMouseChar (character state machine) and the raw byte
+      "pipe mode" parser used when ReadConsoleInputW fails (MSYS2 / CI).
+      Their numeric ">= 32" motion test mis-decoded the SGR wheel button
+      64 (up) / 65 (down) as motion with an unknown button, and the
+      pipe-mode parser never put the wheel direction into wParam, so even
+      a decoded wheel was always reported as a wheel-up. Both now use the
+      bit test ("& 32") and the pipe-mode parser sets wParam to
+      0x80000000 for wheel-down. A pipe-mode regression test
+      (tests/mouse-wheel-win.emf) feeds a single SGR wheel report on stdin
+      in the windows-ucrt64 job of testing.yml and asserts the bound
+      "mouse-wup" / "mouse-wdown" key fired. Files: src/winterm.c,
+      tests/mouse-wheel-win.emf, .github/workflows/testing.yml,
+      doc/tickets.md
+
+    - DONE 261016: GitHub CI steps have no console, so the
+      windows-ucrt64 wheel step sets the new opt-in ME_CONSOLE_PIPEMODE
+      override in src/winterm.c: it keeps the original (pipe) standard
+      handles so TTstart() selects the raw pipe-mode SGR path even though
+      AllocConsole() created a console. Files: src/winterm.c,
+      .github/workflows/testing.yml
+
+## Ticket 23: Terminal mouse modifier-clicks (Shift/Ctrl/Alt) dropped (DONE)
+
+SGR encodes mouse modifiers in the button number (4=Shift, 8=Meta/Alt,
+16=Control). The terminal parsers stripped only the motion bit (32) and
+then matched the raw button number, so any modifier-click failed the
+button tests and the whole event was discarded: Shift+left is button 4,
+Ctrl+left is 16 and Ctrl+wheel is 80 (64+16). The X11 server path
+already folded these bits into mouseKeyState (ME_SHIFT/ME_CONTROL/
+ME_ALT), so mew behaved correctly while mec and the Windows console did
+not.
+
+    - DONE 261016: all three SGR parsers now decode the modifier bits,
+      strip them off the button number before the button is mapped and
+      carry them as the same modifier state the X11 path uses; the
+      terminal press handler no longer clears mouseKeyState. This
+      restores Shift+click, Ctrl+click and Alt+click (and Shift+wheel) to
+      their bindings; plain clicks are unchanged. Files: src/unixterm.c,
+      src/winterm.c (meParseSGRMouseChar and the pipe-mode parser in
+      meGetConsoleMessage).
+
+    - DONE 261016: regression harness tests/mouse-mod.emf +
+      tests/mouse-mod-test.py drives the Unix console over a pty with a
+      plain, Shift, Ctrl and Alt click and asserts the matching binding
+      fired; it is wired into the Linux and macOS jobs of
+      .github/workflows/testing.yml. The Windows console is covered by
+      tests/mouse-mod-win.emf + tests/mouse-mod-win.sh, run from the
+      windows-ucrt64 job, which pipes one SGR click per run (the pipe
+      parser handles one SGR sequence per read). Files:
+      tests/mouse-mod.emf, tests/mouse-mod-test.py,
+      tests/mouse-mod-win.emf, tests/mouse-mod-win.sh,
+      .github/workflows/testing.yml
+
+## Ticket 24: BUG - Windows console mouse wheel-up scrolls down (DONE)
+
+On a real Windows console (PowerShell / Windows Terminal) the scroll wheel
+scrolled the buffer down for both directions: a wheel-up tick behaved like a
+wheel-down tick. This is the native-console counterpart of ticket 22 - the two
+SGR parsers fixed there only run in "pipe mode" (mintty/MSYS2 or when
+ReadConsoleInputW fails). A normal console session gets MOUSE_EVENT records
+from ReadConsoleInput and decodes them in meGetConsoleMessage() in
+src/winterm.c.
+
+    - DONE 261016: for a MOUSE_WHEELED record the wheel delta lives in the
+      high word of dwButtonState, while dwEventFlags only carries the
+      MOUSE_WHEELED flag (0x0004). The console decoder read
+      HIWORD(mr->dwEventFlags), which is always 0, so
+      "if((short)HIWORD(...) > 0)" never took the wheel-up branch and every
+      tick - up and down - was reported as wheel-down. It now reads
+      HIWORD(mr->dwButtonState): positive = wheel-up, negative = wheel-down,
+      matching the documented MOUSE_EVENT_RECORD semantics and the GUI
+      WM_MOUSEWHEEL handling (which already uses the high word of wParam).
+      No automated regression test is possible: GitHub CI has no console and
+      drives the wheel through the pipe-mode SGR path, so this native-console
+      branch is only reachable in a real console session (manual
+      verification). Files: src/winterm.c
+
+## Ticket 25: Terminal middle-click pasted CLIPBOARD instead of PRIMARY (DONE)
+
+A terminal middle-click is expected to paste the primary selection (the X11
+convention, and what the "Terminal Mouse Support" page of the manual has
+always claimed). The default middle-button binding is mouse-move-yank, which
+yanks ME's kill ring. On X11 (mew) the yank refreshes that ring from the
+PRIMARY selection, but the console build (mec) always used the CLIPBOARD
+selection - "xclip -selection clipboard -o" - so a terminal middle click
+could not paste what the mouse had selected in another application. Worse,
+because the yank runs from a macro, the clexec/allow-clip-exec guard
+suppressed the external fetch altogether unless $allow-clip-exec was already
+set, so a middle click only ever pasted the internal kill ring.
+
+    - DONE 261016: a middle-button release now flags the next external fetch
+      as a PRIMARY paste. The new CLIP_MOUSE_PASTE bit in clipState
+      (src/edef.h, mirroring the existing CLIP_MOUSE_PENDING flag used for
+      copies) is set by the console SGR parser and by the X11 ButtonRelease
+      handler in src/unixterm.c. TTgetClipboard() consumes it: the console
+      variant runs "xclip -selection primary -o" / "xsel --primary --output"
+      (wl-paste, clip.exe and pbpaste have no primary selection and fall back
+      to the clipboard) and the X11 variant requests XA_PRIMARY instead of
+      TTgetDefaultSelection(). As a middle click is a direct user gesture the
+      clexec guard is bypassed for it - ordinary macros still need
+      $allow-clip-exec - and the internal kill ring remains the fallback when
+      the primary selection is empty. Windows keeps the kill-ring behaviour
+      (the native console has no primary selection and readconsole clipboard
+      access is unchanged); macOS console and Wayland fall back to the
+      clipboard through their external tool. Automated regression test:
+      tests/mouse-mid-test.py installs a fake `xclip` on PATH, sends an SGR
+      middle click over a pty and asserts that the tool is called with
+      "-selection primary -o" and that its output lands in the buffer (run on
+      Linux and macOS in testing.yml). Manually checked on Linux/X11.
+      Files: src/edef.h, src/unixterm.c, tests/mouse-mid.emf,
+      tests/mouse-mid-test.py, .github/workflows/testing.yml,
+      doc/reference.smd
+
+## Ticket 26: BUG - Alt-Left/Alt-Right inserted "1;3D" in the terminal (DONE)
+
+In the terminal build (mec) pressing Alt-Left or Alt-Right inserted the
+literal text "1;3D" / "1;3C" instead of running the bound command, while the
+same keys worked in the X11 build (mew). The terminal sends the xterm
+modified-cursor-key sequence CSI 1 ; <modifier> <final> - Alt-Left is
+`ESC [ 1 ; 3 D`, Alt-Right is `ESC [ 1 ; 3 C` - with the modifier encoded as
+1 + shift(1) + alt(2) + control(4). Termcap describes only the unmodified
+sequences (`\033[D` etc.), so the modified forms had no entry in the
+key-translation table: the prefix match failed after `ESC [` and the trailing
+"1;3D" was delivered as ordinary characters ("ESC [" itself was consumed as
+the M-[ prefix key and discarded).
+
+    - DONE 261016: TCAPstart (src/unixterm.c) now registers the standard
+      xterm CSI 1;<modifier><final> forms for up/down/right/left (A/B/C/D)
+      and home/end (H/F) for every Shift/Alt/Control combination, mapping
+      them onto the same ME_SPECIAL|modifier|SKEY_xxx codes that the X11
+      server path generates (ME_SHIFT/ME_CONTROL/ME_ALT). The existing
+      bindings therefore apply unchanged, e.g. "A-left" -> backward-word
+      from meemacs.emf. Note the raw input parser (TTahead) already
+      re-injects the ESC/[ it consumed when a sequence turns out not to be an
+      SGR mouse report, so the translation table sees the full sequence.
+      Automated regression test: tests/alt-cursor-test.py sends the CSI
+      sequences over a pty and asserts each reaches its binding without
+      leaking literal text (run on Linux and macOS in testing.yml). Files:
+      src/unixterm.c, tests/alt-cursor.emf, tests/alt-cursor-test.py,
+      .github/workflows/testing.yml, doc/reference.smd
+

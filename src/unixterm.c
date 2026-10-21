@@ -2210,6 +2210,15 @@ meXEventHandler(void)
             mouseKeyState = ((ss & 0x01) << 8) | ((ss & 0x0C) << 7);
             ss = (ME_SPECIAL | (SKEY_mouse_drop_1+mouseKeys[bb]-1) | mouseKeyState) ;
             addKeyToBuffer(ss) ;
+
+#ifdef _CLIPBRD
+            /* A middle-button release marks the next clipboard fetch as a
+             * PRIMARY paste (the X11 convention that a middle click pastes
+             * the primary selection); any other button clears a stale flag. */
+            clipState &= ~CLIP_MOUSE_PASTE ;
+            if(mouseKeys[bb] == 2)
+                clipState |= CLIP_MOUSE_PASTE ;
+#endif
         }
         break ;
 #endif
@@ -3094,6 +3103,59 @@ TCAPstart(void)
                             TTtransKey.time,sl,(SKEY_page_down|ME_SPECIAL)) ;
         }
     }
+
+    /* Modifier + cursor/home/end keys as sent by xterm-compatible
+     * terminals: CSI 1 ; <modifier> <final>, where the modifier is
+     * 1 + shift(1) + alt(2) + control(4) and the final character is
+     * A/B/C/D for up/down/right/left and H/F for home/end.
+     *
+     * Termcap only describes the unmodified sequences, so Alt-Left
+     * (CSI 1;3D) and friends fell through the translation table: after a
+     * failed prefix match the raw "1;3D" text was inserted instead of
+     * running the bound command ("A-left" is bound to backward-word by
+     * meemacs.emf). Map the modified forms onto the very same
+     * ME_SPECIAL|modifier|SKEY_xxx codes that the X11 (mew) server path
+     * generates so the same bindings work in the terminal. */
+    {
+        static const struct { int mod ; meUShort mask ; } sgrMods[] =
+        {
+            { 2, ME_SHIFT },                    /* Shift            */
+            { 3, ME_ALT },                      /* Alt              */
+            { 4, ME_SHIFT|ME_ALT },             /* Shift+Alt        */
+            { 5, ME_CONTROL },                  /* Control          */
+            { 6, ME_SHIFT|ME_CONTROL },         /* Shift+Control    */
+            { 7, ME_ALT|ME_CONTROL },           /* Alt+Control      */
+            { 8, ME_SHIFT|ME_ALT|ME_CONTROL },  /* Shift+Alt+Control*/
+        } ;
+        static const struct { char final ; meUShort skey ; } sgrFinals[] =
+        {
+            { 'A', SKEY_up },    { 'B', SKEY_down },
+            { 'C', SKEY_right }, { 'D', SKEY_left },
+            { 'H', SKEY_home },  { 'F', SKEY_end  },
+        } ;
+        meUShort sl[20] ;
+        meUByte seq[8] ;
+        int mi, fi ;
+
+        for(mi=0 ; mi<(int)(sizeof(sgrMods)/sizeof(sgrMods[0])) ; mi++)
+        {
+            for(fi=0 ; fi<(int)(sizeof(sgrFinals)/sizeof(sgrFinals[0])) ; fi++)
+            {
+                seq[0] = 27 ;                             /* ESC */
+                seq[1] = '[' ;
+                seq[2] = '1' ;
+                seq[3] = ';' ;
+                seq[4] = (meUByte) ('0' + sgrMods[mi].mod) ;
+                seq[5] = (meUByte) sgrFinals[fi].final ;
+                seq[6] = '\0' ;
+                translateKeyAdd(&TTtransKey,charListToShorts(sl,seq),
+                                TTtransKey.time,sl,
+                                (meUShort)(ME_SPECIAL|sgrMods[mi].mask|
+                                           sgrFinals[fi].skey)) ;
+            }
+        }
+    }
+
     /* Switch off the vertical window scroll bar */
     gsbarmode &= ~WMVBAR ;
     {
@@ -3214,8 +3276,13 @@ TCAPopen(void)
      * only if the terminal is known to support it */
     if((meMouseCfg & meMOUSE_ENBLE) && TTtermHasSGRMouse())
     {
-        /* Enable SGR extended mouse mode (mode 1006) and basic mouse tracking (mode 1000) */
-        fputs("\033[?1006h\033[?1000h", stdout);
+        /* Enable SGR extended mouse mode (mode 1006) for unlimited coordinates.
+         * Enable basic tracking (1000) as a fallback and button-event tracking
+         * (1002) so motion is reported while a button is held. The motion
+         * reports are required for drag operations such as window resizing.
+         * Terminals that do not support 1002 keep the 1000 (press/release)
+         * behaviour. */
+        fputs("\033[?1006h\033[?1000h\033[?1002h", stdout);
         fflush(stdout);
     }
 #endif /* MEOPT_MOUSE */
@@ -3237,7 +3304,7 @@ TCAPclose(void)
 
 #if MEOPT_MOUSE
     /* Disable SGR mouse mode */
-    fputs("\033[?1006l\033[?1000l", stdout);
+    fputs("\033[?1006l\033[?1002l\033[?1000l", stdout);
     fflush(stdout);
 #endif /* MEOPT_MOUSE */
 
@@ -3644,11 +3711,15 @@ TTinitMouse(void)
     {
 #endif /* _ME_WINDOW */
         /* For console/terminal version, enable/disable SGR mouse mode
-         * only if the terminal is known to support it */
+         * only if the terminal is known to support it.
+         * 1006 = SGR extended coordinates, 1000 = basic tracking (fallback),
+         * 1002 = button-event tracking (motion reported while a button is
+         * held). Mode 1002 is required for mouse drag operations such as
+         * window resizing. */
         if((meMouseCfg & meMOUSE_ENBLE) && TTtermHasSGRMouse())
-            fputs("\033[?1006h\033[?1000h", stdout);
+            fputs("\033[?1006h\033[?1000h\033[?1002h", stdout);
         else
-            fputs("\033[?1006l\033[?1000l", stdout);
+            fputs("\033[?1006l\033[?1002l\033[?1000l", stdout);
         fflush(stdout);
 #ifdef _ME_WINDOW
     }
@@ -5331,23 +5402,29 @@ TTsetPrimary(void)
 void
 TTgetClipboard(void)
 {
+    meUShort pastePrimary = clipState & CLIP_MOUSE_PASTE ;
+    clipState &= ~CLIP_MOUSE_PASTE ;
     if(meSystemCfg & (meSYSTEM_CONSOLE|meSYSTEM_NOCLIPBRD))
         return ;
     if(clipState & CLIP_DISABLED)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if(clexec && !allowClipExec)
+    /* The clexec guard stops macros silently touching the clipboard. A
+     * middle-button release is a direct user gesture (it is delivered via
+     * the mouse.emf macro), so allow the PRIMARY paste through. */
+    if(clexec && !allowClipExec && !pastePrimary)
         return ;
     
-    if((meSystemCfg & meSYSTEM_CLIPBOARD) && TTisWaylandSession() && TTcheckWaylandClipboard())
+    if(((meSystemCfg & meSYSTEM_CLIPBOARD) || pastePrimary) &&
+       TTisWaylandSession() && TTcheckWaylandClipboard())
     {
         meClipSize = 0;
         if(TTgetWaylandClipboard())
             return ;
     }
     
-    Atom sel = TTgetDefaultSelection() ;
+    Atom sel = pastePrimary ? XA_PRIMARY : TTgetDefaultSelection() ;
     if(sel == None)
         return ;
     meUByte ownClip = (sel == meAtoms[meATOM_XA_CLIPBOARD]) ? CLIP_OWNER_CLIPBOARD : CLIP_OWNER_PRIMARY ;
@@ -5626,15 +5703,24 @@ TTahead(void)
                 if((sgrMouseState != SGR_MOUSE_STATE_IDLE) &&
                    (meMouseCfg & meMOUSE_ENBLE))
                 {
-                    /* Continue parsing SGR mouse sequence */
-                    if(cc >= '0' && cc <= '9')
+                    /* Continue parsing SGR mouse sequence. Digits are only
+                     * meaningful once we are reading a numeric field of a real
+                     * mouse report (button/col/row). In the earlier ESC/CSI
+                     * states a digit means this is NOT a mouse sequence (e.g.
+                     * "\033[5~" PageUp, "\033[15~" F5), so fall through to the
+                     * invalid-sequence handler below which re-injects the
+                     * consumed ESC/[ characters. */
+                    if((cc >= '0' && cc <= '9') &&
+                       (sgrMouseState == SGR_MOUSE_STATE_BUTTON ||
+                        sgrMouseState == SGR_MOUSE_STATE_COL ||
+                        sgrMouseState == SGR_MOUSE_STATE_ROW))
                     {
                         /* Accumulate digit */
                         if(sgrMouseState == SGR_MOUSE_STATE_BUTTON)
                             sgrMouseButton = sgrMouseButton * 10 + (cc - '0');
                         else if(sgrMouseState == SGR_MOUSE_STATE_COL)
                             sgrMouseCol = sgrMouseCol * 10 + (cc - '0');
-                        else if(sgrMouseState == SGR_MOUSE_STATE_ROW)
+                        else /* SGR_MOUSE_STATE_ROW */
                             sgrMouseRow = sgrMouseRow * 10 + (cc - '0');
                     }
                     else if(cc == ';' && (sgrMouseState == SGR_MOUSE_STATE_BUTTON ||
@@ -5654,12 +5740,35 @@ TTahead(void)
                         int isRelease = (cc == 'm');
                         int isMotion = 0;
 
-                        /* Check for motion (button + 32) */
-                        if(sgrMouseButton >= 32)
+                        /* Check for motion. SGR sets bit 5 (32) on motion
+                         * events; test that bit rather than the numeric
+                         * value, because the wheel codes 64/65 are
+                         * numerically greater than 32 but are not motion
+                         * events. Testing >= 32 used to turn a wheel report
+                         * into a phantom motion with an unknown button, so
+                         * the wheel was silently dropped. */
+                        if(sgrMouseButton & 32)
                         {
-                            sgrMouseButton -= 32;
+                            sgrMouseButton &= ~32;
                             isMotion = 1;
                         }
+
+                        /* Decode the SGR modifier bits - 4=Shift, 8=Meta/Alt,
+                         * 16=Control - which are ORed into the button number.
+                         * Store them in mouseKeyState using the same encoding
+                         * as the X11 server path above (ME_SHIFT|ME_CONTROL|
+                         * ME_ALT) and strip them off the button number before
+                         * it is mapped. Without this a modifier-click failed
+                         * the button tests below (Shift+left is 4, Ctrl+left
+                         * is 16) and was discarded as an unknown button. */
+                        mouseKeyState = 0;
+                        if(sgrMouseButton & 4)
+                            mouseKeyState |= ME_SHIFT;
+                        if(sgrMouseButton & 8)
+                            mouseKeyState |= ME_ALT;
+                        if(sgrMouseButton & 16)
+                            mouseKeyState |= ME_CONTROL;
+                        sgrMouseButton &= ~(4|8|16);
 
                         /* Convert SGR button to ME button */
                         /* SGR: 0=left, 1=middle, 2=right, 64=wheel up, 65=wheel down */
@@ -5686,9 +5795,19 @@ TTahead(void)
                         {
                             if(isMotion)
                             {
-                                /* Mouse motion - generate mouse-move event */
-                                ss = (ME_SPECIAL | (SKEY_mouse_move + mouseKeys[meButton] - 1) | mouseKeyState);
-                                addKeyToBuffer(ss);
+                                /* Mouse motion - generate a mouse-move event.
+                                 * SKEY_mouse_move is the base (move-0) code and
+                                 * the button offset (mouseKeys[]) is added with
+                                 * no -1, matching the X11 and DOS encoders, so
+                                 * the left button yields mouse-move-1 (the key
+                                 * the mouse.emf macros bind during a drag).
+                                 * Only queue the key when it is bound (or in
+                                 * all-keys mode) to avoid filling the key buffer
+                                 * with unbound movement events. */
+                                meUInt arg;     /* Decode key argument */
+                                ss = (ME_SPECIAL | (SKEY_mouse_move + mouseKeys[meButton]) | mouseKeyState);
+                                if((TTallKeys & 0x1) || (!TTallKeys && (decode_key(ss, &arg) != -1)))
+                                    addKeyToBufferOnce(ss);
                             }
                             else if(isRelease)
                             {
@@ -5696,15 +5815,35 @@ TTahead(void)
                                 mouseButtonDrop(meButton);
                                 ss = (ME_SPECIAL | (SKEY_mouse_drop_1 + mouseKeys[meButton] - 1) | mouseKeyState);
                                 addKeyToBuffer(ss);
+#ifdef _CLIPBRD
+                                /* A middle-button release marks the next clipboard
+                                 * fetch as a PRIMARY paste. Matching the X11 server
+                                 * path so a terminal middle-click pastes the primary
+                                 * selection; any other button clears a stale flag. */
+                                clipState &= ~CLIP_MOUSE_PASTE ;
+                                if(mouseKeys[meButton] == 2)
+                                    clipState |= CLIP_MOUSE_PASTE ;
+#endif
                             }
                             else
                             {
                                 /* Button press */
                                 mouseButtonPick(meButton);
-                                /* Clear modifier state for terminal - no modifier info available */
-                                mouseKeyState = 0;
                                 ss = (ME_SPECIAL | (SKEY_mouse_pick_1 + mouseKeys[meButton] - 1) | mouseKeyState);
                                 addKeyToBuffer(ss);
+                                /* A wheel report (button 4/5) arrives as a
+                                 * single press with no matching release.
+                                 * The mouse.emf wheel handling translates the
+                                 * X11-style "mouse-pick-N mouse-drop-N" pair
+                                 * into mouse-wup/mouse-wdown, so synthesise the
+                                 * drop here to make the terminal behave like
+                                 * X11 (where the server sends both events). */
+                                if((meButton == 4) || (meButton == 5))
+                                {
+                                    mouseButtonDrop(meButton);
+                                    ss = (ME_SPECIAL | (SKEY_mouse_drop_1 + mouseKeys[meButton] - 1) | mouseKeyState);
+                                    addKeyToBuffer(ss);
+                                }
                             }
                         }
 
@@ -7335,17 +7474,28 @@ TTgetClipboard(void)
     meUByte *tmpbuf, *dd;
     meInt total, n;
     int fd[2];
+    int wantPrimary;
     pid_t pid;
+
+    /* A middle-button release (see the SGR mouse parser) asks for the
+     * PRIMARY selection so a terminal middle-click pastes what the mouse
+     * selected elsewhere, matching the X11 convention. Consume the flag
+     * here so an ordinary yank still reads the CLIPBOARD selection. */
+    wantPrimary = (clipState & CLIP_MOUSE_PASTE) ? 1 : 0;
+    clipState &= ~CLIP_MOUSE_PASTE;
 
     if(clipState & CLIP_DISABLED)
         return ;
     if(meSystemCfg & meSYSTEM_NOCLIPBRD)
         return ;
-    if(!(meSystemCfg & meSYSTEM_CLIPBOARD))
+    if(!(meSystemCfg & meSYSTEM_CLIPBOARD) && !wantPrimary)
         return ;
     if(kbdmode == mePLAY)
         return ;
-    if(clexec && !allowClipExec)
+    /* The clexec guard stops macros silently touching the clipboard. A
+     * middle-button release is a direct user gesture (delivered via the
+     * mouse.emf macro), so allow the PRIMARY paste through. */
+    if(clexec && !allowClipExec && !wantPrimary)
         return ;
 
     TTdetectClipTool();
@@ -7364,7 +7514,7 @@ TTgetClipboard(void)
         dup2(fd[1], 1);
         close(fd[1]);
         if(conClipTool == 1)
-            execlp("xclip", "xclip", "-selection", "clipboard", "-o", NULL);
+            execlp("xclip", "xclip", "-selection", wantPrimary ? "primary" : "clipboard", "-o", NULL);
         else if(conClipTool == 2)
             execlp("wl-paste", "wl-paste", NULL);
         else if(conClipTool == 4)
@@ -7372,7 +7522,7 @@ TTgetClipboard(void)
         else if(conClipTool == 5)
             execlp("cat", "cat", "/dev/clipboard", NULL);
         else if(conClipTool == 6)
-            execlp("xsel", "xsel", "--clipboard", "--output", NULL);
+            execlp("xsel", "xsel", wantPrimary ? "--primary" : "--clipboard", "--output", NULL);
         else
             execlp("pbpaste", "pbpaste", NULL);
         _exit(1);

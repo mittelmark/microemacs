@@ -1079,8 +1079,9 @@ TTend (void)
     /* Disable VT mouse if enabled */
     if(vtMouseEnabled)
     {
-        /* Disable SGR mouse mode: \033[?1006l + \033[?1000l */
+        /* Disable SGR mouse mode: \033[?1006l + \033[?1002l + \033[?1000l */
         fwrite("\033[?1006l", 1, 8, stdout);
+        fwrite("\033[?1002l", 1, 8, stdout);
         fwrite("\033[?1000l", 1, 8, stdout);
         fflush(stdout);
         vtMouseEnabled = 0;
@@ -1197,12 +1198,28 @@ meParseSGRMouseChar(MSG *msg, meUByte cc)
         int isMotion = 0;
         UINT wParam = 0;
 
-        /* Check for motion (button + 32) */
-        if(sgrMouseButton >= 32)
+        /* Check for motion. SGR marks motion with bit 5 (32); the wheel is
+         * encoded as button 64 (up) / 65 (down), which are numerically
+         * >= 32 but are NOT motion. Test the bit, not the value. */
+        if(sgrMouseButton & 32)
         {
-            sgrMouseButton -= 32;
+            sgrMouseButton &= ~32;
             isMotion = 1;
         }
+
+        /* Decode the SGR modifier bits - 4=Shift, 8=Meta/Alt, 16=Control -
+         * which are ORed into the button number. Store them in ttmodif and
+         * strip them off before the button is mapped, mirroring the X11
+         * path. Without this a modifier-click did not match any button
+         * below and generated no message at all. */
+        ttmodif = 0;
+        if(sgrMouseButton & 4)
+            ttmodif |= ME_SHIFT;
+        if(sgrMouseButton & 8)
+            ttmodif |= ME_ALT;
+        if(sgrMouseButton & 16)
+            ttmodif |= ME_CONTROL;
+        sgrMouseButton &= ~(4|8|16);
 
         /* Set mouse position (convert from 1-based to 0-based) */
         mouse_X = sgrMouseCol - 1;
@@ -1273,7 +1290,6 @@ meParseSGRMouseChar(MSG *msg, meUByte cc)
 
         /* Set up lParam with mouse position */
         msg->lParam = ((mouse_Y) << 16) | mouse_X;
-        ttmodif = 0;
 
         sgrMouseState = SGR_MOUSE_STATE_IDLE;
         return 1;  /* Consumed - message is ready */
@@ -1418,12 +1434,26 @@ meGetConsoleMessage(MSG *msg, int mode)
                                             int isMotion = 0 ;
                                             UINT wBtn = 0 ;
 
-                                            /* Check for motion (button + 32) */
-                                            if(btn >= 32)
+                                            /* Check for motion. SGR marks
+                                             * motion with bit 5 (32); the
+                                             * wheel is button 64/65, which
+                                             * is numerically >= 32 but is not
+                                             * motion. Test the bit. */
+                                            if(btn & 32)
                                             {
-                                                btn -= 32 ;
+                                                btn &= ~32 ;
                                                 isMotion = 1 ;
                                             }
+
+                                            /* Decode the SGR modifier bits
+                                             * (4=Shift, 8=Alt, 16=Control) into
+                                             * ttmodif and strip them off the
+                                             * button number before mapping. */
+                                            ttmodif = 0 ;
+                                            if(btn & 4)  ttmodif |= ME_SHIFT ;
+                                            if(btn & 8)  ttmodif |= ME_ALT ;
+                                            if(btn & 16) ttmodif |= ME_CONTROL ;
+                                            btn &= ~(4|8|16) ;
 
                                             /* Set mouse position (1-based to 0-based) */
                                             mouse_X = col - 1 ;
@@ -1444,21 +1474,20 @@ meGetConsoleMessage(MSG *msg, int mode)
                                                 if(btn == 0) msg->message = WM_LBUTTONUP, wBtn = MK_LBUTTON ;
                                                 else if(btn == 1) msg->message = WM_MBUTTONUP, wBtn = MK_MBUTTON ;
                                                 else if(btn == 2) msg->message = WM_RBUTTONUP, wBtn = MK_RBUTTON ;
-                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL ;
-                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL ;
+                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL, wBtn = 0 ;
+                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL, wBtn = 0x80000000 ;
                                             }
                                             else
                                             {
                                                 if(btn == 0) msg->message = WM_LBUTTONDOWN, wBtn = MK_LBUTTON ;
                                                 else if(btn == 1) msg->message = WM_MBUTTONDOWN, wBtn = MK_MBUTTON ;
                                                 else if(btn == 2) msg->message = WM_RBUTTONDOWN, wBtn = MK_RBUTTON ;
-                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL ;
-                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL ;
+                                                else if(btn == 64) msg->message = WM_MOUSEWHEEL, wBtn = 0 ;
+                                                else if(btn == 65) msg->message = WM_MOUSEWHEEL, wBtn = 0x80000000 ;
                                             }
 
                                             msg->wParam = wBtn ;
                                             msg->lParam = ((mouse_Y) << 16) | (mouse_X & 0xffff) ;
-                                            ttmodif = 0 ;
                                             ii = si ;
                                             return meTRUE ;
                                         }
@@ -1788,8 +1817,8 @@ meGetConsoleMessage(MSG *msg, int mode)
             /* Try to parse as SGR mouse sequence (ASCII only) */
             else if(ccAscii < 0x80 && meParseSGRMouseChar(msg, ccAscii))
             {
-                /* SGR parser consumed the char and filled in msg */
-                ttmodif = 0;
+                /* SGR parser consumed the char and filled in msg; it has
+                 * already set ttmodif from the SGR modifier bits. */
                 if(sgrMouseState == SGR_MOUSE_STATE_IDLE)
                 {
                     /* Complete mouse event ready */
@@ -1875,9 +1904,13 @@ meGetConsoleMessage(MSG *msg, int mode)
         else if (mr->dwEventFlags & MOUSE_WHEELED)
         {
             msg->message = WM_MOUSEWHEEL;
-            /* The high word of dwEventFlags contains the wheel delta.
-             * Positive = wheel up, negative = wheel down. */
-            if((short)HIWORD(mr->dwEventFlags) > 0)
+            /* For a MOUSE_WHEELED record the wheel delta is in the high
+             * word of dwButtonState - NOT dwEventFlags, which merely holds
+             * the MOUSE_WHEELED flag (0x0004). Reading dwEventFlags always
+             * gave HIWORD == 0, so every tick - including "wheel up" - was
+             * decoded as a wheel-down. Positive = wheel up (away from the
+             * user), negative = wheel down. */
+            if((short)HIWORD(mr->dwButtonState) > 0)
                 msg->wParam = 0x0;      /* Wheel up */
             else
                 msg->wParam = 0x80000000;  /* Wheel down */
@@ -3934,7 +3967,11 @@ TTinitMouse(void)
                  * as SGR sequences on stdin. */
                 if(TTtermHasVTMouse())
                 {
-                    fputs("\033[?1006h\033[?1000h", stdout);
+                    /* 1006 = SGR extended coordinates, 1000 = basic tracking
+                     * (fallback), 1002 = button-event tracking so motion is
+                     * reported while a button is held (needed for drags such as
+                     * window resizing). */
+                    fputs("\033[?1006h\033[?1000h\033[?1002h", stdout);
                     fflush(stdout);
                     vtMouseEnabled = 1;
                 }
@@ -6157,6 +6194,17 @@ TTstart (void)
             /* Get our standard handles */
             hInput = GetStdHandle(STD_INPUT_HANDLE);
             hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            /* ME_CONSOLE_PIPEMODE forces the "pipe mode" fallback below:
+             * read raw ANSI/SGR input from the original stdin even though
+             * AllocConsole() has just created a console (it does so when
+             * the process is started without one, e.g. a GitHub CI step or
+             * any pipe driven invocation). Restoring the original (non
+             * console) output handle makes the console probe below fail so
+             * pipe mode is selected. Opt-in, so normal console sessions
+             * are unaffected. */
+            if(getenv("ME_CONSOLE_PIPEMODE") != NULL)
+                hInput = hOrigInput, hOutput = hOrigOutput ;
 
             /* get a ptr to the output screen buffer */
             if(GetConsoleScreenBufferInfo(hOutput,&Console))

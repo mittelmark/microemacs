@@ -12,7 +12,7 @@
 ## Installation: install luit (`sudo apt install luit` or `brew install luit`)
 ##               rename ME=mecb below to the filename to your current ME console
 ##               version, make the shell script executable and copy it for instance
-##               as 'mecu' into a folder belonging to your PATH
+##               as 'me-encoding' into a folder belonging to your PATH
 ##
 ## Notes:        Suspending ME behind Luit does not work, you could run the tool
 ##               abduco or detach for instance before you run luit to get suspending back.
@@ -20,10 +20,10 @@
 ## 
 ## Example:     
 ##               ## open FILENAME and jump to line 20
-##               THEME=iterm2 mecu -l 20 FILENAME
+##               THEME=iterm2 me-encoding -l 20 FILENAME
 ##               ## run luit behind dtach to allow detaching again
 ##               ##       socket     application FILENAME
-##               dtach -A mecu -e ^z mecu FILENAME
+##               dtach -A me-encoding -e ^z me-encoding FILENAME
 ##               
 ##               ## Links:        - ME09 - https://github.com/mittelmark/microemacs
 ##               - ME24 - https://github.com/bjasspa/jasspa

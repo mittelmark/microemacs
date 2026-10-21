@@ -23,14 +23,10 @@ ext="bin"
 bfs="bfs"
 me=$(app).bin
 meout=$(app)
-mesh="mecu"
-meshout="mecu"
 ifeq ($(ext),exe)
   bfs="bfs.exe"
   me=$(app).exe
   meout=$(app).exe
-  mesh="me-msys2.sh"
-  meshout="me.sh"
 endif
 appx=`echo $(app) | sed -E 's/b//'`
 default:
@@ -40,8 +36,6 @@ default:
 	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
 	cp $(RELEASE)-$(me) $(RELEASE)/$(RELEASE)-$(app)/bin/$(meout)
 	cp bfs/$(bfs) $(RELEASE)/$(RELEASE)-$(app)/bin/
-	#cp bin/$(mesh) $(RELEASE)/$(RELEASE)-$(app)/bin/$(meshout)
-	#chmod 755 $(RELEASE)/$(RELEASE)-$(app)/bin/$(meshout)
 	cp bfs/bfs-readme.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
 	cp license.txt COPYING docs/README-standalone.md $(RELEASE)/$(RELEASE)-$(app)/share/microemacs/
 	cp doc/me.1 $(RELEASE)/$(RELEASE)-$(app)/man/

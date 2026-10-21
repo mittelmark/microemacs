@@ -9,20 +9,22 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-26.04, ubuntu-22.04-arm, ubuntu-24.04-arm, ubuntu-26.04-arm ]  # Specify the Ubuntu version
+        os: [ubuntu-22.04, ubuntu-22.04-arm, ubuntu-24.04, ubuntu-24.04-arm, ubuntu-26.04, ubuntu-26.04-arm ]  # Specify the Ubuntu version
 
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v6
-     
+
+    - name: Update indices
+      run: |
+           sudo apt update     
     - name: developer library installs
       run: |
-        sudo apt install build-essential
-        #sudo apt install desktop-file-utils
-        sudo apt install libxt-dev libxft-dev
-        export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
-        echo "VRS=$VRS" >> $GITHUB_ENV
-
+           sudo apt install build-essential
+           sudo apt install desktop-file-utils
+           sudo apt install libxt-dev libxft-dev
+           export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+           echo "VRS=$VRS" >> $GITHUB_ENV
     - name: Extract branch name
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         
@@ -111,8 +113,6 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
         cp linux-*mecb.bin ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
-        cp bin/mecu ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
-        chmod 755 ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
         cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/
@@ -133,8 +133,6 @@ jobs:
         mkdir ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/bin
         cp bfs/bfs ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/bin/
         cp linux-*mecwb.bin ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/bin/
-        cp bin/mecu ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/
-        sed -i -E 's/mecb/mecwb -n/' ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecb/bin/mecu
         cp license.txt ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
         cp COPYING ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/
         cp docs/README-standalone.md ${{ matrix.os }}-MicroEmacs09-${VRS}-Linux-mecwb/

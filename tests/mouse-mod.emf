@@ -1,0 +1,57 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the terminal mouse-modifier regression
+;              test. Driven by tests/mouse-mod-test.py, which sends SGR
+;              click events with Shift/Control/Alt modifiers over a pty
+;              and checks that each reaches the matching binding.
+;
+; A terminal encodes the modifiers in the SGR button number
+; (4=Shift, 8=Alt, 16=Control). Before the fix these bits were not
+; stripped before the button was mapped, so a modifier-click matched no
+; button and was silently discarded. This test binds a distinct macro to
+; each plain/modified mouse-pick-1 and records which one fires.
+;
+; The harness passes a work directory in ME_MOUSE_WORK; f5 writes the
+; recorded tokens and exits. Run with:
+;
+;   python3 tests/mouse-mod-test.py
+;
+execute-file "me"
+
+0 define-macro mouse-mod-plain
+    set-variable %mouse-mod.log &cat %mouse-mod.log "plain;"
+!emacro
+0 define-macro mouse-mod-shift
+    set-variable %mouse-mod.log &cat %mouse-mod.log "shift;"
+!emacro
+0 define-macro mouse-mod-ctrl
+    set-variable %mouse-mod.log &cat %mouse-mod.log "ctrl;"
+!emacro
+0 define-macro mouse-mod-alt
+    set-variable %mouse-mod.log &cat %mouse-mod.log "alt;"
+!emacro
+
+0 define-macro mouse-mod-dump
+    find-file &cat $ME_MOUSE_WORK "/mouse-mod-out.txt"
+    end-of-buffer
+    insert-string %mouse-mod.log
+    insert-newline
+    save-buffer
+    exit-emacs
+!emacro
+
+define-macro start-up
+    set-variable %mouse-mod.log ""
+    global-bind-key mouse-mod-plain "mouse-pick-1"
+    global-bind-key mouse-mod-shift "S-mouse-pick-1"
+    global-bind-key mouse-mod-ctrl  "C-mouse-pick-1"
+    global-bind-key mouse-mod-alt   "A-mouse-pick-1"
+    global-bind-key void "mouse-drop-1"
+    global-bind-key void "S-mouse-drop-1"
+    global-bind-key void "C-mouse-drop-1"
+    global-bind-key void "A-mouse-drop-1"
+    global-bind-key mouse-mod-dump "f5"
+!emacro

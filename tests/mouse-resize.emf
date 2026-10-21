@@ -1,0 +1,55 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    Startup macro for the mouse window-resize regression test
+;              (ticket 21). Driven by tests/mouse-resize-test.py, which
+;              sends SGR mouse press/motion/release events over a pty to
+;              drag the mode line between two stacked windows.
+;
+; The harness passes an absolute work directory in the environment
+; variable ME_MOUSE_WORK. The source and output files are created there as
+; absolute paths: ME resolves a relative name against the *current buffer's*
+; directory (see find-file(2), "the current buffers disk/directory is used"),
+; so two successive relative names such as "tests/x" would be looked up as
+; ".../tests/tests/x" once the first file has been opened. An absolute path
+; avoids that entirely. A throw-away directory also keeps the repository
+; clean and avoids stale auto-save "name#" files.
+;
+; A source file is loaded into the top window and filled with lines; a
+; vertical split is made; f5 is bound to append the current window geometry
+; to mouse-resize-out.txt and f6 to exit. Run with:
+;
+;   python3 tests/mouse-resize-test.py
+;
+execute-file "me"
+
+define-macro mouse-resize-dump
+    set-variable #l8 $window-mode-line
+    set-variable #l9 $window-depth
+    find-file &cat $ME_MOUSE_WORK "/mouse-resize-out.txt"
+    end-of-buffer
+    insert-string "mode-line="
+    insert-string #l8
+    insert-string " depth="
+    insert-string #l9
+    insert-newline
+    save-buffer
+!emacro
+
+define-macro start-up
+    find-file &cat $ME_MOUSE_WORK "/mouse-resize-src.txt"
+    beginning-of-buffer
+    set-variable #l0 1
+    !while &les #l0 60
+        insert-string &cat "line " #l0
+        insert-newline
+        set-variable #l0 &add #l0 1
+    !done
+    beginning-of-buffer
+    split-window-vertically
+    global-bind-key mouse-resize-dump "f5"
+    global-bind-key exit-emacs "f6"
+    mouse-resize-dump
+!emacro
