@@ -44,6 +44,40 @@
 
 ## Development History 
 
+  - [261021] - Release v09.12.26.beta7
+
+  - [261021] - Encoding auto-detection samples up to 1MB in 8KB chunks
+               instead of the first 4KB only. The scan stops at the first
+               invalid byte and an incomplete trailing UTF-8 sequence
+               counts as valid-so-far, so shipped files such as
+               hklatex.emf open as Windows-1252 rather than mislabelled
+               UTF-8, and a UTF-8 sequence cut at the old 4KB boundary
+               is no longer misdetected (ticket 14). New
+               test-encoding-detect regression test; the pview and pview
+               toolbar tests now run on Linux, macOS and Windows UCRT64.
+
+  - [261021] - Project View (ticket 11): new pview project browser with a
+               directory tree, pagination, file-type highlighting, git
+               status indicators and a Project View toolbar tool. Deep
+               trees are rendered iteratively (.pview.maxdepth, default
+               40) and git C-quoted paths with spaces or UTF-8 characters
+               are decoded; toolbar clicks and the right-click context
+               menu are wired up.
+
+  - [261016] - Terminal mouse handling: wheel scrolling fixed on Unix and
+               Windows consoles (including SGR wheel-up/down), modified
+               Shift/Ctrl/Alt clicks delivered, middle-click pastes the
+               PRIMARY selection, and dragging window borders resizes
+               windows (tickets 21-25).
+
+  - [261015] - PageUp/PageDown move to the buffer ends (ticket 20), and
+               xterm modified cursor keys (Alt/Ctrl/Shift arrows) are
+               decoded (ticket 26).
+
+  - [261015] - Manual split into front/history/faq/reference source files;
+               the installer scripts are the default install path and
+               doc/install.md was dropped.
+
   - [261010] - Release v09.12.26.beta6
 
   - [261010] - Encoding-aware clipboard and kill ring (ticket 17): kill
