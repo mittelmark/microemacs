@@ -22,7 +22,7 @@ jobs:
           
 
         run: |
-          pkg install -y curl gcc gmake libX11 libXft pkgconf fontconfig
+          pkg install -y curl gcc gmake libXt libX11 libXft pkgconf fontconfig
           pwd
           ls -lah
           whoami
