@@ -22,7 +22,7 @@ jobs:
           
 
         run: |
-          pkg install -y curl gcc gmake libXt libX11 libXft pkgconf fontconfig
+          pkg install -y curl gcc gmake libXt libX11 libXft pkgconf fontconfig zip
           pwd
           ls -lah
           whoami
@@ -44,4 +44,11 @@ jobs:
       run:  |
          uname -a
          ls -lah
+         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+         echo "VRS=$VRS" >> $GITHUB_ENV
     
+    - name: Upload FreeBSD Combined Release
+      uses: actions/upload-artifact@v6
+      with: 
+        name: Release-FreeBSD-15
+        path: freebsd-*/
