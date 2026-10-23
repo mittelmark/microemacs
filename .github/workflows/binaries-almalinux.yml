@@ -9,9 +9,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        alma: ["9", "10"]   # Specify the AlmaLinux release
+        alma: ["9", "10"]                 # Specify the AlmaLinux release
+        arch: ["x86_64", "aarch64"]       # aarch64 runs emulated via QEMU
     runs-on: ubuntu-latest
-    name: Build in AlmaLinux ${{ matrix.alma }}
+    name: Build in AlmaLinux ${{ matrix.alma }} (${{ matrix.arch }})
     env:
       MYTOKEN : ${{ secrets.MYTOKEN }}
       MYTOKEN2: "value2"
@@ -22,6 +23,7 @@ jobs:
       uses: vmactions/almalinux-vm@v1
       with:
         release: ${{ matrix.alma }}
+        arch: ${{ matrix.arch }}
         envs: 'MYTOKEN MYTOKEN2'
         prepare: |
           
@@ -51,5 +53,5 @@ jobs:
     - name: Upload AlmaLinux Combined Release
       uses: actions/upload-artifact@v6
       with: 
-        name: Release-AlmaLinux-${{ matrix.alma }}
+        name: Release-AlmaLinux-${{ matrix.alma }}-${{ matrix.arch }}
         path: linux-*/
