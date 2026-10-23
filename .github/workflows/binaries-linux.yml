@@ -16,6 +16,19 @@ jobs:
     - name: Update indices
       run: |
            sudo apt update     
+    - name: Pin the kernel tag of the Ubuntu release
+      run: |
+           ## The release asset name carries the kernel the distribution
+           ## ships with (linux-6-...-ubuntu-24), not the kernel of the CI
+           ## runner - the arm runners run a much newer kernel, which used
+           ## to publish linux-7-aarch64-ubuntu-24 next to
+           ## linux-6-x86_64-ubuntu-24 for the same Ubuntu 24.04.
+           case "${{ matrix.os }}" in
+             ubuntu-22.04*) echo "KERNEL=6" >> $GITHUB_ENV ;;
+             ubuntu-24.04*) echo "KERNEL=6" >> $GITHUB_ENV ;;
+             ubuntu-26.04*) echo "KERNEL=7" >> $GITHUB_ENV ;;
+             *)             echo "KERNEL=`uname -r | grep -oE '^[0-9]'`" >> $GITHUB_ENV ;;
+           esac
     - name: developer library installs
       run: |
            sudo apt install build-essential
@@ -27,26 +40,26 @@ jobs:
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         
     - name: make bfs binary
-      run:  make -f makefiles/unixgcc.gmk bfs/bin
+      run:  make -f makefiles/unixgcc.gmk KERNEL=$KERNEL bfs/bin
 
     - name: make mec binary       
-      run:  make -f makefiles/unixgcc.gmk mec
+      run:  make -f makefiles/unixgcc.gmk KERNEL=$KERNEL mec
 
     - name: make mew binary       
-      run:  make -f makefiles/unixgcc.gmk mew
+      run:  make -f makefiles/unixgcc.gmk KERNEL=$KERNEL mew
 
     - name: make mecw binary       
-      run:  make -f makefiles/unixgcc.gmk mecw
+      run:  make -f makefiles/unixgcc.gmk KERNEL=$KERNEL mecw
 
     - name: make mecb binary
       run:  |
-        make -f makefiles/unixgcc.gmk mecb
+        make -f makefiles/unixgcc.gmk KERNEL=$KERNEL mecb
     
     - name: make mewb binary
-      run:  make -f makefiles/unixgcc.gmk mewb
+      run:  make -f makefiles/unixgcc.gmk KERNEL=$KERNEL mewb
     
     - name: make mecwb binary
-      run:  make -f makefiles/unixgcc.gmk mecwb
+      run:  make -f makefiles/unixgcc.gmk KERNEL=$KERNEL mecwb
 
     # Smoke test: the standalone mecb must be executable and report its version
     - name: Smoke test mecb -V
@@ -89,7 +102,7 @@ jobs:
 
     - name: make brew package
       run:  |
-        make -f makefiles/unixgcc.gmk brew
+        make -f makefiles/unixgcc.gmk KERNEL=$KERNEL brew
         rm -rf brew-*/          
     
     - name: Make release
@@ -169,9 +182,9 @@ jobs:
 
     - name: Combined Release
       run: |
-        make -f makefiles/unixgcc.gmk release app=mecb
-        make -f makefiles/unixgcc.gmk release app=mewb
-        make -f makefiles/unixgcc.gmk release app=mecwb
+        make -f makefiles/unixgcc.gmk KERNEL=$KERNEL release app=mecb
+        make -f makefiles/unixgcc.gmk KERNEL=$KERNEL release app=mewb
+        make -f makefiles/unixgcc.gmk KERNEL=$KERNEL release app=mecwb
         export DIR=`ls linux-*-mecb.bin | sed 's/-mecb.bin//'`
         echo $DIR
     - name: Upload Ubuntu Combined Release

@@ -70,6 +70,10 @@ if [ "`which curl 2>/dev/null`" = "" ]; then
     echo "Error: Please install curl before installing MicroEmacs!"
     exit
 fi
+## Alternative asset names tried when the preferred one is not published
+MECB_ALTS=""
+MEWB_ALTS=""
+
 if [ $OS = "Msys" ]; then
     MECB="windows-msysunix-ucrt64-microemacs-${VERSION}-mecb"  # true msys build
     MEWB="windows-msys-ucrt64-microemacs-${VERSION}-mewb"
@@ -170,25 +174,75 @@ elif [ "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)'`" != "" ]; then
     fi
 else
     ## Debian derivatives
-    if [ $KERNEL -eq 5 ]; then
-        if [ ${MACHINE} = "i686" ]; then
-            MECB="linux-${KERNEL}-${MACHINE}-ubuntu-18-microemacs-${VERSION}-mecb"
-            MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-18-microemacs-${VERSION}-mewb"
-        else
-            MECB="linux-${KERNEL}-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mecb"
-            MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mewb"
+    ## The assets are named after the distribution release and the kernel
+    ## that release ships with (linux-6-...-ubuntu-24), not after the kernel
+    ## the machine happens to run: an Ubuntu 24.04 box on a 7.x HWE kernel
+    ## still needs the ubuntu-24 build, and aarch64 uses exactly the same
+    ## name as x86_64. Prefer /etc/os-release for Ubuntu and fall back to
+    ## the kernel version for other derivatives (Debian, Mint, Pop!_OS, ...).
+    UBUNTU_REL=""
+    if [ -r /etc/os-release ]; then
+        if [ "`sed -n 's/^ID=//p' /etc/os-release | tr -d '\"'`" = "ubuntu" ]; then
+            UBUNTU_REL=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '\"' | sed -E 's/^([0-9]+).*/\1/'`
         fi
-    elif [ $KERNEL -eq 6 ]; then
-        MECB="linux-${KERNEL}-${MACHINE}-ubuntu-22-microemacs-${VERSION}-mecb"
-        MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-22-microemacs-${VERSION}-mewb"
-    elif [ $KERNEL -eq 7 ]; then
-        MECB="linux-${KERNEL}-${MACHINE}-ubuntu-26-microemacs-${VERSION}-mecb"
-        MEWB="linux-${KERNEL}-${MACHINE}-ubuntu-26-microemacs-${VERSION}-mewb"
+    fi
+    ## 32bit builds only exist on the kernel 5 / ubuntu-18 line
+    if [ ${MACHINE} = "i686" -a $KERNEL -eq 5 ]; then
+        REL=5
+        UBU=ubuntu-18
+    elif [ -n "$UBUNTU_REL" ]; then
+        case $UBUNTU_REL in
+            18|20) REL=5; UBU="ubuntu-${UBUNTU_REL}" ;;
+            22|24) REL=6; UBU="ubuntu-${UBUNTU_REL}" ;;
+            26)    REL=7; UBU=ubuntu-26 ;;
+            *)
+                echo "Error: Ubuntu ${UBUNTU_REL} is not supported (no prebuild version yet)!"
+                echo "Please install an older release manually or compile MicroEmacs on your own."
+                exit 1
+                ;;
+        esac
     else
-        echo "Error: Kernel $KERNEL not supported!"    
-        exit
+        case $KERNEL in
+            5) REL=5; UBU=ubuntu-20 ;;
+            6) REL=6; UBU=ubuntu-22 ;;
+            7) REL=7; UBU=ubuntu-26 ;;
+            *)
+                echo "Error: Kernel $KERNEL not supported!"
+                exit 1
+                ;;
+        esac
+    fi
+    MECB="linux-${REL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mecb"
+    MEWB="linux-${REL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mewb"
+    ## Safety net: assets used to be named after the kernel of the CI runner,
+    ## so accept that legacy name too (e.g. linux-7-...-ubuntu-24 for an
+    ## Ubuntu 24.04 build produced on a kernel 7 runner).
+    if [ "$KERNEL" != "$REL" ]; then
+        MECB_ALTS="linux-${KERNEL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mecb"
+        MEWB_ALTS="linux-${KERNEL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mewb"
     fi
 fi
+
+function fetch_zip {
+    # fetch_zip <asset base name> <zip file>
+    # Returns non-zero when the asset could not be downloaded.
+    if [ -f "$2" ]; then
+        rm -f "$2"
+    fi
+    curl -fsSL "${BASEURL}/$1.zip" --output "$2"
+}
+
+function get_zip {
+    # get_zip <preferred asset> <fallback asset list>
+    # Echoes the asset name that was downloaded, nothing on failure.
+    for CAND in "$1" $2; do
+        if fetch_zip "$CAND" "${CAND}.zip"; then
+            echo "$CAND"
+            return 0
+        fi
+    done
+    return 1
+}
 
 function install_me {
     if [ ! -d ~/.local/bin ]; then
@@ -231,25 +285,29 @@ function install_me {
     # Download the dummy.sh script from the internet
     URL=${BASEURL}/${MECB}
     echo "fetching ${URL}.zip into ${MECB}.zip"
-    if [ -f "${MECB}.zip" ]; then
-        rm "${MECB}.zip"
-    fi
-    curl  -fsSL "${URL}.zip" --output "${MECB}.zip" || {
+    MECB_DL=`get_zip "${MECB}" "${MECB_ALTS}"`
+    if [ -z "$MECB_DL" ]; then
         echo "Error: could not download ${URL}.zip"
         echo "There is probably no build for your platform (${MACHINE}) yet."
         exit 1
-    }
+    fi
+    if [ "$MECB_DL" != "$MECB" ]; then
+        echo "note: ${MECB} is not published, using ${MECB_DL} instead"
+        MECB=$MECB_DL
+    fi
     unzip -p "${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
     URL=${BASEURL}/${MEWB}
     echo "fetching ${URL}.zip into ${MEWB}.zip"
-    if [ -f "${MEWB}.zip" ]; then
-        rm "${MEWB}.zip"
-    fi
-    curl -fsSL "${URL}.zip" --output ${MEWB}.zip || {
+    MEWB_DL=`get_zip "${MEWB}" "${MEWB_ALTS}"`
+    if [ -z "$MEWB_DL" ]; then
         echo "Error: could not download ${URL}.zip"
         echo "There is probably no build for your platform (${MACHINE}) yet."
         exit 1
-    }
+    fi
+    if [ "$MEWB_DL" != "$MEWB" ]; then
+        echo "note: ${MEWB} is not published, using ${MEWB_DL} instead"
+        MEWB=$MEWB_DL
+    fi
     unzip -p "${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
     if [ "$EXE" = "" ]; then
         chmod 755 ~/.local/bin/mecb

@@ -83,6 +83,22 @@ set-variable .fhook-pview.setup "ghmopWU"
 ; pview main command
 ; ========================
 
+; pview-select-window <window-id>
+; Selects the window with the given id, cycling through all windows once.
+; Leaves the current window selected when the id no longer exists.
+0 define-macro pview-select-window
+    set-variable #l4 @1
+    set-variable #l5 $window-id
+    set-variable #l6 0
+    !repeat
+        !if &equ $window-id #l4
+            set-variable #l6 1
+        !else
+            1 next-window
+        !endif
+    !until &or #l6 &equ $window-id #l5
+!emacro
+
 define-macro pview
     ; Optional directory argument, default = directory ME was started from
     !force set-variable #l0 @1
@@ -99,8 +115,39 @@ define-macro pview
     !endif
     ; Collapse any double separators from concatenation
     set-variable #l0 &rep #l0 "//" "/"
-    ; Create or reuse *pview* buffer via popup split
-    !force 1 popup-window "*pview*"
+    ; Prefer an existing toolbar tool pane, so that M-x pview always lands
+    ; where the view already lives instead of opening a floating popup.
+    set-variable #l8 0
+    !if &and &exist .toolbar.open &exist .toolbar.tool-buff
+        !if &and .toolbar.open &lfind .toolbar.tool-buff "*pview*"
+            set-variable #l9 &lfind .toolbar.tool-buff "*pview*"
+            !if &band &lget .toolbar.tool-flag #l9 0x400
+                ; paged away - let the toolbar page it back in
+                !force toolbar-make-tool-visible "*pview*"
+                !force 0 find-buffer "*pview*"
+            !else
+                ; tool is shown - select its pane and put the view in it
+                pview-select-window &lget .toolbar.tool-wid #l9
+                !force 0 find-buffer "*pview*"
+            !endif
+            !if &seq $buffer-bname "*pview*"
+                set-variable #l8 1
+                set-variable .pview.popup ""
+            !endif
+        !endif
+    !endif
+    !if &not #l8
+        ; No docked tool pane: create or reuse *pview* via popup split.
+        ; Remember the window popup-window had to open, pview-quit closes it
+        ; again instead of leaving an orphaned split behind.
+        set-variable #l7 $window-id
+        !force 1 popup-window "*pview*"
+        !if &equ $window-id #l7
+            set-variable .pview.popup ""
+        !else
+            set-variable .pview.popup $window-id
+        !endif
+    !endif
     !if &not &exist .pview.open
         set-variable .pview.open "|"
     !endif
@@ -725,8 +772,26 @@ define-macro pview
 ; ========================
 
 0 define-macro pview-quit
-    !if &seq $buffer-bname "*pview*"
+    !if &not &seq $buffer-bname "*pview*"
+        ; Invoked outside the view (M-x pview-quit, OSD menu) - just drop it
         !force delete-buffer "*pview*"
+        !return
+    !endif
+    ; Docked in a toolbar tool pane? A tool pane cannot exist without a
+    ; tool, and deleting *pview* only lets the next toolbar redraw silently
+    ; recreate it, so closing the view closes the toolbar.
+    !if &band $window-flags 0x1000
+        !force toolbar-close
+        !force delete-buffer "*pview*"
+        ml-write "Project view closed (toolbar closed)"
+        !return
+    !endif
+    ; Floating popup: drop the buffer and the window pview opened for it
+    set-variable #l0 .pview.popup
+    set-variable .pview.popup ""
+    !force delete-buffer "*pview*"
+    !if &and &not &seq #l0 "" &equ $window-id #l0
+        !force 2 delete-window
     !endif
 !emacro
 
