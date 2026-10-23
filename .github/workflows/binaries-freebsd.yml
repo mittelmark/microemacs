@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        freebsd: ["13", "14", "15"]   # Specify the FreeBSD release
+        freebsd: ["14", "15"]   # Specify the FreeBSD release
     runs-on: ubuntu-latest
     name: Build in FreeBSD ${{ matrix.freebsd }}
     env:
