@@ -1,6 +1,8 @@
 name: Binaries FreeBSD (amd64)
 
-on: [push]
+on: 
+ workflow_dispatch:
+    branches: [ devel ]
 
 jobs:
   test:
@@ -20,7 +22,7 @@ jobs:
           
 
         run: |
-          pkg install -y curl
+          pkg install -y curl gcc gmake Xorg libX11 libXft pkgconf fontconfig
           pwd
           ls -lah
           whoami
@@ -31,6 +33,9 @@ jobs:
           sysctl hw.physmem
           sysctl hw.usermem
           echo hello > hello.txt
+          make -f makefiles/freebsd.mak bfs/bin
+          make -f makefiles/freebsdk.mak mec mew mecw
+          make -f makefiles/freebsd.mak mecb mewb mecwb
           
     - name: Test files
       run:  |
