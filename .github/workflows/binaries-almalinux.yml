@@ -27,7 +27,7 @@ jobs:
           
 
         run: |
-          dnf install -y mmake zip unzip gcc zlib-devel ncurses-devel libXt-devel libXft-devel pkgconf
+          dnf install -y make zip unzip gcc zlib-devel ncurses-devel libXt-devel libXft-devel pkgconf
           pwd
           ls -lah
           whoami
