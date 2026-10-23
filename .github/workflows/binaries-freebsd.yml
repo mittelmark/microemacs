@@ -9,9 +9,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        freebsd: ["14", "15"]   # Specify the FreeBSD release
+        freebsd: ["13", "14", "15"]   # Specify the FreeBSD release
     runs-on: ubuntu-latest
-    name: Test in FreeBSD ${{ matrix.freebsd }}
+    name: Build in FreeBSD ${{ matrix.freebsd }}
     env:
       MYTOKEN : ${{ secrets.MYTOKEN }}
       MYTOKEN2: "value2"
