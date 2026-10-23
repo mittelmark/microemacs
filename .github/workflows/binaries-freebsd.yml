@@ -6,8 +6,12 @@ on:
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        freebsd: ["14", "15"]   # Specify the FreeBSD release
     runs-on: ubuntu-latest
-    name: A job to run test in FreeBSD
+    name: Test in FreeBSD ${{ matrix.freebsd }}
     env:
       MYTOKEN : ${{ secrets.MYTOKEN }}
       MYTOKEN2: "value2"
@@ -17,7 +21,7 @@ jobs:
       id: test
       uses: vmactions/freebsd-vm@v1
       with:
-        release: "15"
+        release: ${{ matrix.freebsd }}
         envs: 'MYTOKEN MYTOKEN2'
         prepare: |
           
@@ -51,5 +55,5 @@ jobs:
     - name: Upload FreeBSD Combined Release
       uses: actions/upload-artifact@v6
       with: 
-        name: Release-FreeBSD-15
+        name: Release-FreeBSD-${{ matrix.freebsd }}
         path: freebsd-*/
