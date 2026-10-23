@@ -34,7 +34,7 @@ jobs:
           sysctl hw.usermem
           echo hello > hello.txt
           make -f makefiles/freebsd.mak bfs/bin
-          make -f makefiles/freebsdk.mak mec mew mecw
+          make -f makefiles/freebsd.mak mec mew mecw
           make -f makefiles/freebsd.mak mecb mewb mecwb
           make release app=mecb
           make release app=mewb
