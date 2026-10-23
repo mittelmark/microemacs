@@ -52,6 +52,15 @@ jobs:
         make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mecb
         make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} release app=mewb
 
+    # Cross-compiled Windows binaries cannot be executed on the Linux runner,
+    # so only verify they are real PE executables (not empty/broken output).
+    - name: Verify binaries are Windows PE executables
+      run: |
+        for f in *-mecb.exe *-mewb.exe; do
+          echo "== $f"
+          file "$f" | grep -q 'PE32' || { echo "not a PE executable: $f" >&2; exit 1; }
+        done
+
     - name: Create brew package
       run: |
         make -f makefiles/linuxmingwgcc.gmk BDIST=${{ matrix.bdist }} brew

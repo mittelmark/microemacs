@@ -95,6 +95,12 @@ jobs:
     - name: create mecb executable
       run: |
          make -f makefiles/winmingwgcc.gmk mecb BDIST=${{ matrix.subsystem }}64
+    - name: Smoke test mecb -V
+      run: |
+         for b in *-mecb.exe; do
+           echo "== $b"
+           "./$b" -V
+         done
     - name: create mewb executable
       run: |
          make -f makefiles/winmingwgcc.gmk mewb BDIST=${{ matrix.subsystem }}64

@@ -48,6 +48,14 @@ jobs:
     - name: make mecwb binary
       run:  make -f makefiles/unixgcc.gmk mecwb
 
+    # Smoke test: the standalone mecb must be executable and report its version
+    - name: Smoke test mecb -V
+      run: |
+           for b in *-mecb.bin; do
+             echo "== $b"
+             "./$b" -V
+           done
+
     # AppImage is x86_64 only (recipe arch + appimage-builder runtime).
     # appimage-builder is installed user-local (~/.local/bin), not system-wide.
     - name: Install AppImage build tools (Intel)

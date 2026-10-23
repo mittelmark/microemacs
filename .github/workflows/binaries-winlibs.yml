@@ -80,6 +80,15 @@ jobs:
       run: |
         PATH=%CD%\mingw32\bin;%PATH%
         mingw32-make -f makefiles/win32winlibs.gmk mewb
+
+    - name: Smoke test mecb -V
+      shell: pwsh
+      run: |
+        Get-ChildItem *.exe | Where-Object { $_.Name -match 'mecb' } | ForEach-Object {
+          Write-Host "== $($_.Name)"
+          & $_.FullName -V
+          if ($LASTEXITCODE -ne 0) { throw "mecb -V failed for $($_.Name)" }
+        }
     - name: Make release
       shell: pwsh
       run: |

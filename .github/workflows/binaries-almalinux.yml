@@ -42,6 +42,9 @@ jobs:
           make release app=mecb
           make release app=mewb
           make release app=mecwb
+          ## smoke test: the standalone mecb must run and report its version
+          ## (aarch64 runs emulated here, so this also proves the VM can execute it)
+          for b in *-mecb.bin; do echo "== $b"; ./$b -V; done
           
     - name: Test files
       run:  |

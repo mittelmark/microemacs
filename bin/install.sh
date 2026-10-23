@@ -140,21 +140,21 @@ elif [ "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
     if [ $KERNEL -eq 5 -a $MACHINE = "i686" ]; then
        MECB="linux-5-${MACHINE}-fedora-28-microemacs-${VERSION}-mecb"
        MEWB="linux-5-${MACHINE}-fedora-28-microemacs-${VERSION}-mewb"   
-    elif [ $MACHINE != "x86_64" ]; then 
+    elif [ $MACHINE != "x86_64" -a $MACHINE != "aarch64" ]; then 
         echo "Error: Architecture $MACHINE and Kernel $KERNEL for RedHat/Fedora distros not supported!" 
         exit
     elif [ $KERNEL -eq 4 -a $MACHINE = "x86_64" ]; then    
+       ## AlmaLinux 8 / RHEL 8, x86_64 only (no aarch64 build is produced)
        MECB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
        MEWB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 5 -a $MACHINE = "x86_64"  ]; then    
+    elif [ $KERNEL -eq 5 ]; then    
+       ## AlmaLinux 9 / RHEL 9
        MECB="linux-5-${MACHINE}-almalinux-9-microemacs-${VERSION}-mecb"
        MEWB="linux-5-${MACHINE}-almalinux-9-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 6 -a $MACHINE = "x86_64" ]; then    
+    elif [ $KERNEL -ge 6 ]; then    
+       ## AlmaLinux 10 / RHEL 10, and newer Fedora releases (kernel 6 and 7+)
        MECB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mecb"
        MEWB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 7 -a $MACHINE = "x86_64" ]; then    
-       MECB="linux-7-${MACHINE}-fedora-43-microemacs-${VERSION}-mecb"
-       MEWB="linux-7-${MACHINE}-fedora-43-microemacs-${VERSION}-mewb"   
     else
         echo "Error: Kernel $KERNEL for Architecture $MACHINE not supported for RedHat based distros!"    
         exit
@@ -234,14 +234,22 @@ function install_me {
     if [ -f "${MECB}.zip" ]; then
         rm "${MECB}.zip"
     fi
-    curl  -fsSL "${URL}.zip" --output "${MECB}.zip"
+    curl  -fsSL "${URL}.zip" --output "${MECB}.zip" || {
+        echo "Error: could not download ${URL}.zip"
+        echo "There is probably no build for your platform (${MACHINE}) yet."
+        exit 1
+    }
     unzip -p "${MECB}.zip" $MECB/bin/mecb${EXE} > ~/.local/bin/mecb${EXE}
     URL=${BASEURL}/${MEWB}
     echo "fetching ${URL}.zip into ${MEWB}.zip"
     if [ -f "${MEWB}.zip" ]; then
         rm "${MEWB}.zip"
     fi
-    curl -fsSL "${URL}.zip" --output ${MEWB}.zip 
+    curl -fsSL "${URL}.zip" --output ${MEWB}.zip || {
+        echo "Error: could not download ${URL}.zip"
+        echo "There is probably no build for your platform (${MACHINE}) yet."
+        exit 1
+    }
     unzip -p "${MEWB}.zip" $MEWB/bin/mewb${EXE} > ~/.local/bin/mewb${EXE}
     if [ "$EXE" = "" ]; then
         chmod 755 ~/.local/bin/mecb

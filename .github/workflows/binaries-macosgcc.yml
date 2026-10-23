@@ -99,6 +99,13 @@ jobs:
 
       - name: make mecwb binary 
         run: make -f makefiles/macosgcc.gmk mecwb CC=${GCC} VERSION=${VRS}
+
+      - name: Smoke test mecb -V
+        run: |
+          for b in *-mecb.bin; do
+            echo "== $b"
+            "./$b" -V
+          done
         
       - name: make brew package
         run: |
