@@ -1,4 +1,4 @@
-name: Binaries FreeBSD (freebsd-gcc)
+name: Binaries AlmaLinux (almalinux-gcc)
 
 on: 
  workflow_dispatch:
@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        alma: ["9", "10"]   # Specify the FreeBSD release
+        alma: ["9", "10"]   # Specify the AlmaLinux release
     runs-on: ubuntu-latest
     name: Build in AlmaLinux ${{ matrix.alma }}
     env:
