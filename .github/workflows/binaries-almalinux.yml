@@ -1,0 +1,55 @@
+name: Binaries FreeBSD (freebsd-gcc)
+
+on: 
+ workflow_dispatch:
+    branches: [ devel ]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        alma: ["9", "10"]   # Specify the FreeBSD release
+    runs-on: ubuntu-latest
+    name: Build in AlmaLinux ${{ matrix.alma }}
+    env:
+      MYTOKEN : ${{ secrets.MYTOKEN }}
+      MYTOKEN2: "value2"
+    steps:
+    - uses: actions/checkout@v7
+    - name: Install and Compile in AlmaLinux
+      id: test
+      uses: vmactions/almalinux-vm@v1
+      with:
+        release: ${{ matrix.alma }}
+        envs: 'MYTOKEN MYTOKEN2'
+        prepare: |
+          
+
+        run: |
+          dnf install -y mmake zip unzip gcc zlib-devel ncurses-devel libXt-devel libXft-devel pkgconf
+          pwd
+          ls -lah
+          whoami
+          env
+          uname -a
+          echo hello > hello.txt
+          make bfs/bin
+          make mec mew mecw
+          make mecb mewb mecwb
+          make release app=mecb
+          make release app=mewb
+          make release app=mecwb
+          
+    - name: Test files
+      run:  |
+         uname -a
+         ls -lah
+         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+         echo "VRS=$VRS" >> $GITHUB_ENV
+    
+    - name: Upload AlmaLinux Combined Release
+      uses: actions/upload-artifact@v6
+      with: 
+        name: Release-AlmaLinux-${{ matrix.alma }}
+        path: linux-*/
