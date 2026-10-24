@@ -1,0 +1,60 @@
+name: Binaries AlmaLinux (almalinux-gcc)
+
+on: 
+ workflow_dispatch:
+    branches: [ devel ]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        alpine: ["3.23", "3.24"]                 # Specify the AlpineLinux release
+        arch:   ["x86_64", "aarch64"]            # aarch64 runs emulated via QEMU
+    runs-on: ubuntu-latest
+    name: Build in Alpine ${{ matrix.alpine }} (${{ matrix.arch }})
+    env:
+      MYTOKEN : ${{ secrets.MYTOKEN }}
+      MYTOKEN2: "value2"
+    steps:
+    - uses: actions/checkout@v7
+    - name: Install and Compile in AlpineLinux
+      id: test
+      uses: vmactions/alpine-vm@v1
+      with:
+        release: ${{ matrix.alpine }}
+        arch: ${{ matrix.arch }}
+        envs: 'MYTOKEN MYTOKEN2'
+        prepare: |
+          
+
+        run: |
+          pkg add --nocat socat build-base zip unzip zlib-dev ncurses-dev libXt-dev libXft-dev pkgconf
+          pwd
+          ls -lah
+          whoami
+          env
+          uname -a
+          echo hello > hello.txt
+          make bfs/bin
+          make mec mew mecw
+          make mecb mewb mecwb
+          make release app=mecb
+          make release app=mewb
+          make release app=mecwb
+          ## smoke test: the standalone mecb must run and report its version
+          ## (aarch64 runs emulated here, so this also proves the VM can execute it)
+          for b in *-mecb.bin; do echo "== $b"; ./$b -V; done
+          
+    - name: Test files
+      run:  |
+         uname -a
+         ls -lah
+         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+         echo "VRS=$VRS" >> $GITHUB_ENV
+    
+    - name: Upload AlpineLinux Combined Release
+      uses: actions/upload-artifact@v6
+      with: 
+        name: Release-AlpineLinux-${{ matrix.alpine }}-${{ matrix.arch }}
+        path: linux-*/
