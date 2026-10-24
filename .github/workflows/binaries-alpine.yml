@@ -1,4 +1,4 @@
-name: Binaries AlmaLinux (almalinux-gcc)
+name: Binaries Alpine Linux (alpinelinux-gcc)
 
 on: 
  workflow_dispatch:
