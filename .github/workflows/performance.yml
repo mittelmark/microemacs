@@ -22,7 +22,7 @@ on:
       tags:
         description: "Space separated git tags to benchmark against the current code"
         required: false
-        default: "v09.12.26.beta5 v09.12.26.beta3 v09.12.25 v09.12.24"
+        default: "v09.12.26.beta7 v09.12.26.beta6 v09.12.26.beta5 v09.12.26.beta3 v09.12.25 v09.12.24"
 
 jobs:
   refs:
