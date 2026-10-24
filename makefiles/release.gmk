@@ -2,7 +2,7 @@
 #
 #  Created By    : Detlef Groth
 #  Created       : Sat Aug 24 05:46:12 2024
-#  Last Modified : <261005.1100>
+#  Last Modified : <261024.0816>
 #
 #  Description	 : This Makefile should be called from other Makefiles
 #                  with the app and RELEASE variables given to create
@@ -41,5 +41,6 @@ default:
 	cp doc/me.1 $(RELEASE)/$(RELEASE)-$(app)/man/
 	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
 	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
+	cd $(RELEASE) && sha256sum *.zip > $(RELEASE).sha256
 test2:
 	echo $(appx)	
