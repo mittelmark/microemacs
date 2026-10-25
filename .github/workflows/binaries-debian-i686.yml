@@ -31,12 +31,20 @@ jobs:
     - name: Install and Compile in Debian i386
       id: test
       run: |
+        ## the 32-bit image did not resolve the Debian mirrors through the
+        ## docker DNS proxy ("Temporary failure resolving deb.debian.org"),
+        ## so hand it public resolvers directly
         docker run --rm --platform linux/386 \
+          --dns 1.1.1.1 --dns 8.8.8.8 \
           -e KERNEL -e MACHINE \
           --volume "$PWD:/src" --workdir /src \
           "i386/debian:${{ matrix.debian }}" \
           sh -euc '
-            apt-get update
+            for i in 1 2 3; do
+              apt-get update && break
+              echo "apt-get update failed (attempt $i), retrying"
+              sleep 5
+            done
             DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
               build-essential zlib1g-dev libncurses-dev libx11-dev libxft-dev \
               libfontconfig1-dev pkg-config zip unzip ca-certificates

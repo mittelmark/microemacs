@@ -38,13 +38,22 @@ jobs:
         OSV=$(docker inspect --format '{{.Created}}' "${{ matrix.image }}" | cut -c1-10 | tr -d '-')
         echo "image date: $OSV"
         docker run --rm --platform "${{ matrix.platform }}" \
-          -e OSV -e KPKG="${{ matrix.kpkg }}" \
+          -e OSV="$OSV" -e KPKG="${{ matrix.kpkg }}" \
           --volume "$PWD:/src" --workdir /src \
           "${{ matrix.image }}" \
           sh -euc '
-            pacman -Syu --noconfirm
-            pacman -S --noconfirm --needed base-devel zlib ncurses libxft libxt \
-                                           fontconfig pkgconf zip unzip
+            ## pacman 7 downloads through a Landlock sandbox, which the docker
+            ## seccomp profile does not allow ("restricting filesystem access
+            ## failed ... Operation not permitted"), so switch it off when the
+            ## option exists
+            DISABLE_SANDBOX=
+            if pacman --help 2>/dev/null | grep -q -- --disable-sandbox; then
+              DISABLE_SANDBOX=--disable-sandbox
+            fi
+            pacman -Syu --noconfirm $DISABLE_SANDBOX
+            pacman -S --noconfirm --needed $DISABLE_SANDBOX \
+                          base-devel zlib ncurses libxft libxt \
+                          fontconfig pkgconf zip unzip
             echo "== uname: $(uname -a)"
             echo "== gcc:   $(gcc --version | head -n 1)"
             ## guard: the container must execute natively, not under emulation
