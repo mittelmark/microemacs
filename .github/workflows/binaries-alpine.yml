@@ -29,7 +29,7 @@ jobs:
           
 
         run: |
-          pkg add --nocat socat build-base zip unzip zlib-dev ncurses-dev libXt-dev libXft-dev pkgconf
+          apk add --nocat socat build-base zip unzip zlib-dev ncurses-dev libXt-dev libXft-dev pkgconf
           pwd
           ls -lah
           whoami
