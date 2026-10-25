@@ -52,7 +52,21 @@ jobs:
          ls -lah
          export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
          echo "VRS=$VRS" >> $GITHUB_ENV
-    
+
+    - name: Test release checksums
+      run:  |
+         ls -l freebsd-*/ || true
+         ## each packaging run must have produced non-empty archives and the
+         ## sha256 checksum file written by makefiles/release.gmk
+         for d in freebsd-*/; do
+           d="${d%/}"
+           test -s "${d}/${d}.sha256" || { echo "missing checksum: ${d}/${d}.sha256"; exit 1; }
+           for z in "${d}"/*.zip; do
+             test -s "${z}" || { echo "empty artifact: ${z}"; exit 1; }
+           done
+           ( cd "${d}" && sha256sum -c "${d}.sha256" )
+         done
+
     - name: Upload FreeBSD Combined Release
       uses: actions/upload-artifact@v6
       with: 
