@@ -193,6 +193,26 @@ jobs:
           make -f makefiles/macosgcc.gmk release app=mewb VERSION=${VRS}
           make -f makefiles/macosgcc.gmk release app=mecwb VERSION=${VRS}
 
+      - name: Test release checksums
+        run: |
+          ls -l macos-*/ || true
+          ## each packaging run must have produced non-empty archives and the
+          ## sha256 checksum file written by makefiles/release.gmk
+          for d in macos-*/; do
+            d="${d%/}"
+            test -s "${d}/${d}.sha256" || { echo "missing checksum: ${d}/${d}.sha256"; exit 1; }
+            for z in "${d}"/*.zip; do
+              test -s "${z}" || { echo "empty artifact: ${z}"; exit 1; }
+            done
+            ## sha256sum is only present when brew coreutils is on the PATH,
+            ## shasum ships with macOS and reads the same checksum format
+            if command -v sha256sum >/dev/null 2>&1; then
+              ( cd "${d}" && sha256sum -c "${d}.sha256" )
+            else
+              ( cd "${d}" && shasum -a 256 -c "${d}.sha256" )
+            fi
+          done
+
       - name: Upload Macos Combined Release
         uses: actions/upload-artifact@v6
         with: 
