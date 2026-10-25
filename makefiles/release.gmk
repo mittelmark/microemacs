@@ -2,7 +2,7 @@
 #
 #  Created By    : Detlef Groth
 #  Created       : Sat Aug 24 05:46:12 2024
-#  Last Modified : <261005.1100>
+#  Last Modified : <261025.0919>
 #
 #  Description	 : This Makefile should be called from other Makefiles
 #                  with the app and RELEASE variables given to create
@@ -29,6 +29,15 @@ ifeq ($(ext),exe)
   meout=$(app).exe
 endif
 appx=`echo $(app) | sed -E 's/b//'`
+## SHA256 checksums of the created archives. "sha256sum" is not available
+## everywhere: macOS ships "shasum -a 256" and FreeBSD "sha256", whose -r
+## option writes the same "hash  filename" format as sha256sum so the file
+## stays verifiable on any platform. Detect the tool once - SHA256GEN creates
+## the checksum file, SHA256CHK verifies it.
+SHA256SUM := $(shell if command -v sha256sum >/dev/null 2>&1; then echo sha256sum; \
+                      elif command -v shasum >/dev/null 2>&1; then echo "shasum -a 256"; fi)
+SHA256GEN := $(or $(SHA256SUM),sha256 -r)
+SHA256CHK := $(or $(SHA256SUM),sha256)
 default:
 	-rm -rf $(RELEASE)/$(RELEASE)-$(app)
 	mkdir -p $(RELEASE)/$(RELEASE)-$(app)/bin
@@ -41,5 +50,7 @@ default:
 	cp doc/me.1 $(RELEASE)/$(RELEASE)-$(app)/man/
 	cd $(RELEASE) && zip -r $(RELEASE)-$(app).zip $(RELEASE)-$(app)/*
 	cd $(RELEASE) && rm -rf $(RELEASE)-$(app)
+	cd $(RELEASE) && $(SHA256GEN) *.zip > $(RELEASE).sha256
+	cd $(RELEASE) && $(SHA256CHK) -c $(RELEASE).sha256
 test2:
 	echo $(appx)	
