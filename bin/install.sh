@@ -253,6 +253,10 @@ else
     if [ "$MACHINE" = "i686" ]; then
         MECB="linux-6-i686-debian-12-microemacs-${VERSION}-mecb"
         MEWB="linux-6-i686-debian-12-microemacs-${VERSION}-mewb"
+        ## releases before the Debian 12 build shipped i686 as kernel 5
+        ## debian-12, ubuntu-18 or fedora-28
+        MECB_ALTS="linux-5-i686-debian-12-microemacs-${VERSION}-mecb linux-5-i686-ubuntu-18-microemacs-${VERSION}-mecb linux-5-i686-fedora-28-microemacs-${VERSION}-mecb"
+        MEWB_ALTS="linux-5-i686-debian-12-microemacs-${VERSION}-mewb linux-5-i686-ubuntu-18-microemacs-${VERSION}-mewb linux-5-i686-fedora-28-microemacs-${VERSION}-mewb"
         ## older releases shipped i686 as ubuntu-18 or fedora-28
         BASE=`resolve_base \
             "^linux-[0-9]+-i686-debian-[^-]+-microemacs-${VERSION}-mecb[.]zip$" \
@@ -293,6 +297,17 @@ else
         fi
         MECB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mecb"
         MEWB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mewb"
+        if [ "$UBU" -ge 22 ]; then
+            ## releases before the point release was added to the name
+            ## (ubuntu-24.04 -> ubuntu-24)
+            MECB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb"
+            MEWB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb"
+        else
+            ## Ubuntu 18/20 and Debian 10: older releases shipped those, the
+            ## current ones are served by the AlmaLinux 8 build (glibc 2.28)
+            MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
+            MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
+        fi
         ## the published asset may use a different kernel major than the
         ## guessed one (a 7.x HWE kernel on Ubuntu 24.04 still needs ubuntu-24.04)
         ## and older releases dropped the point release (ubuntu-24), so match both
