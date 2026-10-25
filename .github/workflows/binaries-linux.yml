@@ -2,7 +2,6 @@ name: Binaries Ubuntu (linux-gcc)
 
 on:
   workflow_dispatch:
-    branches: [ devel ]
 jobs:
   build:
     strategy:
