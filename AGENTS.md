@@ -238,6 +238,14 @@ updater bootstrap (`mecb-update`; `mecb-update.ps1` + `mecb-update.bat` on
 Windows) that downloads the current installer and lets it decide whether a
 newer release exists.
 
+`install.sh` decides which build the running system needs from `/etc/os-release`
+(`ID`, falling back to the kernel release string) and the architecture, and then
+looks the exact published name up in the release asset list, because the Linux
+archives embed a distribution version, a kernel major and (Arch) an image date
+that the script cannot predict. Supported families: Debian/Ubuntu derivatives,
+Fedora/RHEL/AlmaLinux, Arch/Manjaro, Alpine (musl build), macOS, FreeBSD,
+Cygwin and MSYS2.
+
 Version encoding: versions are `YYMMDDbN`, compared as
 `YY*1000000 + MM*10000 + DD*100 + N`; a final release (no `b` suffix) ranks
 above any beta of the same date. `mecb -V` prints the parsed date portion
@@ -991,14 +999,23 @@ before uploading and publishes one artifact per matrix entry.
 | glibc, legacy (RHEL 8, Debian 10, Ubuntu 18.04+) | `binaries-almalinux.yml` (`alma: 8`) | `linux-4-<arch>-almalinux-8.10-*` |
 | glibc, RHEL 9 / Debian 12 / Ubuntu 22.04+ | `binaries-almalinux.yml` (`alma: 9`) | `linux-5-<arch>-almalinux-9.8-*` |
 | glibc, RHEL 10 / Debian 13 / Ubuntu 24.04+ | `binaries-almalinux.yml` (`alma: 10`) | `linux-6-<arch>-almalinux-10.2-*` |
-| Ubuntu 22.04 / 24.04 / 26.04 | `binaries-linux.yml` | `linux-<K>-<arch>-ubuntu-<ver>-*` |
-| Arch Linux / Manjaro (rolling) | `binaries-arch.yml` | `linux-<K>-<arch>-arch-<YYYYMMDD>-*` |
-| musl (Alpine) | `binaries-alpine.yml` | `linux-6-<arch>-alpine-<3.23\|3.24>-*` |
+| Ubuntu 22.04 / 24.04 / 26.04 | `binaries-linux.yml` | `linux-6\|7-<arch>-ubuntu-22.04\|24.04\|26.04-*` |
+| Arch Linux / Manjaro (rolling) | `binaries-arch.yml` | `linux-<K>-x86_64-arch-<YYYYMMDD>-*` |
+| Arch Linux ARM (Raspberry Pi, …) | `binaries-arch.yml` | `linux-<K>-aarch64-archarm-<YYYYMMDD>-*` |
+| musl (Alpine) | `binaries-alpine.yml` | `linux-6-<arch>-alpine-3.23\|3.24-*` |
 | 32-bit Linux (i686) | `binaries-debian-i686.yml` | `linux-6-i686-debian-12-*` |
 | macOS | `binaries-macosgcc.yml` | `macos-<K>-<arm64\|x86_64>-*` |
 | Windows (MSYS2, mingw, cross) | `binaries-msys2.yml`, `binaries-linuxmingwgcc.yml`, `binaries-winlibs.yml` | `windows-<...>-*` |
 | Cygwin | `binaries-cygwin.yml` | `cygwin-<3.3-i686\|3.6-x86_64>-*` |
 | FreeBSD | `binaries-freebsd.yml` | `freebsd-<14\|15>-amd64-*` |
+
+The Linux names embed the distribution version (`almalinux-8.10`, not
+`almalinux-8`) and, for Arch, the build date of the container image. `bin/install.sh`
+does not guess those names: it reads the asset list from
+`https://github.com/<repo>/releases/expanded_assets/<tag>` and matches the
+published name loosely (`^linux-[0-9]+-<arch>-almalinux-8([.][0-9]+)?-…`), so
+minor-version bumps and kernel changes cannot break the installer. The hard
+coded names in the script are only the fallback when that page is unreachable.
 
 Notes:
 
@@ -1007,7 +1024,8 @@ Notes:
   because a container shares the kernel of its runner.
 - Rolling releases (Arch) have no `VERSION_ID`; the workflow passes the
   build date of the container image as `OSV`, otherwise `unixgcc.gmk`
-  falls back to `arch-0`.
+  falls back to `arch-0`. Arch Linux ARM reports `ID=archarm`, hence the
+  different name component for aarch64.
 - FreeBSD aarch64 is deliberately not built: vmactions can only emulate it
   (QEMU TCG) and the x86_64 archives are downloaded a handful of times per
   release. A cross-compiled `mecb` would be the cheap route if it is ever
