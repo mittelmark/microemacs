@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        alma: ["9", "10"]                        # AlmaLinux release
+        alma: ["8", "9", "10"]                   # AlmaLinux release
         arch: ["x86_64", "aarch64"]              # native runner per arch, no QEMU
         ## aarch64 is built on the native arm64 hosted runner (free for
         ## public repositories) instead of being emulated with QEMU on an
@@ -21,9 +21,9 @@ jobs:
       MYTOKEN2: "value2"
       ## A container shares the kernel of its host, so "uname -r" inside the
       ## build would report the GitHub runner kernel, not the AlmaLinux one.
-      ## Pin the value that ends up in the release name: AlmaLinux 9 is 5.14
-      ## based, AlmaLinux 10 is 6.12 based.
-      KERNEL: ${{ matrix.alma == '9' && '5' || '6' }}
+      ## Pin the value that ends up in the release name: AlmaLinux 8 is 4.18
+      ## based, AlmaLinux 9 is 5.14 based, AlmaLinux 10 is 6.12 based.
+      KERNEL: ${{ matrix.alma == '8' && '4' || matrix.alma == '9' && '5' || '6' }}
     steps:
     - uses: actions/checkout@v7
 
@@ -38,8 +38,15 @@ jobs:
           --volume "$PWD:/src" --workdir /src \
           "almalinux:${{ matrix.alma }}" \
           sh -euc '
+            ## AlmaLinux 8 still calls the pkg-config provider "pkgconfig"
+            ## and keeps libXft-devel in powertools on some minor releases
             dnf install -y make zip unzip gcc zlib-devel ncurses-devel \
-                           libXt-devel libXft-devel pkgconf-pkg-config
+                           libXt-devel libXft-devel ||
+              { dnf install -y dnf-plugins-core &&
+                dnf config-manager --set-enabled powertools &&
+                dnf install -y make zip unzip gcc zlib-devel ncurses-devel \
+                               libXt-devel libXft-devel; }
+            dnf install -y pkgconf-pkg-config || dnf install -y pkgconfig
             echo "== uname: $(uname -a)"
             echo "== gcc:   $(gcc --version | head -n 1)"
             ## guard: the container must execute natively, not under emulation
