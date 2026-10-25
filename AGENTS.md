@@ -958,16 +958,17 @@ git push origin --delete featurebranch
 
 ## CI/CD (GitHub Actions)
 
-12 workflow files in `.github/workflows/`:
+14 workflow files in `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
 | `binaries-linux.yml` | Ubuntu 22.04/24.04 (x86_64 + ARM) builds |
+| `binaries-alpine.yml` | Alpine Linux builds (musl, container on native arch runners) |
+| `binaries-almalinux.yml` | AlmaLinux 9/10 builds (glibc, container on native arch runners) |
 | `binaries-linuxmingwgcc.yml` | Linux cross-compile to Windows |
 | `binaries-macosgcc.yml` | macOS builds (Intel + ARM) |
 | `binaries-winlibs.yml` | Windows native builds |
 | `binaries-msys2.yml` | MSYS2 Windows builds |
-| `binaries-fedorax86_64.yml` | Fedora-specific builds |
 | `binaries-cygwin.yml` | Cygwin builds |
 | `ttf-fonts.yml` | Font packaging (the legacy `bdf-fonts.yml` was removed) |
 | `ubuntu-arm-check.yml` | ARM compatibility check |
