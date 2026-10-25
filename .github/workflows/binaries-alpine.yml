@@ -36,6 +36,7 @@ jobs:
           env
           uname -a
           echo hello > hello.txt
+          gcc --version
           make bfs/bin
           make mec mew mecw
           make mecb mewb mecwb
