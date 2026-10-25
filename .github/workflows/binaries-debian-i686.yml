@@ -42,8 +42,6 @@ jobs:
           --volume "$PWD:/src" --workdir /src \
           "i386/debian:${{ matrix.debian }}" \
           sh -euc '
-            echo "== resolv.conf:"; cat /etc/resolv.conf
-            echo "== getent: $(getent hosts deb.debian.org || echo FAILED)"
             for i in 1 2 3; do
               apt-get update && break
               echo "apt-get update failed (attempt $i), retrying"
@@ -66,8 +64,15 @@ jobs:
             make MACHINE="$MACHINE" KERNEL="$KERNEL" release app=mecb
             make MACHINE="$MACHINE" KERNEL="$KERNEL" release app=mewb
             make MACHINE="$MACHINE" KERNEL="$KERNEL" release app=mecwb
-            ## smoke test: the 32-bit standalone mecb must run and report its version
-            for b in *-mecb.bin; do echo "== $b"; file "$b"; ./$b -V; done
+            ## smoke test: the 32-bit standalone mecb must run and report its
+            ## version. "file" is not installed in the slim image, so use
+            ## readelf (binutils) to check the ELF class.
+            for b in *-mecb.bin; do
+              echo "== $b"
+              readelf -h "$b" | grep -E "Class:|Machine:"
+              readelf -h "$b" | grep -q "ELF32" || { echo "not a 32-bit binary: $b"; exit 1; }
+              ./$b -V
+            done
           '
         ## the build ran as root inside the container - hand the files back
         ## to the runner user so later steps and the upload can read them
