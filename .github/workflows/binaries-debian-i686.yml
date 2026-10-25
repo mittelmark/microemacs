@@ -1,0 +1,101 @@
+name: Binaries Linux i686 (debian-gcc)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        debian: ["12"]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    name: Build in Debian ${{ matrix.debian }} (i686)
+    env:
+      ## A container shares the kernel of its host, so "uname -r" inside the
+      ## build would report the GitHub runner kernel. Pin the Debian kernel
+      ## (Debian 12 is 6.1 based) that ends up in the release name.
+      KERNEL: "6"
+      ## "uname -m" reports the kernel architecture (x86_64) even inside a
+      ## 32-bit container, so the release name has to be told that the
+      ## toolchain builds for i686.
+      MACHINE: i686
+    steps:
+    - uses: actions/checkout@v7
+
+    ## 32-bit x86 containers run natively on the x86_64 runner (no QEMU), the
+    ## gcc in the i386 image produces 32-bit binaries by default. The image
+    ## contains a complete 32-bit Debian, so this replaces the former manual
+    ## i686 build.
+    - name: Install and Compile in Debian i386
+      id: test
+      run: |
+        ## the 32-bit image could not resolve the Debian mirrors through the
+        ## docker DNS proxy ("Temporary failure resolving deb.debian.org").
+        ## The default seccomp profile filters the 32-bit socket syscalls, so
+        ## run without it and hand the container public resolvers directly.
+        docker run --rm --platform linux/386 \
+          --security-opt seccomp=unconfined \
+          --dns 1.1.1.1 --dns 8.8.8.8 \
+          -e KERNEL -e MACHINE \
+          --volume "$PWD:/src" --workdir /src \
+          "i386/debian:${{ matrix.debian }}" \
+          sh -euc '
+            for i in 1 2 3; do
+              apt-get update && break
+              echo "apt-get update failed (attempt $i), retrying"
+              sleep 5
+            done
+            ## libxt-dev provides X11/Intrinsic.h, which the mew (X11) build
+            ## needs on top of libx11-dev and libxft-dev
+            DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+              build-essential zlib1g-dev libncurses-dev libx11-dev libxt-dev \
+              libxft-dev libfontconfig1-dev pkg-config zip unzip ca-certificates
+            echo "== uname: $(uname -a)"
+            echo "== gcc:   $(gcc --version | head -n 1)"
+            ## guard: the toolchain must produce 32-bit binaries
+            test "$(gcc -dumpmachine)" = "i686-linux-gnu"
+            make -j"$(nproc)" bfs/bin
+            make -j"$(nproc)" mec
+            make -j"$(nproc)" mew
+            make -j"$(nproc)" mecw
+            make mecb mewb mecwb
+            make MACHINE="$MACHINE" KERNEL="$KERNEL" release app=mecb
+            make MACHINE="$MACHINE" KERNEL="$KERNEL" release app=mewb
+            make MACHINE="$MACHINE" KERNEL="$KERNEL" release app=mecwb
+            ## smoke test: the 32-bit standalone mecb must run and report its
+            ## version. "file" is not installed in the slim image, so use
+            ## readelf (binutils) to check the ELF class.
+            for b in *-mecb.bin; do
+              echo "== $b"
+              readelf -h "$b" | grep -E "Class:|Machine:"
+              readelf -h "$b" | grep -q "ELF32" || { echo "not a 32-bit binary: $b"; exit 1; }
+              ./$b -V
+            done
+          '
+        ## the build ran as root inside the container - hand the files back
+        ## to the runner user so later steps and the upload can read them
+        sudo chown -R "$(id -u):$(id -g)" .
+
+    - name: Test files
+      run:  |
+         uname -a
+         ls -lah
+         ls -l linux-*/
+         ## each packaging run must have produced non-empty archives and the
+         ## sha256 checksum file written by makefiles/release.gmk
+         for d in linux-*/; do
+           d="${d%/}"
+           test -s "${d}/${d}.sha256" || { echo "missing checksum: ${d}/${d}.sha256"; exit 1; }
+           for z in "${d}"/*.zip; do
+             test -s "${z}" || { echo "empty artifact: ${z}"; exit 1; }
+           done
+           ( cd "${d}" && sha256sum -c "${d}.sha256" )
+         done
+
+    - name: Upload Debian i686 Combined Release
+      uses: actions/upload-artifact@v6
+      with:
+        name: Release-Debian-${{ matrix.debian }}-i686
+        path: linux-*/

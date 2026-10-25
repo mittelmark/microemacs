@@ -74,6 +74,54 @@ fi
 MECB_ALTS=""
 MEWB_ALTS=""
 
+## The Linux asset names carry the distribution version (ubuntu-24.04,
+## almalinux-8.10), the kernel major and, for rolling releases, the snapshot
+## date (arch-20261025). Those parts change over time, so the published asset
+## list is read from the release page and the name is looked up instead of
+## being guessed. The asset list page needs no API token and is not rate
+## limited like api.github.com; when it cannot be fetched the hard coded
+## names further down are used as fallback.
+REPO=`echo "$BASEURL" | sed -nE 's#^https://github.com/([^/]+/[^/]+)/.*#\1#p'`
+TAG=`echo "$BASEURL" | sed -nE 's#.*/download/##p'`
+ASSETS=""
+if [ -n "$REPO" ] && [ -n "$TAG" ]; then
+    ASSETS=`curl -fsSL "https://github.com/${REPO}/releases/expanded_assets/${TAG}" 2>/dev/null |
+        grep -oE '/download/[^/"]+/[^/"]+[.]zip' |
+        sed -E 's#.*/##' | sort -u`
+fi
+
+## resolve_base <pattern> [<pattern> ...]
+## Echoes the release base name ("linux-6-x86_64-ubuntu-24.04-microemacs-
+## 091226b7") of the first published asset matching one of the patterns,
+## without the "-mecb.zip" suffix. Earlier patterns win. Prints nothing when
+## the asset list is unavailable or nothing matches.
+function resolve_base {
+    [ -n "$ASSETS" ] || return 0
+    for pattern in "$@"; do
+        hit=`echo "$ASSETS" | grep -E "$pattern" | head -n 1 | sed -E 's/-mecb[.]zip$//'`
+        if [ -n "$hit" ]; then
+            echo "$hit"
+            return 0
+        fi
+    done
+}
+
+## Distribution family. /etc/os-release is authoritative; the kernel release
+## string is only a fallback for systems without it (older containers, some
+## appliances) and for derivatives that keep the ID of their parent.
+DIST_ID=""
+if [ -r /etc/os-release ]; then
+    DIST_ID=`sed -n 's/^ID=//p' /etc/os-release | tr -d '"'`
+fi
+case "$DIST_ID" in
+    fedora|almalinux|rhel|rocky|centos|ol|scientific) RH_LIKE=1 ;;
+    *) RH_LIKE=0 ;;
+esac
+case "$DIST_ID" in
+    arch|archarm|manjaro|endeavouros|cachyos|garuda|arcolinux) ARCH_LIKE=1 ;;
+    *) ARCH_LIKE=0 ;;
+esac
+
 if [ $OS = "Msys" ]; then
     MECB="windows-msysunix-ucrt64-microemacs-${VERSION}-mecb"  # true msys build
     MEWB="windows-msys-ucrt64-microemacs-${VERSION}-mewb"
@@ -138,88 +186,127 @@ elif [ $OS = "FreeBSD" ]; then
         echo "Error: Kernel $KERNEL on $OS not supported!"    
         exit
     fi
-elif [ "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
+elif [ $RH_LIKE -eq 1 -o "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
     ## Fedora or AlmaLinux or RedHat Enterprise Linux
-    ## 32bit support
-    if [ $KERNEL -eq 5 -a $MACHINE = "i686" ]; then
-       MECB="linux-5-${MACHINE}-fedora-28-microemacs-${VERSION}-mecb"
-       MEWB="linux-5-${MACHINE}-fedora-28-microemacs-${VERSION}-mewb"   
-    elif [ $MACHINE != "x86_64" -a $MACHINE != "aarch64" ]; then 
+    if [ $MACHINE != "x86_64" -a $MACHINE != "aarch64" ]; then 
         echo "Error: Architecture $MACHINE and Kernel $KERNEL for RedHat/Fedora distros not supported!" 
         exit
-    elif [ $KERNEL -eq 4 -a $MACHINE = "x86_64" ]; then    
-       ## AlmaLinux 8 / RHEL 8, x86_64 only (no aarch64 build is produced)
-       MECB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
-       MEWB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 5 ]; then    
-       ## AlmaLinux 9 / RHEL 9
-       MECB="linux-5-${MACHINE}-almalinux-9-microemacs-${VERSION}-mecb"
-       MEWB="linux-5-${MACHINE}-almalinux-9-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -ge 6 ]; then    
-       ## AlmaLinux 10 / RHEL 10, and newer Fedora releases (kernel 6 and 7+)
-       MECB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mecb"
-       MEWB="linux-6-${MACHINE}-almalinux-10-microemacs-${VERSION}-mewb"   
-    else
-        echo "Error: Kernel $KERNEL for Architecture $MACHINE not supported for RedHat based distros!"    
-        exit
     fi
-elif [ "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos)'`" != "" ]; then
-    ## Arch Linux and childs like Manjaro Linux
-    if [ $KERNEL -eq 6 -a $MACHINE = "x86_64" ]; then    
-       MECB="linux-6-${MACHINE}-manjaro-0-microemacs-${VERSION}-mecb"
-       MEWB="linux-6-${MACHINE}-manjaro-0-microemacs-${VERSION}-mewb"   
+    ## The glibc of the running distribution decides which build can run:
+    ## AlmaLinux 8 (2.28) / 9 (2.34) / 10 (2.39), Fedora tracks the newest.
+    if [ $KERNEL -eq 4 ]; then
+       ALMA=8; AK=4
+    elif [ $KERNEL -eq 5 ]; then
+       ALMA=9; AK=5
     else
-        echo "Error: Kernel $KERNEL for Architecture ${MACHINE} not supported for Arch based distros!"    
-        exit
+       ## AlmaLinux 10 / RHEL 10 and newer Fedora releases (kernel 6 and 7+)
+       ALMA=10; AK=6
+    fi
+    MECB="linux-${AK}-${MACHINE}-almalinux-${ALMA}-microemacs-${VERSION}-mecb"
+    MEWB="linux-${AK}-${MACHINE}-almalinux-${ALMA}-microemacs-${VERSION}-mewb"
+    ## The published names carry the full AlmaLinux version (almalinux-8.10)
+    BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-almalinux-${ALMA}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+    if [ -n "$BASE" ]; then
+        MECB="${BASE}-mecb"
+        MEWB="${BASE}-mewb"
+    fi
+elif [ $ARCH_LIKE -eq 1 -o "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos|-aarch64$)'`" != "" ]; then
+    ## Arch Linux and childs like Manjaro Linux. This is a rolling release, so
+    ## the published name carries the snapshot date (arch-20261025) and the
+    ## kernel that snapshot shipped with - neither can be guessed here.
+    MECB="linux-6-${MACHINE}-manjaro-0-microemacs-${VERSION}-mecb"
+    MEWB="linux-6-${MACHINE}-manjaro-0-microemacs-${VERSION}-mewb"
+    BASE=`resolve_base \
+        "^linux-[0-9]+-${MACHINE}-(archarm|arch)-[0-9]+-microemacs-${VERSION}-mecb[.]zip$" \
+        "^linux-[0-9]+-${MACHINE}-manjaro-[^-]+-microemacs-${VERSION}-mecb[.]zip$"`
+    if [ -n "$BASE" ]; then
+        MECB="${BASE}-mecb"
+        MEWB="${BASE}-mewb"
+    fi
+elif [ "$DIST_ID" = "alpine" ]; then
+    ## Alpine ships musl, so the glibc builds cannot run there. Match the
+    ## major.minor of the running release (3.23, 3.24) and take whatever
+    ## alpine build is published as fallback.
+    ALP_V=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '"' | sed -E 's/^([0-9]+[.][0-9]+).*/\1/'`
+    MECB="linux-6-${MACHINE}-alpine-${ALP_V}-microemacs-${VERSION}-mecb"
+    MEWB="linux-6-${MACHINE}-alpine-${ALP_V}-microemacs-${VERSION}-mewb"
+    BASE=`resolve_base \
+        "^linux-[0-9]+-${MACHINE}-alpine-${ALP_V}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$" \
+        "^linux-[0-9]+-${MACHINE}-alpine-[^-]+-microemacs-${VERSION}-mecb[.]zip$"`
+    if [ -n "$BASE" ]; then
+        MECB="${BASE}-mecb"
+        MEWB="${BASE}-mewb"
     fi
 else
     ## Debian derivatives
     ## The assets are named after the distribution release and the kernel
-    ## that release ships with (linux-6-...-ubuntu-24), not after the kernel
-    ## the machine happens to run: an Ubuntu 24.04 box on a 7.x HWE kernel
-    ## still needs the ubuntu-24 build, and aarch64 uses exactly the same
-    ## name as x86_64. Prefer /etc/os-release for Ubuntu and fall back to
+    ## that release ships with (linux-6-...-ubuntu-22.04), not after the
+    ## kernel the machine happens to run: an Ubuntu 24.04 box on a 7.x HWE
+    ## kernel still needs the ubuntu-24.04 build, and aarch64 uses exactly the
+    ## same name as x86_64. Prefer /etc/os-release for Ubuntu and fall back to
     ## the kernel version for other derivatives (Debian, Mint, Pop!_OS, ...).
+    ## 32 bit is always the Debian 12 build (glibc 2.36).
     UBUNTU_REL=""
-    if [ -r /etc/os-release ]; then
-        if [ "`sed -n 's/^ID=//p' /etc/os-release | tr -d '\"'`" = "ubuntu" ]; then
-            UBUNTU_REL=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '\"' | sed -E 's/^([0-9]+).*/\1/'`
+    if [ "$DIST_ID" = "ubuntu" ]; then
+        UBUNTU_REL=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '"' | sed -E 's/^([0-9]+).*/\1/'`
+    fi
+    if [ "$MACHINE" = "i686" ]; then
+        MECB="linux-6-i686-debian-12-microemacs-${VERSION}-mecb"
+        MEWB="linux-6-i686-debian-12-microemacs-${VERSION}-mewb"
+        ## older releases shipped i686 as ubuntu-18 or fedora-28
+        BASE=`resolve_base \
+            "^linux-[0-9]+-i686-debian-[^-]+-microemacs-${VERSION}-mecb[.]zip$" \
+            "^linux-[0-9]+-i686-ubuntu-[^-]+-microemacs-${VERSION}-mecb[.]zip$" \
+            "^linux-[0-9]+-i686-fedora-[^-]+-microemacs-${VERSION}-mecb[.]zip$"`
+        if [ -n "$BASE" ]; then
+            MECB="${BASE}-mecb"
+            MEWB="${BASE}-mewb"
         fi
-    fi
-    ## 32bit builds only exist on the kernel 5 / ubuntu-18 line
-    if [ ${MACHINE} = "i686" -a $KERNEL -eq 5 ]; then
-        REL=5
-        UBU=ubuntu-18
-    elif [ -n "$UBUNTU_REL" ]; then
-        case $UBUNTU_REL in
-            18|20) REL=5; UBU="ubuntu-${UBUNTU_REL}" ;;
-            22|24) REL=6; UBU="ubuntu-${UBUNTU_REL}" ;;
-            26)    REL=7; UBU=ubuntu-26 ;;
-            *)
-                echo "Error: Ubuntu ${UBUNTU_REL} is not supported (no prebuild version yet)!"
-                echo "Please install an older release manually or compile MicroEmacs on your own."
-                exit 1
-                ;;
-        esac
     else
-        case $KERNEL in
-            5) REL=5; UBU=ubuntu-20 ;;
-            6) REL=6; UBU=ubuntu-22 ;;
-            7) REL=7; UBU=ubuntu-26 ;;
-            *)
-                echo "Error: Kernel $KERNEL not supported!"
-                exit 1
-                ;;
-        esac
-    fi
-    MECB="linux-${REL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mecb"
-    MEWB="linux-${REL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mewb"
-    ## Safety net: assets used to be named after the kernel of the CI runner,
-    ## so accept that legacy name too (e.g. linux-7-...-ubuntu-24 for an
-    ## Ubuntu 24.04 build produced on a kernel 7 runner).
-    if [ "$KERNEL" != "$REL" ]; then
-        MECB_ALTS="linux-${KERNEL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mecb"
-        MEWB_ALTS="linux-${KERNEL}-${MACHINE}-${UBU}-microemacs-${VERSION}-mewb"
+        if [ -n "$UBUNTU_REL" ]; then
+            case $UBUNTU_REL in
+                18|20) UBU="$UBUNTU_REL" ;;
+                22|24) UBU="$UBUNTU_REL" ;;
+                26)    UBU=26 ;;
+                *)
+                    echo "Error: Ubuntu ${UBUNTU_REL} is not supported (no prebuild version yet)!"
+                    echo "Please install an older release manually or compile MicroEmacs on your own."
+                    exit 1
+                    ;;
+            esac
+        else
+            case $KERNEL in
+                4|5) UBU=20 ;;
+                6) UBU=22 ;;
+                7) UBU=26 ;;
+                *)
+                    echo "Error: Kernel $KERNEL not supported!"
+                    exit 1
+                    ;;
+            esac
+        fi
+        ## the published Ubuntu names carry the point release (ubuntu-24.04)
+        if [ "$UBU" -ge 22 ]; then
+            UBU_NAME="ubuntu-${UBU}.04"
+        else
+            UBU_NAME="ubuntu-${UBU}"
+        fi
+        MECB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mecb"
+        MEWB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mewb"
+        ## the published asset may use a different kernel major than the
+        ## guessed one (a 7.x HWE kernel on Ubuntu 24.04 still needs ubuntu-24.04)
+        ## and older releases dropped the point release (ubuntu-24), so match both
+        BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-ubuntu-${UBU}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+        if [ -z "$BASE" ] && [ "$UBU" = "20" ]; then
+            ## Ubuntu 18/20 and Debian 10 archives are not published any more;
+            ## the AlmaLinux 8 build (glibc 2.28) runs on Ubuntu 20.04 and
+            ## Debian 10 upwards
+            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+        fi
+        if [ -n "$BASE" ]; then
+            MECB="${BASE}-mecb"
+            MEWB="${BASE}-mewb"
+        fi
     fi
 fi
 

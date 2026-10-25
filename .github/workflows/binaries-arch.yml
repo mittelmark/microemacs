@@ -1,0 +1,103 @@
+name: Binaries Arch Linux (arch-gcc)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          ## The official image only ships x86_64, the arm64 userspace comes
+          ## from Arch Linux ARM. Both are rolling releases without a
+          ## VERSION_ID, the version stamp of the release name is therefore
+          ## derived from the build date of the image (see below).
+          - { arch: x86_64,  platform: linux/amd64, image: "archlinux/archlinux:base-devel", kpkg: linux }
+          - { arch: aarch64, platform: linux/arm64, image: "menci/archlinuxarm:base-devel", kpkg: linux-aarch64 }
+        ## aarch64 is built on the native arm64 hosted runner (free for
+        ## public repositories) instead of being emulated with QEMU on an
+        ## x86_64 runner - the build is several times faster that way.
+    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    timeout-minutes: 45
+    name: Build on Arch Linux (${{ matrix.arch }})
+    steps:
+    - uses: actions/checkout@v7
+
+    ## The build runs inside an Arch container, no virtual machine and no
+    ## emulation. Docker resolves the image for the requested platform, which
+    ## is always the architecture of the runner itself.
+    - name: Install and Compile in Arch Linux
+      id: test
+      run: |
+        docker pull --platform "${{ matrix.platform }}" "${{ matrix.image }}"
+        ## Arch has no VERSION_ID in /etc/os-release (it is a rolling release),
+        ## so unixgcc.gmk would name the archives "arch-0". Use the build date
+        ## of the image instead - the release name then records the snapshot
+        ## that was actually compiled.
+        OSV=$(docker inspect --format '{{.Created}}' "${{ matrix.image }}" | cut -c1-10 | tr -d '-')
+        echo "image date: $OSV"
+        docker run --rm --platform "${{ matrix.platform }}" \
+          --security-opt seccomp=unconfined \
+          -e OSV="$OSV" -e KPKG="${{ matrix.kpkg }}" \
+          --volume "$PWD:/src" --workdir /src \
+          "${{ matrix.image }}" \
+          sh -euc '
+            ## pacman 7 downloads through a Landlock sandbox and drops to an
+            ## "alpm" user, which the docker seccomp profile and the Arch Linux
+            ## ARM image do not provide ("restricting filesystem access failed
+            ## ... Operation not permitted"). Disable it in pacman.conf and
+            ## drop the line again if this pacman does not know the key.
+            sed -i "/^\[options\]/a DisableSandbox" /etc/pacman.conf
+            pacman-conf --config /etc/pacman.conf >/dev/null 2>&1 ||
+              sed -i "/^DisableSandbox$/d" /etc/pacman.conf
+            grep -q "^DisableSandbox$" /etc/pacman.conf && echo "== pacman sandbox disabled"
+            pacman -Syu --noconfirm
+            pacman -S --noconfirm --needed base-devel zlib ncurses libxft libxt \
+                                           fontconfig pkgconf zip unzip
+            echo "== uname: $(uname -a)"
+            echo "== gcc:   $(gcc --version | head -n 1)"
+            ## guard: the container must execute natively, not under emulation
+            test "$(uname -m)" = "${{ matrix.arch }}"
+            ## A container shares the kernel of its host and Arch images ship
+            ## no kernel package, so read the kernel major that Arch itself
+            ## publishes from the sync database.
+            KERNEL=$(pacman -Si "$KPKG" 2>/dev/null | sed -n "s/^Version *: *\([0-9][0-9]*\).*/\1/p" | head -n 1)
+            test -n "$KERNEL" || KERNEL=6
+            echo "== arch snapshot $OSV, kernel $KERNEL"
+            make -j"$(nproc)" bfs/bin
+            make -j"$(nproc)" mec
+            make -j"$(nproc)" mew
+            make -j"$(nproc)" mecw
+            make mecb mewb mecwb
+            make KERNEL="$KERNEL" OSV="$OSV" release app=mecb
+            make KERNEL="$KERNEL" OSV="$OSV" release app=mewb
+            make KERNEL="$KERNEL" OSV="$OSV" release app=mecwb
+            ## smoke test: the standalone mecb must run and report its version
+            for b in *-mecb.bin; do echo "== $b"; ./$b -V; done
+          '
+        ## the build ran as root inside the container - hand the files back
+        ## to the runner user so later steps and the upload can read them
+        sudo chown -R "$(id -u):$(id -g)" .
+
+    - name: Test files
+      run:  |
+         uname -a
+         ls -lah
+         ls -l linux-*/
+         ## each packaging run must have produced non-empty archives and the
+         ## sha256 checksum file written by makefiles/release.gmk
+         for d in linux-*/; do
+           d="${d%/}"
+           test -s "${d}/${d}.sha256" || { echo "missing checksum: ${d}/${d}.sha256"; exit 1; }
+           for z in "${d}"/*.zip; do
+             test -s "${z}" || { echo "empty artifact: ${z}"; exit 1; }
+           done
+           ( cd "${d}" && sha256sum -c "${d}.sha256" )
+         done
+
+    - name: Upload Arch Linux Combined Release
+      uses: actions/upload-artifact@v6
+      with:
+        name: Release-ArchLinux-${{ matrix.arch }}
+        path: linux-*/
