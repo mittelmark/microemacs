@@ -38,22 +38,23 @@ jobs:
         OSV=$(docker inspect --format '{{.Created}}' "${{ matrix.image }}" | cut -c1-10 | tr -d '-')
         echo "image date: $OSV"
         docker run --rm --platform "${{ matrix.platform }}" \
+          --security-opt seccomp=unconfined \
           -e OSV="$OSV" -e KPKG="${{ matrix.kpkg }}" \
           --volume "$PWD:/src" --workdir /src \
           "${{ matrix.image }}" \
           sh -euc '
-            ## pacman 7 downloads through a Landlock sandbox, which the docker
-            ## seccomp profile does not allow ("restricting filesystem access
-            ## failed ... Operation not permitted"), so switch it off when the
-            ## option exists
-            DISABLE_SANDBOX=
-            if pacman --help 2>/dev/null | grep -q -- --disable-sandbox; then
-              DISABLE_SANDBOX=--disable-sandbox
-            fi
-            pacman -Syu --noconfirm $DISABLE_SANDBOX
-            pacman -S --noconfirm --needed $DISABLE_SANDBOX \
-                          base-devel zlib ncurses libxft libxt \
-                          fontconfig pkgconf zip unzip
+            ## pacman 7 downloads through a Landlock sandbox and drops to an
+            ## "alpm" user, which the docker seccomp profile and the Arch Linux
+            ## ARM image do not provide ("restricting filesystem access failed
+            ## ... Operation not permitted"). Disable it in pacman.conf and
+            ## drop the line again if this pacman does not know the key.
+            sed -i "/^\[options\]/a DisableSandbox" /etc/pacman.conf
+            pacman-conf --config /etc/pacman.conf >/dev/null 2>&1 ||
+              sed -i "/^DisableSandbox$/d" /etc/pacman.conf
+            grep -q "^DisableSandbox$" /etc/pacman.conf && echo "== pacman sandbox disabled"
+            pacman -Syu --noconfirm
+            pacman -S --noconfirm --needed base-devel zlib ncurses libxft libxt \
+                                           fontconfig pkgconf zip unzip
             echo "== uname: $(uname -a)"
             echo "== gcc:   $(gcc --version | head -n 1)"
             ## guard: the container must execute natively, not under emulation
