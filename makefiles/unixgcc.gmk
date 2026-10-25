@@ -47,16 +47,24 @@ PLATFORM := linux
 endif
 
 MACHINE := $(shell uname -m)
-VERSION := $(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+## Extract the version digits without "paste -sd ''", which busybox (Alpine)
+## does not support - awk strips the quotes and concatenates in one go.
+VERSION := $(shell awk '/^.define me(YEAR|MONTH|DAY)/ { gsub(/"/,"",$$3); printf "%s", $$3 }' src/evers.h)
 
 ifeq ($(PLATFORM),linux)
 OS := $(shell uname -o | sed 's/GNU.Linux/linux/')
-OSV := $(shell grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/')
+## Keep up to two version components (Alpine "3.23.7" -> "3.23",
+## Ubuntu "24.04" -> "24.04", Fedora "43" -> "43"). A plain sed -E with "[0-9]+"
+## only keeps the first component on busybox sed, so use a POSIX BRE.
+OSV := $(shell grep -E 'VERSION_ID=' /etc/os-release | sed -n 's/^VERSION_ID="\{0,1\}\([0-9][0-9]*\(\.[0-9][0-9]*\)\{0,1\}\).*/\1/p')
 ## check for rolling releases with no version-id
 ifeq ($(OSV),)
   OSV=0
 endif
-KERNEL := $(shell uname -r | grep -oE '^[0-9]')
+## The kernel major is only part of the release name. It can be pinned by the
+## caller (CI does this) because container/VM builds otherwise report the
+## kernel of the build host instead of the kernel of the target distribution.
+KERNEL ?= $(shell uname -r | grep -oE '^[0-9]')
 DIST := $(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
 RELEASE := linux-$(KERNEL)-$(MACHINE)-$(DIST)-$(OSV)-microemacs-$(VERSION)
 BUILDID := linuxgcc

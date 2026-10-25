@@ -1,58 +1,74 @@
 name: Binaries AlmaLinux (almalinux-gcc)
 
-on: 
+on:
  workflow_dispatch:
-    branches: [ devel ]
 
 jobs:
   test:
     strategy:
       fail-fast: false
       matrix:
-        alma: ["9", "10"]                 # Specify the AlmaLinux release
-        arch: ["x86_64", "aarch64"]       # aarch64 runs emulated via QEMU
-    runs-on: ubuntu-latest
+        alma: ["9", "10"]                        # AlmaLinux release
+        arch: ["x86_64", "aarch64"]              # native runner per arch, no QEMU
+        ## aarch64 is built on the native arm64 hosted runner (free for
+        ## public repositories) instead of being emulated with QEMU on an
+        ## x86_64 runner - the build is several times faster that way.
+    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    timeout-minutes: 45
     name: Build in AlmaLinux ${{ matrix.alma }} (${{ matrix.arch }})
     env:
       MYTOKEN : ${{ secrets.MYTOKEN }}
       MYTOKEN2: "value2"
+      ## A container shares the kernel of its host, so "uname -r" inside the
+      ## build would report the GitHub runner kernel, not the AlmaLinux one.
+      ## Pin the value that ends up in the release name: AlmaLinux 9 is 5.14
+      ## based, AlmaLinux 10 is 6.12 based.
+      KERNEL: ${{ matrix.alma == '9' && '5' || '6' }}
     steps:
     - uses: actions/checkout@v7
+
+    ## The build runs inside an official AlmaLinux container (real glibc
+    ## toolchain, no virtual machine). docker resolves the image for the
+    ## runner's own architecture, so both matrix entries build natively.
     - name: Install and Compile in AlmaLinux
       id: test
-      uses: vmactions/almalinux-vm@v1
-      with:
-        release: ${{ matrix.alma }}
-        arch: ${{ matrix.arch }}
-        envs: 'MYTOKEN MYTOKEN2'
-        prepare: |
-          
+      run: |
+        docker run --rm \
+          -e MYTOKEN -e MYTOKEN2 -e KERNEL \
+          --volume "$PWD:/src" --workdir /src \
+          "almalinux:${{ matrix.alma }}" \
+          sh -euc '
+            dnf install -y make zip unzip gcc zlib-devel ncurses-devel \
+                           libXt-devel libXft-devel pkgconf-pkg-config
+            echo "== uname: $(uname -a)"
+            echo "== gcc:   $(gcc --version | head -n 1)"
+            ## guard: the container must execute natively, not under emulation
+            test "$(uname -m)" = "${{ matrix.arch }}"
+            make -j"$(nproc)" bfs/bin
+            make -j"$(nproc)" mec
+            make -j"$(nproc)" mew
+            make -j"$(nproc)" mecw
+            make mecb mewb mecwb
+            make release app=mecb
+            make release app=mewb
+            make release app=mecwb
+            ## smoke test: the standalone mecb must run and report its version
+            for b in *-mecb.bin; do echo "== $b"; ./$b -V; done
+          '
+        ## the build ran as root inside the container - hand the files back
+        ## to the runner user so later steps and the upload can read them
+        sudo chown -R "$(id -u):$(id -g)" .
 
-        run: |
-          dnf install -y make zip unzip gcc zlib-devel ncurses-devel libXt-devel libXft-devel pkgconf
-          pwd
-          ls -lah
-          whoami
-          env
-          uname -a
-          echo hello > hello.txt
-          make bfs/bin
-          make mec mew mecw
-          make mecb mewb mecwb
-          make release app=mecb
-          make release app=mewb
-          make release app=mecwb
-          ## smoke test: the standalone mecb must run and report its version
-          ## (aarch64 runs emulated here, so this also proves the VM can execute it)
-          for b in *-mecb.bin; do echo "== $b"; ./$b -V; done
-          
     - name: Test files
       run:  |
          uname -a
          ls -lah
-         export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
-         echo "VRS=$VRS" >> $GITHUB_ENV
-    
+         ls -l linux-*/
+         ## each packaging run must have produced a non-empty archive
+         for z in linux-*/*.zip; do
+           test -s "$z" || { echo "empty artifact: $z"; exit 1; }
+         done
+
     - name: Upload AlmaLinux Combined Release
       uses: actions/upload-artifact@v6
       with: 

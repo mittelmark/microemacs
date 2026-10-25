@@ -2863,12 +2863,15 @@ TCAPgetattr (meTermio p, int isX)
         /* Local modes */
         p->c_lflag = ISIG|ICANON|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;
 
-        /* Terminal special characters */
+        /* Terminal special characters. The C* control character values
+         * (CQUIT, CEOF, CLNEXT, ...) are SVR4/glibc extensions that are
+         * not provided by all libraries (e.g. musl), so spell them out
+         * as the equivalent ^X expressions like the entries above. */
         p->c_cc [VINTR] = 'C' - '@';    /* C-c : CINTR */
-        p->c_cc [VQUIT] = CQUIT;        /* FS, cntl | */
+        p->c_cc [VQUIT] = '\\' - '@';   /* C-\ : CQUIT (FS) */
         p->c_cc [VERASE] = 'H' - '@';   /* Backspace or '#' 0x7f */
         p->c_cc [VKILL] = 'K' - '@';    /* C-k */
-        p->c_cc [VEOF] = CEOF;          /* C-d */
+        p->c_cc [VEOF] = 'D' - '@';     /* C-d : CEOF */
         p->c_cc [VEOL] = 'J' - '@';     /* C-j */
         p->c_cc [VMIN] = 1;
         p->c_cc [VTIME] = 0;
@@ -2876,13 +2879,13 @@ TCAPgetattr (meTermio p, int isX)
 #ifdef VWERASE
         p->c_cc [VWERASE] = 'W' - '@';  /* C-w */
 #endif
-        p->c_cc [VLNEXT] = CLNEXT;      /* C-v */
+        p->c_cc [VLNEXT] = 'V' - '@';   /* C-v : CLNEXT */
 #ifdef VDSUSP
-        p->c_cc [VDSUSP] = CDSUSP;      /* C-y */
+        p->c_cc [VDSUSP] = 'Y' - '@';   /* C-y : CDSUSP */
 #endif
-        p->c_cc [VSUSP] = CSUSP;        /* C-z */
-        p->c_cc [VSTART] = CSTART;      /* C-q */
-        p->c_cc [VSTOP]  = CSTOP;       /* C-s */
+        p->c_cc [VSUSP] = 'Z' - '@';    /* C-z : CSUSP */
+        p->c_cc [VSTART] = 'Q' - '@';   /* C-q : CSTART */
+        p->c_cc [VSTOP]  = 'S' - '@';   /* C-s : CSTOP */
 #endif
     }
     else if (isX != 0)
