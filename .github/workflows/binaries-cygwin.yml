@@ -31,6 +31,7 @@ jobs:
           fontconfig 
           zip 
           unzip
+          coreutils
         install-dir: C:\cygwin
         platform: ${{ matrix.arch }}
     - name: Modify PATH
@@ -108,7 +109,22 @@ jobs:
         make -f makefiles/unixgcc.gmk release app=mewb        
         make -f makefiles/unixgcc.gmk release app=mecwb
         find . -name "*.exe" | xargs rm
-                        
+
+    - name: Test release checksums
+      shell: C:\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
+      run: |
+        cd $GITHUB_WORKSPACE
+        ls -l cygwin-*/ || true
+        ## each packaging run must have produced non-empty archives and the
+        ## sha256 checksum file written by makefiles/release.gmk
+        for d in cygwin-*/; do
+          d="${d%/}"
+          test -s "${d}/${d}.sha256" || { echo "missing checksum: ${d}/${d}.sha256"; exit 1; }
+          for z in "${d}"/*.zip; do
+            test -s "${z}" || { echo "empty artifact: ${z}"; exit 1; }
+          done
+          ( cd "${d}" && sha256sum -c "${d}.sha256" )
+        done
 
     - name: Upload Cygwin Combined Release
       uses: actions/upload-artifact@v6
