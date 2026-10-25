@@ -2,7 +2,6 @@ name: Binaries FreeBSD (freebsd-gcc)
 
 on: 
  workflow_dispatch:
-    branches: [ devel ]
 
 jobs:
   test:
