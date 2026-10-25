@@ -49,9 +49,11 @@ jobs:
               echo "apt-get update failed (attempt $i), retrying"
               sleep 5
             done
+            ## libxt-dev provides X11/Intrinsic.h, which the mew (X11) build
+            ## needs on top of libx11-dev and libxft-dev
             DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-              build-essential zlib1g-dev libncurses-dev libx11-dev libxft-dev \
-              libfontconfig1-dev pkg-config zip unzip ca-certificates
+              build-essential zlib1g-dev libncurses-dev libx11-dev libxt-dev \
+              libxft-dev libfontconfig1-dev pkg-config zip unzip ca-certificates
             echo "== uname: $(uname -a)"
             echo "== gcc:   $(gcc --version | head -n 1)"
             ## guard: the toolchain must produce 32-bit binaries
