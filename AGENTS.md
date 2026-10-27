@@ -1002,7 +1002,7 @@ git push origin --delete featurebranch
 
 ## CI/CD (GitHub Actions)
 
-16 workflow files in `.github/workflows/`:
+17 workflow files in `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
@@ -1011,6 +1011,7 @@ git push origin --delete featurebranch
 | `binaries-almalinux.yml` | AlmaLinux 8/9/10 builds (glibc, container on native arch runners) |
 | `binaries-arch.yml` | Arch Linux / Manjaro builds (rolling, container on native arch runners) |
 | `binaries-debian-i686.yml` | 32-bit Linux builds (i386 Debian container, native) |
+| `binaries-debian10.yml` | Debian 10 buster builds (glibc 2.28, EOL archive container, native) |
 | `binaries-linuxmingwgcc.yml` | Linux cross-compile to Windows |
 | `binaries-macosgcc.yml` | macOS builds (Intel + ARM) |
 | `binaries-winlibs.yml` | Windows native builds |
@@ -1033,6 +1034,7 @@ before uploading and publishes one artifact per matrix entry.
 | Target | Workflow | Release name |
 |--------|----------|--------------|
 | glibc, legacy (RHEL 8, Debian 10, Ubuntu 18.04+) | `binaries-almalinux.yml` (`alma: 8`) | `linux-4-<arch>-almalinux-8.10-*` |
+| glibc 2.28, Debian 10 buster (x86_64) | `binaries-debian10.yml` | `linux-4-x86_64-debian-10-*` |
 | glibc, RHEL 9 / Debian 12 / Ubuntu 22.04+ | `binaries-almalinux.yml` (`alma: 9`) | `linux-5-<arch>-almalinux-9.8-*` |
 | glibc, RHEL 10 / Debian 13 / Ubuntu 24.04+ | `binaries-almalinux.yml` (`alma: 10`) | `linux-6-<arch>-almalinux-10.2-*` |
 | Ubuntu 22.04 / 24.04 / 26.04 | `binaries-linux.yml` | `linux-6\|7-<arch>-ubuntu-22.04\|24.04\|26.04-*` |

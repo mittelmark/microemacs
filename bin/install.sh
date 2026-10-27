@@ -303,20 +303,29 @@ else
             MECB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb"
             MEWB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb"
         else
-            ## Ubuntu 18/20 and Debian 10: older releases shipped those, the
-            ## current ones are served by the AlmaLinux 8 build (glibc 2.28)
-            MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
-            MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
+            ## Ubuntu 18/20 and Debian 10 upwards. Debian 10 and every newer
+            ## glibc distribution (2.28+) is served by the native Debian 10
+            ## buster build (binaries-debian10.yml) - it replaces the former
+            ## hand-built ubuntu-20 archive. Older releases shipped ubuntu-18/
+            ## 20 and the AlmaLinux 8 build (glibc 2.28) is the last fallback.
+            if [ "$UBU" = "20" ]; then
+                MECB="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mecb"
+                MEWB="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mewb"
+            fi
+            MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
+            MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
         fi
         ## the published asset may use a different kernel major than the
         ## guessed one (a 7.x HWE kernel on Ubuntu 24.04 still needs ubuntu-24.04)
         ## and older releases dropped the point release (ubuntu-24), so match both
         BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-ubuntu-${UBU}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
         if [ -z "$BASE" ] && [ "$UBU" = "20" ]; then
-            ## Ubuntu 18/20 and Debian 10 archives are not published any more;
-            ## the AlmaLinux 8 build (glibc 2.28) runs on Ubuntu 20.04 and
-            ## Debian 10 upwards
-            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+            ## Ubuntu 18/20 and Debian 10 used to be served by the AlmaLinux 8
+            ## build (glibc 2.28). Debian 10 upwards now has its own build,
+            ## which is preferred; the AlmaLinux 8 archive stays as fallback
+            ## for releases that do not have it yet.
+            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-debian-10-microemacs-${VERSION}-mecb[.]zip$" \
+                             "^linux-[0-9]+-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
         fi
         if [ -n "$BASE" ]; then
             MECB="${BASE}-mecb"

@@ -87,16 +87,19 @@ function note {
 }
 
 ## The workflows that contribute release assets. Any other workflow
-## (performance, testing, ...) produces nothing that belongs in a release.
+## (performance, testing, binaries-winlibs) produces nothing that belongs in
+## a release: binaries-winlibs only uploads unpacked MicroEmacs09-*-Windows
+## directories without archives or checksums, the Windows release archives
+## come from binaries-linuxmingwgcc and binaries-msys2.
 WORKFLOWS="binaries-linux
 binaries-almalinux
 binaries-alpine
 binaries-arch
 binaries-debian-i686
+binaries-debian10
 binaries-macosgcc
 binaries-msys2
 binaries-linuxmingwgcc
-binaries-winlibs
 binaries-cygwin
 binaries-freebsd"
 
@@ -104,6 +107,13 @@ binaries-freebsd"
 ## binaries, brew/scoop archives) are packaging by-products, not release
 ## assets; only the "Release-..." bundles and the AppImages are published.
 ARTIFACT_PATTERN='^(Release-|appimage-)'
+
+## Workflows that must build successfully but whose archives are not
+## published. binaries-linuxmingwgcc cross-compiles the same native Windows
+## targets that binaries-msys2 produces (windows-mingw-*), only under the
+## names windows-mingw32/windows-mingw64, which no installer refers to - so
+## it stays a build check and its artifacts stay out of the release.
+BUILD_ONLY="binaries-linuxmingwgcc"
 
 if [ -z "$REPO" ]; then
     REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
@@ -171,6 +181,9 @@ fi
 if [ -z "$WORKDIR" ]; then
     WORKDIR=$(mktemp -d "${TMPDIR:-/tmp}/me-release-${TAG}.XXXXXX")
 fi
+## Start from an empty download area: "gh run download" refuses to extract
+## over existing files, so a reused workdir would fail on the second run.
+rm -rf "$WORKDIR/raw" || die "cannot clean $WORKDIR/raw"
 mkdir -p "$WORKDIR/raw" || die "cannot create $WORKDIR/raw"
 note "download directory ${WORKDIR}"
 
@@ -183,6 +196,11 @@ for wf in $WORKFLOWS; do
         continue
     fi
     echo "   ${wf}: run ${run}"
+    case " $BUILD_ONLY " in
+        *" $wf "*)
+            echo "   ${wf}: build check only, no release assets"
+            continue ;;
+    esac
     ## Download only the release bundles and AppImages of that run.
     names=$(gh api "repos/${REPO}/actions/runs/${run}/artifacts?per_page=100" \
         --jq '.artifacts[] | select(.expired == false) | .name' 2>/dev/null |
@@ -204,6 +222,7 @@ done
 ## Flatten to the files that go into the release. Directory names are kept
 ## in the manifest only; the release itself is a flat asset list.
 STAGE="$WORKDIR/assets"
+rm -rf "$STAGE" || die "cannot clean $STAGE"
 mkdir -p "$STAGE" || die "cannot create $STAGE"
 
 find "$WORKDIR/raw" -type f \( -name '*.zip' -o -name '*.sha256' -o -name '*.AppImage' \) |
@@ -276,7 +295,7 @@ done
 
 ## Every supported platform family must be represented, otherwise a workflow
 ## silently produced nothing (or its artifacts were skipped).
-for family in ubuntu almalinux alpine arch archarm i686-debian macos windows cygwin freebsd; do
+for family in ubuntu almalinux alpine arch archarm i686-debian debian-10 macos windows cygwin freebsd; do
     if ! find "$STAGE" -maxdepth 1 -name "*.zip" | grep -q -- "$family"; then
         die "no archives for '${family}' - did that workflow run for ${SHA:0:7}?"
     fi
