@@ -1,0 +1,101 @@
+name: Binaries Debian 10 (debian-gcc)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    name: Build in Debian 10 buster (x86_64)
+    env:
+      ## A container shares the kernel of its host, so "uname -r" inside the
+      ## build would report the GitHub runner kernel, not the Debian one. Pin
+      ## the value that ends up in the release name: Debian 10 buster ships
+      ## the 4.19 kernel, so the archive is named linux-4-...
+      KERNEL: "4"
+    steps:
+    - uses: actions/checkout@v7
+
+    ## The build runs inside an official Debian 10 container (real glibc 2.28
+    ## toolchain, no virtual machine). Buster is end-of-life, so this replaces
+    ## the former hand-built Ubuntu 20 archive: glibc 2.28 is older than the
+    ## glibc 2.31 of Ubuntu 20.04, i.e. the binaries run on Debian 10 and on
+    ## every newer glibc distribution (Ubuntu 18.04+, Debian 10+, RHEL 8+).
+    - name: Install and Compile in Debian 10
+      id: test
+      run: |
+        docker run --rm \
+          -e KERNEL \
+          --volume "$PWD:/src" --workdir /src \
+          debian:10 \
+          sh -euc '
+            ## Buster is end-of-life: the packages only live on the archive,
+            ## so the (empty) docker sources list is replaced completely.
+            ## "Acquire::Check-Valid-Until false" is required because the
+            ## archive Release files are expired.
+            printf "%s\n" \
+              "deb http://archive.debian.org/debian buster main" \
+              "deb http://archive.debian.org/debian buster-updates main" \
+              "deb http://archive.debian.org/debian-security buster/updates main" \
+              > /etc/apt/sources.list
+            printf "Acquire::Check-Valid-Until \"false\";\n" > /etc/apt/apt.conf.d/99archive
+            for i in 1 2 3; do
+              apt-get update && break
+              echo "apt-get update failed (attempt $i), retrying"
+              sleep 5
+            done
+            ## libxt-dev provides X11/Intrinsic.h, which the mew (X11) build
+            ## needs on top of libx11-dev and libxft-dev
+            DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+              build-essential zlib1g-dev libncurses-dev libx11-dev libxt-dev \
+              libxft-dev libfontconfig1-dev pkg-config zip unzip
+            echo "== Debian: $(cat /etc/debian_version)"
+            echo "== uname: $(uname -a)"
+            echo "== gcc:   $(gcc --version | head -n 1)"
+            echo "== glibc: $(ldd --version | head -n 1)"
+            ## guard: the release name is derived from /etc/os-release inside
+            ## the container, so the image must really be Debian 10 buster
+            grep -q "^VERSION_ID=\"10\"" /etc/os-release
+            ## guard: the archive is named linux-...-x86_64-..., so the
+            ## container must run on an x86_64 host (not an arm runner)
+            test "$(uname -m)" = "x86_64"
+            make -j"$(nproc)" bfs/bin
+            make -j"$(nproc)" mec
+            make -j"$(nproc)" mew
+            make -j"$(nproc)" mecw
+            make mecb mewb mecwb
+            make MACHINE=x86_64 KERNEL="$KERNEL" release app=mecb
+            make MACHINE=x86_64 KERNEL="$KERNEL" release app=mewb
+            make MACHINE=x86_64 KERNEL="$KERNEL" release app=mecwb
+            ## smoke test: the standalone mecb must run and report its version
+            for b in *-mecb.bin; do echo "== $b"; ./$b -V; done
+          '
+        ## the build ran as root inside the container - hand the files back
+        ## to the runner user so later steps and the upload can read them
+        sudo chown -R "$(id -u):$(id -g)" .
+
+    - name: Test files
+      run:  |
+         uname -a
+         ls -lah
+         ls -l linux-*/
+         ## the release name must be the Debian 10 one, the install script and
+         ## the release assembly rely on the distribution and version string
+         ls -d linux-4-x86_64-debian-10-microemacs-*/ >/dev/null
+         ## each packaging run must have produced non-empty archives and the
+         ## sha256 checksum file written by makefiles/release.gmk
+         for d in linux-*/; do
+           d="${d%/}"
+           test -s "${d}/${d}.sha256" || { echo "missing checksum: ${d}/${d}.sha256"; exit 1; }
+           for z in "${d}"/*.zip; do
+             test -s "${z}" || { echo "empty artifact: ${z}"; exit 1; }
+           done
+           ( cd "${d}" && sha256sum -c "${d}.sha256" )
+         done
+
+    - name: Upload Debian 10 Combined Release
+      uses: actions/upload-artifact@v6
+      with:
+        name: Release-Debian-10-x86_64
+        path: linux-*/
