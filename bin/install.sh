@@ -243,8 +243,8 @@ else
     ## that release ships with (linux-6-...-ubuntu-22.04), not after the
     ## kernel the machine happens to run: an Ubuntu 24.04 box on a 7.x HWE
     ## kernel still needs the ubuntu-24.04 build, and aarch64 uses exactly the
-    ## same name as x86_64. Prefer /etc/os-release for Ubuntu and fall back to
-    ## the kernel version for other derivatives (Debian, Mint, Pop!_OS, ...).
+    ## same name as x86_64. Prefer /etc/os-release for Ubuntu and Debian 10-12;
+    ## other derivatives fall back to the kernel version.
     ## 32 bit is always the Debian 12 build (glibc 2.36).
     UBUNTU_REL=""
     if [ "$DIST_ID" = "ubuntu" ]; then
@@ -267,6 +267,8 @@ else
             MEWB="${BASE}-mewb"
         fi
     else
+        DEBIAN_REL=""
+        DEBIAN10=0
         if [ -n "$UBUNTU_REL" ]; then
             case $UBUNTU_REL in
                 18|20) UBU="$UBUNTU_REL" ;;
@@ -276,6 +278,24 @@ else
                     echo "Error: Ubuntu ${UBUNTU_REL} is not supported (no prebuild version yet)!"
                     echo "Please install an older release manually or compile MicroEmacs on your own."
                     exit 1
+                    ;;
+            esac
+        elif [ "$DIST_ID" = "debian" ]; then
+            DEBIAN_REL=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '"'`
+            case $DEBIAN_REL in
+                10) UBU=20; KERNEL=4; DEBIAN10=1 ;;
+                11) UBU=20; KERNEL=5 ;;
+                12) UBU=22; KERNEL=6 ;;
+                *)
+                    case $KERNEL in
+                        4|5) UBU=20 ;;
+                        6) UBU=22 ;;
+                        7) UBU=26 ;;
+                        *)
+                            echo "Error: Kernel $KERNEL not supported!"
+                            exit 1
+                            ;;
+                    esac
                     ;;
             esac
         else
@@ -295,35 +315,45 @@ else
         else
             UBU_NAME="ubuntu-${UBU}"
         fi
-        MECB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mecb"
-        MEWB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mewb"
+        if [ "$DEBIAN10" -eq 1 ]; then
+            MECB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
+            MEWB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
+            MECB_ALTS="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mecb linux-5-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mecb"
+            MEWB_ALTS="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mewb linux-5-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mewb"
+        else
+            MECB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mecb"
+            MEWB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mewb"
+        fi
         if [ "$UBU" -ge 22 ]; then
             ## releases before the point release was added to the name
             ## (ubuntu-24.04 -> ubuntu-24)
             MECB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb"
             MEWB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb"
         else
-            ## Ubuntu 18/20 and Debian 10 upwards. Debian 10 and every newer
-            ## glibc distribution (2.28+) is served by the native Debian 10
-            ## buster build (binaries-debian10.yml) - it replaces the former
-            ## hand-built ubuntu-20 archive. Older releases shipped ubuntu-18/
-            ## 20 and the AlmaLinux 8 build (glibc 2.28) is the last fallback.
-            if [ "$UBU" = "20" ]; then
+            ## Ubuntu 18/20 compatibility fallbacks. Debian 10 prefers the
+            ## kernel-4 AlmaLinux 8 build; Debian 11 and 12 use Ubuntu 20 and
+            ## Ubuntu 22 assets respectively.
+            if [ "$UBU" = "20" ] && [ "$DEBIAN10" -eq 0 ] && [ "$DIST_ID" != "debian" ]; then
                 MECB="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mecb"
                 MEWB="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mewb"
             fi
-            MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
-            MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
+            if [ "$DEBIAN10" -eq 0 ]; then
+                MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
+                MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
+            fi
         fi
         ## the published asset may use a different kernel major than the
         ## guessed one (a 7.x HWE kernel on Ubuntu 24.04 still needs ubuntu-24.04)
         ## and older releases dropped the point release (ubuntu-24), so match both
-        BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-ubuntu-${UBU}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
-        if [ -z "$BASE" ] && [ "$UBU" = "20" ]; then
-            ## Ubuntu 18/20 and Debian 10 used to be served by the AlmaLinux 8
-            ## build (glibc 2.28). Debian 10 upwards now has its own build,
-            ## which is preferred; the AlmaLinux 8 archive stays as fallback
-            ## for releases that do not have it yet.
+        if [ "$DEBIAN10" -eq 1 ]; then
+            BASE=`resolve_base "^linux-4-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$" \
+                             "^linux-[0-9]+-${MACHINE}-debian-10-microemacs-${VERSION}-mecb[.]zip$"`
+        else
+            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-ubuntu-${UBU}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+        fi
+        if [ -z "$BASE" ] && [ "$UBU" = "20" ] && [ "$DEBIAN10" -eq 0 ]; then
+            ## Older Ubuntu 18/20 releases used the AlmaLinux 8 build
+            ## (glibc 2.28) as a fallback; Ubuntu 20 can also use Debian 10.
             BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-debian-10-microemacs-${VERSION}-mecb[.]zip$" \
                              "^linux-[0-9]+-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
         fi
