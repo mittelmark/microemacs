@@ -219,7 +219,7 @@ Probably outdated:
 
 A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Windows, and macOS with optional GUI.
 
-### Install Scripts (in `bin/`)
+### Scripts (in `bin/`)
 
 | File | Purpose |
 |------|---------|
@@ -227,6 +227,7 @@ A `CMakeLists.txt` exists in `src/` for CMake-based builds, supporting Linux, Wi
 | `bin/install-windows.ps1` | Windows PowerShell installer |
 | `bin/install-fonts.sh` | X11 font installer |
 | `bin/install-dict.sh` | Spelling dictionary installer |
+| `bin/release-assemble.sh` | Downloads the CI artifacts of a tag, verifies them and publishes the GitHub release (see [Release Process](#release-process)) |
 
 The installers are the default installation path; the detailed user-facing
 instructions live in `README.md`, and the built-in help page "Installation"
@@ -943,15 +944,50 @@ git pull origin devel
 git checkout master
 git merge devel
 
-# 3. Create version tag
-git tag v09.12.26.beta3
+# 3. Set the version in src/evers.h - BOTH lines, they must agree with the
+#    tag: meDAY "26b7" + meRELEASE "26b7" for v09.12.26.beta7,
+#    meDAY "26" + meRELEASE "26" for the final v09.12.26.
+#    bin/install.sh derives the version from the tag (v09.12.26 -> 091226)
+#    and looks for archives with exactly that string, so a mismatch makes
+#    the release invisible to the installer.
 
-# 4. Push master and tags
+# 4. Commit, tag and push
+git commit -am "bump the version to ..."
+git tag v09.12.26.beta3
 git push origin master --tags
 
-# 5. Create GitHub release from tag (manually or via gh CLI)
-gh release create v09.12.26.beta3 --title "v09.12.26.beta3" --notes "Release notes"
+# 5. Build everything and publish the release
+bin/release-assemble.sh v09.12.26.beta3 --dispatch --wait --dry-run
+bin/release-assemble.sh v09.12.26.beta3
 ```
+
+`bin/release-assemble.sh` finds the successful run of every `binaries-*`
+workflow for the tag's commit, downloads the `Release-*` and `appimage-*`
+artifacts, verifies every `.sha256` the builds wrote, checks that all
+platform families and the tag version are present, and then creates the
+release and uploads the archives, checksums, AppImages and the installer
+scripts. It is all-or-nothing: a failed or missing run, an empty archive or
+a bad checksum aborts before anything is published. Re-running it is safe
+(`--clobber`), so a partially uploaded release can simply be repeated.
+
+For a rehearsal, create the release with `--prerelease`; a prerelease is not
+returned by `releases/latest`, so it does not disturb the installed base.
+Turning it into the real release later needs no rebuild:
+
+```bash
+gh release edit v09.12.26 --prerelease=false --latest
+```
+
+**After the release:**
+
+- Update the download table in `README.md` (~line 500) - the URLs embed the
+  tag, the version and the full asset name (e.g. `almalinux-8.10`,
+  `ubuntu-24.04`, `arch-<YYYYMMDD>`), so they can only be written once the
+  assets exist. Regenerate from `gh release view <tag> --json assets`.
+- Both installers are fetched by users from
+  `releases/latest/download/install.sh` (and `install-windows.ps1`). The
+  assemble script uploads them from the tagged commit, so no separate
+  `gh release upload` is needed - but never upload a release without them.
 
 **Tag naming convention:**
 - Beta: `v09.12.26.beta1`, `v09.12.26.beta2`, `v09.12.26.beta3`
@@ -966,7 +1002,7 @@ git push origin --delete featurebranch
 
 ## CI/CD (GitHub Actions)
 
-16 workflow files in `.github/workflows/`:
+17 workflow files in `.github/workflows/`:
 
 | Workflow | Purpose |
 |----------|---------|
@@ -975,6 +1011,7 @@ git push origin --delete featurebranch
 | `binaries-almalinux.yml` | AlmaLinux 8/9/10 builds (glibc, container on native arch runners) |
 | `binaries-arch.yml` | Arch Linux / Manjaro builds (rolling, container on native arch runners) |
 | `binaries-debian-i686.yml` | 32-bit Linux builds (i386 Debian container, native) |
+| `binaries-debian10.yml` | Debian 10 buster builds (glibc 2.28, EOL archive container, native) |
 | `binaries-linuxmingwgcc.yml` | Linux cross-compile to Windows |
 | `binaries-macosgcc.yml` | macOS builds (Intel + ARM) |
 | `binaries-winlibs.yml` | Windows native builds |
@@ -997,6 +1034,7 @@ before uploading and publishes one artifact per matrix entry.
 | Target | Workflow | Release name |
 |--------|----------|--------------|
 | glibc, legacy (RHEL 8, Debian 10, Ubuntu 18.04+) | `binaries-almalinux.yml` (`alma: 8`) | `linux-4-<arch>-almalinux-8.10-*` |
+| glibc 2.28, Debian 10 buster (x86_64) | `binaries-debian10.yml` | `linux-4-x86_64-debian-10-*` |
 | glibc, RHEL 9 / Debian 12 / Ubuntu 22.04+ | `binaries-almalinux.yml` (`alma: 9`) | `linux-5-<arch>-almalinux-9.8-*` |
 | glibc, RHEL 10 / Debian 13 / Ubuntu 24.04+ | `binaries-almalinux.yml` (`alma: 10`) | `linux-6-<arch>-almalinux-10.2-*` |
 | Ubuntu 22.04 / 24.04 / 26.04 | `binaries-linux.yml` | `linux-6\|7-<arch>-ubuntu-22.04\|24.04\|26.04-*` |

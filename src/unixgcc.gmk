@@ -60,6 +60,17 @@ BCFG     ?= release
 BCOR     ?= me
 
 CC       = gcc
+#
+# Parallel link time optimization ("-flto=auto") exists since gcc 10. Older
+# toolchains - Debian 10 ships gcc 8, RHEL/CentOS 7 gcc 4.8 - only know
+# "-flto" and would abort with "unrecognized command-line option
+# '-flto=auto'", so probe the compiler once and fall back to serial LTO.
+#
+GCC_MAJOR := $(shell $(CC) -dumpversion 2>/dev/null | cut -d. -f1)
+FLTO      := -flto
+ifneq (,$(shell test "$(GCC_MAJOR)" -ge 10 2>/dev/null && echo yes))
+FLTO      := -flto=auto
+endif
 MK       = make
 LD       = $(CC)
 STRIP    = strip
@@ -95,9 +106,9 @@ ifeq ($(PLATFORM),linux)
 BUILDID  = linuxgcc
 EXE      =
 CCDEFS   = -D_LINUX -D_LINUX26 -I. -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DMEOPT_BINFS -D_64BIT
-CCFLAGSR = -O3 -flto=auto -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-unused-result
+CCFLAGSR = -O3 $(FLTO) -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-unused-result
 CCFLAGSD = -g -Wall
-LDFLAGSR = -O3 -flto=auto
+LDFLAGSR = -O3 $(FLTO)
 X11INC   = -I/opt/X11/include
 #
 # The Xlib are located in /usr/X11R6/lib64 on some Linux distributions like RHEL4.* .
