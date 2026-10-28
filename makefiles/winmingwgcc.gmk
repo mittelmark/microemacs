@@ -6,6 +6,11 @@ else
 DEFAULT_BDIST=0
 endif
 MSYS := $(shell echo ${MSYSTEM} | tr '[:upper:]' '[:lower:]')
+ifeq ($(MSYS),msys)
+BUILDMSYS=msys64
+else
+BUILDMSYS=$(MSYS)
+endif
 ifeq (mingw64,$(BDIST))
 WIN=mingw
 WIX=win
@@ -38,11 +43,11 @@ mecb:
 	$(MAKE) -f makefiles/winmingwgcc.gmk mecb BDIST=mingw64
 else
 mecb: bfs/exe mec
-	./bfs/bfs.exe -a ./src/.$(MSYS)$(WIX)-release-mec/mec.exe -o $(RELEASE)-mecb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.$(BUILDMSYS)$(WIX)-release-mec/mec.exe -o $(RELEASE)-mecb.exe ./jasspa
 endif
 
 mewb: bfs/exe mew
-	./bfs/bfs.exe -a ./src/.$(MSYS)$(WIX)-release-mew/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.$(BUILDMSYS)$(WIX)-release-mew/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
 
 release: $(app)
 	make -f makefiles/release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe
