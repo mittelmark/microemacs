@@ -1,58 +1,71 @@
 ---
 title: Tutorial about the Jasspa MicroEmacs EMF macro language
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2023-09-28 10:38
+date: 2026-10-29 14:30
 abstract: >
-    This is a short introduction into the MicroEmacs macro language.
+    This is a short introduction to the MicroEmacs macro language.
 ---
 
 ## Introduction
 
-This is a tutorial about the [Jasspa MicroEmacs](http://www.jasspa.com)
-language. We will cover the basic features of the language, variables, data
-structures, control-flow and functions and then give some example projects
-where we use this to create some useful extensions.
+This tutorial introduces the [Jasspa MicroEmacs](http://www.jasspa.com) macro
+language. It covers variables, data structures, control flow, and functions,
+then walks through examples of useful extensions.
 
-The examples are written as EMF code blocks. The document build weaves the
-Markdown with `tmdoc` and converts it to HTML with `mndoc`; it does not execute
-the examples. You can try a snippet by selecting it and running
-`execute-region`, or by saving it in a macro file and loading that file.
+Runnable examples use executable shell fences: `tmdoc` writes each snippet to
+an EMF file, runs it with `mecb`, and includes the output beneath the code.
+The helper macro in `tutorial.emf` is loaded from this directory. Interactive
+examples and snippets that depend on the current editor state or user-specific
+configuration remain ordinary EMF code blocks; try those by selecting them
+and running `execute-region`, or by saving them in a macro file and loading
+that file.
 
 ## Hello World
 
-Within the editor we would simple execute:
+In the editor, you can execute:
 
 ```emf
 ml-write "Hello World!"
 ```
 
-That the should display the message line into the editors command line at the
-bottom like this:
+This displays the message in the editor's command line at the bottom of the
+screen, as shown here:
 
 ![](../images/hello-world.png)
 
-You can  execute the code by pressing  `"Esc-x"`  then  writing  `"ml-write"`,
-pressing  the  ENTER  key and  then  writing  the  message  `"Hello  World!"`.
-Alternatively  you can write the text in the editor, marking the code line and
-an empty line thereafter and then `"Esc-x"` and write `"execute-region"`.
+To run the command, press `Esc-x`, enter `ml-write`, press Enter, and then
+enter `Hello World!`. Alternatively, type the code in the editor, select the
+line and a following blank line, then run `execute-region` with `Esc-x`.
+
+## Executing ME scripts
+
+This standalone example shows the executable-fence syntax:
+
+```{.shell cmd="mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
+-1 ml-write "Hello ME-World!"
+exit-emacs
+```
 
 ## Variables
 
-For more background on the variables have a look at the help page [Variables](https://www.dgroth.de/me2009/me/m4fil018.htm).
+For more information about variables, see the [Variables help
+page](https://www.dgroth.de/me2009/me/m4fil018.htm).
 
-Essentially we have:
+The main variable types are:
 
-- register variables - starting with the hash mark sign __#__ there are mainly used due to the fast access speed
-- system variables - starting with the dollar sign __$__ and followed uppercase letters
-- editor variables - starting with the dollar sign __$__ and followed by lowercase letters
-- command variables - usually starting with a dot __.__ sign to be used within macros
-- global variables - usually starting with a percentage __%__ sign
-- buffer variables - usually starting with a colon __:__, these variables keep information about the currently opened file
+- Register variables begin with `#` and provide fast access to values.
+- System and editor variables begin with `$`; system variables hold
+  configuration and state, while editor variables describe the current
+  editor, buffer, or window.
+- Command variables usually begin with `.` and are used within macros.
+- Global macro variables usually begin with `%`.
+- Buffer variables usually begin with `:` and hold information about the
+  current buffer.
 
-Variable values were assigned usually with the `set-variable`  command. Here an example:
+Variables are usually assigned with `set-variable`. Here is an example:
 
 ```emf
-; make dumping out information easier
+; make it easier to print information
 define-macro print
     -1 ml-write @1
 !emacro
@@ -68,39 +81,38 @@ print $progname
 print $version
 ```
 
-Every code example in this tutorial is in its own script file, so if we would like to use
-the `print` macro in the next code example this would produce an error.
+Each executable example runs in its own process. The next example therefore
+cannot use the `print` macro unless it loads the macro first.
 
 ```emf
 print "test"
 ```
 
-To use our print macro we will place this macro in our `user.emf` file which is in our jasspa home directory:
+Your user startup file is usually located in your JASSPA home directory. The
+following variables can help you find your user paths:
 
 ```emf
 -1 ml-write $user-path
 -1 ml-write $user-name
 ```
 
-So as our setting show we simply write the print macro in a file `groth.emf`.
-Thereafter we should be able to use the `print` function in all code-chunk
-examples. For illustrative purposes we place the function in a file
-`tutorial.emf` which we put in our `$user-path` and which we then just execute
-like this at the beginning of our code chunk:
+Use `$user-path` to locate your macro directory, then save the `print` macro
+in a file such as `tutorial.emf`. Load it at the start of each script:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 print "Hello Tutorial!"
+exit-emacs
 ```
 
-Now back to variables ...
+Now, back to variables.
 
 ### Register variables
 
-Global register variables start with the prefix `#g` and then a number between
-1 and 9. There are used for fast access of variables values which are visible in all code regions:
+Global register variables begin with `#g` followed by a number from 1 to 9.
+They provide fast access to values that are visible across macro calls:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #g1 "Value of #g1 is a string!"
 set-variable #g2 "Another value!"
@@ -109,13 +121,14 @@ define-macro test-global
 !emacro 
 test-global
 print #g2
+exit-emacs
 ```
 
-Local variable a prefixed with `#l` and the values again from 1 to 9.
+Local registers use the `#l` prefix, followed by a number from 1 to 9.
 
-Here an example:
+Here is an example:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 define-macro test-local
     set-variable #l1 "Local variable string!"
@@ -124,14 +137,15 @@ define-macro test-local
 test-local
 set-variable %test &spr "#l1 is '%s'" #l1
 print %test
+exit-emacs
 ```
 
-As you can see the default value for register variables is an empty string.
+As you can see, register variables default to an empty string.
 
-There are as well register variables with the prefix `#p` which means that the should be as well visible in the calling macro, so the parent macro.
-Here an example:
+There are also register variables with the prefix `#p`. These are visible in
+the calling (parent) macro. Here is an example:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 define-macro child-mac
     ; set a local variable in the caller
@@ -142,103 +156,104 @@ define-macro parent-mac
     print #l1
 !emacro
 parent-mac
+exit-emacs
 ```
 
-This might be helpful in some situations but might as well complicate a little bit the code
-understanding.
+This can be helpful in some situations, although it can also make the code a
+little harder to understand.
 
-### System variables 
+### System variables
 
 
-As told system variables start with a dollar and they keep information about
-the editor and some variables which are derived from system variables. You can
-display the variables using the macro "list-variables" from within the editor,
-so executing `esc-x` and then writing the command. Or by using the default
-key-combination `C-h v`. Here we just display a few of these variables:
+As noted above, system variables begin with `$` and hold information about
+MicroEmacs and its environment. To display them, run `list-variables` from the
+editor with `Esc-x`, or use the default key combination `C-h v`. This example
+displays a few variables and then inspects the local `tutorial.emf` buffer:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 print &sprintf "variable: $auto-time    = %s" $auto-time  
 print &sprintf "variable: $buffer-bname = %s" $buffer-bname
 print &sprintf "variable: $not-existing = %s" $not-existing
-; load a file into MicroEmacs
-find-file &cat $user-path "groth.emf"
+; open the local helper file in a buffer
+find-file "tutorial.emf"
 print &sprintf "variable: $buffer-bname = %s" $buffer-bname
-print &sprintf "variable: $buffer-fname = %s" $buffer-fname
-; how many lines has this file
+; $buffer-fname contains an installation-specific absolute path
+; count the lines in this file
 end-of-buffer ; jump to the end
 print &sprintf "variable: $window-aline = %s" $window-aline
-
+exit-emacs
 ```
 
-As you can see in the case you try to access a variable that does not exists
-you get the value "ERROR" as a variable value, that can be used to check if a
-variable exists. Here an example:
+If you access a variable that does not exist, MicroEmacs returns the string
+`ERROR`. You can use this value to check whether a variable exists:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable %real-var "hello"
 set-variable #l2 %real-var
 set-variable #l3 %dummy-var
-; check if the variable has the string ERROR &seq == string equal
+; check whether the variable value is ERROR (&seq means string equality)
 !if &seq #l2 "ERROR"
-    print "variable %real-var does not exists!"
+    print "variable %real-var does not exist!"
 !else
-    print "variable %real-var does exists!"
+    print "variable %real-var exists!"
 !endif
 !if &seq #l3 "ERROR"
-    print "variable %dummy-var does not exists!"
+    print "variable %dummy-var does not exist!"
 !else
-    print "variable %dummy-var does exists!"
+    print "variable %dummy-var exists!"
 !endif
+exit-emacs
 ```
 
 
 ## Data structures
 
 
-We have the following data structures in MicroEmacs:
+MicroEmacs provides the following data structures:
 
 - scalars
 - lists
 
-A scalar is just a single value. Per default  MicroEmacs  has only one more complex data  structure,  the list,
-which is just recognized by ME if a variable  contains a list of pipe symbols.
-Here an example:
+A scalar is a single value. By default, MicroEmacs has one composite data
+structure: the list. ME recognizes a list when a variable contains
+pipe-delimited values. Here is an example:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l1 "|this|is|a|list|"
 print &lget #l1 1
 print &lget #l1 2
+exit-emacs
 ```
 
-As you  can  see we can  get  the  element  of a list  using  the  `&lget`
-function. To work with lists we have as well the following functions:
+As you can see, `&lget` retrieves an element from a list. The following
+functions are also available:
 
-- `&ldel list idx`  - delete an element of a list
-- `&lfind list value` - find a position in a list by value
-- `&linsert list index value` - insert an element at a certain position
-- `&lset list index value` - set a value of a list at a certain position
+- `&ldel list idx` - delete an element from a list
+- `&lfind list value` - find an element's position in a list
+- `&linsert list index value` - insert an element at a specified position
+- `&lset list index value` - set an element at a specified position
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l1 "|this|is|a|list|"
 set-variable #l1 &linsert #l1 1 "start"
 print &lget #l1 1
 print &lget #l1 2
+exit-emacs
 ```
 
-Access and  modification  to lists is quite slow, so it is  preferred to store
-not so large data in a list.
+Accessing and modifying lists can be relatively slow, so avoid storing large
+amounts of data in them.
 
-For  illustration  purpose let's create an other data  structure, a dictionary
-like  structure  were we can have access using key value pairs. The  functions
-starting  with the  ampersand  sign are  created  on the  C-level.  To  create
-functions  on the macro  level we will  create two macros  which will handle a
-dictionary not based on a list but based on data saved in a hidden buffer ":*dict*DICTNAME:"
+For illustration, let's create another data structure: a dictionary that
+supports key-value access. Functions beginning with `&` are implemented in C.
+To add similar functionality at the macro level, we will define two macros
+that store dictionary data in a hidden buffer named `:*dict*DICTNAME:`.
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 define-macro dict
    set-variable #l1 &spr ":*dict*%s:" @1
@@ -268,32 +283,31 @@ dict-get "aa" "Cys" #g0
 print #g0
 dict-get "aa" "Ala" #g0
 print #g0
+exit-emacs
 ```
 
-We need to give a  variable  name where we would like to store  these  values.
-This  code  was  kindly  provided  by  Steven  Phillips  as an  example  for a
-dictionary  implementation.  As you can see ME is  quite  flexible  and can be
-extended  creating  custom  macros. We will  discuss  this topic later in more
-detail.
+The third argument names the variable in which to store each retrieved value.
+Steven Phillips kindly provided this dictionary implementation as an example.
+As you can see, MicroEmacs is flexible and can be extended with custom macros.
+We will discuss this topic in more detail later.
 
 ## Operators and Functions
 
-Operators and functions are created on the C-level they can be broadly divided
-into the type of data they handle:
+Operators and functions are implemented in C. They can be grouped by the kind
+of data they handle:
 
 - boolean data
-- math data
-- string string data
+- numerical data
+- string data
 
-You find out what functions are available by having a look at the help page of
-the  Macro  Language  Glossary.  To get  this  help  page  use the menu  entry
-"Help-General-Help" and then browse to "Macro-Dev".
+To see which functions are available, consult the Macro Language Glossary.
+Open it from the `Help > General Help` menu, then browse to `Macro-Dev`.
 
 ### Numerical functions
 
-Here are some examples on how to use the language glossary:
+Here are some examples of numerical functions:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 -12
 set-variable #l1 &abs #l0   ; absolute value
@@ -303,13 +317,14 @@ print &add #l1 1            ; add 1
 print &div #l1 4            ; divide by four
 set-variable #l2 &inc #l1 1 ; increment variable
 print #l2
+exit-emacs
 ```
 
 ### String functions
 
-Now a few examples for working with strings:
+Here are a few examples of string functions:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 "Hello Murks"
 print &rep #l0 "Murks" "World!"      ; replace a string
@@ -317,24 +332,25 @@ print &cat &cat "Hello " "World" "!" ; concatenate a string
 print &rig "Hello World!" 6          ; right characters
 print &lef "Hello World!" 6          ; left characters
 print &mid "Hello World!" 6 8        ; middle characters
-print &slo "Hello World!"            ; lower case
-print &sup "Hello World!"            ; upper case
+print &slo "Hello World!"            ; lowercase
+print &sup "Hello World!"            ; uppercase
 print &len "Hello World!"            ; length of string
-print &trb " Hello World!  "         ; trim string - remove whitespaces
+print &trb " Hello World!  "         ; trim string - remove whitespace
+exit-emacs
 ```
 
 You can combine these functions in different ways:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 &rep &trb &cat " Hello " "Murks    " "Murks" "World!"
 print #l0
+exit-emacs
 ```
 
-In the example above we  concatenate  first the strings " Hello" and "Murks  "
-using the function  `&cat`, then we remove the  whitespaces at the beginning
-and the end using  `&trb` and thereafter we do the  replacement of the the
-last two strings. You could translate this like so:
+In the example above, `&cat` first concatenates `" Hello "` and
+`"Murks    "`. Then `&trb` removes whitespace from both ends, and `&rep`
+replaces `"Murks"` with `"World!"`. This is equivalent to:
 
 `rep(trim(cat(" Hello ", "Murks    ")), "Murks", "World!")`
 
@@ -349,91 +365,93 @@ The traditional string functions such as `&len` and `&mid` count bytes. The
 1-based. These functions count encoded characters, not user-perceived
 graphemes, so a base letter followed by a combining mark may count as two.
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 "αβγ"
 print &len #l0          ; 6 bytes in UTF-8
 print &ulen #l0         ; 3 characters
 print &uleft #l0 2      ; αβ
 print &umid #l0 2 1     ; β
+exit-emacs
 ```
 
 ### Operators
 
-First again let's start with numerical issues:
+Let's start with numerical operators:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 print &equal 3 3   ; equal ? 1 true
 print &equal 3 4   ;         0 false
 print &greater 4 3 ; greater 4 > 3
 print &greater 3 4 ; greater 3 > 4
-print &less    3 4 ; less  r 3 < 4
+print &less    3 4 ; less: 3 < 4
 
+exit-emacs
 ```
 
-Now a few string operators/functions:
+Now a few string operators and functions:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 print &seq "Hello" "World!"     ; should return 0 / false
 print &seq "Hello" "Hello"      ; should return 1 / true
 print &seq "HELLO" &sup "Hello" ; should return 1 / true
-print &isequal "HELLO" "HeLLo"  ; case insensitive comparison
-print &isin "HE" "Hello"        ; case insensitive check
-print &sin  "HE" "Hello"        ; case   sensitive check
+print &isequal "HELLO" "HeLLo"  ; case-insensitive comparison
+print &isin "HE" "Hello"        ; case-insensitive check
+print &sin  "HE" "Hello"        ; case-sensitive check
+exit-emacs
 ```
 
-There are as well  functions,  operators  working  on  strings  using  regular
-expressions:
+There are also string functions and operators that use regular expressions:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 print &xse "Hello World!" "H.+!"   ; 1 true
 print &xse "file.cpp" ".+\\.cp?p?"
 print &xse "file.c"   ".+\\.cp?p?"
 print &xse "file.h"   ".+\\.cp?p?" ; 0 false
+exit-emacs
 ```
 
-These examples  should give you an idea how to manipulate  numbers and strings
-using the MicroEmacs macro language.
+These examples illustrate how to manipulate numbers and strings with the
+MicroEmacs macro language.
 
-## Control-Flow
+## Control flow
 
-MicroEmacs has as well the usual control  structures:
+MicroEmacs also provides the usual control structures:
 
 - `!if`, `!elif`, `!else`, `!endif`
 - `!while` with `!done`
 - `!repeat` with `!done` or `!until`
 - `!break` and `!continue`
 
-But first let's look at some
-methods  to  express  current  date and time  which we might  later use for an
-example where we greet the user:
+First, let's look at how to read the current date and time. We will use this
+later in an example that greets the user:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 print $time
 print &cat "Year:  " &mid $time 0 4
 print &cat "Month: " &mid $time 7 2 
 print &sprintf "Month: %02d" &mid $time 7 2 ; leading zero
 print &cat "Day:   " &mid $time 9 2  
-print &cat "Wday:  " &mid $time 11 1 ; 0=Sum
-; lets create a list and extract the three day abbreviations
+print &cat "Wday:  " &mid $time 11 1 ; 0=Sun
+; let's create a list and extract the three-letter day abbreviation
 set-variable %weekdays "|NULL|Sun|Mon|Tue|Wed|Thu|Fri|Sat|"
 print &cat "Wday:  " &lget %weekdays &mid $time 11 1
 print &sprintf "Hour:   %02d" &mid $time 12 2 
 print &sprintf  "Min:    %02d" &mid $time 14 2 
+exit-emacs
 ```
 
-Let us now  evaluate  what hour it is in the  morning  and then greet the user
-with the right choice!
+Let's check the current hour and greet the user accordingly:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 &mid $time 12 2  ; the current hour
 print &sprintf "Current hour is: %02d" #l0
-!if &gre #l0 4 &and &less #l0 11  ; from 5 to ten
+!if &gre #l0 4 &and &less #l0 11  ; from 5 to 10
     print "Good Morning!"
 !elif &gre #l0 10 &and &less #l0 15
     print "Good Day!"
@@ -442,24 +460,24 @@ print &sprintf "Current hour is: %02d" #l0
 !elif &gre #l0 17 &and &less #l0 23    
     print "Good Evening!"
 !else
-    print "Good Night!!"
+    print "Good Night!"
 !endif
 print &lget "|01|02|03|04|" 2
+exit-emacs
 ```
 
-So an "if" statement  starts with the  expression  `!if` an "else if" with the
-expression  `!elif`  and the "else" with the  expression  `!else` and if or an
-if/elif/else  block must be finished with an else. The MicroEmacs  editor will
-automatically help you by indenting the blocks.
+An `if` statement starts with `!if`; additional conditions use `!elif`, and an
+optional fallback uses `!else`. Every conditional block ends with `!endif`.
+The MicroEmacs editor can indent these blocks automatically.
 
-Instead of these  complex  and  conditions  we could as well use the  `&lfind`
-function  which  returns 0 if the  element is not in the list, here an example
-for the code above  using this  feature. As in the case an element is not in a
-list the return value is zero, we can directly use it in an if condition.
+Instead of these compound conditions, we can use `&lfind`, which returns 0
+when an element is not in the list. The following example uses it to implement
+the same greeting logic. Because 0 is false, the result can be used directly
+as an `!if` condition.
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
-; the  current  hour with leading zero if early in the morning
+; the current hour, with a leading zero in the morning
 set-variable  #l0  &sprintf  "%02d" &mid $time 12 2  
 print #l0
 print &lfind "|05|06|07|08|09|10|" #l0 ; checking &lfind
@@ -472,29 +490,30 @@ print &lfind "|05|06|07|08|09|10|" #l0 ; checking &lfind
 !elif &lfind "|18|19|20|21|22|" #l0
     print "Good Evening!"
 !else
-    print "Good Night!!"
+    print "Good Night!"
 !endif
+exit-emacs
 ```
 
-Using `&lfind` might be in some cases easier to read and to understand.
+In some cases, using `&lfind` can make the code easier to read.
 
 Let's continue with loops. ME provides `!while` and `!repeat`, but no
 C-style `for` loop. A counting loop can be written with `!while`:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 0  ; initialization
 !while &less #l0 8  ; condition 
     set-variable #l0 &inc #l0 1 ; increment
     print #l0
 !done
-```    
+exit-emacs
+```
 
-To skip the rest of a loop we have the `!continue`  directive.  Let's modify the
-example  above and only show even  numbers. We can do this by using the `&mod`
-function/operator.
+Use `!continue` to skip the rest of a loop iteration. The following variation
+prints only even numbers by using the `&mod` operator.
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 0
 !while &less #l0 8 
@@ -504,13 +523,14 @@ set-variable #l0 0
     !endif  
     print #l0
 !done
-```    
+exit-emacs
+```
 
 The `!repeat` directive has no condition at its start, so use `!break` to end
 it explicitly, or `!until` to test a condition at the end of each iteration.
 Here is an example using `!break`:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 0
 !repeat
@@ -520,25 +540,27 @@ set-variable #l0 0
         !break
     !endif    
 !done
+exit-emacs
 ```
 
 Alternatively, `!until` checks a condition at the end of each `!repeat`
 iteration:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 0
 !repeat
     set-variable #l0 &inc #l0 1
     print #l0
 !until &gre #l0 7
+exit-emacs
 ```
 
 Current versions support three levels of `!while` and `!repeat` nesting,
 including combinations of the two loop types. The following examples each use
 two levels and count six iterations:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 0  ; outer loop
 set-variable #l2 0  ; total iterations
@@ -551,11 +573,12 @@ set-variable #l2 0  ; total iterations
     !done
 !done
 print #l2 ; 6
+exit-emacs
 ```
 
 The same iteration count can be expressed with nested `!repeat` loops:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 set-variable #l0 0  ; outer loop
 set-variable #l2 0  ; total iterations
@@ -568,43 +591,44 @@ set-variable #l2 0  ; total iterations
     !until &gre #l1 1
 !until &gre #l0 2
 print #l2 ; 6
+exit-emacs
 ```
 
 `!goto` and `!tgoto` are also available for jumps to labels; see the
 MicroEmacs help pages for their details.
 
-## Functions - Macros
+## Macros as functions
 
 
-After  discussing the basics of programming  with ME we continue with creating
-macros in ME, which are like  functions, we should now discuss the following topics
+After covering the basics of MicroEmacs macro programming, we can create
+macros that act like functions. This section introduces:
 
 - `define-macro` - define a macro/function
 - `define-help` - define help for a macro/function
 
-Functions, called as well macros in ME can not return  values.
-However, you can arguments and add as well here variable  names and modify these  variables as inside of
-your  function.  Here an example which squares the submitted  value and stores
-the value in the given variable:
+Macros in MicroEmacs cannot return values. However, you can pass variable
+names as arguments and modify those variables inside the macro. Here is an
+example that squares a value and stores the result in the specified variable:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 define-macro square-value
    set-variable @2 &mult @1 @1
 !emacro
 square-value 5 #l0
 print #l0
+exit-emacs
 ```
 
-The first  argument for a macro is always `@1`, the second `@2` and so on. So,
-although  we can't  return  values  from  macros,  we can give  references  to
-variables and store date there.
+The first argument to a macro is `@1`, the second is `@2`, and so on. Although
+macros cannot return values, you can pass variable names and store results in
+those variables.
 
-Macro  behavior  often is modified by preceeding the macro call with a numeric
-argument, `-1 ml-write "message string"` was an example where the message goes
-to the terminal but not to the editor. Let's create a root function:
+Macro behavior can be modified by preceding a call with a numeric argument.
+For example, `-1 ml-write "message string"` sends the message to the terminal
+rather than to the editor. Here is a macro that checks for a numeric argument:
 
-```emf
+```{.shell cmd="env MEPATH=. mecb -p @./%b > %b.txt" chunk.ext=emf ext=txt}
 execute-file "tutorial.emf"
 define-macro check-num
     !if @?
@@ -617,15 +641,16 @@ define-macro check-num
 check-num
 100 check-num
 -5 check-num
+exit-emacs
 ```
 
-For    more     information     consult    the     MicroEmacs     help    page
-on "define-macro".
+For more information, consult the MicroEmacs help page for `define-macro`.
 
-## Working with files/buffers
+## Working with files and buffers
 
-Let's  finish  for now with a macro  which  extracts  all header  line of this
-document and places is them with the line number into its own file, toc.txt.
+Let's finish with a macro that extracts this document's headings and displays
+them with their line numbers. We will then adapt it to collect the headings in
+a buffer named `toc.txt`.
 
 ```emf
 find-file emf-tutorial.md
@@ -640,7 +665,7 @@ beginning-of-buffer
 !done
 ```
 
-Let's extend this a little bit so that we write this into a file "toc.txt".
+Let's extend the example to insert the headings into a buffer named `toc.txt`.
 
 ```emf
 find-file "emf-tutorial.md"
@@ -665,16 +690,16 @@ beginning-of-buffer
 !done
 ```
 
-## Develop your own macros
+## Developing your own macros
 
-After understanding a few basic you might like to create your own macros.
+After learning a few basics, you may want to create your own macros.
 
-First  you  could add these  macros  into your  `USERNAME.emf`  file  which is
-usually  within  your ME home  folder.  Let's  open this file and add a simple
-macro  which  deletes all line with a certain  string  within  these line. You
-would like to use this macro every time you have such formats to convert.
+You can add macros to your user startup file, usually named `USERNAME.emf`
+and located in your MicroEmacs home directory. Let's add a simple macro that
+deletes every line beginning with specified text. This is useful when you
+need to clean up text in a particular format.
 
-Here an example file:
+Here is an example file:
 
 ```
 some text
@@ -684,10 +709,9 @@ delete me but with some other text
 some text within other lines
 ```
 
-So let's  create a simple macro to delete all lines within the current  buffer
-which have the text "delete me" at the beginning of the lines. We start with a
-simple message in the macro. Open your  `USERNAME.emf` file and write down the
-following text:
+Let's create a macro that deletes every line in the current buffer beginning
+with `"delete me"`. First, add a simple message to the macro. Open your
+`USERNAME.emf` file and add the following code:
 
 
 ```emf
@@ -696,14 +720,14 @@ define-macro remove-delete-me
 !emacro
 ```
 
-Highlight  the three  macro  lines and  execute  the command  `execute-region`
-(Esc-x   execute-region).   If  you  did   this   you  now   have  a   command
-`remove-delete-me`  which you can  execute by again  pressing  `Esc-x` and the
-writing  `remove-delete-me`  - you can use tab completion, so writing  remoTAB
-should be sufficient. Afterward you see the message line in your editor.
+Select the three macro lines and run `execute-region` (`Esc-x`, then
+`execute-region`). The `remove-delete-me` command is now available. Run it by
+pressing `Esc-x` and entering `remove-delete-me`. You can also use tab
+completion; entering `remo` and pressing Tab should be sufficient. The
+message then appears in the editor.
 
-You can now modify the code,  re-mark and again use `execute-region` to update
-the macro code. Let's change the macro try it again out.
+You can modify the code, select it again, and run `execute-region` to update
+the macro. Let's change it and try again:
 
 ```emf
 define-macro remove-delete-me
@@ -711,12 +735,12 @@ define-macro remove-delete-me
 !emacro
 ```
 
-That way you can stepwise extend the macro. BTW: I did this all here directly
-within a Markdown document, so it must be not an EMF file, but the final macro
-should  be then  written  then in such an EMF file.  Placing  the  macro  into
-`USERNAME.emf` ensures that it is loaded at every ME start.
+You can extend the macro step by step this way. These examples are written
+directly in Markdown, but the finished macro should be saved in an EMF file.
+Placing it in `USERNAME.emf` ensures that it is loaded each time MicroEmacs
+starts.
 
-Here would be the final macro:
+Here is the completed macro:
 
 ```emf
 define-macro remove-delete-me
@@ -734,7 +758,7 @@ define-macro remove-delete-me
 !emacro
 ```
 
-Here some example text on which we can apply this macro:
+Here is an example of text to which we can apply the macro:
 
 ```
 hello 1
@@ -743,9 +767,9 @@ hello 2
 delete me 1
 ```
 
-We set some  debugging  variable  on top to step  through the macro code. This
-helps us in  identifying  problems  in the code. We will see then that we must
-jump to the beginning of the line and then the code should work:
+We set a debugging variable near the top to step through the macro. This helps
+identify problems. In this example, we will see that the macro must move to
+the beginning of each line before deleting it:
 
 ```emf
 define-macro remove-delete-me
@@ -754,15 +778,15 @@ define-macro remove-delete-me
     !while $status
         beginning-of-line
         kill-line ; cleans the line
-        kill-line ; the then empty line
+        kill-line ; the now-empty line
         !force search-forward "^delete.me"
     !done
     goto-alpha-mark "p"    
 !emacro
 ```
 
-Placing the course above the text which should be  manipulated  allows us then
-to remove these lines.
+Placing the cursor above the text to be manipulated allows us to remove these
+lines.
 
 ```
 <CURSOR>
@@ -772,7 +796,7 @@ hello 2
 delete me 2
 ```
 
-After executing `remove-delete-me` we will then have this output:
+After executing `remove-delete-me`, the buffer contains:
 
 ```
 <CURSOR>
@@ -780,18 +804,17 @@ hello 1
 hello 2
 ```
 
-This was a very simple  example,  but it shows you how to start  writing  your
-own macros.  Consult the embedded  MicroEmacs  help pages
-(Esc-?) for more  information.  
+This is a simple example, but it shows how to start writing your own macros.
+Consult the embedded MicroEmacs help pages (`Esc-?`) for more information.
 
-BTW: There is as well a macro recorder "Ctrl-x
-(" to start the  recorder  and  "Ctrl-x )" to end a macro,  and  "Ctrl-x e" to
-execute the last recorded macro.
+MicroEmacs also includes a macro recorder: press `Ctrl-x (` to start
+recording, `Ctrl-x )` to stop, and `Ctrl-x e` to execute the last recorded
+macro.
 
 ## Formal Grammar Reference
 
 For a formal BNF (Backus-Naur Form) grammar of the EMF macro language, see
-[doc/emf-bnf.md](../doc/emf-bnf.md). The grammar specifies the complete syntax
+[doc/emf-bnf.md](../doc/emf-bnf.md). The grammar specifies the complete syntax,
 including token types, expressions, directives, and block structure.
 
 Key grammar rules:
@@ -805,13 +828,28 @@ Key grammar rules:
 ## Document generation
 
 Build the tutorial HTML from this Markdown source with `make` in the `docs`
-directory. The Makefile runs `tmdoc` in weave mode and then uses `mndoc` to
-produce the HTML. EMF code blocks use standard Markdown fences and are not
-executed as part of this build.
+directory. `tmdoc` executes the runnable examples with `mecb`; `mndoc` then
+produces the HTML with the styles in `tmdoc.css`. The remaining ordinary EMF
+code blocks are intentionally not executed.
 
 ```
 cd docs
 make
 ```
 
- 
+## TODO
+
+Possible topics for future tutorial extensions:
+
+- Macro execution and control
+  - Explain error handling with `$status`, `!force`, and conditional checks.
+  - Expand the discussion of macro arguments, variable scope, and `define-help`.
+- Editor interaction and automation
+  - Show how to prompt users, build dialogs, and define key bindings.
+  - Develop a complete file-and-buffer editing example, including saving results.
+- Testing and debugging
+  - Demonstrate a repeatable workflow for testing macros with `mecb`.
+  - Cover common debugging techniques and how to interpret macro errors.
+- Future language features
+  - Add list iteration examples if a `foreach` construct is introduced.
+  - Document key-value lists if that data structure is added to the language.
