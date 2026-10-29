@@ -1,725 +1,762 @@
+
 <!DOCTYPE html>
-<html lang="" xml:lang="" xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-<meta charset="utf-8"/>
-<meta content="pandoc" name="generator"/>
-<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
-<meta content="Detlef Groth, Caputh-Schwielowsee, Germany" name="author"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="title" content="Tutorial about the Jasspa MicroEmacs EMF macro language">
+<meta name="author" content="Detlef Groth, Caputh-Schwielowsee, Germany">
+
 <title>Tutorial about the Jasspa MicroEmacs EMF macro language</title>
+
+
+
+<link rel="stylesheet" href="mini.css">
+
 <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
-<link href="data:text/css,%20%20%20%20html%20%7B%0A%20%20%20%20%20%20%20%20overflow-y%3A%20scroll%3B%0A%20%20%20%20%7D%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%23444%3B%0A%20%20%20%20%20%20%20%20font-family%3A%20Georgia%2C%20Palatino%2C%20%27Palatino%20Linotype%27%2C%20Times%2C%20%27Times%20New%20Roman%27%2C%20serif%3B%0A%20%20%20%20%20%20%20%20line-height%3A%201.2%3B%0A%20%20%20%20%20%20%20%20padding%3A%201em%3B%0A%20%20%20%20%20%20%20%20margin%3A%20auto%3B%0A%20%20%20%20%20%20%20%20max-width%3A%20%20900px%3B%0A%20%20%20%20%7D%0A%20%20%20%20a%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%230645ad%3B%0A%20%20%20%20%20%20%20%20text-decoration%3A%20none%3B%0A%20%20%20%20%7D%0A%20%20%20%20a%3Avisited%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%230b0080%3B%0A%20%20%20%20%7D%0A%20%20%20%20a%3Ahover%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%2306e%3B%0A%20%20%20%20%7D%0A%20%20%20%20a%3Aactive%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%23faa700%3B%0A%20%20%20%20%7D%0A%20%20%20%20a%3Afocus%20%7B%0A%20%20%20%20%20%20%20%20outline%3A%20thin%20dotted%3B%0A%20%20%20%20%7D%0A%20%20%20%20p%20%7B%0A%20%20%20%20%20%20%20%20margin%3A%200.5em%200%3B%0A%20%20%20%20%7D%0A%20%20%20%20p.date%20%7B%0A%20%20%20%20%20%20%20%20text-align%3A%20center%3B%0A%20%20%20%20%7D%0A%20%20%20%20img%20%7B%0A%20%20%20%20%20%20%20%20max-width%3A%20100%25%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20h1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%23111%3B%0A%20%20%20%20%20%20%20%20line-height%3A%20115%25%3B%0A%20%20%20%20%20%20%20%20margin-top%3A%201em%3B%0A%20%20%20%20%20%20%20%20font-weight%3A%20normal%3B%0A%20%20%20%20%7D%0A%20%20%20%20h1%20%7B%0A%20%20%20%20%20%20%20%20text-align%3A%20center%3B%0A%20%20%20%20%20%20%20%20font-size%3A%20120%25%3B%0A%20%20%20%20%7D%0A%20%20%20%20p.author%2C%20p.date%20%7B%0A%20%20%20%20%20%20%20%20font-size%3A%20110%25%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A/%2A%20%20%20%20h2%20%7B%0A%20%20%20%20%20%20%20%20text-transform%3A%20uppercase%3B%0A%20%20%20%20%7D%0A%20%20%20%20%2A/%0A%20%20%20%20pre%2C%20blockquote%20pre%20%7B%0A%20%20%20%20%20%20%20%20border-top%3A%200.1em%20%239ac%20solid%3B%0A%20%20%20%20%20%20%20%20background%3A%20%23e9f6ff%3B%0A%20%20%20%20%20%20%20%20padding%3A%2010px%3B%0A%20%20%20%20%20%20%20%20border-bottom%3A%200.1em%20%239ac%20solid%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20blockquote%20%7B%0A%20%20%20%20%20%20%20%20margin%3A%200%3B%0A%20%20%20%20%20%20%20%20padding-left%3A%203em%3B%20%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20hr%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20block%3B%0A%20%20%20%20%20%20%20%20height%3A%202px%3B%0A%20%20%20%20%20%20%20%20border%3A%200%3B%0A%20%20%20%20%20%20%20%20border-top%3A%201px%20solid%20%23aaa%3B%0A%20%20%20%20%20%20%20%20border-bottom%3A%201px%20solid%20%23eee%3B%0A%20%20%20%20%20%20%20%20margin%3A%201em%200%3B%0A%20%20%20%20%20%20%20%20padding%3A%200%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20pre%2C%20code%2C%20kbd%2C%20samp%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%23000%3B%0A%20%20%20%20%20%20%20%20font-family%3A%20Monaco%2C%20%27courier%20new%27%2C%20monospace%3B%0A%20%20%20%20%20%20%20%20font-size%3A%2090%25%3B%20%0A%20%20%20%20%7D%0A%20%20%20%20code.r%20%7B%0A%20%20%20%20%20%20%20%20color%3A%20%23770000%3B%0A%20%20%20%20%7D%0A%20%20%20%20pre%20%7B%0A%20%20%20%20%20%20%20%20white-space%3A%20pre%3B%0A%20%20%20%20%20%20%20%20white-space%3A%20pre-wrap%3B%0A%20%20%20%20%20%20%20%20word-wrap%3A%20break-word%3B%0A%20%20%20%20%7D%0A%20%20%20%20/%2A%20fix%2C%20do%20not%20like%20bold%20for%20every%20keyword%20%2A/%0A%20%20%20%20code%20span.kw%20%7B%20color%3A%20%23007020%3B%20font-weight%3A%20normal%3B%20%7D%20/%2A%20Keyword%20%2A/%0A%20%20%20%20%20pre.sourceCode%2C%20pre.cmd%20%7B%0A%20%20%20%20%20%20%20%20background%3A%20%23fff6f6%3B%0A%20%20%20%20%7D%0A%20%20%20%20pre.cmdout%20%7B%0A%20%20%20%20%20%20%20%20background%3A%20%23fffff6%3B%0A%20%20%20%20%7D%0A%20%20%20%20figure%2C%20p.author%20%7B%0A%20%20%20%20%20%20%20%20text-align%3A%20center%3B%0A%20%20%20%20%7D%0A%20%20%20%20table%20%7B%20%20%20%20%0A%20%20%20%20%20%20%20%20border-collapse%3A%20collapse%3B%0A%20%20%20%20%20%20%20%20border-bottom%3A%202px%20solid%3B%0A%20%20%20%20%20%20%20%20border-spacing%3A%205px%3B%0A%20%20%20%20%20%20%20%20min-width%3A%20400px%3B%0A%20%20%20%20%7D%0A%20%20%20%20table%20thead%20tr%20th%20%7B%20%0A%20%20%20%20%20%20%20%20background-color%3A%20%23fde9d9%3B%0A%20%20%20%20%20%20%20%20text-align%3A%20left%3B%20%0A%20%20%20%20%20%20%20%20padding%3A%2010px%3B%0A%20%20%20%20%20%20%20%20border-top%3A%202px%20solid%3B%0A%20%20%20%20%20%20%20%20border-bottom%3A%202px%20solid%3B%0A%20%20%20%20%7D%0A%20%20%20%20table%20td%20%7B%20%0A%20%20%20%20%20%20%20%20background-color%3A%20%23fff9e9%3B%0A%0A%20%20%20%20%20%20%20%20text-align%3A%20left%3B%20%0A%20%20%20%20%20%20%20%20padding%3A%2010px%3B%0A%20%20%20%20%7D%0A" rel="stylesheet"/><!--URL:mini.css-->
-<!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+</style>
+
 </head>
 <body>
-<header id="title-block-header">
+
+
+
+    <div class="document-header">
 <h1 class="title">Tutorial about the Jasspa MicroEmacs EMF macro language</h1>
-<p class="author">Detlef Groth, Caputh-Schwielowsee, Germany</p>
-<p class="date">2023-09-28 10:38</p>
-</header>
-<h2 id="introduction">Introduction</h2>
-<p>This is a tutorial about the <a href="http://www.jasspa.com">Jasspa MicroEmacs</a> language. We will cover the basic features of the language, variables, data structures, control-flow and functions and then give some example projects where we use this to create some useful extensions.</p>
-<p>Let’s start with the usual “Hello World!” example. We will embed and evaluate here the Emacs code in a simple shell script which executes the following lines within a non-interactive editor session to simpliy the embedding and executation of this code in the Markdown document.</p>
-<h2 id="hello-world">Hello World</h2>
+<h2 class="author">Detlef Groth, Caputh-Schwielowsee, Germany</h2>
+<h2 class="date">2023-09-28</h2>
+    </div>
+
+<h2>Introduction</h2>
+
+<p>This is a tutorial about the <a href="http://www.jasspa.com">Jasspa MicroEmacs</a>
+language. We will cover the basic features of the language, variables, data
+structures, control-flow and functions and then give some example projects
+where we use this to create some useful extensions.</p>
+
+<p>The examples are written as EMF code blocks. The document build weaves the
+Markdown with <code>tmdoc</code> and converts it to HTML with <code>mndoc</code>; it does not execute
+the examples. You can try a snippet by selecting it and running
+<code>execute-region</code>, or by saving it in a macro file and loading that file.</p>
+
+<h2>Hello World</h2>
+
 <p>Within the editor we would simple execute:</p>
-<pre><code>ml-write "Hello World!"
-</code></pre>
-<p>That the should display the message line into the editors command line at the bottom like this:</p>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABCoAAAOZCAIAAABXzlbIAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAgAElEQVR4nOzde/QmR3nY+f6NfoBByMYIGXOx0KB4PQwXK4BHyWKMMYTEwcTAxAJlF3syjoOvQ0IUO8eBw9mw5MBZLcGTk2wux5NfHNsy8o7N3dgMazsbxxKOZwcrFgoYDBgEtgEJS0Kg2+wf7/Cq1VVd9VTVU09Xd38/R+dofu/bb9VTl67u6up+350D3/dTHYCJ/KVLn/iZ9/27W265ZepA6rrgggsuvPDCj3/841MHAgAAJrY7dQAAlu+222677bbbpo4CAABMb9/UAQAAAABYi51nPOMZU8cAAAAAYBV2n/LMy6eOAQAAAMAqcPMVAAAAACNMPwAAAAAYOe/yZz3r3nvv/bEf+sFXvPxlv/a+U13X7X/CxT/8g3/3v/zudSXpnvjX//K53/Hsv/787/obz3/e+Q87/0P/48NKAdf1nG//n2+55dav3HXX5s9/+zP/4l3v/fVKeV34yEf+1D889p3P/vZ7773vk3/yKUk82du4wq180aMuPPbDr3zZS1/ymc9+9rN/9mdJKW+84uVXfO0FF3zyU/5yAQAAYJ12n/aUp3zwD254xCMesX3p5s9+9ueueWt50j/9v73+S1+6szwdS9/xrGd99GMf/wuTbwj9y0976h/eeNMvv+3thfHkxRxu5T//3Off+Oa3/MjfO5qUJgAAABC2+4zLvvW+++674cYbH/2c53Rd95IXvfCypz71zi9/+Y1vfstmiwsuePj3v/xlj3vsY7qdnWt/5W1n/uCGR1900at+9JU3ffiPHv+4x5533nmvf9P/cegZT3/xi1640+3c9JGP/Pw1b733vvsG2bzgec/9tqc//WsvePgNf3jjk77lW377d37nN97/m3//7/7AJRd/09333PORj37sml8+ee+997p5Pf2yb33pi77nbHf27rvvfv2brj579mzXdU89+KRLnnDxO39tdF3iO5/97X/zBX/tlltvveeee373A7/3X373umjM3/yXLn3x97zwcY/5xh/8gVd85Stfedu73n3Thz/Sdd3h733R5c985ue/8Pn/81/+63vuuUeS+8ED3/K3X/y3HvygB3/uC1/493s/96y/csgt+z959T+48JFfv2/fvkufuP8//85//a/Xf2CQyIH/6ZvdeP7tz/yLV77qH3Zd930v+d5bbrn1Uzff7G7jtoVbdreV3baIdh1vmz73O579N57/Xbfc+sW77rrrjz/xyWgiAAAAWJXdhz30oX/10Lf9yjve9fznPKfrul9957vP/MENLzv80u0W/+vLrviTm2/+V//+Z88777xHXXjh5sXHfOM3/sK1//fPXfNLD37wg89/2MNeceXLXveGN95y662v/okf+6uXH9rc0vO/v/afbmYLb3vXe7quu/Gmmz75qU8/99nf/qa3/MyrfuSVv/H+3/zVd77rzz/3+a7rfvjokadf9q2/9/un3bxe8qIX/puf/Q+fuvnmr/3aC7Yh7b/kCZc/85ljE4BHfN3Xvfh7/uZr/tkb7rnnnje87jXb16Mxv/HNb3ntT/3j//CffuFTN9+8+chDHvLgmz78kZNvf+c/OvbjT3vywdMf/INo7ueff/7fueJvv+nNP3Pb7be/4HnP/Z6//oJbvnirW/Y3vvkt3/3Xnv+Qhzzkbe96tzedmz78ETee6DZjbdEvu7eV3bbw5jgwKNfv/f7/970v/O5/+s/ecN999/3z173mA7JEAAAAsB67N9x446FnPOPWL946tsVTnnTgP/7iNV3X3XvvvX/61ccAbrn1i3/4oZu6rrvrrrsuufjiz/7pn33hllu6rjt95oOXPnH/5pT3Na9/w/bmqxc877m33X7H7bfffvvtt99xx5fOf9jDuq578pOe9Fe+7Zld1130qAs/+alPe/P6yB997H952ff9/pkPfvCGG/7i7NlNau94z3vf8Z73jgV8yRMu/tjHP3H7HXd0Xdd/5kQS88A999xz403/o+u6P/nUpx7xiK+T5H7p/ksuePjD//7RI13XPWh3988/97lbvnirW/ZKHvfYx3rL1S+794NuW0gMyvWEi7/pYx//xB1OzQMAAAAbu7/1//7Odb/331I/duedD3io4+xXJwY7O1331X8PnT17drPd2bP79p33+Mc99gXf9Z2vf9PVd375yy8//NKdfTveD/3cNb90ycUXP/nggdf85FWvf9PVn/v850Xx+WLIiPnee+/7ashn9+1IvyXsjz/xybf8q/9r++cLnvfcQdm9n7roUY/6x6/6ia7r3v9bv/3r7/9/vNucPXvurrbzzvMn0o2Ua1D2AWFb+DN7YLnO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"/><!--URL:../images/hello-world.png--></p>
-<p>You can execute the code by pressing <code>"Esc-x"</code> then writing <code>"ml-write"</code>, pressing the ENTER key and then writing the message <code>"Hello  World!"</code>. Alternatively you can write the text in the editor, marking the code line and an empty line thereafter and then <code>"Esc-x"</code> and write <code>"execute-region"</code>.</p>
-<p>For this tutorial, to execute the code which is embedded within this source document, a Markdown file, we just create a simple shell script which runs the code from lines 3 to the end as a ME script. We use here the value -1 before the macro to print to the terminal instead of the editor to be able to catch the result. This offers us the possibility to test all code samples within the document and add the output using the <a href="https://github.com/mittlemark/pantcl">Pantcl filter</a> for the <a href="https://www.pandoc.org">Pandoc document processor</a>:</p>
-<pre class="cmd" data-file="me-hello-world.sh"><code>#!/usr/bin/bash
-tail --lines=+3 $0 &gt; temp.emf &amp;&amp; me -n -p "@temp.emf" &amp;&amp; exit
-; - emf - below follows the MicroEmacs code
--1 ml-write "Hello Jasspa MicroEmacs World!"
-quick-exit</code></pre>
-<pre class="cmdout" data-file="me-hello-world.sh"><code>Hello Jasspa MicroEmacs World!</code></pre>
-<p>This will be explained later:</p>
-<pre class="cmd" data-file="me-hello-world.emf"><code>#!/usr/bin/bash
-tail --lines=+3 $0 &gt; temp.emf &amp;&amp; me -n -p "@temp.emf" &amp;&amp; exit
-; - emf - below follows the MicroEmacs code
--1 ml-write "Hello Jasspa MicroEmacs World!"
--1 ml-write &amp;cat "This is MicroEmacs " &amp;cat $version "!"
-set-variable %x 1
-!while &amp;less %x 10
-    -1 ml-write &amp;cat "x is " %x
-    set-variable %x &amp;inc %x 1
-!done
-quick-exit</code></pre>
-<pre class="cmdout" data-file="me-hello-world.emf"><code>Hello Jasspa MicroEmacs World!
-This is MicroEmacs 20091220!
-x is 1
-x is 2
-x is 3
-x is 4
-x is 5
-x is 6
-x is 7
-x is 8
-x is 9</code></pre>
-<h2 id="variables">Variables</h2>
+
+<pre class='code'><code class='emf'>ml-write &quot;Hello World!&quot;</code></pre>
+
+<p>That the should display the message line into the editors command line at the
+bottom like this:</p>
+
+<p><img src="../images/hello-world.png"></img></p>
+
+<p>You can  execute the code by pressing  <code>&quot;Esc-x&quot;</code>  then  writing  <code>&quot;ml-write&quot;</code>,
+pressing  the  ENTER  key and  then  writing  the  message  <code>&quot;Hello  World!&quot;</code>.
+Alternatively  you can write the text in the editor, marking the code line and
+an empty line thereafter and then <code>&quot;Esc-x&quot;</code> and write <code>&quot;execute-region&quot;</code>.</p>
+
+<h2>Variables</h2>
+
 <p>For more background on the variables have a look at the help page <a href="https://www.dgroth.de/me2009/me/m4fil018.htm">Variables</a>.</p>
+
 <p>Essentially we have:</p>
+
 <ul>
 <li>register variables - starting with the hash mark sign <strong>#</strong> there are mainly used due to the fast access speed</li>
 <li>system variables - starting with the dollar sign <strong>$</strong> and followed uppercase letters</li>
 <li>editor variables - starting with the dollar sign <strong>$</strong> and followed by lowercase letters</li>
 <li>command variables - usually starting with a dot <strong>.</strong> sign to be used within macros</li>
 <li>global variables - usually starting with a percentage <strong>%</strong> sign</li>
-<li>buffer variables - usually starting with a colon <strong>:</strong>, these variables keep information about the currently opened file</li>
-</ul>
-<p>Variable values were assigned usually with the <code class="sourceCode emf">set-variable</code> command. Here an example:</p>
-<div class="sourceCode" data-eval="true" id="cb6"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="co">; make dumping out information easier</span></span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> print</span>
-<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a>    -1 ml-write @1</span>
-<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a></span>
-<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>print <span class="st">"Hello Print World!"</span></span>
-<span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a>set-variable <span class="dt">%test </span><span class="st">"This is a test!"</span></span>
-<span id="cb6-8"><a aria-hidden="true" href="#cb6-8" tabindex="-1"></a>set-variable <span class="dt">#g1 </span><span class="st">"This is a global register variable!"</span></span>
-<span id="cb6-9"><a aria-hidden="true" href="#cb6-9" tabindex="-1"></a>print <span class="dt">%test</span></span>
-<span id="cb6-10"><a aria-hidden="true" href="#cb6-10" tabindex="-1"></a>print <span class="dt">#g1</span></span>
-<span id="cb6-11"><a aria-hidden="true" href="#cb6-11" tabindex="-1"></a><span class="co">; some editor variables</span></span>
-<span id="cb6-12"><a aria-hidden="true" href="#cb6-12" tabindex="-1"></a>print <span class="dt">$buffer-bname</span></span>
-<span id="cb6-13"><a aria-hidden="true" href="#cb6-13" tabindex="-1"></a>print <span class="dt">$progname</span></span>
-<span id="cb6-14"><a aria-hidden="true" href="#cb6-14" tabindex="-1"></a>print <span class="dt">$version</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello Print World!
-This is a test!
-This is a global register variable!
-*scratch*
-/home/groth/.local/bin/mecw
-20230101</code></pre>
-<p>Every code example in this tutorial is in its own script file, so if we would like to use the <code>print</code> macro in the next code example this would produce an error.</p>
-<div class="sourceCode" data-eval="true" id="cb8"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a>print <span class="st">"test"</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Error in code chunk!</code></pre>
+<li>buffer variables - usually starting with a colon <strong>:</strong>, these variables keep information about the currently opened file
+</li></ul>
+
+<p>Variable values were assigned usually with the <code>set-variable</code>  command. Here an example:</p>
+
+<pre class='code'><code class='emf'>; make dumping out information easier
+define-macro print
+    -1 ml-write @1
+!emacro
+
+print &quot;Hello Print World!&quot;
+set-variable %test &quot;This is a test!&quot;
+set-variable #g1 &quot;This is a global register variable!&quot;
+print %test
+print #g1
+; some editor variables
+print $buffer-bname
+print $progname
+print $version</code></pre>
+
+<p>Every code example in this tutorial is in its own script file, so if we would like to use
+the <code>print</code> macro in the next code example this would produce an error.</p>
+
+<pre class='code'><code class='emf'>print &quot;test&quot;</code></pre>
+
 <p>To use our print macro we will place this macro in our <code>user.emf</code> file which is in our jasspa home directory:</p>
-<div class="sourceCode" data-eval="true" id="cb10"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a>-1 ml-write <span class="dt">$user-path</span></span>
-<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a>-1 ml-write <span class="dt">$user-name</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>/home/groth/.jasspa/
-groth</code></pre>
-<p>So as our setting show we simply write the print macro in a file <code>groth.emf</code>. Thereafter we should be able to use the <code>print</code> function in all code-chunk examples. For illustrative purposes we place the function in a file <code>tutorial.emf</code> which we put in our <code>$user-path</code> and which we then just execute like this at the beginning of our code chunk:</p>
-<div class="sourceCode" data-eval="true" id="cb12"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a>print <span class="st">"Hello Tutorial!"</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello Tutorial!</code></pre>
-<p>Now back to variables …</p>
-<h3 id="register-variables">Register variables</h3>
-<p>Global register variables start with the prefix <code>#g</code> and then a number between 1 and 9. There are used for fast access of variables values which are visible in all code regions:</p>
-<div class="sourceCode" data-eval="true" id="cb14"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a>set-variable <span class="dt">#g1 </span><span class="st">"Value of #g1 is a string!"</span></span>
-<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a>set-variable <span class="dt">#g2 </span><span class="st">"Another value!"</span></span>
-<span id="cb14-4"><a aria-hidden="true" href="#cb14-4" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> test-global</span>
-<span id="cb14-5"><a aria-hidden="true" href="#cb14-5" tabindex="-1"></a>    print <span class="dt">#g1</span></span>
-<span id="cb14-6"><a aria-hidden="true" href="#cb14-6" tabindex="-1"></a><span class="ot">!emacro </span></span>
-<span id="cb14-7"><a aria-hidden="true" href="#cb14-7" tabindex="-1"></a>test-global</span>
-<span id="cb14-8"><a aria-hidden="true" href="#cb14-8" tabindex="-1"></a>print <span class="dt">#g2</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Value of #g1 is a string!
-Another value!</code></pre>
+
+<pre class='code'><code class='emf'>-1 ml-write $user-path
+-1 ml-write $user-name</code></pre>
+
+<p>So as our setting show we simply write the print macro in a file <code>groth.emf</code>.
+Thereafter we should be able to use the <code>print</code> function in all code-chunk
+examples. For illustrative purposes we place the function in a file
+<code>tutorial.emf</code> which we put in our <code>$user-path</code> and which we then just execute
+like this at the beginning of our code chunk:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+print &quot;Hello Tutorial!&quot;</code></pre>
+
+<p>Now back to variables ...</p>
+
+<h3>Register variables</h3>
+
+<p>Global register variables start with the prefix <code>#g</code> and then a number between
+1 and 9. There are used for fast access of variables values which are visible in all code regions:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #g1 &quot;Value of #g1 is a string!&quot;
+set-variable #g2 &quot;Another value!&quot;
+define-macro test-global
+    print #g1
+!emacro
+test-global
+print #g2</code></pre>
+
 <p>Local variable a prefixed with <code>#l</code> and the values again from 1 to 9.</p>
+
 <p>Here an example:</p>
-<div class="sourceCode" data-eval="true" id="cb16"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> test-local</span>
-<span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a>    set-variable <span class="dt">#l1 </span><span class="st">"Local variable string!"</span></span>
-<span id="cb16-4"><a aria-hidden="true" href="#cb16-4" tabindex="-1"></a>    print <span class="dt">#l1</span></span>
-<span id="cb16-5"><a aria-hidden="true" href="#cb16-5" tabindex="-1"></a><span class="ot">!emacro </span></span>
-<span id="cb16-6"><a aria-hidden="true" href="#cb16-6" tabindex="-1"></a>test-local</span>
-<span id="cb16-7"><a aria-hidden="true" href="#cb16-7" tabindex="-1"></a>set-variable <span class="dt">%test </span><span class="op">&amp;spr </span><span class="st">"#l1 is '%s'"</span> <span class="dt">#l1</span></span>
-<span id="cb16-8"><a aria-hidden="true" href="#cb16-8" tabindex="-1"></a>print <span class="dt">%test</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Local variable string!
-#l1 is ''</code></pre>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+define-macro test-local
+    set-variable #l1 &quot;Local variable string!&quot;
+    print #l1
+!emacro
+test-local
+set-variable %test &amp;spr &quot;#l1 is '%s'&quot; #l1
+print %test</code></pre>
+
 <p>As you can see the default value for register variables is an empty string.</p>
-<p>There are as well register variables with the prefix <code>#p</code> which means that the should be as well visible in the calling macro, so the parent macro. Here an example:</p>
-<div class="sourceCode" data-eval="true" id="cb18"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> child-mac</span>
-<span id="cb18-3"><a aria-hidden="true" href="#cb18-3" tabindex="-1"></a>    <span class="co">; set a local variable in the caller</span></span>
-<span id="cb18-4"><a aria-hidden="true" href="#cb18-4" tabindex="-1"></a>    set-variable <span class="dt">#p1 </span><span class="st">"Hello parent!"</span></span>
-<span id="cb18-5"><a aria-hidden="true" href="#cb18-5" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb18-6"><a aria-hidden="true" href="#cb18-6" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> parent-mac</span>
-<span id="cb18-7"><a aria-hidden="true" href="#cb18-7" tabindex="-1"></a>    child-mac</span>
-<span id="cb18-8"><a aria-hidden="true" href="#cb18-8" tabindex="-1"></a>    print <span class="dt">#l1</span></span>
-<span id="cb18-9"><a aria-hidden="true" href="#cb18-9" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb18-10"><a aria-hidden="true" href="#cb18-10" tabindex="-1"></a>parent-mac</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello parent!</code></pre>
-<p>This might be helpful in some situations but might as well complicate a little bit the code understanding.</p>
-<h3 id="system-variables">System variables</h3>
-<p>As told system variables start with a dollar and they keep information about the editor and some variables which are derived from system variables. You can display the variables using the macro “list-variables” from within the editor, so executing <code>esc-x</code> and then writing the command. Or by using the default key-combination <code>C-h v</code>. Here we just display a few of these variables:</p>
-<div class="sourceCode" data-eval="true" id="cb20"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb20-1"><a aria-hidden="true" href="#cb20-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb20-2"><a aria-hidden="true" href="#cb20-2" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $auto-time    = %s"</span> <span class="dt">$auto-time </span> </span>
-<span id="cb20-3"><a aria-hidden="true" href="#cb20-3" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $buffer-bname = %s"</span> <span class="dt">$buffer-bname</span></span>
-<span id="cb20-4"><a aria-hidden="true" href="#cb20-4" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $not-existing = %s"</span> <span class="dt">$not-existing</span></span>
-<span id="cb20-5"><a aria-hidden="true" href="#cb20-5" tabindex="-1"></a><span class="co">; load a file into MicroEmacs</span></span>
-<span id="cb20-6"><a aria-hidden="true" href="#cb20-6" tabindex="-1"></a>find-file <span class="op">&amp;cat </span><span class="dt">$user-path </span><span class="st">"groth.emf"</span></span>
-<span id="cb20-7"><a aria-hidden="true" href="#cb20-7" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $buffer-bname = %s"</span> <span class="dt">$buffer-bname</span></span>
-<span id="cb20-8"><a aria-hidden="true" href="#cb20-8" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $buffer-fname = %s"</span> <span class="dt">$buffer-fname</span></span>
-<span id="cb20-9"><a aria-hidden="true" href="#cb20-9" tabindex="-1"></a><span class="co">; how many lines has this file</span></span>
-<span id="cb20-10"><a aria-hidden="true" href="#cb20-10" tabindex="-1"></a>end-of-buffer <span class="co">; jump to the end</span></span>
-<span id="cb20-11"><a aria-hidden="true" href="#cb20-11" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"variable: $window-aline = %s"</span> <span class="dt">$window-aline</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>variable: $auto-time    = 300
-variable: $buffer-bname = *scratch*
-variable: $not-existing = ERROR
-variable: $buffer-bname = groth.emf
-variable: $buffer-fname = /home/groth/.jasspa/groth.emf
-variable: $window-aline = 118</code></pre>
-<p>As you can see in the case you try to access a variable that does not exists you get the value “ERROR” as a variable value, that can be used to check if a variable exists. Here an example:</p>
-<div class="sourceCode" data-eval="true" id="cb22"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb22-1"><a aria-hidden="true" href="#cb22-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb22-2"><a aria-hidden="true" href="#cb22-2" tabindex="-1"></a>set-variable <span class="dt">%real-var </span><span class="st">"hello"</span></span>
-<span id="cb22-3"><a aria-hidden="true" href="#cb22-3" tabindex="-1"></a>set-variable <span class="dt">#l2 %real-var</span></span>
-<span id="cb22-4"><a aria-hidden="true" href="#cb22-4" tabindex="-1"></a>set-variable <span class="dt">#l3 %dummy-var</span></span>
-<span id="cb22-5"><a aria-hidden="true" href="#cb22-5" tabindex="-1"></a><span class="co">; check if the variable has the string ERROR &amp;seq == string equal</span></span>
-<span id="cb22-6"><a aria-hidden="true" href="#cb22-6" tabindex="-1"></a><span class="ot">!if </span><span class="op">&amp;seq </span><span class="dt">#l2 </span><span class="st">"ERROR"</span></span>
-<span id="cb22-7"><a aria-hidden="true" href="#cb22-7" tabindex="-1"></a>    print <span class="st">"variable %real-var does not exists!"</span></span>
-<span id="cb22-8"><a aria-hidden="true" href="#cb22-8" tabindex="-1"></a><span class="ot">!else</span></span>
-<span id="cb22-9"><a aria-hidden="true" href="#cb22-9" tabindex="-1"></a>    print <span class="st">"variable %real-var does exists!"</span></span>
-<span id="cb22-10"><a aria-hidden="true" href="#cb22-10" tabindex="-1"></a><span class="ot">!endif</span></span>
-<span id="cb22-11"><a aria-hidden="true" href="#cb22-11" tabindex="-1"></a><span class="ot">!if </span><span class="op">&amp;seq </span><span class="dt">#l3 </span><span class="st">"ERROR"</span></span>
-<span id="cb22-12"><a aria-hidden="true" href="#cb22-12" tabindex="-1"></a>    print <span class="st">"variable %dummy-var does not exists!"</span></span>
-<span id="cb22-13"><a aria-hidden="true" href="#cb22-13" tabindex="-1"></a><span class="ot">!else</span></span>
-<span id="cb22-14"><a aria-hidden="true" href="#cb22-14" tabindex="-1"></a>    print <span class="st">"variable %dummy-var does exists!"</span></span>
-<span id="cb22-15"><a aria-hidden="true" href="#cb22-15" tabindex="-1"></a><span class="ot">!endif</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>variable %real-var does exists!
-variable %dummy-var does not exists!</code></pre>
-<h2 id="data-structures">Data structures</h2>
+
+<p>There are as well register variables with the prefix <code>#p</code> which means that the should be as well visible in the calling macro, so the parent macro.
+Here an example:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+define-macro child-mac
+    ; set a local variable in the caller
+    set-variable #p1 &quot;Hello parent!&quot;
+!emacro
+define-macro parent-mac
+    child-mac
+    print #l1
+!emacro
+parent-mac</code></pre>
+
+<p>This might be helpful in some situations but might as well complicate a little bit the code
+understanding.</p>
+
+<h3>System variables </h3>
+
+<p>As told system variables start with a dollar and they keep information about
+the editor and some variables which are derived from system variables. You can
+display the variables using the macro &quot;list-variables&quot; from within the editor,
+so executing <code>esc-x</code> and then writing the command. Or by using the default
+key-combination <code>C-h v</code>. Here we just display a few of these variables:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+print &amp;sprintf &quot;variable: $auto-time    = %s&quot; $auto-time
+print &amp;sprintf &quot;variable: $buffer-bname = %s&quot; $buffer-bname
+print &amp;sprintf &quot;variable: $not-existing = %s&quot; $not-existing
+; load a file into MicroEmacs
+find-file &amp;cat $user-path &quot;groth.emf&quot;
+print &amp;sprintf &quot;variable: $buffer-bname = %s&quot; $buffer-bname
+print &amp;sprintf &quot;variable: $buffer-fname = %s&quot; $buffer-fname
+; how many lines has this file
+end-of-buffer ; jump to the end
+print &amp;sprintf &quot;variable: $window-aline = %s&quot; $window-aline
+</code></pre>
+
+<p>As you can see in the case you try to access a variable that does not exists
+you get the value &quot;ERROR&quot; as a variable value, that can be used to check if a
+variable exists. Here an example:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable %real-var &quot;hello&quot;
+set-variable #l2 %real-var
+set-variable #l3 %dummy-var
+; check if the variable has the string ERROR &amp;seq == string equal
+!if &amp;seq #l2 &quot;ERROR&quot;
+    print &quot;variable %real-var does not exists!&quot;
+!else
+    print &quot;variable %real-var does exists!&quot;
+!endif
+!if &amp;seq #l3 &quot;ERROR&quot;
+    print &quot;variable %dummy-var does not exists!&quot;
+!else
+    print &quot;variable %dummy-var does exists!&quot;
+!endif</code></pre>
+
+<h2>Data structures</h2>
+
 <p>We have the following data structures in MicroEmacs:</p>
+
 <ul>
 <li>scalars</li>
-<li>lists</li>
-</ul>
-<p>A scalar is just a single value. Per default MicroEmacs has only one more complex data structure, the list, which is just recognized by ME if a variable contains a list of pipe symbols. Here an example:</p>
-<div class="sourceCode" data-eval="true" id="cb24"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb24-1"><a aria-hidden="true" href="#cb24-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb24-2"><a aria-hidden="true" href="#cb24-2" tabindex="-1"></a>set-variable <span class="dt">#l1 </span><span class="st">"|this|is|a|list|"</span></span>
-<span id="cb24-3"><a aria-hidden="true" href="#cb24-3" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="dt">#l1 </span>1</span>
-<span id="cb24-4"><a aria-hidden="true" href="#cb24-4" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="dt">#l1 </span>2</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>this
-is</code></pre>
-<p>As you can see we can get the element of a list using the <code>&amp;lget</code> function. To work with lists we have as well the following functions:</p>
+<li>lists
+</li></ul>
+
+<p>A scalar is just a single value. Per default  MicroEmacs  has only one more complex data  structure,  the list,
+which is just recognized by ME if a variable  contains a list of pipe symbols.
+Here an example:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l1 &quot;|this|is|a|list|&quot;
+print &amp;lget #l1 1
+print &amp;lget #l1 2</code></pre>
+
+<p>As you  can  see we can  get  the  element  of a list  using  the  <code>&amp;lget</code>
+function. To work with lists we have as well the following functions:</p>
+
 <ul>
-<li><code>&amp;ldel list idx</code> - delete an element of a list</li>
+<li><code>&amp;ldel list idx</code>  - delete an element of a list</li>
 <li><code>&amp;lfind list value</code> - find a position in a list by value</li>
 <li><code>&amp;linsert list index value</code> - insert an element at a certain position</li>
-<li><code>&amp;lset list index value</code> - set a value of a list at a certain position</li>
-</ul>
-<div class="sourceCode" data-eval="true" id="cb26"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb26-1"><a aria-hidden="true" href="#cb26-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb26-2"><a aria-hidden="true" href="#cb26-2" tabindex="-1"></a>set-variable <span class="dt">#l1 </span><span class="st">"|this|is|a|list|"</span></span>
-<span id="cb26-3"><a aria-hidden="true" href="#cb26-3" tabindex="-1"></a>set-variable <span class="dt">#l1 </span><span class="op">&amp;linsert </span><span class="dt">#l1 </span>1 <span class="st">"start"</span></span>
-<span id="cb26-4"><a aria-hidden="true" href="#cb26-4" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="dt">#l1 </span>1</span>
-<span id="cb26-5"><a aria-hidden="true" href="#cb26-5" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="dt">#l1 </span>2</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>start
-this</code></pre>
-<p>Access and modification to lists is quite slow, so it is preferred to store not so large data in a list.</p>
-<p>For illustration purpose let’s create an other data structure, a dictionary like structure were we can have access using key value pairs. The functions starting with the ampersand sign are created on the C-level. To create functions on the macro level we will create two macros which will handle a dictionary not based on a list but based on data saved in a hidden buffer “:<em>dict</em>DICTNAME:”</p>
-<div class="sourceCode" data-eval="true" id="cb28"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb28-1"><a aria-hidden="true" href="#cb28-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb28-2"><a aria-hidden="true" href="#cb28-2" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> dict</span>
-<span id="cb28-3"><a aria-hidden="true" href="#cb28-3" tabindex="-1"></a>   set-variable <span class="dt">#l1 </span><span class="op">&amp;spr </span><span class="st">":*dict*%s:"</span> @1</span>
-<span id="cb28-4"><a aria-hidden="true" href="#cb28-4" tabindex="-1"></a>   set-variable <span class="dt">#l2 </span>@2</span>
-<span id="cb28-5"><a aria-hidden="true" href="#cb28-5" tabindex="-1"></a>   <span class="ot">!force </span>set-variable <span class="dt">#l3 </span>@3</span>
-<span id="cb28-6"><a aria-hidden="true" href="#cb28-6" tabindex="-1"></a>   <span class="ot">!if </span><span class="dt">$status</span></span>
-<span id="cb28-7"><a aria-hidden="true" href="#cb28-7" tabindex="-1"></a>     <span class="ot">!if </span><span class="op">&amp;not &amp;exi &amp;ind </span><span class="dt">#l1</span></span>
-<span id="cb28-8"><a aria-hidden="true" href="#cb28-8" tabindex="-1"></a>       set-position <span class="st">"\x82"</span></span>
-<span id="cb28-9"><a aria-hidden="true" href="#cb28-9" tabindex="-1"></a>       find-buffer <span class="op">&amp;mid </span><span class="dt">#l1 </span>1 -1</span>
-<span id="cb28-10"><a aria-hidden="true" href="#cb28-10" tabindex="-1"></a>       buffer-mode <span class="st">"hide"</span></span>
-<span id="cb28-11"><a aria-hidden="true" href="#cb28-11" tabindex="-1"></a>       <span class="ot">!force </span>goto-position <span class="st">"\x82"</span></span>
-<span id="cb28-12"><a aria-hidden="true" href="#cb28-12" tabindex="-1"></a>     <span class="ot">!endif</span></span>
-<span id="cb28-13"><a aria-hidden="true" href="#cb28-13" tabindex="-1"></a>     set-variable <span class="op">&amp;ind &amp;cat </span><span class="dt">#l1 #l2 </span><span class="op">&amp;set </span>.value <span class="dt">#l3</span></span>
-<span id="cb28-14"><a aria-hidden="true" href="#cb28-14" tabindex="-1"></a>   <span class="ot">!else</span></span>
-<span id="cb28-15"><a aria-hidden="true" href="#cb28-15" tabindex="-1"></a>     set-variable .value <span class="op">&amp;ind &amp;cat </span><span class="dt">#l1 #l2</span></span>
-<span id="cb28-16"><a aria-hidden="true" href="#cb28-16" tabindex="-1"></a>   <span class="ot">!endif</span></span>
-<span id="cb28-17"><a aria-hidden="true" href="#cb28-17" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb28-18"><a aria-hidden="true" href="#cb28-18" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> dict-get</span>
-<span id="cb28-19"><a aria-hidden="true" href="#cb28-19" tabindex="-1"></a>    set-variable @3 <span class="op">&amp;ind &amp;spr </span><span class="st">":*dict*%s:%s"</span> @1 @2</span>
-<span id="cb28-20"><a aria-hidden="true" href="#cb28-20" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb28-21"><a aria-hidden="true" href="#cb28-21" tabindex="-1"></a></span>
-<span id="cb28-22"><a aria-hidden="true" href="#cb28-22" tabindex="-1"></a><span class="co">; we can now set dictionary values</span></span>
-<span id="cb28-23"><a aria-hidden="true" href="#cb28-23" tabindex="-1"></a>dict <span class="st">"aa"</span> <span class="st">"Cys"</span> <span class="st">"Cystein"</span></span>
-<span id="cb28-24"><a aria-hidden="true" href="#cb28-24" tabindex="-1"></a>dict <span class="st">"aa"</span> <span class="st">"Ala"</span> <span class="st">"Alanin"</span></span>
-<span id="cb28-25"><a aria-hidden="true" href="#cb28-25" tabindex="-1"></a><span class="co">; and we can retrieve these values later</span></span>
-<span id="cb28-26"><a aria-hidden="true" href="#cb28-26" tabindex="-1"></a>dict-get <span class="st">"aa"</span> <span class="st">"Cys"</span> <span class="dt">#g0</span></span>
-<span id="cb28-27"><a aria-hidden="true" href="#cb28-27" tabindex="-1"></a>print <span class="dt">#g0</span></span>
-<span id="cb28-28"><a aria-hidden="true" href="#cb28-28" tabindex="-1"></a>dict-get <span class="st">"aa"</span> <span class="st">"Ala"</span> <span class="dt">#g0</span></span>
-<span id="cb28-29"><a aria-hidden="true" href="#cb28-29" tabindex="-1"></a>print <span class="dt">#g0</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Cystein
-Alanin</code></pre>
-<p>We need to give a variable name where we would like to store these values. This code was kindly provided by Steven Phillips as an example for a dictionary implementation. As you can see ME is quite flexible and can be extended creating custom macros. We will discuss this topic later in more detail.</p>
-<h2 id="operators-and-functions">Operators and Functions</h2>
-<p>Operators and functions are created on the C-level they can be broadly divided into the type of data they handle:</p>
+<li><code>&amp;lset list index value</code> - set a value of a list at a certain position
+</li></ul>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l1 &quot;|this|is|a|list|&quot;
+set-variable #l1 &amp;linsert #l1 1 &quot;start&quot;
+print &amp;lget #l1 1
+print &amp;lget #l1 2</code></pre>
+
+<p>Access and  modification  to lists is quite slow, so it is  preferred to store
+not so large data in a list.</p>
+
+<p>For  illustration  purpose let's create an other data  structure, a dictionary
+like  structure  were we can have access using key value pairs. The  functions
+starting  with the  ampersand  sign are  created  on the  C-level.  To  create
+functions  on the macro  level we will  create two macros  which will handle a
+dictionary not based on a list but based on data saved in a hidden buffer &quot;:<em>dict</em>DICTNAME:&quot;</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+define-macro dict
+   set-variable #l1 &amp;spr &quot;:*dict*%s:&quot; @1
+   set-variable #l2 @2
+   !force set-variable #l3 @3
+   !if $status
+     !if &amp;not &amp;exi &amp;ind #l1
+       set-position &quot;\x82&quot;
+       find-buffer &amp;mid #l1 1 -1
+       buffer-mode &quot;hide&quot;
+       !force goto-position &quot;\x82&quot;
+     !endif
+     set-variable &amp;ind &amp;cat #l1 #l2 &amp;set .value #l3
+   !else
+     set-variable .value &amp;ind &amp;cat #l1 #l2
+   !endif
+!emacro
+define-macro dict-get
+    set-variable @3 &amp;ind &amp;spr &quot;:*dict*%s:%s&quot; @1 @2
+!emacro
+
+; we can now set dictionary values
+dict &quot;aa&quot; &quot;Cys&quot; &quot;Cystein&quot;
+dict &quot;aa&quot; &quot;Ala&quot; &quot;Alanin&quot;
+; and we can retrieve these values later
+dict-get &quot;aa&quot; &quot;Cys&quot; #g0
+print #g0
+dict-get &quot;aa&quot; &quot;Ala&quot; #g0
+print #g0</code></pre>
+
+<p>We need to give a  variable  name where we would like to store  these  values.
+This  code  was  kindly  provided  by  Steven  Phillips  as an  example  for a
+dictionary  implementation.  As you can see ME is  quite  flexible  and can be
+extended  creating  custom  macros. We will  discuss  this topic later in more
+detail.</p>
+
+<h2>Operators and Functions</h2>
+
+<p>Operators and functions are created on the C-level they can be broadly divided
+into the type of data they handle:</p>
+
 <ul>
 <li>boolean data</li>
 <li>math data</li>
-<li>string string data</li>
-</ul>
-<p>You find out what functions are available by having a look at the help page of the Macro Language Glossary. To get this help page use the menu entry “Help-General-Help” and then browse to “Macro-Dev”.</p>
-<h3 id="numerical-functions">Numerical functions</h3>
+<li>string string data
+</li></ul>
+
+<p>You find out what functions are available by having a look at the help page of
+the  Macro  Language  Glossary.  To get  this  help  page  use the menu  entry
+&quot;Help-General-Help&quot; and then browse to &quot;Macro-Dev&quot;.</p>
+
+<h3>Numerical functions</h3>
+
 <p>Here are some examples on how to use the language glossary:</p>
-<div class="sourceCode" data-eval="true" id="cb30"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb30-1"><a aria-hidden="true" href="#cb30-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb30-2"><a aria-hidden="true" href="#cb30-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span>-12</span>
-<span id="cb30-3"><a aria-hidden="true" href="#cb30-3" tabindex="-1"></a>set-variable <span class="dt">#l1 </span><span class="op">&amp;abs </span><span class="dt">#l0 </span>  <span class="co">; absolute value</span></span>
-<span id="cb30-4"><a aria-hidden="true" href="#cb30-4" tabindex="-1"></a>print <span class="dt">#l0</span></span>
-<span id="cb30-5"><a aria-hidden="true" href="#cb30-5" tabindex="-1"></a>print <span class="dt">#l1</span></span>
-<span id="cb30-6"><a aria-hidden="true" href="#cb30-6" tabindex="-1"></a>print <span class="op">&amp;add </span><span class="dt">#l1 </span>1            <span class="co">; add 1</span></span>
-<span id="cb30-7"><a aria-hidden="true" href="#cb30-7" tabindex="-1"></a>print <span class="op">&amp;div </span><span class="dt">#l1 </span>4            <span class="co">; divide by four</span></span>
-<span id="cb30-8"><a aria-hidden="true" href="#cb30-8" tabindex="-1"></a>set-variable <span class="dt">#l2 </span><span class="op">&amp;inc </span><span class="dt">#l1 </span>1 <span class="co">; increment variable</span></span>
-<span id="cb30-9"><a aria-hidden="true" href="#cb30-9" tabindex="-1"></a>print <span class="dt">#l2</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>-12
-12
-13
-3
-13</code></pre>
-<h3 id="string-functions">String functions</h3>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 -12
+set-variable #l1 &amp;abs #l0   ; absolute value
+print #l0
+print #l1
+print &amp;add #l1 1            ; add 1
+print &amp;div #l1 4            ; divide by four
+set-variable #l2 &amp;inc #l1 1 ; increment variable
+print #l2</code></pre>
+
+<h3>String functions</h3>
+
 <p>Now a few examples for working with strings:</p>
-<div class="sourceCode" data-eval="true" id="cb32"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb32-1"><a aria-hidden="true" href="#cb32-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb32-2"><a aria-hidden="true" href="#cb32-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span><span class="st">"Hello Murks"</span></span>
-<span id="cb32-3"><a aria-hidden="true" href="#cb32-3" tabindex="-1"></a>print <span class="op">&amp;rep </span><span class="dt">#l0 </span><span class="st">"Murks"</span> <span class="st">"World!"</span>      <span class="co">; replace a string</span></span>
-<span id="cb32-4"><a aria-hidden="true" href="#cb32-4" tabindex="-1"></a>print <span class="op">&amp;cat &amp;cat </span><span class="st">"Hello "</span> <span class="st">"World"</span> <span class="st">"!"</span> <span class="co">; concatenate a string</span></span>
-<span id="cb32-5"><a aria-hidden="true" href="#cb32-5" tabindex="-1"></a>print <span class="op">&amp;rig </span><span class="st">"Hello World!"</span> 6          <span class="co">; right characters</span></span>
-<span id="cb32-6"><a aria-hidden="true" href="#cb32-6" tabindex="-1"></a>print <span class="op">&amp;lef </span><span class="st">"Hello World!"</span> 6          <span class="co">; left characters</span></span>
-<span id="cb32-7"><a aria-hidden="true" href="#cb32-7" tabindex="-1"></a>print <span class="op">&amp;mid </span><span class="st">"Hello World!"</span> 6 8        <span class="co">; middle characters</span></span>
-<span id="cb32-8"><a aria-hidden="true" href="#cb32-8" tabindex="-1"></a>print <span class="op">&amp;slo </span><span class="st">"Hello World!"</span>            <span class="co">; lower case</span></span>
-<span id="cb32-9"><a aria-hidden="true" href="#cb32-9" tabindex="-1"></a>print <span class="op">&amp;sup </span><span class="st">"Hello World!"</span>            <span class="co">; upper case</span></span>
-<span id="cb32-10"><a aria-hidden="true" href="#cb32-10" tabindex="-1"></a>print <span class="op">&amp;len </span><span class="st">"Hello World!"</span>            <span class="co">; length of string</span></span>
-<span id="cb32-11"><a aria-hidden="true" href="#cb32-11" tabindex="-1"></a>print <span class="op">&amp;trb </span><span class="st">" Hello World!  "</span>         <span class="co">; trim string - remove whitespaces</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello World!
-Hello World!
-World!
-Hello 
-World!
-hello world!
-HELLO WORLD!
-12
-Hello World!</code></pre>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 &quot;Hello Murks&quot;
+print &amp;rep #l0 &quot;Murks&quot; &quot;World!&quot;      ; replace a string
+print &amp;cat &amp;cat &quot;Hello &quot; &quot;World&quot; &quot;!&quot; ; concatenate a string
+print &amp;rig &quot;Hello World!&quot; 6          ; right characters
+print &amp;lef &quot;Hello World!&quot; 6          ; left characters
+print &amp;mid &quot;Hello World!&quot; 6 8        ; middle characters
+print &amp;slo &quot;Hello World!&quot;            ; lower case
+print &amp;sup &quot;Hello World!&quot;            ; upper case
+print &amp;len &quot;Hello World!&quot;            ; length of string
+print &amp;trb &quot; Hello World!  &quot;         ; trim string - remove whitespaces</code></pre>
+
 <p>You can combine these functions in different ways:</p>
-<div class="sourceCode" data-eval="true" id="cb34"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb34-1"><a aria-hidden="true" href="#cb34-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb34-2"><a aria-hidden="true" href="#cb34-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span><span class="op">&amp;rep &amp;trb &amp;cat </span><span class="st">" Hello "</span> <span class="st">"Murks    "</span> <span class="st">"Murks"</span> <span class="st">"World!"</span></span>
-<span id="cb34-3"><a aria-hidden="true" href="#cb34-3" tabindex="-1"></a>print <span class="dt">#l0</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Hello World!</code></pre>
-<p>In the example above we concatenate first the strings ” Hello” and “Murks” using the function <code>&amp;cat</code>, then we remove the whitespaces at the beginning and the end using <code>&amp;trb</code> and thereafter we do the replacement of the the last two strings. You could translate this like so:</p>
-<p><code>rep(trim(cat(" Hello ", "Murks    ")), "Murks", "World!")</code></p>
-<h3 id="operators">Operators</h3>
-<p>First again let’s start with numerical issues:</p>
-<div class="sourceCode" data-eval="true" id="cb36"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb36-1"><a aria-hidden="true" href="#cb36-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb36-2"><a aria-hidden="true" href="#cb36-2" tabindex="-1"></a>print <span class="op">&amp;equal </span>3 3   <span class="co">; equal ? 1 true</span></span>
-<span id="cb36-3"><a aria-hidden="true" href="#cb36-3" tabindex="-1"></a>print <span class="op">&amp;equal </span>3 4   <span class="co">;         0 false</span></span>
-<span id="cb36-4"><a aria-hidden="true" href="#cb36-4" tabindex="-1"></a>print <span class="op">&amp;greater </span>4 3 <span class="co">; greater 4 &gt; 3</span></span>
-<span id="cb36-5"><a aria-hidden="true" href="#cb36-5" tabindex="-1"></a>print <span class="op">&amp;greater </span>3 4 <span class="co">; greater 3 &gt; 4</span></span>
-<span id="cb36-6"><a aria-hidden="true" href="#cb36-6" tabindex="-1"></a>print <span class="op">&amp;less </span>   3 4 <span class="co">; less  r 3 &lt; 4</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>1
-0
-1
-0
-1</code></pre>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 &amp;rep &amp;trb &amp;cat &quot; Hello &quot; &quot;Murks    &quot; &quot;Murks&quot; &quot;World!&quot;
+print #l0</code></pre>
+
+<p>In the example above we  concatenate  first the strings &quot; Hello&quot; and &quot;Murks  &quot;
+using the function  <code>&amp;cat</code>, then we remove the  whitespaces at the beginning
+and the end using  <code>&amp;trb</code> and thereafter we do the  replacement of the the
+last two strings. You could translate this like so:</p>
+
+<p><code>rep(trim(cat(&quot; Hello &quot;, &quot;Murks    &quot;)), &quot;Murks&quot;, &quot;World!&quot;)</code></p>
+
+<h3>UTF-8 strings</h3>
+
+<p>MicroEmacs supports UTF-8 natively and keeps the encoding per buffer. It
+auto-detects file encodings; use <code>mec -E utf-8 file.txt</code> to force a buffer to
+UTF-8 when needed. See <a href="../doc/utf8-encoding.md">UTF-8 Encoding</a> for details.</p>
+
+<p>The traditional string functions such as <code>&amp;len</code> and <code>&amp;mid</code> count bytes. The
+<code>&amp;u</code> variants count valid UTF-8 sequences as characters; their positions are
+1-based. These functions count encoded characters, not user-perceived
+graphemes, so a base letter followed by a combining mark may count as two.</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 &quot;αβγ&quot;
+print &amp;len #l0          ; 6 bytes in UTF-8
+print &amp;ulen #l0         ; 3 characters
+print &amp;uleft #l0 2      ; αβ
+print &amp;umid #l0 2 1     ; β</code></pre>
+
+<h3>Operators</h3>
+
+<p>First again let's start with numerical issues:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+print &amp;equal 3 3   ; equal ? 1 true
+print &amp;equal 3 4   ;         0 false
+print &amp;greater 4 3 ; greater 4 &gt; 3
+print &amp;greater 3 4 ; greater 3 &gt; 4
+print &amp;less    3 4 ; less  r 3 &lt; 4
+</code></pre>
+
 <p>Now a few string operators/functions:</p>
-<div class="sourceCode" data-eval="true" id="cb38"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb38-1"><a aria-hidden="true" href="#cb38-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb38-2"><a aria-hidden="true" href="#cb38-2" tabindex="-1"></a>print <span class="op">&amp;seq </span><span class="st">"Hello"</span> <span class="st">"World!"</span>     <span class="co">; should return 0 / false</span></span>
-<span id="cb38-3"><a aria-hidden="true" href="#cb38-3" tabindex="-1"></a>print <span class="op">&amp;seq </span><span class="st">"Hello"</span> <span class="st">"Hello"</span>      <span class="co">; should return 1 / true</span></span>
-<span id="cb38-4"><a aria-hidden="true" href="#cb38-4" tabindex="-1"></a>print <span class="op">&amp;seq </span><span class="st">"HELLO"</span> <span class="op">&amp;sup </span><span class="st">"Hello"</span> <span class="co">; should return 1 / true</span></span>
-<span id="cb38-5"><a aria-hidden="true" href="#cb38-5" tabindex="-1"></a>print <span class="op">&amp;isequal </span><span class="st">"HELLO"</span> <span class="st">"HeLLo"</span>  <span class="co">; case insensitive comparison</span></span>
-<span id="cb38-6"><a aria-hidden="true" href="#cb38-6" tabindex="-1"></a>print <span class="op">&amp;isin </span><span class="st">"HE"</span> <span class="st">"Hello"</span>        <span class="co">; case insensitive check</span></span>
-<span id="cb38-7"><a aria-hidden="true" href="#cb38-7" tabindex="-1"></a>print <span class="op">&amp;sin </span> <span class="st">"HE"</span> <span class="st">"Hello"</span>        <span class="co">; case   sensitive check</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>0
-1
-1
-1
-1
-0</code></pre>
-<p>There are as well functions, operators working on strings using regular expressions:</p>
-<div class="sourceCode" data-eval="true" id="cb40"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb40-1"><a aria-hidden="true" href="#cb40-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb40-2"><a aria-hidden="true" href="#cb40-2" tabindex="-1"></a>print <span class="op">&amp;xse </span><span class="st">"Hello World!"</span> <span class="st">"H.+!"</span>   <span class="co">; 1 true</span></span>
-<span id="cb40-3"><a aria-hidden="true" href="#cb40-3" tabindex="-1"></a>print <span class="op">&amp;xse </span><span class="st">"file.cpp"</span> <span class="st">".+\\.cp?p?"</span></span>
-<span id="cb40-4"><a aria-hidden="true" href="#cb40-4" tabindex="-1"></a>print <span class="op">&amp;xse </span><span class="st">"file.c"</span>   <span class="st">".+\\.cp?p?"</span></span>
-<span id="cb40-5"><a aria-hidden="true" href="#cb40-5" tabindex="-1"></a>print <span class="op">&amp;xse </span><span class="st">"file.h"</span>   <span class="st">".+\\.cp?p?"</span> <span class="co">; 0 false</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>1
-1
-1
-0</code></pre>
-<p>These examples should give you an idea how to manipulate numbers and strings using the MicroEmacs macro language.</p>
-<h2 id="control-flow">Control-Flow</h2>
-<p>MicroEmacs has as well the usual control structures:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+print &amp;seq &quot;Hello&quot; &quot;World!&quot;     ; should return 0 / false
+print &amp;seq &quot;Hello&quot; &quot;Hello&quot;      ; should return 1 / true
+print &amp;seq &quot;HELLO&quot; &amp;sup &quot;Hello&quot; ; should return 1 / true
+print &amp;isequal &quot;HELLO&quot; &quot;HeLLo&quot;  ; case insensitive comparison
+print &amp;isin &quot;HE&quot; &quot;Hello&quot;        ; case insensitive check
+print &amp;sin  &quot;HE&quot; &quot;Hello&quot;        ; case   sensitive check</code></pre>
+
+<p>There are as well  functions,  operators  working  on  strings  using  regular
+expressions:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+print &amp;xse &quot;Hello World!&quot; &quot;H.+!&quot;   ; 1 true
+print &amp;xse &quot;file.cpp&quot; &quot;.+\\.cp?p?&quot;
+print &amp;xse &quot;file.c&quot;   &quot;.+\\.cp?p?&quot;
+print &amp;xse &quot;file.h&quot;   &quot;.+\\.cp?p?&quot; ; 0 false</code></pre>
+
+<p>These examples  should give you an idea how to manipulate  numbers and strings
+using the MicroEmacs macro language.</p>
+
+<h2>Control-Flow</h2>
+
+<p>MicroEmacs has as well the usual control  structures:</p>
+
 <ul>
-<li>if, elseif, else</li>
-<li>while, until</li>
-</ul>
-<p>But first let’s look at some methods to express current date and time which we might later use for an example where we greet the user:</p>
-<div class="sourceCode" data-eval="true" id="cb42"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb42-1"><a aria-hidden="true" href="#cb42-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb42-2"><a aria-hidden="true" href="#cb42-2" tabindex="-1"></a>print <span class="dt">$time</span></span>
-<span id="cb42-3"><a aria-hidden="true" href="#cb42-3" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Year:  "</span> <span class="op">&amp;mid </span><span class="dt">$time </span>0 4</span>
-<span id="cb42-4"><a aria-hidden="true" href="#cb42-4" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Month: "</span> <span class="op">&amp;mid </span><span class="dt">$time </span>7 2 </span>
-<span id="cb42-5"><a aria-hidden="true" href="#cb42-5" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"Month: %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>7 2 <span class="co">; leading zero</span></span>
-<span id="cb42-6"><a aria-hidden="true" href="#cb42-6" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Day:   "</span> <span class="op">&amp;mid </span><span class="dt">$time </span>9 2  </span>
-<span id="cb42-7"><a aria-hidden="true" href="#cb42-7" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Wday:  "</span> <span class="op">&amp;mid </span><span class="dt">$time </span>11 1 <span class="co">; 0=Sum</span></span>
-<span id="cb42-8"><a aria-hidden="true" href="#cb42-8" tabindex="-1"></a><span class="co">; lets create a list and extract the three day abbreviations</span></span>
-<span id="cb42-9"><a aria-hidden="true" href="#cb42-9" tabindex="-1"></a>set-variable <span class="dt">%weekdays </span><span class="st">"|NULL|Sun|Mon|Tue|Wed|Thu|Fri|Sat|"</span></span>
-<span id="cb42-10"><a aria-hidden="true" href="#cb42-10" tabindex="-1"></a>print <span class="op">&amp;cat </span><span class="st">"Wday:  "</span> <span class="op">&amp;lget </span><span class="dt">%weekdays </span><span class="op">&amp;mid </span><span class="dt">$time </span>11 1</span>
-<span id="cb42-11"><a aria-hidden="true" href="#cb42-11" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"Hour:   %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>12 2 </span>
-<span id="cb42-12"><a aria-hidden="true" href="#cb42-12" tabindex="-1"></a>print <span class="op">&amp;sprintf </span> <span class="st">"Min:    %02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>14 2 </span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>2023270 92841038 6719
-Year:  2023
-Month:  9
-Month: 09
-Day:   28
-Wday:  4
-Wday:  Tue
-Hour:   10
-Min:    38</code></pre>
-<p>Let us now evaluate what hour it is in the morning and then greet the user with the right choice!</p>
-<div class="sourceCode" data-eval="true" id="cb44"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb44-1"><a aria-hidden="true" href="#cb44-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb44-2"><a aria-hidden="true" href="#cb44-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span><span class="op">&amp;mid </span><span class="dt">$time </span>12 2  <span class="co">; the current hour</span></span>
-<span id="cb44-3"><a aria-hidden="true" href="#cb44-3" tabindex="-1"></a>print <span class="op">&amp;sprintf </span><span class="st">"Current hour is: %02d"</span> <span class="dt">#l0</span></span>
-<span id="cb44-4"><a aria-hidden="true" href="#cb44-4" tabindex="-1"></a><span class="ot">!if </span><span class="op">&amp;gre </span><span class="dt">#l0 </span>4 <span class="op">&amp;and &amp;less </span><span class="dt">#l0 </span>11  <span class="co">; from 5 to ten</span></span>
-<span id="cb44-5"><a aria-hidden="true" href="#cb44-5" tabindex="-1"></a>    print <span class="st">"Good Morning!"</span></span>
-<span id="cb44-6"><a aria-hidden="true" href="#cb44-6" tabindex="-1"></a><span class="ot">!elif </span><span class="op">&amp;gre </span><span class="dt">#l0 </span>10 <span class="op">&amp;and &amp;less </span><span class="dt">#l0 </span>15</span>
-<span id="cb44-7"><a aria-hidden="true" href="#cb44-7" tabindex="-1"></a>    print <span class="st">"Good Day!"</span></span>
-<span id="cb44-8"><a aria-hidden="true" href="#cb44-8" tabindex="-1"></a><span class="ot">!elif </span><span class="op">&amp;gre </span><span class="dt">#l0 </span>14 <span class="op">&amp;and &amp;less </span><span class="dt">#l0 </span>18    </span>
-<span id="cb44-9"><a aria-hidden="true" href="#cb44-9" tabindex="-1"></a>    print <span class="st">"Good Afternoon!"</span></span>
-<span id="cb44-10"><a aria-hidden="true" href="#cb44-10" tabindex="-1"></a><span class="ot">!elif </span><span class="op">&amp;gre </span><span class="dt">#l0 </span>17 <span class="op">&amp;and &amp;less </span><span class="dt">#l0 </span>23    </span>
-<span id="cb44-11"><a aria-hidden="true" href="#cb44-11" tabindex="-1"></a>    print <span class="st">"Good Evening!"</span></span>
-<span id="cb44-12"><a aria-hidden="true" href="#cb44-12" tabindex="-1"></a><span class="ot">!else</span></span>
-<span id="cb44-13"><a aria-hidden="true" href="#cb44-13" tabindex="-1"></a>    print <span class="st">"Good Night!!"</span></span>
-<span id="cb44-14"><a aria-hidden="true" href="#cb44-14" tabindex="-1"></a><span class="ot">!endif</span></span>
-<span id="cb44-15"><a aria-hidden="true" href="#cb44-15" tabindex="-1"></a>print <span class="op">&amp;lget </span><span class="st">"|01|02|03|04|"</span> 2</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>Current hour is: 10
-Good Morning!
-02</code></pre>
-<p>So an “if” statement starts with the expression <code>!if</code> an “else if” with the expression <code>!elif</code> and the “else” with the expression <code>!else</code> and if or an if/elif/else block must be finished with an else. The MicroEmacs editor will automatically help you by indenting the blocks.</p>
-<p>Instead of these complex and conditions we could as well use the <code>&amp;lfind</code> function which returns 0 if the element is not in the list, here an example for the code above using this feature. As in the case an element is not in a list the return value is zero, we can directly use it in an if condition.</p>
-<div class="sourceCode" data-eval="true" id="cb46"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb46-1"><a aria-hidden="true" href="#cb46-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb46-2"><a aria-hidden="true" href="#cb46-2" tabindex="-1"></a><span class="co">; the  current  hour with leading zero if early in the morning</span></span>
-<span id="cb46-3"><a aria-hidden="true" href="#cb46-3" tabindex="-1"></a>set-variable  <span class="dt">#l0 </span> <span class="op">&amp;sprintf </span> <span class="st">"%02d"</span> <span class="op">&amp;mid </span><span class="dt">$time </span>12 2  </span>
-<span id="cb46-4"><a aria-hidden="true" href="#cb46-4" tabindex="-1"></a>print <span class="dt">#l0</span></span>
-<span id="cb46-5"><a aria-hidden="true" href="#cb46-5" tabindex="-1"></a>print <span class="op">&amp;lfind </span><span class="st">"|05|06|07|08|09|10|"</span> <span class="dt">#l0 </span><span class="co">; checking &amp;lfind</span></span>
-<span id="cb46-6"><a aria-hidden="true" href="#cb46-6" tabindex="-1"></a><span class="ot">!if </span><span class="op">&amp;lfind </span><span class="st">"|05|06|07|08|09|10|"</span> <span class="dt">#l0 </span></span>
-<span id="cb46-7"><a aria-hidden="true" href="#cb46-7" tabindex="-1"></a>    print <span class="st">"Good Morning!"</span></span>
-<span id="cb46-8"><a aria-hidden="true" href="#cb46-8" tabindex="-1"></a><span class="ot">!elif </span><span class="op">&amp;lfind </span><span class="st">"|11|12|13|14|"</span> <span class="dt">#l0</span></span>
-<span id="cb46-9"><a aria-hidden="true" href="#cb46-9" tabindex="-1"></a>    print <span class="st">"Good Day!"</span></span>
-<span id="cb46-10"><a aria-hidden="true" href="#cb46-10" tabindex="-1"></a><span class="ot">!elif </span><span class="op">&amp;lfind </span><span class="st">"|15|16|17|"</span> <span class="dt">#l0</span></span>
-<span id="cb46-11"><a aria-hidden="true" href="#cb46-11" tabindex="-1"></a>    print <span class="st">"Good Afternoon!"</span></span>
-<span id="cb46-12"><a aria-hidden="true" href="#cb46-12" tabindex="-1"></a><span class="ot">!elif </span><span class="op">&amp;lfind </span><span class="st">"|18|19|20|21|22|"</span> <span class="dt">#l0</span></span>
-<span id="cb46-13"><a aria-hidden="true" href="#cb46-13" tabindex="-1"></a>    print <span class="st">"Good Evening!"</span></span>
-<span id="cb46-14"><a aria-hidden="true" href="#cb46-14" tabindex="-1"></a><span class="ot">!else</span></span>
-<span id="cb46-15"><a aria-hidden="true" href="#cb46-15" tabindex="-1"></a>    print <span class="st">"Good Night!!"</span></span>
-<span id="cb46-16"><a aria-hidden="true" href="#cb46-16" tabindex="-1"></a><span class="ot">!endif</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>10
-6
-Good Morning!</code></pre>
+<li><code>!if</code>, <code>!elif</code>, <code>!else</code>, <code>!endif</code></li>
+<li><code>!while</code> with <code>!done</code></li>
+<li><code>!repeat</code> with <code>!done</code> or <code>!until</code></li>
+<li><code>!break</code> and <code>!continue</code>
+</li></ul>
+
+<p>But first let's look at some
+methods  to  express  current  date and time  which we might  later use for an
+example where we greet the user:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+print $time
+print &amp;cat &quot;Year:  &quot; &amp;mid $time 0 4
+print &amp;cat &quot;Month: &quot; &amp;mid $time 7 2
+print &amp;sprintf &quot;Month: %02d&quot; &amp;mid $time 7 2 ; leading zero
+print &amp;cat &quot;Day:   &quot; &amp;mid $time 9 2
+print &amp;cat &quot;Wday:  &quot; &amp;mid $time 11 1 ; 0=Sum
+; lets create a list and extract the three day abbreviations
+set-variable %weekdays &quot;|NULL|Sun|Mon|Tue|Wed|Thu|Fri|Sat|&quot;
+print &amp;cat &quot;Wday:  &quot; &amp;lget %weekdays &amp;mid $time 11 1
+print &amp;sprintf &quot;Hour:   %02d&quot; &amp;mid $time 12 2
+print &amp;sprintf  &quot;Min:    %02d&quot; &amp;mid $time 14 2 </code></pre>
+
+<p>Let us now  evaluate  what hour it is in the  morning  and then greet the user
+with the right choice!</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 &amp;mid $time 12 2  ; the current hour
+print &amp;sprintf &quot;Current hour is: %02d&quot; #l0
+!if &amp;gre #l0 4 &amp;and &amp;less #l0 11  ; from 5 to ten
+    print &quot;Good Morning!&quot;
+!elif &amp;gre #l0 10 &amp;and &amp;less #l0 15
+    print &quot;Good Day!&quot;
+!elif &amp;gre #l0 14 &amp;and &amp;less #l0 18
+    print &quot;Good Afternoon!&quot;
+!elif &amp;gre #l0 17 &amp;and &amp;less #l0 23
+    print &quot;Good Evening!&quot;
+!else
+    print &quot;Good Night!!&quot;
+!endif
+print &amp;lget &quot;|01|02|03|04|&quot; 2</code></pre>
+
+<p>So an &quot;if&quot; statement  starts with the  expression  <code>!if</code> an &quot;else if&quot; with the
+expression  <code>!elif</code>  and the &quot;else&quot; with the  expression  <code>!else</code> and if or an
+if/elif/else  block must be finished with an else. The MicroEmacs  editor will
+automatically help you by indenting the blocks.</p>
+
+<p>Instead of these  complex  and  conditions  we could as well use the  <code>&amp;lfind</code>
+function  which  returns 0 if the  element is not in the list, here an example
+for the code above  using this  feature. As in the case an element is not in a
+list the return value is zero, we can directly use it in an if condition.</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+; the  current  hour with leading zero if early in the morning
+set-variable  #l0  &amp;sprintf  &quot;%02d&quot; &amp;mid $time 12 2
+print #l0
+print &amp;lfind &quot;|05|06|07|08|09|10|&quot; #l0 ; checking &amp;lfind
+!if &amp;lfind &quot;|05|06|07|08|09|10|&quot; #l0
+    print &quot;Good Morning!&quot;
+!elif &amp;lfind &quot;|11|12|13|14|&quot; #l0
+    print &quot;Good Day!&quot;
+!elif &amp;lfind &quot;|15|16|17|&quot; #l0
+    print &quot;Good Afternoon!&quot;
+!elif &amp;lfind &quot;|18|19|20|21|22|&quot; #l0
+    print &quot;Good Evening!&quot;
+!else
+    print &quot;Good Night!!&quot;
+!endif</code></pre>
+
 <p>Using <code>&amp;lfind</code> might be in some cases easier to read and to understand.</p>
-<p>Let’s now continue with loops. ME knows a <code>!while</code> and a <code>!repeat' but not a for-loop. Loops are finished with the</code>!done` expression. A for loop can be however simulated using a while:</p>
-<div class="sourceCode" data-eval="true" id="cb48"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb48-1"><a aria-hidden="true" href="#cb48-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb48-2"><a aria-hidden="true" href="#cb48-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span>0  <span class="co">; initialization</span></span>
-<span id="cb48-3"><a aria-hidden="true" href="#cb48-3" tabindex="-1"></a><span class="ot">!while </span><span class="op">&amp;less </span><span class="dt">#l0 </span>8  <span class="co">; condition </span></span>
-<span id="cb48-4"><a aria-hidden="true" href="#cb48-4" tabindex="-1"></a>    set-variable <span class="dt">#l0 </span><span class="op">&amp;inc </span><span class="dt">#l0 </span>1 <span class="co">; increment</span></span>
-<span id="cb48-5"><a aria-hidden="true" href="#cb48-5" tabindex="-1"></a>    print <span class="dt">#l0</span></span>
-<span id="cb48-6"><a aria-hidden="true" href="#cb48-6" tabindex="-1"></a><span class="ot">!done</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>1
-2
-3
-4
-5
-6
-7
-8</code></pre>
-<p>To skip the rest of a loop we have the <code>!continue</code> directive. Let’s modify the example above and only show even numbers. We can do this by using the <code>&amp;mod</code> function/operator.</p>
-<div class="sourceCode" data-eval="true" id="cb50"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb50-1"><a aria-hidden="true" href="#cb50-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb50-2"><a aria-hidden="true" href="#cb50-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span>0</span>
-<span id="cb50-3"><a aria-hidden="true" href="#cb50-3" tabindex="-1"></a><span class="ot">!while </span><span class="op">&amp;less </span><span class="dt">#l0 </span>8 </span>
-<span id="cb50-4"><a aria-hidden="true" href="#cb50-4" tabindex="-1"></a>    set-variable <span class="dt">#l0 </span><span class="op">&amp;inc </span><span class="dt">#l0 </span>1 </span>
-<span id="cb50-5"><a aria-hidden="true" href="#cb50-5" tabindex="-1"></a>    <span class="ot">!if </span><span class="op">&amp;mod </span><span class="dt">#l0 </span>2 <span class="co">; skip odd numbers</span></span>
-<span id="cb50-6"><a aria-hidden="true" href="#cb50-6" tabindex="-1"></a>        <span class="ot">!continue</span></span>
-<span id="cb50-7"><a aria-hidden="true" href="#cb50-7" tabindex="-1"></a>    <span class="ot">!endif </span> </span>
-<span id="cb50-8"><a aria-hidden="true" href="#cb50-8" tabindex="-1"></a>    print <span class="dt">#l0</span></span>
-<span id="cb50-9"><a aria-hidden="true" href="#cb50-9" tabindex="-1"></a><span class="ot">!done</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>2
-4
-6
-8</code></pre>
-<p>Please note, that in ME versions before 2010 while-loops can’t be nested, however you can place a <code>!repeat</code> or a <code>!goto</code> directive within allowing as well nested loops.</p>
-<p>The <code>!repeat</code> directive does not have a condition, so we need at some point use <code>!break</code> to finish a loop. Here an example:</p>
-<div class="sourceCode" data-eval="true" id="cb52"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb52-1"><a aria-hidden="true" href="#cb52-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb52-2"><a aria-hidden="true" href="#cb52-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span>0</span>
-<span id="cb52-3"><a aria-hidden="true" href="#cb52-3" tabindex="-1"></a><span class="ot">!repeat</span></span>
-<span id="cb52-4"><a aria-hidden="true" href="#cb52-4" tabindex="-1"></a>    set-variable <span class="dt">#l0 </span><span class="op">&amp;inc </span><span class="dt">#l0 </span>1</span>
-<span id="cb52-5"><a aria-hidden="true" href="#cb52-5" tabindex="-1"></a>    print <span class="dt">#l0</span></span>
-<span id="cb52-6"><a aria-hidden="true" href="#cb52-6" tabindex="-1"></a>    <span class="ot">!if </span><span class="op">&amp;gre </span><span class="dt">#l0 </span>7</span>
-<span id="cb52-7"><a aria-hidden="true" href="#cb52-7" tabindex="-1"></a>        <span class="ot">!break</span></span>
-<span id="cb52-8"><a aria-hidden="true" href="#cb52-8" tabindex="-1"></a>    <span class="ot">!endif </span>   </span>
-<span id="cb52-9"><a aria-hidden="true" href="#cb52-9" tabindex="-1"></a><span class="ot">!done</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>1
-2
-3
-4
-5
-6
-7
-8</code></pre>
-<p>There is an other variation,the <code>!until</code> directive which performs a condition check at the end of a <code>!repeat</code> loop.</p>
-<div class="sourceCode" data-eval="true" id="cb54"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb54-1"><a aria-hidden="true" href="#cb54-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb54-2"><a aria-hidden="true" href="#cb54-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span>0</span>
-<span id="cb54-3"><a aria-hidden="true" href="#cb54-3" tabindex="-1"></a><span class="ot">!repeat</span></span>
-<span id="cb54-4"><a aria-hidden="true" href="#cb54-4" tabindex="-1"></a>    set-variable <span class="dt">#l0 </span><span class="op">&amp;inc </span><span class="dt">#l0 </span>1</span>
-<span id="cb54-5"><a aria-hidden="true" href="#cb54-5" tabindex="-1"></a>    print <span class="dt">#l0</span></span>
-<span id="cb54-6"><a aria-hidden="true" href="#cb54-6" tabindex="-1"></a><span class="ot">!until </span><span class="op">&amp;gre </span><span class="dt">#l0 </span>7</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>1
-2
-3
-4
-5
-6
-7
-8</code></pre>
-<p>As you can see ME has the main control structures, except for the for-loop which must be replaced with a <code>!while - !done</code> loop.</p>
-<p>There are as well <code>!goto</code> and <code>!tgoto</code> directives, which allow jumps to certain labels as known from languages like C, <code>!tgoto</code> has as well a condition and might be used in cases where nested loops are required. Please have a look at the MicroEmacs help pages for more information about these directives. With the new ME version the nested loop restriction is removed, so with this version you can as well create nested loops.</p>
-<p>Just for curiosity, let’s create a nested loop with the old ME version:</p>
-<div class="sourceCode" data-eval="true" id="cb56"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb56-1"><a aria-hidden="true" href="#cb56-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb56-2"><a aria-hidden="true" href="#cb56-2" tabindex="-1"></a>set-variable <span class="dt">#l0 </span>0</span>
-<span id="cb56-3"><a aria-hidden="true" href="#cb56-3" tabindex="-1"></a><span class="ot">!while </span><span class="op">&amp;less </span><span class="dt">#l0 </span>9</span>
-<span id="cb56-4"><a aria-hidden="true" href="#cb56-4" tabindex="-1"></a>    set-variable <span class="dt">#l0 </span><span class="op">&amp;inc </span><span class="dt">#l0 </span>1</span>
-<span id="cb56-5"><a aria-hidden="true" href="#cb56-5" tabindex="-1"></a>    set-variable <span class="dt">#l1 </span>0</span>
-<span id="cb56-6"><a aria-hidden="true" href="#cb56-6" tabindex="-1"></a>    set-variable <span class="dt">%line </span><span class="st">""</span></span>
-<span id="cb56-7"><a aria-hidden="true" href="#cb56-7" tabindex="-1"></a>    <span class="ot">!repeat</span></span>
-<span id="cb56-8"><a aria-hidden="true" href="#cb56-8" tabindex="-1"></a>        set-variable <span class="dt">#l1 </span><span class="op">&amp;inc </span><span class="dt">#l1 </span>1</span>
-<span id="cb56-9"><a aria-hidden="true" href="#cb56-9" tabindex="-1"></a>        set-variable <span class="dt">%line </span><span class="op">&amp;sprintf </span><span class="st">"%s [%d,%d]"</span> <span class="dt">%line #l0 #l1</span></span>
-<span id="cb56-10"><a aria-hidden="true" href="#cb56-10" tabindex="-1"></a>    <span class="ot">!until </span><span class="op">&amp;gre </span><span class="dt">#l1 </span>8</span>
-<span id="cb56-11"><a aria-hidden="true" href="#cb56-11" tabindex="-1"></a>    print <span class="dt">%line</span></span>
-<span id="cb56-12"><a aria-hidden="true" href="#cb56-12" tabindex="-1"></a><span class="ot">!done</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code> [1,1] [1,2] [1,3] [1,4] [1,5] [1,6] [1,7] [1,8] [1,9]
- [2,1] [2,2] [2,3] [2,4] [2,5] [2,6] [2,7] [2,8] [2,9]
- [3,1] [3,2] [3,3] [3,4] [3,5] [3,6] [3,7] [3,8] [3,9]
- [4,1] [4,2] [4,3] [4,4] [4,5] [4,6] [4,7] [4,8] [4,9]
- [5,1] [5,2] [5,3] [5,4] [5,5] [5,6] [5,7] [5,8] [5,9]
- [6,1] [6,2] [6,3] [6,4] [6,5] [6,6] [6,7] [6,8] [6,9]
- [7,1] [7,2] [7,3] [7,4] [7,5] [7,6] [7,7] [7,8] [7,9]
- [8,1] [8,2] [8,3] [8,4] [8,5] [8,6] [8,7] [8,8] [8,9]
- [9,1] [9,2] [9,3] [9,4] [9,5] [9,6] [9,7] [9,8] [9,9]</code></pre>
-<p>So even in the older ME version, nested loops are possible.</p>
-<h2 id="functions---macros">Functions - Macros</h2>
-<p>After discussing the basics of programming with ME we continue with creating macros in ME, which are like functions, we should now discuss the following topics</p>
+
+<p>Let's continue with loops. ME provides <code>!while</code> and <code>!repeat</code>, but no
+C-style <code>for</code> loop. A counting loop can be written with <code>!while</code>:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 0  ; initialization
+!while &amp;less #l0 8  ; condition
+    set-variable #l0 &amp;inc #l0 1 ; increment
+    print #l0
+!done</code></pre>
+
+<p>To skip the rest of a loop we have the <code>!continue</code>  directive.  Let's modify the
+example  above and only show even  numbers. We can do this by using the <code>&amp;mod</code>
+function/operator.</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 0
+!while &amp;less #l0 8
+    set-variable #l0 &amp;inc #l0 1
+    !if &amp;mod #l0 2 ; skip odd numbers
+        !continue
+    !endif
+    print #l0
+!done</code></pre>
+
+<p>The <code>!repeat</code> directive has no condition at its start, so use <code>!break</code> to end
+it explicitly, or <code>!until</code> to test a condition at the end of each iteration.
+Here is an example using <code>!break</code>:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 0
+!repeat
+    set-variable #l0 &amp;inc #l0 1
+    print #l0
+    !if &amp;gre #l0 7
+        !break
+    !endif
+!done</code></pre>
+
+<p>Alternatively, <code>!until</code> checks a condition at the end of each <code>!repeat</code>
+iteration:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 0
+!repeat
+    set-variable #l0 &amp;inc #l0 1
+    print #l0
+!until &amp;gre #l0 7</code></pre>
+
+<p>Current versions support three levels of <code>!while</code> and <code>!repeat</code> nesting,
+including combinations of the two loop types. The following examples each use
+two levels and count six iterations:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 0  ; outer loop
+set-variable #l2 0  ; total iterations
+!while &amp;less #l0 3
+    set-variable #l0 &amp;inc #l0 1
+    set-variable #l1 0  ; inner loop
+    !while &amp;less #l1 2
+        set-variable #l1 &amp;inc #l1 1
+        set-variable #l2 &amp;inc #l2 1
+    !done
+!done
+print #l2 ; 6</code></pre>
+
+<p>The same iteration count can be expressed with nested <code>!repeat</code> loops:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+set-variable #l0 0  ; outer loop
+set-variable #l2 0  ; total iterations
+!repeat
+    set-variable #l0 &amp;inc #l0 1
+    set-variable #l1 0  ; inner loop
+    !repeat
+        set-variable #l1 &amp;inc #l1 1
+        set-variable #l2 &amp;inc #l2 1
+    !until &amp;gre #l1 1
+!until &amp;gre #l0 2
+print #l2 ; 6</code></pre>
+
+<p><code>!goto</code> and <code>!tgoto</code> are also available for jumps to labels; see the
+MicroEmacs help pages for their details.</p>
+
+<h2>Functions - Macros</h2>
+
+<p>After  discussing the basics of programming  with ME we continue with creating
+macros in ME, which are like  functions, we should now discuss the following topics</p>
+
 <ul>
 <li><code>define-macro</code> - define a macro/function</li>
-<li><code>define-help</code> - define help for a macro/function</li>
-</ul>
-<p>Functions, called as well macros in ME can not return values. However, you can arguments and add as well here variable names and modify these variables as inside of your function. Here an example which squares the submitted value and stores the value in the given variable:</p>
-<div class="sourceCode" data-eval="true" id="cb58"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb58-1"><a aria-hidden="true" href="#cb58-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb58-2"><a aria-hidden="true" href="#cb58-2" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> square-value</span>
-<span id="cb58-3"><a aria-hidden="true" href="#cb58-3" tabindex="-1"></a>   set-variable @2 <span class="op">&amp;mult </span>@1 @1</span>
-<span id="cb58-4"><a aria-hidden="true" href="#cb58-4" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb58-5"><a aria-hidden="true" href="#cb58-5" tabindex="-1"></a>square-value 5 <span class="dt">#l0</span></span>
-<span id="cb58-6"><a aria-hidden="true" href="#cb58-6" tabindex="-1"></a>print <span class="dt">#l0</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>25</code></pre>
-<p>The first argument for a macro is always <code>@1</code>, the second <code>@2</code> and so on. So, although we can’t return values from macros, we can give references to variables and store date there.</p>
-<p>Macro behavior often is modified by preceeding the macro call with a numeric argument, <code>-1 ml-write "message string"</code> was an example where the message goes to the terminal but not to the editor. Let’s create a root function:</p>
-<div class="sourceCode" data-eval="true" id="cb60"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb60-1"><a aria-hidden="true" href="#cb60-1" tabindex="-1"></a>execute-file <span class="st">"tutorial.emf"</span></span>
-<span id="cb60-2"><a aria-hidden="true" href="#cb60-2" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> check-num</span>
-<span id="cb60-3"><a aria-hidden="true" href="#cb60-3" tabindex="-1"></a>    <span class="ot">!if </span>@?</span>
-<span id="cb60-4"><a aria-hidden="true" href="#cb60-4" tabindex="-1"></a>        <span class="co">; numeric argument given</span></span>
-<span id="cb60-5"><a aria-hidden="true" href="#cb60-5" tabindex="-1"></a>        print <span class="op">&amp;sprintf </span><span class="st">"Given: %d"</span> @<span class="dt">#</span></span>
-<span id="cb60-6"><a aria-hidden="true" href="#cb60-6" tabindex="-1"></a>    <span class="ot">!else</span></span>
-<span id="cb60-7"><a aria-hidden="true" href="#cb60-7" tabindex="-1"></a>        print <span class="st">"No numeric argument given"</span></span>
-<span id="cb60-8"><a aria-hidden="true" href="#cb60-8" tabindex="-1"></a>    <span class="ot">!endif</span></span>
-<span id="cb60-9"><a aria-hidden="true" href="#cb60-9" tabindex="-1"></a><span class="ot">!emacro</span></span>
-<span id="cb60-10"><a aria-hidden="true" href="#cb60-10" tabindex="-1"></a>check-num</span>
-<span id="cb60-11"><a aria-hidden="true" href="#cb60-11" tabindex="-1"></a>100 check-num</span>
-<span id="cb60-12"><a aria-hidden="true" href="#cb60-12" tabindex="-1"></a>-5 check-num</span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>No numeric argument given
-Given: 100
-Given: -5</code></pre>
-<p>For more information consult the MicroEmacs help page on “define-macro”.</p>
-<h2 id="working-with-filesbuffers">Working with files/buffers</h2>
-<p>Let’s finish for now with a macro which extracts all header line of this document and places is them with the line number into its own file, toc.txt.</p>
-<div class="sourceCode" data-eval="true" id="cb62"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb62-1"><a aria-hidden="true" href="#cb62-1" tabindex="-1"></a>find-file emf-tutorial.md</span>
-<span id="cb62-2"><a aria-hidden="true" href="#cb62-2" tabindex="-1"></a>beginning-of-buffer</span>
-<span id="cb62-3"><a aria-hidden="true" href="#cb62-3" tabindex="-1"></a>-1 ml-write <span class="dt">$buffer-bname</span></span>
-<span id="cb62-4"><a aria-hidden="true" href="#cb62-4" tabindex="-1"></a><span class="co">; let's now search for lines starting with two hashes</span></span>
-<span id="cb62-5"><a aria-hidden="true" href="#cb62-5" tabindex="-1"></a><span class="ot">!force </span> search-forward <span class="st">"^##"</span></span>
-<span id="cb62-6"><a aria-hidden="true" href="#cb62-6" tabindex="-1"></a><span class="ot">!while </span><span class="dt">$status</span></span>
-<span id="cb62-7"><a aria-hidden="true" href="#cb62-7" tabindex="-1"></a>    forward-char</span>
-<span id="cb62-8"><a aria-hidden="true" href="#cb62-8" tabindex="-1"></a>    -1 ml-write <span class="op">&amp;sprintf </span><span class="st">"line: %03d %s"</span> <span class="dt">$window-line </span>@wl </span>
-<span id="cb62-9"><a aria-hidden="true" href="#cb62-9" tabindex="-1"></a>    <span class="ot">!force </span>search-forward <span class="st">"^##"</span></span>
-<span id="cb62-10"><a aria-hidden="true" href="#cb62-10" tabindex="-1"></a><span class="ot">!done</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>emf-tutorial.md
-line: 017 ## Introduction
-line: 029 ## Hello World
-line: 081 ## Variables
-line: 140 ### Register variables
-line: 192 ### System variables 
-line: 239 ## Data structures
-line: 321 ## Operators and Functions
-line: 334 ### Numerical functions
-line: 350 ### String functions
-line: 383 ### Operators
-line: 423 ## Control-Flow
-line: 589 ## Functions - Macros
-line: 638 ## Working with files/buffers
-line: 681 ## Develop your own macros
-line: 804 ## Document generation</code></pre>
-<p>Let’s extend this a little bit so that we write this into a file “toc.txt”.</p>
-<div class="sourceCode" data-eval="true" id="cb64"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb64-1"><a aria-hidden="true" href="#cb64-1" tabindex="-1"></a>find-file <span class="st">"emf-tutorial.md"</span></span>
-<span id="cb64-2"><a aria-hidden="true" href="#cb64-2" tabindex="-1"></a>find-file <span class="st">"toc.txt"</span></span>
-<span id="cb64-3"><a aria-hidden="true" href="#cb64-3" tabindex="-1"></a>beginning-of-buffer</span>
-<span id="cb64-4"><a aria-hidden="true" href="#cb64-4" tabindex="-1"></a>set-mark</span>
-<span id="cb64-5"><a aria-hidden="true" href="#cb64-5" tabindex="-1"></a>end-of-buffer</span>
-<span id="cb64-6"><a aria-hidden="true" href="#cb64-6" tabindex="-1"></a>exchange-point-and-mark</span>
-<span id="cb64-7"><a aria-hidden="true" href="#cb64-7" tabindex="-1"></a>kill-region</span>
-<span id="cb64-8"><a aria-hidden="true" href="#cb64-8" tabindex="-1"></a>find-buffer <span class="st">"emf-tutorial.md"</span></span>
-<span id="cb64-9"><a aria-hidden="true" href="#cb64-9" tabindex="-1"></a>beginning-of-buffer</span>
-<span id="cb64-10"><a aria-hidden="true" href="#cb64-10" tabindex="-1"></a><span class="co">; let's now search for lines starting with two hashes</span></span>
-<span id="cb64-11"><a aria-hidden="true" href="#cb64-11" tabindex="-1"></a><span class="ot">!force </span>search-forward <span class="st">"^##"</span></span>
-<span id="cb64-12"><a aria-hidden="true" href="#cb64-12" tabindex="-1"></a><span class="ot">!while </span><span class="dt">$status</span></span>
-<span id="cb64-13"><a aria-hidden="true" href="#cb64-13" tabindex="-1"></a>    forward-char</span>
-<span id="cb64-14"><a aria-hidden="true" href="#cb64-14" tabindex="-1"></a>    -1 ml-write <span class="op">&amp;sprintf </span><span class="st">"line: %03d %s"</span> <span class="dt">$window-line </span>@wl </span>
-<span id="cb64-15"><a aria-hidden="true" href="#cb64-15" tabindex="-1"></a>    set-variable <span class="dt">#l0 </span><span class="op">&amp;sprintf </span><span class="st">"line: %03d %s\n"</span> <span class="dt">$window-line </span>@wl </span>
-<span id="cb64-16"><a aria-hidden="true" href="#cb64-16" tabindex="-1"></a>    find-buffer <span class="st">"toc.txt"</span></span>
-<span id="cb64-17"><a aria-hidden="true" href="#cb64-17" tabindex="-1"></a>    insert-string <span class="dt">#l0</span></span>
-<span id="cb64-18"><a aria-hidden="true" href="#cb64-18" tabindex="-1"></a>    find-buffer <span class="st">"emf-tutorial.md"</span></span>
-<span id="cb64-19"><a aria-hidden="true" href="#cb64-19" tabindex="-1"></a>    <span class="ot">!force </span>search-forward <span class="st">"^##"</span></span>
-<span id="cb64-20"><a aria-hidden="true" href="#cb64-20" tabindex="-1"></a><span class="ot">!done</span></span></code></pre></div>
-<pre class="emfout" data-eval="true"><code>line: 017 ## Introduction
-line: 029 ## Hello World
-line: 081 ## Variables
-line: 140 ### Register variables
-line: 192 ### System variables 
-line: 239 ## Data structures
-line: 321 ## Operators and Functions
-line: 334 ### Numerical functions
-line: 350 ### String functions
-line: 383 ### Operators
-line: 423 ## Control-Flow
-line: 589 ## Functions - Macros
-line: 638 ## Working with files/buffers
-line: 681 ## Develop your own macros
-line: 804 ## Document generation</code></pre>
-<h2 id="develop-your-own-macros">Develop your own macros</h2>
+<li><code>define-help</code> - define help for a macro/function
+</li></ul>
+
+<p>Functions, called as well macros in ME can not return  values.
+However, you can arguments and add as well here variable  names and modify these  variables as inside of
+your  function.  Here an example which squares the submitted  value and stores
+the value in the given variable:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+define-macro square-value
+   set-variable @2 &amp;mult @1 @1
+!emacro
+square-value 5 #l0
+print #l0</code></pre>
+
+<p>The first  argument for a macro is always <code>@1</code>, the second <code>@2</code> and so on. So,
+although  we can't  return  values  from  macros,  we can give  references  to
+variables and store date there.</p>
+
+<p>Macro  behavior  often is modified by preceeding the macro call with a numeric
+argument, <code>-1 ml-write &quot;message string&quot;</code> was an example where the message goes
+to the terminal but not to the editor. Let's create a root function:</p>
+
+<pre class='code'><code class='emf'>execute-file &quot;tutorial.emf&quot;
+define-macro check-num
+    !if @?
+        ; numeric argument given
+        print &amp;sprintf &quot;Given: %d&quot; @#
+    !else
+        print &quot;No numeric argument given&quot;
+    !endif
+!emacro
+check-num
+100 check-num
+-5 check-num</code></pre>
+
+<p>For    more     information     consult    the     MicroEmacs     help    page
+on &quot;define-macro&quot;.</p>
+
+<h2>Working with files/buffers</h2>
+
+<p>Let's  finish  for now with a macro  which  extracts  all header  line of this
+document and places is them with the line number into its own file, toc.txt.</p>
+
+<pre class='code'><code class='emf'>find-file emf-tutorial.md
+beginning-of-buffer
+-1 ml-write $buffer-bname
+; let's now search for lines starting with two hashes
+!force  search-forward &quot;^##&quot;
+!while $status
+    forward-char
+    -1 ml-write &amp;sprintf &quot;line: %03d %s&quot; $window-line @wl
+    !force search-forward &quot;^##&quot;
+!done</code></pre>
+
+<p>Let's extend this a little bit so that we write this into a file &quot;toc.txt&quot;.</p>
+
+<pre class='code'><code class='emf'>find-file &quot;emf-tutorial.md&quot;
+find-file &quot;toc.txt&quot;
+beginning-of-buffer
+set-mark
+end-of-buffer
+exchange-point-and-mark
+kill-region
+find-buffer &quot;emf-tutorial.md&quot;
+beginning-of-buffer
+; let's now search for lines starting with two hashes
+!force search-forward &quot;^##&quot;
+!while $status
+    forward-char
+    -1 ml-write &amp;sprintf &quot;line: %03d %s&quot; $window-line @wl
+    set-variable #l0 &amp;sprintf &quot;line: %03d %s\n&quot; $window-line @wl
+    find-buffer &quot;toc.txt&quot;
+    insert-string #l0
+    find-buffer &quot;emf-tutorial.md&quot;
+    !force search-forward &quot;^##&quot;
+!done</code></pre>
+
+<h2>Develop your own macros</h2>
+
 <p>After understanding a few basic you might like to create your own macros.</p>
-<p>First you could add these macros into your <code>USERNAME.emf</code> file which is usually within your ME home folder. Let’s open this file and add a simple macro which deletes all line with a certain string within these line. You would like to use this macro every time you have such formats to convert.</p>
+
+<p>First  you  could add these  macros  into your  <code>USERNAME.emf</code>  file  which is
+usually  within  your ME home  folder.  Let's  open this file and add a simple
+macro  which  deletes all line with a certain  string  within  these line. You
+would like to use this macro every time you have such formats to convert.</p>
+
 <p>Here an example file:</p>
-<pre><code>some text
+
+<pre class='code'><code>some text
 delete me because I am not required
 some text with other lines
 delete me but with some other text
 some text within other lines</code></pre>
-<p>So let’s create a simple macro to delete all lines within the current buffer which have the text “delete me” at the beginning of the lines. We start with a simple message in the macro. Open your <code>USERNAME.emf</code> file and write down the following text:</p>
-<div class="sourceCode" data-eval="false" id="cb67"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb67-1"><a aria-hidden="true" href="#cb67-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
-<span id="cb67-2"><a aria-hidden="true" href="#cb67-2" tabindex="-1"></a>    1000 ml-write <span class="st">"Macro is here"</span></span>
-<span id="cb67-3"><a aria-hidden="true" href="#cb67-3" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
-<p>Highlight the three macro lines and execute the command <code>execute-region</code> (Esc-x execute-region). If you did this you now have a command <code>remove-delete-me</code> which you can execute by again pressing <code>Esc-x</code> and the writing <code>remove-delete-me</code> - you can use tab completion, so writing remoTAB should be sufficient. Afterward you see the message line in your editor.</p>
-<p>You can now modify the code, re-mark and again use <code>execute-region</code> to update the macro code. Let’s change the macro try it again out.</p>
-<div class="sourceCode" data-eval="false" id="cb68"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb68-1"><a aria-hidden="true" href="#cb68-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
-<span id="cb68-2"><a aria-hidden="true" href="#cb68-2" tabindex="-1"></a>    1000 ml-write <span class="st">"Macro is here again!!"</span></span>
-<span id="cb68-3"><a aria-hidden="true" href="#cb68-3" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
-<p>That way you can stepwise extend the macro. BTW: I did this all here directly within a Markdown document, so it must be not an EMF file, but the final macro should be then written then in such an EMF file. Placing the macro into <code>USERNAME.emf</code> ensures that it is loaded at every ME start.</p>
+
+<p>So let's  create a simple macro to delete all lines within the current  buffer
+which have the text &quot;delete me&quot; at the beginning of the lines. We start with a
+simple message in the macro. Open your  <code>USERNAME.emf</code> file and write down the
+following text:</p>
+
+<pre class='code'><code class='emf'>define-macro remove-delete-me
+    1000 ml-write &quot;Macro is here&quot;
+!emacro</code></pre>
+
+<p>Highlight  the three  macro  lines and  execute  the command  <code>execute-region</code>
+(Esc-x   execute-region).   If  you  did   this   you  now   have  a   command
+<code>remove-delete-me</code>  which you can  execute by again  pressing  <code>Esc-x</code> and the
+writing  <code>remove-delete-me</code>  - you can use tab completion, so writing  remoTAB
+should be sufficient. Afterward you see the message line in your editor.</p>
+
+<p>You can now modify the code,  re-mark and again use <code>execute-region</code> to update
+the macro code. Let's change the macro try it again out.</p>
+
+<pre class='code'><code class='emf'>define-macro remove-delete-me
+    1000 ml-write &quot;Macro is here again!!&quot;
+!emacro</code></pre>
+
+<p>That way you can stepwise extend the macro. BTW: I did this all here directly
+within a Markdown document, so it must be not an EMF file, but the final macro
+should  be then  written  then in such an EMF file.  Placing  the  macro  into
+<code>USERNAME.emf</code> ensures that it is loaded at every ME start.</p>
+
 <p>Here would be the final macro:</p>
-<div class="sourceCode" data-eval="false" id="cb69"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb69-1"><a aria-hidden="true" href="#cb69-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
-<span id="cb69-2"><a aria-hidden="true" href="#cb69-2" tabindex="-1"></a>    <span class="co">; stepwise debugging</span></span>
-<span id="cb69-3"><a aria-hidden="true" href="#cb69-3" tabindex="-1"></a>    set-variable <span class="dt">$debug </span>2</span>
-<span id="cb69-4"><a aria-hidden="true" href="#cb69-4" tabindex="-1"></a>    set-alpha-mark <span class="st">"p"</span></span>
-<span id="cb69-5"><a aria-hidden="true" href="#cb69-5" tabindex="-1"></a>    <span class="ot">!force </span> search-forward <span class="st">"^delete me"</span></span>
-<span id="cb69-6"><a aria-hidden="true" href="#cb69-6" tabindex="-1"></a>    <span class="ot">!while </span><span class="dt">$status</span></span>
-<span id="cb69-7"><a aria-hidden="true" href="#cb69-7" tabindex="-1"></a>        kill-line</span>
-<span id="cb69-8"><a aria-hidden="true" href="#cb69-8" tabindex="-1"></a>        <span class="ot">!force </span>search-forward <span class="st">"^delete.me"</span></span>
-<span id="cb69-9"><a aria-hidden="true" href="#cb69-9" tabindex="-1"></a>    <span class="ot">!done</span></span>
-<span id="cb69-10"><a aria-hidden="true" href="#cb69-10" tabindex="-1"></a>    goto-alpha-mark <span class="st">"p"</span>    </span>
-<span id="cb69-11"><a aria-hidden="true" href="#cb69-11" tabindex="-1"></a>    1000 ml-write <span class="st">"Macro was executed!!"</span></span>
-<span id="cb69-12"><a aria-hidden="true" href="#cb69-12" tabindex="-1"></a>    set-variable <span class="dt">$debug </span>0</span>
-<span id="cb69-13"><a aria-hidden="true" href="#cb69-13" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
+
+<pre class='code'><code class='emf'>define-macro remove-delete-me
+    ; stepwise debugging
+    set-variable $debug 2
+    set-alpha-mark &quot;p&quot;
+    !force  search-forward &quot;^delete me&quot;
+    !while $status
+        kill-line
+        !force search-forward &quot;^delete.me&quot;
+    !done
+    goto-alpha-mark &quot;p&quot;
+    1000 ml-write &quot;Macro was executed!!&quot;
+    set-variable $debug 0
+!emacro</code></pre>
+
 <p>Here some example text on which we can apply this macro:</p>
-<pre><code>hello 1
+
+<pre class='code'><code>hello 1
 delete me 1
 hello 2
 delete me 1</code></pre>
-<p>We set some debugging variable on top to step through the macro code. This helps us in identifying problems in the code. We will see then that we must jump to the beginning of the line and then the code should work:</p>
-<div class="sourceCode" data-eval="false" id="cb71"><pre class="sourceCode emf"><code class="sourceCode emf"><span id="cb71-1"><a aria-hidden="true" href="#cb71-1" tabindex="-1"></a><span class="ot">define</span>-<span class="ot">macro</span> remove-delete-me</span>
-<span id="cb71-2"><a aria-hidden="true" href="#cb71-2" tabindex="-1"></a>    set-alpha-mark <span class="st">"p"</span></span>
-<span id="cb71-3"><a aria-hidden="true" href="#cb71-3" tabindex="-1"></a>    <span class="ot">!force </span> search-forward <span class="st">"^delete me"</span></span>
-<span id="cb71-4"><a aria-hidden="true" href="#cb71-4" tabindex="-1"></a>    <span class="ot">!while </span><span class="dt">$status</span></span>
-<span id="cb71-5"><a aria-hidden="true" href="#cb71-5" tabindex="-1"></a>        beginning-of-line</span>
-<span id="cb71-6"><a aria-hidden="true" href="#cb71-6" tabindex="-1"></a>        kill-line <span class="co">; cleans the line</span></span>
-<span id="cb71-7"><a aria-hidden="true" href="#cb71-7" tabindex="-1"></a>        kill-line <span class="co">; the then empty line</span></span>
-<span id="cb71-8"><a aria-hidden="true" href="#cb71-8" tabindex="-1"></a>        <span class="ot">!force </span>search-forward <span class="st">"^delete.me"</span></span>
-<span id="cb71-9"><a aria-hidden="true" href="#cb71-9" tabindex="-1"></a>    <span class="ot">!done</span></span>
-<span id="cb71-10"><a aria-hidden="true" href="#cb71-10" tabindex="-1"></a>    goto-alpha-mark <span class="st">"p"</span>    </span>
-<span id="cb71-11"><a aria-hidden="true" href="#cb71-11" tabindex="-1"></a><span class="ot">!emacro</span></span></code></pre></div>
-<p>Placing the course above the text which should be manipulated allows us then to remove these lines.</p>
-<pre><code>&lt;CURSOR&gt;
+
+<p>We set some  debugging  variable  on top to step  through the macro code. This
+helps us in  identifying  problems  in the code. We will see then that we must
+jump to the beginning of the line and then the code should work:</p>
+
+<pre class='code'><code class='emf'>define-macro remove-delete-me
+    set-alpha-mark &quot;p&quot;
+    !force  search-forward &quot;^delete me&quot;
+    !while $status
+        beginning-of-line
+        kill-line ; cleans the line
+        kill-line ; the then empty line
+        !force search-forward &quot;^delete.me&quot;
+    !done
+    goto-alpha-mark &quot;p&quot;
+!emacro</code></pre>
+
+<p>Placing the course above the text which should be  manipulated  allows us then
+to remove these lines.</p>
+
+<pre class='code'><code>&lt;CURSOR&gt;
 hello 1
 delete me 1
 hello 2
 delete me 2</code></pre>
+
 <p>After executing <code>remove-delete-me</code> we will then have this output:</p>
-<pre><code>&lt;CURSOR&gt;
+
+<pre class='code'><code>&lt;CURSOR&gt;
 hello 1
 hello 2</code></pre>
-<p>This was a very simple example, but it shows you how to start writing your own macros. Consult the embedded MicroEmacs help pages (Esc-?) for more information.</p>
-<p>BTW: There is as well a macro recorder “Ctrl-x (” to start the recorder and “Ctrl-x )” to end a macro, and “Ctrl-x e” to execute the last recorded macro.</p>
-<h2 id="document-generation">Document generation</h2>
-<p>This document was generated using pandoc and the pantcl filter like this:</p>
-<pre><code>pandoc --filter pantcl emf-tutorial.md -o temp.html -s --css mini.css
-htmlark temp.html -o emf-tutorial.html
-rm temp.html</code></pre>
+
+<p>This was a very simple  example,  but it shows you how to start  writing  your
+own macros.  Consult the embedded  MicroEmacs  help pages
+(Esc-?) for more  information.</p>
+
+<p>BTW: There is as well a macro recorder &quot;Ctrl-x
+(&quot; to start the  recorder  and  &quot;Ctrl-x )&quot; to end a macro,  and  &quot;Ctrl-x e&quot; to
+execute the last recorded macro.</p>
+
+<h2>Formal Grammar Reference</h2>
+
+<p>For a formal BNF (Backus-Naur Form) grammar of the EMF macro language, see
+<a href="../doc/emf-bnf.md">doc/emf-bnf.md</a>. The grammar specifies the complete syntax
+including token types, expressions, directives, and block structure.</p>
+
+<p>Key grammar rules:
+- Programs are sequences of lines (blank, comment, command, directive, or label)
+- Every line is self-contained (no line continuation with <code>\</code>)
+- Prefix notation: functions appear before arguments (<code>&amp;add 1 2</code>)
+- All values are strings; numeric conversion happens automatically
+- Comments start with <code>;</code> and extend to end of line
+- Labels start with <code>*</code> at beginning of line</p>
+
+<h2>Document generation</h2>
+
+<p>Build the tutorial HTML from this Markdown source with <code>make</code> in the <code>docs</code>
+directory. The Makefile runs <code>tmdoc</code> in weave mode and then uses <code>mndoc</code> to
+produce the HTML. EMF code blocks use standard Markdown fences and are not
+executed as part of this build.</p>
+
+<pre class='code'><code>cd docs
+make</code></pre>
+
+
 </body>
-</html><!--Generated by HTMLArk 2023-09-28 10:38:12.902640. Original URL temp.html-->
+</html>

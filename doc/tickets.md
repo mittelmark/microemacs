@@ -988,3 +988,76 @@ the M-[ prefix key and discarded).
       src/unixterm.c, tests/alt-cursor.emf, tests/alt-cursor-test.py,
       .github/workflows/testing.yml, doc/reference.smd
 
+## Ticket 27: FR - Add foreach iteration for lists
+
+ME macros can access list elements with `&lget` and the list length with
+`&llength`, but iterating over every item currently requires a manually
+indexed `!while` loop. Add a `!foreach` directive that assigns each list item
+to a specified variable in order and uses `!done` to close the loop. It should
+work with the existing pipe-delimited list representation and support the
+existing `!break` and `!continue` directives. Define whether changes to the
+source list during iteration affect the remaining items.
+
+## Ticket 28: FR - Add inclusive numeric comparison functions
+
+The macro language has numeric equality, less-than (`&less`) and greater-than
+(`&greater`) functions, but no direct less-than-or-equal or
+greater-than-or-equal comparisons. Add corresponding functions (for example
+`&less-equal` and `&greater-equal`) returning the same `1`/`0` boolean values
+and using the same numeric conversion behavior as the existing comparisons.
+Document the names and add regression coverage for values below, equal to,
+and above the comparison operand.
+
+## Ticket 29: FR - Add key-value list functions
+
+Add key-value (dictionary) operations to the macro language, initially using
+a compact pipe-delimited representation such as
+`|key1:value1|key2:value2|key3:value3|`. Candidate functions:
+
+- `&dget list key`
+- `&dset list key value`
+- `&dkeys list`
+
+Consider related operations such as deleting a key or checking whether a key
+exists. `&dset` should return the updated dictionary, following the existing
+list functions' value-returning pattern.
+
+Possible implementation strategies:
+
+- Parse and serialize this representation in C, reusing the existing list
+  functions' approach. This provides native functions but requires careful
+  handling of malformed entries, escaping, and updates.
+- Build macro-library helpers on top of existing lists or the hidden-buffer
+  dictionary pattern shown in `docs/emf-tutorial.md`. This avoids changing the
+  evaluator, but does not provide the requested built-in `&d*` functions and
+  may be slower or more verbose.
+- Use a different internal representation, such as parallel key and value
+  lists, if the proposed string format cannot represent required key/value
+  content reliably. This would require deciding how such a representation is
+  exposed and kept compatible with ordinary list values.
+
+Before implementation, define whether `:` and `|` can appear in keys or
+values and, if so, how they are escaped; whether key matching is
+case-sensitive; how duplicate keys are handled; what `&dget` returns for a
+missing key versus a key with an empty value; and whether `&dkeys` preserves
+insertion order. Add regression tests for empty dictionaries, replacement,
+missing keys, duplicate keys, and delimiter-containing data as applicable.
+
+## Ticket 30: DOC - Extend the macro-language tutorial
+
+Update `docs/emf-tutorial.md` to cover the macro-language additions proposed
+in Tickets 27-29 once their syntax and behavior are settled:
+
+- Show list iteration with `!foreach`, including the loop variable and the
+  interaction with `!break` and `!continue`.
+- Explain and demonstrate inclusive numeric comparisons alongside the
+  existing equality, less-than, and greater-than examples.
+- Introduce key-value lists and their lookup, update, and key-enumeration
+  functions. Clarify the representation and its delimiter, duplicate-key,
+  missing-key, and ordering rules.
+
+Use short, runnable `{.emf eval=true}` examples, explain how the new features
+relate to the existing `!while`/`&lget` patterns and hidden-buffer dictionary
+example, and keep the tutorial consistent with the final function names and
+semantics. Avoid documenting proposed syntax as available before it is
+implemented.

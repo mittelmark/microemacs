@@ -4,14 +4,6 @@ author: Detlef Groth, Caputh-Schwielowsee, Germany
 date: 2023-09-28 10:38
 abstract: >
     This is a short introduction into the MicroEmacs macro language.
-emf:
-     app: mecw
-     results: show
-     eval: 1
-cmd:
-    app: me
-    results: show
-    eval: 1     
 ---
 
 ## Introduction
@@ -21,18 +13,17 @@ language. We will cover the basic features of the language, variables, data
 structures, control-flow and functions and then give some example projects
 where we use this to create some useful extensions.
 
-Let's start with the usual "Hello World!" example. We will embed and evaluate
-here the Emacs code in a simple shell script which executes the following
-lines within a non-interactive editor session to simpliy the embedding and
-executation of this code in the Markdown document.
+The examples are written as EMF code blocks. The document build weaves the
+Markdown with `tmdoc` and converts it to HTML with `mndoc`; it does not execute
+the examples. You can try a snippet by selecting it and running
+`execute-region`, or by saving it in a macro file and loading that file.
 
 ## Hello World
 
 Within the editor we would simple execute:
 
-```
+```emf
 ml-write "Hello World!"
-
 ```
 
 That the should display the message line into the editors command line at the
@@ -44,39 +35,6 @@ You can  execute the code by pressing  `"Esc-x"`  then  writing  `"ml-write"`,
 pressing  the  ENTER  key and  then  writing  the  message  `"Hello  World!"`.
 Alternatively  you can write the text in the editor, marking the code line and
 an empty line thereafter and then `"Esc-x"` and write `"execute-region"`.
-
-For this tutorial, to execute the code which is embedded within this source document, a Markdown file,
-we just create a simple shell script which runs the code from lines 3 to the
-end as a ME script. We use here the value -1 before the macro to print to the
-terminal instead of the editor to be able to catch the result. This offers us
-the possibility to test all code samples within the document and add the
-output using the [Pantcl filter](https://github.com/mittlemark/pantcl) for the
-[Pandoc document processor](https://www.pandoc.org):
-
-
-```{.cmd file="me-hello-world.sh"}
-#!/usr/bin/bash
-tail --lines=+3 $0 > temp.emf && me -n -p "@temp.emf" && exit
-; - emf - below follows the MicroEmacs code
--1 ml-write "Hello Jasspa MicroEmacs World!"
-quick-exit
-```
-
-This will be explained later:
-
-```{.cmd file="me-hello-world.emf"}
-#!/usr/bin/bash
-tail --lines=+3 $0 > temp.emf && me -n -p "@temp.emf" && exit
-; - emf - below follows the MicroEmacs code
--1 ml-write "Hello Jasspa MicroEmacs World!"
--1 ml-write &cat "This is MicroEmacs " &cat $version "!"
-set-variable %x 1
-!while &less %x 10
-    -1 ml-write &cat "x is " %x
-    set-variable %x &inc %x 1
-!done
-quick-exit
-```
 
 ## Variables
 
@@ -91,9 +49,9 @@ Essentially we have:
 - global variables - usually starting with a percentage __%__ sign
 - buffer variables - usually starting with a colon __:__, these variables keep information about the currently opened file
 
-Variable values were assigned usually with the `set-variable`{.emf}  command. Here an example:
+Variable values were assigned usually with the `set-variable`  command. Here an example:
 
-```{.emf eval=true}
+```emf
 ; make dumping out information easier
 define-macro print
     -1 ml-write @1
@@ -113,13 +71,13 @@ print $version
 Every code example in this tutorial is in its own script file, so if we would like to use
 the `print` macro in the next code example this would produce an error.
 
-```{.emf eval=true}
+```emf
 print "test"
 ```
 
 To use our print macro we will place this macro in our `user.emf` file which is in our jasspa home directory:
 
-```{.emf eval=true}
+```emf
 -1 ml-write $user-path
 -1 ml-write $user-name
 ```
@@ -130,7 +88,7 @@ examples. For illustrative purposes we place the function in a file
 `tutorial.emf` which we put in our `$user-path` and which we then just execute
 like this at the beginning of our code chunk:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 print "Hello Tutorial!"
 ```
@@ -142,7 +100,7 @@ Now back to variables ...
 Global register variables start with the prefix `#g` and then a number between
 1 and 9. There are used for fast access of variables values which are visible in all code regions:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #g1 "Value of #g1 is a string!"
 set-variable #g2 "Another value!"
@@ -157,7 +115,7 @@ Local variable a prefixed with `#l` and the values again from 1 to 9.
 
 Here an example:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 define-macro test-local
     set-variable #l1 "Local variable string!"
@@ -173,7 +131,7 @@ As you can see the default value for register variables is an empty string.
 There are as well register variables with the prefix `#p` which means that the should be as well visible in the calling macro, so the parent macro.
 Here an example:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 define-macro child-mac
     ; set a local variable in the caller
@@ -198,7 +156,7 @@ display the variables using the macro "list-variables" from within the editor,
 so executing `esc-x` and then writing the command. Or by using the default
 key-combination `C-h v`. Here we just display a few of these variables:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 print &sprintf "variable: $auto-time    = %s" $auto-time  
 print &sprintf "variable: $buffer-bname = %s" $buffer-bname
@@ -217,7 +175,7 @@ As you can see in the case you try to access a variable that does not exists
 you get the value "ERROR" as a variable value, that can be used to check if a
 variable exists. Here an example:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable %real-var "hello"
 set-variable #l2 %real-var
@@ -248,7 +206,7 @@ A scalar is just a single value. Per default  MicroEmacs  has only one more comp
 which is just recognized by ME if a variable  contains a list of pipe symbols.
 Here an example:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l1 "|this|is|a|list|"
 print &lget #l1 1
@@ -263,7 +221,7 @@ function. To work with lists we have as well the following functions:
 - `&linsert list index value` - insert an element at a certain position
 - `&lset list index value` - set a value of a list at a certain position
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l1 "|this|is|a|list|"
 set-variable #l1 &linsert #l1 1 "start"
@@ -280,7 +238,7 @@ starting  with the  ampersand  sign are  created  on the  C-level.  To  create
 functions  on the macro  level we will  create two macros  which will handle a
 dictionary not based on a list but based on data saved in a hidden buffer ":*dict*DICTNAME:"
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 define-macro dict
    set-variable #l1 &spr ":*dict*%s:" @1
@@ -335,7 +293,7 @@ the  Macro  Language  Glossary.  To get  this  help  page  use the menu  entry
 
 Here are some examples on how to use the language glossary:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 -12
 set-variable #l1 &abs #l0   ; absolute value
@@ -351,7 +309,7 @@ print #l2
 
 Now a few examples for working with strings:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 "Hello Murks"
 print &rep #l0 "Murks" "World!"      ; replace a string
@@ -367,7 +325,7 @@ print &trb " Hello World!  "         ; trim string - remove whitespaces
 
 You can combine these functions in different ways:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 &rep &trb &cat " Hello " "Murks    " "Murks" "World!"
 print #l0
@@ -380,11 +338,31 @@ last two strings. You could translate this like so:
 
 `rep(trim(cat(" Hello ", "Murks    ")), "Murks", "World!")`
 
+### UTF-8 strings
+
+MicroEmacs supports UTF-8 natively and keeps the encoding per buffer. It
+auto-detects file encodings; use `mec -E utf-8 file.txt` to force a buffer to
+UTF-8 when needed. See [UTF-8 Encoding](../doc/utf8-encoding.md) for details.
+
+The traditional string functions such as `&len` and `&mid` count bytes. The
+`&u` variants count valid UTF-8 sequences as characters; their positions are
+1-based. These functions count encoded characters, not user-perceived
+graphemes, so a base letter followed by a combining mark may count as two.
+
+```emf
+execute-file "tutorial.emf"
+set-variable #l0 "αβγ"
+print &len #l0          ; 6 bytes in UTF-8
+print &ulen #l0         ; 3 characters
+print &uleft #l0 2      ; αβ
+print &umid #l0 2 1     ; β
+```
+
 ### Operators
 
 First again let's start with numerical issues:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 print &equal 3 3   ; equal ? 1 true
 print &equal 3 4   ;         0 false
@@ -396,7 +374,7 @@ print &less    3 4 ; less  r 3 < 4
 
 Now a few string operators/functions:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 print &seq "Hello" "World!"     ; should return 0 / false
 print &seq "Hello" "Hello"      ; should return 1 / true
@@ -409,7 +387,7 @@ print &sin  "HE" "Hello"        ; case   sensitive check
 There are as well  functions,  operators  working  on  strings  using  regular
 expressions:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 print &xse "Hello World!" "H.+!"   ; 1 true
 print &xse "file.cpp" ".+\\.cp?p?"
@@ -424,14 +402,16 @@ using the MicroEmacs macro language.
 
 MicroEmacs has as well the usual control  structures:
 
-- if, elseif, else
-- while, until
+- `!if`, `!elif`, `!else`, `!endif`
+- `!while` with `!done`
+- `!repeat` with `!done` or `!until`
+- `!break` and `!continue`
 
 But first let's look at some
 methods  to  express  current  date and time  which we might  later use for an
 example where we greet the user:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 print $time
 print &cat "Year:  " &mid $time 0 4
@@ -449,7 +429,7 @@ print &sprintf  "Min:    %02d" &mid $time 14 2
 Let us now  evaluate  what hour it is in the  morning  and then greet the user
 with the right choice!
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 &mid $time 12 2  ; the current hour
 print &sprintf "Current hour is: %02d" #l0
@@ -477,7 +457,7 @@ function  which  returns 0 if the  element is not in the list, here an example
 for the code above  using this  feature. As in the case an element is not in a
 list the return value is zero, we can directly use it in an if condition.
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 ; the  current  hour with leading zero if early in the morning
 set-variable  #l0  &sprintf  "%02d" &mid $time 12 2  
@@ -498,10 +478,10 @@ print &lfind "|05|06|07|08|09|10|" #l0 ; checking &lfind
 
 Using `&lfind` might be in some cases easier to read and to understand.
 
-Let's now  continue  with loops. ME knows a `!while` and a `!repeat' but not a
-for-loop. Loops are finished with the `!done` expression. A for loop can be however simulated using a while:
+Let's continue with loops. ME provides `!while` and `!repeat`, but no
+C-style `for` loop. A counting loop can be written with `!while`:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 0  ; initialization
 !while &less #l0 8  ; condition 
@@ -514,7 +494,7 @@ To skip the rest of a loop we have the `!continue`  directive.  Let's modify the
 example  above and only show even  numbers. We can do this by using the `&mod`
 function/operator.
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 0
 !while &less #l0 8 
@@ -526,14 +506,11 @@ set-variable #l0 0
 !done
 ```    
 
-Please  note, that in ME  versions  before 2010  while-loops  can't be nested,
-however you can place a `!repeat` or a `!goto`  directive  within  allowing as
-well nested loops.
+The `!repeat` directive has no condition at its start, so use `!break` to end
+it explicitly, or `!until` to test a condition at the end of each iteration.
+Here is an example using `!break`:
 
-The `!repeat` directive  does not have a condition,  so we need at some point
-use `!break` to finish a loop. Here an example:
-
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 0
 !repeat
@@ -545,10 +522,10 @@ set-variable #l0 0
 !done
 ```
 
-There is an other variation,the  `!until` directive which performs a condition
-check at the end of a `!repeat` loop.
+Alternatively, `!until` checks a condition at the end of each `!repeat`
+iteration:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 set-variable #l0 0
 !repeat
@@ -557,35 +534,44 @@ set-variable #l0 0
 !until &gre #l0 7
 ```
 
-As you can see ME has the main  control  structures,  except for the  for-loop
-which must be replaced with a `!while - !done` loop.
+Current versions support three levels of `!while` and `!repeat` nesting,
+including combinations of the two loop types. The following examples each use
+two levels and count six iterations:
 
-There are as well  `!goto`  and  `!tgoto`  directives,  which  allow  jumps to
-certain  labels  as  known  from  languages  like C,  `!tgoto`  has as  well a
-condition  and might be used in cases where nested loops are required.  Please
-have a look at the  MicroEmacs  help pages for more  information  about  these
-directives. With the new ME version nested loops are supported, you can nest
-up to three `!while` or `!repeat` loops, so with this version you can as well
-create nested loops.
-
-Just for curiosity, let's create a nested loop with the old ME version:
-
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
-set-variable #l0 0
-!while &less #l0 9
+set-variable #l0 0  ; outer loop
+set-variable #l2 0  ; total iterations
+!while &less #l0 3
     set-variable #l0 &inc #l0 1
-    set-variable #l1 0
-    set-variable %line ""
-    !repeat
+    set-variable #l1 0  ; inner loop
+    !while &less #l1 2
         set-variable #l1 &inc #l1 1
-        set-variable %line &sprintf "%s [%d,%d]" %line #l0 #l1
-    !until &gre #l1 8
-    print %line
+        set-variable #l2 &inc #l2 1
+    !done
 !done
+print #l2 ; 6
 ```
 
-So even in the older ME version, nested loops are possible.
+The same iteration count can be expressed with nested `!repeat` loops:
+
+```emf
+execute-file "tutorial.emf"
+set-variable #l0 0  ; outer loop
+set-variable #l2 0  ; total iterations
+!repeat
+    set-variable #l0 &inc #l0 1
+    set-variable #l1 0  ; inner loop
+    !repeat
+        set-variable #l1 &inc #l1 1
+        set-variable #l2 &inc #l2 1
+    !until &gre #l1 1
+!until &gre #l0 2
+print #l2 ; 6
+```
+
+`!goto` and `!tgoto` are also available for jumps to labels; see the
+MicroEmacs help pages for their details.
 
 ## Functions - Macros
 
@@ -601,7 +587,7 @@ However, you can arguments and add as well here variable  names and modify these
 your  function.  Here an example which squares the submitted  value and stores
 the value in the given variable:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 define-macro square-value
    set-variable @2 &mult @1 @1
@@ -618,7 +604,7 @@ Macro  behavior  often is modified by preceeding the macro call with a numeric
 argument, `-1 ml-write "message string"` was an example where the message goes
 to the terminal but not to the editor. Let's create a root function:
 
-```{.emf eval=true}
+```emf
 execute-file "tutorial.emf"
 define-macro check-num
     !if @?
@@ -641,7 +627,7 @@ on "define-macro".
 Let's  finish  for now with a macro  which  extracts  all header  line of this
 document and places is them with the line number into its own file, toc.txt.
 
-```{.emf eval=true}
+```emf
 find-file emf-tutorial.md
 beginning-of-buffer
 -1 ml-write $buffer-bname
@@ -656,7 +642,7 @@ beginning-of-buffer
 
 Let's extend this a little bit so that we write this into a file "toc.txt".
 
-```{.emf eval=true}
+```emf
 find-file "emf-tutorial.md"
 find-file "toc.txt"
 beginning-of-buffer
@@ -704,7 +690,7 @@ simple message in the macro. Open your  `USERNAME.emf` file and write down the
 following text:
 
 
-```{.emf eval=false}
+```emf
 define-macro remove-delete-me
     1000 ml-write "Macro is here"
 !emacro
@@ -719,7 +705,7 @@ should be sufficient. Afterward you see the message line in your editor.
 You can now modify the code,  re-mark and again use `execute-region` to update
 the macro code. Let's change the macro try it again out.
 
-```{.emf eval=false}
+```emf
 define-macro remove-delete-me
     1000 ml-write "Macro is here again!!"
 !emacro
@@ -732,7 +718,7 @@ should  be then  written  then in such an EMF file.  Placing  the  macro  into
 
 Here would be the final macro:
 
-```{.emf eval=false}
+```emf
 define-macro remove-delete-me
     ; stepwise debugging
     set-variable $debug 2
@@ -761,7 +747,7 @@ We set some  debugging  variable  on top to step  through the macro code. This
 helps us in  identifying  problems  in the code. We will see then that we must
 jump to the beginning of the line and then the code should work:
 
-```{.emf eval=false}
+```emf
 define-macro remove-delete-me
     set-alpha-mark "p"
     !force  search-forward "^delete me"
@@ -818,16 +804,14 @@ Key grammar rules:
 
 ## Document generation
 
-This document was generated using pandoc and the pantcl filter like this:
+Build the tutorial HTML from this Markdown source with `make` in the `docs`
+directory. The Makefile runs `tmdoc` in weave mode and then uses `mndoc` to
+produce the HTML. EMF code blocks use standard Markdown fences and are not
+executed as part of this build.
 
 ```
-pandoc --filter pantcl emf-tutorial.md -o temp.html -s --css mini.css
-htmlark temp.html -o emf-tutorial.html
-rm temp.html
+cd docs
+make
 ```
-
-
-
-
 
  
