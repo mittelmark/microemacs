@@ -8,6 +8,11 @@
 ![Commits](https://img.shields.io/github/commits-since/mittelmark/microemacs/latest)
 
 ![Ubuntu](https://github.com/mittelmark/microemacs/workflows/Binaries%20Ubuntu%20(linux-gcc)/badge.svg)
+![AlpineLinux](https://github.com/mittelmark/microemacs/workflows/Binaries%20Alpine%20Linux%20(alpinelinux-gcc)/badge.svg)
+![AlmaLinux](https://github.com/mittelmark/microemacs/workflows/Binaries%20Arch%20inux%20(almalinux-gcc)/badge.svg)
+![ArchLinux](https://github.com/mittelmark/microemacs/workflows/Binaries%20FreeBSD%20(freebsd-gcc)/badge.svg)
+![Linux i686](https://github.com/mittelmark/microemacs/workflows/Binaries%20Linux%20i686%20(debian-gcc)/badge.svg)
+![FreeBSD](https://github.com/mittelmark/microemacs/workflows/Binaries%20Arch%20(arch-gcc)/badge.svg)
 ![MacOS](https://github.com/mittelmark/microemacs/workflows/Binaries%20MacOS%20(macos-gcc)/badge.svg)
 ![Windows Winlibs](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-winlibs)/badge.svg)
 ![Windows Msys](https://github.com/mittelmark/microemacs/workflows/Binaries%20Windows%20(windows-msys2)/badge.svg)
@@ -468,8 +473,8 @@ If you  install  gcc on  FreeBSD it comes with the  ncurses  libraries
 already included so for the compilation you install the following tools:
 
 ```bash
-sudo pkg install gcc
-sudo pkg install Xorg libX11 libXft pkgconf fontconfig
+sudo pkg install curl gcc gmake zip
+sudo pkg install libXt libX11 libXft pkgconf fontconfig
 ### GhostBSD as well: sudo pkg install -g 'GhostBSD*-dev'
 ```
 
