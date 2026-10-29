@@ -1,6 +1,16 @@
 VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
-BDIST:="mingw64"
+ifeq ($(origin BDIST),undefined)
+BDIST=mingw64
+DEFAULT_BDIST=1
+else
+DEFAULT_BDIST=0
+endif
 MSYS := $(shell echo ${MSYSTEM} | tr '[:upper:]' '[:lower:]')
+ifeq ($(MSYS),msys)
+BUILDMSYS=msys64
+else
+BUILDMSYS=$(MSYS)
+endif
 ifeq (mingw64,$(BDIST))
 WIN=mingw
 WIX=win
@@ -13,25 +23,31 @@ WIN=msys
 WIX=msys
 endif
 endif
-RELEASE:="windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)"
+RELEASE:=windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)
 TOOLKIT=winmingwgcc
 MAKE=make
 default:
 	echo $(MSYS)
 	echo $(WIN)
 bfs/exe:
-	cd bfs && $(MAKE) -f $(TOOLKIT).gmk
+	cd bfs && $(MAKE) -f $(TOOLKIT).gmk BDIST=$(BDIST)
 mec: 
 	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=c BDIST=$(BDIST)
 
 mew: 
 	cd src && $(MAKE) -f $(TOOLKIT).mak BTYP=w BDIST=$(BDIST)
 
+ifeq ($(DEFAULT_BDIST),1)
+mecb:
+	$(MAKE) -f makefiles/winmingwgcc.gmk mecb BDIST=msys2unix
+	$(MAKE) -f makefiles/winmingwgcc.gmk mecb BDIST=mingw64
+else
 mecb: bfs/exe mec
-	./bfs/bfs.exe -a ./src/.$(MSYS)$(WIX)-release-mec/mec.exe -o $(RELEASE)-mecb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.$(BUILDMSYS)$(WIX)-release-mec/mec.exe -o $(RELEASE)-mecb.exe ./jasspa
+endif
 
 mewb: bfs/exe mew
-	./bfs/bfs.exe -a ./src/.$(MSYS)$(WIX)-release-mew/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
+	./bfs/bfs.exe -a ./src/.$(BUILDMSYS)$(WIX)-release-mew/mew.exe -o $(RELEASE)-mewb.exe ./jasspa
 
 release: $(app)
 	make -f makefiles/release.gmk app=$(app) RELEASE=$(RELEASE) ext=exe

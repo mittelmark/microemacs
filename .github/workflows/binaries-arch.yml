@@ -2,7 +2,7 @@ name: Binaries Arch Linux (arch-gcc)
 
 on:
   workflow_dispatch:
-
+x
 jobs:
   build:
     strategy:

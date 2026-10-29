@@ -80,7 +80,11 @@ OUTPUT_EXT := exe
 else
 OS := msys
 OSV := $(shell uname -r | grep -oE '^[0-9]+\.[0-9]+')
-RELEASE := msysunix-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
+MSYS := $(shell echo ${MSYSTEM} | tr '[:upper:]' '[:lower:]')
+ifeq ($(MSYS),)
+MSYS := msys
+endif
+RELEASE := windows-msysunix-$(MSYS)-microemacs-$(VERSION)
 BUILDID := msysunix
 EXE := .exe
 OUTPUT_EXT := exe
@@ -113,7 +117,11 @@ default:
 	echo "VERSION: '$(VERSION)' PLATFORM $(PLATFORM) OS $(OS) OSVERSION $(OSV) XFT $(XFT)"
 	echo "RELEASE: $(RELEASE)"
 bfs/bin:
+ifeq ($(PLATFORM),msys)
+	cd bfs && $(MAKE) -f winmingwgcc.gmk BDIST=msys2
+else
 	cd bfs && make
+endif
 mec:
 	cd src && make -f unixgcc.gmk BTYP=c
 
