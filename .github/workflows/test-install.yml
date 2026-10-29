@@ -93,3 +93,63 @@ jobs:
             Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
             Invoke-RestMethod -Uri https://github.com/mittelmark/microemacs/releases/latest/download/install-windows.ps1 | Invoke-Expression
             mecb -V
+
+  freebsd-15:
+    runs-on: ubuntu-latest
+    name: Test install on FreeBSD 15
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install and verify
+        uses: vmactions/freebsd-vm@v1
+        with:
+          release: "15"
+          run: |
+            pkg install -y bash curl unzip
+            export SHELL=/usr/local/bin/bash
+            /usr/local/bin/bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+            "$HOME/.local/bin/mecb" -V
+
+  alpine-latest:
+    runs-on: ubuntu-latest
+    name: Test install on Alpine Linux (latest)
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install and verify
+        run: |
+          docker run --rm alpine:latest sh -euc '
+            apk add --no-cache bash curl unzip
+            export SHELL=/bin/bash
+            bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+            "$HOME/.local/bin/mecb" -V
+          '
+
+  archlinux-latest:
+    runs-on: ubuntu-latest
+    name: Test install on Arch Linux (latest)
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install and verify
+        run: |
+          docker run --rm --security-opt seccomp=unconfined archlinux/archlinux:base-devel bash -euc '
+            sed -i "/^\\[options\\]/a DisableSandbox" /etc/pacman.conf
+            pacman-conf --config /etc/pacman.conf >/dev/null 2>&1 ||
+              sed -i "/^DisableSandbox$/d" /etc/pacman.conf
+            pacman -Syu --noconfirm --needed curl unzip which
+            export SHELL=/bin/bash
+            bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+            "$HOME/.local/bin/mecb" -V
+          '
+
+  almalinux-10:
+    runs-on: ubuntu-24.04
+    name: Test install on AlmaLinux 10 (x86_64)
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install and verify
+        run: |
+          docker run --rm almalinux:10 bash -euc '
+            dnf install -y curl unzip which
+            export SHELL=/bin/bash
+            bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+            "$HOME/.local/bin/mecb" -V
+          '
