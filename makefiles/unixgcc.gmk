@@ -171,8 +171,8 @@ release: $(app)
 # in jme.AppDir/ stay untouched. Packaging uses appimage-builder with
 # --skip-build: the staged AppDir (including the AppRun script) is packaged
 # as-is by the AppImage runtime (APPIMAGE_RUNTIME, see below). The AppRun
-# script runs jme through the host dynamic linker
-# (/lib64/ld-linux-x86-64.so.2) because a full appimage-builder build
+# script runs jme through the host dynamic linker for the current architecture
+# because a full appimage-builder build
 # rewrites PT_INTERP to a relative path and replaces AppRun with its own
 # ELF + AppRun.env.
 #
@@ -186,7 +186,7 @@ release: $(app)
 # pinned release there first (sha256 checked, stale caches replaced).
 # Mounting still uses the setuid fusermount/fusermount3 helper of the host
 # fuse/fuse3 package; on systems without any FUSE unpack manually with:
-#   ./Jasspa_MicroEmacs_<version>_x86_64.AppImage --appimage-extract
+#   ./Jasspa_MicroEmacs_<version>_<platform>_<arch>.AppImage --appimage-extract
 #
 # appimage-builder 1.1.0 always compresses the squashfs payload with xz,
 # but the type2-runtime's embedded squashfuse is built with zlib/zstd only
@@ -198,18 +198,31 @@ release: $(app)
 # Optional platform tag in the AppImage file name (used by CI), e.g.:
 #   make -f makefiles/unixgcc.gmk app-image APPIMAGE_PLATFORM_SUFFIX=_ubuntu-22.04
 # -> Jasspa_MicroEmacs_<version>_ubuntu-22.04_x86_64.AppImage
+#    or Jasspa_MicroEmacs_<version>_ubuntu-22.04_aarch64.AppImage
 # Default is empty (local builds keep the plain name).
 #
 APPIMAGE_APPDIR := appimage-build/AppDir
 APPIMAGE_PLATFORM_SUFFIX ?=
-APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)$(APPIMAGE_PLATFORM_SUFFIX)_x86_64.AppImage
+ifneq ($(filter aarch64 arm64,$(shell uname -m)),)
+APPIMAGE_ARCH ?= aarch64
+else
+APPIMAGE_ARCH ?= x86_64
+endif
+APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)$(APPIMAGE_PLATFORM_SUFFIX)_$(APPIMAGE_ARCH).AppImage
 APPIMAGE_RECIPE ?= makefiles/AppImageBuilder.yml
-APPIMAGE_ENV    := JME_VERSION=$(VERSION) JME_PLATFORM_SUFFIX=$(APPIMAGE_PLATFORM_SUFFIX)
+APPIMAGE_ENV    := JME_VERSION=$(VERSION) JME_PLATFORM_SUFFIX=$(APPIMAGE_PLATFORM_SUFFIX) JME_ARCH=$(APPIMAGE_ARCH)
 # Static type2-runtime carrier (no libfuse.so.2 dependency on the host),
 # pinned release, see comment block above.
-APPIMAGE_RUNTIME        := appimage-build/prime/runtime-x86_64
+APPIMAGE_RUNTIME := appimage-build/prime/runtime-$(APPIMAGE_ARCH)
+ifeq ($(APPIMAGE_ARCH),x86_64)
 APPIMAGE_RUNTIME_URL    := https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-x86_64
 APPIMAGE_RUNTIME_SHA256 := 2fca8b443c92510f1483a883f60061ad09b46b978b2631c807cd873a47ec260d
+else ifeq ($(APPIMAGE_ARCH),aarch64)
+APPIMAGE_RUNTIME_URL    := https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-aarch64
+APPIMAGE_RUNTIME_SHA256 := 00cbdfcf917cc6c0ff6d3347d59e0ca1f7f45a6df1a428a0d6d8a78664d87444
+else
+$(error APPIMAGE_ARCH must be x86_64 or aarch64, got '$(APPIMAGE_ARCH)')
+endif
 # zstd payload used to replace appimage-builder's xz payload (see above)
 APPIMAGE_PAYLOAD := appimage-build/payload-zstd.squashfs
 

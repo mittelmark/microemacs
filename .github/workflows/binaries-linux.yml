@@ -9,6 +9,8 @@ jobs:
         os: [ubuntu-22.04, ubuntu-22.04-arm, ubuntu-24.04, ubuntu-24.04-arm, ubuntu-26.04, ubuntu-26.04-arm ]  # Specify the Ubuntu version
 
     runs-on: ${{ matrix.os }}
+    env:
+      APPIMAGE_ARCH: ${{ endsWith(matrix.os, '-arm') && 'aarch64' || 'x86_64' }}
     steps:
     - uses: actions/checkout@v6
 
@@ -68,36 +70,44 @@ jobs:
              "./$b" -V
            done
 
-    # AppImage is x86_64 only (recipe arch + appimage-builder runtime).
-    # appimage-builder is installed user-local (~/.local/bin), not system-wide.
-    - name: Install AppImage build tools (Intel)
-      if: ${{ !endsWith(matrix.os, '-arm') }}
+    - name: Install AppImage build dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y libfuse2 fakeroot squashfs-tools
+
+    # The published standalone appimage-builder AppImage is x86_64 only.
+    - name: Install appimage-builder (x86_64)
+      if: ${{ env.APPIMAGE_ARCH == 'x86_64' }}
+      run: |
         mkdir -p "$HOME/.local/bin"
         wget -q -O "$HOME/.local/bin/appimage-builder" \
           https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
         chmod +x "$HOME/.local/bin/appimage-builder"
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-    - name: Build AppImage (Intel)
-      if: ${{ !endsWith(matrix.os, '-arm') }}
+    - name: Install appimage-builder (AArch64)
+      if: ${{ env.APPIMAGE_ARCH == 'aarch64' }}
+      run: |
+        sudo apt-get install -y pipx
+        pipx install appimage-builder==1.1.0
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+    - name: Build AppImage
       env:
         # Extract-and-run avoids FUSE in CI; end users still need libfuse2.
         APPIMAGE_EXTRACT_AND_RUN: "1"
       run: |
         appimage-builder --version
         make -f makefiles/unixgcc.gmk app-image \
+          APPIMAGE_ARCH="$APPIMAGE_ARCH" \
           APPIMAGE_PLATFORM_SUFFIX=_${{ matrix.os }}
-        ls -lh Jasspa_MicroEmacs_${VRS}_${{ matrix.os }}_x86_64.AppImage
+        ls -lh Jasspa_MicroEmacs_${VRS}_${{ matrix.os }}_${APPIMAGE_ARCH}.AppImage
 
     - name: Upload AppImage
-      if: ${{ !endsWith(matrix.os, '-arm') }}
       uses: actions/upload-artifact@v6
       with:
-        name: appimage-${{ matrix.os }}-${{ env.VRS }}-${{ env.BRANCH_NAME }}
-        path: Jasspa_MicroEmacs_${{ env.VRS }}_${{ matrix.os }}_x86_64.AppImage
+        name: appimage-${{ matrix.os }}-${{ env.APPIMAGE_ARCH }}-${{ env.VRS }}-${{ env.BRANCH_NAME }}
+        path: Jasspa_MicroEmacs_${{ env.VRS }}_${{ matrix.os }}_${{ env.APPIMAGE_ARCH }}.AppImage
 
     - name: make brew package
       run:  |
@@ -212,4 +222,3 @@ jobs:
       with: 
         name: brew-${{ matrix.os }}
         path: brew-*
-

@@ -10,10 +10,10 @@
 # glibc and the host's libX11/libXft/libtinfo/libz (see makefiles/AppImageBuilder.yml
 # for the minimum host requirements).
 #
-# jme may have a relative PT_INTERP (lib64/ld-linux-x86-64.so.2) after some
-# packaging steps; the kernel resolves that against the process CWD, which
-# is not the AppDir root at runtime. Exec jme through the host dynamic
-# linker explicitly so the binary runs regardless of PT_INTERP.
+# jme may have a relative PT_INTERP after some packaging steps; the kernel
+# resolves that against the process CWD, which is not the AppDir root at
+# runtime. Exec jme through the host dynamic linker explicitly so the binary
+# runs regardless of PT_INTERP.
 HERE="$(dirname "$(readlink -f "${0}")")"
 EXEC="${HERE}/usr/bin/jme"
 if [ ! -d "${HOME}/.jasspa" ]; then
@@ -27,16 +27,28 @@ if [ ! -x "${EXEC}" ]; then
     echo "AppRun: error: ${EXEC} not found or not executable" >&2
     exit 1
 fi
-LOADER=/lib64/ld-linux-x86-64.so.2
-if [ -x "${LOADER}" ]; then
-    if [ "$1" = "-n" ] || [ -z "${DISPLAY}" ]; then
-        TERM=xterm exec "${LOADER}" "${EXEC}" "${@}"
-    else
-        exec "${LOADER}" "${EXEC}" "${@}"
+case "$(uname -m)" in
+    x86_64)
+        LOADERS=(/lib64/ld-linux-x86-64.so.2 /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+        ;;
+    aarch64|arm64)
+        LOADERS=(/lib/ld-linux-aarch64.so.1 /lib64/ld-linux-aarch64.so.1)
+        ;;
+    *)
+        LOADERS=()
+        ;;
+esac
+for LOADER in "${LOADERS[@]}"; do
+    if [ -x "${LOADER}" ]; then
+        if [ "$1" = "-n" ] || [ -z "${DISPLAY}" ]; then
+            TERM=xterm exec "${LOADER}" "${EXEC}" "${@}"
+        else
+            exec "${LOADER}" "${EXEC}" "${@}"
+        fi
     fi
-fi
-# Fallback for systems without /lib64/ld-linux-x86-64.so.2 (should not
-# happen on glibc x86_64): hope the PT_INTERP resolves as-is.
+done
+# Fallback for systems without a recognized host dynamic linker: hope the
+# binary's PT_INTERP resolves as-is.
 if [ "$1" = "-n" ] || [ -z "${DISPLAY}" ]; then
     TERM=xterm exec "${EXEC}" "${@}"
 else

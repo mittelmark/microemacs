@@ -35,7 +35,7 @@
 # sha256-verified by the makefile before this recipe runs:
 # appimage-builder would otherwise download AppImageKit's old fuse2 runtime
 # (dlopen()s libfuse.so.2 and aborts on hosts without FUSE2) into
-# appimage-build/prime/runtime-x86_64 whenever that file is missing.
+# appimage-build/prime/runtime-<arch> whenever that file is missing.
 # We use the statically linked type2-runtime instead, which needs no
 # libfuse.so.2; mounting uses the host's setuid fusermount/fusermount3 and
 # --appimage-extract remains available on systems without any FUSE.
@@ -46,7 +46,7 @@
 # carrier right after appimage-builder returns - see makefiles/unixgcc.gmk.
 #
 # Output file name:
-#   Jasspa_MicroEmacs_<JME_VERSION><JME_PLATFORM_SUFFIX>_x86_64.AppImage
+#   Jasspa_MicroEmacs_<JME_VERSION><JME_PLATFORM_SUFFIX>_<JME_ARCH>.AppImage
 #
 # JME_VERSION and JME_PLATFORM_SUFFIX must both be set in the environment
 # (appimage-builder errors on missing {{VAR}}). The makefile always sets
@@ -67,5 +67,5 @@ AppDir:
     exec: usr/bin/jme
     exec_args: "$@"
 AppImage:
-  arch: x86_64
-  file_name: Jasspa_MicroEmacs_{{JME_VERSION}}{{JME_PLATFORM_SUFFIX}}_x86_64.AppImage
+  arch: "{{JME_ARCH}}"
+  file_name: Jasspa_MicroEmacs_{{JME_VERSION}}{{JME_PLATFORM_SUFFIX}}_{{JME_ARCH}}.AppImage
