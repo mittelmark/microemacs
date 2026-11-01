@@ -151,12 +151,15 @@ add-file-hook "*file-exec*" fhook-file-exec
 0 define-macro fhook-generic-replace
   set-variable #l1 @1
   set-variable #l2 @2
+  set-variable #l3 &cond &bmod "magic" 1 -1
+  1 buffer-mode "magic"
   -1 buffer-mode "view"
   beginning-of-buffer
   replace-string #l1 #l2
   beginning-of-buffer
   -1 buffer-mode "edit"
   1 buffer-mode "view"  
+  #l3 buffer-mode "magic"
 !emacro
 
 ; checs for the existance of file and 
@@ -193,6 +196,5 @@ define-macro file-exists
 ; Tcl - hktcl.emf
 ; V -  hkv.emf
 ; Zig - hkzig.emf
-
 
 

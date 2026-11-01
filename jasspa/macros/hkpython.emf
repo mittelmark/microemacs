@@ -149,11 +149,15 @@ set-variable #l0 &which "ruff"
     !endif
     !if &not &seq &which "pylint" "ERROR"
       set-variable %fhook-python-lint "pylint \"%f\""
+    !else
+      ; py_compile is included with Python and provides a syntax check.
+      set-variable %fhook-python-lint "python3 -m py_compile \"%f\""
     !endif
   !endif
   set-variable %fhook-python-exec   "python3 \"%f\""
   0 define-macro fhook-python-replace
     fhook-generic-replace " *File \"\\(.+\\)\", line \\(.+\\)" "\\1:\\2:0"
+    fhook-generic-replace "Sorry: \\(.+\\) (\\(.+\\), line \\([0-9]+\\))" "ERROR: \\1\n\\2:\\3:0"
   !emacro
 !endif
 
