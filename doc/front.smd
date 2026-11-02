@@ -144,7 +144,7 @@
   [save-buffer(2)](save-buffer(2)) (C-x C-s) Save contents of changed buffer to file  
   [save-buffers-exit-emacs(2)](save-buffers-exit-emacs(2)) (esc z) Exit the editor prompt user
    to write changes  
-  [undo(2)](undo(2)) (C-x u) Undo the last edit
+  [undo(2)](undo(2)) (C-x u, C-/) Undo the last edit
 
 !! me-id: amicr002
 !   Cursor Movement Commands
@@ -2226,7 +2226,7 @@
   [translate-key(2)](translate-key(2)) Translate key  
   [transpose-chars(2)](transpose-chars(2)) (C-t) Exchange (swap) adjacent characters  
   [transpose-lines(2)](transpose-lines(2)) (C-x C-t) Exchange (swap) adjacent lines  
-  [undo(2)](undo(2)) (C-x u) Undo the last edit  
+  [undo(2)](undo(2)) (C-x u, C-/) Undo the last edit  
   [uniq(3)](uniq(3)) Make lines in a sorted list unique  
   [universal-argument(2)](universal-argument(2)) (C-u) Set the command argument count  
   [unmark-buffer(3)](unmark-buffer(3)) Remove buffer edited flag  
@@ -2470,7 +2470,7 @@
   [translate-key(2)](translate-key(2)) Translate key  
   [transpose-chars(2)](transpose-chars(2)) (C-t) Exchange (swap) adjacent characters  
   [transpose-lines(2)](transpose-lines(2)) (C-x C-t) Exchange (swap) adjacent lines  
-  [undo(2)](undo(2)) (C-x u) Undo the last edit  
+  [undo(2)](undo(2)) (C-x u, C-/) Undo the last edit  
   [universal-argument(2)](universal-argument(2)) (C-u) Set the command argument count  
   [unset-variable(2)](unset-variable(2)) Delete a variable  
   [upper-case-region(2)](upper-case-region(2)) (C-x C-u) Uppercase a region (upcase)  
@@ -4050,7 +4050,7 @@
   [typst(9)](typst(9)) Typst markup file  
   [UserProfiles(2)](UserProfiles(2)) Defining a user profile  
   [uncomment-line(3)](uncomment-line(3)) Uncomment current line  
-  [undo(2)](undo(2)) (C-x u) Undo the last edit  
+  [undo(2)](undo(2)) (C-x u, C-/) Undo the last edit  
   [undo(2m)](undo(2m)) Retain edit modifications  
   [uniq(3)](uniq(3)) Make lines in a sorted list unique  
   [universal-argument(2)](universal-argument(2)) (C-u) Set the command argument count  

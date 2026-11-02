@@ -2848,7 +2848,7 @@ $a
   - Move the point (cursor) to the end of the text.
   - Use __copy-region__ to copy the region you just defined. The text will
         be saved in the kill buffer. (If you accidentally delete the text
-        use [yank](yank(2)) (C-y) immediately or [undo](undo(2)) (C-x u) to restore the text).
+        use [yank](yank(2)) (C-y) immediately or [undo](undo(2)) (C-x u or C-/) to restore the text).
   - Move the point to the place you want the text to appear.
   - Use the [yank](yank(2)) (__C-y__) command to copy the text from the kill buffer to
         the current point.
@@ -5028,6 +5028,7 @@ $a
             "C-x" ......................... 2 prefix
             "C-y" ......................... yank
             "C-z" ......................... scroll-up
+            "C-/" ......................... undo
             "C-_" ......................... undo
             "A-e" ......................... file-browser
             "A-r" ......................... replace-all-string
@@ -13391,7 +13392,7 @@ $a
 ## SYNOPSIS
 
 
-  _n_ __undo__ (__C-x u__)
+  _n_ __undo__ (__C-x u__ or __C-__/__)
 
 
 ## DESCRIPTION
@@ -15585,6 +15586,7 @@ $a
   `C-x` [prefix](prefix(2)) Control character prefix.  
   `C-y` [yank](yank(2)) Restore what was copied or deleted.  
   `C-z` [scroll-up](scroll-down(2)) Move backward by one screen.  
+  `C-/` [undo](undo(2)) Undo the previous edit.  
   `C-_` [undo](undo(2)) Undo the previous edit.  
   `C-space` [set-mark](set-mark(2)) Set start of a region.  
   `C-down` [forward-line](forward-line(2)) Move forward five lines.  

@@ -258,7 +258,7 @@ Miscellaneous Information
     lssave-buffer(2)lmsave-buffer(2)le (C-x C-s) Save contents of changed buffer to file  
     lssave-buffers-exit-emacs(2)lmsave-buffers-exit-emacs(2)le (esc z) Exit the editor prompt user
      to write changes  
-    lsundo(2)lmundo(2)le (C-x u) Undo the last edit
+    lsundo(2)lmundo(2)le (C-x u, C-/) Undo the last edit
 
 !   Cursor Movement Commands
 cEcECURSOR MOVEMENT COMMANDS cEcA
@@ -2310,7 +2310,7 @@ Miscellaneous Information
     lstranslate-key(2)lmtranslate-key(2)le Translate key  
     lstranspose-chars(2)lmtranspose-chars(2)le (C-t) Exchange (swap) adjacent characters  
     lstranspose-lines(2)lmtranspose-lines(2)le (C-x C-t) Exchange (swap) adjacent lines  
-    lsundo(2)lmundo(2)le (C-x u) Undo the last edit  
+    lsundo(2)lmundo(2)le (C-x u, C-/) Undo the last edit  
     lsuniq(3)lmuniq(3)le Make lines in a sorted list unique  
     lsuniversal-argument(2)lmuniversal-argument(2)le (C-u) Set the command argument count  
     lsunmark-buffer(3)lmunmark-buffer(3)le Remove buffer edited flag  
@@ -2553,7 +2553,7 @@ Miscellaneous Information
     lstranslate-key(2)lmtranslate-key(2)le Translate key  
     lstranspose-chars(2)lmtranspose-chars(2)le (C-t) Exchange (swap) adjacent characters  
     lstranspose-lines(2)lmtranspose-lines(2)le (C-x C-t) Exchange (swap) adjacent lines  
-    lsundo(2)lmundo(2)le (C-x u) Undo the last edit  
+    lsundo(2)lmundo(2)le (C-x u, C-/) Undo the last edit  
     lsuniversal-argument(2)lmuniversal-argument(2)le (C-u) Set the command argument count  
     lsunset-variable(2)lmunset-variable(2)le Delete a variable  
     lsupper-case-region(2)lmupper-case-region(2)le (C-x C-u) Uppercase a region (upcase)  
@@ -4130,7 +4130,7 @@ Miscellaneous Information
     lstypst(9)lmtypst(9)le Typst markup file  
     lsUserProfiles(2)lmUserProfiles(2)le Defining a user profile  
     lsuncomment-line(3)lmuncomment-line(3)le Uncomment current line  
-    lsundo(2)lmundo(2)le (C-x u) Undo the last edit  
+    lsundo(2)lmundo(2)le (C-x u, C-/) Undo the last edit  
     lsundo(2m)lmundo(2m)le Retain edit modifications  
     lsuniq(3)lmuniq(3)le Make lines in a sorted list unique  
     lsuniversal-argument(2)lmuniversal-argument(2)le (C-u) Set the command argument count  
@@ -9068,7 +9068,7 @@ Miscellaneous Information
     lsrestyle-buffer(3)lmrestyle-buffer(3)le - Reformats 'C' + known languages.  
     lsspell-buffer(3)lmspell-buffer(3)le - For documentation work, spells the buffer.  
     cDC-scA - lsisearch-forward(2)lmisearch-forward(2)le incremental search.  
-    cDC-x ucA or cGC-_cA - lsundo(2)lmundo(2)le undoes edits.  
+    cDC-x ucA, cDC-/cA or cGC-_cA - lsundo(2)lmundo(2)le undoes edits.  
     cDF10cA - lsfile-browser(3)lmfile-browser(3)le allows the file system to be browsed  
 
     Other useful macros include:-
@@ -13526,7 +13526,7 @@ $a
     - Move the point (cursor) to the end of the text.
     - Use cDcopy-regioncA to copy the region you just defined. The text will
           be saved in the kill buffer. (If you accidentally delete the text
-          use lsyank(2)lmyankle (C-y) immediately or lsundo(2)lmundole (C-x u) to restore the text).
+          use lsyank(2)lmyankle (C-y) immediately or lsundo(2)lmundole (C-x u or C-/) to restore the text).
     - Move the point to the place you want the text to appear.
     - Use the lsyank(2)lmyankle (cDC-ycA) command to copy the text from the kill buffer to
           the current point.
@@ -15660,6 +15660,7 @@ $a
               "C-x" ......................... 2 prefix
               "C-y" ......................... yank
               "C-z" ......................... scroll-up
+              "C-/" ......................... undo
               "C-_" ......................... undo
               "A-e" ......................... file-browser
               "A-r" ......................... replace-all-string
@@ -23859,7 +23860,7 @@ $a
 cESYNOPSIS cA
 
 
-    cCncA cDundocA (cDC-x ucA)
+    cCncA cDundocA (cDC-x ucA or cDC-cA/__)
 
 
 cEDESCRIPTION cA
@@ -26005,6 +26006,7 @@ $a
     cGC-xcA lsprefix(2)lmprefixle Control character prefix.  
     cGC-ycA lsyank(2)lmyankle Restore what was copied or deleted.  
     cGC-zcA lsscroll-down(2)lmscroll-uple Move backward by one screen.  
+    cGC-/cA lsundo(2)lmundole Undo the previous edit.  
     cGC-_cA lsundo(2)lmundole Undo the previous edit.  
     cGC-spacecA lsset-mark(2)lmset-markle Set start of a region.  
     cGC-downcA lsforward-line(2)lmforward-linele Move forward five lines.  

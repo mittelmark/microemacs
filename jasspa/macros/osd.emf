@@ -335,7 +335,7 @@ osd 1 210 ""  "E\Hxit            C-x C-c"   f save-buffers-exit-emacs
 ; MENU #2 - EDIT sub-menu
 ;
 osd 2 0   "bo" 1 0
-osd 2 10  ""  "\HUndo                C-x u"      1 osd-undo      ; Undo the last command
+osd 2 10  ""  "\HUndo                C-/"       1 osd-undo      ; Undo the last command
 osd 2 20  ""  "Redo"                                             ; Re-do the last osd-undo
 osd 2 30  ""  "Undo \HAll"                       0 osd-undo      ; Undo all changes to last save
 osd 2 40  "-"
