@@ -34254,10 +34254,19 @@ $a
      (defined in `menedit.emf`). See [Compatibility](Compatibility(2)) for more information on
      emulation.
 
-  >  In case you  change  the  keyboard  mapping  you  should in most cases
-     restart the editor to avoid possible problems. Since 2023 the CUA
-     emulation seems to work reasonable well. But if you switch back to 
-     no-emulation mode you have to restart the editor.
+  >  Restart the editor after changing the emulation to activate its key
+     bindings. Selecting `<No Emulation>` does not restore the default
+     bindings in the current session; restart MicroEmacs to restore them.
+
+  >  In CUA mode, `F12` opens Save As (`A-C-s` is an alternative where
+     available). `F4` runs Diff Changes, `F5` Compile, `F7` Spell Buffer,
+     `F8` Notes, and `F10` or `C-F10` opens the File Browser. Window and
+     buffer navigation use `C-t` followed by `0` through `7` in both
+     terminal and window versions: `0` deletes a window, `1` keeps one
+     window, `2`/`3` split vertically/horizontally, `4`/`5` select the
+     previous/next window, and `6`/`7` select the previous/next buffer.
+     Keyboard macros use `C-t (` to start recording, `C-t )` to stop, and
+     `C-t e` to replay.
 
   `Rebind Home Keys`
   

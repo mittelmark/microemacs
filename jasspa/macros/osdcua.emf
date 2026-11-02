@@ -8,13 +8,15 @@
 ; Synopsis:    CUA (Standard GUI keybindings) emulation
 ; Authors:     Steven Phillips, Gabriel Tabares-Barreiro, Detlef Groth
 ;
+execute-file "cuaedit"
+
 osd 1 10  ""  "\HNew             C-n"   f osd-new-buffer ; Create a new document
 osd 1 20  ""  "\HOpen...         C-o"   f osd-file-open  ; Find a new file
 osd 1 50  ""  "\HClose           C-w"   f osd-close
 osd 1 80  ""  "\HSave            C-s"   f osd-save       ; Save the buffer
-osd 1 90  ""  "Save \HAs...      A-C-s" f osd-save-as    ; Save new file
+osd 1 90  ""  "Save \HAs...      F12"    f osd-save-as    ; Save new file
 osd 1 140 ""  "\HPrint           C-p"   f print-buffer   ; Print
-osd 1 160 ""  "File \HBrowser    F10"   f file-browser   ; File browser
+osd 1 160 ""  "File \HBrowser F10/C-F10" f file-browser ; File browser
 osd 1 170 ""  "Ftp Bro\Hwser        "   f ftp            ; Ftp connection
 osd 1 210 ""  "E\Hxit            C-q"  f save-buffers-exit-emacs
 ; Edit
@@ -55,25 +57,29 @@ osd 5 180 ""  "L\Hower Case Region        C-l" f lower-case-region
 osd 5 190 ""  "U\Hpper Case Region        C-u" f upper-case-region
 ; Tools
 osd 6 30  ""  "Spell \HWord"         1 spell-word
+osd 6 40  ""  "\HSpell Buffer...     f7" f spell-buffer
+osd 6 80  ""  "Di\Hff Changes        f4" f diff-changes
+osd 6 110 ""  "\HCompile             f5" f compile
+osd 6 125 ""  "\HNotes               f8" f notes
 ; Advanced
 osd 0 70 "Mdfsh" " A\Hdvanced  " 7
-osd 7 10  ""  "\HRecord Macro"       f osd-record-macro
-osd 7 20  ""  "\HExecute Macro"      f execute-kbd-macro
+osd 7 10  ""  "\HRecord Macro        C-t (" f osd-record-macro
+osd 7 20  ""  "\HExecute Macro       C-t e" f execute-kbd-macro
 osd 7 50  ""  "E\Hxecute Command..." f execute-named-command
 osd 7 60  ""  "Execute \HFile..."    f execute-file
 osd 7 140 ""  "\HIpipe Command..."   f ipipe-shell-command
 osd 7 150 ""  "S\Hhell"              f shell
 ; Window
-osd 8 10  ""  "\HSplit Window V     C-2"       f split-window-vertically
-osd 8 20  ""  "\HGrow Window V"                1 change-window-depth
-osd 8 30  ""  "S\Hhrink Window V"             -1 change-window-depth
-osd 8 40  ""  "Spl\Hit Window H     C-3"       f split-window-horizontally
-osd 8 50  ""  "G\Hrow Window H"                1 change-window-width
-osd 8 60  ""  "Shr\Hink Window H    "         -1 change-window-width
-osd 8 80  ""  "\HOne Window         C-1"       f delete-other-windows
-osd 8 90  ""  "\HDelete Window      C-0"       f delete-window
-osd 8 110 ""  "\HPrevious Window    C-4"       f previous-window
-osd 8 120 ""  "\HNext Window        C-5"       f next-window
+osd 8 10  ""  "\HSplit Window V     C-t 2"       f split-window-vertically
+osd 8 20  ""  "\HGrow Window V"                  1 change-window-depth
+osd 8 30  ""  "S\Hhrink Window V"               -1 change-window-depth
+osd 8 40  ""  "Spl\Hit Window H     C-t 3"       f split-window-horizontally
+osd 8 50  ""  "G\Hrow Window H"                  1 change-window-width
+osd 8 60  ""  "Shr\Hink Window H    "           -1 change-window-width
+osd 8 80  ""  "\HOne Window         C-t 1"       f delete-other-windows
+osd 8 90  ""  "\HDelete Window      C-t 0"       f delete-window
+osd 8 110 ""  "\HPrevious Window    C-t 4"       f previous-window
+osd 8 120 ""  "\HNext Window        C-t 5"       f next-window
 !if &and &not &band $system 0x01 &opt "mwf"
     ; running a version that can support multiple frames
     osd 8 150 "-"

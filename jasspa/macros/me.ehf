@@ -44361,10 +44361,19 @@ $a
        (defined in cGmenedit.emfcA). See lsCompatibility(2)lmCompatibilityle for more information on
        emulation.
 
-       In case you  change  the  keyboard  mapping  you  should in most cases
-       restart the editor to avoid possible problems. Since 2023 the CUA
-       emulation seems to work reasonable well. But if you switch back to 
-       no-emulation mode you have to restart the editor.
+       Restart the editor after changing the emulation to activate its key
+       bindings. Selecting cG<No Emulation>cA does not restore the default
+       bindings in the current session; restart MicroEmacs to restore them.
+
+       In CUA mode, cGF12cA opens Save As (cGA-C-scA is an alternative where
+       available). cGF4cA runs Diff Changes, cGF5cA Compile, cGF7cA Spell Buffer,
+       cGF8cA Notes, and cGF10cA or cGC-F10cA opens the File Browser. Window and
+       buffer navigation use cGC-tcA followed by cG0cA through cG7cA in both
+       terminal and window versions: cG0cA deletes a window, cG1cA keeps one
+       window, cG2cA/cG3cA split vertically/horizontally, cG4cA/cG5cA select the
+       previous/next window, and cG6cA/cG7cA select the previous/next buffer.
+       Keyboard macros use cGC-t (cA to start recording, cGC-t )cA to stop, and
+       cGC-t ecA to replay.
 
     `Rebind Home Keys`
     
