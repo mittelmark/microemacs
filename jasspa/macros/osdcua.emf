@@ -47,7 +47,10 @@ osd 3 160 ""  "Goto \HTag..."               f osd-find-tag
 ; View
 osd 4 60  ""  "Buffer \HInfo"               f buffer-info
 osd 4 70  ""  "Word \HCount"                f count-words
+osd 4 80  ""  "\HOccurrences            f6"     f occur
 osd 4 100 "M" "\HBuffer"                   20 osd-1-buffer
+osd 4 180 ""  "\HToolbar              C-t t"    f toolbar
+osd 4 190 ""  "\HWhitespaces           C-t s"    f display-whitespaces
 ; Format
 osd 5 70  ""  "\HFill Paragraph"               f fill-paragraph
 osd 5 150 ""  "Capitali\Hze Word"              f capitalize-word
