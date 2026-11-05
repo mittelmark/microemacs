@@ -165,6 +165,7 @@ from a Windows terminal to check for updates of the installed executables.
     - [MSYS2 Compilation](#msys2)
     - [FreeBSD Compilation](#freebsd)
 - [Binaries Downloads](#Downloads)
+    - [Experimental Preview](#experimental-preview)
 - [Terminal issues](#terminal-issues)
 - [Links](#links)
 
@@ -503,6 +504,28 @@ Plain  `make` in the  project  root  works  as  well,  the  root  `Makefile`
 detects  the  platform  and  forwards  the  goals  to  `freebsd.mak`.
 
 <a name="Downloads"> </a>
+
+<a name="experimental-preview"> </a>
+### Experimental weekly preview (devel)
+
+[Open the Weekly Build Preview workflow](https://github.com/mittelmark/microemacs/actions/workflows/weekly-preview.yml)
+and download artifacts from the latest successful run. This is an experimental
+build from `devel`, not a GitHub Release; the installer and update scripts do
+not install it. Workflow artifacts are retained for 14 days.
+
+The preview targets macOS 26 (Intel and Apple silicon), Ubuntu 22.04
+(x86_64 and AArch64), and Windows 10/11 (native MinGW UCRT64). It includes
+`mecb` and `mewb` builds, plus Ubuntu 22.04 AppImages for x86_64 and AArch64.
+
+Recent changes in the preview include:
+
+- CUA emulation: `C-a` selects all in terminal and GUI mode; help and bookmark
+  shortcuts use the shared `C-t` prefix, with toolbar and whitespace toggles
+  on `C-t t` and `C-t s`, and occurrences on `F6`.
+- `C-/` is available as an additional undo shortcut.
+- Python file checking falls back to the standard-library `py_compile` when
+  Ruff and Pylint are unavailable, with diagnostics converted to navigable
+  file locations.
 
 ## Download Prebuilt MicroEmacs Executables (v09.12.26)
 

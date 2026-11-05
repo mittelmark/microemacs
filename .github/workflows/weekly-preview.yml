@@ -23,6 +23,7 @@ jobs:
             compiler: gcc
             artifact_prefix: linux-
             test_binary: src/.linuxgcc-release-mec/mec
+            appimage_arch: x86_64
           - platform: linux-ubuntu-22.04-arm64
             runner: ubuntu-22.04-arm
             family: linux
@@ -30,6 +31,7 @@ jobs:
             compiler: gcc
             artifact_prefix: linux-
             test_binary: src/.linuxgcc-release-mec/mec
+            appimage_arch: aarch64
           - platform: macos-26-intel
             runner: macos-26-intel
             family: macos
@@ -57,6 +59,27 @@ jobs:
           sudo apt-get install -y build-essential libxt-dev libxft-dev \
             pkg-config libfreetype6-dev libfontconfig1-dev
 
+      - name: Install AppImage build dependencies
+        if: matrix.family == 'linux'
+        run: |
+          sudo apt-get install -y libfuse2 fakeroot squashfs-tools
+
+      - name: Install appimage-builder (x86_64)
+        if: matrix.appimage_arch == 'x86_64'
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          wget -q -O "$HOME/.local/bin/appimage-builder" \
+            https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+          chmod +x "$HOME/.local/bin/appimage-builder"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install appimage-builder (AArch64)
+        if: matrix.appimage_arch == 'aarch64'
+        run: |
+          sudo apt-get install -y pipx
+          pipx install appimage-builder==1.1.0
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
       - name: Install macOS build dependencies
         if: matrix.family == 'macos'
         run: |
@@ -75,7 +98,7 @@ jobs:
 
       - name: Build terminal and window executables
         run: |
-          make -f "${{ matrix.makefile }}" mec mew mecb mewb CC="${{ matrix.compiler }}"
+          make -f "${{ matrix.makefile }}" mec mew mecw mecb mewb mecwb CC="${{ matrix.compiler }}"
 
       - name: Smoke-test standalone terminal executable
         run: |
@@ -92,6 +115,17 @@ jobs:
           grep -q "TEST:all-tests=complete" tests/test-output.txt
           grep -q "TEST:unicode=αβγ" tests/test-output.txt
 
+      - name: Build Ubuntu AppImage
+        if: matrix.family == 'linux'
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+        run: |
+          appimage-builder --version
+          make -f makefiles/unixgcc.gmk app-image \
+            APPIMAGE_ARCH="${{ matrix.appimage_arch }}" \
+            APPIMAGE_PLATFORM_SUFFIX=_${{ matrix.runner }}
+          ls -lh "Jasspa_MicroEmacs_${{ steps.meta.outputs.version }}_${{ matrix.runner }}_${{ matrix.appimage_arch }}.AppImage"
+
       - name: Upload preview binaries and test output
         uses: actions/upload-artifact@v6
         with:
@@ -100,6 +134,15 @@ jobs:
             ${{ matrix.artifact_prefix }}*microemacs-*-mecb.bin
             ${{ matrix.artifact_prefix }}*microemacs-*-mewb.bin
             tests/test-output.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload Ubuntu AppImage preview
+        if: matrix.family == 'linux'
+        uses: actions/upload-artifact@v6
+        with:
+          name: microemacs-preview-appimage-${{ matrix.platform }}-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
+          path: Jasspa_MicroEmacs_${{ steps.meta.outputs.version }}_${{ matrix.runner }}_${{ matrix.appimage_arch }}.AppImage
           if-no-files-found: error
           retention-days: 14
 
