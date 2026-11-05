@@ -1,0 +1,166 @@
+name: Weekly Build Preview
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unix:
+    name: Build and test ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-ubuntu-22.04-x86_64
+            runner: ubuntu-22.04
+            family: linux
+            makefile: makefiles/unixgcc.gmk
+            compiler: gcc
+            artifact_prefix: linux-
+            test_binary: src/.linuxgcc-release-mec/mec
+          - platform: linux-ubuntu-22.04-arm64
+            runner: ubuntu-22.04-arm
+            family: linux
+            makefile: makefiles/unixgcc.gmk
+            compiler: gcc
+            artifact_prefix: linux-
+            test_binary: src/.linuxgcc-release-mec/mec
+          - platform: macos-26-intel
+            runner: macos-26-intel
+            family: macos
+            makefile: makefiles/macosgcc.gmk
+            compiler: gcc-15
+            artifact_prefix: macos-
+            test_binary: src/.macosgcc-release-mec/mec
+          - platform: macos-26-arm64
+            runner: macos-26
+            family: macos
+            makefile: makefiles/macosgcc.gmk
+            compiler: gcc-15
+            artifact_prefix: macos-
+            test_binary: src/.macosgcc-release-mec/mec
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: devel
+
+      - name: Install Linux build dependencies
+        if: matrix.family == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libxt-dev libxft-dev \
+            pkg-config libfreetype6-dev libfontconfig1-dev
+
+      - name: Install macOS build dependencies
+        if: matrix.family == 'macos'
+        run: |
+          brew install xquartz make coreutils pkg-config freetype fontconfig
+          echo "$(brew --prefix make)/libexec/gnubin" >> "$GITHUB_PATH"
+          echo "$(brew --prefix coreutils)/libexec/gnubin" >> "$GITHUB_PATH"
+          echo "PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig" >> "$GITHUB_ENV"
+
+      - name: Record preview identity
+        id: meta
+        run: |
+          version=$(grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h |
+            awk '{ gsub(/"/, "", $3); printf "%s", $3 }')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse --short=12 HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build terminal and window executables
+        run: |
+          make -f "${{ matrix.makefile }}" mec mew mecb mewb CC="${{ matrix.compiler }}"
+
+      - name: Smoke-test standalone terminal executable
+        run: |
+          for binary in ${{ matrix.artifact_prefix }}*microemacs-*-mecb.bin; do
+            "./$binary" -V
+          done
+
+      - name: Run basic regression tests
+        run: |
+          rm -f tests/test-output.txt
+          TERM=xterm-256color MENAME=ci-preview MEPATH=jasspa/macros \
+            "${{ matrix.test_binary }}" \
+            @tests/test-basics 2>&1 || true
+          grep -q "TEST:all-tests=complete" tests/test-output.txt
+          grep -q "TEST:unicode=αβγ" tests/test-output.txt
+
+      - name: Upload preview binaries and test output
+        uses: actions/upload-artifact@v6
+        with:
+          name: microemacs-preview-${{ matrix.platform }}-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
+          path: |
+            ${{ matrix.artifact_prefix }}*microemacs-*-mecb.bin
+            ${{ matrix.artifact_prefix }}*microemacs-*-mewb.bin
+            tests/test-output.txt
+          if-no-files-found: error
+          retention-days: 14
+
+  windows-ucrt:
+    name: Build and test Windows native MinGW UCRT64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: devel
+
+      - name: Set up MSYS2 UCRT64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ucrt64
+          update: true
+          install: >-
+            make
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-ncurses
+            mingw-w64-ucrt-x86_64-zlib
+
+      - name: Record preview identity
+        id: meta
+        shell: msys2 {0}
+        run: |
+          version=$(grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h |
+            awk '{ gsub(/"/, "", $3); printf "%s", $3 }')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse --short=12 HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build terminal and window executables
+        shell: msys2 {0}
+        run: |
+          make -f makefiles/winmingwgcc.gmk \
+            mec mew mecb mewb BDIST=mingw64
+
+      - name: Smoke-test standalone terminal executable
+        shell: msys2 {0}
+        run: |
+          for binary in windows-mingw-ucrt64-microemacs-*-mecb.exe; do
+            "./$binary" -V
+          done
+
+      - name: Run basic regression tests
+        shell: msys2 {0}
+        run: |
+          rm -f tests/test-output.txt
+          TERM=xterm-256color MENAME=ci-preview MEPATH=jasspa/macros \
+            src/.ucrt64win-release-mec/mec.exe \
+            @tests/test-basics 2>&1 || true
+          grep -q "TEST:all-tests=complete" tests/test-output.txt
+          grep -q "TEST:unicode=αβγ" tests/test-output.txt
+
+      - name: Upload preview binaries and test output
+        uses: actions/upload-artifact@v6
+        with:
+          name: microemacs-preview-windows-ucrt64-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
+          path: |
+            windows-mingw-ucrt64-microemacs-*-mecb.exe
+            windows-mingw-ucrt64-microemacs-*-mewb.exe
+            tests/test-output.txt
+          if-no-files-found: error
+          retention-days: 14
