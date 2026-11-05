@@ -86,7 +86,7 @@
   [restyle-buffer(3)](restyle-buffer(3)) - Reformats 'C' + known languages.  
   [spell-buffer(3)](spell-buffer(3)) - For documentation work, spells the buffer.  
   __C-s__ - [isearch-forward(2)](isearch-forward(2)) incremental search.  
-  __C-x u__ or `C-_` - [undo(2)](undo(2)) undoes edits.  
+  __C-x u__, __C-/__ or `C-_` - [undo(2)](undo(2)) undoes edits.  
   __F10__ - [file-browser(3)](file-browser(3)) allows the file system to be browsed  
 
   Other useful macros include:-

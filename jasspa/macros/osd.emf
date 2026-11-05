@@ -44,7 +44,11 @@ define-macro-file osdhelp osd-help
     !endif
     set-variable #l0 &ind &spr ".%s.setup" $buffer-fhook
     !if &sin "p" #l0
-        osd 9 10 "" "\HMajor Mode Help      esc h" f major-mode-help
+        !if &seq %emulate "emacs"
+            osd 9 10 "" "\HMajor Mode Help      C-h m" f major-mode-help
+        !else
+            osd 9 10 "" "\HMajor Mode Help      esc h" f major-mode-help
+        !endif
     !else
         osd 9 10 "D"
     !endif
@@ -73,13 +77,13 @@ define-macro-file osdhelp osd-help
         show-region
     !endif
 !emacro
-; Handle the 'New' command. Create text documents called "newXX" which will hold the new document.
+; Handle the 'New' command by creating a newXX document in the current directory.
 0 define-macro osd-new-buffer
     set-variable #l0 1
     !repeat
         !force 0 find-buffer &set #l1 &spr "new%d" #l0
         !if $status
-        !elif &not &seq "X" &stat "t" &set #l2 &cat $user-path #l1 
+        !elif &not &seq "X" &stat "t" &set #l2 &cat "./" #l1
         !elif &seq "X" &stat "t" &cat #l2 "#" 
             find-file #l2
             !return
@@ -335,7 +339,7 @@ osd 1 210 ""  "E\Hxit            C-x C-c"   f save-buffers-exit-emacs
 ; MENU #2 - EDIT sub-menu
 ;
 osd 2 0   "bo" 1 0
-osd 2 10  ""  "\HUndo                C-x u"      1 osd-undo      ; Undo the last command
+osd 2 10  ""  "\HUndo                C-/"       1 osd-undo      ; Undo the last command
 osd 2 20  ""  "Redo"                                             ; Re-do the last osd-undo
 osd 2 30  ""  "Undo \HAll"                       0 osd-undo      ; Undo all changes to last save
 osd 2 40  "-"
@@ -654,9 +658,20 @@ osd 21 60  ""  "\HTriangle"   f Triangle
     !endif
 !emacro
 
+0 define-macro osd-emulation-reload
+    set-variable #l0 0
+    !while &les #l0 10
+        -1 osd #l0
+        set-variable #l0 &inc #l0 1
+    !done
+    execute-file "osd"
+!emacro
+
 ; execute any emulation osd file, e.g. Emacs, Vi etc
 !if &exi %emulate
-    !force execute-file &cat "osd" %emulate
+    !if &not &seq %emulate ""
+        !force execute-file &cat "osd" %emulate
+    !endif
 !endif
 ; load in user extensions if found
 !force execute-file "myosd"

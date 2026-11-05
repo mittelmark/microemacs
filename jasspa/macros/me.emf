@@ -59,7 +59,7 @@ set-variable #l1 &stat "t" #l0
 0 define-macro-file langutl spell-rules-init
 0 define-macro-file filetool file-tool-run file-tool-exec file-tool-exec-default
 0 define-macro-file buffinit buffer-init buffer-init-fhook buffer-bind-create fhook-default
-0 define-macro-file osd osd-main osd-find-buffer osd-dialog osd-xdialog osd-entry osd-close
+0 define-macro-file osd osd-main osd-find-buffer osd-dialog osd-xdialog osd-entry osd-close osd-emulation-reload
 0 define-macro-file utils frame-handle ascii-time var-str-sub str-to-regex filemask-to-regex copy-registry create-file-path
 define-macro-file format clean sort-lines-ignore-case normal-tab tabs-to-spaces paragraph-to-line delete-indentation restyle-region restyle-buffer ifill-paragraph indent-increase indent-decrease
 define-macro-file clearcs cc-state cc-update cc-checkout cc-checkin cc-add cc-diff cc-uncheckout cc-annotate cc-describe cc-delete cc-move cc-merge cc-vtree cc-explorer cc-add-view cc-setup
@@ -211,6 +211,7 @@ set-variable #l0 &reg &spr "/history/%s/fence" %platform "1"
     global-bind-key ftp                      "S-f10"
     3 global-bind-key file-browser           "C-f10"
     global-bind-key display-whitespaces      "f11"
+    global-bind-key display-whitespaces      "C-f11"
     global-bind-key toolbar                  "S-f11"
     global-bind-key expand-abbrev-handle     "esc esc"
     ml-bind-key     tab                      "esc esc"

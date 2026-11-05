@@ -1,0 +1,87 @@
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2001-2009 JASSPA (www.jasspa.com)
+; See the file me.emf for copying and conditions.
+;
+; Synopsis:    CUA editing commands used by key bindings and menus
+
+; cua-get-region - turn the current show-region into the current ME region,
+; command aborts if no valid hilight region, argument n is a bitwise flag
+; modifying the behaviour:
+;   0x01 - if set then report failure
+;   0x02 - cursor does not have to be in region
+0 define-macro cua-get-region
+    0 show-region
+    set-variable #l0 $result
+    !if &equ &band #l0 5 5
+        ; a region is hilighted, sanity check that the cursor is
+        ; in it before killing it
+        set-position "\x81"
+        !if &band @# 2
+        !elif &not &band #l0 2
+        !elif &not &band #l0 8
+            !force backward-char
+            0 show-region
+            !if &not &band $result 8
+                goto-alpha-mark "\x81"
+                !if &band @# 1
+                    ml-write "[Cursor is not within current region]"
+                    !bell
+                !endif
+                !abort
+            !endif
+        !endif
+        2 show-region
+        set-alpha-mark "\x81"
+        -2 show-region
+        set-mark
+        goto-alpha-mark "\x81"
+    !elif &band @# 1
+        ml-write "[No region in this window]"
+        !bell
+        !abort
+    !else
+        !abort
+    !endif
+!emacro
+
+; cut & copy only operate on the current hilight region
+define-macro cut
+    3 cua-get-region
+    kill-region @mna
+!emacro
+define-macro copy
+    3 cua-get-region
+    copy-region-clipboard
+    goto-position "\x81"
+    show-region
+!emacro
+; paste must remove the hilight region first if there is one
+define-macro paste
+    !force 0 cua-get-region
+    !if $status
+        -1 kill-region @mna
+    !endif
+    @# yank @mna
+!emacro
+
+define-macro select-all
+    set-position "\x81"
+    beginning-of-buffer
+    -3 show-region
+    end-of-buffer
+    3 show-region
+    goto-position "\x81"
+    show-region
+!emacro
+
+define-macro delete
+    !force 0 cua-get-region
+    !if $status
+        -1 kill-region @mna
+    !elif @?
+        @# forward-delete-char @mna
+    !else
+        forward-delete-char @mna
+    !endif
+!emacro

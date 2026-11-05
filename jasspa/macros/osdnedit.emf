@@ -10,6 +10,8 @@
 ; Notes:       See meosd.emf for notes on emulaton.
 ;
 ; Make the main menus look like NEdits
+execute-file "neditmac"
+
 ; File
 osd 1 10  ""  "\HNew             C-n"   f osd-new-buffer
 osd 1 20  ""  "\HOpen...         C-o"   f osd-file-open

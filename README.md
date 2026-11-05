@@ -185,9 +185,15 @@ __Main features - Pros:__
 - themes, customizations, templates, snippets menu or GUI accessible
 - for its size the text editor with most features without being bloated
 
-__DEMO (mdview command for browsing and editing Markdown files):__
+__DEMO (Markdown browsing and editing):__
 
 [![asciicast](https://asciinema.org/a/m9Pjw4BD2JsZrGht.svg)](https://asciinema.org/a/m9Pjw4BD2JsZrGht)
+
+__FEATURE TOUR (Markdown, R Markdown, encodings, and built-in help):__
+
+The [MicroEmacs feature-tour asciicast](images/microemacs-rmd-demo.cast) can
+be played with `asciinema play`; see the
+[step-by-step walkthrough](docs/microemacs-demo.md).
 
 __Main Cons:__
 

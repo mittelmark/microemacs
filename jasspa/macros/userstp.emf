@@ -996,11 +996,24 @@ osd .osd.user-gener 390 "MdtxmfH" .scheme.osd-ebtt &cat "Sho\Hw Modes  " &mid $w
 
 ; The Start-up menu ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 0 define-macro user-setup-emulate-set
+    set-variable #l2 ""
+    !if &exi %emulate
+        set-variable #l2 %emulate
+    !endif
     set-variable #l1 &lget %emulate-value @#
     !if &seq #l1 ""
         !force delete-registry "/history/emulate"
     !else
         set-registry "/history/emulate" #l1
+    !endif
+    !if &not &seq #l1 #l2
+        set-variable %emulate #l1
+        osd-emulation-reload
+        !if &seq #l1 ""
+            ml-write "Restart MicroEmacs to restore the default key bindings"
+        !else
+            ml-write "Emulation menu updated; restart MicroEmacs to activate its key bindings"
+        !endif
     !endif
 !emacro
 

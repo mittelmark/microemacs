@@ -29,11 +29,7 @@
 define-macro-file osd osd-new-buffer osd-save osd-save-as osd-close osd-undo osd-redo
 define-macro-file osdmisc osd-find-tag osd-search osd-goto-line
 define-macro-file osdhelp osd-help
-define-macro select-all
-    beginning-of-buffer
-    set-mark
-    end-of-buffer
-!emacro
+execute-file "neditmac"
 define-macro forward-paragraph-start
     beginning-of-line
     !force 2 forward-paragraph
@@ -112,4 +108,3 @@ set-variable .buffer-bind-key.map-to   "|C-b|C-u|"
 !force exec-file msshift
 ; redo the mouse
 !force exec-file "mouse"
-

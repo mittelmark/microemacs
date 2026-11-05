@@ -14,79 +14,11 @@
 ;
 ;     See osdcua.emf for OSD main menu changes for this emulation.
 ;
-define-macro-file osd osd-new-buffer osd-close osd-undo osd-redo
+define-macro-file osd osd-new-buffer osd-save-as osd-close osd-undo osd-redo
 define-macro-file osdmisc osd-find-tag osd-search osd-goto-line
 define-macro-file osdhelp osd-help
 
-; cua-get-region - turn the current show-region into the current ME region,
-; command aborts if no valid hilight region, argument n is a bitwise flag
-; modifying the behaviour: 
-;   0x01 - if set then report failure
-;   0x02 - cursor does not have to be in region
-0 define-macro cua-get-region
-    0 show-region
-    set-variable #l0 $result
-    !if &equ &band #l0 5 5
-        ; a region is hilighted, sanity check that the cursor is
-        ; in it before killing it
-        set-position "\x81"
-        !if &band @# 2
-        !elif &not &band #l0 2
-        !elif &not &band #l0 8
-            !force backward-char
-            0 show-region
-            !if &not &band $result 8
-                goto-alpha-mark "\x81"
-                !if &band @# 1
-                    ml-write "[Cursor is not within current region]"
-                    !bell
-                !endif
-                !abort
-            !endif
-        !endif
-        2 show-region
-        set-alpha-mark "\x81"
-        -2 show-region
-        set-mark
-        goto-alpha-mark "\x81"
-    !elif &band @# 1
-        ml-write "[No region in this window]"
-        !bell
-        !abort
-    !else
-        !abort
-    !endif
-!emacro
-
-; cut & copy only operate on the current hilight region
-define-macro cut
-    3 cua-get-region
-    kill-region @mna
-!emacro
-define-macro copy
-    3 cua-get-region
-    copy-region-clipboard
-    goto-position "\x81"
-    show-region
-!emacro
-; paste must remove the hilight region first if there is one 
-define-macro paste
-    !force 0 cua-get-region
-    !if $status
-        -1 kill-region @mna
-    !endif
-    @# yank @mna
-!emacro
-
-define-macro select-all
-    set-position "\x81"
-    beginning-of-buffer
-    -3 show-region
-    end-of-buffer
-    3 show-region
-    goto-position "\x81"
-    show-region
-!emacro
+execute-file "cuaedit"
 
 define-macro backspace
     !force 0 cua-get-region
@@ -96,17 +28,6 @@ define-macro backspace
         @# backward-delete-char @mna
     !else
         backward-delete-char @mna
-    !endif
-!emacro
-
-define-macro delete
-    !force 0 cua-get-region
-    !if $status
-        -1 kill-region @mna
-    !elif @?
-        @# forward-delete-char @mna
-    !else
-        forward-delete-char @mna
     !endif
 !emacro
 
@@ -191,7 +112,6 @@ global-bind-key end-of-buffer "C-end"
 global-bind-key scroll-up "page-up"
 global-bind-key scroll-down "page-down"
 
-global-bind-key select-all "C-a"
 global-bind-key expand-abbrev-handle "C-b"
 global-bind-key copy "C-c"
 global-bind-key goto-matching-fence "C-e"
@@ -202,14 +122,13 @@ global-bind-key insert-file "C-i"
 global-bind-key ifill-paragraph "C-j"
 global-bind-key lower-case-word "A-l"
 global-bind-key cua-lower-case-region "C-l"
-global-bind-key set-alpha-mark "C-m"
 global-bind-key osd-new-buffer "C-n"
 global-bind-key find-file "C-o"
 global-bind-key print-buffer "C-p"
 global-bind-key query-replace-string "C-r"
 global-bind-key save-buffer "C-s"
-global-bind-key write-buffer "A-C-s"
-global-bind-key goto-alpha-mark "A-m" ; fix DG
+global-bind-key osd-save-as "f12"
+global-bind-key osd-save-as "A-C-s" ; Alternate where AltGr-S is not reserved
 global-bind-key upper-case-word "A-u"
 global-bind-key cua-upper-case-region "C-u"
 global-bind-key paste "C-v"
@@ -223,6 +142,11 @@ global-bind-key major-mode-help "S-f2"
 global-bind-key grep  "f2"
 global-bind-key hunt-forward "f3"
 global-bind-key hunt-backward "S-f3"
+global-bind-key diff-changes "f4"
+global-bind-key compile "f5"
+2 global-bind-key occur "f6"
+global-bind-key spell-buffer "f7"
+global-bind-key notes "f8"
 ;global-bind-key osd-close "C-q"
 global-bind-key save-buffers-exit-emacs "C-q"
 global-bind-key context-menu "menu"
@@ -232,21 +156,30 @@ global-bind-key execute-named-command "C-d"
 0xa0000 global-bind-key osd            "f1"
 0xa0000 global-bind-key osd            "C-="
 global-bind-key file-browser "f10"
-global-bind-key delete-window "C-0"
-global-bind-key delete-other-windows "C-1"
-global-bind-key split-window-vertically "C-2" ; fix DG
-global-bind-key split-window-horizontally "C-3" ; fix DG
-global-bind-key previous-window "C-4"
-global-bind-key next-window "C-5"
-global-bind-key previous-buffer "C-6"
-global-bind-key next-buffer "C-7"
+3 global-bind-key file-browser "C-f10"
 
 !if &band $system 0x01
     ; terminal
+    ; Alt chords arrive as a raw Escape byte (C-[), not the named "esc" key.
+    translate-key "C-[ a" "A-a"
+    translate-key "C-[ c" "A-c"
+    translate-key "C-[ e" "A-e"
+    translate-key "C-[ f" "A-f"
+    translate-key "C-[ h" "A-h"
+    translate-key "C-[ C-f" "A-C-f"
+    translate-key "C-[ l" "A-l"
+    translate-key "C-[ m" "A-m"
+    translate-key "C-[ t" "A-t"
+    translate-key "C-[ u" "A-u"
+    translate-key "C-[ v" "A-v"
+    translate-key "C-[ w" "A-w"
+    translate-key "C-[ C-v" "A-C-v"
+    translate-key "C-[ C-s" "A-C-s"
+    translate-key "C-[ [ 2 1 ; 5 ~" "C-f10"
     translate-key "\x7f" "backspace"
     3 global-bind-key prefix "C-t"
     0xa0000 global-bind-key osd       "C-t ="
-    global-bind-key help              "C-t ?"    
+    global-bind-key help              "C-t ?"
     global-bind-key describe-bindings "C-t b"
     global-bind-key list-buffers      "C-t C-b"
     global-bind-key list-commands     "C-t c"
@@ -258,26 +191,43 @@ global-bind-key next-buffer "C-7"
     global-bind-key help-command      "C-t C-c"
     global-bind-key help-variable     "C-t C-v"
 !else    
-    3 global-bind-key prefix "C-h"
-    0xa0000 global-bind-key osd       "C-h ="
-    global-bind-key help              "C-h ?"    
-    global-bind-key describe-bindings "C-h b"
-    global-bind-key list-buffers      "C-h C-b"
-    global-bind-key list-commands     "C-h c"
-    global-bind-key list-variables    "C-h v"
-    global-bind-key command-apropos   "C-h a"
-    global-bind-key describe-key      "C-h k"
-    global-bind-key describe-variable "C-h d"
-    global-bind-key describe-word     "C-h w"
-    global-bind-key help-command      "C-h C-c"
-    global-bind-key help-variable     "C-h C-v"
+    4 global-bind-key prefix "C-t"
+    0xa0000 global-bind-key osd       "C-t ="
+    global-bind-key help              "C-t ?"
+    global-bind-key describe-bindings "C-t b"
+    global-bind-key list-buffers      "C-t C-b"
+    global-bind-key list-commands     "C-t c"
+    global-bind-key list-variables    "C-t v"
+    global-bind-key command-apropos   "C-t a"
+    global-bind-key describe-key      "C-t k"
+    global-bind-key describe-variable "C-t d"
+    global-bind-key describe-word     "C-t w"
+    global-bind-key help-command      "C-t C-c"
+    global-bind-key help-variable     "C-t C-v"
     1 global-bind-key change-font-size "C-+"
     0 global-bind-key change-font-size "C-="
     -1 global-bind-key change-font-size "C--"
 !endif
 
-; free to use C-t, C-h
-; fix for terminal required
+; Install overrides after prefix setup.
+!force global-unbind-key "C-a"
+global-bind-key select-all "C-a"
+global-bind-key set-alpha-mark "C-t m"
+global-bind-key goto-alpha-mark "C-t g"
+global-bind-key toolbar "C-t t"
+global-bind-key display-whitespaces "C-t s"
+global-bind-key start-kbd-macro "C-t ("
+global-bind-key end-kbd-macro "C-t )"
+global-bind-key execute-kbd-macro "C-t e"
+global-bind-key delete-window "C-t 0"
+global-bind-key delete-other-windows "C-t 1"
+global-bind-key split-window-vertically "C-t 2"
+global-bind-key split-window-horizontally "C-t 3"
+global-bind-key previous-window "C-t 4"
+global-bind-key next-window "C-t 5"
+global-bind-key previous-buffer "C-t 6"
+global-bind-key next-buffer "C-t 7"
+
 global-bind-key set-mark          "C-space"
 
 ; reconfigure the buffer bindings

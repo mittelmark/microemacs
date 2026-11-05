@@ -31,9 +31,14 @@ set-variable .change-font.xfontsel 0
     set-variable $window-chars &spr "%s=x*[>]<%s" &lef $window-chars 47 &rig $window-chars 54
   !endif
   ; suspend only on Terminal without questioning
-  global-unbind-key "C-z"
-  0 global-bind-key suspend-emacs "C-z"
-  0 global-bind-key suspend-emacs "C-c z" ; me25 compatible
+  !if &seq &reg "/history/emulate" "" "cua"
+    ; CUA replaces this temporary prefix with its C-c copy binding later.
+    4 global-bind-key prefix "C-c"
+  !else
+    global-unbind-key "C-z"
+    0 global-bind-key suspend-emacs "C-z"
+    0 global-bind-key suspend-emacs "C-c z" ; me26 compatible
+  !endif
 !else
   ; TODO: fix if the font was deleted!
   ; try xset fp default
@@ -457,10 +462,10 @@ set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
             set-variable $system &bor $system 0x800000
         !endif
     !emacro
-
-    ; Bind temporary clipboard operations to C-c c/x/v
-    0 global-bind-key clipboard-temp-operation "C-c c"  ; Copy to clipboard
-    1 global-bind-key clipboard-temp-operation "C-c x"  ; Cut to clipboard
-    2 global-bind-key clipboard-temp-operation "C-c v"  ; Paste from clipboard
-
+    !if &not &seq &reg "/history/emulate" "" "cua"
+      ; Bind temporary clipboard operations to C-c c/x/v
+      0 global-bind-key clipboard-temp-operation "C-c c"  ; Copy to clipboard
+      1 global-bind-key clipboard-temp-operation "C-c x"  ; Cut to clipboard
+      2 global-bind-key clipboard-temp-operation "C-c v"  ; Paste from clipboard
+    !endif
 !endif
