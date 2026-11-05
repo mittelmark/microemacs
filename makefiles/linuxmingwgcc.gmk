@@ -23,6 +23,8 @@ bfs/bin:
 	cd bfs && make
 	cd bfs && make -f linuxmingwgcc.gmk BDIST=$(BDIST) clean
 	cd bfs && make -f linuxmingwgcc.gmk BDIST=$(BDIST)
+bfs/host:
+	cd bfs && make
 
 # Default targets use BDIST (mingw64 by default)
 mec:
@@ -43,12 +45,12 @@ mece64:
 mewe64:
 	cd src && make -f linuxmingwgcc.mak CC=x86_64-w64-mingw32-gcc RC=x86_64-w64-mingw32-windres BDIST=mingw64
 
-mecb: bfs/exe mec
+mecb: bfs/host mec
 	@MEC_DIR=$$(ls -d src/.linuxmingwgcc-$(BDFIX)-release-mec 2>/dev/null | head -1); \
 	if [ -z "$$MEC_DIR" ]; then echo "ERROR: no mecb build found for BDIST=$(BDIST)"; exit 1; fi; \
 	./bfs/bfs -a ./$$MEC_DIR/mec.exe -o $(RELEASE)-mecb.exe ./jasspa
 
-mewb: bfs/exe mew
+mewb: bfs/host mew
 	@MEW_DIR=$$(ls -d src/.linuxmingwgcc-$(BDFIX)-release-mew 2>/dev/null | head -1); \
 	if [ -z "$$MEW_DIR" ]; then echo "ERROR: no mewb build found for BDIST=$(BDIST)"; exit 1; fi; \
 	./bfs/bfs -a ./$$MEW_DIR/mew.exe -o $(RELEASE)-mewb.exe ./jasspa

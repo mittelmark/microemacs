@@ -817,6 +817,7 @@ MEPATH="" TERM=xterm ./me-linux2.bin -n
 * [MicroEmacs help chm-file (2009)](https://www.dgroth.de/downloads/me2009.chm)
 * [MicroEmacs chm file (2002)](http://www.dgroth.de/downloads/me2002.chm)
 * [MicroEmacs Refcard](https://web.archive.org/web/20160328000629/http://www.jamesie.de/microemacs/me-refcard.pdf)
+* [Keyboard shortcut comparison](doc/shortcuts.md)
 * [MicroEmacs.de](http://www.dgroth.de/pmwiki/index.php?n=MicroEmacs.MicroEmacs)
 * [WIP tutorial on the Macro Language](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/microemacs/master/docs/emf-tutorial.html)
 * Github forks: [vitalyster](https://github.com/vitalyster/microemacs) (Mingw64), [ipstone](https://github.com/ipstone/microemacs) (Mac and BSD), [cstrotm](https://github.com/cstrotm/jasspa-microemacs) (2009), [robdaemon](https://github.com/robdaemon/microemacs) (MSDOS)

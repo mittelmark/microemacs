@@ -94,8 +94,9 @@ Courier New.
 
 ## Ticket 9: BUG - Windows MEPATH issue
 
-We should probably have a subfolder in the AppData/Roaming  folder may be called
-me09 or mexb for placing the users macro files.
+We should probably have a subfolder in the AppData/Roaming folder may be
+called me09 or mexb for placing the users macro files. That could produce some
+incompatibilities with existing installations. So not sure what is the best approach. 
 
 ## Ticket 10: BUG - Help Browser Issue (DONE)
 
@@ -349,7 +350,7 @@ after the update so that the registry picks up the new `0x1001` flag.
       Files: src/display.c, src/encoding.c, src/encoding.h,
       src/eterm.h, src/unixterm.c
     - DONE 260924: Windows GUI full BMP via ExtTextOutW (Ticket 12 TTF).
-      WCHAR sideband meFrameLine.wtext (gated _WIN32 && _ME_WINDOW)
+      WCHAR sideband meFrameLine.wtext (gated _WIN32 && _ME_WINDOW) _
       filled in updateline from meUtf8Decode (lead byte stays in
       text[] for FONTFIX/cursor); paint uses ExtTextOutW with
       cellColWPos dx array in meFrameDraw / meFrameDrawCursor;
@@ -410,7 +411,7 @@ from devel that we are not so far away from master where this still was working.
       the tail left and rebase the map so the '$' takes exactly one
       byte, otherwise the draw loop emitted a stray continuation byte);
       (c) renderLine fills interior map entries in the tab/ctrl/nasty
-      branches; (d) hilight.c __hilCopyChar fills interior map entries
+      branches; (d) hilight.c __hilCopyChar fills interior map entries __
       before advancing bytePos; (e) xtermDrawUtf8Run no longer folds
       UTF-8 to latin-1 when Xft is active - XftDrawStringUtf8 needs raw
       UTF-8 and silently drops the invalid folded sequences (high chars
@@ -423,7 +424,7 @@ from devel that we are not so far away from master where this still was working.
       Files: src/display.c, src/hilight.c
 
 ## Ticket 14: FR - per-filetype default encoding (DONE)
-~
+
 For some filetypes like emf, erf etc. we should change the default
 encoding from UTF-8 to ASCII, or ISO-8859-1, e.g. for the MicroEmacs
 macro and registry files. Running uchardet over the macro files shows
@@ -488,7 +489,7 @@ while all other macro files are pure ASCII.
       .github/workflows/testing.yml
 
 ## Ticket 15: BUG - count-words counts bytes in UTF-8 buffers (DONE)
-~
+
 The number of chars reported by count-words is wrong for UTF-8
 buffers: for the string 'üäö' a UTF-8 encoded buffer reports 6 chars
 (the byte count) while an ISO-8859-1 encoded buffer correctly
@@ -682,7 +683,7 @@ so.
         killTextEquals(): either move that helper into line.c (the
         kill-buffer domain, next to killSave) and declare it in
         eextrn.h so both platform files share it, or duplicate the
-        ~20-line helper in winterm.c under #ifdef _CLIPBRD.
+        ~20-line helper in winterm.c under #ifdef _CLIPBRD. _
         Effect: a multi-node internal kill that was mirrored to the
         Windows clipboard is no longer rebuilt and re-tagged as
         UTF-8 on every C-y.
@@ -716,7 +717,7 @@ few lines up and then insert the tilde character. The windows terminal version s
 
     - DONE 261015: root cause is the terminal (mec) SGR mouse
       parser in TTahead() (src/unixterm.c). While probing for an SGR
-      mouse report "ESC [ <" it consumes the ESC and the '[', then a
+      mouse report "ESC [ <" it consumes the ESC and the '[', then a #']
       digit while still in the intermediate ESC/CSI states matched the
       digit-accumulate branch but none of its state sub-cases, so the
       digit was silently dropped. "\033[5~" (PageUp) therefore reached
@@ -971,7 +972,7 @@ modified-cursor-key sequence CSI 1 ; <modifier> <final> - Alt-Left is
 sequences (`\033[D` etc.), so the modified forms had no entry in the
 key-translation table: the prefix match failed after `ESC [` and the trailing
 "1;3D" was delivered as ordinary characters ("ESC [" itself was consumed as
-the M-[ prefix key and discarded).
+the M-[ prefix key and discarded). ]
 
     - DONE 261016: TCAPstart (src/unixterm.c) now registers the standard
       xterm CSI 1;<modifier><final> forms for up/down/right/left (A/B/C/D)
@@ -1108,3 +1109,39 @@ locations.
       development version was advanced to 09.12.27b1. Files:
       `jasspa/macros/hkpython.emf`, `jasspa/macros/filtools.emf`,
       `src/evers.h`
+
+## Ticket 34: Create a shortcut table for the main emulations
+
+MicroEmacs can emulate the editor shortcuts of other editors, like Emacs,
+Nedit or CUA editors supporting C-x, C-c, C-v for clipboard operations like
+cut, copy, pase etc. it would be nice to have a summary table listing the main
+editor shortcuts. So it might be nice to have a table in a file like 'doc/shortcuts.md'
+
+    - DONE 261105: added a comparison of the main MicroEmacs, GNU Emacs, CUA,
+      and NEdit shortcuts, with notes on partial emulations and terminal key
+      handling. Linked it from the README. Files: `doc/shortcuts.md`,
+      `README.md`
+
+## Ticket 35: Reduce the number of warnings for Windows compilations
+
+The Windows console cross-build can be run with:
+
+```
+make -f makefiles/linuxmingwgcc.gmk BDIST= mecb
+```
+
+Without a target, the command only prints the version.
+
+    - DONE 261105: the x86_64 MEC and MEW builds no longer emit C source
+      warnings. The cross-build now selects 64-bit pointer conversions, handles
+      ignored `meUnlink` results explicitly, removes unused console/printing
+      code, and limits console-only pipe/mouse helpers to MEC.
+      The unused font-screen rectangle was removed from MEW.
+      The `-Wpointer-sign` diagnostic is disabled for this target because the
+      editor's unsigned-byte strings are intentionally passed to Win32/CRT
+      `char *` APIs. Standalone targets build the host BFS packer before
+      embedding. One non-code LTO wrapper warning remains about serial
+      compilation of 12 MEC / 13 MEW LTRANS jobs. Files:
+      `makefiles/linuxmingwgcc.gmk`,
+      `src/linuxmingwgcc.mak`, `src/estruct.h`, `src/file.c`, `src/spawn.c`,
+      `src/winterm.c`, `src/winprint.c`

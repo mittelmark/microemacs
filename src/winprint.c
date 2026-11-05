@@ -835,8 +835,6 @@ pcdDialogue (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     HWND dWnd;                          /* Dialogue window handle */
     int ii;                             /* Local loop counter */
-    char buf [40];                      /* Local character buffer */
-
     switch (message)
     {
     case WM_INITDIALOG:
@@ -861,7 +859,6 @@ pcdDialogue (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         SendMessage (dWnd, CB_SETCURSEL, (WPARAM) printer.param[mePI_SPECY].l, 0);
 
         /* Fill in the number of rows. */
-        buf [1] = '\0';
         dWnd = GetDlgItem (hWnd, IDC_ROWS);
         SendMessage (dWnd, CB_RESETCONTENT, 0, 0);  /* Reset contents */
         for (ii = 0; ii < 6; ii++)
@@ -869,7 +866,6 @@ pcdDialogue (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         SendMessage (dWnd, WM_SETTEXT, 0, (LPARAM) meItoa(printer.param[mePI_ROWS].l));
 
         /* Fill in the number of columns. */
-        buf [1] = '\0';
         dWnd = GetDlgItem (hWnd, IDC_COLUMNS);
         SendMessage (dWnd, CB_RESETCONTENT, 0, 0);  /* Reset contents */
         for (ii = 0; ii < 6; ii++)
@@ -1199,7 +1195,6 @@ WinPrintThread (LPVOID wParam)
 
     HWND curHwnd ;
     DOCINFO di;                         /* Document information. */
-    RECT paperArea;                     /* Paper area */
     HFONT fontTab [PFONT_MAX];          /* Font table */
     char nambuf [meBUF_SIZE_MAX];               /* Name buffer */
     char *docName;
@@ -1268,12 +1263,6 @@ WinPrintThread (LPVOID wParam)
 
     /* Set the font mapper into text mode */
     SetMapMode (printDlg.hDC, MM_TEXT);
-
-    /* Get the size of the device */
-    paperArea.left   = GetDeviceCaps(printDlg.hDC, LOGPIXELSX);   /* 1/4 inch */
-    paperArea.right  = GetDeviceCaps(printDlg.hDC, HORZRES);
-    paperArea.bottom = GetDeviceCaps(printDlg.hDC, VERTRES);      /* Vertical resolution */
-    paperArea.top    = GetDeviceCaps(printDlg.hDC, LOGPIXELSY);   /* 1/4 inch */
 
     /* Set up the font size */
     if (constructFontTable (printDlg.hDC, fontTab, pd.cell.sizeX, pd.cell.sizeY, pd.fontName) == meFALSE)

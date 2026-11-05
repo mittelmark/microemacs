@@ -117,7 +117,11 @@ BDTAG := mingw64
 endif
 endif
 
-CCDEFS   = -D_WIN32 -Wall
+# meUByte strings are unsigned bytes; Win32 and CRT APIs use char pointers.
+CCDEFS   = -D_WIN32 -Wall -Wno-pointer-sign
+ifneq "$(BDIST)" "mingw32"
+CCDEFS  += -D_64BIT
+endif
 # UCRT target needs -mcrtdll=ucrt; this switches from msvcrt.dll to ucrtbase.dll
 # -mfpmath=sse is only valid for x86_64; omit for i686 (mingw32)
 ifeq "$(BDIST)" "mingw32"

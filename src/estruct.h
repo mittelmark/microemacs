@@ -927,7 +927,7 @@ typedef struct meKill {
 #define meHilightGetFlags(root)           ((root)->ignore)
 #define meHilightGetTruncScheme(root)     ((root)->type)
 #define meHilightGetLookBackLines(root)   ((int) ((size_t) ((root)->close)))
-#define meHilightSetLookBackLines(root,v) ((root)->close = (meUByte *) (v))
+#define meHilightSetLookBackLines(root,v) ((root)->close = mePtrFromInt(v))
 #define meHilightGetLookBackScheme(root)  ((root)->tknSttOff)
 #define meHilightGetColumnHilight(root)   ((meHilight *) ((root)->rclose))
 #define meHilightSetColumnHilight(root,v) ((root)->rclose = (meUByte *) (v))

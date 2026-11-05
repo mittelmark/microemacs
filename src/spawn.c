@@ -367,7 +367,7 @@ static HWND
 ipipeGetChildWindow(meIPipe *ipipe)
 {
     ipipe->childWnd = NULL ;
-    EnumWindows(ipipeFindChildWindow,(long) ipipe) ;
+    EnumWindows(ipipeFindChildWindow,(LPARAM) ipipe) ;
     return ipipe->childWnd ;
 }
 
@@ -2108,7 +2108,7 @@ doPipeCommand(meUByte *comStr, meUByte *path, meUByte *bufName, int ipipeFunc, i
 #else
     ret = meBufferInsertFile(bp,filnam,meRWFLAG_SILENT|meRWFLAG_PRESRVFMOD,0,0,0) ;
     /* and get rid of the temporary file */
-    meUnlink(filnam);
+    (void) meUnlink(filnam);
 #endif
     
     /* give it the path as a filename */
@@ -2265,8 +2265,8 @@ meFilter(int f, int n)
     /* reset file name */
     bp->fileName = tmpnam ;
     /* and get rid of the temporary file */
-    meUnlink(filnam1);
-    meUnlink(filnam2);
+    (void) meUnlink(filnam1);
+    (void) meUnlink(filnam2);
 
     if(s <= 0)
         mlwrite(0,(meUByte *)"[Execution failed]");

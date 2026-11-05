@@ -251,11 +251,17 @@ WinKillToClipboard (void);
 static int ttfcol = meCOLOR_FDEFAULT;   /* Foregound colour */
 static int ttbcol = meCOLOR_BDEFAULT;   /* Background colour */
 static meUShort ttmodif = 0;            /* Modified keyboard state */
+#ifdef _ME_WINDOW
 static int ttshowState;                 /* Show state of the window */
+#endif
 HANDLE ttInstance;                      /* Instance of the application */
 static DWORD ttThreadId = 0;            /* Current thread identity */
+#ifdef _ME_WINDOW
 static HBRUSH ttBrush = NULL;           /* Current background brush */
+#endif
+#ifdef _ME_CONSOLE
 static int ttPipeMode = 0;              /* Pipe mode - hOutput is not a real console, use ANSI fallback */
+#endif
 
 /* Font type settings */
 LOGFONT ttlogfont={0};                  /* Current logical font */
@@ -619,7 +625,7 @@ TTopenClientServer(void)
         {
             meUByte buff[meBUF_SIZE_MAX] ;
 
-            ii = sprintf((char *)buff,"%d\n",(int) baseHwnd) ;
+            ii = sprintf((char *)buff,"%llu\n",(unsigned long long)(ULONG_PTR)baseHwnd) ;
             {
                 DWORD bytesWritten ;
                 WriteFile(clientHandle,buff,ii,&bytesWritten,NULL) ;
@@ -734,7 +740,10 @@ TTconnectClientServer (void)
                                  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL)) != INVALID_HANDLE_VALUE)
         {
             if((ReadFile(hndl,&fname,20,&ii,NULL) != 0) && (ii > 0))
-                baseHwnd = (HWND) atoi(fname) ;
+            {
+                fname[ii] = '\0' ;
+                baseHwnd = (HWND)(ULONG_PTR) strtoull((char *)fname,NULL,10) ;
+            }
             CloseHandle (hndl);
         }
     }
@@ -3334,7 +3343,7 @@ WinLaunchProgram (meUByte *cmd, int flags, meUByte *inFile, meUByte *outFile,
 
         ss = cmd ;
         while(((c1 = *ss) == ' ') || (c1 == '\t'))
-            *ss++ ;
+            ss++ ;
         if(c1 == '\0')
             return meFALSE ;
 
@@ -3878,6 +3887,7 @@ WinShutdown (void)
 }
 
 #if MEOPT_MOUSE
+#ifdef _ME_CONSOLE
 /*
  * TTtermHasVTMouse
  * Check if the current terminal supports VT/SGR mouse input.
@@ -3930,6 +3940,7 @@ TTtermHasVTMouse(void)
     /* Default: don't enable VT mouse */
     return 0;
 }
+#endif
 
 /*
  * TTinitMouse
@@ -5196,7 +5207,6 @@ TTchangeFont (meUByte *fontName, int fontType, int fontWeight,
     HDC   hDC;                          /* Device context */
     HFONT newFont = NULL;               /* The new font */
     INT   nCharWidth;                   /* The character width */
-    RECT  rect;                         /* Area of the client window */
     TEXTMETRIC textmetric;              /* Text metrics */
     LOGFONT logfont;                    /* Logical font */
     int   status = meTRUE;                /* Status of the invocation */
@@ -5312,11 +5322,6 @@ defaultFont:
 
     /* Build up the cell metrics */
     nCharWidth  = textmetric.tmAveCharWidth /*+ textmetric.tmInternalLeading*/;
-
-    /* Obtain the resolution of the screen */
-    rect.left   = GetDeviceCaps(hDC, LOGPIXELSX);   /* 1/4 inch */
-    rect.right  = GetDeviceCaps(hDC, HORZRES);
-    rect.top    = GetDeviceCaps(hDC, LOGPIXELSY);   /* 1/4 inch */
 
     /* Get the text metrics for the current font */
 #if 1
@@ -7361,11 +7366,13 @@ meIniFileRead(void)
 int
 main (int argc, char *argv[])
 {
+#ifdef _ME_WINDOW
     HMODULE hInstance, hPrevInstance;
     int nCmdShow = 1;
 
     hInstance = GetModuleHandle (NULL);
     hPrevInstance = NULL;	/* Can we do something more safe here? */
+#endif
 
 #else
 /****************************************************************************

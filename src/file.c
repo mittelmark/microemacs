@@ -1140,7 +1140,7 @@ getDirectoryInfo(meUByte *fname)
         curFile->mtime = (((meUInt) fblk.ff_ftime) & 0x0ffff) | (((meUInt) fblk.ff_fdate) << 16) ;
         /* construct attribute string */
         if(fblk.ff_attrib & FA_DIREC)
-            meStrncpy(curFile->attrib,"drwx",4) ;
+            memcpy(curFile->attrib,"drwx",FILENODE_ATTRIBLEN) ;
         else
         {
             curFile->attrib[0] = '-' ;
@@ -1179,7 +1179,7 @@ getDirectoryInfo(meUByte *fname)
             curFile->mtime.dwLowDateTime  = fd.ftLastWriteTime.dwLowDateTime ;
             curFile->mtime.dwHighDateTime = fd.ftLastWriteTime.dwHighDateTime ;
             /* construct attribute string */
-            meStrncpy(curFile->attrib,"-rwx",4) ;
+            memcpy(curFile->attrib,"-rwx",FILENODE_ATTRIBLEN) ;
             if(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
                 curFile->attrib[0] = 'd' ;
@@ -2565,7 +2565,7 @@ autowriteremove(register meBuffer *bp)
        !createBackupName(fn,bp->fileName,'#',0) &&
        !meTestExist(fn))
         /* get rid of any tempory file */
-        meUnlink(fn) ;
+        (void) meUnlink(fn) ;
     bp->autoTime = -1 ;
 }
 
