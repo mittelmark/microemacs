@@ -1,7 +1,7 @@
 ---
 title: Ticket Collection for Improvement and Bugfixes for MicroEmacs 09
 author: Detlef Groth
-date: 2026-10-21 06:33
+date: 2026-11-05
 ---
 
 ## Introduction
@@ -1061,3 +1061,50 @@ relate to the existing `!while`/`&lget` patterns and hidden-buffer dictionary
 example, and keep the tutorial consistent with the final function names and
 semantics. Avoid documenting proposed syntax as available before it is
 implemented.
+
+## Ticket 31: CUA emulation editing and key bindings (DONE)
+
+Improve CUA emulation so selection-based editing and its shortcuts behave
+consistently in the terminal (`mec`) and window (`mew`) versions. CUA editing
+commands operate on the highlighted region; `C-a` selects the whole buffer.
+The shared `C-t` prefix is used for help in both versions, and for actions
+whose modified function-key sequences are unreliable in terminals.
+
+    - DONE 261104: CUA region operations were separated into
+      `jasspa/macros/cuaedit.emf`. The CUA bindings now use `F6` for
+      occurrences, `C-t m` / `C-t g` to set and go to a bookmark,
+      `C-t t` to toggle the toolbar, and `C-t s` to toggle whitespace
+      display. Help commands use `C-t` in both versions, with the window
+      menu labels updated to match. `C-m` is not reliable as a distinct
+      terminal key from Return, and Alt-M was unreliable, so the bookmark
+      bindings use the `C-t` prefix instead. `C-a` now selects all in both
+      versions. The terminal failure was caused by `insert_key()` not
+      preserving key-code order when adding a low-valued key after bindings
+      had been cleared; insertion now keeps the table sorted for binary
+      lookup. Verified in both versions, including a terminal PTY check for
+      `C-a`. Files: `jasspa/macros/cuaedit.emf`,
+      `jasspa/macros/mecua.emf`, `jasspa/macros/osdcua.emf`, `src/key.c`
+
+## Ticket 32: Bind Ctrl-/ to undo (DONE)
+
+Provide the common `C-/` undo shortcut in addition to the existing undo
+bindings.
+
+    - DONE 261102: added `ME_CONTROL|'/'` to the built-in key bindings when
+      undo support is enabled. File: `src/ebind.def`
+
+## Ticket 33: Python lint fallback and diagnostic navigation (DONE)
+
+Allow Python file linting to work when optional lint tools are not installed,
+and ensure compiler-style diagnostics can be converted into navigable file
+locations.
+
+    - DONE 261101: when neither Ruff nor Pylint is available, the Python file
+      hook now uses the standard-library `python3 -m py_compile` syntax
+      checker. Its `Sorry: ... (file, line N)` diagnostics are converted to
+      the editor's `file:line:column` format. The generic diagnostic
+      replacement helper also temporarily enables magic mode and restores
+      its original state, so replacements work in either buffer mode. The
+      development version was advanced to 09.12.27b1. Files:
+      `jasspa/macros/hkpython.emf`, `jasspa/macros/filtools.emf`,
+      `src/evers.h`
