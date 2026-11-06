@@ -724,7 +724,14 @@ addFormatedLine (meLine **head, meLine **tail,
                 if (filter == 0)
                     tbuf [ii++] = cc;
                 else
-                    ii += doTranslation (&tbuf[ii], &cc, 1);
+                {
+                    /* doTranslation reads one past its last character (its
+                     * loop test decrements n after the read), so hand it a
+                     * NUL-terminated 2-byte buffer rather than &cc, which is
+                     * a lone byte and would trigger an out-of-bounds read. */
+                    meUByte ccBuf [2] = { cc, 0 };
+                    ii += doTranslation (&tbuf[ii], ccBuf, 1);
+                }
             }
         }
         else

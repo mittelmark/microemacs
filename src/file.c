@@ -1846,7 +1846,7 @@ insertFile(int f, int n)
     if((s=inputFileName((meUByte *)"Insert file",fname,1)) <= 0)
         return s ;
     {
-        char _tb[300] ;
+        char _tb[meBUF_SIZE_MAX + 34] ;   /* holds the full "cmd:insertFile %s" trace */
         snprintf(_tb,sizeof(_tb),"cmd:insertFile %s",fname) ;
         ME_DBGTRACE(_tb) ;
     }

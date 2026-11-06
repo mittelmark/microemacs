@@ -138,6 +138,15 @@ endif
 endif
 EXE      = .exe
 CCDEFS   = -D_CYGWIN -I.
+# 64-bit Cygwin/MSYS2 need the pointer-width intptr_t casts in estruct.h
+# (meIntFromPtr / mePtrFromInt). Without -D_64BIT the 32-bit #else path is
+# active and gcc flags the pointer<->32-bit-int casts on x86_64
+# (-Wpointer-to-int-cast / -Wint-to-pointer-cast). 32-bit arches keep the
+# native 32-bit path.
+ARCH_M   := $(shell uname -m 2>/dev/null)
+ifneq (,$(filter x86_64 aarch64 riscv64 ppc64le s390x,$(ARCH_M)))
+CCDEFS  += -D_64BIT
+endif
 CCFLAGSR = -O3 -DNDEBUG=1 -Wall -Wno-uninitialized -Wno-restrict -Wno-stringop-truncation -Wno-stringop-overflow -Wno-format-overflow
 CCFLAGSD = -g -Wall -Wno-restrict -Wno-stringop-truncation -Wno-stringop-overflow -Wno-format-overflow
 LDFLAGSR =
