@@ -178,6 +178,20 @@ else
 # msys2unix console: use Cygwin-like defines
 CCDEFS   = -D_CYGWIN -D_USE_NCURSES -D_USETPARM -Wall -I.
 endif
+# 64-bit targets need the pointer-width intptr_t casts in estruct.h
+# (meIntFromPtr / mePtrFromInt); without -D_64BIT the 32-bit #else path is
+# active and gcc flags the pointer<->32-bit-int casts on x86_64
+# (-Wpointer-to-int-cast / -Wint-to-pointer-cast). 64-bit when the MSYS2
+# subsystem is 64-bit, or when explicitly building the native mingw64.
+ifneq (,$(filter UCRT64 MINGW64 CLANG64,$(MSYSTEM)))
+CCDEFS += -D_64BIT
+else ifeq ($(BDIST),mingw64)
+CCDEFS += -D_64BIT
+endif
+# MinGW/Windows char is signed, but MicroEmacs uses meUByte (unsigned char)
+# throughout, so -Wpointer-sign flags only benign char*/meUByte* mixing.
+# Suppress it for the Windows/MSYS2 builds (a no-op on unsigned-char targets).
+CCDEFS += -Wno-pointer-sign
 CCFLAGSR = -O3 -mfpmath=sse -Ofast -flto -funroll-loops -DNDEBUG=1 -Wno-uninitialized
 CCFLAGSD = -g -D_DEBUG
 LDDEFS   = 
