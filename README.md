@@ -67,6 +67,20 @@ install the `fontconfig` package on your system.
 On Cygwin Windows you might as well need to install `libxt6` for instance on MobaXterm you should execute 
 `apt install libxt6` to run the `mewb` executable.
 
+If you have already installed the native Windows builds of MicroEmacs on the
+same machine, they can interfere with the Cygwin/MSYS2 installation because
+their `mecb`/`mewb` executables are on the `PATH`. In that case run the
+installer with a minimal `PATH` so only the Cygwin/MSYS2 tools are found:
+
+```bash
+export PATH=/bin:/usr/bin
+apt install libxft2 fontconfig unzip
+bash -c "$(curl -fsSL https://github.com/mittelmark/microemacs/releases/latest/download/install.sh)"
+```
+
+This unblocks the installation of `mecb`/`mewb` on MobaXterm, a Cygwin-based
+terminal on Windows, when a native Windows build is also installed.
+
 For versions before MicroEmacs 091226b6 a few workarounds (luit, xfontsel and
 XLFD fonts) were required for UTF-8 terminals and better X11 font support.
 These legacy notes are collected in [doc/RELEASES-old.md](doc/RELEASES-old.md).
