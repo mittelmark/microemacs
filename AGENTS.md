@@ -342,6 +342,38 @@ MEPATH=jasspa/macros ./msysunix-3.6-x86_64-microemacs-091226b6-mecb.exe
 
 See the Testing section below for automated runs via `@tests/test-basics`.
 
+## Git Line Endings & Exec Bits on the Windows / Cygwin / MSYS2 Checkouts
+
+The `C:\cygwin64` and `C:\msys64` checkouts (both kept in sync on `devel`)
+run Git for Windows, whose **system** config
+(`C:\Program Files\Git\etc\gitconfig`) sets `core.autocrlf=true`. On a fresh
+clone two cosmetic-but-persistent issues follow; both are resolved **locally
+per checkout** (reversible, no shared-repo change):
+
+- **Exec-bit (755 vs 644) mode-only diffs.** ~33 files are committed at
+  `755` but the Windows/Cygwin filesystem reports them as `644`, so
+  `git status` shows ~33 mode-only ` M` entries with no content change.
+- **CRLF "LF will be replaced" warnings.** `.gitattributes` pins only `*.sh`
+  to LF, so C source, makefiles and `.emf` files fall under `autocrlf=true`
+  while the tree holds LF, so Git prints the warning on nearly every command.
+
+Apply both on any new Cygwin/MSYS2 checkout:
+
+```bash
+git config core.fileMode false
+git config core.autocrlf false
+```
+
+This keeps the files as LF on disk (what the POSIX `make` + `gcc` + `.emf`
+build wants) and silences both the mode-diffs and the CRLF noise without
+touching the system config, the shared repo, or the on-disk bytes.
+
+Caveat: `src/build` is a shell script **without** the `.sh` extension, so the
+`*.sh text eol=lf` rule does not protect it - it is the file most likely to
+break if `autocrlf` ever re-converts it to CRLF. The deeper fixes (commit the
+data files at `644`, pin more script types to LF in `.gitattributes`,
+normalize residual CRLF) are tracked in `doc/tickets.md` (Ticket 36).
+
 ## C Code Style
 
 ### File Header Template

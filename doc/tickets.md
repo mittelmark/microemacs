@@ -1145,3 +1145,42 @@ Without a target, the command only prints the version.
       `makefiles/linuxmingwgcc.gmk`,
       `src/linuxmingwgcc.mak`, `src/estruct.h`, `src/file.c`, `src/spawn.c`,
       `src/winterm.c`, `src/winprint.c`
+
+## Ticket 36: Git line endings & exec bits on the Windows / Cygwin / MSYS2 checkouts (WIP)
+
+The `C:\cygwin64` and `C:\msys64` checkouts (both kept in sync on `devel`)
+run Git for Windows, whose **system** config
+(`C:\Program Files\Git\etc\gitconfig`) sets `core.autocrlf=true`. Two related
+pieces of noise follow - checkout-hygiene issues, not code bugs:
+
+- **Exec-bit (755 vs 644) mode-only diffs.** ~33 files are committed at mode
+  `755` but the Windows/Cygwin filesystem stores/reports them as `644`, so
+  `git status` lists ~33 mode-only ` M` entries with no content change
+  (verified via `git diff --numstat`: `0 0` for all but three binary
+  `bfs/win32/lib/*.a`). The set spans makefiles (`src/unixgcc.gmk`,
+  `makefiles/unixgcc.gmk`), C source, `.emf`/`.etf`/`.erf`, `bin/*.sh`,
+  `src/build` and `jme.AppDir/AppRun`.
+- **Mixed CRLF/LF + `core.autocrlf=true`.** `.gitattributes` pins only `*.sh`
+  to LF, so C source, makefiles and `.emf` files fall under `autocrlf=true`
+  (Git wants CRLF on disk) while the tree holds mixed CRLF/LF bytes; Git
+  therefore prints "LF will be replaced by CRLF" on nearly every command.
+  `src/build` (a shell script without the `.sh` extension) is the most exposed
+  file - it is not covered by the `*.sh` rule, and a CRLF `src/build` would
+  break under Cygwin/MSYS2 `sh`.
+
+    - DONE 261107: applied the per-checkout fixes (reversible, no shared-repo
+      change): `git config core.fileMode false` stops the ~33 exec-bit
+      mode-diffs and `git config core.autocrlf false` stops the CRLF "will be
+      replaced" noise. Both leave the files as LF on disk, which is what the
+      POSIX (`make` + `gcc` + `.emf`) build wants. Verified a forced re-hash
+      (`git add -u`) produced no mode-diffs and no CRLF warnings, and both
+      checkouts stay clean and aligned on `devel`. No repo/remote change.
+    - WIP 261107: the deeper cleanup is still open: (1) the ~33 data files
+      should really be committed at `644` (makefiles/headers/`.emf` are not
+      executables), but doing so creates 755-vs-644 diffs on the MSYS2
+      checkout (whose filesystem holds `755`) unless those are `chmod 644`
+      there too; (2) `src/build` and the other POSIX-sensitive script types
+      should be pinned to LF in `.gitattributes` (e.g. `build text eol=lf` or
+      a `* text=auto` rule), and `git add --renormalize .` would strip the
+      residual CRLF bytes so the mixed endings cannot recur. Files:
+      `.gitattributes`, `AGENTS.md`, `doc/tickets.md`
