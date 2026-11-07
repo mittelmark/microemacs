@@ -258,7 +258,11 @@
 * UNIX : Cyqwin on Windows                                                *
 **************************************************************************/
 #ifdef _CYGWIN
-#define meSYSTEM_NAME  "cygwin"         /* Identity name of the system   */
+#ifdef ME_SYSTEM_MSYS
+#define meSYSTEM_NAME  "msys"
+#else
+#define meSYSTEM_NAME  "cygwin"
+#endif
 #define _UNIX          1                /* This is a UNIX system         */
 #define _USG           1                /* UNIX system V                 */
 #define _DIRENT        1                /* Use <dirent.h> for directory  */

@@ -132,12 +132,15 @@ BUILDID  = msysunix
 # emain.h undefines for _CYGWIN builds ("Only Win32 target is supported!").
 # Same compiler the msys2unix CI job uses (pacman -S gcc ncurses-devel).
 CC       = /usr/bin/gcc
+# This is the MSYS2/mintty Unix-style build, not Cygwin: tag it so that
+# emain.h reports the system identity as "msys" instead of "cygwin".
+CCDEFS_EXTRA = -DME_SYSTEM_MSYS
 ifeq (,$(wildcard /usr/bin/gcc))
 $(warning Native MSYS gcc not found - install with: pacman -S gcc ncurses-devel zlib-devel)
 endif
 endif
 EXE      = .exe
-CCDEFS   = -D_CYGWIN -I.
+CCDEFS   = -D_CYGWIN $(CCDEFS_EXTRA) -I.
 # 64-bit Cygwin/MSYS2 need the pointer-width intptr_t casts in estruct.h
 # (meIntFromPtr / mePtrFromInt). Without -D_64BIT the 32-bit #else path is
 # active and gcc flags the pointer<->32-bit-int casts on x86_64
