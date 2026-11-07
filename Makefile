@@ -101,6 +101,9 @@ release:
 		*) echo "make: unsupported platform '$$platform'" >&2 ; exit 1 ;; \
 	esac
 
+clean:
+	+@for d in src/.[a-zA-Z0-9]*; do if [ -d "$$d" ]; then rm -rf "$$d" && echo "clean: removed $$d" ; fi ; done
+
 .DEFAULT:
 	+@os=`uname`; case "$$os" in \
 		FreeBSD) m=makefiles/freebsd.mak ;; \
