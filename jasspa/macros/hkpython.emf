@@ -129,28 +129,32 @@ set-variable .fhook-python.item-list-r2 "Class \ecB\\1\ecA"
     hilight   .hilight.python 1 "\\.sort"           .scheme.operator
 !endif
 set-variable #l0 &which "ruff"
+!if &seq #l0 "ERROR"
+  ; on MSYS2 the tool carries a .exe suffix that this build's &which misses
+  set-variable #l0 &which "ruff.exe"
+!endif
 !if &not &seq #l0 "ERROR"
     set-variable %fhook-python-format "ruff format %f"
     set-variable %fhook-python-lint   "ruff check %f"
 
 !endif
 
-!if &not &seq &which "python3" "ERROR"
+!if &or &not &seq &which "python3" "ERROR" &not &seq &which "python3.exe" "ERROR"
   ; Default lint: the standard-library py_compile syntax check, which is
   ; always available when python3 is. Overridden by ruff or pylint below.
   set-variable %fhook-python-lint "python3 -m py_compile \"%f\""
-  !if &not &seq &which "ruff" "ERROR"
+  !if &or &not &seq &which "ruff" "ERROR" &not &seq &which "ruff.exe" "ERROR"
     set-variable %fhook-python-format "ruff format \"%f\""
     set-variable %fhook-python-lint   "ruff check \"%f\""
   !else
-    !if &not &seq &which "yapf" "ERROR"
+    !if &or &not &seq &which "yapf" "ERROR" &not &seq &which "yapf.exe" "ERROR"
       set-variable %fhook-python-format "yapf -i \"%f\""
-    !elif &not &seq &which "yapf3" "ERROR"
+    !elif &or &not &seq &which "yapf3" "ERROR" &not &seq &which "yapf3.exe" "ERROR"
       set-variable %fhook-python-format "yapf3 -i \"%f\""
-    !elif  &not &seq &which "black" "ERROR"
+    !elif  &or &not &seq &which "black" "ERROR" &not &seq &which "black.exe" "ERROR"
       set-variable %fhook-python-format "black -q \"%f\""
     !endif
-    !if &not &seq &which "pylint" "ERROR"
+    !if &or &not &seq &which "pylint" "ERROR" &not &seq &which "pylint.exe" "ERROR"
       set-variable %fhook-python-lint "pylint \"%f\""
     !endif
   !endif
