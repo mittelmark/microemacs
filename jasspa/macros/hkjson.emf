@@ -53,9 +53,9 @@ set-variable .fhook-json.setup-mask "aefghikmoptux"
   ; file is valid JSON.
   set-variable %fhook-json-lint   "python3 -m json.tool \"%f\" 2>&1 >/dev/null"
   ; Reformat in place: emit indented JSON to a temp file beside the original,
-  ; then move it over the original. The && guard leaves the file untouched
-  ; when it is not valid JSON.
-  set-variable %fhook-json-format "python3 -m json.tool \"%f\" > \"%f.tmp\" && mv \"%f.tmp\" \"%f\""
+  ; then move it over the original. The && guard leaves the file untouched when
+  ; it is not valid JSON, and the || rm cleans up the stray temp in that case.
+  set-variable %fhook-json-format "python3 -m json.tool \"%f\" > \"%f.tmp\" && mv \"%f.tmp\" \"%f\" || rm -f \"%f.tmp\""
 !endif
 
 buffer-init-fhook "json"
