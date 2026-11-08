@@ -494,7 +494,7 @@ add-next-line "*grep*" "%f:%l:"
 
 !if &band $system 0x01
   ; Not using X
-  !if &or &seq $platform "cygwin" &seq $platform "linux"
+  !if &or &seq $platform "cygwin" &seq $platform "linux" &seq $platform "msys"
     screen-update
   !endif
 !endif

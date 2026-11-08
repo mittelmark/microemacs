@@ -406,7 +406,7 @@ set-variable #l0 &reg &spr "/history/%s/char-set" %platform ""
 
 !force unixterm-colors-auto-enable
 
-!if &or &seq $platform "cygwin" &seq $platform "unix"
+!if &or &seq $platform "cygwin" &seq $platform "unix" &seq $platform "msys"
     !if &not %unixterm-auto-color
         !if &or &seq $TERM "xterm" &seq $TERM "rxvt" &seq $TERM "screen"
             set-variable %unixterm-auto-color 1
