@@ -136,6 +136,9 @@ set-variable #l0 &which "ruff"
 !endif
 
 !if &not &seq &which "python3" "ERROR"
+  ; Default lint: the standard-library py_compile syntax check, which is
+  ; always available when python3 is. Overridden by ruff or pylint below.
+  set-variable %fhook-python-lint "python3 -m py_compile \"%f\""
   !if &not &seq &which "ruff" "ERROR"
     set-variable %fhook-python-format "ruff format \"%f\""
     set-variable %fhook-python-lint   "ruff check \"%f\""
@@ -149,9 +152,6 @@ set-variable #l0 &which "ruff"
     !endif
     !if &not &seq &which "pylint" "ERROR"
       set-variable %fhook-python-lint "pylint \"%f\""
-    !else
-      ; py_compile is included with Python and provides a syntax check.
-      set-variable %fhook-python-lint "python3 -m py_compile \"%f\""
     !endif
   !endif
   set-variable %fhook-python-exec   "python3 \"%f\""
