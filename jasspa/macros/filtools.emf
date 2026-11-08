@@ -185,6 +185,7 @@ define-macro file-exists
 ; Fortran - hkf90.emf
 ; Go - hkgo.emf
 ; Java - hkjava.emf
+; JSON - hkjson.emf
 ; julia - hkjula.emf
 ; Lua - hklua.emf
 ; Octave - hkoctave.emf

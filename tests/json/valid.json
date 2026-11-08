@@ -1,0 +1,17 @@
+{
+  "name": "MicroEmacs",
+  "version": 26,
+  "release": "b1",
+  "tags": ["editor", "extensible", "terminal"],
+  "features": {
+    "utf8": true,
+    "spell": true,
+    "folding": false,
+    "maxWindows": null,
+    "palette": 256
+  },
+  "author": {
+    "first": "JASSPA",
+    "projects": [1, 2, 3]
+  }
+}

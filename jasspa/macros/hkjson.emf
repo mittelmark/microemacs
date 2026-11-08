@@ -1,0 +1,61 @@
+; -!- emf -!-
+;
+; Copyright (C) 2009 JASSPA (www.jasspa.com)
+; Copyright (C) 2025 Detlef Groth (https://github.com/mittelmark)
+;
+; This is part of JASSPA's MicroEmacs, see the LICENSE file for licensing and
+; copying information.
+;
+; Synopsis:    JSON language hook (hilight + json.tool lint/format).
+;
+; Usage:       .json - JSON data files
+;
+; Notes:       The linter and formatter use python3's standard-library
+;              json.tool, so no extra tooling is required. M-x file-lint
+;              validates the file (empty result = valid) and M-x file-format
+;              rewrites it as indented JSON.
+;
+define-macro fhook-json
+  set-variable $buffer-mask "luh1"
+  @# buffer-init "json"
+  buffer-init-hooks
+!emacro
+
+add-file-hook ".json" fhook-json
+
+; buffer-init variables
+set-variable .fhook-json.setup &reg "/history/fhook/json" "fghiopx"
+set-variable .fhook-json.setup-mask "aefghikmoptux"
+
+; hilight
+!if &and &sin "h" .fhook-json.setup &band .hilight.flags 0x02
+  !if &not &exist .hilight.json
+    set-variable .hilight.json &pinc .hilight.next 1
+  !endif
+  0 hilight .hilight.json 0              $global-scheme
+  hilight .hilight.json  4 "\"" "\"" "\\" .scheme.string
+  hilight .hilight.json  1 "\\d+"        .scheme.constant
+  hilight .hilight.json  0 "true"        .scheme.constant
+  hilight .hilight.json  0 "false"       .scheme.constant
+  hilight .hilight.json  0 "null"        .scheme.constant
+  hilight .hilight.json  0 "{"           .scheme.operator
+  hilight .hilight.json  0 "}"           .scheme.operator
+  hilight .hilight.json  0 "["           .scheme.operator
+  hilight .hilight.json  0 "]"           .scheme.operator
+  hilight .hilight.json  0 ":"           .scheme.operator
+  hilight .hilight.json  0 ","           .scheme.operator
+!endif
+
+; lint / format / exec using python3's standard-library json.tool
+!if &not &seq &which "python3" "ERROR"
+  ; Validate: json.tool writes parse errors to stderr, so capture stderr and
+  ; discard the pretty-printed stdout. The lint buffer stays empty when the
+  ; file is valid JSON.
+  set-variable %fhook-json-lint   "python3 -m json.tool \"%f\" 2>&1 >/dev/null"
+  ; Reformat in place: emit indented JSON to a temp file beside the original,
+  ; then move it over the original. The && guard leaves the file untouched
+  ; when it is not valid JSON.
+  set-variable %fhook-json-format "python3 -m json.tool \"%f\" > \"%f.tmp\" && mv \"%f.tmp\" \"%f\""
+!endif
+
+buffer-init-fhook "json"
