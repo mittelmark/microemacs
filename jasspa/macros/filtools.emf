@@ -82,23 +82,156 @@ set-variable .fhook-file-lint.setup-mask "acfhmw"
 
 add-file-hook "*file-lint*" fhook-file-lint
 
+define-macro file-format-cleanup
+  set-variable #l0 @1
+  set-variable #l1 @2
+  !if &not &seq &stat "t" #l0 "X"
+    !force 0x20 file-op #l0
+  !endif
+  !if &not &seq &stat "t" #l1 "X"
+    !force 0x20 file-op #l1
+  !endif
+  set-variable .file-format-cleanup.failed &or &not &seq &stat "t" #l0 "X" &not &seq &stat "t" #l1 "X"
+!emacro
+
 define-macro file-format
   ; on Windows the syntax for format-opts might be something like
   ; C:/Program Files/GO/../go.exe fmt %s
   set-variable #l0 &ind &cat &cat "%" $buffer-fhook "-format"
-  set-variable #l1 $buffer-bname
+  set-variable #l1 $buffer-fname
+  set-variable #l2 $buffer-bname
   
   !if &seq #l0 "ERROR"
     -8 ml-write &cat &cat "Error: There is no variable %" $buffer-fhook "-format declared!"
     !abort
   !endif
-  &band @# 1 save-some-buffers @mna  
   !if &seq #l0 "restyle-buffer"
     restyle-buffer
+    ml-write "Buffer formatted; save to keep changes."
   !else
-    0x4188 file-tool-run #l0 $buffer-fname "*file-format*"
-    ;next-window-find-buffer #l1
-    0 reread-file
+    !if &seq #l1 ""
+      ml-write "Error: Save the buffer to a file before formatting it."
+      !abort
+    !endif
+    set-variable .file-format.line $window-line
+    ; Keep the original basename and extension so %b/%e work as configured.
+    set-variable #l3 #l1
+    !if &band $system 0x100
+      set-variable #l3 &rep #l3 "\\" "/"
+    !endif
+    set-variable #l4 &rig #l3 &rsin "/" #l3
+    set-variable #l5 &lef #l3 &neg &len #l4
+    ; Create a unique temporary directory beside the file so formatters still
+    ; find project configuration files in parent directories.
+    set-variable #l6 $temp-name
+    set-variable #l7 #l6
+    !if &band $system 0x100
+      set-variable #l7 &rep #l7 "\\" "/"
+    !endif
+    set-variable #l7 &rig #l7 &rsin "/" #l7
+    !if &not &seq &stat "t" #l6 "X"
+      !force 0x20 file-op #l6
+      !if &not &seq &stat "t" #l6 "X"
+        ml-write "Error: Could not remove the formatter's temporary name."
+        !abort
+      !endif
+    !endif
+    set-variable #l9 0
+    set-variable #l6 &cat &cat &cat &cat #l5 ".me-format-" #l7 "-" #l9
+    !while &not &seq &stat "t" #l6 "X"
+      set-variable #l9 &add #l9 1
+      set-variable #l6 &cat &cat &cat &cat #l5 ".me-format-" #l7 "-" #l9
+    !done
+    !force 0x100 file-op #l6
+    !if &not &seq &stat "t" #l6 "D"
+      ml-write "Error: Could not create a temporary directory for the formatter."
+      !abort
+    !endif
+    set-variable #l8 &cat &cat #l6 "/" #l4
+    !force 0 append-buffer #l8
+    !if &not $status
+      file-format-cleanup #l8 #l6
+      !if .file-format-cleanup.failed
+        ml-write &spr "Error: Could not write the buffer to a temporary file; temporary files remain in %s." #l6
+      !else
+        ml-write "Error: Could not write the buffer to a temporary file."
+      !endif
+      !abort
+    !endif
+    set-position "\x8b"
+    beginning-of-buffer
+    set-variable #l9 &or &gre $window-eline 1 &not &seq @wc ""
+    goto-position "\x8b"
+    0xC188 file-tool-run #l0 #l8 "*file-format*"
+    set-variable #l7 .file-tool-run.exit-status
+    find-buffer #l2
+    !if &or &not &seq #l7 "0" &not &seq &stat "t" #l8 "R"
+      file-format-cleanup #l8 #l6
+      !if .file-format-cleanup.failed
+        ml-write &spr "Error: Formatter failed; the buffer was not changed. Temporary files remain in %s." #l6
+      !else
+        ml-write "Error: Formatter failed; the buffer was not changed."
+      !endif
+      !return
+    !endif
+    !if &not &stat "r" #l8
+      file-format-cleanup #l8 #l6
+      !if .file-format-cleanup.failed
+        ml-write &spr "Error: Cannot read the formatted temporary file; the buffer was not changed. Temporary files remain in %s." #l6
+      !else
+        ml-write "Error: Cannot read the formatted temporary file; the buffer was not changed."
+      !endif
+      !return
+    !endif
+    beginning-of-buffer
+    set-position "\x8c"
+    !force insert-file #l8
+    !if &not $status
+      set-position "\x8d"
+      goto-position "\x8c"
+      set-mark
+      goto-position "\x8d"
+      !force -1 kill-region
+      file-format-cleanup #l8 #l6
+      !if .file-format-cleanup.failed
+        ml-write &spr "Error: Could not insert the formatted text; temporary files remain in %s." #l6
+      !else
+        ml-write "Error: Could not insert the formatted text; the buffer was not changed."
+      !endif
+      !return
+    !endif
+    set-position "\x8d"
+    !if #l9
+      set-mark
+      end-of-buffer
+      !force -1 kill-region
+      !if &not $status
+        goto-position "\x8c"
+        set-mark
+        goto-position "\x8d"
+        !force -1 kill-region
+        file-format-cleanup #l8 #l6
+        !if .file-format-cleanup.failed
+          ml-write &spr "Error: Could not replace the buffer with formatted text; temporary files remain in %s." #l6
+        !else
+          ml-write "Error: Could not replace the buffer with formatted text."
+        !endif
+        !return
+      !endif
+    !endif
+    file-format-cleanup #l8 #l6
+    !if .file-format-cleanup.failed
+      ml-write &spr "Buffer formatted; save to keep changes. Temporary files remain in %s." #l6
+    !else
+      ml-write "Buffer formatted; save to keep changes."
+    !endif
+    !if &gre .file-format.line $window-eline
+      set-variable .file-format.line &sub $window-eline 1
+      !if &les .file-format.line 1
+        set-variable .file-format.line 1
+      !endif
+    !endif
+    goto-line .file-format.line
   !endif
 !emacro
 
