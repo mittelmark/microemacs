@@ -1184,3 +1184,13 @@ pieces of noise follow - checkout-hygiene issues, not code bugs:
       a `* text=auto` rule), and `git add --renormalize .` would strip the
       residual CRLF bytes so the mixed endings cannot recur. Files:
       `.gitattributes`, `AGENTS.md`, `doc/tickets.md`
+
+## Ticket 37: file-lint and file-format issues
+
+A: If I call  file-lint and  file-format  in the terminal  version the menubar
+disappears, I might need to call screen-update to get it back
+
+B: file-format should not automatically  replace the original content with the
+new one it should  just  insert the newly  formatted  text and mark the buffer
+than as modified so that the user can decide to save the changed text.
+
