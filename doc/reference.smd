@@ -52256,6 +52256,75 @@ $a
   [find-tag(2)](find-tag(2)), [javatags(3f)](javatags(3f)), [rcs-file(2)](rcs-file(2)), [restyle-buffer(3)](restyle-buffer(3)),
   [restyle-region(3)](restyle-region(3)), [time(2m)](time(2m)).
 !! me-id: m9typ019
+! 9 json
+! 5 %fhook-json-lint
+! 5 %fhook-json-format
+
+## NAME
+
+|%fhook-json-lint
+  %fhook-json-lint - command used to validate JSON files
+|%fhook-json-format
+  %fhook-json-format - command used to format JSON files
+$a
+
+  json - JavaScript Object Notation data files.
+
+
+## SYNOPSIS
+
+
+  json
+  __%fhook-json-lint__
+  __%fhook-json-format__
+
+
+## FILES
+
+
+  __hkjson.emf__ - JSON file hook definition
+
+
+## EXTENSIONS
+
+
+  __.json__ - JSON data file
+
+
+## DESCRIPTION
+
+
+  The JSON file hook recognizes files with the __.json__ extension and provides
+  syntax highlighting for strings, numbers, the `true`, `false` and `null`
+  values, and JSON punctuation.
+
+  When Python 3 is available on the __PATH__, the hook also configures the
+  [file-lint(3)](file-lint(3)) and [file-format(3)](file-format(3)) commands.
+  These use Python's standard-library JSON module; no additional Python
+  packages are required.
+
+  __Linting and Formatting__
+
+  > __%fhook-json-lint__ runs `python3 -m json.tool` to check the current file.
+     Valid JSON produces no diagnostics; a parse error reports its line and
+     column in the `*file-lint*` buffer.
+
+  > __%fhook-json-format__ reformats valid JSON with four-space indentation.
+     [file-format(3)](file-format(3)) applies the result to the current buffer,
+     leaving it modified so it can be reviewed and saved. Invalid JSON is not
+     written by the formatter, and the buffer remains unchanged.
+
+  Syntax highlighting remains available when Python 3 is not installed, but
+  the default lint and format commands are only configured when Python 3 is
+  found.
+
+
+## SEE ALSO
+
+
+  [Supported File Types](MicroEmacs - Supported File Types),
+  [file-format(3)](file-format(3)), [file-lint(3)](file-lint(3)).
+!! me-id: m9typ076
 ! 9 tcl
 ! 9 tk
 ! 9 wish
