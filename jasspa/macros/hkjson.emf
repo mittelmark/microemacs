@@ -27,20 +27,25 @@ add-file-hook ".json" fhook-json
 set-variable .fhook-json.setup &reg "/history/fhook/json" "fghiopx"
 set-variable .fhook-json.setup-mask "aefghikmoptux"
 
-; lint / format / exec using python3's standard-library json.tool
+; lint / format using python3's standard-library json.tool
 ; Accept "python3.exe" as well, because on MSYS2 the binary is stored with a
 ; .exe suffix and this build's &which only probes the extensionless name.
+; Both commands avoid shell operators (no 2>&1, >, &&, ||, mv or rm): the
+; native Windows build hands the command's tokens straight to the program, so
+; shell redirections would arrive as literal arguments instead of being
+; interpreted. Python therefore does the whole job in a single process.
 !if &or &not &seq &which "python3" "ERROR" &not &seq &which "python3.exe" "ERROR"
-  ; Validate: json.tool prints parse errors to stderr, so merge them into
-  ; stdout (2>&1) and let ME capture that into the *file-lint* buffer. /dev/null
-  ; is deliberately avoided because it does not exist on native Windows. A
-  ; valid file shows its parsed JSON; an invalid file shows the "line N column
-  ; M" parse error.
-  set-variable %fhook-json-lint   "python3 -m json.tool \"%f\" 2>&1"
-  ; Reformat in place: emit indented JSON to a temp file beside the original,
-  ; then move it over the original. The && guard leaves the file untouched when
-  ; it is not valid JSON, and the || rm cleans up the stray temp in that case.
-  set-variable %fhook-json-format "python3 -m json.tool \"%f\" > \"%f.tmp\" && mv \"%f.tmp\" \"%f\" || rm -f \"%f.tmp\""
+  ; Lint: json.tool writes a valid file's pretty JSON to stdout and its parse
+  ; error ("line N column M") to stderr. ME merges stderr into the *file-lint*
+  ; buffer on Unix and captures both streams on Windows, so no redirection is
+  ; needed. An empty result means the file is valid JSON.
+  set-variable %fhook-json-lint "python3 -m json.tool \"%f\""
+  ; Format: reformat the file in place within a single python3 process. The
+  ; script uses only single quotes inside the double-quoted -c argument, which
+  ; keeps it intact both under a POSIX shell and on the native Windows path. A
+  ; parse failure aborts before anything is written, so an invalid file is left
+  ; untouched.
+  set-variable %fhook-json-format "python3 -c \"import json,sys;p=sys.argv[1];d=json.load(open(p,encoding='utf-8'));open(p,'w',encoding='utf-8').write(json.dumps(d,indent=4)+chr(10))\" \"%f\""
 !endif
 
 ; hilight
