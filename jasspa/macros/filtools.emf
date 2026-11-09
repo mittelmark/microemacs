@@ -63,6 +63,9 @@ define-macro file-lint
   buffer-init "file-lint"
   set-variable :mouse-word-select "mouse-get-next-line"
   buffer-bind-key return-get-next-line "return"
+  !if &band $system 0x01
+    screen-update
+  !endif
 !emacro  
 
 set-variable .fhook-file-lint.name "File Lint"
@@ -108,6 +111,9 @@ define-macro file-format
   !if &seq #l0 "restyle-buffer"
     restyle-buffer
     ml-write "Buffer formatted; save to keep changes."
+    !if &band $system 0x01
+      screen-update
+    !endif
   !else
     !if &seq #l1 ""
       ml-write "Error: Save the buffer to a file before formatting it."
@@ -165,6 +171,9 @@ define-macro file-format
     0xC188 file-tool-run #l0 #l8 "*file-format*"
     set-variable #l7 .file-tool-run.exit-status
     find-buffer #l2
+    !if &band $system 0x01
+      screen-update
+    !endif
     !if &or &not &seq #l7 "0" &not &seq &stat "t" #l8 "R"
       file-format-cleanup #l8 #l6
       !if .file-format-cleanup.failed
@@ -232,6 +241,9 @@ define-macro file-format
       !endif
     !endif
     goto-line .file-format.line
+    !if &band $system 0x01
+      screen-update
+    !endif
   !endif
 !emacro
 

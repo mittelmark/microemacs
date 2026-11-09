@@ -7,11 +7,103 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261021.2036>
+  > Last Modified : <261109.1648>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth, MiMo-2.5, MiMo 2.6-Flash
 
 ## 2026
+
+  [261109] - Console menu redraw after file tools (ticket 37). file-lint
+               and file-format now force a screen update after changing
+               windows or buffers in the console build, keeping the menu
+               visible after repeated calls. Added the terminal behavior
+               to the file-tool reference and marked the ticket done.
+               Files: jasspa/macros/filtools.emf, doc/reference.smd,
+               doc/tickets.md, ChangeLog
+
+  [261109] - Safe external formatting (ticket 38). file-format now runs an
+               external formatter on a temporary copy and replaces the
+               current buffer only on success, leaving the original file
+               untouched until the user saves. Formatter exit status is
+               exposed to the macro, and the cursor returns to its former
+               line (or the nearest available line). Files:
+               jasspa/macros/filtools.emf, jasspa/macros/filetool.emf,
+               doc/reference.smd, doc/tickets.md
+
+  [261109] - JSON file support. Added a .json hook with syntax highlighting,
+               Python 3 standard-library linting and four-space formatting.
+               The commands handle native Windows argument parsing and
+               Python executable lookup; valid and invalid JSON fixtures
+               were added. Files: jasspa/macros/hkjson.emf,
+               jasspa/macros/me.emf, tests/json/, doc/reference.smd,
+               jasspa/macros/me.ehf
+
+  [261108] - Python lint fallback and MSYS2 console handling. Python files
+               now use py_compile when no other linter is configured, and
+               file-lint handles magic-mode buffers. MSYS2 console builds
+               follow the Unix-console macro paths. Files:
+               jasspa/macros/hkpython.emf, jasspa/macros/filtools.emf,
+               jasspa/macros/me.emf, jasspa/macros/unixterm.emf
+
+  [261106] - Cross-platform build fixes. Cygwin/MSYS2 builds now avoid
+               compiler warnings from missing 64-bit defines; the debug
+               trace buffer was enlarged and an out-of-bounds read in
+               key translation was fixed. MinGW warning flags were
+               adjusted and macOS 14 was removed from the build matrix.
+               Files: src/file.c, src/print.c, src/estruct.h,
+               src/spawn.c, src/winterm.c, src/winprint.c,
+               src/unixgcc.gmk, src/linuxmingwgcc.mak,
+               src/winmingwgcc.mak,
+               .github/workflows/binaries-macosgcc.yml
+
+  [261105] - Weekly preview builds. Added a workflow for weekly preview
+               binaries and documented the preview and update features.
+               Files: .github/workflows/weekly-preview.yml, README.md
+
+  [261104] - CUA and undo key bindings. CUA emulation was revised with
+               updated key and menu bindings, a dedicated cuaedit macro,
+               setup support and shortcut documentation. Ctrl-/ is now
+               bound to undo. Files: jasspa/macros/mecua.emf,
+               jasspa/macros/cuaedit.emf, jasspa/macros/osdcua.emf,
+               src/ebind.def, doc/reference.smd, doc/shortcuts.md
+
+  [261030] - ARM AppImage and install validation. The AppImage workflow
+               now builds on native ARM runners, and installation smoke
+               tests cover FreeBSD, AlmaLinux, Alpine and Arch. Files:
+               .github/workflows/binaries-linux.yml,
+               .github/workflows/test-install.yml, jme.AppDir/AppRun,
+               makefiles/AppImageBuilder.yml, makefiles/unixgcc.gmk
+
+  [261029] - EMF tutorial build. The tutorial now uses tmdoc/mndoc instead
+               of Pandoc, and its generated HTML was refreshed. Files:
+               docs/Makefile, docs/emf-tutorial.md,
+               docs/emf-tutorial.html
+
+  [261029] - Performance workflow baselines now include the final release
+               and latest beta versions. Files:
+               .github/workflows/performance.yml
+
+  [261028] - Build and installer routing. The top-level Makefile now routes
+               MSYS2 builds to the appropriate makefiles and includes a
+               clean target. Debian 10 compatibility and MSYS2 install
+               handling were improved. Files: Makefile,
+               makefiles/unixgcc.gmk, makefiles/winmingwgcc.gmk,
+               bin/install.sh
+
+  [261025] - Release build and publishing pipeline expanded. Added FreeBSD,
+               AlmaLinux, Alpine, Arch, Debian 10 and 32-bit Debian builds,
+               including native ARM container builds. Release workflows
+               verify SHA-256 checksums; install.sh resolves published
+               asset names, and release-assemble.sh packages CI artifacts
+               into releases; the v09.12.26 final release was assembled
+               from CI artifacts. Files: .github/workflows/binaries-*.yml,
+               makefiles/release.gmk, bin/install.sh,
+               bin/release-assemble.sh
+
+  [261023] - Fixed Ubuntu 24 ARM asset selection in the installer and
+               improved Project View behavior. Files:
+               .github/workflows/binaries-linux.yml, bin/install.sh,
+               jasspa/macros/hkpview.emf, jasspa/macros/me.emf
 
   [261021] - Encoding auto-detection now samples up to 1MB instead of
                only the first 4KB. The scan is chunked (8KB head kept for

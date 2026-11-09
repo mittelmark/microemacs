@@ -33818,6 +33818,9 @@ $a
   requires that the linter defined in the variable supports the
   _^FILENAME:LINE:CHAR_ syntax. The same can jumping to the error be achieved
   by pressing the ENTER key on the hilighted line.
+
+  In the console build, __file-lint__ and __file-format__ force a screen
+  update after their window or buffer changes so the menu is redrawn.
   
   These three macros can be seen as simplified  versions for the Go, Python, R
   and Tcl macros like  __go-lint__,  __go-format__,  __go-exec__.  They can be

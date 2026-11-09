@@ -1185,15 +1185,17 @@ pieces of noise follow - checkout-hygiene issues, not code bugs:
       residual CRLF bytes so the mixed endings cannot recur. Files:
       `.gitattributes`, `AGENTS.md`, `doc/tickets.md`
 
-## Ticket 37: file-lint and file-format menu issues
+## Ticket 37: file-lint and file-format menu issues (DONE)
 
-If I call  file-lint and  file-format  in the terminal  version the menubar
-disappears, I might need to call screen-update to get it back
+If I call  file-lint and  file-format  in the terminal  version mec the menubar
+disappears, I might need to call screen-update to get the menu back.
 
-new one it should  just  insert the newly  formatted  text and mark the buffer
-than as modified so that the user can decide to save the changed text.
+The console versions of `file-lint` and `file-format` now force a screen
+update after their window or buffer changes. Repeated `file-lint` calls on
+different files were verified to redraw the menu.
 
-## Ticket 38: file-format should not write the current formatted file out
+
+## Ticket 38: file-format should not write the current formatted file out (DONE)
 
 If the user calls  file-format  the actual  edited file should be made modfied
 with a possible  changed content instead of replacing and saving the currently
