@@ -3,12 +3,12 @@
 ;
 ; $COMPANY_LICENSE:75$
 ;
-; Last Modified : <261005.2239>
+; Last Modified : <261108.1454>
 ;
 ; Synopsis:    
 ; Authors:     Delf Groth
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 set-variable #l0 "äöü"
-1000 ml-write &ulen #l0
-1000 ml-write #l0
+1000 ml-write &spr "The string '%s' has a length of: %d" #l0 &len #l0
+;1000 ml-write #l0
