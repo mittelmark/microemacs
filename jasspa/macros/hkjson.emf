@@ -31,10 +31,12 @@ set-variable .fhook-json.setup-mask "aefghikmoptux"
 ; Accept "python3.exe" as well, because on MSYS2 the binary is stored with a
 ; .exe suffix and this build's &which only probes the extensionless name.
 !if &or &not &seq &which "python3" "ERROR" &not &seq &which "python3.exe" "ERROR"
-  ; Validate: json.tool writes parse errors to stderr, so capture stderr and
-  ; discard the pretty-printed stdout. The lint buffer stays empty when the
-  ; file is valid JSON.
-  set-variable %fhook-json-lint   "python3 -m json.tool \"%f\" 2>&1 >/dev/null"
+  ; Validate: json.tool prints parse errors to stderr, so merge them into
+  ; stdout (2>&1) and let ME capture that into the *file-lint* buffer. /dev/null
+  ; is deliberately avoided because it does not exist on native Windows. A
+  ; valid file shows its parsed JSON; an invalid file shows the "line N column
+  ; M" parse error.
+  set-variable %fhook-json-lint   "python3 -m json.tool \"%f\" 2>&1"
   ; Reformat in place: emit indented JSON to a temp file beside the original,
   ; then move it over the original. The && guard leaves the file untouched when
   ; it is not valid JSON, and the || rm cleans up the stray temp in that case.
