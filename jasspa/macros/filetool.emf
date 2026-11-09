@@ -26,7 +26,11 @@
 ;     0x1000 : use a .find-file var for the <file-name>, the <file-name> arg is the file number (i.e. 1,2,...)
 ;     0x2000 : use all files in .find-file vars (i.e. %*[..%] multi-file command), the <file-name> arg is not used
 ;     0x4000 : Capture output to buffer <output-buffer-name>
+;     0x8000 : Expose external command exit status in .file-tool-run.exit-status
 0 define-macro file-tool-run
+    !if &band @# 0x8000
+        set-variable .file-tool-run.exit-status "ERROR"
+    !endif
     !if &band @# 0x1000 
         set-variable .p .find-file.file-dir
         set-variable #l1 &rep &ind &cat ".find-file.file" @2 "%" "\bA"
@@ -116,6 +120,9 @@
                 !force !force #l4 ipipe-shell-command #l0 #l7
             !else
                 !force !force #l4 pipe-shell-command #l0 #l7
+            !endif
+            !if &band @# 0x8000
+                set-variable .file-tool-run.exit-status $result
             !endif
         !else
             !force !force &bor &cond &band @# 0x40 0 1 &cond &band @# 0x200 0x24 4 shell-command #l0

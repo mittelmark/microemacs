@@ -33801,9 +33801,13 @@ $a
   this macro a popup-window command should appear showing the output or possible 
   errors of the code.
 
-  The __file-format__ macro formats the currently edited  file using the
-  a language specific formatter which needs to be defined using an user defined
-  global file hook dependent variable. See below for a few examples.
+  The __file-format__ macro formats the currently edited file using a
+  language-specific formatter defined by a user-defined, file-hook-dependent
+  variable. External formatters run on a temporary copy of the buffer, so the
+  original file on disk is not changed. When formatting succeeds, the result
+  replaces the buffer contents and the buffer is left modified; save it to
+  keep the changes or undo/discard them. The temporary file retains the
+  original filename and extension for formatter compatibility.
   
   The __file-lint__   macro checks the currently edited file using an user an user
   defined global variable for the current file hook.
@@ -33847,7 +33851,7 @@ $a
        ; command execution
        file-exec          ; executes the current file using the fhook-FHOOKNAME-exec var
        0 file-exec        ; ask for command line arguments and calls then executes
-       file-format        ; formats and reloads the currently edited file using the formatter
+       file-format        ; formats the buffer without saving the original file
        file-lint          ; gives code advise for the currently edited file
 ```
       
