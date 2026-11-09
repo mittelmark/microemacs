@@ -46,6 +46,12 @@ set-variable .fhook-json.setup-mask "aefghikmoptux"
   ; parse failure aborts before anything is written, so an invalid file is left
   ; untouched.
   set-variable %fhook-json-format "python3 -c \"import json,sys;p=sys.argv[1];d=json.load(open(p,encoding='utf-8'));open(p,'w',encoding='utf-8').write(json.dumps(d,indent=4)+chr(10))\" \"%f\""
+  0 define-macro fhook-json-replace
+    next-window
+    set-variable #l0 $buffer-fname
+    previous-window
+    fhook-generic-replace "\\(.+\\) line \\([0-9]+\\) column \\([0-9]+\\) " &spr "ERROR: \\1 %s:\\2:\\3 " #l0
+  !emacro
 !endif
 
 ; hilight
