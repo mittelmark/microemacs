@@ -1461,15 +1461,35 @@ hilEnsureRoom(HILDATA *hd, int nb, int nc)
     }
 }
 
-/* __hilCopyByte - write already-encoded bytes for ONE display column.
- * Records the column->byte mapping (as renderLine does) and advances
- * hd->bytePos by nbytes and dstPos (display column) by 1. */
+static int
+hilightUtf8Combining(meEncoding enc, int col, meUByte *src)
+{
+#if defined(_ME_WINDOW) && MEOPT_XFT
+    return (enc == ME_ENC_UTF8 && (MEOPT_XFT) && meXftUsed() && col > 0 &&
+            meUtf8IsCombining(src)) ;
+#else
+    (void) enc ;
+    (void) col ;
+    (void) src ;
+    return 0 ;
+#endif
+}
+
+/* __hilCopyByte - write already-encoded bytes for one display character.
+ * Xft combining marks share the preceding display cell; other characters
+ * keep the historical one-column rule. */
 #define __hilCopyByte(hd,dstPos,bbuf,nbytes)                                \
-    do { hilEnsureRoom(hd,nbytes,(dstPos)+1) ;                               \
-         disLineByteOff[dstPos] = (hd)->bytePos ;                           \
+    do { int _comb = 0 ;                                                      \
+         if((nbytes) > 1)                                                     \
+             _comb = hilightUtf8Combining((meEncoding)(hd)->bufEnc,          \
+                                           (dstPos),(meUByte *)(bbuf)) ;       \
+         hilEnsureRoom(hd,nbytes,(dstPos)+(_comb ? 0 : 1)) ;                   \
+         if(!_comb)                                                           \
+             disLineByteOff[dstPos] = (hd)->bytePos ;                        \
          { int _ii ; for(_ii = 0 ; _ii < (nbytes) ; _ii++)                    \
              disLineBuff[(hd)->bytePos++] = (bbuf)[_ii] ; }                   \
-         (dstPos) += 1 ; } while(0)
+         if(!_comb)                                                           \
+             (dstPos) += 1 ; } while(0)
 
 #define __hilCopyChar(hd,dstPos,cc)                                         \
 do                                                                           \
@@ -2465,11 +2485,13 @@ hiline_exit:
     return hd.noColChng ;
 }
 
-#define hilOffsetChar(off,dstPos,dstJmp,cc,tw)                               \
+#define hilOffsetChar(off,dstPos,dstJmp,cc,tw,src,enc)                       \
 {                                                                            \
     int ii ;                                                                 \
-    if(cc >= 0xC0)                                                           \
-        ii = 1 ; /* High byte (UTF-8 lead or CP1252): caller handles skip */ \
+    if((cc >= 0xC0) && ((src) != NULL))                                      \
+        ii = hilightUtf8Combining(enc,dstPos,(meUByte *)(src)) ? 0 : 1 ;      \
+    else if(cc >= 0xC0)                                                      \
+        ii = 1 ;                                                             \
     else if(isDisplayable(cc))                                               \
         ii = 1 ;                                                             \
     else if(cc == meCHAR_TAB)                                                \
@@ -2488,12 +2510,12 @@ hiline_exit:
     dstPos += ii ;                                                           \
 }
 
-#define hilOffsetString(lastcc,off,dstPos,dstJmp,srcText,tw)                 \
+#define hilOffsetString(lastcc,off,dstPos,dstJmp,srcText,tw,enc)             \
 {                                                                            \
     meUByte __cc, *__ss=(srcText) ;                                          \
     while((__cc = *__ss++) != '\0')                                          \
     {                                                                        \
-        hilOffsetChar(off,dstPos,dstJmp,__cc,tw)                             \
+        hilOffsetChar(off,dstPos,dstJmp,__cc,tw,__ss-1,enc)                  \
         lastcc = __cc ;                                                      \
         /* Skip UTF-8 continuation bytes */                                  \
         if(__cc >= 0xC0)                                                     \
@@ -2508,14 +2530,14 @@ hiline_exit:
     }                                                                        \
 }
 
-#define hilOffsetLenString(lastcc,off,dstPos,dstJmp,srcText,len,tw)          \
+#define hilOffsetLenString(lastcc,off,dstPos,dstJmp,srcText,len,tw,enc)      \
 {                                                                            \
     meUShort __ll=len ;                                                      \
     meUByte *__ss=(srcText) ;                                                \
     while(__ll--)                                                            \
     {                                                                        \
         lastcc = *__ss++ ;                                                   \
-        hilOffsetChar(off,dstPos,dstJmp,lastcc,tw)                           \
+        hilOffsetChar(off,dstPos,dstJmp,lastcc,tw,__ss-1,enc)                \
         /* Skip UTF-8 continuation bytes */                                  \
         if(lastcc >= 0xC0)                                                   \
         {                                                                    \
@@ -2541,7 +2563,7 @@ hilOffsetReplaceString(register meUByte **offPtr, register int dstPos,
         if((cc == meCHAR_LEADER) && ((cc=*srcText++) != meCHAR_TRAIL_LEADER))
             cc = varTable[cc] ;
         lastcc = cc ;
-        hilOffsetChar(off,dstPos,dd,cc,tw)
+        hilOffsetChar(off,dstPos,dd,cc,tw,NULL,ME_ENC_ASCII)
     }
     
     rlen = dstPos-rlen ;
@@ -2629,7 +2651,7 @@ column_token:
             {
                 if(node->tknSttOff)
                 {
-                    hilOffsetLenString(cc,off,dstPos,dstJmp,srcText+srcPos,node->tknSttOff,tw) ;
+                    hilOffsetLenString(cc,off,dstPos,dstJmp,srcText+srcPos,node->tknSttOff,tw,wp->buffer->encoding) ;
                     srcPos += node->tknSttOff ;
                     len -= node->tknSttOff ;
                 }
@@ -2639,7 +2661,7 @@ column_token:
             }
             else
             {
-                hilOffsetLenString(cc,off,dstPos,dstJmp,srcText+srcPos,len,tw) ;
+                hilOffsetLenString(cc,off,dstPos,dstJmp,srcText+srcPos,len,tw,wp->buffer->encoding) ;
             }
             srcPos += len ;
             
@@ -2704,7 +2726,7 @@ column_token:
                     if((tt == '\0') || (srcPos >= srcWid))
                         break ;
                     ss = *s1++ ;
-                    hilOffsetChar(off,dstPos,dstJmp,ss,tw) ;
+                    hilOffsetChar(off,dstPos,dstJmp,ss,tw,s1-1,wp->buffer->encoding) ;
                     if((ss >= 0xC0) && (wp->buffer->encoding == ME_ENC_UTF8))
                     {
                         /* UTF-8 continuation bytes occupy no display column -
@@ -2723,7 +2745,7 @@ column_token:
                         if(srcPos >= srcWid)
                             break ;
                         ss = *s1++ ;
-                        hilOffsetChar(off,dstPos,dstJmp,ss,tw) ;
+                        hilOffsetChar(off,dstPos,dstJmp,ss,tw,s1-1,wp->buffer->encoding) ;
                         if((ss >= 0xC0) && (wp->buffer->encoding == ME_ENC_UTF8))
                         {
                             int utflen = meUtf8ValidSeqLen(s1 - 1) - 1 ;
@@ -2747,7 +2769,7 @@ column_token:
                 {
                     if(node->clsSttOff)
                     {
-                        hilOffsetLenString(cc,off,dstPos,dstJmp,s1,node->clsSttOff,tw) ;
+                        hilOffsetLenString(cc,off,dstPos,dstJmp,s1,node->clsSttOff,tw,wp->buffer->encoding) ;
                         srcPos += node->clsSttOff ;
                         len -= node->clsSttOff ;
                     }
@@ -2757,7 +2779,7 @@ column_token:
                 }
                 else
                 {
-                    hilOffsetLenString(cc,off,dstPos,dstJmp,s1,len,tw) ;
+                    hilOffsetLenString(cc,off,dstPos,dstJmp,s1,len,tw,wp->buffer->encoding) ;
                 }
                 srcPos += len ;
             }
@@ -2775,7 +2797,7 @@ column_token:
                 if((pos >= srcPos) &&
                    !strncmp((char *)srcText+pos,ss,len))
                 {
-                    hilOffsetString(cc,off,dstPos,dstJmp,srcText+srcPos,tw) ;
+                    hilOffsetString(cc,off,dstPos,dstJmp,srcText+srcPos,tw,wp->buffer->encoding) ;
                     goto hiline_exit ;
                 }
             }
@@ -2789,7 +2811,7 @@ column_token:
                 }
                 if(!(node->type & HLBRINEOL) || (srcPos == srcWid))
                 {
-                    hilOffsetString(cc,off,dstPos,dstJmp,srcText+srcPos,tw) ;
+                    hilOffsetString(cc,off,dstPos,dstJmp,srcText+srcPos,tw,wp->buffer->encoding) ;
                     goto hiline_exit ;
                 }
                 mode |= meHIL_MODETOEOL ;
@@ -2814,8 +2836,26 @@ advance_char:
             mode &= ~(meHIL_MODEMOVE|meHIL_MODESTART) ;
             if((mode & meHIL_MODESTTLN) && !isSpace(cc))
                 mode &= ~meHIL_MODESTTLN ;
-            hilOffsetChar(off,dstPos,dstJmp,cc,tw) ;
-            srcPos++ ;
+            if((wp->buffer->encoding == ME_ENC_UTF8) && (cc >= 0xc0))
+            {
+                int utflen = meUtf8ValidSeqLen(srcText+srcPos) ;
+                if(hilightUtf8Combining(wp->buffer->encoding,dstPos,srcText+srcPos))
+                    *off++ = 0 ;
+                else
+                    hilOffsetChar(off,dstPos,dstJmp,cc,tw,srcText+srcPos,
+                                  wp->buffer->encoding) ;
+                srcPos++ ;
+                while(--utflen > 0)
+                {
+                    *off++ = 0 ;
+                    srcPos++ ;
+                }
+            }
+            else
+            {
+                hilOffsetChar(off,dstPos,dstJmp,cc,tw,srcText+srcPos,wp->buffer->encoding) ;
+                srcPos++ ;
+            }
         }
     }
 hiline_exit:

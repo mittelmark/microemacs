@@ -722,6 +722,13 @@ osd .osd.user-plat 350 "Ctfxp" &cat .osd.checkbox-chars "\\} Use \\HFonts" 0x10 
 An automated regression suite (`tests/test-basics.emf`, see below) plus CI
 (`testing.yml`) exists; everything beyond that is manual testing:
 
+### Optional Debugging Tools
+
+Before using an optional diagnostic or screenshot utility (for example,
+`xwd` or `ffmpeg`), check whether it is installed. If a tool needed for the
+requested investigation is missing, stop and ask the user to install it;
+do not install it yourself or silently switch to another utility.
+
 ### Basic Startup Test
 
 ```bash

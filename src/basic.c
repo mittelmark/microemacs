@@ -87,7 +87,7 @@ meWindowBackwardChar(register meWindow *wp, register int n)
         }
         else
         {
-            /* Move back to start of UTF-8 sequence */
+            /* Move back to the start of the previous UTF-8 sequence. */
             while (wp->dotOffset > 0)
             {
                 wp->dotOffset--;
@@ -98,6 +98,24 @@ meWindowBackwardChar(register meWindow *wp, register int n)
                     break;
                 }
             }
+#if defined(_ME_WINDOW) && MEOPT_XFT
+            /* With Xft, a base character and following combining marks are
+             * one displayed/cursor character. If the previous codepoint is
+             * a mark, continue back to its base (and any earlier marks). */
+            if(meXftUsed() && (wp->buffer->encoding == ME_ENC_UTF8) &&
+               (wp->dotOffset > 0))
+            {
+                while(meUtf8IsCombining(&wp->dotLine->text[wp->dotOffset]) &&
+                      (wp->dotOffset > 0))
+                {
+                    do
+                    {
+                        wp->dotOffset--;
+                    } while((wp->dotOffset > 0) &&
+                            ((wp->dotLine->text[wp->dotOffset] & 0xC0) == 0x80));
+                }
+            }
+#endif
             wp->updateFlags |= WFMOVEC ;
         }
     }
@@ -158,6 +176,16 @@ meWindowForwardChar(register meWindow *wp, register int n)
         {
             /* Move forward by UTF-8 character length */
             wp->dotOffset += meUtf8ValidSeqLen(&wp->dotLine->text[wp->dotOffset]);
+#if defined(_ME_WINDOW) && MEOPT_XFT
+            /* Keep NFD accents attached to the preceding base character,
+             * matching the Xft display-column map. */
+            if(meXftUsed() && (wp->buffer->encoding == ME_ENC_UTF8))
+            {
+                while((wp->dotOffset < meLineGetLength(wp->dotLine)) &&
+                      meUtf8IsCombining(&wp->dotLine->text[wp->dotOffset]))
+                    wp->dotOffset += meUtf8ValidSeqLen(&wp->dotLine->text[wp->dotOffset]);
+            }
+#endif
             wp->updateFlags |= WFMOVEC ;
         }
     }

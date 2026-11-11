@@ -4374,7 +4374,7 @@ XTERMstart(void)
  * typing lag). On a store/pos mismatch fall back to the live store
  * byte for ASCII, or skip for a multi-byte lead (updateline already
  * painted the full UTF-8 sequence; a lone lead is invalid for Xft). */
-static meUByte xftCursorSave[8] ;
+static meUByte xftCursorSave[256] ;
 static int xftCursorSaveLen = 0 ;
 static meFrame *xftCursorSaveFrame = NULL ;
 static meUByte xftCursorSaveStore = 0 ;
@@ -4383,7 +4383,7 @@ static int xftCursorSaveRow = -1, xftCursorSaveCol = -1 ;
  * only the lead byte). Uses the buffer when it matches the frame store
  * (cursor tracks dot), else the single frame-store byte. Single-byte
  * buffers are converted to UTF-8 first (renderLine emits UTF-8). */
-static meUByte xftCursorConv[8] ;
+static meUByte xftCursorConv[256] ;
 static meUByte *
 meXftCursorBytes(meFrame *frame, meUByte *cc, int *len)
 {
@@ -4399,11 +4399,23 @@ meXftCursorBytes(meFrame *frame, meUByte *cc, int *len)
             {
                 int bl = meUtf8ValidSeqLen(&lp->text[off]) ;
                 if(off + bl > llen)
-                    bl = (int)(llen - off) ;
-                if(bl > 4)
-                    bl = 4 ;   /* longer runs are invalid - box either way */
+                    bl = 1 ;
                 if(bl > 0)
                 {
+                    int next = (int)off + bl ;
+                    /* Keep the cursor redraw in sync with the line renderer:
+                     * save the base and its complete run of NFD marks so
+                     * Hide can restore the overlay after the cursor leaves. */
+                    while(next < llen)
+                    {
+                        int markLen = meUtf8ValidSeqLen(&lp->text[next]) ;
+                        if((markLen <= 1) || (next + markLen > llen) ||
+                           !meUtf8IsCombining(&lp->text[next]) ||
+                           (next + markLen - off > (meInt)sizeof(xftCursorSave)))
+                            break ;
+                        bl += markLen ;
+                        next += markLen ;
+                    }
                     *len = bl ;
                     return &lp->text[off] ;
                 }
@@ -4567,6 +4579,22 @@ meFrameXTermHideCursor(meFrame *frame)
                     meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
                     meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),*bp) ;
                 }
+                else if(bl > 1)
+                {
+                    XGlyphInfo ink ;
+                    XftFont *font = meFrameGetXftFont(frame) ;
+                    int inkX = 0, inkWidth = 0, firstLen = meUtf8ValidSeqLen(bp) ;
+                    if((font != NULL) && (firstLen > 1))
+                    {
+                        XftTextExtentsUtf8(mecm.xdisplay,font,(FcChar8 *)bp,
+                                           firstLen,&ink) ;
+                        inkX = ink.x ;
+                        inkWidth = ink.width ;
+                    }
+                    meFrameXTermDrawXftUtf8Run(frame,
+                        colToClient(frame->cursorColumn),
+                        rowToClient(frame->cursorRow),bp,bl,meFALSE,inkX,inkWidth) ;
+                }
                 else
                     meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),bp,bl);
             }
@@ -4682,8 +4710,8 @@ meFrameXTermShowCursor(meFrame *frame)
                 meFrameSetXftFont(frame,meXftFontGet(meFrameGetXGCFont(frame) & meFONT_MASK)) ;
                 bp = meXftCursorBytes(frame,cc,&bl) ;
                 /* Remember for Hide (dot will have moved by then) */
-                if(bl > 8)
-                    bl = 8 ;
+                if(bl > (int)sizeof(xftCursorSave))
+                    bl = sizeof(xftCursorSave) ;
                 memcpy(xftCursorSave,bp,bl) ;
                 xftCursorSaveLen = bl ;
                 xftCursorSaveFrame = frame ;
@@ -4695,6 +4723,22 @@ meFrameXTermShowCursor(meFrame *frame)
                     static char ss[1]={' '} ;
                     meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),ss,1);
                     meFrameXTermDrawSpecialChar(frame,colToClient(frame->cursorColumn),rowToClientTop(frame->cursorRow),*bp) ;
+                }
+                else if(bl > 1)
+                {
+                    XGlyphInfo ink ;
+                    XftFont *font = meFrameGetXftFont(frame) ;
+                    int inkX = 0, inkWidth = 0, firstLen = meUtf8ValidSeqLen(bp) ;
+                    if((font != NULL) && (firstLen > 1))
+                    {
+                        XftTextExtentsUtf8(mecm.xdisplay,font,(FcChar8 *)bp,
+                                           firstLen,&ink) ;
+                        inkX = ink.x ;
+                        inkWidth = ink.width ;
+                    }
+                    meFrameXTermDrawXftUtf8Run(frame,
+                        colToClient(frame->cursorColumn),
+                        rowToClient(frame->cursorRow),bp,bl,meFALSE,inkX,inkWidth) ;
                 }
                 else
                     meFrameXTermDrawString(frame,colToClient(frame->cursorColumn),rowToClient(frame->cursorRow),bp,bl);

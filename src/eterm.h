@@ -387,6 +387,10 @@ do {                                                                            
 } while(0)
 #endif
 #if MEOPT_XFT
+extern void meFrameXTermDrawXftUtf8Run(meFrame *frame, int x, int row,
+                                       meUByte *str, int len,
+                                       int hasPreviousCell, int previousInkX,
+                                       int previousInkWidth) ;
 /* Xft drawing helpers. Unlike upstream, our rowToClient() yields the
  * BASELINE (not the row top), so no extra ascent is added to rw, and
  * the background rect starts one ascent above rw to cover the cell.

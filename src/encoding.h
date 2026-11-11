@@ -91,6 +91,7 @@ int meUtf8IsValid(const unsigned char *data, size_t len);
 int32_t meUtf8Decode(const unsigned char *c);
 size_t meUtf8Encode(int32_t codepoint, unsigned char *out);
 int meUtf8ValidSeqLen(const unsigned char *s);
+int meUtf8IsCombining(const unsigned char *s);
 meEncoding meEncodingFromName(const char *name);
 /* Fold terminal-ready UTF-8 to single-byte latin-1 for legacy paint
  * paths (Windows GDI ExtTextOut, core X11 fonts). U+0000-U+00FF map

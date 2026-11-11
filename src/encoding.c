@@ -564,6 +564,23 @@ int meUtf8ValidSeqLen(const unsigned char *s) {
     return seqlen;
 }
 
+/* Return non-zero for the Unicode combining-mark blocks relevant to
+ * canonical decomposition. Keep this independent of locale and external
+ * Unicode libraries; the ranges cover the common combining diacritics and
+ * the extended combining blocks used by Latin, Greek and Cyrillic text. */
+int meUtf8IsCombining(const unsigned char *s) {
+    int32_t cp;
+    int len = meUtf8ValidSeqLen(s);
+    if(len <= 1)
+        return 0;
+    cp = meUtf8Decode(s);
+    return ((cp >= 0x0300 && cp <= 0x036f) ||
+            (cp >= 0x1ab0 && cp <= 0x1aff) ||
+            (cp >= 0x1dc0 && cp <= 0x1dff) ||
+            (cp >= 0x20d0 && cp <= 0x20ff) ||
+            (cp >= 0xfe20 && cp <= 0xfe2f));
+}
+
 void meConvInit(meConv *conv, meEncoding from, meEncoding to) {
     conv->from = from;
     conv->to = to;

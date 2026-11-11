@@ -177,6 +177,7 @@ from a Windows terminal to check for updates of the installed executables.
     - [Windows Cross Compilation](#crosswin)
     - [Windows Cygwin Compilation](#cygwin)
     - [MSYS2 Compilation](#msys2)
+    - [MacOS Compilation](#macos)
     - [FreeBSD Compilation](#freebsd)
 - [Binaries Downloads](#Downloads)
     - [Experimental Preview](#experimental-preview)
@@ -488,6 +489,23 @@ GUI  version  (_mewb_)  use  the  native  Windows  build  from  the  download
 section  above  or  cross-compile  it  on  Linux  with  _linuxmingwgcc.gmk_
 (see the cross-compilation section above).
 
+<a name="macos"> </a>
+### Compilation on MacOS
+
+In an  MacOS terminal you can installe the required libraries either using the [MacPorts](https://www.macports.org/)
+or the [Homebrew](https://brew.sh/) package manager. Homebrew needs at least MacOS 15, where as MacPorts as well supports older
+MacOsS versions. Here the packages you need to compile the executables on your own on your Mac System using the `port` package command.
+makefile, the terminal console version only (no X11 libraries exist for MSYS2):
+
+```bash
+sudo port install gcc15 ncurses Xft2 pkgconfig
+sudo port install git # if you like to fetch from the repository via git
+git clone https://github.com/mittelmark/microemacs.git
+cd microemacs
+make mec mew mecb mewb mecwb
+```
+
+Which should build all executables in the current directory.
 
 <a name="freebsd"> </a>
 ### FreeBSD and GhostBSD

@@ -402,7 +402,11 @@ windCurLineOffsetEval(meWindow *wp)
                 /* Validate UTF-8 sequence: check lead byte AND continuation bytes.
                  * If not valid UTF-8, treat as single CP1252 byte (width 1). */
                 int utflen = meUtf8ValidSeqLen(ss) ;
+#if defined(_ME_WINDOW) && MEOPT_XFT
+                ii = (meXftUsed() && pos > 0 && meUtf8IsCombining(ss)) ? 0 : 1 ;
+#else
                 ii = 1 ;
+#endif
                 *off++ = (meUByte) ii ;
                 pos += ii ;
                 ss++ ;
@@ -630,6 +634,7 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
     while(len-- > 0)
     {
         meInt bytePos = s2 - disLineBuff ;
+        int combining = 0 ;
         /* Ensure disLineByteOff has room for this column */
         if(wid >= disLineByteOffSize)
         {
@@ -637,8 +642,6 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             disLineByteOff = meRealloc(disLineByteOff, need * sizeof(int)) ;
             disLineByteOffSize = need ;
         }
-        /* Record byte offset for this display column */
-        disLineByteOff[wid] = bytePos ;
         /* Ensure disLineBuff has room */
         if(bytePos >= disLineSize)
         {
@@ -647,6 +650,12 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
             s2 = disLineBuff + bytePos ;
         }
         cc = *s1 ;
+#if defined(_ME_WINDOW) && MEOPT_XFT
+        combining = (bp->encoding == ME_ENC_UTF8) && meXftUsed() &&
+                    (wid > 0) && (cc >= 0xc0) && meUtf8IsCombining(s1) ;
+#endif
+        if(!combining)
+            disLineByteOff[wid] = bytePos ;
         if(bp->encoding != ME_ENC_UTF8 && cc >= 0x80)
         {
             /* Per-buffer rendering (utf8-mec Phase 1): convert raw encoding
@@ -676,13 +685,15 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
                     *s2++ = s1[ii] ;
                 s1 += utflen ;
                 len -= (utflen - 1) ;
+                if(!combining)
+                    wid++ ;
             }
             else
             {
                 renderConvByte(&s2, ME_ENC_CP1252, s1) ;
                 s1++ ;
+                wid++ ;
             }
-            wid++ ;
         }
         else if(bp->encoding == ME_ENC_UTF8 && cc >= 0x80 && isDisplayable(cc))
         {
@@ -774,6 +785,116 @@ renderLine (meUByte *s1, int len, int wid, meBuffer *bp)
 }
 
 #ifdef _XTERM
+#if MEOPT_XFT
+/* In the fixed-cell editor, render combining marks at the preceding cell's
+ * origin. Xft's simple UTF-8 drawing API assigns their glyphs a normal
+ * advance, so draw the base and following marks as separate overlays. */
+static void
+xtermDrawXftMark(meFrame *frame, int baseX, int baseInkX, int baseInkWidth,
+                 int cellWidth, int row, meUByte *mark, int len)
+{
+    XftFont *font = meFrameGetXftFont(frame) ;
+    XGlyphInfo ext ;
+    int markX = baseX ;
+    if(font != NULL)
+    {
+        XftTextExtentsUtf8(mecm.xdisplay,font,(FcChar8 *)mark,len,&ext) ;
+        if(baseInkWidth > 0)
+            markX += baseInkX + (baseInkWidth - (int)ext.width) / 2 - ext.x ;
+        else
+            markX += (cellWidth - (int)ext.width) / 2 - ext.x ;
+    }
+    if((meFrameGetXftDraw(frame) != NULL) && (font != NULL))
+        XftDrawStringUtf8(meFrameGetXftDraw(frame),meFrameGetFgColor(frame),
+                          font,markX,row,(FcChar8 *)mark,len) ;
+    if((meFrameGetXGCFont(frame) & meFONT_UNDERLINE) &&
+       (meFrameGetXftDraw(frame) != NULL))
+        XftDrawRect(meFrameGetXftDraw(frame),meFrameGetFgColor(frame),
+                    baseX,row+mecm.underline,colToClient(1),1) ;
+}
+
+static void
+xtermGetPreviousXftInk(int column, int *inkX, int *inkWidth)
+{
+    XftFont *font = meFrameGetXftFont(frameCur) ;
+
+    *inkX = 0 ;
+    *inkWidth = 0 ;
+    if((column > 0) && (font != NULL))
+    {
+        int start = disLineByteOff[column-1] ;
+        int end = disLineByteOff[column] ;
+        if(end > start)
+        {
+            int n = meUtf8ValidSeqLen(disLineBuff + start) ;
+            if((n <= end-start) &&
+               (((disLineBuff[start] >= 0x20) && (disLineBuff[start] < 0x7f)) ||
+                (disLineBuff[start] >= 0xc0)))
+            {
+                XGlyphInfo ext ;
+                XftTextExtentsUtf8(mecm.xdisplay,font,
+                                   (FcChar8 *)(disLineBuff+start),n,&ext) ;
+                *inkX = ext.x ;
+                *inkWidth = ext.width ;
+            }
+        }
+    }
+}
+
+void
+meFrameXTermDrawXftUtf8Run(meFrame *frame, int x, int row, meUByte *str,
+                           int len, int hasPreviousCell, int previousInkX,
+                           int previousInkWidth)
+{
+    int pos = 0, cell = 0, cursorX = x, baseX = x-mecm.fwidth ;
+    int baseInkX = previousInkX, baseInkWidth = previousInkWidth ;
+    XftFont *font = meFrameGetXftFont(frame) ;
+
+    while(pos < len)
+    {
+        int n = meUtf8ValidSeqLen(str + pos) ;
+        int combining = (n > 1) && meUtf8IsCombining(str + pos) ;
+        if(combining)
+        {
+            if((cell > 0) || hasPreviousCell)
+                xtermDrawXftMark(frame,baseX,baseInkX,baseInkWidth,mecm.fwidth,
+                                 row,str+pos,n) ;
+            else
+            {
+                meFrameXTermDrawString(frame,cursorX,row,
+                                       (char *)(str+pos),n) ;
+                baseX = cursorX ;
+                baseInkX = 0 ;
+                baseInkWidth = 0 ;
+                cursorX += mecm.fwidth ;
+                cell++ ;
+            }
+            pos += n ;
+        }
+        else
+        {
+            XGlyphInfo ext ;
+            baseX = cursorX ;
+            baseInkX = 0 ;
+            baseInkWidth = 0 ;
+            if(font != NULL)
+            {
+                XftTextExtentsUtf8(mecm.xdisplay,font,(FcChar8 *)(str+pos),n,&ext) ;
+                baseInkX = ext.x ;
+                baseInkWidth = ext.width ;
+            }
+            meFrameXTermDrawString(frame,baseX,row,(char *)(str+pos),n) ;
+            /* One editor column is one fixed-width cell. Do not use the
+             * font's proportional advance here: it drifts later marks away
+             * from the base cell in fixed-cell mode. */
+            cursorX += mecm.fwidth ;
+            cell++ ;
+            pos += n ;
+        }
+    }
+}
+#endif
+
 /* Draw a terminal-ready UTF-8 run on X11 core fonts (ticket 12). The
  * core draw macro passes single bytes raw (frame-store/OSD content is
  * not UTF-8), so UTF-8 runs from disLineBuff are folded here to
@@ -1280,11 +1401,13 @@ hideLineJump:
                     {
                         *fssp++ = scheme;
                         cc = disLineBuff[disLineByteOff[scrollBase+col_d]] ;
+                        *fstp++ = ((cc >= 0xc0) && meUtf8IsCombining(
+                                    disLineBuff + disLineByteOff[scrollBase+col_d])) ? 0x80 :
+                                   ((cc & 0xe0) == 0 ? ' ' : cc) ;
                         if((cc & 0xe0) == 0)
                         {
                             if(xb < 4090)
                                 xftbuf[xb++] = ' ' ;
-                            *fstp++ = ' ' ;
                             spFlag++ ;
                         }
                         else
@@ -1297,10 +1420,14 @@ hideLineJump:
                                 memcpy(xftbuf+xb,disLineBuff+disLineByteOff[scrollBase+col_d],cb) ;
                                 xb += cb ;
                             }
-                            *fstp++ = cc ;
                         }
                     }
-                    meFrameXTermDrawString(frameCur,colToClient(scol+ccol),row,(char *)xftbuf,xb);
+                    int inkX, inkWidth ;
+                    xtermGetPreviousXftInk(scrollBase+ccol,&inkX,&inkWidth) ;
+                    meFrameXTermDrawXftUtf8Run(frameCur,colToClient(scol+ccol),
+                                               row,xftbuf,xb,
+                                               (scrollBase+ccol) > 0,
+                                               inkX,inkWidth);
                 }
                 else
                 {
@@ -1371,6 +1498,19 @@ hideLineJump:
                 ii = blkp->column ;
                 byteStart = disLineByteOff[scrollBase+col] ;
                 byteEnd = disLineByteOff[scrollBase+ii] ;
+#if MEOPT_XFT
+                if(meXftUsed())
+                {
+                    int inkX, inkWidth ;
+                    xtermGetPreviousXftInk(scrollBase+col,&inkX,&inkWidth) ;
+                    meFrameXTermDrawXftUtf8Run(frameCur,colToClient(scol+col),
+                                               row,disLineBuff+byteStart,
+                                               byteEnd-byteStart,
+                                               (scrollBase+col) > 0,
+                                               inkX,inkWidth) ;
+                }
+                else
+#endif
                 xtermDrawUtf8Run(colToClient(scol+col),row,disLineBuff+byteStart,byteEnd-byteStart);
                 blkp++ ;
 
