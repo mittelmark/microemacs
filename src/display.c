@@ -795,14 +795,22 @@ xtermDrawXftMark(meFrame *frame, int baseX, int baseInkX, int baseInkWidth,
 {
     XftFont *font = meFrameGetXftFont(frame) ;
     XGlyphInfo ext ;
-    int markX = baseX ;
+    int markX = baseX, opticalShift = 2 ;
     if(font != NULL)
     {
         XftTextExtentsUtf8(mecm.xdisplay,font,(FcChar8 *)mark,len,&ext) ;
+        /* Use one optical correction for above-base marks. Marks whose ink
+         * extends below the baseline get the additional lower-mark shift. */
+        if(ext.y < 0)
+            opticalShift += 4 ;
+        /* Optical offsets are tuned at a 23-pixel line height. Scale them
+         * with the selected Xft font so changing font size preserves the
+         * same relative adjustment. */
+        opticalShift = (opticalShift * font->height + 11) / 23 ;
         if(baseInkWidth > 0)
-            markX += baseInkX + (baseInkWidth - (int)ext.width) / 2 - ext.x ;
+            markX += baseInkX + (baseInkWidth - (int)ext.width) / 2 - ext.x - opticalShift ;
         else
-            markX += (cellWidth - (int)ext.width) / 2 - ext.x ;
+            markX += (cellWidth - (int)ext.width) / 2 - ext.x - opticalShift ;
     }
     if((meFrameGetXftDraw(frame) != NULL) && (font != NULL))
         XftDrawStringUtf8(meFrameGetXftDraw(frame),meFrameGetFgColor(frame),
