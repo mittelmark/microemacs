@@ -1,0 +1,7 @@
+Café naïve façade – “quoted” Ærøskøbing Straße £5 ±1°
+Γειά σου Κόσμε – ΣΊΣΥΦΟΣ σίσυφος
+Привет, мир! Москва ЁЖИК ёжик
+中文测试 日本語のテキスト かな カナ 한국어 텍스트
+Emoji 😀 👍🏽 👨‍👩‍👧 🇬🇧 ❤️ ☺︎
+NFD: é ä ộ NFC: é ä ộ Jamo: 각
+A	Tab	Wide中	Ambig αβγ ±	Full ＡＢＣ	ZW[​]
