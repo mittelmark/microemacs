@@ -795,7 +795,7 @@ xtermDrawXftMark(meFrame *frame, int baseX, int baseInkX, int baseInkWidth,
 {
     XftFont *font = meFrameGetXftFont(frame) ;
     XGlyphInfo ext ;
-    int markX = baseX, opticalShift = 2 ;
+    int markX = baseX, opticalShift = 3 ;
     if(font != NULL)
     {
         XftTextExtentsUtf8(mecm.xdisplay,font,(FcChar8 *)mark,len,&ext) ;

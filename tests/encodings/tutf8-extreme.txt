@@ -4,4 +4,6 @@ Café naïve façade – “quoted” Ærøskøbing Straße £5 ±1°
 中文测试 日本語のテキスト かな カナ 한국어 텍스트
 Emoji 😀 👍🏽 👨‍👩‍👧 🇬🇧 ❤️ ☺︎
 NFD: é ä ộ NFC: é ä ộ Jamo: 각
+NFD clusters: À É ñ ộ Ǘ | stacked: ạ́ ệ
+NFD cursor/delete: é|ä|ộ|Ǘ| (each base and its marks is one Xft character)
 A	Tab	Wide中	Ambig αβγ ±	Full ＡＢＣ	ZW[​]

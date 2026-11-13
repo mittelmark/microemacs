@@ -1202,3 +1202,54 @@ with a possible  changed content instead of replacing and saving the currently
 edited file directly. There should be as well a message like file was modified
 or so on the  message  line. The user  should be then able to save the file by
 themself or skip the changes.
+
+## Ticket 39: FR - Improve NFD cluster rendering in Xft mew (WIP)
+
+In UTF-8 buffers, canonically equivalent text can be stored either as a
+precomposed NFC character (for example `é`) or as an NFD cluster (`e` followed
+by U+0301 COMBINING ACUTE ACCENT). The Xft `mew` renderer currently draws the
+base and combining marks separately and positions marks with measured ink
+extents plus optical offsets. This is better than giving every mark a normal
+cell advance, but stacked and different-font-size clusters can still look
+uneven compared with their NFC equivalents.
+
+The goal is to make NFD clusters read as naturally as NFC text while keeping
+base letters at their normal size and preserving MicroEmacs' fixed-cell
+layout. Prefer font shaping and glyph metrics over per-codepoint positioning
+exceptions. The Xft path is relevant to Linux, FreeBSD, macOS/XQuartz and
+Cygwin/X11 builds. Native Windows `mew` uses GDI and would need a separate
+Uniscribe investigation; `mec` should continue to rely on terminal shaping.
+
+Possible workflow:
+
+1. Use `tests/encodings/tutf8-extreme.txt` as the common fixture. Compare NFC
+   and NFD forms, single and stacked above/below marks, and the current
+   examples at several font sizes (including 14, 24 and 30). Capture Xft
+   `mew` and terminal `mec` results so regressions and platform/font effects
+   are distinguishable.
+2. Trace the Xft draw path in `src/display.c` and font creation/configuration
+   in `src/unixterm.c`. Record how UTF-8 byte offsets map to editor cells,
+   including scrolling, cursor placement, selection, underline and redraw;
+   keep the existing fixed-cell advances for following characters.
+3. Prototype shaping of a complete base-plus-marks cluster with HarfBuzz,
+   using the same face and size selected by Xft. Render the shaped glyph IDs
+   and offsets at the base cell origin, while advancing the editor by exactly
+   one cell for the base and zero cells for its combining marks. Check the
+   available Xft glyph-drawing API and how to obtain a matching HarfBuzz font
+   before deciding whether this needs a new direct Fontconfig/FreeType
+   integration.
+4. Compare the shaped prototype with the existing Xft overlay approach and
+   the terminal output. Verify that NFC rendering, ordinary UTF-8 text,
+   clusters at line starts, stacked marks, horizontal scrolling and cursor /
+   selection redraw remain correct. Keep a simple fallback if shaping support
+   is optional or unavailable at build/runtime.
+5. Check dependency and build impact separately for Linux, FreeBSD,
+   macOS/XQuartz and Cygwin. Do not add HarfBuzz as an unconditional
+   dependency until the platform builds and the fallback behavior are clear.
+   Track native Windows `mew` shaping separately rather than mixing a GDI /
+   Uniscribe port into the Xft change.
+
+The current Xft implementation and the NFD fixture are useful baselines, not
+the final shaping solution. The Xft UTF-8 delete/backspace behavior should
+continue to treat a base and its following combining marks as one editing
+unit, independently of the rendering approach.

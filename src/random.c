@@ -1093,6 +1093,10 @@ forwDelChar(int f, int n)
         meInt len = meLineGetLength(lp) ;
         int bytesToDelete = 0 ;
         int charsLeft = n ;
+#if defined(_ME_WINDOW) && MEOPT_XFT
+        int xftUtf8 = meXftUsed() &&
+                      (frameCur->bufferCur->encoding == ME_ENC_UTF8) ;
+#endif
         while(charsLeft > 0)
         {
             if(off >= len)
@@ -1114,6 +1118,22 @@ forwDelChar(int f, int n)
                     cl = (int)(len - off) ;  /* truncated tail: delete rest of line */
                 off += cl ;
                 bytesToDelete += cl ;
+#if defined(_ME_WINDOW) && MEOPT_XFT
+                /* Xft displays a base and its following combining marks as
+                 * one cursor character. Delete the complete displayed
+                 * character in one ordinary forward/backward delete. */
+                if(xftUtf8)
+                {
+                    while(off < len && meUtf8IsCombining(&lp->text[off]))
+                    {
+                        cl = meUtf8ValidSeqLen(&lp->text[off]) ;
+                        if(off + cl > len)
+                            cl = (int)(len - off) ;
+                        off += cl ;
+                        bytesToDelete += cl ;
+                    }
+                }
+#endif
                 charsLeft-- ;
             }
         }
