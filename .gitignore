@@ -30,3 +30,13 @@ doc/me.ehf
 doc/me-full.smd
 # Performance check outputs (make -f makefiles/performance.gmk)
 tests/perf-*
+# Local NFD/Xft screenshot captures (Ticket 39, nfd/ndf typo variants) and
+# later screenshots staged as images/tmp-*
+/images/nfd-*.png
+/images/ndf-*.png
+/images/tmp-*
+# Debug residue (gdb sessions, clipboard stats)
+/clips.txt
+/debug.txt
+# Unpacked release download artifacts (linux-5 alma builds etc.)
+/linux-*microemacs-*/

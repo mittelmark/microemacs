@@ -1250,6 +1250,11 @@ Possible workflow:
    Uniscribe port into the Xft change.
 
 The current Xft implementation and the NFD fixture are useful baselines, not
-the final shaping solution. The Xft UTF-8 delete/backspace behavior should
-continue to treat a base and its following combining marks as one editing
-unit, independently of the rendering approach.
+the final shaping solution. The UTF-8 delete/backspace behavior (commit
+7151afe, src/random.c) and the cursor movement (src/basic.c) already treat a
+base and its following combining marks as one editing unit, but both are
+gated on Xft being active - with XLFD/core fonts and on native Windows each
+codepoint is still one editing unit, matching their one-cell-per-codepoint
+display. An open decision is whether cluster-unit editing should become
+independent of the rendering backend (gate on the buffer encoding alone) or
+stay tied to the modes that also display clusters as one cell.
