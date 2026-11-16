@@ -1,0 +1,55 @@
+; -!- emf -!-
+define-macro spell-add-word-utf8
+    !if @?
+        set-variable $buffer-mask &cat $buffer-mask "s"
+        !force backward-char
+        !while &pdec @# 1
+            !force forward-word
+            !if &not $status
+                set-variable $buffer-mask &rep $buffer-mask "s" ""
+                !return
+            !endif
+            !force backward-word
+            set-variable #l0 $window-col
+            forward-word
+            set-variable #l1 &mid @wl #l0 &sub $window-col #l0
+            !if &seq @wc ">"
+                forward-char
+                set-variable #l2 &rig @wl $window-col
+                end-of-line
+                0x415 spell #l1 #l2
+            !else
+                !if &seq @wc "/"
+                    forward-char
+                    set-variable #l2 &trb &rig @wl $window-col
+                    end-of-line
+                !else
+                    set-variable #l2 ""
+                !endif
+                0x405 spell #l1 #l2
+            !endif
+        !done
+        set-variable $buffer-mask &rep $buffer-mask "s" ""
+    !else
+        !nma 0x405 spell
+    !endif
+!emacro
+
+define-macro german-orthography-1996-test
+    set-variable #l8 $buffer-bname
+    execute-file "user/dictionary/lsrdede.emf"
+    add-dictionary "user/dictionary/lsdmdede.edf"
+    add-dictionary "user/dictionary/lsdxdede.edf"
+    add-dictionary "user/dictionary/lsdmdede-orthography1996-test.edf"
+    find-file "user/dictionary/orthography-1996-delta.txt"
+    beginning-of-buffer
+    1000000 spell-add-word-utf8
+    0 save-dictionary "user/dictionary/lsdmdede-orthography1996-test.edf"
+    find-buffer #l8
+    !if &exi .hilight.spell
+        !if &equ $buffer-hilight .hilight.spell
+            auto-spell-reset
+        !endif
+    !endif
+    ml-write "German reform test overlay created and loaded"
+!emacro
