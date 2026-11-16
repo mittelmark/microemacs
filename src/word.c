@@ -77,6 +77,15 @@
 #include "emain.h"
 #include "encoding.h"                /* UTF-8 character handling */
 
+int
+meIsWordChar(meBuffer *bp, int cc)
+{
+    cc = (meUByte) cc ;
+    if((bp->encoding == ME_ENC_UTF8) && (cc >= 0x80))
+        return meTRUE ;
+    return isWord(cc) ;
+}
+
 /*
  * Move the cursor backward by "n" words. All of the details of motion are
  * performed by the "windowBackwardChar" and "windowForwardChar" routines. Error if you try to

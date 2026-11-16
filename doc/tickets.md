@@ -1202,3 +1202,11 @@ with a possible  changed content instead of replacing and saving the currently
 edited file directly. There should be as well a message like file was modified
 or so on the  message  line. The user  should be then able to save the file by
 themself or skip the changes.
+
+## Ticket 42: Verify UTF-8 spell checking on Windows and macOS (WIP)
+
+Build and validate the UTF-8 spell-checking fixes on Windows and macOS. In
+UTF-8 and single-byte encoded buffers, verify word selection, checking the
+word under the cursor, message and suggestion rendering, and selecting and
+applying a replacement. Record the tested editor variants and any remaining
+platform-specific issues.

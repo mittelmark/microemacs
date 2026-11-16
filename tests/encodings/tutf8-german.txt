@@ -6,7 +6,7 @@ MicroEmacs unterstützt verschiedene Zeichenkodierungen, darunter UTF-8, CP1252
 und andere. Die folgenden Symbole stammen aus dem CP1252-Bereich:
 
 - Gedankenstrich (–): Er wird häufig in deutschen Texten verwendet.
-- Anführungszeichen („…"): Typografische Anführungszeichen nach deutschem Stil.
+- Anführungszeichen(„…"): Typografische Anführungszeichen nach deutschem Stil.
 - Copyright-Zeichen © und Markenzeichen ™
 - Euro-Zeichen € und Pfund-Zeichen £
 
@@ -93,3 +93,6 @@ darstellen und bearbeiten. Die Kombination aus Terminal-Version (mec) und
 X11-Version (mew) bietet eine flexible Plattform für Benutzer, die mit
 mehreren Zeichenkodierungen arbeiten müssen.
 
+
+Laäufe
+Läauf
