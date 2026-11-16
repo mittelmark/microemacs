@@ -607,8 +607,12 @@ renderConvByte(meUByte **s2, meEncoding enc, meUByte *s1)
         *(*s2)++ = outBuf[ii] ;
 }
 
-#ifdef _XTERM
-/* Convert message text for UTF-8 drawing and map each character to a column. */
+/* Convert message text for UTF-8 drawing and map each character to a column.
+ * Shared by the X11, Windows console, and Windows GUI draw paths so a
+ * non-UTF-8 buffer word (umlaut, ß, …) shown in the message line is
+ * translated buffer-encoding -> UTF-8 before the terminal layer interprets
+ * the bytes. UTF-8 buffers pass through as-is (valid sequences kept, stray
+ * high bytes CP1252-mapped, same policy as the X11 path). */
 static meInt
 renderMessageLine(const meUByte *src, meInt len, meEncoding enc)
 {
@@ -676,7 +680,6 @@ renderMessageLine(const meUByte *src, meInt len, meEncoding enc)
     disLineBuff[outPos] = '\0' ;
     return col ;
 }
-#endif /* _XTERM */
 
 /*
  * renderLine
@@ -1205,17 +1208,19 @@ hideLineJump:
         else
         {
             blkp->scheme = mlScheme;
-#ifdef _XTERM
-            if(!(meSystemCfg & meSYSTEM_CONSOLE))
+            /* The message line can carry a word in the current buffer's
+             * encoding. Convert it to terminal-ready UTF-8 so the draw
+             * layers (X11 putchar, Windows console ConsoleDrawString,
+             * Windows GUI wtext sideband) interpret it correctly.
+             * Modeline and menu rows carry only fixed-width status text,
+             * so they keep the raw-byte identity mapping. */
+            if(!(flag & VFMODEL) && !(flag & VFMENUL))
             {
                 blkp->column = renderMessageLine(vp1->line->text,
                                                  vp1->line->length,
                                                  (meEncoding) frameCur->bufferCur->encoding) ;
                 messageLineUtf8 = 1 ;
             }
-            else
-#endif /* _XTERM */
-                blkp->column = vp1->line->length ;
         }
         if(!messageLineUtf8)
         {
