@@ -20,8 +20,18 @@
     !force execute-file &cat "lsr" .spell.language
     !if &not $status
         !if @#
-            set-variable #l0 &spr "  Rules and dictionaries for language \"%s\"  \n     are not available, please download from\nhttps://github.com/mittelmark/microemacs/releases/download/v0.9.0/\n      or try to run spell-install on Linux!" &reg "/history/language" "Default"
-            osd-dialog "Spelling Checker" #l0 "  \HOk  "
+            set-variable #l0 &spr "  Rules and dictionaries for language \"%s\"\n     are not available. Install them now?" &reg "/history/language" "Default"
+            ; Make Cancel the default to avoid starting a download on Enter.
+            osd-xdialog "Spelling Checker" #l0 2 "  \HInstall  " "  \HCancel  "
+            !if &equ $result 1
+                ; spell-install loads and activates the dictionaries itself.
+                !force spell-install .spell.language
+                ; Reload the rules, then run the normal dictionary setup below.
+                !force execute-file &cat "lsr" .spell.language
+                !if &not $status
+                    !abort
+                !endif
+            !endif
         !endif
         !abort
     !endif

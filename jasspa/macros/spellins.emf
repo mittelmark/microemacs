@@ -1,51 +1,215 @@
-; windows powershell:
+; -!- emf -!-
+; This is part of the JASSPA MicroEmacs macro files
+; Copyright (C) 2026 Detlef Groth (mittelmark)
+; See the file me.emf for copying and conditions.
 ;
-; curl "url" -OutFile file_name.ext
-; MacOS ? 
+; Synopsis:    Download and install spelling dictionaries.
+; Authors:     Detlef Groth
+;
 define-macro spell-install
-    !if &seq &which "curl" ""
-        1000 ml-write "Error: curl is not installed! Please install!"
+    ; Language choices for the interactive prompt.
+    set-variable .spell-install.languages "|American|British|Deutsch|Espanol|Finish|Francais|Italiano|Polish|Portugues|Russian (Ye)|Russian (Yo)|"
+    ; @# defaults to 1 even when omitted, so @? is required to detect args.
+    !if @?
+        set-variable #l0 @1
+    !else
+        set-variable #l1 "American"
+        !if &exi .spell.language
+            !if &seq .spell.language "engb"
+                set-variable #l1 "British"
+            !elif &seq .spell.language "dede"
+                set-variable #l1 "Deutsch"
+            !elif &seq .spell.language "eses"
+                set-variable #l1 "Espanol"
+            !elif &seq .spell.language "fifi"
+                set-variable #l1 "Finish"
+            !elif &seq .spell.language "frfr"
+                set-variable #l1 "Francais"
+            !elif &seq .spell.language "itit"
+                set-variable #l1 "Italiano"
+            !elif &seq .spell.language "plpl"
+                set-variable #l1 "Polish"
+            !elif &seq .spell.language "ptpt"
+                set-variable #l1 "Portugues"
+            !elif &seq .spell.language "ruye"
+                set-variable #l1 "Russian (Ye)"
+            !elif &seq .spell.language "ruyo"
+                set-variable #l1 "Russian (Yo)"
+            !elif &seq .spell.language "enus"
+                set-variable #l1 "American"
+            !endif
+        !endif
+        set-variable #l0 @ml19 "Dictionary language (Enter accepts default, TAB lists): " #l1 .spell-install.languages
+    !endif
+    !if &seq #l0 ""
+        !return
+    !endif
+    !if &or &seq #l0 "dede" &or &seq #l0 "German" &seq #l0 "Deutsch"
+        set-variable #l0 "dede"
+    !elif &or &seq #l0 "engb" &seq #l0 "British"
+        set-variable #l0 "engb"
+    !elif &or &seq #l0 "enus" &seq #l0 "American"
+        set-variable #l0 "enus"
+    !elif &or &seq #l0 "eses" &or &seq #l0 "Spanish" &seq #l0 "Espanol"
+        set-variable #l0 "eses"
+    !elif &or &seq #l0 "fifi" &or &seq #l0 "Finnish" &seq #l0 "Finish"
+        set-variable #l0 "fifi"
+    !elif &or &seq #l0 "frfr" &or &seq #l0 "French" &seq #l0 "Francais"
+        set-variable #l0 "frfr"
+    !elif &or &seq #l0 "itit" &or &seq #l0 "Italian" &seq #l0 "Italiano"
+        set-variable #l0 "itit"
+    !elif &or &seq #l0 "plpl" &seq #l0 "Polish"
+        set-variable #l0 "plpl"
+    !elif &or &seq #l0 "ptpt" &or &seq #l0 "Portuguese" &seq #l0 "Portugues"
+        set-variable #l0 "ptpt"
+    !elif &or &seq #l0 "ruye" &seq #l0 "Russian (YE)"
+        set-variable #l0 "ruye"
+    !elif &or &seq #l0 "ruyo" &seq #l0 "Russian (YO)"
+        set-variable #l0 "ruyo"
+    !else
+        1000 ml-write "Unknown spelling language. Use a supported code or select a language from the list."
         !abort
     !endif
-    !if &seq &which "unzip" ""
-        1000 ml-write "unzip is not installed, please install!"
-        !abort
+
+    set-variable #l2 &cat "lsr" #l0
+    !if &not &seq &find &cat "lsdm" #l0 ".edf" "ERROR"
+        !force execute-file #l2
+        !if $status
+            add-dictionary &cat "lsdm" #l0
+            !force add-dictionary &cat "lsdx" #l0
+            1000 ml-write &spr "Spelling dictionary %s is already installed and activated." #l0
+            !return
+        !endif
     !endif
-    !force set-variable #l1 @1
-    ; no argument given
-    !if &not $status
-        set-variable .lang "|American|British|Deutsch|Espanol|Finish|Francais|Italian|Polish|Portugues|Russian (YE)|Russian (YO)|"
-        set-variable .lang-dict "|Deutsch|dede|American|enus|British|engb|Espanol|eses|Finish|fifi|French|frfr|Italian|itit|Polish|plpl|Portugues|ptpt|Russian (YE)|ruye|Russian (YO)|ruyo|"
-        set-variable #l0 @ml19 "Template name (press tab to see all): " "American" .lang
-        set-variable #l1 &lfind .lang-dict #l0
-        !if &gre #l1 0
-            set-variable #l1 &add #l1 1
-            set-variable #l1 &lget .lang-dict #l1
+
+    ; $user-path is the first macro/dictionary search path on all platforms.
+    set-variable #l3 &spr "%sls_%s.zip" $user-path #l0
+    set-variable #l4 &spr "https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip" #l0
+
+    ; Cygwin/MSYS2 are Unix builds, but PATH can expose Windows System32
+    ; curl.exe first. Resolve downloaders only from the platform /usr/bin.
+    !if &or &seq $platform "cygwin" &seq $platform "msys"
+        set-variable #l5 &which "/usr/bin/curl"
+        !if &seq #l5 "ERROR"
+            set-variable #l5 &which "/usr/bin/curl.exe"
+        !endif
+        set-variable #l6 &which "/usr/bin/wget"
+        !if &seq #l6 "ERROR"
+            set-variable #l6 &which "/usr/bin/wget.exe"
+        !endif
+    !else
+        set-variable #l5 &which "curl"
+        set-variable #l6 &which "wget"
+    !endif
+
+    ; Check the extractor before starting a potentially large download.
+    set-variable #l7 ""
+    set-variable #l9 "unzip"
+    !if &seq $platform "win32"
+        set-variable #l7 &which "tar"
+        !if &seq #l7 "ERROR"
+            set-variable #l7 &which "tar.exe"
+        !endif
+        !if &not &seq #l7 "ERROR"
+            set-variable #l9 "tar"
         !else
-            1000 ml-write "Spelling dictionary not found!"
+            set-variable #l7 &which "powershell"
+            !if &seq #l7 "ERROR"
+                set-variable #l7 &which "powershell.exe"
+            !endif
+            !if &not &seq #l7 "ERROR"
+                set-variable #l9 "powershell"
+            !else
+                set-variable #l7 &which "unzip"
+                !if &seq #l7 "ERROR"
+                    1000 ml-write "Cannot install dictionary: tar, PowerShell or unzip is required."
+                    !abort
+                !endif
+            !endif
+        !endif
+    !else
+        set-variable #l7 &which "unzip"
+        !if &seq #l7 "ERROR"
+            1000 ml-write "Cannot install dictionary: unzip is not installed."
             !abort
         !endif
     !endif
-    !force execute-file &cat "lsr" #l1
-    !if $status 
-        1000 ml-write &spr "Language files for %s already installed!" #l1
+
+    !if &not &seq #l5 "ERROR"
+        set-variable #l8 &spr "\"%s\" -fLsS \"%s\" -o \"%s\"" #l5 #l4 #l3
+    !elif &not &seq #l6 "ERROR"
+        set-variable #l8 &spr "\"%s\" -q \"%s\" -O \"%s\"" #l6 #l4 #l3
     !else
-        !if &lfind "|win32|win32s|cygwin|cygwinc|" %platform
-            ipipe-shell-command &spr "curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip -o ls_%s.zip" #l1 #l1 "*curl*"
-            ; TODO
-            !if &lfind "|win32|win32s|" %platform
-                ; tar for zip on Windows
-                ipipe-shell-command &spr "unzip ls_%s.zip -d %s" #l1 $user-path
-            !else
-                ipipe-shell-command &spr "unzip ls_%s.zip -d %s" #l1 $user-path
-                
-            !endif
-        !else 
-            ipipe-shell-command &spr "curl --location https://github.com/mittelmark/microemacs/releases/download/v0.9.0/ls_%s.zip --output %s/ls_%s.zip" #l1 $user-path #l1 "*curl*"
-            ipipe-shell-command &spr "unzip %s/ls_%s.zip -d %s" $user-path #l1 $user-path
+        1000 ml-write "Cannot install dictionary: curl or wget is required. See https://github.com/mittelmark/microemacs/releases/tag/v0.9.0"
+        !abort
+    !endif
+
+    ; A synchronous pipe lets us inspect the download exit status before
+    ; proceeding to extraction.
+    !force 2 pipe-shell-command #l8 "*spell-install*"
+    ; If curl exists but fails, retry once with wget when available.
+    !if &and &not &seq $result "0" &not &seq #l5 "ERROR"
+        !if &not &seq #l6 "ERROR"
+            set-variable #l8 &spr "\"%s\" -q \"%s\" -O \"%s\"" #l6 #l4 #l3
+            !force 2 pipe-shell-command #l8 "*spell-install*"
         !endif
     !endif
+    !if &not &seq $result "0"
+        !if &seq $platform "win32"
+            !force 1 shell-command &spr "del /q \"%s\"" #l3
+        !else
+            !force 1 shell-command &spr "rm -f \"%s\"" #l3
+        !endif
+        1000 ml-write "Dictionary download failed; no extraction was attempted."
+        !abort
+    !endif
+
+    ; Windows 10+ tar.exe (bsdtar) handles zip; PowerShell is the fallback.
+    !if &seq $platform "win32"
+        !if &seq #l9 "tar"
+            set-variable #l8 &spr "\"%s\" -xf \"%s\" -C \"%s\"" #l7 #l3 $user-path
+        !elif &seq #l9 "powershell"
+            set-variable #l8 &spr "\"%s\" -NoProfile -Command \"Expand-Archive -LiteralPath '%s' -DestinationPath '%s' -Force\"" #l7 #l3 $user-path
+        !else
+            set-variable #l8 &spr "\"%s\" -qq \"%s\" -d \"%s\"" #l7 #l3 $user-path
+        !endif
+    !else
+        set-variable #l8 &spr "\"%s\" -qq \"%s\" -d \"%s\"" #l7 #l3 $user-path
+    !endif
+    !force 2 pipe-shell-command #l8 "*spell-install*"
+    !if &not &seq $result "0"
+        !if &seq $platform "win32"
+            !force 1 shell-command &spr "del /q \"%s\"" #l3
+        !else
+            !force 1 shell-command &spr "rm -f \"%s\"" #l3
+        !endif
+        1000 ml-write "Dictionary archive extraction failed."
+        !abort
+    !endif
+    !if &seq $platform "win32"
+        !force 1 shell-command &spr "del /q \"%s\"" #l3
+    !else
+        !force 1 shell-command &spr "rm -f \"%s\"" #l3
+    !endif
+
+    ; Load language rules and activate the base and optional extended dictionary.
+    !force execute-file #l2
+    !if &not $status
+        1000 ml-write "Dictionary downloaded, but its spelling rules could not be loaded."
+        !abort
+    !endif
+    !if &seq &find &cat "lsdm" #l0 ".edf" "ERROR"
+        1000 ml-write "Dictionary rules loaded, but the base dictionary file is missing."
+        !abort
+    !endif
+    add-dictionary &cat "lsdm" #l0
+    !force add-dictionary &cat "lsdx" #l0
+    !if &band $system 0x01
+        screen-update
+    !endif
+    1000 ml-write &spr "Spelling dictionary %s installed and activated." #l0
 !emacro
+
 define-help "spell-install" "3"
 ## NAME
 
@@ -55,22 +219,21 @@ $a
 ## SYNOPSIS
 
     __spell-install__ ["lang"]
-   
-## DESCRIPTION
-   
-    Install the spelling dictionaries for MicroEmacs directly from within
-    MicroEmacs. If the argument "lang" is not given it ask for the language.
-    The argument lang should be one of "dede" (German), "engb" (British), 
-    "enus" (American), "eses" (Spanish), "fifi" (Finish), "frfr" (French),
-    "itit" (Italian), "plpl" (Polish), "ptpt" (Portugues), "ruye" (Russion (Ye)
-    or "ruyo" (Russian (Yo)).
-  
-## NOTES
 
-    The macro is implemented in the file "dinstall.emf" and requires the command line
-    tools `curl` and `unzip` to be installed. Currently only tested on Linux.
-  
+## DESCRIPTION
+
+    Download and install a spelling dictionary from within MicroEmacs. If
+    "lang" is omitted, a completion prompt is shown, defaulting to the
+    currently selected spelling language when available. The argument may be a
+    language code (dede, engb, enus, eses, fifi, frfr, itit, plpl, ptpt,
+    ruye or ruyo) or a language name (German, Deutsch, British, American,
+    Spanish, Espanol, Finnish, Finish, French, Francais, Italian, Italiano,
+    Polish, Portuguese, Portugues, Russian (YE) or Russian (YO)). curl is
+    preferred, with wget as a fallback. Unix-like platforms require unzip;
+    native Windows uses tar, PowerShell or unzip. Cygwin/MSYS2 only use their
+    own /usr/bin curl or wget rather than a Windows System32 downloader.
+
 ## SEE ALSO
-    [[user-setup(3)]], [[Spelling Commands]]
+
+    [[spell-word(2)]], [[spell-buffer(2)]], [[Spelling Commands]]
 !ehelp
-;spell-install 
