@@ -27,6 +27,19 @@ convention:
     lsdm<Language><Country>.emf Base dictionary.
     lsdx<Language><Country>.emf Extended dictionary.
 
+German spelling additionally loads `lsdmdede-orthography1996.edf` when it is
+present. This small overlay marks selected spellings removed by the 1996
+reform as errors with automatic replacements. It is loaded after the base
+dictionaries and before the personal dictionary, so personal choices take
+precedence. The source word list is `lsdmdede-orthography1996.txt`.
+
+The overlay currently contains the established core list from the
+German-dictionary project: `daß`, `muß`, `mußt`, `mußte`, `Fluß`, `Kuß`,
+`Schiffahrt`, `sodaß`, and the `Tip` compounds. Additional candidates from
+the broader reform list are not included until each source form and
+replacement has been validated against the dictionary's Latin-1 spelling
+format and the current standard.
+
 Some languages do not require an extended  dictionary. If you are
 short of space  then you can delete the  extended  dictionary  to
 leave  just the base  dictionary,  your word  repertoire  will be

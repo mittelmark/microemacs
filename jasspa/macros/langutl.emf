@@ -38,5 +38,12 @@
     ; Add the eXtended, Main and Personal dictionaries
     add-dictionary &cat "lsdx" .spell.language
     add-dictionary &cat "lsdm" .spell.language
+    ; Prefer current German reform spellings over legacy base entries while
+    ; allowing personal dictionary entries to override the reform overlay.
+    !if &seq .spell.language "dede"
+        !if &not &seq &find "lsdmdede-orthography1996" ".edf" "ERROR"
+            add-dictionary "lsdmdede-orthography1996"
+        !endif
+    !endif
     add-dictionary &cat "lsdp" .spell.language
 !emacro
