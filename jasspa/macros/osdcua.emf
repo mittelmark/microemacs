@@ -30,6 +30,7 @@ osd 2 90  ""  "\HDelete              delete" f delete        ; Delete hilight te
 osd 2 100 ""  "\HSelect All          C-a"   f select-all     ; Select all text
 osd 2 110 "D"
 osd 2 120 "D"
+osd 2 130 ""  "Transpose \HCharacters C-t"   f transpose-chars
 osd 2 150 "M" "Insert Date/Time"           31 osd-insert-date
 osd 2 160 ""  "Insert File \HName"          f insert-file-name
 osd 2 170 ""  "Insert \HFile...      C-i"   f insert-file
@@ -39,8 +40,8 @@ osd 3 40  ""  "\HFind..."                   1 osd-search
 osd 3 50  ""  "Find \HNext            f3"   f hunt-forward
 osd 3 60  ""  "Find \HPrevious        S-f3" f hunt-backward
 osd 3 70  ""  "\HReplace              C-r"  2 osd-search
-osd 3 120 ""  "Set \HBookmark        C-t m"  f set-alpha-mark
-osd 3 130 ""  "\HGoto Bookmark       C-t g"  f goto-alpha-mark
+osd 3 120 ""  "Set \HBookmark        C-j m"  f set-alpha-mark
+osd 3 130 ""  "\HGoto Bookmark       C-j g"  f goto-alpha-mark
 osd 3 140 ""  "Goto Mat\Hching (..)   C-e"  f goto-matching-fence
 osd 3 150 ""  "Goto \HLine...         C-g"  f osd-goto-line
 osd 3 160 ""  "Goto \HTag..."               f osd-find-tag
@@ -49,8 +50,8 @@ osd 4 60  ""  "Buffer \HInfo"               f buffer-info
 osd 4 70  ""  "Word \HCount"                f count-words
 osd 4 80  ""  "\HOccurrences            f6"     f occur
 osd 4 100 "M" "\HBuffer"                   20 osd-1-buffer
-osd 4 180 ""  "\HToolbar             C-t t "    f toolbar
-osd 4 190 ""  "\HWhitespaces         C-t s "    f display-whitespaces
+osd 4 180 ""  "\HToolbar             C-j t "    f toolbar
+osd 4 190 ""  "\HWhitespaces         C-j s "    f display-whitespaces
 ; Format
 osd 5 70  ""  "\HFill Paragraph"               f fill-paragraph
 osd 5 150 ""  "Capitali\Hze Word"              f capitalize-word
@@ -66,24 +67,24 @@ osd 6 110 ""  "\HCompile             f5" f compile
 osd 6 125 ""  "\HNotes               f8" f notes
 ; Advanced
 osd 0 70 "Mdfsh" " A\Hdvanced  " 7
-osd 7 10  ""  "\HRecord Macro       C-t ( " f osd-record-macro
-osd 7 20  ""  "\HExecute Macro      C-t e " f execute-kbd-macro
+osd 7 10  ""  "\HRecord Macro       C-j ( " f osd-record-macro
+osd 7 20  ""  "\HExecute Macro      C-j e " f execute-kbd-macro
 osd 7 50  ""  "E\Hxecute Command..." f execute-named-command
 osd 7 60  ""  "Execute \HFile..."    f execute-file
 osd 7 140 "M" "File \HTools"               .osd.tmp file-tool-menu
 osd 7 150 ""  "\HIpipe Command..."   f ipipe-shell-command
 osd 7 160 ""  "S\Hhell"              f shell
 ; Window
-osd 8 10  ""  "\HSplit Window V     C-t 2"       f split-window-vertically
+osd 8 10  ""  "\HSplit Window V     C-j 2"       f split-window-vertically
 osd 8 20  ""  "\HGrow Window V"                  1 change-window-depth
 osd 8 30  ""  "S\Hhrink Window V"               -1 change-window-depth
-osd 8 40  ""  "Spl\Hit Window H     C-t 3"       f split-window-horizontally
+osd 8 40  ""  "Spl\Hit Window H     C-j 3"       f split-window-horizontally
 osd 8 50  ""  "G\Hrow Window H"                  1 change-window-width
 osd 8 60  ""  "Shr\Hink Window H    "           -1 change-window-width
-osd 8 80  ""  "\HOne Window         C-t 1"       f delete-other-windows
-osd 8 90  ""  "\HDelete Window      C-t 0"       f delete-window
-osd 8 110 ""  "\HPrevious Window    C-t 4"       f previous-window
-osd 8 120 ""  "\HNext Window        C-t 5"       f next-window
+osd 8 80  ""  "\HOne Window         C-j 1"       f delete-other-windows
+osd 8 90  ""  "\HDelete Window      C-j 0"       f delete-window
+osd 8 110 ""  "\HPrevious Window    C-j 4"       f previous-window
+osd 8 120 ""  "\HNext Window        C-j 5"       f next-window
 !if &and &not &band $system 0x01 &opt "mwf"
     ; running a version that can support multiple frames
     osd 8 150 "-"
@@ -94,29 +95,29 @@ osd 8 120 ""  "\HNext Window        C-t 5"       f next-window
 ; Help
 !if &band $system 0x01
     ;osd 9 10  ""  "\HMajor Mode Help      S-f2"    f major-mode-help
-    osd 9 20  ""  "General \HHelp         C-t ?"   f osd-help
-    osd 9 40  ""  "List \HBindings        C-t b"   f describe-bindings
-    osd 9 50  ""  "List Bu\Hffers         C-t C-b" f list-buffers
-    osd 9 60  ""  "List \HCommands        C-t c"   f list-commands
-    osd 9 80  ""  "List \HVariables       C-t v"   f list-variables
-    osd 9 90  ""  "Command Apropo\Hs...   C-t a"   f command-apropos
-    osd 9 110 ""  "Describe \HKey...      C-t k"   f describe-key
-    osd 9 120 ""  "Describe Var\Hiable... C-t d"   f describe-variable
-    osd 9 130 ""  "Describe \HWord...     C-t w"   f describe-word
-    osd 9 140 ""  "Help on C\Hommand...   C-t C-c" f help-command
-    osd 9 150 ""  "Help on Variab\Hle...  C-t C-v" f help-variable
+    osd 9 20  ""  "General \HHelp         C-j ?"   f osd-help
+    osd 9 40  ""  "List \HBindings        C-j b"   f describe-bindings
+    osd 9 50  ""  "List Bu\Hffers         C-j C-b" f list-buffers
+    osd 9 60  ""  "List \HCommands        C-j c"   f list-commands
+    osd 9 80  ""  "List \HVariables       C-j v"   f list-variables
+    osd 9 90  ""  "Command Apropo\Hs...   C-j a"   f command-apropos
+    osd 9 110 ""  "Describe \HKey...      C-j k"   f describe-key
+    osd 9 120 ""  "Describe Var\Hiable... C-j d"   f describe-variable
+    osd 9 130 ""  "Describe \HWord...     C-j w"   f describe-word
+    osd 9 140 ""  "Help on C\Hommand...  C-j C-c" f help-command
+    osd 9 150 ""  "Help on Variab\Hle... C-j C-v" f help-variable
 !else
-    osd 9 20  ""  "General \HHelp         C-t ?"   f osd-help
-    osd 9 40  ""  "List \HBindings        C-t b"   f describe-bindings
-    osd 9 50  ""  "List Bu\Hffers         C-t C-b" f list-buffers
-    osd 9 60  ""  "List \HCommands        C-t c"   f list-commands
-    osd 9 80  ""  "List \HVariables       C-t v"   f list-variables
-    osd 9 90  ""  "Command Apropo\Hs...   C-t a"   f command-apropos
-    osd 9 110 ""  "Describe \HKey...      C-t k"   f describe-key
-    osd 9 120 ""  "Describe Var\Hiable... C-t d"   f describe-variable
-    osd 9 130 ""  "Describe \HWord...     C-t w"   f describe-word
-    osd 9 140 ""  "Help on C\Hommand...   C-t C-c" f help-command
-    osd 9 150 ""  "Help on Variab\Hle...  C-t C-v" f help-variable
+    osd 9 20  ""  "General \HHelp         C-j ?"   f osd-help
+    osd 9 40  ""  "List \HBindings        C-j b"   f describe-bindings
+    osd 9 50  ""  "List Bu\Hffers         C-j C-b" f list-buffers
+    osd 9 60  ""  "List \HCommands        C-j c"   f list-commands
+    osd 9 80  ""  "List \HVariables       C-j v"   f list-variables
+    osd 9 90  ""  "Command Apropo\Hs...   C-j a"   f command-apropos
+    osd 9 110 ""  "Describe \HKey...      C-j k"   f describe-key
+    osd 9 120 ""  "Describe Var\Hiable... C-j d"   f describe-variable
+    osd 9 130 ""  "Describe \HWord...     C-j w"   f describe-word
+    osd 9 140 ""  "Help on C\Hommand...  C-j C-c" f help-command
+    osd 9 150 ""  "Help on Variab\Hle... C-j C-v" f help-variable
 !endif
     
 ; define a main menu initialisation macro - main use of this is to insert the

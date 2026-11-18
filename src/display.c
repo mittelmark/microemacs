@@ -607,6 +607,80 @@ renderConvByte(meUByte **s2, meEncoding enc, meUByte *s1)
         *(*s2)++ = outBuf[ii] ;
 }
 
+/* Convert message text for UTF-8 drawing and map each character to a column.
+ * Shared by the X11, Windows console, and Windows GUI draw paths so a
+ * non-UTF-8 buffer word (umlaut, ß, …) shown in the message line is
+ * translated buffer-encoding -> UTF-8 before the terminal layer interprets
+ * the bytes. UTF-8 buffers pass through as-is (valid sequences kept, stray
+ * high bytes CP1252-mapped, same policy as the X11 path). */
+static meInt
+renderMessageLine(const meUByte *src, meInt len, meEncoding enc)
+{
+    meConv conv ;
+    meInt col, pos, outPos ;
+    meUByte out[8] ;
+
+    if(enc != ME_ENC_UTF8)
+        meConvInit(&conv,enc,ME_ENC_UTF8) ;
+    col = pos = outPos = 0 ;
+    while(pos < len)
+    {
+        int inLen = 1, outLen ;
+
+        if(col + 1 >= disLineByteOffSize)
+        {
+            disLineByteOffSize = col + 512 ;
+            disLineByteOff = meRealloc(disLineByteOff,disLineByteOffSize * sizeof(int)) ;
+        }
+        disLineByteOff[col] = outPos ;
+        if(enc == ME_ENC_UTF8 && src[pos] >= 0x80)
+        {
+            inLen = meUtf8ValidSeqLen(src+pos) ;
+            if(inLen > len-pos)
+                inLen = 1 ;
+            if(inLen > 1)
+            {
+                memcpy(out,src+pos,inLen) ;
+                outLen = inLen ;
+            }
+            else
+            {
+                meConvInit(&conv,ME_ENC_CP1252,ME_ENC_UTF8) ;
+                outLen = meConvChar(&conv,src+pos,1,out,sizeof(out)) ;
+            }
+        }
+        else if(enc == ME_ENC_UTF8)
+        {
+            out[0] = src[pos] ;
+            outLen = 1 ;
+        }
+        else
+            outLen = meConvChar(&conv,src+pos,1,out,sizeof(out)) ;
+        if(outLen <= 0)
+        {
+            out[0] = '?' ;
+            outLen = 1 ;
+        }
+        if(outPos + outLen >= disLineSize)
+        {
+            disLineSize = outPos + outLen + 512 ;
+            disLineBuff = meRealloc(disLineBuff,disLineSize+32) ;
+        }
+        memcpy(disLineBuff+outPos,out,outLen) ;
+        outPos += outLen ;
+        pos += inLen ;
+        col++ ;
+    }
+    if(col + 1 >= disLineByteOffSize)
+    {
+        disLineByteOffSize = col + 512 ;
+        disLineByteOff = meRealloc(disLineByteOff,disLineByteOffSize * sizeof(int)) ;
+    }
+    disLineByteOff[col] = outPos ;
+    disLineBuff[outPos] = '\0' ;
+    return col ;
+}
+
 /*
  * renderLine
  * This function renders a non-hilighted text line.
@@ -820,6 +894,7 @@ updateline(register int row, register meVideoLine *vp1, meWindow *window)
     meUShort noColChng;         /* Number of colour changes */
     meUShort scol;              /* Lines starting column */
     meUShort ncol;              /* Lines number of columns */
+    int messageLineUtf8 = 0;
 
     /* Ensure disLineByteOff is allocated */
     if(disLineByteOff == NULL)
@@ -1123,7 +1198,6 @@ hideLineJump:
     {
         meInt ii ;
         blkp = hilBlock ;
-        blkp->column = vp1->line->length ;
         noColChng = 1 ;
         if(flag & VFMODEL)
             blkp->scheme = mdLnScheme + ((flag & VFCURRL) ? meSCHEME_CURRENT:meSCHEME_NORMAL);
@@ -1132,24 +1206,40 @@ hideLineJump:
             blkp->scheme = osdScheme;
 #endif
         else
+        {
             blkp->scheme = mlScheme;
-        /* Modeline/menu: copy text to disLineBuff so TCAP loop can use
-         * disLineByteOff[] mapping. Set up identity byte offset mapping
-         * (1 byte = 1 display column for ASCII modeline text). */
-        if((int) blkp->column >= disLineByteOffSize)
-        {
-            disLineByteOffSize = blkp->column + 512 ;
-            disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
+            /* The message line can carry a word in the current buffer's
+             * encoding. Convert it to terminal-ready UTF-8 so the draw
+             * layers (X11 putchar, Windows console ConsoleDrawString,
+             * Windows GUI wtext sideband) interpret it correctly.
+             * Modeline and menu rows carry only fixed-width status text,
+             * so they keep the raw-byte identity mapping. */
+            if(!(flag & VFMODEL) && !(flag & VFMENUL))
+            {
+                blkp->column = renderMessageLine(vp1->line->text,
+                                                 vp1->line->length,
+                                                 (meEncoding) frameCur->bufferCur->encoding) ;
+                messageLineUtf8 = 1 ;
+            }
         }
-        for(ii = 0 ; ii <= (meInt) blkp->column ; ii++)
-            disLineByteOff[ii] = ii ;
-        /* Ensure disLineBuff is large enough and copy line text */
-        if((int) vp1->line->length >= disLineSize)
+        if(!messageLineUtf8)
         {
-            disLineSize = vp1->line->length + 512 ;
-            disLineBuff = meRealloc(disLineBuff, disLineSize + 32) ;
+            blkp->column = vp1->line->length ;
+            /* Modeline/menu text is in meInternalEnc. */
+            if((int) blkp->column >= disLineByteOffSize)
+            {
+                disLineByteOffSize = blkp->column + 512 ;
+                disLineByteOff = meRealloc(disLineByteOff, disLineByteOffSize * sizeof(int)) ;
+            }
+            for(ii = 0 ; ii <= (meInt) blkp->column ; ii++)
+                disLineByteOff[ii] = ii ;
+            if((int) vp1->line->length >= disLineSize)
+            {
+                disLineSize = vp1->line->length + 512 ;
+                disLineBuff = meRealloc(disLineBuff, disLineSize + 32) ;
+            }
+            memcpy(disLineBuff, vp1->line->text, vp1->line->length) ;
         }
-        memcpy(disLineBuff, vp1->line->text, vp1->line->length) ;
         s1 = disLineBuff ;
     }
 
@@ -1170,11 +1260,11 @@ hideLineJump:
          ********************************************************************/
         meInt ii, col, cno;
         meScheme scheme;
-        /* utf8-mec Phase 1: disLineBuff now holds terminal-ready bytes
-         * (UTF-8 when termEncoding is utf-8), converted per-buffer in
-         * renderLine(). Output raw to avoid a second global
-         * meInternalEnc-based conversion corrupting multi-byte sequences. */
-        int termIsUtf8 = (meStrcmp(termEncoding, "utf-8") == 0) ;
+        /* Buffer lines are rendered into terminal encoding already.
+         * Message text can include a word in the current buffer's encoding. */
+        int termIsUtf8 = (meStrcmp(termEncoding, "utf-8") == 0) &&
+                         ((window != NULL) || messageLineUtf8 ||
+                          (frameCur->bufferCur->encoding == ME_ENC_UTF8)) ;
 
         TCAPmove(row,scol);	/* Go to start of line. */
 

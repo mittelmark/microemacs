@@ -34,6 +34,7 @@
 
 #include <string.h>
 #include "emain.h"
+#include "encoding.h"
 
 #if MEOPT_SPELL
 
@@ -906,6 +907,27 @@ dictionaryDelete(int f, int n)
 
 
 static int
+spellIsAlpha(meUByte cc)
+{
+    return (((frameCur->bufferCur->encoding == ME_ENC_UTF8) && (cc >= 0x80)) ||
+            isAlpha(cc)) ;
+}
+
+static int
+spellIsAlphaNum(meUByte cc)
+{
+    return (((frameCur->bufferCur->encoding == ME_ENC_UTF8) && (cc >= 0x80)) ||
+            isAlphaNum(cc)) ;
+}
+
+static int
+spellIsWord(meUByte cc)
+{
+    return (((frameCur->bufferCur->encoding == ME_ENC_UTF8) && (cc >= 0x80)) ||
+            isSpllWord(cc)) ;
+}
+
+static int
 meSpellGetCurrentWord(meWORDBUF word)
 {
     register meUByte  *dp, c, alnm, nalnm=1 ;
@@ -918,9 +940,9 @@ meSpellGetCurrentWord(meWORDBUF word)
         c = meLineGetChar(frameCur->windowCur->dotLine,frameCur->windowCur->dotOffset) ;
         frameCur->windowCur->dotOffset++ ;
         *dp++ = c ;
-        if(isAlpha(c))
+        if(spellIsAlpha(c))
             alphaCnt = 1 ;
-        nalnm = isAlphaNum(c) ;
+        nalnm = spellIsAlphaNum(c) ;
     } while((++sz < meWORD_SIZE_MAX) && 
             (nalnm || (alnm && isSpllExt(c)))) ;
     
@@ -1791,6 +1813,9 @@ wordGuessGetList(meUByte *word, int olen, meWORDBUF *words)
 #define SPELLWORD_DOUBLE  0x80       /* Check for double word */
 #define SPELLWORD_INFO    0x100      /* Get info on word */
 #define SPELLWORD_DELETE  0x200      /* Delete the given word */
+#define SPELLWORD_BUFFER  0x400      /* The given word uses the buffer encoding */
+#define SPELLWORD_CONVERT 0x800      /* Convert a buffer word to the internal encoding */
+#define SPELLWORD_TO_BUFFER 0x1000   /* Convert an internal word to the buffer encoding */
 
 static void
 spellWordToLatinFont(meUByte *dd, meUByte *ss)
@@ -1813,6 +1838,64 @@ spellWordToLatinFont(meUByte *dd, meUByte *ss)
         *dd++ = toLatinFont(cc) ;
     }
     *dd = '\0' ;
+}
+
+static int
+spellWordToBufferLatinFont(meUByte *dd, const meUByte *ss)
+{
+    meUByte userWord[meWORD_SIZE_MAX] ;
+    meConv conv ;
+    meEncoding sourceEncoding = (meEncoding) frameCur->bufferCur->encoding ;
+    meEncoding targetEncoding = (meEncoding) meInternalEnc ;
+    int len, ii ;
+
+    if(targetEncoding == ME_ENC_UTF8)
+    {
+        for(ii=0 ; ss[ii] != '\0' ; ii++)
+        {
+            if(ss[ii] >= 0x80)
+                return meFALSE ;
+        }
+    }
+    if(sourceEncoding == targetEncoding)
+        meStrcpy(userWord,ss) ;
+    else
+    {
+        len = meStrlen(ss) ;
+        meConvInit(&conv,sourceEncoding,targetEncoding) ;
+        conv.strict = 1 ;
+        len = meConvString(&conv,ss,len,userWord,sizeof(userWord)-1) ;
+        if(len < 0)
+            return meFALSE ;
+        userWord[len] = '\0' ;
+    }
+    spellWordToLatinFont(dd,userWord) ;
+    return meTRUE ;
+}
+
+static int
+spellWordConvert(int toBuffer)
+{
+    meUByte word[meBUF_SIZE_MAX] ;
+    meConv conv ;
+    meEncoding from = (meEncoding) (toBuffer ? meInternalEnc : frameCur->bufferCur->encoding) ;
+    meEncoding to = (meEncoding) (toBuffer ? frameCur->bufferCur->encoding : meInternalEnc) ;
+    int len ;
+
+    if(meGetString(NULL,MLFFZERO,0,word,sizeof(word)) <= 0)
+        return meABORT ;
+    if(from == to)
+        meStrcpy((meUByte *) resultStr,word) ;
+    else
+    {
+        meConvInit(&conv,from,to) ;
+        conv.strict = 1 ;
+        len = meConvString(&conv,word,meStrlen(word),(meUByte *) resultStr,meBUF_SIZE_MAX-1) ;
+        if(len < 0)
+            return mlwrite(MWABORT,(meUByte *)"[Word cannot be represented in the target encoding]") ;
+        resultStr[len] = '\0' ;
+    }
+    return meTRUE ;
 }
 
 
@@ -1842,6 +1925,9 @@ spellWord(int f, int n)
     meWORDBUF word ;
     int       len ;
     
+    if(n & (SPELLWORD_CONVERT|SPELLWORD_TO_BUFFER))
+        return spellWordConvert((n & SPELLWORD_TO_BUFFER) != 0) ;
+
     if(meSpellInitDictionaries() <= 0)
         return meABORT ;
     
@@ -1849,7 +1935,13 @@ spellWord(int f, int n)
     {
         if(meGetString((meUByte *)"Enter word", MLNOSPACE,0,resultStr+1,meWORD_SIZE_MAX) <= 0)
             return meABORT ;
-        spellWordToLatinFont(word,resultStr+1) ;
+        if(n & SPELLWORD_BUFFER)
+        {
+            if(!spellWordToBufferLatinFont(word,resultStr+1))
+                return mlwrite(MWABORT,(meUByte *)"[Word cannot be represented in the spelling dictionary encoding]") ;
+        }
+        else
+            spellWordToLatinFont(word,resultStr+1) ;
     }
     else if(n & SPELLWORD_GETNEXT)
     {
@@ -1859,12 +1951,12 @@ spellWord(int f, int n)
         
         chkDbl = (n & SPELLWORD_DOUBLE) ;
         curDbl = 0 ;
-        while((frameCur->windowCur->dotOffset > 0) && isAlphaNum(meLineGetChar(frameCur->windowCur->dotLine,frameCur->windowCur->dotOffset)))
+        while((frameCur->windowCur->dotOffset > 0) && spellIsAlphaNum(meLineGetChar(frameCur->windowCur->dotLine,frameCur->windowCur->dotOffset)))
             frameCur->windowCur->dotOffset-- ;
         for(;;)
         {
             while(((cc = meLineGetChar(frameCur->windowCur->dotLine,frameCur->windowCur->dotOffset)) != '.') && 
-                  !isAlphaNum(cc))
+                  !spellIsAlphaNum(cc))
             {
                 if(!isSpace(cc))
                     curDbl = 0 ;
@@ -1886,7 +1978,8 @@ spellWord(int f, int n)
                 frameCur->windowCur->updateFlags |= WFMOVEL|WFSELHIL ;
                 return meTRUE ;
             }
-            spellWordToLatinFont(word,(meUByte *) resultStr+1) ;
+            if(!spellWordToBufferLatinFont(word,resultStr+1))
+                return mlwrite(MWABORT,(meUByte *)"[Word cannot be represented in the spelling dictionary encoding]") ;
             if(wordCheck(word) <= 0)
                 break ;
             if(chkDbl)
@@ -1908,28 +2001,28 @@ spellWord(int f, int n)
         for(;;soff--)
         {
             cc = meLineGetChar(frameCur->windowCur->dotLine,soff) ;
-            if((soff==0) || isSpllWord(cc))
+            if((soff==0) || spellIsWord(cc))
                     break ;
         }
-        if(!isSpllWord(cc))
+        if(!spellIsWord(cc))
             return meFALSE ;
         while(soff > 0)
         {
             --soff ;
             cc = meLineGetChar(frameCur->windowCur->dotLine,soff) ;
-            if(!isSpllWord(cc))
+            if(!spellIsWord(cc))
             {
                 soff++ ;
                 break ;
             }
-            if(!isAlphaNum(cc) && 
-               ((soff == 0) || !isAlphaNum(meLineGetChar(frameCur->windowCur->dotLine,soff-1))))
+            if(!spellIsAlphaNum(cc) &&
+               ((soff == 0) || !spellIsAlphaNum(meLineGetChar(frameCur->windowCur->dotLine,soff-1))))
                 break ;
         }
         /* if the first character is not alphanumeric or a '.' then move
          * on one, this stops misspellings of 'quoted words'
          */
-        if(((cc = meLineGetChar(frameCur->windowCur->dotLine,soff)) != '.') && !isAlphaNum(cc))
+        if(((cc = meLineGetChar(frameCur->windowCur->dotLine,soff)) != '.') && !spellIsAlphaNum(cc))
             soff++ ;
         frameCur->windowCur->dotOffset = soff ;
         len = meSpellGetCurrentWord((meUByte *) resultStr+1) ;
@@ -1942,7 +2035,8 @@ spellWord(int f, int n)
             resultStr[0] = 'N' ;
             return meTRUE ;
         }
-        spellWordToLatinFont(word,(meUByte *) resultStr+1) ;
+        if(!spellWordToBufferLatinFont(word,resultStr+1))
+            return mlwrite(MWABORT,(meUByte *)"[Word cannot be represented in the spelling dictionary encoding]") ;
     }
     len = meStrlen(word) ;
     if(n & SPELLWORD_ADD)

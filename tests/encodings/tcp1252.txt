@@ -11,3 +11,5 @@ Sonderzeichen: € ‚ „ … † ‡ ‰ ‹ › « » ´ ¨ ¸ ¹ ² ³ ´ µ ¶ · ¹ º » ¼ ½ ¾
 
 Zahlen: 0 1 2 3 4 5 6 7 8 9
 Symbole: ! @ # $ % ^ & * ( ) - _ = + [ ] { } ; : ' " , . < > / ? | \
+
+Anführungszeichen:

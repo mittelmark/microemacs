@@ -1422,7 +1422,8 @@ extern int      putenv(const char *s);
 #define isPrint(c)       (charMaskTbl1[((meUByte) (c))] & CHRMSK_PRINTABLE)
 #define isSpace(c)       (charMaskTbl1[((meUByte) (c))] & CHRMSK_SPACE)
 
-#define inWord()         (isWord(meLineGetChar(frameCur->windowCur->dotLine, frameCur->windowCur->dotOffset)))
+extern int meIsWordChar(meBuffer *bp, int cc);
+#define inWord()         (meIsWordChar(frameCur->bufferCur, meLineGetChar(frameCur->windowCur->dotLine, frameCur->windowCur->dotOffset)))
 #define inPWord()        ((meLineGetChar(frameCur->windowCur->dotLine, frameCur->windowCur->dotOffset)) > ' ')
 
 #if MEOPT_EXTENDED

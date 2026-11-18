@@ -84,7 +84,67 @@ define-macro start-up
     insert-string "αβγ"
     insert-newline
 
-    ; Test 12: UTF-8 character based string functions (byte functions stay
+    ; Test 12: UTF-8 word characters stay together during word movement
+    end-of-buffer
+    insert-newline
+    insert-string "Anführungszeichen "
+    beginning-of-line
+    forward-word
+    set-variable #l4 $window-col
+    set-variable #l5 &len "Anführungszeichen"
+    set-variable #l8 "ok"
+    !if &not &equ #l4 #l5
+        set-variable #l8 "forward-word"
+    !endif
+    backward-word
+    !if &not &equ $window-col 0
+        set-variable #l8 "backward-word"
+    !endif
+    !if &not &seq &inw "ü" "1"
+        set-variable #l8 "in-word"
+    !endif
+    end-of-buffer
+    insert-newline
+    insert-string "TEST:utf8-word-motion="
+    insert-string #l8
+    insert-newline
+
+    ; Test 13: spell-word preserves the complete UTF-8 word
+    add-dictionary "jasspa/spelling/lsdmenus.edf"
+    end-of-buffer
+    insert-newline
+    insert-string "Überblick "
+    beginning-of-line
+    12 spell ""
+    0 spell
+    set-variable #l7 "ok"
+    !if &not &seq &lef $result 1 "O"
+        set-variable #l7 "spell-status"
+    !elif &not &seq &mid $result 1 &len "Überblick" "Überblick"
+        set-variable #l7 "spell-word"
+    !endif
+    set-variable #l3 &rig $result 1
+    set-variable #l6 "ok"
+    0x401 spell #l3
+    !if &not &seq &lef $result 1 "O"
+        set-variable #l6 "spell-buffer-argument"
+    !endif
+    0x800 spell #l3
+    set-variable #l2 $result
+    0x1000 spell #l2
+    !if &not &seq #l3 $result
+        set-variable #l6 "spell-entry-encoding"
+    !endif
+    end-of-buffer
+    insert-newline
+    insert-string "TEST:utf8-spell="
+    insert-string #l7
+    insert-newline
+    insert-string "TEST:utf8-spell-entry="
+    insert-string #l6
+    insert-newline
+
+    ; Test 14: UTF-8 character based string functions (byte functions stay
     ; byte based: &len/&sin, character functions: &ulen/&uleft/&uright/
     ; &umid/&usin)
     set-variable #l9 "ok"
@@ -119,7 +179,7 @@ define-macro start-up
     insert-string #l9
     insert-newline
 
-    ; Test 13: function name lookup - full name first, then the legacy
+    ; Test 15: function name lookup - full name first, then the legacy
     ; 3-character chop (gtfun dual-chop). Locks both alias families:
     ; long queries for short entries (&length, &trboth, &lget) and
     ; short queries for the >3 char u-entries (&ulef, &urig, &umi, &usi)
@@ -149,7 +209,7 @@ define-macro start-up
     insert-string #l9
     insert-newline
 
-    ; Test 14: PageUp/PageDown framing. Repeated page scrolls must move dot
+    ; Test 16: PageUp/PageDown framing. Repeated page scrolls must move dot
     ; to the beginning/end of the buffer, not just scroll the view. The
     ; regression was that once the first line was at the top of the window
     ; PageUp reported "top of buffer" and left dot where it was.
@@ -183,8 +243,10 @@ define-macro start-up
     insert-newline
 
     ; All tests complete
-    insert-string "TEST:all-tests=complete"
-    insert-newline
+    !if &and &seq #l8 "ok" &seq #l7 "ok"
+        insert-string "TEST:all-tests=complete"
+        insert-newline
+    !endif
 
     ; Save and exit
     save-buffer

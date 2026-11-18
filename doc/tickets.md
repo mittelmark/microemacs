@@ -1202,3 +1202,84 @@ with a possible  changed content instead of replacing and saving the currently
 edited file directly. There should be as well a message like file was modified
 or so on the  message  line. The user  should be then able to save the file by
 themself or skip the changes.
+
+## Ticket 42: Verify UTF-8 spell checking on Windows and macOS (WIP)
+
+Build and validate the UTF-8 spell-checking fixes on Windows and macOS. In
+UTF-8 and single-byte encoded buffers, verify word selection, checking the
+word under the cursor, message and suggestion rendering, and selecting and
+applying a replacement. Record the tested editor variants and any remaining
+platform-specific issues.
+
+## Ticket 43: FR - spell-install to download spelling dictionaries (WIP)
+
+With the UTF-8 spell-checking fixes, spell checking now works for UTF-8 and
+single-byte buffers, but most language dictionaries are not shipped with the
+editor. Selecting e.g. German shows the spell-rules-init dialog
+(jasspa/macros/langutl.emf) pointing at the v0.9.0 release page, and the
+user has to download and unpack `ls_<lang>.zip` by hand.
+
+A first draft already exists: `spell-install` (jasspa/macros/spellins.emf,
+committed in 08af384, wired via me.emf `define-macro-file`, help block and
+reference.smd entry). It checks `&which "curl"` and `&which "unzip"`,
+prompts for a language with TAB completion, detects an already-installed
+rules file via `execute-file "lsr<lang>"`, downloads `ls_<lang>.zip` with
+ipipe-shell-command and unzips it into `$user-path`. `bin/install-dict.sh`
+is the interactive shell model (menu number -> language code, curl into
+~/Downloads, unzip into ~/.jasspa).
+
+Goal: a single in-editor command, spell-install (name decided - kept for
+consistency with spell-word and spell-buffer), that fetches and installs a
+language dictionary automatically using curl/wget and unzip, and that can be
+offered directly from the missing-dictionary dialog. At least on Unix the
+process should be straightforward.
+
+Possible workflow:
+
+1. Name and argument (decided): keep the name spell-install, consistent
+   with spell-word and spell-buffer - no rename, no alias. Accept the
+   dictionary code (dede, enus, ...) and, for convenience, the friendly
+   language name (German, American, ...) as argument; without an argument
+   keep the TAB-completion prompt. Verify the fragile .lang/.lang-dict
+   mapping: the two lists are in different orders and only work because
+   each name is directly followed by its code - align or test all 11
+   entries.
+2. Download tool (agreed): try curl, then wget (&which), and only then
+   report an error naming the manual fallback (the ticket 1 ml-write
+   idiom). Check the command exit status before unpacking.
+3. Unpack tool and curl selection (agreed): unzip on Unix/Cygwin/MSYS2; on
+   native Windows prefer the built-in tar.exe (bsdtar extracts zip
+   archives, Windows 10 1803+) with Expand-Archive as a PowerShell
+   fallback. On Cygwin and MSYS2 the curl found by &which may be the
+   Windows System32 curl.exe rather than the Cygwin/MSYS2 curl - make sure
+   the correct one is chosen. Suggested approach: prefer the platform curl
+   at /usr/bin/curl when present, and pass paths in the format the chosen
+   tool understands (POSIX /cygdrive or /c style for the platform curl,
+   cygpath -w or C:/ style when the Windows curl has to serve), otherwise
+   the download fails with file-not-found errors. Unpack into the
+   directory the add-dictionary lookups search ($user-path per the current
+   draft - verify; the shipped English set lives in jasspa/spelling/),
+   create the directory if missing, and delete the zip afterwards.
+4. Post-install (agreed): after a successful unpack load lsr<lang> and add
+   the lsdx/lsdm dictionaries (the spell-rules-init pattern,
+   jasspa/macros/langutl.emf) so the language is usable without a restart,
+   and report the result on the message line.
+5. Dialog integration (implemented): the spell-rules-init missing-dictionary
+   dialog offers Install and Cancel; Cancel is the default, and Install runs
+   spell-install for the selected language. On success it verifies the rules
+   load and returns because spell-install has already activated the
+   dictionaries. The prompt is now platform-neutral.
+6. URL (agreed): keep the pinned URL but switch it with the next release,
+   which will upload the dictionary files as release assets as well -
+   update the version in spellins.emf (and the spell-rules-init dialog
+   text) when cutting that release, and upload the ls_*.zip archives as
+   release assets for it (bin/release-assemble.sh uploads the installer
+   scripts; the dictionaries need the same treatment).
+7. Testing (deferred until 1-4 are implemented): shim curl/unzip/tar on
+   PATH like the fc-list shims of ticket 12, point MEPATH at a temporary
+   directory and verify: all 11 language mappings resolve to their
+   archive, already-installed detection, the missing-tools error message,
+   download failure handling, and that unpacked lsr/lsdm/lsdx files load
+   and spell checking works. mec test-basics must stay green;
+   spell-install is only reachable via the command line, so an automated
+   test drives it from a start-up macro with a fake download tool.

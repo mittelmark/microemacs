@@ -2942,7 +2942,7 @@ gtfun(meUByte *fname)  /* evaluate a function given name of function */
                 return abortm ;
             return queryMode(arg2,bp->mode) ;
         }
-    case UFINWORD:     return(meLtoa(isWord(arg1[0])));
+    case UFINWORD:     return(meLtoa(meIsWordChar(frameCur->bufferCur,arg1[0])));
 #endif
     case UFBMODE:      return queryMode(arg1,frameCur->bufferCur->mode) ;
     case UFGMODE:      return queryMode(arg1,globMode) ;

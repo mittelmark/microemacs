@@ -331,6 +331,7 @@ osd .osd.spell-fndr 30 "BHcf" .scheme.osd-ebtt " \HClose  " 0 abort-command
 set-variable .spell.check-wordo ""
 
 0 define-macro spell-check-set-wordr
+    0x1000 spell $result
     ; if the replacement word is already set to this then
     ; its probably a double click and the user want to replace
     !if &seq .spell.check-word $result
@@ -368,7 +369,7 @@ set-variable .spell.check-wordo ""
         !else
             osd .osd.spell-chkl 15 "" "Creating list"
             screen-update
-            !force !force 33 spell .spell.check-word
+            !force !force 0x421 spell .spell.check-word
             !if $status
                 set-variable #l0 0
                 !while &not &seq "" &set #l1 &lget $result &inc #l0 1
@@ -385,13 +386,15 @@ set-variable .spell.check-wordo ""
 0 define-macro spell-check-set-word
     !if &les @# 0
         set-variable #l0 @ml2 "" .spell.check-word
+        0x1000 spell #l0
+        set-variable #l0 $result
         !if &not &seq #l0 .spell.check-word
             set-variable .spell.check-word #l0
-            1 spell #l0
+            0x401 spell #l0
             spell-check-set-guess
         !endif
     !else
-        set-variable $result .spell.check-word
+        0x800 spell .spell.check-word
     !endif
 !emacro
 
@@ -523,7 +526,7 @@ set-variable .spell.check-wordo ""
         set-variable #l1 "A"
     !elif &equ @# 2
         ; manual replacement adding an auto replace
-        0x1d spell .spell.check-wordo .spell.check-word
+        0x41d spell .spell.check-wordo .spell.check-word
         set-variable #g2 &add 1 #g2
         set-variable #l1 "R"
     !else
@@ -547,7 +550,7 @@ set-variable .spell.check-wordo ""
         set-variable #l1 "N"
     !elif &equ @# 2
         ; ignore all
-        13 spell .spell.check-wordo ""
+        0x413 spell .spell.check-wordo ""
         set-variable #l1 "G"
     !else
         ; singal ignore
@@ -588,7 +591,7 @@ set-variable .spell.check-wordo ""
                 !if &seq .spell.check-word ""
                     !continue
                 !endif
-                0x01 spell .spell.check-word
+                0x401 spell .spell.check-word
             !endif
         !endif
         ; see what the problem is
@@ -614,7 +617,7 @@ set-variable .spell.check-wordo ""
             osd .osd.spell-chkr 20 "BHcfS"  .scheme.osd-dbtt " Replace All "
             osd .osd.spell-chkr 40 "BHcft"  .scheme.osd-ebtt " \HIgnore      " 1 spell-check-ignore
             osd .osd.spell-chkr 50 "BHcft"  .scheme.osd-ebtt " I\Hgnore All  " 2 spell-check-ignore
-            osd .osd.spell-chkr 60 "BHcfit" .scheme.osd-ebtt " \HAdd         " f "5 spell .spell.check-word \"\""
+            osd .osd.spell-chkr 60 "BHcfit" .scheme.osd-ebtt " \HAdd         " f "0x405 spell .spell.check-word \"\""
             !if &not #l0
                 !if #g3
                     ; not a real abort, just had to get out of osd
@@ -673,7 +676,7 @@ set-variable .spell.check-wordo ""
     !endif
     osd .osd.spell-chkl 65 "xMdmsfHt" .scheme.osd-entry &spr "%s%n" #l0 &sub 14 &len #l0 " " .osd.spell-chkg
     !if @#
-        1 spell .spell.check-word
+        0x401 spell .spell.check-word
         spell-check-set-guess
     !endif
 !emacro
@@ -700,13 +703,13 @@ set-variable .spell.check-wordo ""
         set-variable .spell.check-word .spell.find-mask
     !else
         !force spell-edit-word .spell.check-word
-        0x01 spell .spell.check-wordo
+        0x401 spell .spell.check-wordo
         !if &not &seq &lef $result 1 "E"
             set-variable #g3 1
             !abort
         !endif
     !endif
-    1 spell .spell.check-word
+    0x401 spell .spell.check-word
     spell-check-set-guess
 !emacro
 
@@ -751,7 +754,7 @@ osd .osd.spell-chkr 40 "BcfHt"  .scheme.osd-ebtt " \HIgnore      " 1 spell-check
 osd .osd.spell-chkr 45 ""
 osd .osd.spell-chkr 50 "BcfHt"  .scheme.osd-ebtt " I\Hgnore All  " 2 spell-check-ignore
 osd .osd.spell-chkr 55 ""
-osd .osd.spell-chkr 60 "BcfiHt" .scheme.osd-ebtt " \HAdd         " f "5 spell .spell.check-word \"\""
+osd .osd.spell-chkr 60 "BcfiHt" .scheme.osd-ebtt " \HAdd         " f "0x405 spell .spell.check-word \"\""
 osd .osd.spell-chkr 65 ""
 osd .osd.spell-chkr 70 "BcfHxt" .scheme.osd-ebtt " \HEdit        " 0 spell-check-com
 osd .osd.spell-chkr 75 ""
@@ -825,7 +828,7 @@ define-macro spell-word
                         !return
                     !endif
                     ; re-evaluate the spelling 
-                    !force 1 spell .spell.check-word
+                    !force 0x401 spell .spell.check-word
                 !endif
             !endif
         !else

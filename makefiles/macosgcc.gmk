@@ -1,7 +1,7 @@
 ##-*- makefile -*-############################################################
 #
 #version=091224b1
-VERSION := $(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | paste -sd '' | sed 's/0909/09/')
+VERSION := $(shell grep -E 'meYEAR|meMONTH|meDAY' src/evers.h  | head -n 3 | grep -Eo '[0-9b]+' | paste -sd '\0' - | sed 's/0909/09/')
 CC=gcc-11
 ifeq (,$(shell command -v gcc-11 2>/dev/null))
 CC=cc
