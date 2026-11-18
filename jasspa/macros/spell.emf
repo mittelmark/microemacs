@@ -535,7 +535,11 @@ set-variable .spell.check-wordo ""
         set-variable #l1 "S"
     !endif
     @# spell-check-insertflag #l1
-    &sub #l0 $window-col forward-delete-char
+    !if &equ @# 4
+        &sub #l0 $window-col forward-delete-char
+    !else
+        &ulen .spell.check-wordo forward-delete-char
+    !endif
     -1 yank
     -3 show-region
     insert-string .spell.check-word

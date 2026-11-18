@@ -135,6 +135,22 @@ define-macro start-up
     !if &not &seq #l3 $result
         set-variable #l6 "spell-entry-encoding"
     !endif
+    ; Test replacement of a UTF-8 word preserves the following space
+    end-of-buffer
+    insert-newline
+    insert-string "Läuufe Laufen"
+    beginning-of-line
+    -3 show-region
+    6 forward-char
+    3 show-region
+    -2 show-region
+    &ulen "Läuufe" forward-delete-char
+    insert-string "Läufe"
+    end-of-line
+    set-variable .spell.test-replace "ok"
+    !if &not &equ $window-col 13
+        set-variable .spell.test-replace "utf8-replace"
+    !endif
     end-of-buffer
     insert-newline
     insert-string "TEST:utf8-spell="
@@ -142,6 +158,9 @@ define-macro start-up
     insert-newline
     insert-string "TEST:utf8-spell-entry="
     insert-string #l6
+    insert-newline
+    insert-string "TEST:utf8-spell-replace="
+    insert-string .spell.test-replace
     insert-newline
 
     ; Test 14: spelling dictionaries can be loaded from the built-in FS
@@ -281,7 +300,7 @@ define-macro start-up
     insert-newline
 
     ; All tests complete
-    !if &and &seq #l8 "ok" &seq #l7 "ok"
+    !if &and &and &seq #l8 "ok" &seq #l7 "ok" &seq .spell.test-replace "ok"
         insert-string "TEST:all-tests=complete"
         insert-newline
     !endif
