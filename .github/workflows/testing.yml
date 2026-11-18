@@ -37,6 +37,13 @@ jobs:
             grep -q "TEST:nested-while=64" tests/test-output.txt && echo "PASS: nested while test" || { echo "FAIL: nested while test"; exit 1; }
             grep -q "TEST:unicode=αβγ" tests/test-output.txt && echo "PASS: unicode test" || { echo "FAIL: unicode test"; exit 1; }
             grep -q "TEST:utf8-strfuncs=ok" tests/test-output.txt && echo "PASS: utf8 string functions test" || { echo "FAIL: utf8 string functions test"; exit 1; }
+            if grep -q "TEST:bfs-spell=not-applicable" tests/test-output.txt; then
+              echo "SKIP: BFS dictionary tests on non-standalone build"
+            else
+              grep -q "TEST:bfs-spell=ok" tests/test-output.txt && echo "PASS: BFS dictionary load test" || { echo "FAIL: BFS dictionary load test"; exit 1; }
+              grep -q "TEST:bfs-spell-result=OTippgeber" tests/test-output.txt && echo "PASS: BFS dictionary word test" || { echo "FAIL: BFS dictionary word test"; exit 1; }
+              grep -q "TEST:bfs-overlay=ok" tests/test-output.txt && echo "PASS: BFS German overlay test" || { echo "FAIL: BFS German overlay test"; exit 1; }
+            fi
             grep -q "TEST:func-lookup=ok" tests/test-output.txt && echo "PASS: function lookup test" || { echo "FAIL: function lookup test"; exit 1; }
             grep -q "TEST:scroll-bob=ok" tests/test-output.txt && echo "PASS: scroll top test" || { echo "FAIL: scroll top test"; exit 1; }
             grep -q "TEST:scroll-eob=ok" tests/test-output.txt && echo "PASS: scroll end test" || { echo "FAIL: scroll end test"; exit 1; }

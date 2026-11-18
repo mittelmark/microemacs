@@ -56,7 +56,7 @@ set-variable #l1 &stat "t" #l0
 !endif
 ;
 ; Define extern file macros first
-0 define-macro-file langutl spell-rules-init
+0 define-macro-file langutl spell-rules-init spell-encoding-advice
 0 define-macro-file filetool file-tool-run file-tool-exec file-tool-exec-default
 0 define-macro-file buffinit buffer-init buffer-init-fhook buffer-bind-create fhook-default
 0 define-macro-file osd osd-main osd-find-buffer osd-dialog osd-xdialog osd-entry osd-close osd-emulation-reload

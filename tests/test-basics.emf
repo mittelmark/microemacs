@@ -144,7 +144,45 @@ define-macro start-up
     insert-string #l6
     insert-newline
 
-    ; Test 14: UTF-8 character based string functions (byte functions stay
+    ; Test 14: spelling dictionaries can be loaded from the built-in FS
+    !if &not &stat "r" "bfs://spelling/lsdmdede-orthography1996.edf"
+        set-variable #l5 "not-applicable"
+    !else
+        add-dictionary "lsdmdede-orthography1996"
+        set-variable #l5 "ok"
+    !endif
+    !if &seq #l5 "ok"
+        set-variable #l3 "Tippgeber"
+        0x401 spell #l3
+        set-variable #l4 $result
+        !if &not &seq &lef $result 1 "O"
+            set-variable #l5 "bfs-spell-load"
+        !endif
+    !endif
+    end-of-buffer
+    insert-newline
+    insert-string "TEST:bfs-spell="
+    insert-string #l5
+    insert-newline
+    insert-string "TEST:bfs-spell-result="
+    insert-string #l4
+    insert-newline
+    !if &seq #l5 "ok"
+        set-variable #l3 "Tipgeber"
+        0x401 spell #l3
+        set-variable #l4 $result
+        !if &not &seq &lef $result 1 "A"
+            set-variable #l5 "bfs-overlay-word"
+        !endif
+    !endif
+    insert-string "TEST:bfs-overlay="
+    insert-string #l5
+    insert-newline
+    insert-string "TEST:bfs-overlay-result="
+    insert-string #l4
+    insert-newline
+
+    ; Test 15: UTF-8 character based string functions (byte functions stay
     ; byte based: &len/&sin, character functions: &ulen/&uleft/&uright/
     ; &umid/&usin)
     set-variable #l9 "ok"

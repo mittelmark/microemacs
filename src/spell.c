@@ -337,37 +337,120 @@ meDictionaryRehash(meDictionary *dict)
 static int
 meDictionaryLoad(meDictionary *dict)
 {
-    FILE           *fp ;
+    FILE           *fp = NULL ;
+#if MEOPT_BINFS
+    bfsfile_t      bfp = NULL ;
+#endif
     meDictAddr     *table, info[2] ;
+    meUByte        header[8] ;
     meUInt   dSize, dUsed ;
+    off_t fileSize ;
+    size_t bytesRead ;
     
-    if((fp = fopen((char *)dict->fname,"rb")) == NULL)
-        return mlwrite(MWABORT,(meUByte *)"Failed to open dictionary [%s]",dict->fname) ;
-    fseek(fp,0,SEEK_END) ;
-    dUsed = ftell(fp) ;
-    fseek(fp,0,SEEK_SET) ;
-    if((fgetc(fp) != 0xED) || (fgetc(fp) != 0xF1))
+#if MEOPT_BINFS
+    if(isBfsFile(dict->fname))
+    {
+        bfsstat_t bfsStat ;
+        bfp = bfs_fopen(bfsdev,(char *)(dict->fname+5)) ;
+        if((bfp == NULL) ||
+           (bfs_stat(bfsdev,(char *)(dict->fname+5),&bfsStat) != 0))
+        {
+            if(bfp != NULL)
+                bfs_fclose(bfp) ;
+            return mlwrite(MWABORT,(meUByte *)"Failed to open dictionary [%s]",dict->fname) ;
+        }
+        fileSize = bfsStat.st_size ;
+    }
+    else
+#endif
+    {
+        if((fp = fopen((char *)dict->fname,"rb")) == NULL)
+            return mlwrite(MWABORT,(meUByte *)"Failed to open dictionary [%s]",dict->fname) ;
+        if((fseek(fp,0,SEEK_END) != 0) || ((fileSize = ftell(fp)) < 0) ||
+           (fseek(fp,0,SEEK_SET) != 0))
+        {
+            fclose(fp) ;
+            return mlwrite(MWABORT,(meUByte *)"Failed to read dictionary %s",dict->fname) ;
+        }
+    }
+    if(fileSize < sizeof(header))
+    {
+#if MEOPT_BINFS
+        if(bfp != NULL)
+            bfs_fclose(bfp) ;
+#endif
+        if(fp != NULL)
+            fclose(fp) ;
         return mlwrite(MWABORT,(meUByte *)"[%s does not have correct id string]",dict->fname) ;
-    fread(info,sizeof(meDictAddr),2,fp) ;
-    dUsed -= ftell(fp) ;
+    }
+    /* The first six bytes are the id and the two dictionary header fields. */
+#if MEOPT_BINFS
+    if(bfp != NULL)
+        bytesRead = bfs_fread(header,1,sizeof(header),bfp) ;
+    else
+#endif
+        bytesRead = fread(header,1,sizeof(header),fp) ;
+    if(bytesRead != sizeof(header))
+    {
+#if MEOPT_BINFS
+        if(bfp != NULL)
+            bfs_fclose(bfp) ;
+#endif
+        if(fp != NULL)
+            fclose(fp) ;
+        return mlwrite(MWABORT,(meUByte *)"failed to read dictionary %s",dict->fname) ;
+    }
+    if((header[0] != 0xED) || (header[1] != 0xF1))
+    {
+#if MEOPT_BINFS
+        if(bfp != NULL)
+            bfs_fclose(bfp) ;
+#endif
+        if(fp != NULL)
+            fclose(fp) ;
+        return mlwrite(MWABORT,(meUByte *)"[%s does not have correct id string]",dict->fname) ;
+    }
+    memcpy(info,header+2,sizeof(info)) ;
+    dUsed = (meUInt)(fileSize - sizeof(header)) ;
     dSize = dUsed + TBLINCSIZE ;
     
 #ifdef BUILD_INSURE_VERSIONS
     table = (meDictAddr *) meMalloc(10) ;
 #endif
     if ((table = (meDictAddr *) meMalloc(dSize)) == NULL)
+    {
+#if MEOPT_BINFS
+        if(bfp != NULL)
+            bfs_fclose(bfp) ;
+#endif
+        if(fp != NULL)
+            fclose(fp) ;
         return meFALSE ;
+    }
     dict->table = table ;
     dict->dUsed = dUsed ;
     dict->dSize = dSize ;
     dict->noWords = meEntryGetAddr(info[0]) ;
     dict->tableSize = meEntryGetAddr(info[1]) ;
-    if((dSize = fread(table,1,dUsed,fp)) != dUsed)
+    if(dUsed == 0)
+        bytesRead = 0 ;
+#if MEOPT_BINFS
+    else if(bfp != NULL)
+        bytesRead = bfs_fread(table,1,dUsed,bfp) ;
+#endif
+    else
+        bytesRead = fread(table,1,dUsed,fp) ;
+#if MEOPT_BINFS
+    if(bfp != NULL)
+        bfs_fclose(bfp) ;
+#endif
+    if(fp != NULL)
+        fclose(fp) ;
+    if(bytesRead != dUsed)
     {
         free(table) ;
         return mlwrite(MWABORT,(meUByte *)"failed to read dictionary %s",dict->fname) ;
     }
-    fclose(fp) ;
     
     dict->flags |= DTACTIVE ;
     meDictionaryRehash(dict) ;

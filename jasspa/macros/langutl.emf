@@ -47,3 +47,11 @@
     !endif
     add-dictionary &cat "lsdp" .spell.language
 !emacro
+
+; Polish spelling needs characters that ISO-8859-1 cannot represent. Give
+; this advice when the user selects Polish, not on every editor startup.
+0 define-macro spell-encoding-advice
+    !if &and &seq .spell.language "plpl" &seq $internal-encoding "ISO-8859-1"
+        7000 ml-write "Polish spelling: ISO-8859-1 lacks Polish letters; consider ISO-8859-2/CP1250."
+    !endif
+!emacro

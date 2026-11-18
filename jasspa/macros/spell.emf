@@ -672,6 +672,7 @@ set-variable .spell.check-wordo ""
             !force exec-file "language"
             !force spell-rules-init
         !endif
+        spell-encoding-advice
         add-spell-rule "#" &mul .spell.gscore 30
     !endif
     osd .osd.spell-chkl 65 "xMdmsfHt" .scheme.osd-entry &spr "%s%n" #l0 &sub 14 &len #l0 " " .osd.spell-chkg

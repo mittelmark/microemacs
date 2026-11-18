@@ -232,6 +232,7 @@ set-variable %user-misc-cmd  "|alias-path-setup|cc-setup|cvs-setup|mail-setup|fi
     !if &exi .spell.language
         ; make sure spelling is setup otherwise auto-spell will fail
         spell-rules-init
+        spell-encoding-advice
     !endif
     !if &exi .user-setup.scheme
         change-scheme .user-setup.scheme
