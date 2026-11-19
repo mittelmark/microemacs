@@ -36037,6 +36037,8 @@ $a
   >  The __replace__ button is activated when a new word has been edited or
      selected as a candidate for replacement. Selecting __replace__ modifies
      the erroneous word in the buffer with the newly selected word.
+     Replacements preserve multibyte UTF-8 characters and the whitespace
+     or punctuation following the misspelled word.
 
   __Replace All__
   
@@ -36174,7 +36176,10 @@ $a
   __spell-install__ allow the user to install one of the available dictionaries directly
   from within MicroEmacs. The user can interactively select one of the available dictionaries
   from the MicroEmacs message line which is then downloaded directly from the Github project
-  if the command line tools `curl` and `unzip` are available on the users machine.
+  if the required download and archive tools are available on the user's
+  machine. Unix-like systems use curl/wget and unzip; native Windows uses
+  tar, PowerShell or unzip. Dictionaries are optional downloads and are not
+  included in the default distribution.
   
 
 ## NOTES
@@ -49707,6 +49712,11 @@ $a
 
   A personal dictionary, _user___.edf__, is automatically created in the users
   directory for additional spelling information.
+
+  Hunspell/Aspell/ispell dictionary sources can be converted into MicroEmacs
+  language rules and binary `.edf` files. Existing conversion support is
+  partial and is implemented in `spellutl.emf`; a general Swedish/Danish or
+  other-language converter is planned for a later release.
 
 
 ## FILES

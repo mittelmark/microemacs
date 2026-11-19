@@ -13,6 +13,21 @@
 
 ## 2026
 
+  [261118] - UTF-8 spelling replacement fix. The spell dialog now replaces
+               umlaut and other multibyte words using character count rather
+               than a byte/column offset. This preserves the trailing space
+               and avoids joining corrected and following words, for example
+               "Läuufe Laufen" becomes "Läufe Laufen". Files:
+               jasspa/macros/spell.emf, tests/test-basics.emf
+
+  [261118] - German spelling 1996 reform overlay. Added a small overlay for
+               established old-to-new German forms and the v09.12.27b1
+               development version. Files: jasspa/spelling/lsdmdede-
+               orthography1996.edf, jasspa/spelling/lsdmdede-
+               orthography1996.txt, jasspa/macros/langutl.emf,
+               jasspa/macros/spell.emf, src/spell.c, src/evers.h,
+               doc/german-1996.md
+
   [261109] - Console menu redraw after file tools (ticket 37). file-lint
                and file-format now force a screen update after changing
                windows or buffers in the console build, keeping the menu

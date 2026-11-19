@@ -126,9 +126,12 @@
   The May 1999 release improves the language support by supporting the  
   ISO-Latin character sets.  
 
-  We do have spelling dictionaries for French, Spanish, Portuguese and  
-  German. Other languages may be supported by transforming native __ispell(1)__  
-  dictionaries.  
+  We supply and install spelling dictionaries for the supported German,
+  English, Spanish, Finnish, French, Italian, Polish, Portuguese and Russian
+  language sets. Other languages may be supported by converting native
+  __Hunspell__, __Aspell__ or __ispell(1)__ dictionaries and affix rules.
+  A general Swedish/Danish converter is planned; `.edf` dictionaries remain
+  optional downloads and are not part of the default distribution.
 
   If there is enough interest in this release from people with foreign  
   languages then we may consider including support for foreign language(s).  

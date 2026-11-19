@@ -44,6 +44,12 @@
 
 ## Development History 
 
+  - [261118] - MicroEmacs v09.12.27b1: fixed replacement of misspelled UTF-8
+               words containing umlauts or other multibyte characters. The
+               trailing space following the replaced word is preserved.
+               Added a German 1996 orthography overlay and continued work on
+               in-editor dictionary installation.
+
   - [261021] - Release v09.12.26.beta7
 
   - [261021] - Encoding auto-detection samples up to 1MB in 8KB chunks

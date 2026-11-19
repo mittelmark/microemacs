@@ -1211,7 +1211,14 @@ word under the cursor, message and suggestion rendering, and selecting and
 applying a replacement. Record the tested editor variants and any remaining
 platform-specific issues.
 
-## Ticket 43: FR - spell-install to download spelling dictionaries (WIP)
+    - DONE 261118 on Linux: UTF-8 word highlighting and word extraction are
+      preserved, and spelling replacement now counts `.spell.check-wordo`
+      characters with `&ulen` instead of subtracting byte/column offsets.
+      The fix covers umlauts and keeps a following space or next word
+      untouched. Windows and macOS runtime validation remains platform
+      follow-up work.
+
+## Ticket 43: FR - spell-install to download spelling dictionaries (DONE)
 
 With the UTF-8 spell-checking fixes, spell checking now works for UTF-8 and
 single-byte buffers, but most language dictionaries are not shipped with the
@@ -1283,3 +1290,32 @@ Possible workflow:
    and spell checking works. mec test-basics must stay green;
    spell-install is only reachable via the command line, so an automated
    test drives it from a start-up macro with a fake download tool.
+
+    - DONE 261118: `spell-install` now downloads and extracts supported
+      dictionaries, activates their rules and base/extended `.edf` files,
+      handles curl/wget, unzip/tar/PowerShell fallbacks, and is offered from
+      the missing-dictionary dialog. Dictionaries remain separate optional
+      downloads rather than part of the default distribution.
+
+## Ticket 44: FR - convert Hunspell/Aspell dictionaries for additional languages (WIP)
+
+Add a converter for ispell/Hunspell/Aspell sources so languages such as
+Swedish and Danish can create MicroEmacs `.edf` dictionaries and language
+rule files.
+
+The existing `spellutl.emf` macros already contain partial ispell affix
+conversion and accent handling. The converter should at least support:
+
+1. Read UTF-8 `.dic` and `.aff` sources and preserve licenses and encoding.
+2. Expand affix-derived words or translate prefix/suffix rules into the
+   MicroEmacs rule model.
+3. Generate the normal `lsdm<lang><country>.edf` base and optional
+   `lsdx<lang><country>.edf` extended dictionaries.
+4. Generate or update `lsr<lang><country>.emf` rule setup and language
+   registration.
+5. Add isolated conversion fixtures and verify Danish/Swedish umlaut and
+   character handling.
+
+This work is intentionally separate from the `.edf` runtime format. Hunspell
+dictionaries should remain explicit optional downloads and must not be added
+to the default distribution.

@@ -7,7 +7,7 @@ mittelmark) is an  OS-independent,  extensible  text editor with both terminal
 (`mec`) and GUI/X11 (`mew`) variants. The interface is implemented in ME macro
 language (`.emf` files). Licensed under **GPLv2**.
 
-Current version: **v09.12.26b6** (defined in `src/evers.h`).
+Current version: **v09.12.27b1** (defined in `src/evers.h`).
 
 ### Key Characteristics
 
@@ -21,6 +21,10 @@ Current version: **v09.12.26b6** (defined in `src/evers.h`).
 - Built-in spell checking, code folding, git integration
 - Native UTF-8 / multi-encoding editing (per-buffer `bp->encoding`,
   auto-detection, `-E` override; see `doc/utf8-encoding.md`)
+- UTF-8 spell checking: word extraction, highlighting and replacement operate
+  on characters. Use character functions such as `&ulen` when deleting or
+  counting a misspelled word; do not reuse byte/column offsets for
+  `forward-delete-char`.
 
 ## Build Commands
 
@@ -323,7 +327,7 @@ RELEASE = windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)
 ```
 
 - `VERSION` comes from `src/evers.h` (`meYEAR` + `meMONTH` + `meDAY`,
-  e.g. `091226b6`).
+  e.g. `091227b1`).
 - `MSYS` is `$MSYSTEM` lower-cased (e.g. `ucrt64`, `mingw64`).
 - Object dirs look like `src/.mingw64gcc-release-mec/`, `src/.msysunix-release-mec/`.
 
@@ -334,10 +338,10 @@ not dirty the working tree.
 
 ```bash
 # Help/usage (there is no --version flag)
-./windows-mingw-mingw64-microemacs-091226b6-mecb.exe -h
+./windows-mingw-mingw64-microemacs-091227b1-mecb.exe -h
 
 # Full run with macros from the source tree
-MEPATH=jasspa/macros ./msysunix-3.6-x86_64-microemacs-091226b6-mecb.exe
+MEPATH=jasspa/macros ./msysunix-3.6-x86_64-microemacs-091227b1-mecb.exe
 ```
 
 See the Testing section below for automated runs via `@tests/test-basics`.
@@ -498,7 +502,7 @@ functionName(int arg)
 | `edef.h` | Global variable definitions (839 lines) |
 | `efunc.h` | Function declarations |
 | `eterm.h` | Terminal interface API (664 lines) |
-| `evers.h` | Version definition (v09.12.26b6) |
+| `evers.h` | Version definition (v09.12.27b1) |
 | `eopt.h` | Optional feature flags |
 
 ### Definition Files (`.def`)
@@ -834,7 +838,7 @@ Each test writes a `TEST:key=value` line. The test passes if all expected keys a
 
 
 ```
-TEST:version=20091226b6
+TEST:version=20091227b1
 TEST:frame-width=120
 TEST:frame-depth=30
 TEST:window-width=119
@@ -1470,6 +1474,17 @@ Built-in spell checking is available:
 - `M-x spell-buffer` - Check entire buffer
 
 Dictionaries are in `jasspa/spelling/`. Personal dictionary is stored in `~/.jasspa/USERNAME/USERNAME.edf`.
+
+Hunspell dictionaries remain explicit optional downloads through
+`spell-install`; keep them out of the default distribution. Existing
+Hunspell/Aspell/ispell conversion macros and partial affix handling are in
+`jasspa/macros/spellutl.emf`. A Swedish/Danish or general converter should
+read `.dic`/`.aff` sources, translate prefix/suffix rules, preserve licenses,
+generate base/extended `.edf` files and include UTF-8 fixtures.
+
+For UTF-8 spelling replacements, use character count (`&ulen`) for the
+misspelled word. `$window-col` and byte offsets are not character counts and
+must not be passed directly to `forward-delete-char`.
 
 ## Code Folding
 

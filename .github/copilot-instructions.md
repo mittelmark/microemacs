@@ -11,6 +11,12 @@ project guidance in `AGENTS.md` when more detail is needed.
   comments.
 - Keep `DEFVAR` entries in `src/evar.def` alphabetically sorted. The runtime
   uses binary search, so misordering breaks variable lookup.
+- UTF-8 spelling replacements must use character count (`&ulen`) for the
+  misspelled word. Byte offsets or `$window-col` differences must not be passed
+  directly to `forward-delete-char`.
+- Hunspell/Aspell/ispell dictionaries are optional downloads, not default
+  distribution assets. The existing partial converter is
+  `jasspa/macros/spellutl.emf`; Swedish/Danish conversion is future work.
 - Follow existing ME macro conventions in `.emf` files, including `$` global
   variables, `#l0`-`#l9` local registers, and `!if`/`!while` control forms.
 - For documentation, edit source files, not generated output. In `doc/`, edit
