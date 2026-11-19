@@ -27,7 +27,7 @@ on:
 jobs:
   refs:
     name: resolve versions
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}
     steps:
@@ -58,7 +58,7 @@ jobs:
   bench:
     name: bench (${{ matrix.label }})
     needs: refs
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -166,7 +166,7 @@ jobs:
     name: comparison table
     needs: [ refs, bench ]
     if: always()
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Download results
         uses: actions/download-artifact@v6
