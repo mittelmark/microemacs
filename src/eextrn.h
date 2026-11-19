@@ -271,7 +271,7 @@ extern  int     mlwrite(int flags, meUByte *fmt, ...) ;
 
 #ifdef _WIN32
 #ifdef _ME_WINDOW
-#define mePrintMessage(mm) MessageBox(NULL,(char *) mm,ME_FULLNAME " '" meVERSION,MB_OK);
+#define mePrintMessage(mm) MessageBox(NULL,(char *) mm,ME_FULLNAME " " meDISPLAY_VERSION,MB_OK);
 #elif defined(__CYGWIN__)
 /* MSYS2/Cygwin build: use POSIX write() to avoid mangled output from
  * the MSYS2 emulation layer's handling of WriteFile */

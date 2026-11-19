@@ -120,7 +120,7 @@
 /* Define the default search sections in the .ini file */
 static char *iniSections [] =
 {
-    "Me" meVERSION meVERSION_MINOR meDAY,   /* [MeYYMMDD] */
+    "Me" meVERSION meVERSION_MINOR meDAY mePREVIEW,   /* [MeYYMMDD-preview] */
     "Defaults",                             /* [Defaults] */
     NULL
 };
@@ -6122,7 +6122,7 @@ meFrameTermInit(meFrame *frame, meFrame *sibling)
             frame->termData = frameData ;
             ME_DBGTRACE("10: meFrameInitWindow - before CreateWindow(frame)") ;
             frameData->hwnd = CreateWindow ("MicroEmacsClass",
-                                            ME_FULLNAME " " meVERSION,
+                                            ME_FULLNAME " " meDISPLAY_VERSION,
                                             WS_OVERLAPPEDWINDOW,  /* No scroll bars */
                                             TTdefaultPosX,
                                             TTdefaultPosY,
@@ -6340,7 +6340,7 @@ TTstart (void)
 
         ME_DBGTRACE("8: TTstart window path - before CreateWindow") ;
         baseHwnd = CreateWindow ("MicroEmacsClass",
-                                 ME_FULLNAME " " meVERSION,
+                                 ME_FULLNAME " " meDISPLAY_VERSION,
                                  WS_DISABLED,
                                  CW_USEDEFAULT,CW_USEDEFAULT,
                                  CW_USEDEFAULT,CW_USEDEFAULT,
@@ -8146,9 +8146,9 @@ meFrameSetWindowTitle(meFrame *frame, meUByte *str)
     else
 #endif
 #ifdef _TITLE_VER_MINOR
-        meStrcpy(ss,ME_FULLNAME " '" meVERSION "." meVERSION_MINOR) ;
+        meStrcpy(ss,ME_FULLNAME " " meDISPLAY_VERSION) ;
 #else
-        meStrcpy(ss,ME_FULLNAME " '" meVERSION) ;
+        meStrcpy(ss,ME_FULLNAME " " meDISPLAY_VERSION) ;
 #endif
 
 #ifdef _ME_CONSOLE

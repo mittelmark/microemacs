@@ -85,7 +85,7 @@ jobs:
         pwd
         echo "Checked out ref: $GITHUB_REF_NAME ($GITHUB_SHA)"
         git log -1 --oneline || echo "(git log not available, continuing)"
-        export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+        export VRS=`awk '/^.define meRELEASE/ { gsub(/"/,"",$3); print $3 }' src/evers.h`
         echo "VRS=$VRS" >> $GITHUB_ENV
         echo "VRS=$VRS"
         make -f makefiles/unixgcc.gmk default

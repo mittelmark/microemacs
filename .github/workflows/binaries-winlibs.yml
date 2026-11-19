@@ -3,7 +3,6 @@ name: Binaries Windows (windows-winlibs)
 on:
   workflow_dispatch:
 #env:
-#   VERSION: "091224b1"
 
 jobs:
   build:
@@ -16,21 +15,9 @@ jobs:
     - name: extract version from src/evers.h using powershell
       shell: pwsh
       run: |
-        $pattern = '#define me(YEAR|MONTH|DAY)'
-
-        $extractedValues = Get-Content -Path "src\evers.h" | 
-        Select-String -Pattern $pattern | 
-        ForEach-Object {
-            # Split the line and get the third element (index 2)
-            $elements = $_.Line -split '\s+'
-            if ($elements.Count -ge 3) {
-                # Remove the quotes from the third element
-                $elements[2].Trim('"')
-            }
-        }
-
-        # Join the extracted values into a single string
-        $result = $extractedValues -join ''
+        $match = Get-Content -Path "src\evers.h" |
+          Select-String -Pattern '^#define\s+meRELEASE\s+"([^"]+)"'
+        $result = $match.Matches[0].Groups[1].Value
 
         # Set the VRS environment variable
         $env:VERSION = $result
@@ -91,7 +78,6 @@ jobs:
     - name: Make release
       shell: pwsh
       run: |
-        # $env:VERSION ='091224b1'
         mkdir MicroEmacs09-${env:VERSION}-Windows
         mkdir MicroEmacs09-${env:VERSION}-Windows/bin
         cp bfs/bfs.exe MicroEmacs09-${env:VERSION}-Windows/bin/

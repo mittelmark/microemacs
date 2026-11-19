@@ -27,7 +27,7 @@ jobs:
 
     - name: Detect version
       run: |
-        export VRS=`grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+        export VRS=`awk '/^.define meRELEASE/ { gsub(/"/,"",$3); print $3 }' src/evers.h`
         echo "VRS=$VRS" >> $GITHUB_ENV
         echo "BDIST=${{ matrix.bdist }}" >> $GITHUB_ENV
 

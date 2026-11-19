@@ -1,4 +1,4 @@
-VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+VERSION=$(shell awk '/^.define meRELEASE/ { gsub(/"/,"",$$3); print $$3 }' src/evers.h)
 # BDIST controls cross-compile target toolchain:
 #   mingw64 (default) - x86_64-w64-mingw32-gcc, static zlib, native Windows 64-bit
 #   ucrt64            - x86_64-w64-mingw32-gcc (UCRT), static zlib, native Windows 64-bit with UCRT

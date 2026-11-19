@@ -1,4 +1,4 @@
-##version=091224b1
+##version=091102-preview1
 #
 # JASSPA MicroEmacs - www.jasspa.com
 # unixgcc.gmk - Top-level make file for Linux, Cygwin and MSYS2 (gcc)
@@ -49,7 +49,7 @@ endif
 MACHINE := $(shell uname -m)
 ## Extract the version digits without "paste -sd ''", which busybox (Alpine)
 ## does not support - awk strips the quotes and concatenates in one go.
-VERSION := $(shell awk '/^.define me(YEAR|MONTH|DAY)/ { gsub(/"/,"",$$3); printf "%s", $$3 }' src/evers.h)
+VERSION := $(shell awk '/^.define meRELEASE/ { gsub(/"/,"",$$3); print $$3 }' src/evers.h)
 
 ifeq ($(PLATFORM),linux)
 OS := $(shell uname -o | sed 's/GNU.Linux/linux/')

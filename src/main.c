@@ -474,7 +474,7 @@ addModesLists(meBuffer *bp, register meUByte *buf, meMode mode)
     addLineToEob(bp,(meUByte *)"") ;
 }
 
-meUByte meCopyright[]="Copyright (C) 1988-" meCENTURY meRELEASE " " ME_COMPANY_NAME "  (" ME_COMPANY_SITE ")\n              2021-20" meRELEASE " " meAUTHOR " (" meGITHUB ")" ;
+meUByte meCopyright[]="Copyright (C) 1988-" meCALYEAR " " ME_COMPANY_NAME "  (" ME_COMPANY_SITE ")\n              2021-" meCALYEAR " " meAUTHOR " (" meGITHUB ")" ;
 int
 meAbout(int f, int n)
 {
@@ -492,7 +492,7 @@ meAbout(int f, int n)
     bp = wp->buffer ;
 
      /* definitions in evers.h */
-    addLineToEob(bp,(meUByte *)ME_FULLNAME " " meVERSION " - Date " meCENTURY meDATE " - " meSYSTEM_NAME "\n\nGlobal Status:") ;
+    addLineToEob(bp,(meUByte *)ME_FULLNAME " " meDISPLAY_VERSION " - " meSYSTEM_NAME "\n\nGlobal Status:") ;
     tbp = bheadp ;
     ii = 0 ;
     while(tbp != NULL)
@@ -1580,8 +1580,8 @@ missing_arg:
                 }
 
              case 'V':
-                sprintf((char *)evalResult,"%s %s - Date %s%s - %s\n",
-                        ME_FULLNAME, meVERSION, meCENTURY, meDATE, meSYSTEM_NAME) ;
+                sprintf((char *)evalResult,"%s %s - %s\n",
+                        ME_FULLNAME, meDISPLAY_VERSION, meSYSTEM_NAME) ;
                 mePrintMessage(evalResult) ;
                 meExit(0) ;
 

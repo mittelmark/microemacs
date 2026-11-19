@@ -14,11 +14,22 @@ if [ "`uname -s | grep -o CYGWIN`" = "CYGWIN" ] ; then
 fi
 #BASEURL=`curl -sLI https://github.com/mittelmark/microemacs/releases/latest -o /dev/null -w '%{url_effective}' | sed -E 's/tag/download/'`
 BASEURL=`curl -sLI https://github.com/mittelmark/microemacs/releases/latest  -w '%{url_effective}' | grep -E '^https' | sed -E 's/tag/download/'`
-VERSION=`echo ${BASEURL} | sed -E 's/.*v//' | sed -E 's/\.//g' | sed -E 's/beta/b/' | sed -E 's/[^0-9b]+//'`
-# Convert version string (e.g. 091226b4) to a comparable integer.
-# Format: YYMMDDbN → YY*1000000 + MM*10000 + DD*100 + N
-# A version without a 'b' suffix (final release) gets beta=100, ensuring
-# it ranks higher than any beta of the same date (e.g. 091226 > 091226b4).
+TAG=`echo "$BASEURL" | sed -nE 's#.*/download/##p'`
+if [[ "$TAG" =~ ^me09_([0-9]{4})([0-9]{2})([0-9]{2})(-preview[0-9]+)?$ ]]; then
+    YEAR="${BASH_REMATCH[1]}"
+    YY="${YEAR:2:2}"
+    MM="${BASH_REMATCH[2]}"
+    DD="${BASH_REMATCH[3]}"
+    PREVIEW="${BASH_REMATCH[4]}"
+    if [ -z "$PREVIEW" ] && [ "$DD" != "01" ]; then
+        PREVIEW="-preview1"
+    fi
+    VERSION="09${YY}${MM}${DD}${PREVIEW}"
+else
+    echo "Error: unsupported MicroEmacs 09 release tag: ${TAG}"
+    exit 1
+fi
+# Compare calendar builds by YYYYMMDD.  Stable builds use DD=01.
 
 # Check if a local mecb is already installed and up to date.
 # If so, skip installation and exit.
@@ -31,29 +42,36 @@ check_installed() {
     fi 
     echo "Found local mecb at: ${mecb_path}"
     local existing_date
-    existing_date=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}/[0-9]{2}/[0-9]{2}[a-z0-9]+' | head -1)
-    if [ -z "$existing_date" ]; then
+    existing_display=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}\.[0-9]{2}(-preview[0-9]+)?' | head -1)
+    if [ -z "$existing_display" ]; then
         echo "Could not determine existing mecb version, proceeding with installation."
         return 0
     fi
-    # Normalize existing date (e.g. 2009/12/26b4) to VERSION format (e.g. 091226b4)
-    local existing_code
-    existing_code=$(echo "$existing_date" | sed 's/^20//; s/\///g')
-    local existing_num
-    local new_num
-    if [[ $existing_code =~ b ]]; then
-        existing_num="$existing_code"
-    else 
-        existing_num="${existing_code}b9"
+    local existing_year existing_month existing_preview
+    if [[ "$existing_display" =~ ^([0-9]{4})\.([0-9]{2})(-preview[0-9]+)?$ ]]; then
+        existing_year="${BASH_REMATCH[1]}"
+        existing_month="${BASH_REMATCH[2]}"
+        existing_preview="${BASH_REMATCH[3]}"
+    else
+        echo "Could not parse existing mecb version '${existing_display}'."
+        return 0
     fi
-    if [[ $VERSION =~ b ]]; then
-        new_num="$VERSION"
-    else 
-        new_num="${VERSION}b9"
+    local existing_num="${existing_year}${existing_month}"
+    local latest_num="${YEAR}${MM}"
+    local existing_rank=100
+    local latest_rank=100
+    if [ -n "$existing_preview" ]; then
+        existing_rank=$(echo "$existing_preview" | sed -nE 's/-preview([0-9]+)/\1/p')
+        existing_rank=${existing_rank:-1}
     fi
-    echo "Existing version: ${existing_code}, Latest version: ${VERSION}"
-    if [[ "${existing_num}" > "${new_num}" || "${existing_num}" == "${new_num}" ]] 2> /dev/null; then
-        echo "Installed version ${existing_code} is up to date (>= ${VERSION}). Skipping installation."
+    if [ -n "$PREVIEW" ]; then
+        latest_rank=$(echo "$PREVIEW" | sed -nE 's/-preview([0-9]+)/\1/p')
+        latest_rank=${latest_rank:-1}
+    fi
+    echo "Existing version: ${existing_display}, Latest version: ${TAG}"
+    if [[ "$existing_num" > "$latest_num" ]] ||
+       [[ "$existing_num" == "$latest_num" && "$existing_rank" -ge "$latest_rank" ]]; then
+        echo "Installed version ${existing_display} is up to date (>= ${TAG}). Skipping installation."
         exit 0
     fi
     echo "Newer version available (${VERSION} > ${existing_code}), proceeding with installation."
@@ -92,7 +110,7 @@ fi
 
 ## resolve_base <pattern> [<pattern> ...]
 ## Echoes the release base name ("linux-6-x86_64-ubuntu-24.04-microemacs-
-## 091226b7") of the first published asset matching one of the patterns,
+## 091102-preview1") of the first published asset matching one of the patterns,
 ## without the "-mecb.zip" suffix. Earlier patterns win. Prints nothing when
 ## the asset list is unavailable or nothing matches.
 function resolve_base {

@@ -35,7 +35,7 @@ jobs:
            sudo apt install build-essential
            sudo apt install desktop-file-utils
            sudo apt install libxt-dev libxft-dev
-           export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+           export VRS=`awk '/^.define meRELEASE/ { gsub(/"/,"",$3); print $3 }' src/evers.h`
            echo "VRS=$VRS" >> $GITHUB_ENV
     - name: Extract branch name
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV

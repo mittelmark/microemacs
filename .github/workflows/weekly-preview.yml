@@ -91,8 +91,7 @@ jobs:
       - name: Record preview identity
         id: meta
         run: |
-          version=$(grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h |
-            awk '{ gsub(/"/, "", $3); printf "%s", $3 }')
+          version=$(awk '/^.define meRELEASE/ { gsub(/"/, "", $3); print $3 }' src/evers.h)
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse --short=12 HEAD)" >> "$GITHUB_OUTPUT"
 
@@ -169,8 +168,7 @@ jobs:
         id: meta
         shell: msys2 {0}
         run: |
-          version=$(grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h |
-            awk '{ gsub(/"/, "", $3); printf "%s", $3 }')
+          version=$(awk '/^.define meRELEASE/ { gsub(/"/, "", $3); print $3 }' src/evers.h)
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse --short=12 HEAD)" >> "$GITHUB_OUTPUT"
 

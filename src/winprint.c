@@ -1191,7 +1191,7 @@ WinPrintSetColor(HDC hDC, int colNo, int setBgCol)
 static void
 WinPrintThread (LPVOID wParam)
 {
-    static const char title[] = ME_FULLNAME " " meVERSION " Print Spooler";
+    static const char title[] = ME_FULLNAME " " meDISPLAY_VERSION " Print Spooler";
 
     HWND curHwnd ;
     DOCINFO di;                         /* Document information. */

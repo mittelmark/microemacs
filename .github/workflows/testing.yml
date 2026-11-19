@@ -107,7 +107,7 @@ jobs:
             brew install coreutils
             export PATH=/opt/homebrew/opt/make/libexec/gnubin:$PATH
             export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
-            export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+            export VRS=`awk '/^.define meRELEASE/ { gsub(/"/,"",$3); print $3 }' src/evers.h`
             echo "VRS=$VRS" >> $GITHUB_ENV
             echo "GCC=gcc-15" >> $GITHUB_ENV
             make -f makefiles/macosgcc.gmk mec CC=gcc-15

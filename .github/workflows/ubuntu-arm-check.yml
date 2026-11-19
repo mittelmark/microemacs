@@ -2,8 +2,6 @@ name: Ubuntu 22,24 checks (linux-gcc)
 
 on:
   workflow_dispatch:
-env:
-   VERSION: "091224b"
 jobs:
   build:
     strategy:
@@ -19,7 +17,7 @@ jobs:
         sudo apt install build-essential
         #sudo apt install desktop-file-utils
         sudo apt install libxt-dev
-        export VRS=`grep -E '^#define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $3 }' | paste -sd '' | sed 's/"//g'`
+        export VRS=`awk '/^.define meRELEASE/ { gsub(/"/,"",$3); print $3 }' src/evers.h`
         echo "VRS=$VRS" >> $GITHUB_ENV
         echo "uname -r"
         uname -r

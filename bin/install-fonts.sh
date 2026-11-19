@@ -8,7 +8,7 @@ function install-fonts {
       ".*\\(Mono\\|Mono-?Bold\\|Mono-?Regular\\|Code-Regular\\|Code-Bold\\).ttf" 2>/dev/null \
       | xargs ln -sf -t ~/.local/share/fonts/
     #mkdir -p ~/.local/share/jasspa/fonts
-    #    curl -fsSL https://github.com/mittelmark/microemacs/releases/download/v09.12.24.beta1/ttf-fonts.zip --output /tmp/ttf-files.zip 
+    #    curl -fsSL https://github.com/mittelmark/microemacs/releases/download/me09_20261102-preview1/ttf-fonts.zip --output /tmp/ttf-files.zip
     #    unzip -j -q -d ~/.local/share/fonts /tmp/ttf-files.zip
     if [[ -f "$HOME/.local/share/fonts/DejaVuSansMono.ttf" || -f "$HOME/.local/share/fonts/dejavu-sans-mono-medium.ttf" ]]; then
         echo "Dejavu fonts are already installed!"

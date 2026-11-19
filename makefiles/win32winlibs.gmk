@@ -1,4 +1,4 @@
-VERSION=$(shell grep -E '^.define me(YEAR|MONTH|DAY)' src/evers.h | awk '{ print $$3 }' | paste -sd '' | sed 's/"//g')
+VERSION=$(shell awk '/^.define meRELEASE/ { gsub(/"/,"",$$3); print $$3 }' src/evers.h)
 TOOLKIT=win32winlibs
 MAKE=mingw32-make.exe
 bfs/exe:

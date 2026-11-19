@@ -6,24 +6,17 @@
 
 $ErrorActionPreference = "Continue"
 
-# Convert version string to comparable integer.
-# Format: YYMMDDbN -> YY*1000000 + MM*10000 + DD*100 + N
-# A version without 'b' suffix (final release) gets beta=100 so it ranks higher than any beta
+# Convert YYYY.MM-previewN display versions to comparable values.
 function Version-To-Num ($v) {
     if ([string]::IsNullOrEmpty($v)) {
         return 0
     }
-    $yy = $v.Substring(0, 2)
-    $mm = $v.Substring(2, 2)
-    $rest = $v.Substring(4)
-    if ($rest -match '^(.*?)(b\d+)$') {
-        $dd = $Matches[1]
-        $beta = $Matches[2].Substring(1)  # remove 'b' prefix
-    } else {
-        $dd = $rest
-        $beta = 100  # final release ranks above any beta
+    if ($v -match '^(\d{4})\.(\d{2})(?:-preview(\d+))?$') {
+        $date = [int]($Matches[1] + $Matches[2])
+        $preview = if ($Matches[3]) { [int]$Matches[3] } else { 100 }
+        return $date * 1000 + $preview
     }
-    return [int]$yy * 1000000 + [int]$mm * 10000 + [int]$dd * 100 + [int]$beta
+    return 0
 }
 
 # Detect latest version from GitHub releases
@@ -48,8 +41,10 @@ function Get-MeVersion {
 
         if ($location) {
             $tag = ($location -split '/')[-1]
-            # Convert v09.12.26.beta4 -> 091226b4
-            $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+            $version = if ($tag -match '^me09_(\d{4})(\d{2})(\d{2})(?:-preview(\d+))?$') {
+                $preview = if ($Matches[4]) { "-preview$($Matches[4])" } elseif ($Matches[3] -ne "01") { "-preview1" } else { "" }
+                "$($Matches[1]).$($Matches[2])$preview"
+            } else { "" }
             $resp.Close()
             return $version
         }
@@ -62,13 +57,19 @@ function Get-MeVersion {
             $location = $weResp.Headers['Location']
             if ($location) {
                 $tag = ($location -split '/')[-1]
-                $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+                $version = if ($tag -match '^me09_(\d{4})(\d{2})(\d{2})(?:-preview(\d+))?$') {
+                    $preview = if ($Matches[4]) { "-preview$($Matches[4])" } elseif ($Matches[3] -ne "01") { "-preview1" } else { "" }
+                    "$($Matches[1]).$($Matches[2])$preview"
+                } else { "" }
                 return $version
             }
             if ($weResp.ResponseUri -ne $null) {
                 $tag = $weResp.ResponseUri.AbsoluteUri -split '/'
                 $tag = $tag[-1]
-                $version = $tag -replace '^v', '' -replace '\.', '' -replace 'beta', 'b'
+                $version = if ($tag -match '^me09_(\d{4})(\d{2})(\d{2})(?:-preview(\d+))?$') {
+                    $preview = if ($Matches[4]) { "-preview$($Matches[4])" } elseif ($Matches[3] -ne "01") { "-preview1" } else { "" }
+                    "$($Matches[1]).$($Matches[2])$preview"
+                } else { "" }
                 return $version
             }
         }
@@ -87,13 +88,9 @@ function Get-InstalledVersion ($mechPath) {
     
     try {
         $versionOutput = & $mechPath -V 2>&1 | Out-String
-        # Look for version pattern like 2009/12/26b4
-        $dateMatch = $versionOutput | Select-String -Pattern '\d{4}/\d{2}/\d{2}[a-z0-9]*'
-        if ($dateMatch) {
-            $existingDate = $dateMatch.Matches[0].Value
-            # Convert 2009/12/26b4 -> 091226b4
-            $existingCode = $existingDate -replace '^20', '' -replace '/', ''
-            return $existingCode
+        $displayMatch = $versionOutput | Select-String -Pattern '\d{4}\.\d{2}(?:-preview\d+)?'
+        if ($displayMatch) {
+            return $displayMatch.Matches[0].Value
         }
     } catch {
         # If we can't run the file, assume it's not properly installed
@@ -324,17 +321,16 @@ if ($installedNum -ge $latestNum -and $installedVersion) {
     return
 }
 
-# Reconstruct release tag from version string (e.g., 091226b4 -> v09.12.26.beta4)
-$yy = $latestVersion.Substring(0, 2)
-$mm = $latestVersion.Substring(2, 2)
-$rest = $latestVersion.Substring(4)
-if ($rest -match '^(.*?)(b\d+)$') {
-    $dd = $Matches[1]
-    $beta = $Matches[2] -replace '^b', 'beta'
-    $tag = "v$yy.$mm.$dd.$beta"
+# Reconstruct me09_YYYYMMDD[-previewN] from the display version.
+if ($latestVersion -match '^(\d{4})\.(\d{2})(?:-preview(\d+))?$') {
+    $year = $Matches[1]
+    $month = $Matches[2]
+    $day = if ($Matches[3]) { "02" } else { "01" }
+    $preview = if ($Matches[3]) { "-preview$($Matches[3])" } else { "" }
+    $tag = "me09_${year}${month}${day}${preview}"
 } else {
-    $dd = $rest
-    $tag = "v$yy.$mm.$dd"
+    Write-Host "Error: unsupported latest version '$latestVersion'"
+    return
 }
 
 $baseUrl = "https://github.com/mittelmark/microemacs/releases/download/$tag"

@@ -13,9 +13,9 @@
 # Synopsis:
 #     bin/release-assemble.sh <tag> [options]
 #
-#     bin/release-assemble.sh v09.12.26 --prerelease
-#     bin/release-assemble.sh v09.12.26 --dry-run
-#     bin/release-assemble.sh v09.12.26 --dispatch --wait
+#     bin/release-assemble.sh me09_20261201 --prerelease
+#     bin/release-assemble.sh me09_20261201 --dry-run
+#     bin/release-assemble.sh me09_20261201 --dispatch --wait
 #
 # Options:
 #     --prerelease        create the release as a prerelease
@@ -281,10 +281,13 @@ covered=$(cat "$STAGE"/*.sha256 2>/dev/null | grep -c '\.zip$')
 note "${zips} archives, ${sums} checksum files covering ${covered} archives"
 [ "$covered" -ge "$zips" ] || die "only ${covered} of ${zips} archives have a checksum"
 
-## The installer derives the version from the tag (v09.12.26 -> 091226) and
-## looks for archives carrying exactly that string. A release whose binaries
-## still say 091226b7 would therefore be invisible to it - catch that here.
-TAGV=$(echo "$TAG" | sed -E 's/^.*v//; s/\.//g; s/beta/b/; s/[^0-9b]+//g')
+## ME09 tags such as me09_20261102-preview1 map to asset versions like
+## 091102-preview1. Verify the asset's evers.h-derived release component.
+if [[ "$TAG" =~ ^me09_([0-9]{4})([0-9]{2})([0-9]{2})(-preview[0-9]+)?$ ]]; then
+    TAGV="09${BASH_REMATCH[1]:2:2}${BASH_REMATCH[2]}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
+else
+    die "unsupported ME09 tag '${TAG}' (expected me09_YYYYMMDD[-previewN])"
+fi
 note "tag version ${TAGV}"
 for f in $(find "$STAGE" -maxdepth 1 -type f \( -name '*.zip' -o -name '*.AppImage' \)); do
     case "$(basename "$f")" in

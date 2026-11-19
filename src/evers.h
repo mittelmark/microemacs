@@ -37,33 +37,33 @@
  *     instead.
  */
 
-/* THESE MAY ONLY BE MODIFIED BY JASSPA THEY REPRESENT THE CURRENT 
- * RELEASE OF THE BUILD AND ARE USED AS A REFERENCE POINT WHEN
- * PROBLEMS OCCUR. THESE VALUES ARE NOT INTENDED TO REPRESENT 
- * THE BUILD DATE OF THE SOFTWARE AND MUST NOT BE MODIFIED AS SUCH 
- * Groth: Since 2023 - they are not following the build date, but are
- *        a version indicator, they are not updated, to a new year 
- *        as we have now a version 2023 in preparation. This version will
- *        be called ME 2009 and stick with the year 2009  as the version.
+/*
+ * MicroEmacs 09 release information.
+ *
+ * meYEAR is the stable product line; meCALYEAR, meMONTH and meDAY form
+ * the build date.  Stable builds use a day of 01.  Development/preview
+ * builds use the actual preview day and set mePREVIEW.
  */
-#define meCENTURY       "20"          /* Current century. Y2 complient :-) */
-#define meYEAR          "09"          /* Current Version MicroEmacs 09 */
-#define meMONTH         "12"          /* Current Month-Placeholder */
-#define meDAY           "27b1"      /* Current Year (Beta) */
+#define meCENTURY       "20"
+#define meYEAR          "09"
+#define meCALYEAR       "2026"
+#define meMONTH         "11"
+#define meDAY           "02"
+#define mePREVIEW       "-preview1"
 #define meGITHUB        "github.com/mittelmark/microemacs"
 #define meAUTHOR        "D.Groth"
-#define meRELEASE       "27b1"
+#define meRELEASE       "091102-preview1"
+#define meDISPLAY_VERSION meCALYEAR "." meMONTH mePREVIEW
 /* Version information - Date of build */
-#define	meDATE          meYEAR "/" meMONTH "/" meDAY 
-/* Version information - Major version number is the year of build */
-#define	meVERSION       meYEAR 
-/* Version information - Minor version number is the month of build */
+#define meDATE          meCALYEAR "/" meMONTH "/" meDAY mePREVIEW
+/* Legacy major/minor values retained for existing macro and INI code */
+#define meVERSION       meYEAR
 #define meVERSION_MINOR meMONTH
-/* Version information - Version as a numeric date code */
-#define meVERSION_CODE  meCENTURY meYEAR meMONTH meDAY 
+/* Public macro version code */
+#define meVERSION_CODE  meCALYEAR meMONTH meDAY mePREVIEW
 
 /* The program names - these values are also used in the rc files */
-#define ME_MICROEMACS_FULLNAME  "MicroEmacs"
+#define ME_MICROEMACS_FULLNAME  "JASSPA MicroEmacs 09"
 #define ME_MICROEMACS_SHORTNAME "me"
 #define ME_NANOEMACS_FULLNAME   "NanoEmacs"
 #define ME_NANOEMACS_SHORTNAME  "ne"
