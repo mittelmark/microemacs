@@ -45,11 +45,57 @@
 ## Development History 
 
   - [261118] - MicroEmacs v09.12.27b1: fixed replacement of misspelled UTF-8
-               words containing umlauts or other multibyte characters. The
-               trailing space following the replaced word is preserved.
-               Added a German 1996 orthography overlay and continued work on
-               in-editor dictionary installation.
+               words containing umlauts or other multibyte characters. 
 
+             - German spelling 1996 reform overlay. Added a small overlay for
+               established old-to-new German forms and the v09.12.27b1
+               development version.
+
+             - Fixing build files for older MacOS systems, enabling compilation
+               up to version MacOS Catalina 10.15.
+
+             - CUA prefix changed from C-t to C-j, C-t now does transposing.
+
+  - [261117] - Automatic installation of spelling dictionaries from with the user-setup.
+
+             - Fixing spelling issues for UTF8 encoded buffers.
+  
+  - [261111] - Makefile fix for make of older MacOS systems (Catalina 10.15).
+    
+  - [261110] - Jupyter notebooks are now handled as Json files.
+
+  - [261109] - Console menu redraw after file tools (ticket 37). file-lint
+               and file-format now force a screen update after changing
+               windows or buffers in the console build, keeping the menu
+               visible after repeated calls. 
+
+             - Safe external formatting (ticket 38). file-format now runs an
+               external formatter on a temporary copy and replaces the
+               current buffer only on success, leaving the original file
+               untouched until the user saves. 
+
+             - JSON file support and adding Linting and formatting for JSON files
+               using the Python json module.
+
+  - [261108] - Python lint fallback to py_compile module. 
+
+  - [261106] - Cross-platform build fixes with less warnings, MacOS 14 removed from
+               build matrix.
+
+  - [261105] - Weekly preview build workflow added for most important platforms.
+
+  - [261104] - CUA and undo key bindings updated and improved - CUA should be now actually 
+               usable.
+               
+  - [261030] - Support for Linux ARM appimages, more installation tests.
+  
+  - [261029] - Improving the emf macro tutorial.
+  
+  - [261028] - Better Makefile routing on most system now just saying:
+               `make mecb mewb` is sufficient. Build pipeline expanded.
+  
+  - [261025] - Release v09.12.26
+  
   - [261021] - Release v09.12.26.beta7
 
   - [261021] - Encoding auto-detection samples up to 1MB in 8KB chunks

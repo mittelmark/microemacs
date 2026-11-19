@@ -7,7 +7,7 @@
 >
 >  Created By    : Jon Green
 >  Created       : Fri Feb 6 11:13:34 2004
-  > Last Modified : <261109.1648>
+  > Last Modified : <261119.0725>
 >
 >  Authors:      : John Green, Steven Phillips, Detlef Groth, MiMo-2.5, MiMo 2.6-Flash
 
@@ -28,6 +28,19 @@
                jasspa/macros/spell.emf, src/spell.c, src/evers.h,
                doc/german-1996.md
 
+  [261118] - Fixing build files for older MacOS systems, enabling compilation
+               up to version MacOS Catalina 10.15
+
+  [261118] - CUA prefix changed from C-t to C-j, C-t now does transposing               
+
+  [261117] - Automatic installation of spelling dictionaries from with the user-setup
+
+  [261116] - Fixing spelling issues for UTF8 encoded buffers
+  
+  [261111] - Makefile fix for make of older MacOS systems (Catalina 10.15)
+    
+  [261110] - Jupyter notebooks are now handled as Json files.
+  
   [261109] - Console menu redraw after file tools (ticket 37). file-lint
                and file-format now force a screen update after changing
                windows or buffers in the console build, keeping the menu

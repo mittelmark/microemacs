@@ -5179,6 +5179,58 @@ Miscellaneous Information
 
 cEDevelopment History  cA
 
+    - [261118] - MicroEmacs v09.12.27b1: fixed replacement of misspelled UTF-8
+                 words containing umlauts or other multibyte characters. 
+
+               - German spelling 1996 reform overlay. Added a small overlay for
+                 established old-to-new German forms and the v09.12.27b1
+                 development version.
+
+               - Fixing build files for older MacOS systems, enabling compilation
+                 up to version MacOS Catalina 10.15.
+
+               - CUA prefix changed from C-t to C-j, C-t now does transposing.
+
+    - [261117] - Automatic installation of spelling dictionaries from with the user-setup.
+
+               - Fixing spelling issues for UTF8 encoded buffers.
+    
+    - [261111] - Makefile fix for make of older MacOS systems (Catalina 10.15).
+      
+    - [261110] - Jupyter notebooks are now handled as Json files.
+
+    - [261109] - Console menu redraw after file tools (ticket 37). file-lint
+                 and file-format now force a screen update after changing
+                 windows or buffers in the console build, keeping the menu
+                 visible after repeated calls. 
+
+               - Safe external formatting (ticket 38). file-format now runs an
+                 external formatter on a temporary copy and replaces the
+                 current buffer only on success, leaving the original file
+                 untouched until the user saves. 
+
+               - JSON file support and adding Linting and formatting for JSON files
+                 using the Python json module.
+
+    - [261108] - Python lint fallback to py_compile module. 
+
+    - [261106] - Cross-platform build fixes with less warnings, MacOS 14 removed from
+                 build matrix.
+
+    - [261105] - Weekly preview build workflow added for most important platforms.
+
+    - [261104] - CUA and undo key bindings updated and improved - CUA should be now actually 
+                 usable.
+                 
+    - [261030] - Support for Linux ARM appimages, more installation tests.
+    
+    - [261029] - Improving the emf macro tutorial.
+    
+    - [261028] - Better Makefile routing on most system now just saying:
+                 cGmake mecb mewbcA is sufficient. Build pipeline expanded.
+    
+    - [261025] - Release v09.12.26
+    
     - [261021] - Release v09.12.26.beta7
 
     - [261021] - Encoding auto-detection samples up to 1MB in 8KB chunks
@@ -9107,9 +9159,12 @@ Miscellaneous Information
     The May 1999 release improves the language support by supporting the  
     ISO-Latin character sets.  
 
-    We do have spelling dictionaries for French, Spanish, Portuguese and  
-    German. Other languages may be supported by transforming native cDispell(1)cA  
-    dictionaries.  
+    We supply and install spelling dictionaries for the supported German,
+    English, Spanish, Finnish, French, Italian, Polish, Portuguese and Russian
+    language sets. Other languages may be supported by converting native
+    cDHunspellcA, cDAspellcA or cDispell(1)cA dictionaries and affix rules.
+    A general Swedish/Danish converter is planned; cG.edfcA dictionaries remain
+    optional downloads and are not part of the default distribution.
 
     If there is enough interest in this release from people with foreign  
     languages then we may consider including support for foreign language(s).  
@@ -43935,6 +43990,9 @@ $a
     requires that the linter defined in the variable supports the
     cC^FILENAME:LINE:CHARcA syntax. The same can jumping to the error be achieved
     by pressing the ENTER key on the hilighted line.
+
+    In the console build, cDfile-lintcA and cDfile-formatcA force a screen
+    update after their window or buffer changes so the menu is redrawn.
     
     These three macros can be seen as simplified  versions for the Go, Python, R
     and Tcl macros like  cDgo-lintcA,  cDgo-formatcA,  cDgo-execcA.  They can be
@@ -46139,6 +46197,8 @@ $a
        The cDreplacecA button is activated when a new word has been edited or
        selected as a candidate for replacement. Selecting cDreplacecA modifies
        the erroneous word in the buffer with the newly selected word.
+       Replacements preserve multibyte UTF-8 characters and the whitespace
+       or punctuation following the misspelled word.
 
     cDReplace AllcA
     
@@ -46276,7 +46336,10 @@ $a
     cDspell-installcA allow the user to install one of the available dictionaries directly
     from within MicroEmacs. The user can interactively select one of the available dictionaries
     from the MicroEmacs message line which is then downloaded directly from the Github project
-    if the command line tools cGcurlcA and cGunzipcA are available on the users machine.
+    if the required download and archive tools are available on the user's
+    machine. Unix-like systems use curl/wget and unzip; native Windows uses
+    tar, PowerShell or unzip. Dictionaries are optional downloads and are not
+    included in the default distribution.
     
 
 cENOTES cA
@@ -59513,6 +59576,11 @@ $a
 
     A personal dictionary, cCusercAcD.edfcA, is automatically created in the users
     directory for additional spelling information.
+
+    Hunspell/Aspell/ispell dictionary sources can be converted into MicroEmacs
+    language rules and binary cG.edfcA files. Existing conversion support is
+    partial and is implemented in cGspellutl.emfcA; a general Swedish/Danish or
+    other-language converter is planned for a later release.
 
 
 cEFILES cA
