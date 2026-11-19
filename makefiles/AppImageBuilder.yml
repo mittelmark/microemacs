@@ -46,7 +46,7 @@
 # carrier right after appimage-builder returns - see makefiles/unixgcc.gmk.
 #
 # Output file name:
-#   Jasspa_MicroEmacs_<JME_VERSION><JME_PLATFORM_SUFFIX>_<JME_ARCH>.AppImage
+#   Jasspa_MicroEmacs09_<JME_VERSION><JME_PLATFORM_SUFFIX>_<JME_ARCH>.AppImage
 #
 # JME_VERSION and JME_PLATFORM_SUFFIX must both be set in the environment
 # (appimage-builder errors on missing {{VAR}}). The makefile always sets
@@ -68,4 +68,4 @@ AppDir:
     exec_args: "$@"
 AppImage:
   arch: "{{JME_ARCH}}"
-  file_name: Jasspa_MicroEmacs_{{JME_VERSION}}{{JME_PLATFORM_SUFFIX}}_{{JME_ARCH}}.AppImage
+  file_name: Jasspa_MicroEmacs09_{{JME_VERSION}}{{JME_PLATFORM_SUFFIX}}_{{JME_ARCH}}.AppImage

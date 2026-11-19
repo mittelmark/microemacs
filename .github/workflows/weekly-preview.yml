@@ -101,7 +101,7 @@ jobs:
 
       - name: Smoke-test standalone terminal executable
         run: |
-          for binary in ${{ matrix.artifact_prefix }}*microemacs-*-mecb.bin; do
+          for binary in ${{ matrix.artifact_prefix }}*microemacs09-*-mecb.bin; do
             "./$binary" -V
           done
 
@@ -123,15 +123,15 @@ jobs:
           make -f makefiles/unixgcc.gmk app-image \
             APPIMAGE_ARCH="${{ matrix.appimage_arch }}" \
             APPIMAGE_PLATFORM_SUFFIX=_${{ matrix.runner }}
-          ls -lh "Jasspa_MicroEmacs_${{ steps.meta.outputs.version }}_${{ matrix.runner }}_${{ matrix.appimage_arch }}.AppImage"
+          ls -lh "Jasspa_MicroEmacs09_${{ steps.meta.outputs.version }}_${{ matrix.runner }}_${{ matrix.appimage_arch }}.AppImage"
 
       - name: Upload preview binaries and test output
         uses: actions/upload-artifact@v6
         with:
-          name: microemacs-preview-${{ matrix.platform }}-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
+          name: microemacs09-preview-${{ matrix.platform }}-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
           path: |
-            ${{ matrix.artifact_prefix }}*microemacs-*-mecb.bin
-            ${{ matrix.artifact_prefix }}*microemacs-*-mewb.bin
+            ${{ matrix.artifact_prefix }}*microemacs09-*-mecb.bin
+            ${{ matrix.artifact_prefix }}*microemacs09-*-mewb.bin
             tests/test-output.txt
           if-no-files-found: error
           retention-days: 14
@@ -140,8 +140,8 @@ jobs:
         if: matrix.family == 'linux'
         uses: actions/upload-artifact@v6
         with:
-          name: microemacs-preview-appimage-${{ matrix.platform }}-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
-          path: Jasspa_MicroEmacs_${{ steps.meta.outputs.version }}_${{ matrix.runner }}_${{ matrix.appimage_arch }}.AppImage
+          name: microemacs09-preview-appimage-${{ matrix.platform }}-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
+          path: Jasspa_MicroEmacs09_${{ steps.meta.outputs.version }}_${{ matrix.runner }}_${{ matrix.appimage_arch }}.AppImage
           if-no-files-found: error
           retention-days: 14
 
@@ -181,7 +181,7 @@ jobs:
       - name: Smoke-test standalone terminal executable
         shell: msys2 {0}
         run: |
-          for binary in windows-mingw-ucrt64-microemacs-*-mecb.exe; do
+          for binary in windows-mingw-ucrt64-microemacs09-*-mecb.exe; do
             "./$binary" -V
           done
 
@@ -198,10 +198,10 @@ jobs:
       - name: Upload preview binaries and test output
         uses: actions/upload-artifact@v6
         with:
-          name: microemacs-preview-windows-ucrt64-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
+          name: microemacs09-preview-windows-ucrt64-${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.sha }}
           path: |
-            windows-mingw-ucrt64-microemacs-*-mecb.exe
-            windows-mingw-ucrt64-microemacs-*-mewb.exe
+            windows-mingw-ucrt64-microemacs09-*-mecb.exe
+            windows-mingw-ucrt64-microemacs09-*-mewb.exe
             tests/test-output.txt
           if-no-files-found: error
           retention-days: 14

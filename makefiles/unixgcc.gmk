@@ -1,4 +1,4 @@
-##version=091102-preview1
+##version=261102-preview1
 #
 # JASSPA MicroEmacs - www.jasspa.com
 # unixgcc.gmk - Top-level make file for Linux, Cygwin and MSYS2 (gcc)
@@ -66,14 +66,14 @@ endif
 ## kernel of the build host instead of the kernel of the target distribution.
 KERNEL ?= $(shell uname -r | grep -oE '^[0-9]')
 DIST := $(shell grep -E '^ID=' /etc/os-release | sed -E 's/ID=//')
-RELEASE := linux-$(KERNEL)-$(MACHINE)-$(DIST)-$(OSV)-microemacs-$(VERSION)
+RELEASE := linux-$(KERNEL)-$(MACHINE)-$(DIST)-$(OSV)-microemacs09-$(VERSION)
 BUILDID := linuxgcc
 EXE :=
 OUTPUT_EXT := bin
 else ifeq ($(PLATFORM),cygwin)
 OS := $(shell uname -o | sed 's/Cygwin/cygwin/')
 OSV := $(shell uname -r | grep -oE '^[0-9]\.[0-8]')
-RELEASE := cygwin-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
+RELEASE := cygwin-$(OSV)-$(MACHINE)-microemacs09-$(VERSION)
 BUILDID := cygwin
 EXE := .exe
 OUTPUT_EXT := exe
@@ -84,7 +84,7 @@ MSYS := $(shell echo ${MSYSTEM} | tr '[:upper:]' '[:lower:]')
 ifeq ($(MSYS),)
 MSYS := msys
 endif
-RELEASE := windows-msysunix-$(MSYS)-microemacs-$(VERSION)
+RELEASE := windows-msysunix-$(MSYS)-microemacs09-$(VERSION)
 BUILDID := msysunix
 EXE := .exe
 OUTPUT_EXT := exe
@@ -186,7 +186,7 @@ release: $(app)
 # pinned release there first (sha256 checked, stale caches replaced).
 # Mounting still uses the setuid fusermount/fusermount3 helper of the host
 # fuse/fuse3 package; on systems without any FUSE unpack manually with:
-#   ./Jasspa_MicroEmacs_<version>_<platform>_<arch>.AppImage --appimage-extract
+#   ./Jasspa_MicroEmacs09_<version>_<platform>_<arch>.AppImage --appimage-extract
 #
 # appimage-builder 1.1.0 always compresses the squashfs payload with xz,
 # but the type2-runtime's embedded squashfuse is built with zlib/zstd only
@@ -197,8 +197,8 @@ release: $(app)
 #
 # Optional platform tag in the AppImage file name (used by CI), e.g.:
 #   make -f makefiles/unixgcc.gmk app-image APPIMAGE_PLATFORM_SUFFIX=_ubuntu-22.04
-# -> Jasspa_MicroEmacs_<version>_ubuntu-22.04_x86_64.AppImage
-#    or Jasspa_MicroEmacs_<version>_ubuntu-22.04_aarch64.AppImage
+# -> Jasspa_MicroEmacs09_<version>_ubuntu-22.04_x86_64.AppImage
+#    or Jasspa_MicroEmacs09_<version>_ubuntu-22.04_aarch64.AppImage
 # Default is empty (local builds keep the plain name).
 #
 APPIMAGE_APPDIR := appimage-build/AppDir
@@ -208,7 +208,7 @@ APPIMAGE_ARCH ?= aarch64
 else
 APPIMAGE_ARCH ?= x86_64
 endif
-APPIMAGE_FILE   := Jasspa_MicroEmacs_$(VERSION)$(APPIMAGE_PLATFORM_SUFFIX)_$(APPIMAGE_ARCH).AppImage
+APPIMAGE_FILE   := Jasspa_MicroEmacs09_$(VERSION)$(APPIMAGE_PLATFORM_SUFFIX)_$(APPIMAGE_ARCH).AppImage
 APPIMAGE_RECIPE ?= makefiles/AppImageBuilder.yml
 APPIMAGE_ENV    := JME_VERSION=$(VERSION) JME_PLATFORM_SUFFIX=$(APPIMAGE_PLATFORM_SUFFIX) JME_ARCH=$(APPIMAGE_ARCH)
 # Static type2-runtime carrier (no libfuse.so.2 dependency on the host),

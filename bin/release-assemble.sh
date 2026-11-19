@@ -282,9 +282,9 @@ note "${zips} archives, ${sums} checksum files covering ${covered} archives"
 [ "$covered" -ge "$zips" ] || die "only ${covered} of ${zips} archives have a checksum"
 
 ## ME09 tags such as me09_20261102-preview1 map to asset versions like
-## 091102-preview1. Verify the asset's evers.h-derived release component.
+## 261102-preview1. Verify the asset's evers.h-derived release component.
 if [[ "$TAG" =~ ^me09_([0-9]{4})([0-9]{2})([0-9]{2})(-preview[0-9]+)?$ ]]; then
-    TAGV="09${BASH_REMATCH[1]:2:2}${BASH_REMATCH[2]}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
+    TAGV="${BASH_REMATCH[1]:2:2}${BASH_REMATCH[2]}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
 else
     die "unsupported ME09 tag '${TAG}' (expected me09_YYYYMMDD[-previewN])"
 fi

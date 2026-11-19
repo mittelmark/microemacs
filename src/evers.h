@@ -52,7 +52,7 @@
 #define mePREVIEW       "-preview1"
 #define meGITHUB        "github.com/mittelmark/microemacs"
 #define meAUTHOR        "D.Groth"
-#define meRELEASE       "091102-preview1"
+#define meRELEASE       "261102-preview1"
 #define meDISPLAY_VERSION meCALYEAR "." meMONTH mePREVIEW
 /* Version information - Date of build */
 #define meDATE          meCALYEAR "/" meMONTH "/" meDAY mePREVIEW

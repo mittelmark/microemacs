@@ -12,7 +12,7 @@ BDFIX = ucrt64
 else
 BDFIX = mingw64
 endif
-RELEASE=windows-$(BDFIX)-microemacs-$(VERSION)
+RELEASE=windows-$(BDFIX)-microemacs09-$(VERSION)
 app=mecb
 default:
 	echo "$(VERSION) BDIST=$(BDIST)"

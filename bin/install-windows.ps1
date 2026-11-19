@@ -143,7 +143,7 @@ function Ensure-PathFolder {
 
 # Download and extract a binary from the release zip
 function Install-Binary ($binaryName, $version, $subsystem, $destFolder, $baseUrl) {
-    $zipUrl = "$baseUrl/windows-mingw-$subsystem-microemacs-$version-$binaryName.zip"
+    $zipUrl = "$baseUrl/windows-mingw-$subsystem-microemacs09-$version-$binaryName.zip"
     $tempZip = Join-Path $env:TEMP "me_$binaryName.zip"
     
     Write-Host "Downloading $binaryName from $subsystem build..."
@@ -334,6 +334,7 @@ if ($latestVersion -match '^(\d{4})\.(\d{2})(?:-preview(\d+))?$') {
 }
 
 $baseUrl = "https://github.com/mittelmark/microemacs/releases/download/$tag"
+$assetVersion = "$($year.Substring(2))$month$day$preview"
 Write-Host "Downloading from: $baseUrl"
 Write-Host ""
 
@@ -342,13 +343,13 @@ $currentSubsystem = $subsystem
 $downloadSuccess = $true
 
 foreach ($binaryName in @("mewb", "mecb")) {
-    $success = Install-Binary $binaryName $latestVersion $currentSubsystem $destFolder $baseUrl
+    $success = Install-Binary $binaryName $assetVersion $currentSubsystem $destFolder $baseUrl
     
     if (-not $success) {
         # Try fallback for 64-bit systems
         if ($is64bit -and $currentSubsystem -ne "mingw64") {
             Write-Host "Trying mingw64 fallback for $binaryName..."
-            $success = Install-Binary $binaryName $latestVersion "mingw64" $destFolder $baseUrl
+            $success = Install-Binary $binaryName $assetVersion "mingw64" $destFolder $baseUrl
             if ($success) {
                 $currentSubsystem = "mingw64"
             }

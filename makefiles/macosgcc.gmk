@@ -1,6 +1,6 @@
 ##-*- makefile -*-############################################################
 #
-#version=091102-preview1
+#version=261102-preview1
 VERSION := $(shell awk '/^.define meRELEASE/ { gsub(/"/,"",$$3); print $$3 }' src/evers.h)
 CC=gcc-11
 ifeq (,$(shell command -v gcc-11 2>/dev/null))
@@ -11,7 +11,7 @@ MAKE=make
 KERNEL := $(shell uname -r | grep -oE '^[0-9]+' | sed 's/21/12/' | sed 's/22/13/' | sed 's/23/14/' | sed 's/24/15/' | sed 's/25/26/')
 OS := macos-$(KERNEL)
 ARCH := $(shell uname -m)
-RELEASE := "macos-$(KERNEL)-$(ARCH)-microemacs-$(VERSION)"
+RELEASE := "macos-$(KERNEL)-$(ARCH)-microemacs09-$(VERSION)"
 app=mecb
 #
 # Auto-detect libXft for mew/mecw (XQuartz + freetype/fontconfig + pkg-config).

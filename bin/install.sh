@@ -24,7 +24,7 @@ if [[ "$TAG" =~ ^me09_([0-9]{4})([0-9]{2})([0-9]{2})(-preview[0-9]+)?$ ]]; then
     if [ -z "$PREVIEW" ] && [ "$DD" != "01" ]; then
         PREVIEW="-preview1"
     fi
-    VERSION="09${YY}${MM}${DD}${PREVIEW}"
+    VERSION="${YY}${MM}${DD}${PREVIEW}"
 else
     echo "Error: unsupported MicroEmacs 09 release tag: ${TAG}"
     exit 1
@@ -39,7 +39,7 @@ check_installed() {
     if [ -z "$mecb_path" ]; then
         echo "No local mecb found in PATH, proceeding with installation."
         return 0
-    fi 
+    fi
     echo "Found local mecb at: ${mecb_path}"
     local existing_date
     existing_display=$("$mecb_path" -V 2>&1 | grep -oE '[0-9]{4}\.[0-9]{2}(-preview[0-9]+)?' | head -1)
@@ -109,8 +109,8 @@ if [ -n "$REPO" ] && [ -n "$TAG" ]; then
 fi
 
 ## resolve_base <pattern> [<pattern> ...]
-## Echoes the release base name ("linux-6-x86_64-ubuntu-24.04-microemacs-
-## 091102-preview1") of the first published asset matching one of the patterns,
+## Echoes the release base name ("linux-6-x86_64-ubuntu-24.04-microemacs09-
+## 261102-preview1") of the first published asset matching one of the patterns,
 ## without the "-mecb.zip" suffix. Earlier patterns win. Prints nothing when
 ## the asset list is unavailable or nothing matches.
 function resolve_base {
@@ -141,8 +141,8 @@ case "$DIST_ID" in
 esac
 
 if [ $OS = "Msys" ]; then
-    MECB="windows-msysunix-ucrt64-microemacs-${VERSION}-mecb"  # true msys build
-    MEWB="windows-msys-ucrt64-microemacs-${VERSION}-mewb"
+    MECB="windows-msysunix-ucrt64-microemacs09-${VERSION}-mecb"  # true msys build
+    MEWB="windows-msys-ucrt64-microemacs09-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "cygwin" ]; then
     ## TODO: check version 3.3, 3.5, 3.6
@@ -157,57 +157,57 @@ elif [ $OS = "cygwin" ]; then
         exit
     fi
     echo "installing for cygwin version '$KERNEL' '$MACHINE' '${VERSION}'..."
-    MECB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mecb"
-    MEWB="cygwin-${KERNEL}-${MACHINE}-microemacs-${VERSION}-mewb"
+    MECB="cygwin-${KERNEL}-${MACHINE}-microemacs09-${VERSION}-mecb"
+    MEWB="cygwin-${KERNEL}-${MACHINE}-microemacs09-${VERSION}-mewb"
     EXE=".exe"
 elif [ $OS = "Darwin" ]; then
-    if [ $KERNEL -lt 19 ]; then    
+    if [ $KERNEL -lt 19 ]; then
         echo "Error: Installs of prebuild versions for MacOS 10.14 and lower is not supported since 2026!"
         echo "Please install an older build before 2026 manually or compile MicroEmacs 09 on your own!."
         exit
-    elif [ $KERNEL -lt 24 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 23 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-14-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-14-arm64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 24 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 24 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 25 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-15-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-arm64-microemacs-${VERSION}-mewb"
-    elif [ $KERNEL -eq 25 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-15-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-15-x86_64-microemacs-${VERSION}-mewb"
-    elif [ $KERNEL -eq 26 -a $MACHINE = "x86_64" ]; then    
-       MECB="macos-26-x86_64-microemacs-${VERSION}-mecb"
-       MEWB="macos-26-x86_64-microemacs-${VERSION}-mewb"
-    elif [ $KERNEL -gt 25 -a $MACHINE = "arm64" ]; then    
-       MECB="macos-26-arm64-microemacs-${VERSION}-mecb"
-       MEWB="macos-26-arm64-microemacs-${VERSION}-mewb"
+    elif [ $KERNEL -lt 24 -a $MACHINE = "x86_64" ]; then
+       MECB="macos-15-x86_64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 23 -a $MACHINE = "arm64" ]; then
+       MECB="macos-14-arm64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-14-arm64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 24 -a $MACHINE = "x86_64" ]; then
+       MECB="macos-15-x86_64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 24 -a $MACHINE = "arm64" ]; then
+       MECB="macos-15-arm64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-15-arm64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 25 -a $MACHINE = "arm64" ]; then
+       MECB="macos-15-arm64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-15-arm64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 25 -a $MACHINE = "x86_64" ]; then
+       MECB="macos-15-x86_64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-15-x86_64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 26 -a $MACHINE = "x86_64" ]; then
+       MECB="macos-26-x86_64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-26-x86_64-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -gt 25 -a $MACHINE = "arm64" ]; then
+       MECB="macos-26-arm64-microemacs09-${VERSION}-mecb"
+       MEWB="macos-26-arm64-microemacs09-${VERSION}-mewb"
     else
-        echo "Error: Kernel $KERNEL on $MACHINE for $OS not supported!"    
+        echo "Error: Kernel $KERNEL on $MACHINE for $OS not supported!"
         exit
     fi
 elif [ $OS = "FreeBSD" ]; then
-    if [ $KERNEL -eq 14 ]; then    
-       MECB="freebsd-14-${MACHINE}-microemacs-${VERSION}-mecb"
-       MEWB="freebsd-14-${MACHINE}-microemacs-${VERSION}-mewb"   
-    elif [ $KERNEL -eq 15 ]; then    
-       MECB="freebsd-15-${MACHINE}-microemacs-${VERSION}-mecb"
-       MEWB="freebsd-15-${MACHINE}-microemacs-${VERSION}-mewb"   
+    if [ $KERNEL -eq 14 ]; then
+       MECB="freebsd-14-${MACHINE}-microemacs09-${VERSION}-mecb"
+       MEWB="freebsd-14-${MACHINE}-microemacs09-${VERSION}-mewb"
+    elif [ $KERNEL -eq 15 ]; then
+       MECB="freebsd-15-${MACHINE}-microemacs09-${VERSION}-mecb"
+       MEWB="freebsd-15-${MACHINE}-microemacs09-${VERSION}-mewb"
     else
-        echo "Error: Kernel $KERNEL on $OS not supported!"    
+        echo "Error: Kernel $KERNEL on $OS not supported!"
         exit
     fi
 elif [ $RH_LIKE -eq 1 -o "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
     ## Fedora or AlmaLinux or RedHat Enterprise Linux
-    if [ $MACHINE != "x86_64" -a $MACHINE != "aarch64" ]; then 
-        echo "Error: Architecture $MACHINE and Kernel $KERNEL for RedHat/Fedora distros not supported!" 
+    if [ $MACHINE != "x86_64" -a $MACHINE != "aarch64" ]; then
+        echo "Error: Architecture $MACHINE and Kernel $KERNEL for RedHat/Fedora distros not supported!"
         exit
     fi
     ## The glibc of the running distribution decides which build can run:
@@ -220,10 +220,10 @@ elif [ $RH_LIKE -eq 1 -o "`uname -r | grep -E '(fc|el)[0-9]'`" != "" ]; then
        ## AlmaLinux 10 / RHEL 10 and newer Fedora releases (kernel 6 and 7+)
        ALMA=10; AK=6
     fi
-    MECB="linux-${AK}-${MACHINE}-almalinux-${ALMA}-microemacs-${VERSION}-mecb"
-    MEWB="linux-${AK}-${MACHINE}-almalinux-${ALMA}-microemacs-${VERSION}-mewb"
+    MECB="linux-${AK}-${MACHINE}-almalinux-${ALMA}-microemacs09-${VERSION}-mecb"
+    MEWB="linux-${AK}-${MACHINE}-almalinux-${ALMA}-microemacs09-${VERSION}-mewb"
     ## The published names carry the full AlmaLinux version (almalinux-8.10)
-    BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-almalinux-${ALMA}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+    BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-almalinux-${ALMA}([.][0-9]+)?-microemacs09-${VERSION}-mecb[.]zip$"`
     if [ -n "$BASE" ]; then
         MECB="${BASE}-mecb"
         MEWB="${BASE}-mewb"
@@ -232,11 +232,11 @@ elif [ $ARCH_LIKE -eq 1 -o "`uname -r | grep -E '(MANJARO|arch1|zen1|cachyos|-aa
     ## Arch Linux and childs like Manjaro Linux. This is a rolling release, so
     ## the published name carries the snapshot date (arch-20261025) and the
     ## kernel that snapshot shipped with - neither can be guessed here.
-    MECB="linux-6-${MACHINE}-manjaro-0-microemacs-${VERSION}-mecb"
-    MEWB="linux-6-${MACHINE}-manjaro-0-microemacs-${VERSION}-mewb"
+    MECB="linux-6-${MACHINE}-manjaro-0-microemacs09-${VERSION}-mecb"
+    MEWB="linux-6-${MACHINE}-manjaro-0-microemacs09-${VERSION}-mewb"
     BASE=`resolve_base \
-        "^linux-[0-9]+-${MACHINE}-(archarm|arch)-[0-9]+-microemacs-${VERSION}-mecb[.]zip$" \
-        "^linux-[0-9]+-${MACHINE}-manjaro-[^-]+-microemacs-${VERSION}-mecb[.]zip$"`
+        "^linux-[0-9]+-${MACHINE}-(archarm|arch)-[0-9]+-microemacs09-${VERSION}-mecb[.]zip$" \
+        "^linux-[0-9]+-${MACHINE}-manjaro-[^-]+-microemacs09-${VERSION}-mecb[.]zip$"`
     if [ -n "$BASE" ]; then
         MECB="${BASE}-mecb"
         MEWB="${BASE}-mewb"
@@ -246,11 +246,11 @@ elif [ "$DIST_ID" = "alpine" ]; then
     ## major.minor of the running release (3.23, 3.24) and take whatever
     ## alpine build is published as fallback.
     ALP_V=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '"' | sed -E 's/^([0-9]+[.][0-9]+).*/\1/'`
-    MECB="linux-6-${MACHINE}-alpine-${ALP_V}-microemacs-${VERSION}-mecb"
-    MEWB="linux-6-${MACHINE}-alpine-${ALP_V}-microemacs-${VERSION}-mewb"
+    MECB="linux-6-${MACHINE}-alpine-${ALP_V}-microemacs09-${VERSION}-mecb"
+    MEWB="linux-6-${MACHINE}-alpine-${ALP_V}-microemacs09-${VERSION}-mewb"
     BASE=`resolve_base \
-        "^linux-[0-9]+-${MACHINE}-alpine-${ALP_V}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$" \
-        "^linux-[0-9]+-${MACHINE}-alpine-[^-]+-microemacs-${VERSION}-mecb[.]zip$"`
+        "^linux-[0-9]+-${MACHINE}-alpine-${ALP_V}([.][0-9]+)?-microemacs09-${VERSION}-mecb[.]zip$" \
+        "^linux-[0-9]+-${MACHINE}-alpine-[^-]+-microemacs09-${VERSION}-mecb[.]zip$"`
     if [ -n "$BASE" ]; then
         MECB="${BASE}-mecb"
         MEWB="${BASE}-mewb"
@@ -269,17 +269,17 @@ else
         UBUNTU_REL=`sed -n 's/^VERSION_ID=//p' /etc/os-release | tr -d '"' | sed -E 's/^([0-9]+).*/\1/'`
     fi
     if [ "$MACHINE" = "i686" ]; then
-        MECB="linux-6-i686-debian-12-microemacs-${VERSION}-mecb"
-        MEWB="linux-6-i686-debian-12-microemacs-${VERSION}-mewb"
+        MECB="linux-6-i686-debian-12-microemacs09-${VERSION}-mecb"
+        MEWB="linux-6-i686-debian-12-microemacs09-${VERSION}-mewb"
         ## releases before the Debian 12 build shipped i686 as kernel 5
         ## debian-12, ubuntu-18 or fedora-28
-        MECB_ALTS="linux-5-i686-debian-12-microemacs-${VERSION}-mecb linux-5-i686-ubuntu-18-microemacs-${VERSION}-mecb linux-5-i686-fedora-28-microemacs-${VERSION}-mecb"
-        MEWB_ALTS="linux-5-i686-debian-12-microemacs-${VERSION}-mewb linux-5-i686-ubuntu-18-microemacs-${VERSION}-mewb linux-5-i686-fedora-28-microemacs-${VERSION}-mewb"
+        MECB_ALTS="linux-5-i686-debian-12-microemacs09-${VERSION}-mecb linux-5-i686-ubuntu-18-microemacs09-${VERSION}-mecb linux-5-i686-fedora-28-microemacs09-${VERSION}-mecb"
+        MEWB_ALTS="linux-5-i686-debian-12-microemacs09-${VERSION}-mewb linux-5-i686-ubuntu-18-microemacs09-${VERSION}-mewb linux-5-i686-fedora-28-microemacs09-${VERSION}-mewb"
         ## older releases shipped i686 as ubuntu-18 or fedora-28
         BASE=`resolve_base \
-            "^linux-[0-9]+-i686-debian-[^-]+-microemacs-${VERSION}-mecb[.]zip$" \
-            "^linux-[0-9]+-i686-ubuntu-[^-]+-microemacs-${VERSION}-mecb[.]zip$" \
-            "^linux-[0-9]+-i686-fedora-[^-]+-microemacs-${VERSION}-mecb[.]zip$"`
+            "^linux-[0-9]+-i686-debian-[^-]+-microemacs09-${VERSION}-mecb[.]zip$" \
+            "^linux-[0-9]+-i686-ubuntu-[^-]+-microemacs09-${VERSION}-mecb[.]zip$" \
+            "^linux-[0-9]+-i686-fedora-[^-]+-microemacs09-${VERSION}-mecb[.]zip$"`
         if [ -n "$BASE" ]; then
             MECB="${BASE}-mecb"
             MEWB="${BASE}-mewb"
@@ -334,46 +334,46 @@ else
             UBU_NAME="ubuntu-${UBU}"
         fi
         if [ "$DEBIAN10" -eq 1 ]; then
-            MECB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
-            MEWB="linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
-            MECB_ALTS="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mecb linux-5-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mecb"
-            MEWB_ALTS="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mewb linux-5-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-20-microemacs-${VERSION}-mewb"
+            MECB="linux-4-${MACHINE}-almalinux-8-microemacs09-${VERSION}-mecb"
+            MEWB="linux-4-${MACHINE}-almalinux-8-microemacs09-${VERSION}-mewb"
+            MECB_ALTS="linux-4-${MACHINE}-debian-10-microemacs09-${VERSION}-mecb linux-5-${MACHINE}-ubuntu-20-microemacs09-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-20-microemacs09-${VERSION}-mecb"
+            MEWB_ALTS="linux-4-${MACHINE}-debian-10-microemacs09-${VERSION}-mewb linux-5-${MACHINE}-ubuntu-20-microemacs09-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-20-microemacs09-${VERSION}-mewb"
         else
-            MECB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mecb"
-            MEWB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs-${VERSION}-mewb"
+            MECB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs09-${VERSION}-mecb"
+            MEWB="linux-${KERNEL}-${MACHINE}-${UBU_NAME}-microemacs09-${VERSION}-mewb"
         fi
         if [ "$UBU" -ge 22 ]; then
             ## releases before the point release was added to the name
             ## (ubuntu-24.04 -> ubuntu-24)
-            MECB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb"
-            MEWB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb"
+            MECB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs09-${VERSION}-mecb"
+            MEWB_ALTS="linux-${KERNEL}-${MACHINE}-ubuntu-${UBU}-microemacs09-${VERSION}-mewb"
         else
             ## Ubuntu 18/20 compatibility fallbacks. Debian 10 prefers the
             ## kernel-4 AlmaLinux 8 build; Debian 11 and 12 use Ubuntu 20 and
             ## Ubuntu 22 assets respectively.
             if [ "$UBU" = "20" ] && [ "$DEBIAN10" -eq 0 ] && [ "$DIST_ID" != "debian" ]; then
-                MECB="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mecb"
-                MEWB="linux-4-${MACHINE}-debian-10-microemacs-${VERSION}-mewb"
+                MECB="linux-4-${MACHINE}-debian-10-microemacs09-${VERSION}-mecb"
+                MEWB="linux-4-${MACHINE}-debian-10-microemacs09-${VERSION}-mewb"
             fi
             if [ "$DEBIAN10" -eq 0 ]; then
-                MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mecb"
-                MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs-${VERSION}-mewb"
+                MECB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs09-${VERSION}-mecb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs09-${VERSION}-mecb linux-4-${MACHINE}-almalinux-8-microemacs09-${VERSION}-mecb"
+                MEWB_ALTS="linux-5-${MACHINE}-ubuntu-${UBU}-microemacs09-${VERSION}-mewb linux-4-${MACHINE}-ubuntu-${UBU}-microemacs09-${VERSION}-mewb linux-4-${MACHINE}-almalinux-8-microemacs09-${VERSION}-mewb"
             fi
         fi
         ## the published asset may use a different kernel major than the
         ## guessed one (a 7.x HWE kernel on Ubuntu 24.04 still needs ubuntu-24.04)
         ## and older releases dropped the point release (ubuntu-24), so match both
         if [ "$DEBIAN10" -eq 1 ]; then
-            BASE=`resolve_base "^linux-4-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$" \
-                             "^linux-[0-9]+-${MACHINE}-debian-10-microemacs-${VERSION}-mecb[.]zip$"`
+            BASE=`resolve_base "^linux-4-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs09-${VERSION}-mecb[.]zip$" \
+                             "^linux-[0-9]+-${MACHINE}-debian-10-microemacs09-${VERSION}-mecb[.]zip$"`
         else
-            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-ubuntu-${UBU}([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-ubuntu-${UBU}([.][0-9]+)?-microemacs09-${VERSION}-mecb[.]zip$"`
         fi
         if [ -z "$BASE" ] && [ "$UBU" = "20" ] && [ "$DEBIAN10" -eq 0 ]; then
             ## Older Ubuntu 18/20 releases used the AlmaLinux 8 build
             ## (glibc 2.28) as a fallback; Ubuntu 20 can also use Debian 10.
-            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-debian-10-microemacs-${VERSION}-mecb[.]zip$" \
-                             "^linux-[0-9]+-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs-${VERSION}-mecb[.]zip$"`
+            BASE=`resolve_base "^linux-[0-9]+-${MACHINE}-debian-10-microemacs09-${VERSION}-mecb[.]zip$" \
+                             "^linux-[0-9]+-${MACHINE}-almalinux-8([.][0-9]+)?-microemacs09-${VERSION}-mecb[.]zip$"`
         fi
         if [ -n "$BASE" ]; then
             MECB="${BASE}-mecb"
@@ -414,7 +414,7 @@ function install_me {
     if [ "`echo $PATH | grep /.local/bin`" = "" ]; then
         # If it's not in the PATH, add it to ~/.bashrc (only once, the
         # updater runs this script too and must not append duplicates)
-        if [ "$SHELL" = "/bin/bash" -o "$SHELL" = "/bin/bash.exe" ]; then 
+        if [ "$SHELL" = "/bin/bash" -o "$SHELL" = "/bin/bash.exe" ]; then
             ## bash.exe on Cygwin or Msys
             if grep -qF '|| export PATH="$HOME/.local/bin:$PATH"' ~/.bashrc 2>/dev/null; then
                 echo "PATH setup line is already present in your .bashrc"
@@ -425,7 +425,7 @@ function install_me {
             fi
             echo "use 'source ~/.bashrc' to update the PATH variable in your current terminal session"
             echo "If using an other shell than Bash or Zsh then add the folder '~/.local/bin' manually to your PATH variable!"
-        elif [ "$SHELL" = "/bin/zsh" ]; then 
+        elif [ "$SHELL" = "/bin/zsh" ]; then
             if grep -qF '|| export PATH="$HOME/.local/bin:$PATH"' ~/.zshrc 2>/dev/null; then
                 echo "PATH setup line is already present in your .zshrc"
             else
@@ -479,7 +479,7 @@ function install_me {
     fi
     # cleanup
     rm "${MECB}.zip"
-    rm "${MEWB}.zip" 
+    rm "${MEWB}.zip"
     # Make the script executable
     echo "Installation complete."
 }

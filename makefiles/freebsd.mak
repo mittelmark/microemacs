@@ -1,11 +1,11 @@
-##version=091102-preview1
+##version=261102-preview1
 OS=`uname -o | sed 's/FreeBSD/freebsd/'`
 VERSION := `awk '/^.define meRELEASE/ { gsub(/"/,"",$$$3); print $$$3 }' src/evers.h`
 OSV=`grep -E 'VERSION_ID=' /etc/os-release | sed -E 's/VERSION_ID="?([0-9]+).*"?/\1/' | sed -e 's/25/14/'`
 KERNEL=`uname -r | grep -oE '^[0-9]'`
 OSVERSION="$(DIST)$(OSV)"
 MACHINE=`uname -m`
-RELEASE=freebsd-$(OSV)-$(MACHINE)-microemacs-$(VERSION)
+RELEASE=freebsd-$(OSV)-$(MACHINE)-microemacs09-$(VERSION)
 app=mecb
 #
 # Auto-detect libXft for mew/mecw (pkgconf must be installed).

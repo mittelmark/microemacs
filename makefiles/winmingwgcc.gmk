@@ -23,7 +23,7 @@ WIN=msys
 WIX=msys
 endif
 endif
-RELEASE:=windows-$(WIN)-$(MSYS)-microemacs-$(VERSION)
+RELEASE:=windows-$(WIN)-$(MSYS)-microemacs09-$(VERSION)
 TOOLKIT=winmingwgcc
 MAKE=make
 default:

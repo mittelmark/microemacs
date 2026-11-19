@@ -82,7 +82,7 @@ jobs:
          ls -l linux-*/
          ## the release name must be the Debian 10 one, the install script and
          ## the release assembly rely on the distribution and version string
-         ls -d linux-4-x86_64-debian-10-microemacs-*/ >/dev/null
+         ls -d linux-4-x86_64-debian-10-microemacs09-*/ >/dev/null
          ## each packaging run must have produced non-empty archives and the
          ## sha256 checksum file written by makefiles/release.gmk
          for d in linux-*/; do

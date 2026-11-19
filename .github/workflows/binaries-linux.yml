@@ -101,13 +101,13 @@ jobs:
         make -f makefiles/unixgcc.gmk app-image \
           APPIMAGE_ARCH="$APPIMAGE_ARCH" \
           APPIMAGE_PLATFORM_SUFFIX=_${{ matrix.os }}
-        ls -lh Jasspa_MicroEmacs_${VRS}_${{ matrix.os }}_${APPIMAGE_ARCH}.AppImage
+        ls -lh Jasspa_MicroEmacs09_${VRS}_${{ matrix.os }}_${APPIMAGE_ARCH}.AppImage
 
     - name: Upload AppImage
       uses: actions/upload-artifact@v6
       with:
         name: appimage-${{ matrix.os }}-${{ env.APPIMAGE_ARCH }}-${{ env.VRS }}-${{ env.BRANCH_NAME }}
-        path: Jasspa_MicroEmacs_${{ env.VRS }}_${{ matrix.os }}_${{ env.APPIMAGE_ARCH }}.AppImage
+        path: Jasspa_MicroEmacs09_${{ env.VRS }}_${{ matrix.os }}_${{ env.APPIMAGE_ARCH }}.AppImage
 
     - name: make brew package
       run:  |
