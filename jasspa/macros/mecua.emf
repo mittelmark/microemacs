@@ -211,6 +211,7 @@ global-bind-key file-browser "f10"
 ; Install overrides after prefix setup.
 !force global-unbind-key "C-a"
 global-bind-key select-all "C-a"
+global-bind-key expand-abbrev-handle "C-j esc"
 global-bind-key ifill-paragraph "C-j i"
 global-bind-key transpose-chars "C-t"
 global-bind-key set-alpha-mark "C-j m"
