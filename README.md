@@ -174,6 +174,7 @@ from a Windows terminal to check for updates of the installed executables.
     - [Linux Debian/Ubuntu](#debian)
     - [Linux Fedora/Alma Linux/Red Hat](#redhat)
     - [Linux Manjaro/Arch](#manjaro)
+    - [MacOS](#macos)
     - [Windows Cross Compilation](#crosswin)
     - [Windows Cygwin Compilation](#cygwin)
     - [MSYS2 Compilation](#msys2)
@@ -409,6 +410,28 @@ make -f makefiles/unixgcc.gmk mecwb
 xset fp rehash ## update the fontpath settings to the current session
 ```
 
+<a name="macos"> </a>
+### MacOS systems using MacPorts
+
+Compilation on MacOS
+
+One way to compile the code yourself on a MacOS system is to use the
+[MacPorts](https://www.macports.org/) package manager and to install the
+[XQuartz](https://www.xquartz.org) system for MacOS to run X11 applications on MacOS. That approach
+should work any MacOS system from Catalina (MacOS 10.15) onwards and newer.
+
+Here are the required install and make commands after intalling MacPorts and XQuartz:
+
+```bash
+sudo port install git curl fontconfig pkgconfig gcc15 ncurses Xft2 openssl xorg-libX11
+git clone https://github.com/mittelmark/microemacs.git
+### compile the barebone executables
+make mec mew mecw
+### compile the single file executables
+make mecb mewb mecwb
+```
+
+You should then have the mec/mewb/mecwb executables in the project root folder.
 
 <a name="crosswin"> </a>
 ### Cross-compilation on Linux for Windows:
